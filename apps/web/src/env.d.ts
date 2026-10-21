@@ -1,3 +1,8 @@
+// Astro's built-in declarations (astro:* modules, import.meta.glob/env,
+// ?raw imports). Referenced here so ESLint and editors resolve them on a fresh
+// checkout too; otherwise they only arrive with the generated .astro/types.d.ts.
+/// <reference types="astro/client" />
+
 // Raw, unvalidated shape. Read values through `getPublicEnv()` in `@/lib/env`.
 interface ImportMetaEnv {
   readonly PUBLIC_SUPABASE_URL?: string;
