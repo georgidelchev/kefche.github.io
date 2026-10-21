@@ -107,12 +107,13 @@ All 10 steps are implemented as separate commits on `main` (local and not yet pu
 - [x] Steps 1–10
 - [x] DoD: `pnpm dev` runs
 - [x] DoD: CI green. First run on `main` passed (2026-10-21, run 39622303928); the deploy job was skipped as intended until Cloudflare is configured.
-- [ ] DoD: preview deploy URL works. Needs the owner's one-time Cloudflare setup (`docs/RUNBOOK.md`), then a push to `main` and a test PR.
+- [x] Production deploy: first `wrangler deploy` from CI on `main` succeeded (2026-10-21, run 39624714266).
+- [ ] DoD: preview deploy URL works. Verified with this PR's preview upload.
 
 ### Owner actions to finish Phase 0
 
 1. ~~Approve pushing the local commits to `origin/main`.~~ Done.
-2. Complete the Cloudflare setup in `docs/RUNBOOK.md` (API token, account ID, GitHub variable and secret) and turn off GitHub Pages.
+2. ~~Complete the Cloudflare setup in `docs/RUNBOOK.md` (API token, account ID, GitHub variable and secret) and turn off GitHub Pages.~~ Done.
 3. Install Docker Desktop before Phase 2.
 
 ---
