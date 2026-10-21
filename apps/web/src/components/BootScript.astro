@@ -1,0 +1,19 @@
+---
+import { RAIL_STORAGE_KEY } from "@/features/shell/rail";
+import { THEME_STORAGE_KEY } from "@/features/theme/theme";
+
+// Runs before first paint, so stored UI preferences never flash (SPEC §6.3).
+// Must stay tiny and dependency-free; only exact known values are accepted.
+// Phase 17: this inline script needs a CSP hash.
+---
+
+<script is:inline define:vars={{ themeKey: THEME_STORAGE_KEY, railKey: RAIL_STORAGE_KEY }}>
+  try {
+    const root = document.documentElement;
+    const theme = localStorage.getItem(themeKey);
+    if (theme === "light" || theme === "dark") root.dataset.theme = theme;
+    if (localStorage.getItem(railKey) === "compact") root.dataset.rail = "compact";
+  } catch {
+    // Storage unavailable: defaults apply.
+  }
+</script>

@@ -1,0 +1,13 @@
+{
+  "primary": "メイン",
+  "skip": "本文へスキップ",
+  "home": "ホーム",
+  "games": "ゲーム",
+  "play": "あそぶ",
+  "friends": "フレンド",
+  "profile": "プロフィール",
+  "search": "検索",
+  "searchPlaceholder": "ゲームを検索",
+  "settings": "設定",
+  "compact": "コンパクトメニュー"
+}

@@ -1,7 +1,8 @@
 {
   "meta": {
     "title": "kefche — free browser games",
-    "description": "Free browser games for phones, tablets and desktop. Play solo, with friends on one device, or online."
+    "description": "Free browser games for phones, tablets and desktop. Play solo, with friends on one device, or online.",
+    "sectionTitle": "{section} · kefche"
   },
   "hero": {
     "tagline": "Free browser games for phones, tablets and desktop. Play solo, with friends on one device, or online."
@@ -14,5 +15,10 @@
   },
   "language": {
     "label": "Language"
+  },
+  "comingSoon": {
+    "badge": "Coming soon",
+    "body": "We're still building this part of kefche. Check back soon.",
+    "back": "Back to home"
   }
 }

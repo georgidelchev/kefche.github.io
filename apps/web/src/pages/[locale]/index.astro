@@ -1,10 +1,8 @@
 ---
 import Logo from "@/components/Logo.astro";
-import LanguageSwitcher from "@/features/i18n/LanguageSwitcher.astro";
-import { ThemeSwitcher } from "@/features/theme/ThemeSwitcher";
+import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALES, type Locale } from "@/i18n/locales";
-import BaseLayout from "@/layouts/BaseLayout.astro";
 
 import type { GetStaticPaths } from "astro";
 
@@ -15,28 +13,17 @@ const locale = Astro.params.locale as Locale;
 const t = getT(locale);
 ---
 
-<BaseLayout
+<AppShell
   locale={locale}
   path="/"
+  section="home"
   title={t("common:meta.title")}
   description={t("common:meta.description")}
 >
-  <main class="mx-auto flex min-h-dvh max-w-xl flex-col justify-center gap-4 px-4">
+  <section class="grid max-w-2xl gap-4 py-8 md:py-16">
     <h1>
-      <Logo class="w-64 max-w-full" />
+      <Logo class="w-64 max-w-full md:w-80" />
     </h1>
-    <p class="text-lg text-muted">{t("common:hero.tagline")}</p>
-    <div class="flex flex-wrap items-center gap-3">
-      <LanguageSwitcher locale={locale} path="/" label={t("common:language.label")} />
-      <ThemeSwitcher
-        client:idle
-        labels={{
-          legend: t("common:theme.legend"),
-          light: t("common:theme.light"),
-          dark: t("common:theme.dark"),
-          system: t("common:theme.system"),
-        }}
-      />
-    </div>
-  </main>
-</BaseLayout>
+    <p class="text-lg text-muted md:text-xl">{t("common:hero.tagline")}</p>
+  </section>
+</AppShell>

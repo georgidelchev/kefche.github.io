@@ -1,7 +1,8 @@
 {
   "meta": {
     "title": "kefche — jeux gratuits dans le navigateur",
-    "description": "Des jeux gratuits dans le navigateur, sur mobile, tablette et ordinateur. Jouez en solo, entre amis sur le même appareil ou en ligne."
+    "description": "Des jeux gratuits dans le navigateur, sur mobile, tablette et ordinateur. Jouez en solo, entre amis sur le même appareil ou en ligne.",
+    "sectionTitle": "{section} · kefche"
   },
   "hero": {
     "tagline": "Des jeux gratuits dans le navigateur, sur mobile, tablette et ordinateur. Jouez en solo, entre amis sur le même appareil ou en ligne."
@@ -14,5 +15,10 @@
   },
   "language": {
     "label": "Langue"
+  },
+  "comingSoon": {
+    "badge": "Bientôt disponible",
+    "body": "Cette partie de kefche est encore en construction. Revenez bientôt.",
+    "back": "Retour à l'accueil"
   }
 }

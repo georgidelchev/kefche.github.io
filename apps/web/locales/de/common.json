@@ -1,7 +1,8 @@
 {
   "meta": {
     "title": "kefche — kostenlose Browserspiele",
-    "description": "Kostenlose Browserspiele für Smartphone, Tablet und Computer. Spiel allein, mit Freunden an einem Gerät oder online."
+    "description": "Kostenlose Browserspiele für Smartphone, Tablet und Computer. Spiel allein, mit Freunden an einem Gerät oder online.",
+    "sectionTitle": "{section} · kefche"
   },
   "hero": {
     "tagline": "Kostenlose Browserspiele für Smartphone, Tablet und Computer. Spiel allein, mit Freunden an einem Gerät oder online."
@@ -14,5 +15,10 @@
   },
   "language": {
     "label": "Sprache"
+  },
+  "comingSoon": {
+    "badge": "Demnächst",
+    "body": "Dieser Teil von kefche ist noch im Aufbau. Schau bald wieder vorbei.",
+    "back": "Zurück zur Startseite"
   }
 }

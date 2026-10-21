@@ -1,0 +1,264 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import {
+  CircleUser,
+  Gamepad2,
+  House,
+  LayoutGrid,
+  PanelLeftClose,
+  Search,
+  Settings,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
+
+import Logo from "@/components/Logo.astro";
+import LanguageSwitcher from "@/features/i18n/LanguageSwitcher.astro";
+import { ThemeSwitcher } from "@/features/theme/ThemeSwitcher";
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+import { NAV_ITEMS, NAV_LABEL_KEYS, type NavId, type SoonSection } from "./nav";
+
+interface Props {
+  locale: Locale;
+  /** Locale-independent path of this page (canonical, hreflang, language switcher). */
+  path: string;
+  /** Highlights the matching navigation item. */
+  section?: NavId | SoonSection;
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+
+const { locale, path, section, title, description, noindex = false } = Astro.props;
+const t = getT(locale);
+
+const ICONS: Record<NavId, LucideIcon> = {
+  home: House,
+  games: LayoutGrid,
+  play: Gamepad2,
+  friends: Users,
+  profile: CircleUser,
+};
+const items = NAV_ITEMS.map((item) => ({
+  ...item,
+  href: getRelativeLocaleUrl(locale, item.path),
+  label: t(NAV_LABEL_KEYS[item.id]),
+  Icon: ICONS[item.id],
+  current: item.id === section ? ("page" as const) : undefined,
+}));
+const homeHref = getRelativeLocaleUrl(locale, "/");
+const searchHref = getRelativeLocaleUrl(locale, "/search/");
+const themeLabels = {
+  legend: t("common:theme.legend"),
+  light: t("common:theme.light"),
+  dark: t("common:theme.dark"),
+  system: t("common:theme.system"),
+};
+const gutter = "ps-[max(1rem,env(safe-area-inset-left))] pe-[max(1rem,env(safe-area-inset-right))]";
+const focusRing =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
+---
+
+<BaseLayout locale={locale} path={path} title={title} description={description} noindex={noindex}>
+  <a
+    href="#main"
+    class:list={[
+      "sr-only z-[60] rounded-xl bg-brand px-4 py-3 font-semibold text-on-brand focus:not-sr-only focus:fixed focus:start-4 focus:top-[calc(1rem+env(safe-area-inset-top))]",
+      focusRing,
+    ]}
+  >
+    {t("nav:skip")}
+  </a>
+
+  <header
+    class:list={[
+      "sticky top-0 z-40 border-b border-border bg-surface pt-[env(safe-area-inset-top)]",
+      gutter,
+    ]}
+  >
+    <div class="mx-auto flex h-16 max-w-7xl items-center gap-4">
+      <a
+        href={homeHref}
+        class:list={["flex min-h-11 shrink-0 items-center rounded-lg text-text", focusRing]}
+      >
+        <Logo class="w-28" />
+      </a>
+
+      <nav aria-label={t("nav:primary")} class="hidden md:block xl:hidden">
+        <ul class="flex items-center gap-1">
+          {items.map(({ href, label, current }) => (
+            <li>
+              <a
+                href={href}
+                aria-current={current}
+                class:list={[
+                  "flex min-h-11 items-center rounded-xl px-3 font-semibold text-muted hover:bg-surface-2 hover:text-text aria-[current=page]:bg-surface-2 aria-[current=page]:text-text",
+                  focusRing,
+                ]}
+              >
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <form
+        role="search"
+        action={searchHref}
+        method="get"
+        class="ms-auto hidden min-w-0 flex-1 items-center lg:flex lg:max-w-xs"
+      >
+        <label for="site-search" class="sr-only">
+          {t("nav:search")}
+        </label>
+        <div class="relative w-full">
+          <Search
+            aria-hidden="true"
+            className="pointer-events-none absolute start-3 top-1/2 size-5 -translate-y-1/2 text-muted"
+          />
+          <input
+            id="site-search"
+            name="q"
+            type="search"
+            placeholder={t("nav:searchPlaceholder")}
+            class:list={[
+              "min-h-11 w-full rounded-full border border-border-strong bg-surface-2 ps-10 pe-4 text-base text-text placeholder:text-muted",
+              focusRing,
+            ]}
+          />
+        </div>
+      </form>
+
+      <!-- Inline controls from 1024px; below that they live in the settings panel. -->
+      <div class="hidden items-center gap-2 lg:flex">
+        <LanguageSwitcher locale={locale} path={path} label={t("common:language.label")} />
+        <ThemeSwitcher client:idle labels={themeLabels} />
+      </div>
+
+      <details class="relative ms-auto lg:hidden" data-popover>
+        <summary
+          class:list={[
+            "flex size-11 cursor-pointer list-none items-center justify-center rounded-full border border-border-strong bg-surface-2 text-text [&::-webkit-details-marker]:hidden",
+            focusRing,
+          ]}
+        >
+          <Settings aria-hidden="true" className="size-5" />
+          <span class="sr-only">{t("nav:settings")}</span>
+        </summary>
+        <div class="absolute end-0 top-full z-50 mt-2 grid w-[min(20rem,calc(100vw-2rem))] gap-4 rounded-2xl border border-border bg-surface p-4 shadow-xl">
+          <form role="search" action={searchHref} method="get">
+            <label for="site-search-panel" class="sr-only">
+              {t("nav:search")}
+            </label>
+            <input
+              id="site-search-panel"
+              name="q"
+              type="search"
+              placeholder={t("nav:searchPlaceholder")}
+              class:list={[
+                "min-h-11 w-full rounded-full border border-border-strong bg-surface-2 px-4 text-base text-text placeholder:text-muted",
+                focusRing,
+              ]}
+            />
+          </form>
+          <div class="grid gap-2">
+            <p class="text-sm font-semibold text-muted">{t("common:theme.legend")}</p>
+            <ThemeSwitcher client:visible labels={themeLabels} />
+          </div>
+          <div class="grid gap-2">
+            <p class="text-sm font-semibold text-muted">{t("common:language.label")}</p>
+            <LanguageSwitcher
+              locale={locale}
+              path={path}
+              label={t("common:language.label")}
+              variant="list"
+            />
+          </div>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <div class:list={["mx-auto flex max-w-7xl", gutter]}>
+    <aside class="sticky top-[calc(4rem+env(safe-area-inset-top))] hidden h-[calc(100dvh-4rem-env(safe-area-inset-top))] w-56 shrink-0 flex-col gap-2 border-e border-border py-4 pe-3 group-data-[rail=compact]/root:w-16 xl:flex">
+      <nav aria-label={t("nav:primary")}>
+        <ul class="grid gap-1">
+          {items.map(({ href, label, current, Icon }) => (
+            <li>
+              <a
+                href={href}
+                aria-current={current}
+                title={label}
+                class:list={[
+                  "flex min-h-11 items-center gap-3 rounded-xl px-3 font-semibold text-muted hover:bg-surface-2 hover:text-text aria-[current=page]:bg-surface-2 aria-[current=page]:text-text",
+                  focusRing,
+                ]}
+              >
+                <Icon aria-hidden="true" className="size-5 shrink-0" />
+                <span class="truncate group-data-[rail=compact]/root:sr-only">{label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <button
+        type="button"
+        data-rail-toggle
+        aria-pressed="false"
+        title={t("nav:compact")}
+        class:list={[
+          "mt-auto flex min-h-11 cursor-pointer items-center gap-3 rounded-xl px-3 text-muted hover:bg-surface-2 hover:text-text",
+          focusRing,
+        ]}
+      >
+        <PanelLeftClose
+          aria-hidden="true"
+          className="size-5 shrink-0 group-data-[rail=compact]/root:rotate-180 rtl:-scale-x-100"
+        />
+        <span class="truncate group-data-[rail=compact]/root:sr-only">{t("nav:compact")}</span>
+      </button>
+    </aside>
+
+    <main
+      id="main"
+      tabindex="-1"
+      class="min-w-0 flex-1 pt-6 pb-[calc(5.5rem+env(safe-area-inset-bottom))] outline-none md:pb-10 xl:ps-8"
+    >
+      <slot />
+    </main>
+  </div>
+
+  <nav
+    aria-label={t("nav:primary")}
+    class:list={[
+      // Full width (insets only) so five labels fit even at 360px.
+      "fixed inset-x-0 bottom-0 z-40 border-t border-border bg-surface ps-[env(safe-area-inset-left)] pe-[env(safe-area-inset-right)] pb-[env(safe-area-inset-bottom)] md:hidden",
+    ]}
+  >
+    <ul class="grid grid-cols-5">
+      {items.map(({ href, label, current, Icon }) => (
+        <li>
+          <a
+            href={href}
+            aria-current={current}
+            class:list={[
+              "flex min-h-14 flex-col items-center justify-center gap-0.5 rounded-xl px-0.5 py-1 text-center text-xs leading-tight font-semibold text-muted aria-[current=page]:text-brand-strong",
+              focusRing,
+            ]}
+          >
+            <Icon aria-hidden="true" className="size-6" />
+            <span class="line-clamp-2 max-w-full break-words">{label}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</BaseLayout>
+
+<script>
+  import "@/features/shell/shell.client";
+</script>

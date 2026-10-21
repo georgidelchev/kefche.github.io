@@ -1,7 +1,8 @@
 {
   "meta": {
     "title": "kefche — jogos grátis no navegador",
-    "description": "Jogos grátis no navegador para celular, tablet e computador. Jogue sozinho, com amigos no mesmo aparelho ou online."
+    "description": "Jogos grátis no navegador para celular, tablet e computador. Jogue sozinho, com amigos no mesmo aparelho ou online.",
+    "sectionTitle": "{section} · kefche"
   },
   "hero": {
     "tagline": "Jogos grátis no navegador para celular, tablet e computador. Jogue sozinho, com amigos no mesmo aparelho ou online."
@@ -14,5 +15,10 @@
   },
   "language": {
     "label": "Idioma"
+  },
+  "comingSoon": {
+    "badge": "Em breve",
+    "body": "Ainda estamos construindo esta parte do kefche. Volte em breve.",
+    "back": "Voltar ao início"
   }
 }

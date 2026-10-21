@@ -1,0 +1,53 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { Hammer } from "lucide-react";
+
+import { Badge } from "@kefche/ui/components/badge";
+import { buttonVariants } from "@kefche/ui/components/button";
+
+import AppShell from "@/features/shell/AppShell.astro";
+import { NAV_LABEL_KEYS, SOON_SECTIONS, type SoonSection } from "@/features/shell/nav";
+import { getT } from "@/i18n/i18n";
+import { LOCALES, type Locale } from "@/i18n/locales";
+
+import type { GetStaticPaths } from "astro";
+
+// "Coming soon" for sections whose phase hasn't shipped (owner decision,
+// Phase 1 Q1). A section's real page replaces this one when it lands.
+export const getStaticPaths = (() =>
+  LOCALES.flatMap((locale) =>
+    SOON_SECTIONS.map((section) => ({ params: { locale, section } })),
+  )) satisfies GetStaticPaths;
+
+const locale = Astro.params.locale as Locale;
+const section = Astro.params.section as SoonSection;
+const t = getT(locale);
+const name = t(NAV_LABEL_KEYS[section]);
+---
+
+<AppShell
+  locale={locale}
+  path={`/${section}/`}
+  section={section}
+  title={t("common:meta.sectionTitle", { section: name })}
+  description={t("common:comingSoon.body")}
+  noindex
+>
+  <section class="mx-auto grid max-w-xl justify-items-center gap-4 py-12 text-center md:py-20">
+    <div
+      aria-hidden="true"
+      class="flex size-16 items-center justify-center rounded-2xl bg-surface-2 text-brand-strong"
+    >
+      <Hammer className="size-8" />
+    </div>
+    <Badge variant="new">{t("common:comingSoon.badge")}</Badge>
+    <h1 class="text-3xl md:text-4xl">{name}</h1>
+    <p class="text-lg text-muted">{t("common:comingSoon.body")}</p>
+    <a
+      href={getRelativeLocaleUrl(locale, "/")}
+      class:list={[buttonVariants({ variant: "primary" }), "mt-2"]}
+    >
+      {t("common:comingSoon.back")}
+    </a>
+  </section>
+</AppShell>

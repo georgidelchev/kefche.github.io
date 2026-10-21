@@ -1,7 +1,7 @@
 ---
+import BootScript from "@/components/BootScript.astro";
 import Fonts from "@/components/Fonts.astro";
 import SeoHead from "@/components/SeoHead.astro";
-import ThemeScript from "@/features/theme/ThemeScript.astro";
 import { LOCALE_INFO, type Locale } from "@/i18n/locales";
 import "@/styles/global.css";
 
@@ -19,10 +19,11 @@ const { bcp47, dir, script } = LOCALE_INFO[locale];
 ---
 
 <!doctype html>
-<html lang={bcp47} dir={dir}>
+<!-- `group/root` lets components react to root data attributes (data-rail, data-theme). -->
+<html lang={bcp47} dir={dir} class="group/root">
   <head>
     <meta charset="utf-8" />
-    <ThemeScript />
+    <BootScript />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <SeoHead
       locale={locale}
