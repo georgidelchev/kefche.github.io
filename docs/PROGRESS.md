@@ -4,27 +4,27 @@
 
 ## Phase checklist
 
-| Phase | Title                                                      | Status                              |
-| ----- | ---------------------------------------------------------- | ----------------------------------- |
-| 0     | Foundation & tooling                                       | ✅ DoD met; awaiting owner sign-off |
-| 1     | Design system, layout, theming, i18n skeleton              | ⏳ Not started                      |
-| 2     | Supabase core, auth & profiles                             | ⏳ Not started                      |
-| 3     | Game SDK & first games (2048, Sudoku, Snake)               | ⏳ Not started                      |
-| 4     | Bots, hotseat & timers                                     | ⏳ Not started                      |
-| 5     | Multiplayer core                                           | ⏳ Not started                      |
-| 6     | Chess                                                      | ⏳ Not started                      |
-| 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                      |
-| 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                      |
-| 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                      |
-| 10    | Admin panel                                                | ⏳ Not started                      |
-| 11–14 | Game batches                                               | ⏳ Not started                      |
-| 15    | Translation pass & content packs                           | ⏳ Not started                      |
-| 16    | PWA, offline, audio & haptics polish                       | ⏳ Not started                      |
-| 17    | Consent, legal, analytics, monitoring                      | ⏳ Not started                      |
-| 18    | Performance & accessibility pass                           | ⏳ Not started                      |
-| 19    | Security review                                            | ⏳ Not started                      |
-| 20    | Test suite                                                 | ⏳ Not started                      |
-| 21    | Launch preparation                                         | ⏳ Not started                      |
+| Phase | Title                                                      | Status                                |
+| ----- | ---------------------------------------------------------- | ------------------------------------- |
+| 0     | Foundation & tooling                                       | ✅ Done (owner signed off 2026-10-21) |
+| 1     | Design system, layout, theming, i18n skeleton              | 📝 Plan awaiting owner approval       |
+| 2     | Supabase core, auth & profiles                             | ⏳ Not started                        |
+| 3     | Game SDK & first games (2048, Sudoku, Snake)               | ⏳ Not started                        |
+| 4     | Bots, hotseat & timers                                     | ⏳ Not started                        |
+| 5     | Multiplayer core                                           | ⏳ Not started                        |
+| 6     | Chess                                                      | ⏳ Not started                        |
+| 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                        |
+| 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                        |
+| 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                        |
+| 10    | Admin panel                                                | ⏳ Not started                        |
+| 11–14 | Game batches                                               | ⏳ Not started                        |
+| 15    | Translation pass & content packs                           | ⏳ Not started                        |
+| 16    | PWA, offline, audio & haptics polish                       | ⏳ Not started                        |
+| 17    | Consent, legal, analytics, monitoring                      | ⏳ Not started                        |
+| 18    | Performance & accessibility pass                           | ⏳ Not started                        |
+| 19    | Security review                                            | ⏳ Not started                        |
+| 20    | Test suite                                                 | ⏳ Not started                        |
+| 21    | Launch preparation                                         | ⏳ Not started                        |
 
 ---
 
@@ -117,6 +117,63 @@ All 10 steps are implemented as separate commits on `main` (local and not yet pu
 1. ~~Approve pushing the local commits to `origin/main`.~~ Done.
 2. ~~Complete the Cloudflare setup in `docs/RUNBOOK.md` (API token, account ID, GitHub variable and secret) and turn off GitHub Pages.~~ Done.
 3. Install Docker Desktop before Phase 2.
+
+---
+
+## Phase 1 — Design system, layout, theming, i18n skeleton
+
+**Goal (SPEC §22):** tokens (light/dark), theme switching without flash, typography, core components (button, input, card, dialog, sheet, tabs, toast, avatar, badge, skeleton, empty/error states), app shell with responsive navigation (bottom bar on phones), logo SVG, i18n routing for all 11 locales with detection and switcher, RTL verified in Arabic, 404 and offline pages.
+**DoD:** a dev-only `/[locale]/dev/ui` page shows every component in both themes and in RTL; Lighthouse accessibility ≥ 95. Also the standing DoD: green checks, no console errors, responsive at 360/768/1280 px in both themes, all new strings translated.
+
+### Steps (one Conventional Commit each)
+
+1. **Palette and contrast.** Add `scripts/check-contrast.mjs`, which computes WCAG ratios for every text/surface token pair in both themes and fails on < 4.5:1 for text or < 3:1 for UI. Refine the tokens to pass (fixes the brand-orange known issue: add `--brand-strong` and `--on-brand`). Add the 8-color player palette, color-blind safe and each paired with a shape (SPEC §6.2), and one accent per game category. Wire it into CI as `pnpm check:contrast`.
+2. **Typography.** Self-host fonts through the Astro Fonts API (Fontsource provider, downloaded at build time, no third-party requests). Proposal: **Inter Variable** for UI (Latin, Cyrillic, Greek) and **Unbounded** for display (Latin, Cyrillic). The final pick comes with the logo approval in step 7. Noto Sans Arabic and Noto Sans Devanagari load only on `ar` and `hi` pages; zh and ja use the system stack. Modular type scale, and `text-wrap: balance` on headings.
+3. **Theme without flash.** A tiny inline `<head>` script applies the stored theme before first paint. Storage reads go through Zod (bad values fall back to System). The Light/Dark/System switcher is a React island, and the state is a small Zustand store (localStorage for now; DB sync in Phase 2). The inline script's hash is recorded for the Phase 17 CSP.
+4. **i18n core.**
+   - Locale registry with code, native name, `dir`, font and plural rules for the 11 locales.
+   - Astro i18n routing (`prefixDefaultLocale`), and i18next + react-i18next with ICU messages shared by Astro (build time) and islands.
+   - Namespaced JSON in `apps/web/locales/<locale>/`.
+   - Helpers for localized paths, `hreflang` alternates (+ `x-default`) and `Intl` formatting.
+   - `pnpm i18n:check` (missing or unused keys, invalid ICU, identical placeholders across locales), added to CI.
+5. **Locale detection and switcher.**
+   - `/` becomes an on-demand Worker route: saved cookie → `Accept-Language` → `en`, then a 302 with `Vary`.
+   - Astro middleware sets the security headers on every on-demand response (fixes that known issue).
+   - The language switcher shows each language in its own script and saves the choice to a cookie and localStorage.
+6. **Component library.**
+   - shadcn/ui (Radix primitives) copied into `packages/ui` and themed with our tokens, plus Lucide icons.
+   - Components: button, input, card, dialog, sheet, tabs, toast, avatar (initials, with a color derived from the id), badge (including pixel-style NEW/HOT), skeleton, empty state and error state.
+   - All components use logical properties only. Directional icons mirror in RTL. Touch targets are ≥ 44 px, focus is visible, and reduced motion is respected.
+7. **Logo.** An inline SVG `kefche` wordmark plus a compact `k` icon. I'll show you 2–3 options as a preview page and **you pick one before it's finalized** (SPEC §23). Then I generate the favicon, Apple touch icon and maskable PWA icons.
+8. **App shell.**
+   - Phones: bottom tab bar (Home, Games, Play, Friends, Profile).
+   - Tablet and desktop: a top header with logo, search and the language/theme switchers. Large screens add a collapsible side rail.
+   - Safe-area insets, skip link, landmarks, and correct `lang`/`dir`.
+   - Unbuilt sections follow your answer to Q1 below.
+9. **Pages.**
+   - Localized home: a minimal hero, with no fake content.
+   - Localized 404 per locale (`/<locale>/404.html`; Cloudflare serves the nearest one).
+   - Localized offline page, used by the service worker in Phase 16.
+   - Dev-only `/[locale]/dev/ui` gallery with theme and RTL toggles. It isn't generated in production builds.
+10. **Verification and docs.** Run Lighthouse against `astro preview` on the home, 404 and dev/ui pages (accessibility ≥ 95). Take screenshots at 360/768/1280 px in both themes plus Arabic RTL. Finish `ADDING_A_LANGUAGE.md`, add the i18n section of `ARCHITECTURE.md`, and add ADRs (fonts, i18n stack, component library).
+
+### Decisions (recorded as ADRs as they are made)
+
+- **Translations:** Phase 1 strings (nav, theme, language, 404, offline, component labels; about 60 keys) are written for **all 11 locales** now, so `i18n:check` passes everywhere and Arabic RTL can be verified properly. Non-en/bg translations are marked for native review in Phase 15. Bulgarian is complete, and you can review it directly.
+- **Primitives in `packages/ui`**, as SPEC §4 says ("themed primitives shared by app and games"), using shadcn's monorepo mode.
+- **Islands only where interactive** (theme switcher, language switcher, dialog/sheet/tabs/toast). Everything else renders to static HTML, to stay inside the 120 KB JS budget.
+
+### Risks
+
+- **JS budget:** React + Radix islands on every page. Measure the gzip size in step 10, and if needed render the shell's interactive bits with tiny vanilla scripts instead of React.
+- **On-demand `/` route** means the first request hits the Worker. That's within the free plan, and every other page is static.
+- **CSP and inline scripts:** the no-flash script must be hash-allowlisted in Phase 17.
+- **Lighthouse** needs a local Chrome or Edge; Edge ships with Windows.
+
+### Open questions for the owner
+
+- **Q1 (answered 2026-10-21):** show all nav items. Unbuilt sections (Games, Play, Friends, Profile) open a localized **"Coming soon"** page, and header search opens the same message. The nav config marks each item `available` or `soon`, and each phase flips its section to `available` and deletes its coming-soon route. Coming-soon pages are `noindex` and excluded from the sitemap.
+- **Logo:** you choose between options in step 7.
 
 ---
 
