@@ -8,6 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "typecheck": "astro check",
+    "sync": "astro sync",
     "cf:deploy": "wrangler deploy",
     "cf:preview": "wrangler versions upload",
     "astro": "astro"
