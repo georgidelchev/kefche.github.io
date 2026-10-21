@@ -22,6 +22,7 @@
     "format:check": "prettier . --check",
     "check:contrast": "node scripts/check-contrast.mjs",
     "i18n:check": "node scripts/i18n-check.mjs",
+    "icons:generate": "node scripts/generate-icons.mjs",
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
@@ -32,6 +33,7 @@
     "@kefche/config": "workspace:*",
     "eslint": "10.13.0",
     "prettier": "3.9.10",
+    "sharp": "0.35.5",
     "supabase": "2.121.0",
     "typescript": "6.0.3"
   }

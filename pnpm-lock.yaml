@@ -181,6 +181,9 @@ importers:
       prettier:
         specifier: 3.9.10
         version: 3.9.10
+      sharp:
+        specifier: 0.35.5
+        version: 0.35.5
       supabase:
         specifier: 2.121.0
         version: 2.121.0

@@ -13,7 +13,8 @@
     "./typography.css": "./src/typography.css",
     "./components.css": "./src/components.css",
     "./components/*": "./src/components/*.tsx",
-    "./lib/*": "./src/lib/*.ts"
+    "./lib/*": "./src/lib/*.ts",
+    "./brand/*": "./src/brand/*.ts"
   },
   "scripts": {
     "typecheck": "tsc -p ."

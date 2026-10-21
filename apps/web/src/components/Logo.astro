@@ -1,0 +1,68 @@
+---
+import { ICON, WORDMARK } from "@kefche/ui/brand/marks";
+
+interface Props {
+  /** `wordmark` is the full "kefche"; `icon` is the compact k-in-a-square mark. */
+  variant?: "wordmark" | "icon";
+  class?: string;
+  /** Set when the logo sits next to visible "kefche" text or inside a labelled link. */
+  decorative?: boolean;
+}
+
+const { variant = "wordmark", class: className, decorative = false } = Astro.props;
+// The brand name is never translated (SPEC §1).
+const role = decorative ? undefined : "img";
+const label = decorative ? undefined : "kefche";
+const hidden = decorative ? "true" : undefined;
+---
+
+{variant === "wordmark" ? (
+  <svg
+    viewBox={WORDMARK.viewBox}
+    class:list={["h-auto", className]}
+    role={role}
+    aria-label={label}
+    aria-hidden={hidden}
+  >
+    <g
+      fill="none"
+      stroke="currentColor"
+      stroke-width={WORDMARK.strokeWidth}
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    >
+      {WORDMARK.ink.map((d) => (
+        <path d={d} />
+      ))}
+    </g>
+    <g
+      fill="none"
+      stroke="var(--brand)"
+      stroke-width={WORDMARK.strokeWidth}
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    >
+      {WORDMARK.accent.map((d) => (
+        <path d={d} />
+      ))}
+    </g>
+  </svg>
+) : (
+  <svg
+    viewBox={ICON.viewBox}
+    class:list={["h-auto", className]}
+    role={role}
+    aria-label={label}
+    aria-hidden={hidden}
+  >
+    <rect width={ICON.size} height={ICON.size} rx={ICON.radius} fill="var(--brand)" />
+    <path
+      d={ICON.k}
+      fill="none"
+      stroke="var(--on-brand)"
+      stroke-width={ICON.strokeWidth}
+      stroke-linecap="square"
+      stroke-linejoin="miter"
+    />
+  </svg>
+)}

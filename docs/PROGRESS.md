@@ -173,13 +173,11 @@ All 10 steps are implemented as separate commits on `main` (local and not yet pu
 ### Open questions for the owner
 
 - **Q1 (answered 2026-10-21):** show all nav items. Unbuilt sections (Games, Play, Friends, Profile) open a localized **"Coming soon"** page, and header search opens the same message. The nav config marks each item `available` or `soon`, and each phase flips its section to `available` and deletes its coming-soon route. Coming-soon pages are `noindex` and excluded from the sitemap.
-- **Logo:** you choose between options in step 7.
+- **Logo (answered 2026-10-21):** owner chose **C · Pixel** (square-capped wordmark, orange e's, `k` on a rounded square) from three options, and kept **Inter** as the UI face over Manrope. Geometry lives in `packages/ui/src/brand/marks.ts`, and `pnpm icons:generate` rebuilds the favicon and app icons from it.
 
 ---
 
 ## Known issues
-
-- **Missing favicon (until Phase 1 step 7):** browsers request `/favicon.ico` and get a 404 console error until the logo step adds the icons.
 
 ## Tracked TODOs
 

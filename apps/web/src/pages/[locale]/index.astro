@@ -1,4 +1,5 @@
 ---
+import Logo from "@/components/Logo.astro";
 import LanguageSwitcher from "@/features/i18n/LanguageSwitcher.astro";
 import { ThemeSwitcher } from "@/features/theme/ThemeSwitcher";
 import { getT } from "@/i18n/i18n";
@@ -21,7 +22,9 @@ const t = getT(locale);
   description={t("common:meta.description")}
 >
   <main class="mx-auto flex min-h-dvh max-w-xl flex-col justify-center gap-4 px-4">
-    <h1 class="text-5xl font-bold tracking-tight">kefche</h1>
+    <h1>
+      <Logo class="w-64 max-w-full" />
+    </h1>
     <p class="text-lg text-muted">{t("common:hero.tagline")}</p>
     <div class="flex flex-wrap items-center gap-3">
       <LanguageSwitcher locale={locale} path="/" label={t("common:language.label")} />
