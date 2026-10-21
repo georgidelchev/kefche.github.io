@@ -1,0 +1,12 @@
+// Cloudflare Workers config. The Astro adapter merges this into the generated
+// dist/client/wrangler.json at build time; deploy with `pnpm --filter web run cf:deploy`.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "kefche",
+  "compatibility_date": "2026-10-12",
+  // Production: kefche.<account>.workers.dev until the custom domain (Phase 21).
+  "workers_dev": true,
+  // Per-PR preview URLs via `wrangler versions upload --preview-alias pr-<n>`.
+  "preview_urls": true,
+  "observability": { "enabled": true },
+}
