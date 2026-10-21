@@ -4,27 +4,27 @@
 
 ## Phase checklist
 
-| Phase | Title                                                      | Status                          |
-| ----- | ---------------------------------------------------------- | ------------------------------- |
-| 0     | Foundation & tooling                                       | 📝 Plan awaiting owner approval |
-| 1     | Design system, layout, theming, i18n skeleton              | ⏳ Not started                  |
-| 2     | Supabase core, auth & profiles                             | ⏳ Not started                  |
-| 3     | Game SDK & first games (2048, Sudoku, Snake)               | ⏳ Not started                  |
-| 4     | Bots, hotseat & timers                                     | ⏳ Not started                  |
-| 5     | Multiplayer core                                           | ⏳ Not started                  |
-| 6     | Chess                                                      | ⏳ Not started                  |
-| 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                  |
-| 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                  |
-| 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                  |
-| 10    | Admin panel                                                | ⏳ Not started                  |
-| 11–14 | Game batches                                               | ⏳ Not started                  |
-| 15    | Translation pass & content packs                           | ⏳ Not started                  |
-| 16    | PWA, offline, audio & haptics polish                       | ⏳ Not started                  |
-| 17    | Consent, legal, analytics, monitoring                      | ⏳ Not started                  |
-| 18    | Performance & accessibility pass                           | ⏳ Not started                  |
-| 19    | Security review                                            | ⏳ Not started                  |
-| 20    | Test suite                                                 | ⏳ Not started                  |
-| 21    | Launch preparation                                         | ⏳ Not started                  |
+| Phase | Title                                                      | Status                                      |
+| ----- | ---------------------------------------------------------- | ------------------------------------------- |
+| 0     | Foundation & tooling                                       | 🔧 Built; DoD needs push + Cloudflare setup |
+| 1     | Design system, layout, theming, i18n skeleton              | ⏳ Not started                              |
+| 2     | Supabase core, auth & profiles                             | ⏳ Not started                              |
+| 3     | Game SDK & first games (2048, Sudoku, Snake)               | ⏳ Not started                              |
+| 4     | Bots, hotseat & timers                                     | ⏳ Not started                              |
+| 5     | Multiplayer core                                           | ⏳ Not started                              |
+| 6     | Chess                                                      | ⏳ Not started                              |
+| 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                              |
+| 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                              |
+| 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                              |
+| 10    | Admin panel                                                | ⏳ Not started                              |
+| 11–14 | Game batches                                               | ⏳ Not started                              |
+| 15    | Translation pass & content packs                           | ⏳ Not started                              |
+| 16    | PWA, offline, audio & haptics polish                       | ⏳ Not started                              |
+| 17    | Consent, legal, analytics, monitoring                      | ⏳ Not started                              |
+| 18    | Performance & accessibility pass                           | ⏳ Not started                              |
+| 19    | Security review                                            | ⏳ Not started                              |
+| 20    | Test suite                                                 | ⏳ Not started                              |
+| 21    | Launch preparation                                         | ⏳ Not started                              |
 
 ---
 
@@ -79,24 +79,50 @@ Every step: `pnpm lint && pnpm typecheck && pnpm build` green before committing.
 
 ### Owner answers (2026-10-21)
 
-- **Q1 — Hosting:** **Cloudflare Pages**, per spec. Step 8 deletes `static.yml`. Step 9 uses the Cloudflare Pages Git integration (the owner connects the repo in the dashboard).
+- **Q1 — Hosting:** **Cloudflare Pages**, per spec. ~~Step 9 uses the Pages Git integration.~~ **Superseded the same day:** `@astrojs/cloudflare` no longer supports Pages, and the owner approved **Cloudflare Workers** (static assets) instead. See ADR-0003.
 - **Q2 — Existing `index.html` prototype:** **delete it** (it stays in git history). Done in step 1.
 - **Q3 — pnpm:** **Corepack** (`corepack enable`), with the version pinned via `packageManager`.
 - **Still open:** Docker Desktop must be installed before Phase 2 (local Supabase).
 
+### What was done (2026-10-21)
+
+All 10 steps are implemented as separate commits on `main` (local and not yet pushed). Format, lint, typecheck and build pass after every step.
+
+**Deviations from the plan** (all recorded as ADRs in `docs/DECISIONS.md`):
+
+- **Hosting:** Cloudflare **Workers** instead of Pages (ADR-0003, owner approved). Deploys run from GitHub Actions after CI instead of through Workers Builds, which ships pnpm 10 and can't read the pnpm 12 lockfile. Production deploys on `main`, and each PR gets a preview URL (`pr-<n>-kefche.<subdomain>.workers.dev`).
+- **Node:** the local 24.15.0 is too old for eslint-plugin-astro (needs ≥ 24.16). pnpm's `devEngines.runtime` now downloads and pins Node **24.22.1** (ADR-0001), so no admin install is needed. There's no `.npmrc` or `engines`: pnpm 12 reads settings from `pnpm-workspace.yaml`.
+- **Supply chain:** explicit 24 h `minimumReleaseAge` (strict) and a reviewed `allowBuilds` list. Versions are the newest ones older than 24 h, so a few packages are one patch behind `latest`.
+- **TypeScript 6.0.3**, not 7: the tooling doesn't support 7 yet (ADR-0005).
+- **ESLint 10 plugins:** `@eslint-react/eslint-plugin` and `eslint-plugin-jsx-a11y-x` replace `eslint-plugin-react` and `eslint-plugin-jsx-a11y`, which don't support ESLint 10 (ADR-0006).
+- **Env:** `PUBLIC_SUPABASE_PUBLISHABLE_KEY` instead of `…_ANON_KEY`, matching Supabase's new key model (ADR-0007). `.env.example` lives in `apps/web/`, because Astro loads env files from there.
+- **Adapter:** Cloudflare Images and KV session bindings are disabled, to avoid provisioning paid or unused resources.
+- **Step 6:** `@kefche/ui` is wired into the app through CSS. `@kefche/game-sdk` is not imported yet, because it has no API until Phase 3.
+
+**Verified locally:** `pnpm dev` serves `/en/` (200). `astro preview` (workerd) serves all `_headers` security headers. `wrangler deploy --dry-run` succeeds with no bindings. Lint probes confirmed that `no-explicit-any`, `no-floating-promises`, the `dangerouslySetInnerHTML` ban and jsx-a11y fire. Using `document` or `process` in `game-sdk` fails typecheck. The env parser rejects secret keys, non-http URLs and missing variables.
+
 ### Status
 
-- [ ] Plan approved by owner
-- [ ] Steps 1–10
-- [ ] DoD: `pnpm dev` runs
-- [ ] DoD: CI green
-- [ ] DoD: preview deploy URL works
+- [x] Plan approved by owner
+- [x] Steps 1–10
+- [x] DoD: `pnpm dev` runs
+- [ ] DoD: CI green. Needs the commits pushed to GitHub (awaiting owner OK).
+- [ ] DoD: preview deploy URL works. Needs the owner's one-time Cloudflare setup (`docs/RUNBOOK.md`), then a push to `main` and a test PR.
+
+### Owner actions to finish Phase 0
+
+1. Approve pushing the local commits to `origin/main`.
+2. Complete the Cloudflare setup in `docs/RUNBOOK.md` (API token, account ID, GitHub variable and secret) and turn off GitHub Pages.
+3. Install Docker Desktop before Phase 2.
 
 ---
 
 ## Known issues
 
 - **Brand orange contrast (Phase 1):** `--brand` `#FF6B1A` on `--bg` `#F7F8FC` is ≈ 2.7:1, which is below 4.5:1 (text) and even below 3:1 (large text and UI). Until the palette is refined in Phase 1, don't use it for text on light surfaces. Use it for fills with dark text, or add a darker `--brand-strong` token.
+- **Security headers on on-demand routes (Phase 2+):** `public/_headers` applies only to static assets. The first on-demand route must add Astro middleware that sets the same headers.
+- **Dev-server redirect status:** `astro dev` answers `/` with 301, while the production `_redirects` correctly uses 302. This is dev-only and goes away with the Phase 1 locale detection (TODO #1).
+- **GitHub Pages is still enabled** in the repo settings and serves the last uploaded artifact (the old prototype) until the owner turns it off.
 
 ## Tracked TODOs
 
