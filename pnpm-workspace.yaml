@@ -14,6 +14,10 @@ minimumReleaseAge: 1440
 
 # Dependency build scripts must be reviewed. Deny by default; allow only what needs it.
 allowBuilds:
+  # Bundler used by Vite/Astro; postinstall verifies the platform binary.
+  esbuild: true
+  # Cloudflare's local Workers runtime (astro dev/preview, wrangler); postinstall verifies the binary.
+  workerd: true
   # Native resolver used by eslint-import-resolver-typescript; the platform
   # binary ships as an optional dependency, so the postinstall is not needed.
   unrs-resolver: false

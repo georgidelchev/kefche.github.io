@@ -100,4 +100,8 @@ _None yet._
 
 ## Tracked TODOs
 
-_None yet. Each code `TODO` must reference an entry here (`TODO(#n)`)._
+Each code `TODO` must reference an entry here (`TODO #n`).
+
+| #   | Where                                                        | What                                                                                                                                                                   | Resolve in |
+| --- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| 1   | `apps/web/src/pages/[locale]/index.astro`, `astro.config.ts` | Only the `en` locale is generated, the page copy is hard-coded English, and `/` → `/en/` is a fixed 302. Replace with i18n routing, translations and locale detection. | Phase 1    |

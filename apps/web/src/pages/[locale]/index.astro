@@ -1,0 +1,24 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+import type { GetStaticPaths } from "astro";
+
+// Only English until the i18n skeleton lands in Phase 1 (see docs/PROGRESS.md, TODO #1).
+export const getStaticPaths = (() => [{ params: { locale: "en" } }]) satisfies GetStaticPaths;
+
+const { locale } = Astro.params;
+---
+
+<BaseLayout
+  lang={locale}
+  title="kefche"
+  description="Free browser games for phones, tablets and desktop. Play solo, with friends on one device, or online."
+>
+  <main class="mx-auto flex min-h-dvh max-w-xl flex-col justify-center gap-4 px-4">
+    <h1 class="text-5xl font-bold tracking-tight">kefche</h1>
+    <p class="text-lg">
+      Free browser games for phones, tablets and desktop. Play solo, with friends on one device, or
+      online.
+    </p>
+  </main>
+</BaseLayout>
