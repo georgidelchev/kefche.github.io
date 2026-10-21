@@ -1,0 +1,8 @@
+packages:
+  - apps/*
+  - packages/*
+  - packages/games/*
+  - "!packages/games"
+
+# Pin exact versions on `pnpm add` (SPEC §0.3).
+saveExact: true
