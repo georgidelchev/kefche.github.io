@@ -1,29 +1,88 @@
 /*
- * kefche design tokens (SPEC §6.2). Values are the spec's initial proposal and
- * are refined and contrast-verified in Phase 1.
+ * kefche design tokens (SPEC §6.2). Contrast is enforced by
+ * `pnpm check:contrast` (scripts/check-contrast.mjs); keep every pair it lists passing.
  *
  * Theme selection: `<html data-theme="light|dark">` forces a theme; without the
- * attribute the system preference applies ("System", the default).
+ * attribute the system preference applies ("System", the default). The two dark
+ * blocks below must stay identical (the check verifies it).
+ *
+ * Usage rules:
+ * - `--brand` / `--brand-2` / `--accent` are fills; put `--on-*` text on them.
+ * - For brand-colored text or icons on a page, use `--brand-strong`; for links `--link`.
+ * - `--border` is decorative (dividers); control outlines use `--border-strong`.
  */
 
 :root {
   color-scheme: light;
 
   --brand: #ff6b1a;
+  --brand-strong: #c2410c;
+  --on-brand: #141826;
   --brand-2: #2563eb;
+  --on-brand-2: #ffffff;
   --accent: #84cc16;
+  --accent-strong: #4d7c0f;
+  --on-accent: #141826;
+  --link: #1d4ed8;
+  --focus: #2563eb;
 
   --bg: #f7f8fc;
   --surface: #ffffff;
   --surface-2: #eef1f8;
   --text: #141826;
-  --text-muted: #5b6478;
+  --text-muted: #545d70;
   --border: #dce1ec;
+  --border-strong: #7f889c;
 
-  --danger: #dc2626;
-  --warning: #b45309;
+  --danger: #c81e1e;
+  --on-danger: #ffffff;
+  --warning: #a14a06;
   --success: #15803d;
   --info: #0369a1;
+
+  /*
+   * Player colors (theme-independent): Okabe–Ito color-blind-safe palette.
+   * Each is always paired with a unique shape, drawn in its `-ink` color:
+   * 1 circle · 2 square · 3 triangle · 4 diamond · 5 star · 6 hexagon · 7 plus · 8 heart
+   */
+  --player-1: #e69f00;
+  --player-1-ink: #141826;
+  --player-2: #56b4e9;
+  --player-2-ink: #141826;
+  --player-3: #009e73;
+  --player-3-ink: #141826;
+  --player-4: #f0e442;
+  --player-4-ink: #141826;
+  --player-5: #0072b2;
+  --player-5-ink: #ffffff;
+  --player-6: #d55e00;
+  --player-6-ink: #141826;
+  --player-7: #cc79a7;
+  --player-7-ink: #141826;
+  --player-8: #000000;
+  --player-8-ink: #ffffff;
+
+  /* Category accents (theme-independent fills for chips and thumbnails; SPEC §20 categories). */
+  --cat-board: #e9b872;
+  --cat-board-ink: #141826;
+  --cat-cards: #f28b82;
+  --cat-cards-ink: #141826;
+  --cat-logic: #a5b4fc;
+  --cat-logic-ink: #141826;
+  --cat-arcade: #d8b4fe;
+  --cat-arcade-ink: #141826;
+  --cat-arenas: #5eead4;
+  --cat-arenas-ink: #141826;
+  --cat-party: #f9a8d4;
+  --cat-party-ink: #141826;
+  --cat-word: #fde047;
+  --cat-word-ink: #141826;
+  --cat-speed: #fb923c;
+  --cat-speed-ink: #141826;
+  --cat-strategy: #86efac;
+  --cat-strategy-ink: #141826;
+  --cat-sports: #7dd3fc;
+  --cat-sports-ink: #141826;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -31,8 +90,15 @@
     color-scheme: dark;
 
     --brand: #ff8a3d;
+    --brand-strong: #ff8a3d;
+    --on-brand: #0e1220;
     --brand-2: #4f8bff;
+    --on-brand-2: #0e1220;
     --accent: #a3e635;
+    --accent-strong: #a3e635;
+    --on-accent: #0e1220;
+    --link: #7aa7ff;
+    --focus: #7aa7ff;
 
     --bg: #0e1220;
     --surface: #161b2e;
@@ -40,8 +106,10 @@
     --text: #eef1fa;
     --text-muted: #a3abc2;
     --border: #2a3252;
+    --border-strong: #6b7596;
 
     --danger: #f87171;
+    --on-danger: #0e1220;
     --warning: #fbbf24;
     --success: #4ade80;
     --info: #38bdf8;
@@ -52,8 +120,15 @@
   color-scheme: dark;
 
   --brand: #ff8a3d;
+  --brand-strong: #ff8a3d;
+  --on-brand: #0e1220;
   --brand-2: #4f8bff;
+  --on-brand-2: #0e1220;
   --accent: #a3e635;
+  --accent-strong: #a3e635;
+  --on-accent: #0e1220;
+  --link: #7aa7ff;
+  --focus: #7aa7ff;
 
   --bg: #0e1220;
   --surface: #161b2e;
@@ -61,8 +136,10 @@
   --text: #eef1fa;
   --text-muted: #a3abc2;
   --border: #2a3252;
+  --border-strong: #6b7596;
 
   --danger: #f87171;
+  --on-danger: #0e1220;
   --warning: #fbbf24;
   --success: #4ade80;
   --info: #38bdf8;

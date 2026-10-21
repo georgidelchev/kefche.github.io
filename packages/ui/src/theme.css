@@ -1,14 +1,21 @@
 /*
  * Exposes the design tokens as Tailwind theme colors (`bg-surface`,
- * `text-muted`, `border-border`, ...). `inline` makes utilities reference the
+ * `text-muted`, `border-border-strong`, `bg-player-3`, ...). `inline` makes utilities reference the
  * CSS variables directly, so switching theme needs no rebuild or `dark:` variants.
  * Import after `tailwindcss` and `tokens.css`.
  */
 
 @theme inline {
   --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-on-brand: var(--on-brand);
   --color-brand-2: var(--brand-2);
+  --color-on-brand-2: var(--on-brand-2);
   --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-on-accent: var(--on-accent);
+  --color-link: var(--link);
+  --color-focus: var(--focus);
 
   --color-bg: var(--bg);
   --color-surface: var(--surface);
@@ -16,9 +23,49 @@
   --color-text: var(--text);
   --color-muted: var(--text-muted);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
 
   --color-danger: var(--danger);
+  --color-on-danger: var(--on-danger);
   --color-warning: var(--warning);
   --color-success: var(--success);
   --color-info: var(--info);
+
+  --color-player-1: var(--player-1);
+  --color-player-1-ink: var(--player-1-ink);
+  --color-player-2: var(--player-2);
+  --color-player-2-ink: var(--player-2-ink);
+  --color-player-3: var(--player-3);
+  --color-player-3-ink: var(--player-3-ink);
+  --color-player-4: var(--player-4);
+  --color-player-4-ink: var(--player-4-ink);
+  --color-player-5: var(--player-5);
+  --color-player-5-ink: var(--player-5-ink);
+  --color-player-6: var(--player-6);
+  --color-player-6-ink: var(--player-6-ink);
+  --color-player-7: var(--player-7);
+  --color-player-7-ink: var(--player-7-ink);
+  --color-player-8: var(--player-8);
+  --color-player-8-ink: var(--player-8-ink);
+
+  --color-cat-board: var(--cat-board);
+  --color-cat-board-ink: var(--cat-board-ink);
+  --color-cat-cards: var(--cat-cards);
+  --color-cat-cards-ink: var(--cat-cards-ink);
+  --color-cat-logic: var(--cat-logic);
+  --color-cat-logic-ink: var(--cat-logic-ink);
+  --color-cat-arcade: var(--cat-arcade);
+  --color-cat-arcade-ink: var(--cat-arcade-ink);
+  --color-cat-arenas: var(--cat-arenas);
+  --color-cat-arenas-ink: var(--cat-arenas-ink);
+  --color-cat-party: var(--cat-party);
+  --color-cat-party-ink: var(--cat-party-ink);
+  --color-cat-word: var(--cat-word);
+  --color-cat-word-ink: var(--cat-word-ink);
+  --color-cat-speed: var(--cat-speed);
+  --color-cat-speed-ink: var(--cat-speed-ink);
+  --color-cat-strategy: var(--cat-strategy);
+  --color-cat-strategy-ink: var(--cat-strategy-ink);
+  --color-cat-sports: var(--cat-sports);
+  --color-cat-sports-ink: var(--cat-sports-ink);
 }

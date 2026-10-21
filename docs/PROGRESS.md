@@ -179,7 +179,6 @@ All 10 steps are implemented as separate commits on `main` (local and not yet pu
 
 ## Known issues
 
-- **Brand orange contrast (Phase 1):** `--brand` `#FF6B1A` on `--bg` `#F7F8FC` is ≈ 2.7:1, which is below 4.5:1 (text) and even below 3:1 (large text and UI). Until the palette is refined in Phase 1, don't use it for text on light surfaces. Use it for fills with dark text, or add a darker `--brand-strong` token.
 - **Security headers on on-demand routes (Phase 2+):** `public/_headers` applies only to static assets. The first on-demand route must add Astro middleware that sets the same headers.
 - **Dev-server redirect status:** `astro dev` answers `/` with 301, while the production `_redirects` correctly uses 302. This is dev-only and goes away with the Phase 1 locale detection (TODO #1).
 - **GitHub Pages is still enabled** in the repo settings and serves the last uploaded artifact (the old prototype) until the owner turns it off.
