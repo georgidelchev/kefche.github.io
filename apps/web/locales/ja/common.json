@@ -11,5 +11,8 @@
     "light": "ライト",
     "dark": "ダーク",
     "system": "システム"
+  },
+  "language": {
+    "label": "言語"
   }
 }

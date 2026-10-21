@@ -11,5 +11,8 @@
     "light": "Clair",
     "dark": "Sombre",
     "system": "Système"
+  },
+  "language": {
+    "label": "Langue"
   }
 }

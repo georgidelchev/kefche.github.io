@@ -1,0 +1,75 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { ChevronDown, Globe } from "lucide-react";
+
+import { LOCALE_INFO, LOCALES, type Locale } from "@/i18n/locales";
+
+interface Props {
+  locale: Locale;
+  /** Locale-independent path of the current page, so switching keeps the reader on it. */
+  path: string;
+  label: string;
+}
+
+const { locale, path, label } = Astro.props;
+---
+
+<details class="group relative" data-language-switcher>
+  <summary class="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-full border border-border-strong bg-surface-2 px-3 text-sm font-medium hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&::-webkit-details-marker]:hidden">
+    <Globe aria-hidden="true" className="size-5" />
+    <span class="sr-only">{label}:</span>
+    <span>{LOCALE_INFO[locale].nativeName}</span>
+    <ChevronDown
+      aria-hidden="true"
+      className="size-4 transition-transform group-open:rotate-180 motion-reduce:transition-none"
+    />
+  </summary>
+  <ul class="absolute end-0 top-full z-50 mt-2 grid min-w-48 gap-0.5 rounded-xl border border-border bg-surface p-1 shadow-lg">
+    {LOCALES.map((l) => (
+      <li>
+        <a
+          href={getRelativeLocaleUrl(l, path)}
+          lang={LOCALE_INFO[l].bcp47}
+          hreflang={LOCALE_INFO[l].bcp47}
+          data-locale={l}
+          aria-current={l === locale ? "true" : undefined}
+          class="flex min-h-11 items-center rounded-lg px-3 text-text hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-focus aria-[current=true]:bg-surface-2 aria-[current=true]:font-semibold"
+        >
+          {LOCALE_INFO[l].nativeName}
+        </a>
+      </li>
+    ))}
+  </ul>
+</details>
+
+<script>
+  import { isLocale } from "@/i18n/locales";
+  import { LOCALE_COOKIE, LOCALE_STORAGE_KEY } from "@/i18n/negotiate";
+
+  const ONE_YEAR = 60 * 60 * 24 * 365;
+
+  for (const root of document.querySelectorAll<HTMLDetailsElement>("[data-language-switcher]")) {
+    // Remember an explicit choice so `/` and future visits use it (SPEC §5).
+    root.addEventListener("click", (event) => {
+      const link = (event.target as Element).closest<HTMLAnchorElement>("a[data-locale]");
+      const locale = link?.dataset.locale;
+      if (!isLocale(locale)) return;
+      const secure = location.protocol === "https:" ? "; Secure" : "";
+      document.cookie = `${LOCALE_COOKIE}=${locale}; Path=/; Max-Age=${String(ONE_YEAR)}; SameSite=Lax${secure}`;
+      try {
+        localStorage.setItem(LOCALE_STORAGE_KEY, locale);
+      } catch {
+        // The cookie alone is enough.
+      }
+    });
+    root.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && root.open) {
+        root.open = false;
+        root.querySelector("summary")?.focus();
+      }
+    });
+    document.addEventListener("click", (event) => {
+      if (root.open && !root.contains(event.target as Node)) root.open = false;
+    });
+  }
+</script>

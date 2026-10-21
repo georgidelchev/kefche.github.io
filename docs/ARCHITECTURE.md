@@ -29,8 +29,9 @@ Isomorphism is enforced by the type system: the base tsconfig has no DOM lib and
 
 ## Rendering and routing
 
-- Every route is prefixed by locale: `src/pages/[locale]/…`. Phase 0 ships only `en`, and `/` redirects to `/en/` with a 302 (TODO #1).
-- Static by default. On-demand routes (public profile, room invite) arrive in later phases and must set security headers in middleware, because `_headers` applies to static assets only.
+- Every route is prefixed by locale: `src/pages/[locale]/…`, generated for all 11 locales.
+- `/` is the only on-demand route so far (`src/pages/index.ts`, rendered in the Worker). It negotiates a locale (cookie `kefche_locale` → `Accept-Language` → `en`) and answers 302 with `Vary: Cookie, Accept-Language` and `no-store`.
+- Everything else is static. `public/_headers` sets the security headers for static assets. `src/middleware.ts` parses the same file and applies those headers to every Worker-rendered response, so there's a single source of truth.
 
 ## Styling and theming
 

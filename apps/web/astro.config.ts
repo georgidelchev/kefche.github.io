@@ -19,7 +19,7 @@ export default defineConfig({
   i18n: {
     locales: [...LOCALES],
     defaultLocale: DEFAULT_LOCALE,
-    // Every route carries its locale (/en/…); `/` picks one in Phase 1 step 5.
+    // Every route carries its locale (/en/…); `/` negotiates one (src/pages/index.ts).
     routing: { prefixDefaultLocale: true, redirectToDefaultLocale: false },
   },
   // Pages are prerendered by default; the adapter serves the few on-demand
@@ -69,9 +69,6 @@ export default defineConfig({
       fallbacks: ["sans-serif"],
     },
   ],
-  // Temporary (302) so browsers don't cache it: locale detection
-  // (saved preference → Accept-Language → en) arrives with i18n in Phase 1.
-  redirects: { "/": { status: 302, destination: "/en/" } },
   vite: {
     plugins: [tailwindcss()],
   },

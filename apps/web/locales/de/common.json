@@ -11,5 +11,8 @@
     "light": "Hell",
     "dark": "Dunkel",
     "system": "System"
+  },
+  "language": {
+    "label": "Sprache"
   }
 }

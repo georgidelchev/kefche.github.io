@@ -11,5 +11,8 @@
     "light": "Claro",
     "dark": "Escuro",
     "system": "Sistema"
+  },
+  "language": {
+    "label": "Idioma"
   }
 }

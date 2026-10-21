@@ -179,14 +179,12 @@ All 10 steps are implemented as separate commits on `main` (local and not yet pu
 
 ## Known issues
 
-- **Security headers on on-demand routes (Phase 2+):** `public/_headers` applies only to static assets. The first on-demand route must add Astro middleware that sets the same headers.
-- **Dev-server redirect status:** `astro dev` answers `/` with 301, while the production `_redirects` correctly uses 302. This is dev-only and goes away with the Phase 1 locale detection (TODO #1).
-- **GitHub Pages is still enabled** in the repo settings and serves the last uploaded artifact (the old prototype) until the owner turns it off.
+- **Missing favicon (until Phase 1 step 7):** browsers request `/favicon.ico` and get a 404 console error until the logo step adds the icons.
 
 ## Tracked TODOs
 
-Each code `TODO` must reference an entry here (`TODO #n`).
+Each code `TODO` must reference an entry here (`TODO #n`). Resolved entries stay listed so the numbers aren't reused.
 
-| #   | Where                                                        | What                                                                                                                                                                   | Resolve in |
-| --- | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| 1   | `apps/web/src/pages/[locale]/index.astro`, `astro.config.ts` | Only the `en` locale is generated, the page copy is hard-coded English, and `/` → `/en/` is a fixed 302. Replace with i18n routing, translations and locale detection. | Phase 1    |
+| #   | Where                                                        | What                                                                  | Status                          |
+| --- | ------------------------------------------------------------ | --------------------------------------------------------------------- | ------------------------------- |
+| 1   | `apps/web/src/pages/[locale]/index.astro`, `astro.config.ts` | Only `en` generated, hard-coded English copy, fixed `/` → `/en/` 302. | ✅ Resolved (Phase 1 steps 4–5) |
