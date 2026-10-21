@@ -3,6 +3,8 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, fontProviders } from "astro/config";
 
+import { DEFAULT_LOCALE, LOCALES } from "./src/i18n/locales";
+
 // Self-hosted at build time (no third-party font requests). SPEC §5 / §6.4:
 // one UI face for Latin/Cyrillic/Greek, a display face for headings, and
 // script-specific Noto faces loaded only by the locales that need them.
@@ -11,6 +13,15 @@ const fontsource = fontProviders.fontsource();
 
 // https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
+  // Canonical origin for canonical/hreflang/OG URLs. Previews also point here,
+  // so they are never treated as the canonical copy. Custom domain: Phase 21.
+  site: "https://kefche.alienguymc.workers.dev",
+  i18n: {
+    locales: [...LOCALES],
+    defaultLocale: DEFAULT_LOCALE,
+    // Every route carries its locale (/en/…); `/` picks one in Phase 1 step 5.
+    routing: { prefixDefaultLocale: true, redirectToDefaultLocale: false },
+  },
   // Pages are prerendered by default; the adapter serves the few on-demand
   // routes added later (public profiles, room invites) from a Cloudflare Worker.
   adapter: cloudflare({

@@ -1,10 +1,10 @@
 ---
 import { Font } from "astro:assets";
 
-/** Writing system of the page locale; decides which font faces are emitted and preloaded. */
-export type Script = "latin" | "cyrillic" | "arabic" | "devanagari" | "cjk";
+import type { Script } from "@/i18n/locales";
 
 interface Props {
+  /** Writing system of the page locale; decides which font faces are emitted and preloaded. */
   script: Script;
 }
 

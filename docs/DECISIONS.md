@@ -103,3 +103,20 @@ Short ADRs: context, decision, consequences. Newest last. Never rewrite an accep
 **Decision.** The Astro Fonts API (stable since Astro 6) with the Fontsource provider downloads the files at build time and serves them from `/_astro/fonts/`. **Inter** (variable 100–900) is the UI face, **Unbounded** (variable 200–900) the display face, and **Noto Sans Arabic** / **Noto Sans Devanagari** the script faces. `Fonts.astro` emits only the faces for the page's script and preloads one file (the UI face's primary subset). `packages/ui/typography.css` picks stacks with `:lang()`, and zh/ja use system CJK stacks. The type scale is a 1.2 modular ratio.
 
 **Consequences.** No third-party font requests and no consent needed for fonts. `unicode-range` means each page downloads only the subsets it uses. Astro also generates metric-matched fallbacks to reduce layout shift (CLS).
+
+---
+
+## ADR-0009: i18n with i18next + ICU, translated at build time
+
+**Date:** 2026-10-21 · **Status:** Accepted
+
+**Context.** SPEC §5 requires i18next/react-i18next with ICU messages, namespaced JSON, 11 locales with RTL, and a CI check for missing or unused keys. The content-page JS budget is 120 KB gzip.
+
+**Decision.**
+
+- `src/i18n/locales.ts` is the single locale registry (code, native name, BCP 47 tag, `dir`, script, OG locale). Astro's i18n routing uses it with `prefixDefaultLocale`, so every URL carries its locale.
+- Messages live in `apps/web/locales/<locale>/<namespace>.json`, with English as the source. `getT(locale)` returns a cached, synchronously initialized i18next instance (`i18next-icu`) with **no fallback language**. Keys are always written in full as `"<namespace>:<key>"` and type-checked against the English JSON.
+- Pages translate on the server at build time. **React islands receive translated strings as props**, so i18next isn't shipped to the browser for content pages. react-i18next is added when the first island needs runtime translation (expected with the games in Phase 3).
+- `pnpm i18n:check` (CI) fails on missing or extra locales, namespaces or keys; empty values; invalid ICU; placeholder mismatches; unused keys; and references to undefined keys.
+
+**Consequences.** Zero i18n runtime JS on content pages. Adding a key means adding it in all 11 files, and the check enforces it. Dynamic key construction isn't allowed, because the check finds keys only as literals.

@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "title": "kefche — jeux gratuits dans le navigateur",
+    "description": "Des jeux gratuits dans le navigateur, sur mobile, tablette et ordinateur. Jouez en solo, entre amis sur le même appareil ou en ligne."
+  },
+  "hero": {
+    "tagline": "Des jeux gratuits dans le navigateur, sur mobile, tablette et ordinateur. Jouez en solo, entre amis sur le même appareil ou en ligne."
+  },
+  "theme": {
+    "legend": "Thème",
+    "light": "Clair",
+    "dark": "Sombre",
+    "system": "Système"
+  }
+}

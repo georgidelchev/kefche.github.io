@@ -1,29 +1,35 @@
 ---
 import { ThemeSwitcher } from "@/features/theme/ThemeSwitcher";
+import { getT } from "@/i18n/i18n";
+import { LOCALES, type Locale } from "@/i18n/locales";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 import type { GetStaticPaths } from "astro";
 
-// Only English until the i18n skeleton lands in Phase 1 (see docs/PROGRESS.md, TODO #1).
-export const getStaticPaths = (() => [{ params: { locale: "en" } }]) satisfies GetStaticPaths;
+export const getStaticPaths = (() =>
+  LOCALES.map((locale) => ({ params: { locale } }))) satisfies GetStaticPaths;
 
-const { locale } = Astro.params;
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
 ---
 
 <BaseLayout
-  lang={locale}
-  title="kefche"
-  description="Free browser games for phones, tablets and desktop. Play solo, with friends on one device, or online."
+  locale={locale}
+  path="/"
+  title={t("common:meta.title")}
+  description={t("common:meta.description")}
 >
   <main class="mx-auto flex min-h-dvh max-w-xl flex-col justify-center gap-4 px-4">
     <h1 class="text-5xl font-bold tracking-tight">kefche</h1>
-    <p class="text-lg text-muted">
-      Free browser games for phones, tablets and desktop. Play solo, with friends on one device, or
-      online.
-    </p>
+    <p class="text-lg text-muted">{t("common:hero.tagline")}</p>
     <ThemeSwitcher
       client:idle
-      labels={{ legend: "Theme", light: "Light", dark: "Dark", system: "System" }}
+      labels={{
+        legend: t("common:theme.legend"),
+        light: t("common:theme.light"),
+        dark: t("common:theme.dark"),
+        system: t("common:theme.system"),
+      }}
     />
   </main>
 </BaseLayout>

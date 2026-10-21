@@ -1,0 +1,35 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import { DEFAULT_LOCALE, LOCALE_INFO, LOCALES, type Locale } from "@/i18n/locales";
+
+interface Props {
+  locale: Locale;
+  /** Locale-independent path of this page, e.g. "/" or "/games/". */
+  path: string;
+  title: string;
+  description: string;
+  /** Pages that must not be indexed (dev, coming soon, private areas; SPEC §15). */
+  noindex?: boolean;
+}
+
+const { locale, path, title, description, noindex = false } = Astro.props;
+const absolute = (l: Locale) => new URL(getRelativeLocaleUrl(l, path), Astro.site).href;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex" />}
+<link rel="canonical" href={absolute(locale)} />
+{!noindex &&
+  LOCALES.map((l) => <link rel="alternate" hreflang={LOCALE_INFO[l].bcp47} href={absolute(l)} />)}
+{!noindex && <link rel="alternate" hreflang="x-default" href={absolute(DEFAULT_LOCALE)} />}
+<meta property="og:site_name" content="kefche" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={absolute(locale)} />
+<meta property="og:locale" content={LOCALE_INFO[locale].ogLocale} />
+{LOCALES.filter((l) => l !== locale).map((l) => (
+  <meta property="og:locale:alternate" content={LOCALE_INFO[l].ogLocale} />
+))}

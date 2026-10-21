@@ -45,6 +45,9 @@ jobs:
       - name: Contrast
         run: pnpm check:contrast
 
+      - name: Translations
+        run: pnpm i18n:check
+
       - name: Typecheck
         run: pnpm typecheck
 
