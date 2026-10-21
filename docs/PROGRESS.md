@@ -7,7 +7,7 @@
 | Phase | Title                                                      | Status                                |
 | ----- | ---------------------------------------------------------- | ------------------------------------- |
 | 0     | Foundation & tooling                                       | ✅ Done (owner signed off 2026-10-21) |
-| 1     | Design system, layout, theming, i18n skeleton              | 📝 Plan awaiting owner approval       |
+| 1     | Design system, layout, theming, i18n skeleton              | ✅ DoD met; awaiting owner sign-off   |
 | 2     | Supabase core, auth & profiles                             | ⏳ Not started                        |
 | 3     | Game SDK & first games (2048, Sudoku, Snake)               | ⏳ Not started                        |
 | 4     | Bots, hotseat & timers                                     | ⏳ Not started                        |
@@ -175,9 +175,57 @@ All 10 steps are implemented as separate commits on `main` (local and not yet pu
 - **Q1 (answered 2026-10-21):** show all nav items. Unbuilt sections (Games, Play, Friends, Profile) open a localized **"Coming soon"** page, and header search opens the same message. The nav config marks each item `available` or `soon`, and each phase flips its section to `available` and deletes its coming-soon route. Coming-soon pages are `noindex` and excluded from the sitemap.
 - **Logo (answered 2026-10-21):** owner chose **C · Pixel** (square-capped wordmark, orange e's, `k` on a rounded square) from three options, and kept **Inter** as the UI face over Manrope. Geometry lives in `packages/ui/src/brand/marks.ts`, and `pnpm icons:generate` rebuilds the favicon and app icons from it.
 
+### What was done (2026-10-21)
+
+All 10 steps are committed on `main` (local, not yet pushed). Format, lint, contrast, i18n, typecheck and build pass after every step.
+
+| Step            | Result                                                                                                                                                                                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 1 Palette       | `pnpm check:contrast` (in CI) enforces 48 pairs × 2 themes. Brand orange is now a fill with dark ink; `--brand-strong` and `--link` are for text; `--border-strong` and `--focus` are for controls. Okabe–Ito player palette with shapes, and 10 category accents. |
+| 2 Typography    | Self-hosted Inter + Unbounded, plus Noto Arabic and Devanagari only on `ar`/`hi`; system CJK stacks; 1.2 modular scale (ADR-0008).                                                                                                                                 |
+| 3 Theme         | Light/Dark/System with an inline pre-paint script; Zod-validated storage, shared store, cross-tab sync.                                                                                                                                                            |
+| 4 i18n          | Locale registry, Astro i18n routing, i18next + ICU at build time with typed keys, `pnpm i18n:check` in CI (ADR-0009).                                                                                                                                              |
+| 5 Detection     | `/` negotiates in the Worker (cookie → Accept-Language → en); the switcher remembers the choice; the middleware adds security headers to Worker responses.                                                                                                         |
+| 6 Components    | `@kefche/ui`: button, input, card, dialog, sheet, tabs, toast, avatar, badge (incl. pixel NEW/HOT), skeleton, empty/error states, player marker (ADR-0010).                                                                                                        |
+| 7 Logo          | Owner-chosen Pixel wordmark and icon; favicon.svg/ico, Apple touch icon, 192/512/maskable app icons.                                                                                                                                                               |
+| 8 Shell         | Bottom tab bar on phones, header nav plus a settings panel on tablets, inline controls from 1024 px, a collapsible side menu from 1280 px; localized coming-soon sections (Q1).                                                                                    |
+| 9 Pages         | 404 rendered in the URL's language with a real 404 status; offline page; dev-only `/[locale]/dev/ui/` gallery.                                                                                                                                                     |
+| 10 Verification | See below. `ADDING_A_LANGUAGE.md` is complete; ARCHITECTURE has i18n, theming, shell, brand and performance sections; CLAUDE.md is updated.                                                                                                                        |
+
+**Verification (local, Chrome):**
+
+- **Lighthouse accessibility 100** on `/en/`, `/ar/`, `/bg/games/` and the dev gallery (`/en/dev/ui/`, `/ar/dev/ui/`). Best practices 100. SEO 100, except the intentionally `noindex` coming-soon pages. Lighthouse doesn't audit pages that return 404, so the 404 page was checked by hand.
+- **43 scripted browser checks pass:**
+  - Theme: no flash, persistence, keyboard, cross-tab sync, invalid storage values.
+  - Language: negotiation, cookie, `/` remembers the choice.
+  - Shell: skip link, side-menu persistence before paint, settings panel and Escape, search, `noindex`.
+  - Components: dialog focus trap, RTL sheet edge, RTL tab arrows, labelled toasts.
+  - Zero console errors throughout.
+- **Screenshots** at 360/768/1024/1280/1440 px in light and dark, including Arabic RTL. No horizontal overflow at any width.
+- **JS budget:** 74 KB gzip on content pages, of the 120 KB budget. The theme switcher went from 16 KB to 5 KB by switching to `zod/mini`.
+
+**Deviations from the plan:**
+
+- react-i18next isn't installed yet: islands get translated props, and the library arrives with the first island that needs runtime translation (ADR-0009).
+- The toast is built on Radix Toast instead of shadcn v4's Sonner (ADR-0010).
+- The 404 page is Worker-rendered rather than one static file per locale, because Cloudflare sends unknown paths to the Worker.
+- The interactive components are verified on the dev gallery. The live pages use only the theme switcher as a React island so far.
+
+### Status
+
+- [x] Plan approved by owner
+- [x] Steps 1–10
+- [x] DoD: dev-only `/[locale]/dev/ui` shows all components in both themes and in RTL
+- [x] DoD: Lighthouse accessibility ≥ 95 (100 measured)
+- [x] Standing DoD: checks green, no console errors, responsive at 360/768/1280 in both themes, all strings translated in all 11 locales
+- [ ] Owner sign-off; push to deploy
+
 ---
 
 ## Known issues
+
+- **Performance is not tuned yet (Phase 18):** Lighthouse mobile performance was 82–92 (LCP 3.3–4.1 s) against the local preview, which serves files uncompressed. Production on Cloudflare compresses, so re-measure there. Candidate fixes when tuning: a smaller preloaded font subset, and inlining critical CSS.
+- **Translations need native review (Phase 15):** all strings in the 9 locales other than en/bg are my translations and haven't been reviewed by native speakers. Bulgarian should be reviewed by the owner.
 
 ## Tracked TODOs
 

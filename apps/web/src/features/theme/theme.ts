@@ -1,4 +1,5 @@
-import { z } from "zod";
+// zod/mini: same validation, tree-shakable (this module ships to the browser).
+import * as z from "zod/mini";
 
 /** localStorage key; also read by the inline no-flash script in ThemeScript.astro. */
 export const THEME_STORAGE_KEY = "kefche:theme";

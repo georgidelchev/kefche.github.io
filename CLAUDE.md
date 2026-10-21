@@ -12,16 +12,20 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 | `pnpm typecheck`                         | `astro check` (web) + `tsc` (packages).                                     |
 | `pnpm build`                             | Build every package that has a `build` script.                              |
 | `pnpm format` / `pnpm format:check`      | Prettier.                                                                   |
+| `pnpm check:contrast`                    | WCAG contrast of every token pair in both themes (`tokens.css`).            |
+| `pnpm i18n:check`                        | All 11 locales match English: keys, ICU, placeholders, no unused keys.      |
+| `pnpm icons:generate`                    | Rebuild favicon and app icons from `packages/ui/src/brand/marks.ts`.        |
 | `pnpm db:start` / `db:stop` / `db:reset` | Local Supabase (needs Docker).                                              |
 | `pnpm --filter web run cf:deploy`        | Deploy to Cloudflare Workers (CI does this on `main`).                      |
 
-**Green before every commit:** `pnpm format:check && pnpm lint && pnpm typecheck && pnpm build`.
+**Green before every commit:** `pnpm format:check && pnpm lint && pnpm check:contrast && pnpm i18n:check && pnpm typecheck && pnpm build`. The dev-only component gallery is at `/en/dev/ui/` (and `/ar/dev/ui/` for RTL).
 
 ## Layout
 
 - `apps/web`: Astro 7 + React islands, Tailwind 4, `@astrojs/cloudflare` (Workers + static assets). Routes live under `src/pages/[locale]/`. Env vars are validated in `src/lib/env.ts` and documented in `apps/web/.env.example`.
 - `packages/config`: shared `tsconfig.base.json`, ESLint preset (`eslint-preset.js`) and Prettier preset (`prettier-preset.js`). The root `eslint.config.js` and `prettier.config.js` use them.
-- `packages/ui`: design tokens (`src/tokens.css`) and the Tailwind theme mapping (`src/theme.css`).
+- `apps/web/src`: `i18n/` (locale registry, `getT`, negotiation), `features/shell/` (AppShell, nav config, shell client script), `features/theme/`, `features/i18n/` (language switcher), `features/errors/`, `components/` (BootScript, Fonts, SeoHead, Logo), `middleware.ts` (security headers on Worker responses). Translations: `apps/web/locales/<locale>/<ns>.json`.
+- `packages/ui`: design tokens (`src/tokens.css`), the Tailwind theme mapping (`src/theme.css`), typography (`src/typography.css`), components (`src/components/*.tsx`, imported as `@kefche/ui/components/<name>`) and brand marks (`src/brand/marks.ts`).
 - `packages/game-sdk`: isomorphic game SDK (Phase 3).
 - `packages/games/<id>`: one package per game (template in `packages/games/README.md`).
 - `supabase/`: CLI project (`config.toml`, `migrations/`, `functions/`, `tests/`, `seed.sql`).
@@ -35,7 +39,10 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 - **No HTML injection:** `dangerouslySetInnerHTML` and Astro `set:html` are lint errors.
 - **Validation:** Zod at every boundary (env, network messages, URL params, storage, forms). Pure functions with injected dependencies, so they stay testable.
 - **Env:** only `PUBLIC_*` vars reach the browser. The Supabase key must be a publishable key (`sb_publishable_…`); secret keys never go in client code.
-- **Strings:** no hard-coded user-facing text once i18n lands (Phase 1). Every `TODO` references an entry in `docs/PROGRESS.md` ("TODO #n").
+- **Strings:** no hard-coded user-facing text. Pages call `getT(locale)` and use full literal keys, `t("nav:home")`; never build keys dynamically (keep a literal map like `NAV_LABEL_KEYS`). Islands receive translated strings as props. A new key goes into all 11 locale files in the same commit. Every `TODO` references an entry in `docs/PROGRESS.md` ("TODO #n").
+- **Client bundles:** use `zod/mini` in code that ships to the browser, and full `zod` on the server and at build time. Prefer static Astro markup plus a small `<script>` over a React island unless the component needs Radix or state.
+- **Components:** labels are props (no English defaults). Corner close buttons need a `closeLabel`. Pass `dir` to Radix components that use arrow keys.
+- **New pages:** wrap them in `AppShell`. A section's real page replaces its coming-soon entry: flip it to `available` in `features/shell/nav.ts`.
 - **Commits:** Conventional Commits, one small focused commit per step.
 
 ## Dependencies
@@ -52,4 +59,6 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 - Never run `pnpm deploy`, which is a built-in pnpm command. Use `pnpm --filter web run cf:deploy`.
 - `public/_headers` applies only to static assets. `src/middleware.ts` copies its `/*` headers onto Worker-rendered responses, so edit only `_headers`.
 - Never add an Astro `redirects` entry for a dynamic path: Cloudflare applies `_redirects` before the Worker runs.
-- Astro 7 compiles with stricter HTML rules: no unclosed tags, no invalid nesting.
+- Astro 7 compiles with stricter HTML rules: no unclosed tags, no invalid nesting. Its `compressHTML: "jsx"` default drops whitespace between text and inline elements, so write `{" "}` where a space matters.
+- In `.astro` files, pass icons to React components as named slots (`<Inbox slot="icon" />`), not as JSX props.
+- Windows PowerShell 5.1: pass multi-line commit messages with `git commit -F <file>`, because here-strings with quotes get mangled. `Add-Content` writes CRLF; prefer editor tools.
