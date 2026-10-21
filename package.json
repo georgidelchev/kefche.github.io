@@ -14,7 +14,17 @@
   },
   "scripts": {
     "dev": "pnpm --filter web dev",
-    "build": "pnpm -r build",
-    "typecheck": "pnpm -r typecheck"
+    "build": "pnpm -r --if-present build",
+    "typecheck": "pnpm -r --if-present typecheck",
+    "lint": "eslint . --max-warnings=0 --cache",
+    "lint:fix": "eslint . --max-warnings=0 --cache --fix",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
+  },
+  "devDependencies": {
+    "@kefche/config": "workspace:*",
+    "eslint": "10.13.0",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3"
   }
 }

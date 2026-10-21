@@ -1,0 +1,121 @@
+import js from "@eslint/js";
+import eslintReact from "@eslint-react/eslint-plugin";
+import { defineConfig, globalIgnores } from "eslint/config";
+import prettier from "eslint-config-prettier";
+import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
+import astro from "eslint-plugin-astro";
+import { importX } from "eslint-plugin-import-x";
+import jsxA11y from "eslint-plugin-jsx-a11y-x";
+import reactHooks from "eslint-plugin-react-hooks";
+import globals from "globals";
+import tseslint from "typescript-eslint";
+
+/**
+ * Shared flat config for the whole workspace. ESLint runs once from the repo
+ * root; `tsconfigRootDir` must be that root so the TypeScript project service
+ * finds each package's tsconfig.
+ *
+ * @param {{ tsconfigRootDir: string }} options
+ */
+export function kefcheEslintConfig({ tsconfigRootDir }) {
+  return defineConfig(
+    globalIgnores(["**/dist/", "**/.astro/", "**/.wrangler/", "**/coverage/", "**/node_modules/"]),
+
+    {
+      linterOptions: { reportUnusedDisableDirectives: "error" },
+    },
+
+    js.configs.recommended,
+    tseslint.configs.strictTypeChecked,
+    tseslint.configs.stylisticTypeChecked,
+    {
+      languageOptions: {
+        parserOptions: {
+          projectService: true,
+          tsconfigRootDir,
+          extraFileExtensions: [".astro"],
+        },
+      },
+      rules: {
+        // SPEC §2: `@ts-ignore` only with an explanation.
+        "@typescript-eslint/ban-ts-comment": [
+          "error",
+          {
+            "ts-expect-error": "allow-with-description",
+            "ts-ignore": "allow-with-description",
+            minimumDescriptionLength: 10,
+          },
+        ],
+        "@typescript-eslint/consistent-type-imports": "error",
+        "@typescript-eslint/no-import-type-side-effects": "error",
+        "@typescript-eslint/switch-exhaustiveness-check": "error",
+      },
+    },
+
+    importX.flatConfigs.recommended,
+    importX.flatConfigs.typescript,
+    {
+      settings: {
+        "import-x/resolver-next": [createTypeScriptImportResolver({ alwaysTryTypes: true })],
+      },
+      rules: {
+        // TypeScript already reports unresolved and missing imports, including
+        // Astro virtual modules (`astro:*`) that the resolver cannot see.
+        "import-x/no-unresolved": "off",
+        "import-x/named": "off",
+        "import-x/namespace": "off",
+        "import-x/default": "off",
+        "import-x/no-named-as-default-member": "off",
+        "import-x/no-duplicates": "error",
+        "import-x/order": [
+          "error",
+          {
+            groups: ["builtin", "external", "internal", ["parent", "sibling", "index"], "type"],
+            pathGroups: [
+              { pattern: "@kefche/**", group: "internal", position: "before" },
+              { pattern: "@/**", group: "internal" },
+            ],
+            pathGroupsExcludedImportTypes: ["builtin"],
+            "newlines-between": "always",
+            alphabetize: { order: "asc", caseInsensitive: true },
+          },
+        ],
+      },
+    },
+
+    {
+      files: ["**/*.{jsx,tsx}"],
+      extends: [
+        eslintReact.configs["strict-type-checked"],
+        reactHooks.configs.flat.recommended,
+        jsxA11y.configs.strict,
+      ],
+      languageOptions: { globals: globals.browser },
+      rules: {
+        // SPEC §2 / §18: never inject HTML.
+        "@eslint-react/dom-no-dangerously-set-innerhtml": "error",
+      },
+    },
+
+    astro.configs["flat/recommended"],
+    astro.configs["flat/jsx-a11y-strict"],
+    {
+      files: ["**/*.astro", "**/*.astro/*"],
+      // Type-aware rules are not reliable inside .astro files (their virtual
+      // script files are not part of any tsconfig program). Keep logic in .ts.
+      extends: [tseslint.configs.disableTypeChecked],
+      rules: {
+        "astro/no-set-html-directive": "error",
+      },
+    },
+
+    {
+      // Plain JS is limited to tooling config files, which are not in any tsconfig.
+      files: ["**/*.{js,mjs,cjs}"],
+      extends: [tseslint.configs.disableTypeChecked],
+      languageOptions: { globals: globals.node },
+    },
+
+    prettier,
+  );
+}

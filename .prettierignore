@@ -1,0 +1,7 @@
+pnpm-lock.yaml
+**/dist/
+**/.astro/
+**/.wrangler/
+**/coverage/
+# Owner-authored source of truth; keep its formatting as written.
+docs/SPEC.md

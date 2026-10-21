@@ -6,3 +6,14 @@ packages:
 
 # Pin exact versions on `pnpm add` (SPEC §0.3).
 saveExact: true
+
+# Supply-chain guard: never install a version published less than a day ago.
+# Setting it explicitly also makes resolution fail (instead of silently falling
+# back to a too-new version) when no old-enough version satisfies a range.
+minimumReleaseAge: 1440
+
+# Dependency build scripts must be reviewed. Deny by default; allow only what needs it.
+allowBuilds:
+  # Native resolver used by eslint-import-resolver-typescript; the platform
+  # binary ships as an optional dependency, so the postinstall is not needed.
+  unrs-resolver: false
