@@ -106,12 +106,12 @@ All 10 steps are implemented as separate commits on `main` (local and not yet pu
 - [x] Plan approved by owner
 - [x] Steps 1–10
 - [x] DoD: `pnpm dev` runs
-- [ ] DoD: CI green. Needs the commits pushed to GitHub (awaiting owner OK).
+- [x] DoD: CI green. First run on `main` passed (2026-10-21, run 39622303928); the deploy job was skipped as intended until Cloudflare is configured.
 - [ ] DoD: preview deploy URL works. Needs the owner's one-time Cloudflare setup (`docs/RUNBOOK.md`), then a push to `main` and a test PR.
 
 ### Owner actions to finish Phase 0
 
-1. Approve pushing the local commits to `origin/main`.
+1. ~~Approve pushing the local commits to `origin/main`.~~ Done.
 2. Complete the Cloudflare setup in `docs/RUNBOOK.md` (API token, account ID, GitHub variable and secret) and turn off GitHub Pages.
 3. Install Docker Desktop before Phase 2.
 

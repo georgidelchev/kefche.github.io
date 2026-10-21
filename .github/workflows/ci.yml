@@ -53,7 +53,8 @@ jobs:
   # Needs repo variable CLOUDFLARE_ACCOUNT_ID and secret CLOUDFLARE_API_TOKEN
   # (docs/RUNBOOK.md); skipped until they exist and for pull requests from forks.
   deploy:
-    name: Deploy (${{ github.event_name == 'pull_request' && 'preview' || 'production' }})
+    # Static name: GitHub does not evaluate expressions in the name of a skipped job.
+    name: Deploy
     needs: verify
     if: >-
       vars.CLOUDFLARE_ACCOUNT_ID != '' &&
