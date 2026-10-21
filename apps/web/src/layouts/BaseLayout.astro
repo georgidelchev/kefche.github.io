@@ -1,5 +1,6 @@
 ---
 import Fonts, { type Script } from "@/components/Fonts.astro";
+import ThemeScript from "@/features/theme/ThemeScript.astro";
 import "@/styles/global.css";
 
 interface Props {
@@ -16,6 +17,7 @@ const { title, description, lang, script = "latin" } = Astro.props;
 <html lang={lang}>
   <head>
     <meta charset="utf-8" />
+    <ThemeScript />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content={description} />
     <title>{title}</title>

@@ -1,4 +1,5 @@
 ---
+import { ThemeSwitcher } from "@/features/theme/ThemeSwitcher";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 
 import type { GetStaticPaths } from "astro";
@@ -20,5 +21,9 @@ const { locale } = Astro.params;
       Free browser games for phones, tablets and desktop. Play solo, with friends on one device, or
       online.
     </p>
+    <ThemeSwitcher
+      client:idle
+      labels={{ legend: "Theme", light: "Light", dark: "Dark", system: "System" }}
+    />
   </main>
 </BaseLayout>

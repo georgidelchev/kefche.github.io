@@ -1,0 +1,17 @@
+---
+import { THEME_STORAGE_KEY } from "./theme";
+
+// Runs before first paint so a stored Light/Dark choice never flashes the
+// other theme (SPEC §6.3). Must stay tiny and dependency-free. Only the two
+// literal values are accepted; anything else means "system".
+// Phase 17: this inline script needs a CSP hash.
+---
+
+<script is:inline define:vars={{ key: THEME_STORAGE_KEY }}>
+  try {
+    const stored = localStorage.getItem(key);
+    if (stored === "light" || stored === "dark") document.documentElement.dataset.theme = stored;
+  } catch {
+    // Storage unavailable: keep the system theme.
+  }
+</script>
