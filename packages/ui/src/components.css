@@ -1,0 +1,55 @@
+/*
+ * Component support styles. Import after `tailwindcss`, `tokens.css` and `theme.css`.
+ */
+
+/* Enter/exit animations used by dialog, sheet and toast (shadcn/ui v4 standard). */
+@import "tw-animate-css";
+
+/* Let Tailwind find the classes used inside this package's components. */
+@source "./components";
+
+/* Pixel-style NEW/HOT badges (SPEC §6.1): stepped 2px corners plus a bevel. */
+@utility pixel-badge {
+  clip-path: polygon(
+    0 2px,
+    2px 2px,
+    2px 0,
+    calc(100% - 2px) 0,
+    calc(100% - 2px) 2px,
+    100% 2px,
+    100% calc(100% - 2px),
+    calc(100% - 2px) calc(100% - 2px),
+    calc(100% - 2px) 100%,
+    2px 100%,
+    2px calc(100% - 2px),
+    0 calc(100% - 2px)
+  );
+  box-shadow:
+    inset -2px -2px 0 rgb(0 0 0 / 0.22),
+    inset 2px 2px 0 rgb(255 255 255 / 0.35);
+}
+
+/*
+ * Reduced motion (SPEC §2): honored from the OS setting, or forced by the
+ * in-app override (`<html data-motion="reduce">`, settings in Phase 2).
+ * Durations become ~0 instead of `none` so Radix still gets animationend.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) *,
+  :root:not([data-motion="full"]) ::before,
+  :root:not([data-motion="full"]) ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root[data-motion="reduce"] *,
+:root[data-motion="reduce"] ::before,
+:root[data-motion="reduce"] ::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}

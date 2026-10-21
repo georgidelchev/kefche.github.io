@@ -2,6 +2,7 @@
 @import "@kefche/ui/tokens.css";
 @import "@kefche/ui/theme.css";
 @import "@kefche/ui/typography.css";
+@import "@kefche/ui/components.css";
 
 @layer base {
   body {
