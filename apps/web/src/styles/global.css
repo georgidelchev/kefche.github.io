@@ -1,1 +1,11 @@
 @import "tailwindcss";
+@import "@kefche/ui/tokens.css";
+@import "@kefche/ui/theme.css";
+
+@layer base {
+  body {
+    /* Raw tokens: `@theme inline` does not emit the `--color-*` aliases. */
+    background-color: var(--bg);
+    color: var(--text);
+  }
+}

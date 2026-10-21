@@ -96,7 +96,7 @@ Every step: `pnpm lint && pnpm typecheck && pnpm build` green before committing.
 
 ## Known issues
 
-_None yet._
+- **Brand orange contrast (Phase 1):** `--brand` `#FF6B1A` on `--bg` `#F7F8FC` is ≈ 2.7:1, which is below 4.5:1 (text) and even below 3:1 (large text and UI). Until the palette is refined in Phase 1, don't use it for text on light surfaces. Use it for fills with dark text, or add a darker `--brand-strong` token.
 
 ## Tracked TODOs
 

@@ -1,0 +1,69 @@
+/*
+ * kefche design tokens (SPEC §6.2). Values are the spec's initial proposal and
+ * are refined and contrast-verified in Phase 1.
+ *
+ * Theme selection: `<html data-theme="light|dark">` forces a theme; without the
+ * attribute the system preference applies ("System", the default).
+ */
+
+:root {
+  color-scheme: light;
+
+  --brand: #ff6b1a;
+  --brand-2: #2563eb;
+  --accent: #84cc16;
+
+  --bg: #f7f8fc;
+  --surface: #ffffff;
+  --surface-2: #eef1f8;
+  --text: #141826;
+  --text-muted: #5b6478;
+  --border: #dce1ec;
+
+  --danger: #dc2626;
+  --warning: #b45309;
+  --success: #15803d;
+  --info: #0369a1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --brand: #ff8a3d;
+    --brand-2: #4f8bff;
+    --accent: #a3e635;
+
+    --bg: #0e1220;
+    --surface: #161b2e;
+    --surface-2: #1e2540;
+    --text: #eef1fa;
+    --text-muted: #a3abc2;
+    --border: #2a3252;
+
+    --danger: #f87171;
+    --warning: #fbbf24;
+    --success: #4ade80;
+    --info: #38bdf8;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --brand: #ff8a3d;
+  --brand-2: #4f8bff;
+  --accent: #a3e635;
+
+  --bg: #0e1220;
+  --surface: #161b2e;
+  --surface-2: #1e2540;
+  --text: #eef1fa;
+  --text-muted: #a3abc2;
+  --border: #2a3252;
+
+  --danger: #f87171;
+  --warning: #fbbf24;
+  --success: #4ade80;
+  --info: #38bdf8;
+}

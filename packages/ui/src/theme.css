@@ -1,0 +1,24 @@
+/*
+ * Exposes the design tokens as Tailwind theme colors (`bg-surface`,
+ * `text-muted`, `border-border`, ...). `inline` makes utilities reference the
+ * CSS variables directly, so switching theme needs no rebuild or `dark:` variants.
+ * Import after `tailwindcss` and `tokens.css`.
+ */
+
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+  --color-accent: var(--accent);
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-muted: var(--text-muted);
+  --color-border: var(--border);
+
+  --color-danger: var(--danger);
+  --color-warning: var(--warning);
+  --color-success: var(--success);
+  --color-info: var(--info);
+}

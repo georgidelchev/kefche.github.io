@@ -1,0 +1,11 @@
+{
+  "name": "@kefche/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "kefche design tokens and themed primitives shared by the app and games.",
+  "exports": {
+    "./tokens.css": "./src/tokens.css",
+    "./theme.css": "./src/theme.css"
+  }
+}
