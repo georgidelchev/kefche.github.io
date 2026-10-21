@@ -1,0 +1,18 @@
+{
+  "name": "@kefche/game-sdk",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Isomorphic game contracts, engines, transport, timers, PRNG and bot harness (SPEC §9).",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
+  "devDependencies": {
+    "@kefche/config": "workspace:*",
+    "typescript": "6.0.3"
+  }
+}

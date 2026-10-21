@@ -279,6 +279,15 @@ importers:
         specifier: 8.72.0
         version: 8.72.0(eslint@10.13.0)(typescript@6.0.3)
 
+  packages/game-sdk:
+    devDependencies:
+      '@kefche/config':
+        specifier: workspace:*
+        version: link:../config
+      typescript:
+        specifier: 6.0.3
+        version: 6.0.3
+
   packages/ui: {}
 
 packages:

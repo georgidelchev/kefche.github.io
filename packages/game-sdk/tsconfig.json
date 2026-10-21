@@ -1,0 +1,6 @@
+{
+  // No DOM and no Node types: the SDK must run unchanged in browsers, Web
+  // Workers, Vitest and Deno Edge Functions (SPEC §4).
+  "extends": "@kefche/config/tsconfig.base.json",
+  "include": ["src"]
+}
