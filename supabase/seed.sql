@@ -1,0 +1,5 @@
+-- ============================================================================
+-- DEMO DATA ONLY: LOCAL DEVELOPMENT SEED
+-- Loaded by `pnpm db:reset` after migrations (supabase/config.toml → [db.seed]).
+-- Never run against production. Nothing here is real user data.
+-- ============================================================================
