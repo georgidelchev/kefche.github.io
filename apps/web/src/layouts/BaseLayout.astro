@@ -1,13 +1,15 @@
 ---
+import Fonts, { type Script } from "@/components/Fonts.astro";
 import "@/styles/global.css";
 
 interface Props {
   title: string;
   description: string;
   lang: string;
+  script?: Script;
 }
 
-const { title, description, lang } = Astro.props;
+const { title, description, lang, script = "latin" } = Astro.props;
 ---
 
 <!doctype html>
@@ -17,6 +19,7 @@ const { title, description, lang } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <Fonts script={script} />
   </head>
   <body>
     <slot />

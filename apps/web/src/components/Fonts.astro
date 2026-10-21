@@ -1,0 +1,23 @@
+---
+import { Font } from "astro:assets";
+
+/** Writing system of the page locale; decides which font faces are emitted and preloaded. */
+export type Script = "latin" | "cyrillic" | "arabic" | "devanagari" | "cjk";
+
+interface Props {
+  script: Script;
+}
+
+const { script } = Astro.props;
+// Only the UI face's primary subset is preloaded (above-the-fold body text).
+const uiSubset = script === "cyrillic" ? "cyrillic" : "latin";
+---
+
+{script !== "cjk" && (
+  <>
+    <Font cssVariable="--font-inter" preload={[{ subset: uiSubset }]} />
+    <Font cssVariable="--font-unbounded" />
+  </>
+)}
+{script === "arabic" && <Font cssVariable="--font-noto-arabic" preload />}
+{script === "devanagari" && <Font cssVariable="--font-noto-devanagari" preload />}

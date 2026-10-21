@@ -1,7 +1,13 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from "astro/config";
+import { defineConfig, fontProviders } from "astro/config";
+
+// Self-hosted at build time (no third-party font requests). SPEC §5 / §6.4:
+// one UI face for Latin/Cyrillic/Greek, a display face for headings, and
+// script-specific Noto faces loaded only by the locales that need them.
+// Chinese and Japanese use the system stack (see src/styles/global.css).
+const fontsource = fontProviders.fontsource();
 
 // https://docs.astro.build/en/reference/configuration-reference/
 export default defineConfig({
@@ -14,6 +20,44 @@ export default defineConfig({
   // Auth sessions live in Supabase, so no Astro sessions and no KV namespace.
   session: false,
   integrations: [react()],
+  fonts: [
+    {
+      provider: fontsource,
+      name: "Inter",
+      cssVariable: "--font-inter",
+      weights: ["100 900"],
+      styles: ["normal"],
+      subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext", "greek"],
+      fallbacks: ["system-ui", "sans-serif"],
+    },
+    {
+      provider: fontsource,
+      name: "Unbounded",
+      cssVariable: "--font-unbounded",
+      weights: ["200 900"],
+      styles: ["normal"],
+      subsets: ["latin", "latin-ext", "cyrillic", "cyrillic-ext"],
+      fallbacks: ["system-ui", "sans-serif"],
+    },
+    {
+      provider: fontsource,
+      name: "Noto Sans Arabic",
+      cssVariable: "--font-noto-arabic",
+      weights: ["100 900"],
+      styles: ["normal"],
+      subsets: ["arabic"],
+      fallbacks: ["sans-serif"],
+    },
+    {
+      provider: fontsource,
+      name: "Noto Sans Devanagari",
+      cssVariable: "--font-noto-devanagari",
+      weights: ["100 900"],
+      styles: ["normal"],
+      subsets: ["devanagari"],
+      fallbacks: ["sans-serif"],
+    },
+  ],
   // Temporary (302) so browsers don't cache it: locale detection
   // (saved preference → Accept-Language → en) arrives with i18n in Phase 1.
   redirects: { "/": { status: 302, destination: "/en/" } },

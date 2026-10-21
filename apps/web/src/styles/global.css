@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "@kefche/ui/tokens.css";
 @import "@kefche/ui/theme.css";
+@import "@kefche/ui/typography.css";
 
 @layer base {
   body {

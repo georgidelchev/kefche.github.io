@@ -1,0 +1,75 @@
+/*
+ * Typography (SPEC §6.4). Font faces are provided by the app (`--font-inter`,
+ * `--font-unbounded`, `--font-noto-*`); this file picks the stack per script via
+ * `:lang()` and defines the type scale. Import after `tailwindcss`.
+ */
+
+:root {
+  --font-ui: var(--font-inter, system-ui, sans-serif);
+  /* Display face covers Latin + Cyrillic only; other scripts use the UI stack. */
+  --font-heading: var(--font-unbounded, var(--font-ui));
+}
+
+:root:lang(ar) {
+  --font-ui: var(--font-noto-arabic, sans-serif), var(--font-inter, system-ui, sans-serif);
+  --font-heading: var(--font-ui);
+}
+
+:root:lang(hi) {
+  --font-ui: var(--font-noto-devanagari, sans-serif), var(--font-inter, system-ui, sans-serif);
+  --font-heading: var(--font-ui);
+}
+
+/* No CJK webfonts (SPEC §5): system stacks only. */
+:root:lang(zh) {
+  --font-ui:
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans CJK SC",
+    "Source Han Sans SC", system-ui, sans-serif;
+  --font-heading: var(--font-ui);
+}
+
+:root:lang(ja) {
+  --font-ui:
+    "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Meiryo", "Noto Sans CJK JP",
+    "Source Han Sans JP", system-ui, sans-serif;
+  --font-heading: var(--font-ui);
+}
+
+/*
+ * Modular scale, ratio 1.2 (minor third) from a 1rem base: sm = 1/1.2 and
+ * lg…6xl = 1.2^1…1.2^9. `xs` (0.75rem) is the one off-scale step, for badges only.
+ */
+@theme inline {
+  --font-sans: var(--font-ui);
+  --font-display: var(--font-heading);
+
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.833rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.2rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.44rem;
+  --text-xl--line-height: 2rem;
+  --text-2xl: 1.728rem;
+  --text-2xl--line-height: 2.25rem;
+  --text-3xl: 2.074rem;
+  --text-3xl--line-height: 2.5rem;
+  --text-4xl: 2.488rem;
+  --text-4xl--line-height: 1.15;
+  --text-5xl: 2.986rem;
+  --text-5xl--line-height: 1.1;
+  --text-6xl: 3.583rem;
+  --text-6xl--line-height: 1.05;
+}
+
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    text-wrap: balance;
+  }
+}

@@ -91,3 +91,15 @@ Short ADRs: context, decision, consequences. Newest last. Never rewrite an accep
 **Decision.** The client uses `PUBLIC_SUPABASE_PUBLISHABLE_KEY`, which has the same role as the anon key. Env validation rejects anything not starting with `sb_publishable_`, so a secret key can't be bundled by mistake.
 
 **Consequences.** Same security model (RLS-protected, safe to expose). Edge Functions will use the secret key from function secrets.
+
+---
+
+## ADR-0008: Self-hosted fonts via the Astro Fonts API
+
+**Date:** 2026-10-21 · **Status:** Accepted (final faces confirmed with the logo, Phase 1 step 7)
+
+**Context.** SPEC §5/§6.4 asks for one legible variable UI font (Latin, Cyrillic, Greek), a playful display face (Latin, Cyrillic), Noto subsets only for the active script, and no CJK webfonts. Loading fonts from Google's CDN sends visitor IPs to a third party, which is a GDPR problem in the EU.
+
+**Decision.** The Astro Fonts API (stable since Astro 6) with the Fontsource provider downloads the files at build time and serves them from `/_astro/fonts/`. **Inter** (variable 100–900) is the UI face, **Unbounded** (variable 200–900) the display face, and **Noto Sans Arabic** / **Noto Sans Devanagari** the script faces. `Fonts.astro` emits only the faces for the page's script and preloads one file (the UI face's primary subset). `packages/ui/typography.css` picks stacks with `:lang()`, and zh/ja use system CJK stacks. The type scale is a 1.2 modular ratio.
+
+**Consequences.** No third-party font requests and no consent needed for fonts. `unicode-range` means each page downloads only the subsets it uses. Astro also generates metric-matched fallbacks to reduce layout shift (CLS).
