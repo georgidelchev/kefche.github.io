@@ -4,27 +4,27 @@
 
 ## Phase checklist
 
-| Phase | Title                                                      | Status                                      |
-| ----- | ---------------------------------------------------------- | ------------------------------------------- |
-| 0     | Foundation & tooling                                       | 🔧 Built; DoD needs push + Cloudflare setup |
-| 1     | Design system, layout, theming, i18n skeleton              | ⏳ Not started                              |
-| 2     | Supabase core, auth & profiles                             | ⏳ Not started                              |
-| 3     | Game SDK & first games (2048, Sudoku, Snake)               | ⏳ Not started                              |
-| 4     | Bots, hotseat & timers                                     | ⏳ Not started                              |
-| 5     | Multiplayer core                                           | ⏳ Not started                              |
-| 6     | Chess                                                      | ⏳ Not started                              |
-| 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                              |
-| 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                              |
-| 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                              |
-| 10    | Admin panel                                                | ⏳ Not started                              |
-| 11–14 | Game batches                                               | ⏳ Not started                              |
-| 15    | Translation pass & content packs                           | ⏳ Not started                              |
-| 16    | PWA, offline, audio & haptics polish                       | ⏳ Not started                              |
-| 17    | Consent, legal, analytics, monitoring                      | ⏳ Not started                              |
-| 18    | Performance & accessibility pass                           | ⏳ Not started                              |
-| 19    | Security review                                            | ⏳ Not started                              |
-| 20    | Test suite                                                 | ⏳ Not started                              |
-| 21    | Launch preparation                                         | ⏳ Not started                              |
+| Phase | Title                                                      | Status                              |
+| ----- | ---------------------------------------------------------- | ----------------------------------- |
+| 0     | Foundation & tooling                                       | ✅ DoD met; awaiting owner sign-off |
+| 1     | Design system, layout, theming, i18n skeleton              | ⏳ Not started                      |
+| 2     | Supabase core, auth & profiles                             | ⏳ Not started                      |
+| 3     | Game SDK & first games (2048, Sudoku, Snake)               | ⏳ Not started                      |
+| 4     | Bots, hotseat & timers                                     | ⏳ Not started                      |
+| 5     | Multiplayer core                                           | ⏳ Not started                      |
+| 6     | Chess                                                      | ⏳ Not started                      |
+| 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                      |
+| 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                      |
+| 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                      |
+| 10    | Admin panel                                                | ⏳ Not started                      |
+| 11–14 | Game batches                                               | ⏳ Not started                      |
+| 15    | Translation pass & content packs                           | ⏳ Not started                      |
+| 16    | PWA, offline, audio & haptics polish                       | ⏳ Not started                      |
+| 17    | Consent, legal, analytics, monitoring                      | ⏳ Not started                      |
+| 18    | Performance & accessibility pass                           | ⏳ Not started                      |
+| 19    | Security review                                            | ⏳ Not started                      |
+| 20    | Test suite                                                 | ⏳ Not started                      |
+| 21    | Launch preparation                                         | ⏳ Not started                      |
 
 ---
 
@@ -107,12 +107,15 @@ All 10 steps are implemented as separate commits on `main` (local and not yet pu
 - [x] Steps 1–10
 - [x] DoD: `pnpm dev` runs
 - [x] DoD: CI green. First run on `main` passed (2026-10-21, run 39622303928); the deploy job was skipped as intended until Cloudflare is configured.
-- [ ] DoD: preview deploy URL works. Needs the owner's one-time Cloudflare setup (`docs/RUNBOOK.md`), then a push to `main` and a test PR.
+- [x] Production deploy: first `wrangler deploy` from CI on `main` succeeded (2026-10-21, run 39624714266).
+- [x] DoD: preview deploy URL works. PR #1 (run 39625333320) uploaded the `pr-1` preview, and https://pr-1-kefche.alienguymc.workers.dev/en/ returned 200.
+
+**Live:** production at https://kefche.alienguymc.workers.dev. Verified: `/` → 302 `/en/`; `/en/` 200 with every baseline security header; `/_astro/*` served with `immutable` caching; unknown paths 404.
 
 ### Owner actions to finish Phase 0
 
 1. ~~Approve pushing the local commits to `origin/main`.~~ Done.
-2. Complete the Cloudflare setup in `docs/RUNBOOK.md` (API token, account ID, GitHub variable and secret) and turn off GitHub Pages.
+2. ~~Complete the Cloudflare setup in `docs/RUNBOOK.md` (API token, account ID, GitHub variable and secret) and turn off GitHub Pages.~~ Done.
 3. Install Docker Desktop before Phase 2.
 
 ---
