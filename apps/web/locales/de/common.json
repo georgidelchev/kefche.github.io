@@ -20,5 +20,11 @@
     "badge": "Demnächst",
     "body": "Dieser Teil von kefche ist noch im Aufbau. Schau bald wieder vorbei.",
     "back": "Zurück zur Startseite"
+  },
+  "actions": {
+    "close": "Schließen"
+  },
+  "notifications": {
+    "label": "Benachrichtigungen"
   }
 }

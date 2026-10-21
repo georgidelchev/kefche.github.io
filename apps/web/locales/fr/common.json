@@ -20,5 +20,11 @@
     "badge": "Bientôt disponible",
     "body": "Cette partie de kefche est encore en construction. Revenez bientôt.",
     "back": "Retour à l'accueil"
+  },
+  "actions": {
+    "close": "Fermer"
+  },
+  "notifications": {
+    "label": "Notifications"
   }
 }

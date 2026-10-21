@@ -1,0 +1,46 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { MapPinOff } from "lucide-react";
+
+import { buttonVariants } from "@kefche/ui/components/button";
+
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getT(locale);
+const title = t("errors:notFound.title");
+---
+
+<AppShell
+  locale={locale}
+  path="/404/"
+  title={t("common:meta.sectionTitle", { section: title })}
+  description={t("errors:notFound.body")}
+  noindex
+>
+  <section class="mx-auto grid max-w-xl justify-items-center gap-4 py-12 text-center md:py-20">
+    <div
+      aria-hidden="true"
+      class="flex size-16 items-center justify-center rounded-2xl bg-surface-2 text-muted"
+    >
+      <MapPinOff className="size-8" />
+    </div>
+    <p class="font-display text-6xl font-bold text-brand-strong" aria-hidden="true">
+      404
+    </p>
+    <h1 class="text-3xl md:text-4xl">{title}</h1>
+    <p class="text-lg text-muted">{t("errors:notFound.body")}</p>
+    <a
+      href={getRelativeLocaleUrl(locale, "/")}
+      class:list={[buttonVariants({ variant: "primary" }), "mt-2"]}
+    >
+      {t("errors:notFound.home")}
+    </a>
+  </section>
+</AppShell>

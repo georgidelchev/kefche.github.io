@@ -20,5 +20,11 @@
     "badge": "Coming soon",
     "body": "We're still building this part of kefche. Check back soon.",
     "back": "Back to home"
+  },
+  "actions": {
+    "close": "Close"
+  },
+  "notifications": {
+    "label": "Notifications"
   }
 }

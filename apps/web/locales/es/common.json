@@ -20,5 +20,11 @@
     "badge": "Próximamente",
     "body": "Todavía estamos construyendo esta parte de kefche. Vuelve pronto.",
     "back": "Volver al inicio"
+  },
+  "actions": {
+    "close": "Cerrar"
+  },
+  "notifications": {
+    "label": "Notificaciones"
   }
 }

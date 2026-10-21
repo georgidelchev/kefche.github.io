@@ -20,5 +20,11 @@
     "badge": "近日公開",
     "body": "kefche のこの部分はまだ準備中です。もうしばらくお待ちください。",
     "back": "ホームに戻る"
+  },
+  "actions": {
+    "close": "閉じる"
+  },
+  "notifications": {
+    "label": "通知"
   }
 }

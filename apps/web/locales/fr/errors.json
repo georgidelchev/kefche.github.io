@@ -1,0 +1,12 @@
+{
+  "notFound": {
+    "title": "Page introuvable",
+    "body": "Nous n'avons pas trouvé cette page. Le lien est peut-être erroné, ou la page a été déplacée.",
+    "home": "Aller à l'accueil"
+  },
+  "offline": {
+    "title": "Vous êtes hors ligne",
+    "body": "Vérifiez votre connexion Internet, puis réessayez.",
+    "retry": "Réessayer"
+  }
+}

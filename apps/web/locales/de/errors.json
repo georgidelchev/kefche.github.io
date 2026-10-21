@@ -1,0 +1,12 @@
+{
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "body": "Diese Seite haben wir nicht gefunden. Vielleicht ist der Link falsch oder die Seite wurde verschoben.",
+    "home": "Zur Startseite"
+  },
+  "offline": {
+    "title": "Du bist offline",
+    "body": "Prüfe deine Internetverbindung und versuch es dann noch einmal.",
+    "retry": "Erneut versuchen"
+  }
+}

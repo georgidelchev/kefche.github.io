@@ -1,0 +1,22 @@
+---
+import NotFoundPage from "@/features/errors/NotFoundPage.astro";
+import { isLocale } from "@/i18n/locales";
+import { LOCALE_COOKIE, negotiateLocale } from "@/i18n/negotiate";
+
+// Rendered in the Worker for every unknown path, so the page speaks the
+// language of the URL (/bg/nope → Bulgarian). Paths without a locale use the
+// same negotiation as `/` (saved choice → Accept-Language → en).
+export const prerender = false;
+
+const segment = Astro.url.pathname.split("/")[1];
+const locale = isLocale(segment)
+  ? segment
+  : negotiateLocale({
+      saved: Astro.cookies.get(LOCALE_COOKIE)?.value,
+      acceptLanguage: Astro.request.headers.get("accept-language"),
+    });
+Astro.response.headers.set("Cache-Control", "private, no-store");
+Astro.response.headers.set("Vary", "Cookie, Accept-Language");
+---
+
+<NotFoundPage locale={locale} />

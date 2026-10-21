@@ -20,5 +20,11 @@
     "badge": "即将推出",
     "body": "kefche 的这一部分仍在建设中，敬请期待。",
     "back": "返回首页"
+  },
+  "actions": {
+    "close": "关闭"
+  },
+  "notifications": {
+    "label": "通知"
   }
 }

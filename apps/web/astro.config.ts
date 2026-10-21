@@ -71,5 +71,18 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
+    // Dev only: pre-bundle these up front. Otherwise Vite discovers
+    // astro:i18n late on a cold start, re-optimizes mid-request and React
+    // renders with two copies ("Invalid hook call") until the reload.
+    ssr: {
+      optimizeDeps: {
+        include: [
+          "astro/virtual-modules/i18n.js",
+          "react",
+          "react-dom/server.edge",
+          "lucide-react",
+        ],
+      },
+    },
   },
 });
