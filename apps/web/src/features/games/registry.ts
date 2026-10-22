@@ -7,7 +7,6 @@ import { parseGameManifest, parseGameText } from "@kefche/game-sdk/manifest-sche
 
 import { LOCALES, type Locale } from "@/i18n/locales";
 
-
 const manifests = import.meta.glob<{ manifest: unknown }>(
   "../../../../../packages/games/*/manifest.ts",
   { eager: true },
