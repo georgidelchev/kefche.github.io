@@ -26,15 +26,18 @@ const listDir = (dir, filter) =>
     .sort();
 const sameSet = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
 
-/** Flattens nested JSON into dotted keys; every leaf must be a non-empty string. */
-function flatten(obj, file, prefix = "", out = new Map()) {
+/**
+ * Flattens nested JSON into dotted keys; every leaf must be a non-empty
+ * string. Arrays (paragraphs, FAQ entries) are allowed in game texts only.
+ */
+function flatten(obj, file, prefix = "", out = new Map(), allowArrays = false) {
   for (const [k, v] of Object.entries(obj)) {
     const key = prefix ? `${prefix}.${k}` : k;
     if (typeof v === "string") {
       if (v.trim() === "") errors.push(`${file}: "${key}" is empty`);
       out.set(key, v);
-    } else if (v && typeof v === "object" && !Array.isArray(v)) {
-      flatten(v, file, key, out);
+    } else if (v && typeof v === "object" && (allowArrays || !Array.isArray(v))) {
+      flatten(v, file, key, out, allowArrays);
     } else {
       errors.push(`${file}: "${key}" must be a string or an object of strings`);
     }
@@ -168,7 +171,7 @@ for (const id of gameIds) {
       const raw = readFileSync(path, "utf8");
       if (raw.includes("TODO(new-game)"))
         errors.push(`${rel(path)}: replace the TODO(new-game) placeholders`);
-      const flat = flatten(JSON.parse(raw), rel(path));
+      const flat = flatten(JSON.parse(raw), rel(path), "", new Map(), true);
       for (const [key, message] of flat) {
         try {
           flat.set(key, { message, args: icuArgs(parse(message)) });

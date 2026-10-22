@@ -1,0 +1,54 @@
+{
+  "name": "2048",
+  "tagline": "Schieben, verbinden und verdoppeln bis zur 2048-Kachel.",
+  "description": "Spiele 2048 kostenlos im Browser: Kacheln schieben, gleiche Zahlen verbinden und 2048 erreichen. Auf Handy, Tablet und PC, auch offline.",
+  "about": [
+    "2048 is a sliding puzzle played on a 4 × 4 grid. Every move pushes all tiles as far as they can go in one direction. When two tiles with the same number collide, they merge into one tile worth their sum, and a new 2 or 4 appears in an empty cell.",
+    "The goal is simple to explain and hard to reach: build a single tile with the number 2048. Each merge also adds its value to your score, so even when the board fills up you can keep chasing a better result. Reaching 2048 doesn't end the game; you can keep going for 4096 and beyond.",
+    "The game here runs entirely in your browser. There is nothing to install and no account is needed, your best score is remembered on this device, and once you have played it the game also works without an internet connection."
+  ],
+  "howToPlay": [
+    "Swipe on the board, or press an arrow key or W, A, S or D, to slide every tile in that direction.",
+    "Two tiles with the same number that touch during a slide merge into one tile with double the value.",
+    "After every move that changes the board, a new tile (usually a 2, sometimes a 4) appears in an empty cell.",
+    "A tile can only merge once per move: 2, 2, 4 slides into 4, 4, not 8.",
+    "The game ends when the board is full and no slide can merge any tiles."
+  ],
+  "controls": [
+    "Phones and tablets: swipe up, down, left or right on the board.",
+    "Keyboard: arrow keys or W, A, S, D.",
+    "Undo takes back your last move, once per game."
+  ],
+  "tips": [
+    "Pick a corner and keep your biggest tile in it. Most strong games build the large numbers along one edge.",
+    "Avoid the direction that would pull your big tile out of its corner, and use it only when nothing else works.",
+    "Keep the row next to your biggest tile filled and in order, so merges can roll toward the corner like a chain.",
+    "Save the undo for a real mistake late in the game, when one bad tile would end your run."
+  ],
+  "faq": [
+    {
+      "question": "Is 2048 free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What happens after I reach 2048?",
+      "answer": "You win, and you can choose to keep playing to build 4096, 8192 or more."
+    },
+    {
+      "question": "Can I undo a move?",
+      "answer": "Yes, once per game. The undo button takes back your last move."
+    },
+    {
+      "question": "Does it work offline?",
+      "answer": "Yes. After you have played once, the game is saved on your device and works without a connection."
+    }
+  ],
+  "ui": {
+    "score": "Punkte",
+    "best": "Rekord",
+    "undo": "Rückgängig",
+    "won": "Du hast 2048 geschafft!",
+    "keepGoing": "Weiterspielen",
+    "boardLabel": "2048-Spielfeld. Punkte {score}, höchste Kachel {best}."
+  }
+}

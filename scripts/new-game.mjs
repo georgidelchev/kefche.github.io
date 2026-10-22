@@ -49,7 +49,7 @@ const files = {
   "tsconfig.json": `{
   // Renderer and entry: browser code.
   "extends": "@kefche/config/tsconfig.base.json",
-  "compilerOptions": { "lib": ["es2024", "dom", "dom.iterable"] },
+  "compilerOptions": { "lib": ["es2024", "dom", "dom.iterable"], "jsx": "react-jsx" },
   "include": ["."],
   "exclude": ["engine"]
 }
