@@ -57,7 +57,9 @@ export default defineConfig({
       weights: ["100 900"],
       styles: ["normal"],
       subsets: ["arabic"],
-      fallbacks: ["sans-serif"],
+      // No fallbacks: typography.css puts Inter after this face, and a generic
+      // family here would catch Latin letters and digits before Inter does.
+      fallbacks: [],
     },
     {
       provider: fontsource,
@@ -66,7 +68,7 @@ export default defineConfig({
       weights: ["100 900"],
       styles: ["normal"],
       subsets: ["devanagari"],
-      fallbacks: ["sans-serif"],
+      fallbacks: [],
     },
   ],
   vite: {

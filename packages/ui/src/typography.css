@@ -10,6 +10,8 @@
   --font-heading: var(--font-unbounded, var(--font-ui));
 }
 
+/* The script faces cover only their script, so Latin letters and digits fall
+   through to Inter. */
 :root:lang(ar) {
   --font-ui: var(--font-noto-arabic, sans-serif), var(--font-inter, system-ui, sans-serif);
   --font-heading: var(--font-ui);
