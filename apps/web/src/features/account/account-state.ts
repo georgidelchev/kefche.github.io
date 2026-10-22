@@ -34,11 +34,12 @@ export function renderAccount(summary: AccountSummary | null): void {
   const slot = String(paletteIndexFor(summary.id));
   const initials = summary.nickname ? initialsFor(summary.nickname, root.lang) : "";
   for (const avatar of document.querySelectorAll<HTMLElement>("[data-account-avatar]")) {
-    avatar.style.backgroundColor = `var(--player-${slot})`;
+    const hasPicture = summary.avatarUrl !== null;
+    // The player color is the initials' background; pictures bring their own.
+    avatar.style.backgroundColor = hasPicture ? "transparent" : `var(--player-${slot})`;
     avatar.style.color = `var(--player-${slot}-ink)`;
     // The URL was validated by the summary schema (no quotes or parentheses).
     avatar.style.backgroundImage = summary.avatarUrl ? `url("${summary.avatarUrl}")` : "";
-    const hasPicture = summary.avatarUrl !== null;
     const label = avatar.querySelector("[data-account-initials]");
     if (label) label.textContent = hasPicture ? "" : initials;
     avatar

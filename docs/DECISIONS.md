@@ -155,3 +155,43 @@ Short ADRs: context, decision, consequences. Newest last. Never rewrite an accep
 - **Accounts are optional per build.** With no `PUBLIC_SUPABASE_*` variables, the build leaves out all account UI. Setting only one, or an invalid value (for example a secret key), fails the build.
 
 **Consequences.** Signed-out visitors load about 8 KB of JS on content pages, and signed-in visitors load supabase-js after the page is idle. Server-side rendering for the signed-in user isn't possible; pages that need it would need cookie sessions (`@supabase/ssr`), which would require a new ADR. A stolen `localStorage` token is an XSS risk, which the strict CSP (Phase 17) and the ban on HTML injection mitigate.
+
+---
+
+## ADR-0012: Public profiles, owner-only settings, rules enforced in the database
+
+**Date:** 2026-10-22 · **Status:** Accepted
+
+**Context.** SPEC §13 lists birth year, locale, theme and privacy as `profiles` columns. Profiles are public: anyone can read them, including through the Worker-rendered profile page. Row-level security works per row, not per column, so private columns on a public row are one careless `select *` away from leaking. The rules (13+, nickname format, reserved and blocked words, the 30-day limit) must also hold for any client, not just our forms.
+
+**Decision.**
+
+- **Two tables:** `profiles` holds public fields only; `user_settings` holds private ones (birth year, locale, theme, sound, haptics, motion, privacy) and is readable and writable by its owner only.
+- **Column privileges** limit what users can update (for example, not `xp`, `level` or `birth_year`). Triggers enforce nickname rules, the cooldown, avatar paths and the bio check on every update. A before-user-created auth hook refuses under-13 email sign-ups before anything is stored, and `complete_profile()` applies the same checks to OAuth sign-ups and guests.
+- **Privileged writes** go through `security definer` functions with `search_path = ''`. They live in `public` only when clients may call them, and each grants `execute` explicitly. Internals live in the `private` schema, which the Data API doesn't expose.
+- **Errors meant for players** carry stable codes as the message (`nickname_taken`, `age_restricted`), which the app translates.
+- **Rate limiting** is a Postgres token bucket (`private.rate_limit_take`) called inside the functions it protects. Privileged actions write to an append-only `audit_log`, and IPs are stored only as salted hashes.
+
+**Consequences.** Private data can't leak through public reads, and the rules can't be bypassed by calling the API directly. Every new per-user table must decide public or private up front. `merge_guest()` and `purge_account()` must be extended whenever a phase adds per-user data.
+
+---
+
+## ADR-0013: Edge Functions on Deno, scheduled jobs through pg_cron
+
+**Date:** 2026-10-22 · **Status:** Accepted
+
+**Context.** A few operations need the service role, which must never reach the browser (SPEC §18):
+
+- merging a guest into an account;
+- exporting a user's data;
+- deleting Storage files and auth users after the 7-day deletion grace period (SPEC §17).
+
+Storage files must be deleted through the Storage API, because deleting rows in SQL orphans them.
+
+**Decision.**
+
+- Supabase Edge Functions (Deno 2) in `supabase/functions/<name>/index.ts`. Exact npm versions are pinned in `supabase/functions/deno.json`, and `deno.lock` is committed. Helpers for CORS, JSON errors and structured logs are shared from `_shared/http.ts`. CI runs `deno lint` and `deno check --frozen` with the Deno version of the edge runtime.
+- **User-facing functions** (`merge-guest`, `export-data`) verify every token with Supabase Auth, validate input with Zod, rate-limit, and return stable error codes.
+- **Scheduled work:** `pg_cron` runs `private.invoke_purge_accounts()` hourly, and it calls `purge-accounts` through `pg_net`. That function accepts only a shared secret (`verify_jwt = false`), compared in constant time. The function's URL and secret live in Vault, so the job does nothing until they're configured (RUNBOOK, "Account deletion job").
+
+**Consequences.** No service-role key appears outside Supabase. Scheduled work needs per-environment setup (Vault entries plus a function secret), which is documented in the RUNBOOK and part of Phase 21. Deno code follows its own lint rules rather than the repo's ESLint.

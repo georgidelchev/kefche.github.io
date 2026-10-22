@@ -35,11 +35,23 @@ Isomorphism is enforced by the type system: the base tsconfig has no DOM lib and
   - `404` (`src/pages/404.astro`) renders in the URL's language (`/bg/nope` gives Bulgarian), or negotiates like `/` when the path has no locale, and returns a real 404 status.
 - Everything else is static. `public/_headers` sets the security headers for static assets. `src/middleware.ts` parses the same file and applies those headers to every Worker-rendered response, so there's a single source of truth.
 - Dev-only pages (`/[locale]/dev/ui/`) return no static paths in production builds, so they're never deployed.
+- **Public profiles** (`/[locale]/u/[nickname]/`) are Worker-rendered, so shared links get real titles. They read public columns only, redirect other casings to the canonical nickname, and are noindex.
+- **Account pages** (`/auth/*`, `/settings/`, `/profile/`) are static and exist only in builds with Supabase settings (ADR-0011).
+
+## Accounts and data (Phase 2)
+
+- **Sessions** live in the browser (supabase-js, PKCE, `localStorage`). The header shows a cached account summary before paint, and supabase-js loads lazily (ADR-0011).
+- **Tables:** `profiles` (public) and `user_settings` (owner-only) (ADR-0012). There are also `user_roles` (with an `app_roles` JWT claim), `consent_records`, an append-only `audit_log`, and in the `private` schema `rate_limits`, `blocked_terms`, `reserved_nicknames` and `deletion_requests`. Every table has RLS.
+- **Sign-up and onboarding:** a before-user-created hook and `complete_profile()` enforce 13+ and the nickname rules. Only the birth year is stored, and the month is stripped from auth metadata.
+- **Guests** upgrade in place; signing in to another account offers `merge-guest`.
+- **Avatars:** 24 presets in `public/avatars/`, plus uploads to the public `avatars` bucket at `<user id>/<uuid>.webp`.
+- **Theme and language** sync across devices through `user_settings` (`features/account/preferences-sync.ts`).
+- **Data rights:** `export-data` returns a JSON download. Deletion waits 7 days, then `pg_cron` → `pg_net` → `purge-accounts` deletes the account (ADR-0013).
 
 ## Internationalization
 
 - **Registry:** `src/i18n/locales.ts` lists every locale with its native name, BCP 47 tag, `dir`, script and OG locale. Routing, fonts, `<html lang dir>`, hreflang and the language switcher all derive from it.
-- **Messages:** `apps/web/locales/<locale>/<namespace>.json` (`common`, `nav`, `errors`), with English as the source. `getT(locale)` returns a cached i18next + ICU instance with **no fallback language**. Keys are always written in full as `"<namespace>:<key>"` and type-checked against the English JSON.
+- **Messages:** `apps/web/locales/<locale>/<namespace>.json` (`common`, `nav`, `errors`, `account`, `auth`, `profile`, `settings`), with English as the source. `getT(locale)` returns a cached i18next + ICU instance with **no fallback language**. Keys are always written in full as `"<namespace>:<key>"` and type-checked against the English JSON.
 - **Build-time translation:** pages translate during server rendering, and islands receive translated strings as props, so no i18n runtime ships to the browser (ADR-0009).
 - **Integrity:** `pnpm i18n:check` (CI) compares every locale with English: namespaces, keys, ICU validity and placeholders. It also fails on unused or undefined keys, found as string literals in the source.
 - **Language choice:** the switcher stores an explicit choice in the `kefche_locale` cookie (read by `/` and the 404 page) and in localStorage.
@@ -89,7 +101,6 @@ GitHub Actions `CI` runs format check → lint → contrast → translations →
 
 ## Sections to come
 
-- Data model and RLS overview _(Phase 2)_
 - Game platform: registry, engine kinds, bots in workers _(Phase 3–4)_
 - Multiplayer: transport, rooms, host authority, migration, reconnection _(Phase 5)_
 - Realtime message budget per game kind (SPEC §10.9) _(Phase 5, 9)_

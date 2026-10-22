@@ -26,7 +26,22 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 
 - `apps/web`: Astro 7 + React islands, Tailwind 4, `@astrojs/cloudflare` (Workers + static assets). Routes live under `src/pages/[locale]/`. Env vars are validated in `src/lib/env.ts` and documented in `apps/web/.env.example`.
 - `packages/config`: shared `tsconfig.base.json`, ESLint preset (`eslint-preset.js`) and Prettier preset (`prettier-preset.js`). The root `eslint.config.js` and `prettier.config.js` use them.
-- `apps/web/src`: `i18n/` (locale registry, `getT`, negotiation), `features/shell/` (AppShell, nav config, shell client script), `features/theme/`, `features/i18n/` (language switcher), `features/errors/`, `components/` (BootScript, Fonts, SeoHead, Logo), `middleware.ts` (security headers on Worker responses). Translations: `apps/web/locales/<locale>/<ns>.json`.
+- `apps/web/src`:
+  - `i18n/`: locale registry, `getT`, negotiation.
+  - `features/`:
+    - `shell/`: AppShell, nav config, shell client script.
+    - `theme/`: switcher and `setTheme`.
+    - `i18n/`: language switcher and `rememberLocale`.
+    - `account/`: header account state, preference sync, avatar URLs.
+    - `auth/`: sign-in, sign-up, onboarding and guest-merge pages.
+    - `profile/`: the public profile page.
+    - `settings/`: the settings page.
+    - `errors/`
+  - `lib/supabase/`: lazy client, config, generated DB types.
+  - `components/`: BootScript, Fonts, SeoHead, Logo.
+  - `middleware.ts`: security headers on Worker responses.
+  - Translations: `apps/web/locales/<locale>/<ns>.json`.
+- `supabase/`: `migrations/`, `functions/` (Edge Functions, Deno), `blocked-terms/` (word lists → `pnpm db:terms`), `templates/` (auth emails). `public/avatars/` holds the preset avatars (`pnpm avatars:generate`).
 - `packages/ui`: design tokens (`src/tokens.css`), the Tailwind theme mapping (`src/theme.css`), typography (`src/typography.css`), components (`src/components/*.tsx`, imported as `@kefche/ui/components/<name>`) and brand marks (`src/brand/marks.ts`).
 - `packages/game-sdk`: isomorphic game SDK (Phase 3).
 - `packages/games/<id>`: one package per game (template in `packages/games/README.md`).
