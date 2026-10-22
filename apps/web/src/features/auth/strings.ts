@@ -14,6 +14,8 @@ export function authStrings(t: AppT) {
     samePassword: t("auth:errors.samePassword"),
     invalidCredentials: t("auth:errors.invalidCredentials"),
     emailNotConfirmed: t("auth:errors.emailNotConfirmed"),
+    emailTaken: t("auth:errors.emailTaken"),
+    identityTaken: t("auth:errors.identityTaken"),
     rateLimited: t("auth:errors.rateLimited"),
     linkExpired: t("auth:errors.linkExpired"),
     ageRestricted: t("auth:errors.ageRestricted"),
@@ -79,6 +81,11 @@ export function authStrings(t: AppT) {
     },
     onboarding: {
       submit: t("auth:onboarding.submit"),
+    },
+    merge: {
+      confirm: t("auth:merge.confirm"),
+      skip: t("auth:merge.skip"),
+      failed: t("auth:merge.failed"),
     },
   };
 }

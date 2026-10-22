@@ -52,6 +52,10 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
   - **Public RPCs:** use `security definer` with `set search_path = ''`, check `auth.uid()`, and grant `execute` explicitly (revoke from `public`).
   - **Under `search_path = ''`:** extension types and operators need their schema, as in `nickname operator(extensions.=) x::extensions.citext`.
   - **Error codes:** errors meant for the client carry a stable code as the message (`nickname_taken`), which the app translates.
+- **Edge Functions** (`supabase/functions/<name>/index.ts`, Deno 2):
+  - **Dependencies:** shared imports live in `supabase/functions/deno.json`, pinned exactly, with `deno.lock` committed. Helpers go in `_shared/`.
+  - **Request handling:** verify every token with Supabase Auth, validate input with Zod, return a stable error code, and log details with `log()`.
+  - **Checks:** ESLint skips this folder; CI runs `deno lint` and `deno check --frozen`. Locally, without Deno: `docker run --rm -v "$PWD/supabase/functions:/fn" -w /fn denoland/deno:2.1.4 sh -c "deno lint && deno check */index.ts"`.
 - **Commits:** Conventional Commits, one small focused commit per step.
 
 ## Dependencies

@@ -10,6 +10,7 @@ import { getSupabase } from "@/lib/supabase/client";
 import { FormMessage, PasswordField, TextField } from "./components/fields";
 import { OAuthButtons } from "./components/OAuthButtons";
 import { messagesFor } from "./components/use-messages";
+import { forgetGuest, guestSession, rememberGuest } from "./guest";
 import { nextFromLocation, routeAfterSignIn } from "./session";
 import { emailField } from "./validation";
 
@@ -35,10 +36,14 @@ export function SignInForm({ strings, paths }: { strings: AuthStrings; paths: Au
     try {
       const supabase = await getSupabase();
       if (!supabase) return;
+      // Signing in replaces a guest session; keep it for the merge offer.
+      const guest = await guestSession(supabase);
+      if (guest) rememberGuest(guest);
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
       await routeAfterSignIn(supabase, paths, nextFromLocation());
     } catch (e) {
+      forgetGuest();
       setFormError(messages.thrown(e));
     }
   });
@@ -80,7 +85,7 @@ export function SignInForm({ strings, paths }: { strings: AuthStrings; paths: Au
         {strings.signIn.or}
         <span className="h-px flex-1 bg-border" />
       </div>
-      <OAuthButtons strings={strings} paths={paths} />
+      <OAuthButtons strings={strings} paths={paths} mode="signIn" />
 
       <p className="text-center">
         {strings.signIn.noAccount}{" "}

@@ -6,6 +6,8 @@ export const AUTH_ERROR_KEYS = [
   "samePassword",
   "invalidCredentials",
   "emailNotConfirmed",
+  "emailTaken",
+  "identityTaken",
   "rateLimited",
   "linkExpired",
   "ageRestricted",
@@ -28,6 +30,9 @@ export const isAuthErrorKey = (value: unknown): value is AuthErrorKey =>
 const SERVER_CODES = new Map<string, AuthErrorKey>([
   ["invalid_credentials", "invalidCredentials"],
   ["email_not_confirmed", "emailNotConfirmed"],
+  ["email_exists", "emailTaken"],
+  ["user_already_exists", "emailTaken"],
+  ["identity_already_exists", "identityTaken"],
   ["weak_password", "passwordWeak"],
   ["same_password", "samePassword"],
   ["over_request_rate_limit", "rateLimited"],

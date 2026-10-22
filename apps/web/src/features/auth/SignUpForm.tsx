@@ -7,13 +7,14 @@ import * as z from "zod/mini";
 import { Button } from "@kefche/ui/components/button";
 
 import type { Locale } from "@/i18n/locales";
-import { getSupabase } from "@/lib/supabase/client";
+import { getSupabase, nullable } from "@/lib/supabase/client";
 
 import { BirthDateField, FormMessage, PasswordField, TextField } from "./components/fields";
 import { OAuthButtons } from "./components/OAuthButtons";
 import { messagesFor } from "./components/use-messages";
 import { useNicknameCheck } from "./components/use-nickname-check";
 import { authErrorKey, type AuthErrorKey } from "./errors";
+import { guestSession } from "./guest";
 import { nextFromLocation, routeAfterSignIn } from "./session";
 import { fill } from "./strings";
 import {
@@ -46,6 +47,7 @@ const FIELD_FOR: Partial<Record<AuthErrorKey, Field>> = {
   nicknameBlocked: "nickname",
   nicknameTaken: "nickname",
   passwordWeak: "password",
+  emailTaken: "email",
   ageRestricted: "birthYear",
   birthDateInvalid: "birthYear",
 };
@@ -79,16 +81,44 @@ export function SignUpForm({ strings, paths, locale, monthNames }: Props) {
     messages.field(errors.nickname) ??
     (current?.problem ? strings.errors[current.problem] : undefined);
 
+  const showError = (key: AuthErrorKey) => {
+    const field = FIELD_FOR[key];
+    if (field) setError(field, { type: "server", message: key }, { shouldFocus: true });
+    else setFormError(strings.errors[key]);
+  };
+
   const onSubmit = handleSubmit(async ({ nickname, email, password, birthMonth, birthYear }) => {
     setFormError(null);
     try {
       const supabase = await getSupabase();
       if (!supabase) return;
+      const emailRedirectTo = new URL(paths.callback, location.origin).href;
+
+      // A guest becomes a full account in place, keeping the same user id and
+      // progress: profile first, then email and password (confirmed by email).
+      if (await guestSession(supabase)) {
+        const profile = await supabase.rpc("complete_profile", {
+          p_nickname: nickname,
+          p_birth_year: Number(birthYear),
+          p_birth_month: Number(birthMonth),
+        });
+        if (profile.error) throw profile.error;
+        const problem = nullable(profile.data);
+        if (problem !== null) {
+          showError(authErrorKey(problem));
+          return;
+        }
+        const { error } = await supabase.auth.updateUser({ email, password }, { emailRedirectTo });
+        if (error) showError(authErrorKey(error));
+        else setSentTo(email);
+        return;
+      }
+
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: new URL(paths.callback, location.origin).href,
+          emailRedirectTo,
           // Read by the sign-up hook and trigger; the birth month is never stored.
           data: {
             nickname,
@@ -99,10 +129,7 @@ export function SignUpForm({ strings, paths, locale, monthNames }: Props) {
         },
       });
       if (error) {
-        const key = authErrorKey(error);
-        const field = FIELD_FOR[key];
-        if (field) setError(field, { type: "server", message: key }, { shouldFocus: true });
-        else setFormError(strings.errors[key]);
+        showError(authErrorKey(error));
         return;
       }
       // With email confirmation on (always, outside tests) there is no session yet.
@@ -178,7 +205,7 @@ export function SignUpForm({ strings, paths, locale, monthNames }: Props) {
         {strings.signIn.or}
         <span className="h-px flex-1 bg-border" />
       </div>
-      <OAuthButtons strings={strings} paths={paths} />
+      <OAuthButtons strings={strings} paths={paths} mode="signUp" />
 
       <p className="text-center">
         {strings.signUp.haveAccount}{" "}

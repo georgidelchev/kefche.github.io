@@ -23,6 +23,7 @@ const paths = authPaths(locale, getRelativeLocaleUrl);
   <div
     data-auth-callback
     data-paths={JSON.stringify(paths)}
+    data-identity-taken={t("auth:errors.identityTaken")}
     class="grid justify-items-center gap-4 text-center"
   >
     <p data-working role="status" class="flex items-center gap-3 text-lg">
@@ -30,7 +31,7 @@ const paths = authPaths(locale, getRelativeLocaleUrl);
       {t("auth:callback.working")}
     </p>
     <div data-failed hidden class="grid justify-items-center gap-4">
-      <p role="alert" class="text-lg">
+      <p data-failed-message role="alert" class="text-lg">
         {t("auth:callback.failed")}
       </p>
       <a href={paths.signIn} class={buttonVariants({ variant: "primary" })}>

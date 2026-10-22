@@ -90,6 +90,9 @@ export type Database = {
 "has_role":
 { Args: { "p_role": Database["public"]['Enums']["app_role"] }; Returns: boolean
                            },
+"merge_guest":
+{ Args: { "p_guest": string,"p_target": string }; Returns: undefined
+                           },
 "set_user_role":
 { Args: { "p_granted": boolean,"p_role": Database["public"]['Enums']["app_role"],"p_user_id": string }; Returns: undefined
                            }

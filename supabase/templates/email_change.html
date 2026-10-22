@@ -1,0 +1,9 @@
+<!-- Email change, also sent when a guest adds an email to become a full account. English for now;
+     localized, branded templates come with the email provider (Phase 21). The link carries a token
+     hash for the site's callback page, so it works in any browser. -->
+<h2>Confirm your email for kefche</h2>
+<p>Confirm {{ .NewEmail }} as the email address of your kefche account:</p>
+<p>
+  <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&amp;type=email_change">Confirm my email</a>
+</p>
+<p>If you didn't ask for this, you can ignore this email.</p>

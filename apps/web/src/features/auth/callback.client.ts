@@ -17,7 +17,9 @@ const isEmailType = (value: string | null): value is EmailOtpType =>
 async function complete(paths: AuthPaths): Promise<void> {
   const params = new URLSearchParams(location.search);
   const supabase = await getSupabase();
-  if (!supabase || params.has("error")) throw new Error("sign-in failed");
+  if (!supabase || params.has("error") || location.hash.includes("error=")) {
+    throw new Error("sign-in failed");
+  }
 
   const code = params.get("code");
   const tokenHash = params.get("token_hash");
@@ -41,11 +43,24 @@ async function complete(paths: AuthPaths): Promise<void> {
   await routeAfterSignIn(supabase, paths, null);
 }
 
+/** Provider errors arrive in the query (PKCE) or, for some flows, the fragment. */
+function errorCode(): string | null {
+  return (
+    new URLSearchParams(location.search).get("error_code") ??
+    new URLSearchParams(location.hash.slice(1)).get("error_code")
+  );
+}
+
 const root = document.querySelector<HTMLElement>("[data-auth-callback]");
 if (root?.dataset.paths) {
   const paths = JSON.parse(root.dataset.paths) as AuthPaths;
   complete(paths).catch(() => {
     root.querySelector<HTMLElement>("[data-working]")?.toggleAttribute("hidden", true);
     root.querySelector<HTMLElement>("[data-failed]")?.toggleAttribute("hidden", false);
+    // A guest tried to link a provider account that already has a kefche account.
+    const message = root.querySelector<HTMLElement>("[data-failed-message]");
+    if (message && errorCode() === "identity_already_exists" && root.dataset.identityTaken) {
+      message.textContent = root.dataset.identityTaken;
+    }
   });
 }

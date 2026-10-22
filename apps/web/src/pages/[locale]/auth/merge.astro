@@ -1,0 +1,29 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import AuthLayout from "@/features/auth/AuthLayout.astro";
+import { MergeGuestForm } from "@/features/auth/MergeGuestForm";
+import { authStaticPaths } from "@/features/auth/page-helpers";
+import { authPaths } from "@/features/auth/paths";
+import { authStrings } from "@/features/auth/strings";
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+export const getStaticPaths = authStaticPaths;
+
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+---
+
+<AuthLayout
+  locale={locale}
+  path="/auth/merge/"
+  heading={t("auth:merge.title")}
+  description={t("auth:merge.description")}
+>
+  <MergeGuestForm
+    client:load
+    strings={authStrings(t)}
+    paths={authPaths(locale, getRelativeLocaleUrl)}
+  />
+</AuthLayout>
