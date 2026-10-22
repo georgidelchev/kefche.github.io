@@ -6,9 +6,10 @@ import { Badge } from "@kefche/ui/components/badge";
 import { buttonVariants } from "@kefche/ui/components/button";
 
 import AppShell from "@/features/shell/AppShell.astro";
-import { NAV_LABEL_KEYS, SOON_SECTIONS, type SoonSection } from "@/features/shell/nav";
+import { NAV_LABEL_KEYS, soonSections, type SoonSection } from "@/features/shell/nav";
 import { getT } from "@/i18n/i18n";
 import { LOCALES, type Locale } from "@/i18n/locales";
+import { getSupabaseEnv } from "@/lib/env";
 
 import type { GetStaticPaths } from "astro";
 
@@ -16,7 +17,7 @@ import type { GetStaticPaths } from "astro";
 // Phase 1 Q1). A section's real page replaces this one when it lands.
 export const getStaticPaths = (() =>
   LOCALES.flatMap((locale) =>
-    SOON_SECTIONS.map((section) => ({ params: { locale, section } })),
+    soonSections(getSupabaseEnv() !== null).map((section) => ({ params: { locale, section } })),
   )) satisfies GetStaticPaths;
 
 const locale = Astro.params.locale as Locale;

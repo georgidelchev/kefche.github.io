@@ -1,0 +1,43 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { LoaderCircle } from "lucide-react";
+
+import { authStaticPaths } from "@/features/auth/page-helpers";
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+// The "Profile" tab: sends signed-in players to their public profile, and
+// everyone else to sign in. Only in builds with accounts; otherwise the tab
+// shows "coming soon" ([section].astro).
+export const getStaticPaths = authStaticPaths;
+
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+const name = t("nav:profile");
+---
+
+<AppShell
+  locale={locale}
+  path="/profile/"
+  section="profile"
+  title={t("common:meta.sectionTitle", { section: name })}
+  description={name}
+  noindex
+>
+  <p
+    data-profile-redirect
+    data-user-base={getRelativeLocaleUrl(locale, "/u/")}
+    data-sign-in={getRelativeLocaleUrl(locale, "/auth/sign-in/")}
+    data-onboarding={getRelativeLocaleUrl(locale, "/auth/onboarding/")}
+    role="status"
+    class="flex items-center justify-center gap-3 py-16 text-lg"
+  >
+    <LoaderCircle aria-hidden="true" className="size-6 animate-spin motion-reduce:animate-none" />
+    {t("profile:opening")}
+  </p>
+</AppShell>
+
+<script>
+  import "@/features/profile/profile-redirect.client";
+</script>

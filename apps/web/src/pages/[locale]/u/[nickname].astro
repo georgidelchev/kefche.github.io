@@ -1,0 +1,125 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { CloudOff } from "lucide-react";
+
+import { UserAvatar } from "@kefche/ui/components/avatar";
+
+import { avatarUrl } from "@/features/account/avatar-url";
+import NotFoundPage from "@/features/errors/NotFoundPage.astro";
+import { fetchPublicProfile } from "@/features/profile/public-profile";
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import { DEFAULT_LOCALE, isLocale, LOCALE_INFO } from "@/i18n/locales";
+import { getSupabaseEnv } from "@/lib/env";
+
+// Public profile (SPEC §7.2), rendered in the Worker on request so shared
+// links get a real title and preview. Public fields only. noindex: players
+// are 13+, so profiles stay out of search engines; links still preview.
+// Stats, ratings, friends and actions arrive with their phases.
+export const prerender = false;
+
+const env = getSupabaseEnv();
+const locale = isLocale(Astro.params.locale) ? Astro.params.locale : DEFAULT_LOCALE;
+const lookup =
+  env && isLocale(Astro.params.locale)
+    ? await fetchPublicProfile(env, Astro.params.nickname ?? "")
+    : ({ status: "missing" } as const);
+
+if (lookup.status === "found" && lookup.profile.nickname !== Astro.params.nickname) {
+  // One canonical URL per profile: the nickname as its owner spells it.
+  return Astro.redirect(
+    getRelativeLocaleUrl(locale, `/u/${encodeURIComponent(lookup.profile.nickname)}/`),
+    301,
+  );
+}
+
+if (lookup.status === "found") {
+  Astro.response.headers.set("Cache-Control", "public, max-age=60");
+} else if (lookup.status === "missing") {
+  Astro.response.status = 404;
+  Astro.response.headers.set("Cache-Control", "public, max-age=30");
+} else {
+  Astro.response.status = 503;
+  Astro.response.headers.set("Cache-Control", "no-store");
+}
+
+const t = getT(locale);
+const { bcp47 } = LOCALE_INFO[locale];
+const profile = lookup.status === "found" ? lookup.profile : null;
+const image = profile && env ? avatarUrl(profile, env.PUBLIC_SUPABASE_URL) : null;
+const facts = profile
+  ? [
+      { label: t("profile:level"), value: new Intl.NumberFormat(bcp47).format(profile.level) },
+      {
+        label: t("profile:joined"),
+        value: new Intl.DateTimeFormat(bcp47, { year: "numeric", month: "long" }).format(
+          new Date(profile.created_at),
+        ),
+      },
+      ...(profile.country
+        ? [
+            {
+              label: t("profile:country"),
+              value:
+                new Intl.DisplayNames([bcp47], { type: "region" }).of(profile.country) ??
+                profile.country,
+            },
+          ]
+        : []),
+    ]
+  : [];
+---
+
+{lookup.status === "missing" && <NotFoundPage locale={locale} />}
+
+{lookup.status === "error" && (
+  <AppShell
+    locale={locale}
+    path={`/u/${encodeURIComponent(Astro.params.nickname ?? "")}/`}
+    title={t("common:meta.sectionTitle", { section: t("nav:profile") })}
+    description={t("profile:unavailable")}
+    noindex
+  >
+    <section class="mx-auto grid max-w-xl justify-items-center gap-4 py-12 text-center">
+      <CloudOff aria-hidden="true" className="size-12 text-muted" />
+      <p role="alert" class="text-lg">
+        {t("profile:unavailable")}
+      </p>
+    </section>
+  </AppShell>
+)}
+
+{profile && (
+  <AppShell
+    locale={locale}
+    path={`/u/${encodeURIComponent(profile.nickname)}/`}
+    title={t("common:meta.sectionTitle", { section: profile.nickname })}
+    description={t("profile:description", { nickname: profile.nickname })}
+    noindex
+  >
+    <article class="mx-auto grid w-full max-w-2xl gap-6 py-6 md:py-12">
+      <header class="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-start">
+        <UserAvatar
+          name={profile.nickname}
+          id={profile.id}
+          size="xl"
+          {...(image ? { src: image } : {})}
+        />
+        <h1 class="min-w-0 text-3xl break-words md:text-4xl">{profile.nickname}</h1>
+      </header>
+      <dl class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        {facts.map(({ label, value }) => (
+          <div class="grid gap-1 rounded-2xl border border-border bg-surface p-4">
+            <dt class="text-sm text-muted">{label}</dt>
+            <dd class="text-lg font-semibold">{value}</dd>
+          </div>
+        ))}
+      </dl>
+      {profile.bio && (
+        <p class="rounded-2xl border border-border bg-surface p-4 break-words whitespace-pre-line">
+          {profile.bio}
+        </p>
+      )}
+    </article>
+  </AppShell>
+)}

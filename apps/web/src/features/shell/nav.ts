@@ -8,18 +8,26 @@ export const NAV_ITEMS = [
   { id: "games", path: "/games/", status: "soon" }, // Phase 3
   { id: "play", path: "/play/", status: "soon" }, // Phase 5
   { id: "friends", path: "/friends/", status: "soon" }, // Phase 8
-  { id: "profile", path: "/profile/", status: "soon" }, // Phase 2
-] as const satisfies readonly { id: string; path: string; status: "available" | "soon" }[];
+  // Needs accounts: "soon" in builds without Supabase (ADR-0011).
+  { id: "profile", path: "/profile/", status: "accounts" },
+] as const satisfies readonly {
+  id: string;
+  path: string;
+  status: "available" | "soon" | "accounts";
+}[];
 
 export type NavId = (typeof NAV_ITEMS)[number]["id"];
 
-/** Sections without a real page yet, plus header search (catalog search, Phase 3). */
-export const SOON_SECTIONS = [
-  ...NAV_ITEMS.filter((i) => i.status === "soon").map((i) => i.id),
-  "search",
-] as const;
+/** Sections that may show "coming soon", plus header search (catalog search, Phase 3). */
+export type SoonSection = Exclude<NavId, "home"> | "search";
 
-export type SoonSection = (typeof SOON_SECTIONS)[number];
+/** Sections without a real page in this build. */
+export function soonSections(accounts: boolean): SoonSection[] {
+  const soon = NAV_ITEMS.filter(
+    (item) => item.status === "soon" || (item.status === "accounts" && !accounts),
+  ).map((item) => item.id as SoonSection);
+  return [...soon, "search"];
+}
 
 /** Literal keys (not built from the id) so typed `t()` and `pnpm i18n:check` can see them. */
 export const NAV_LABEL_KEYS = {
