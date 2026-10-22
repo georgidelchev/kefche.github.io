@@ -1,0 +1,66 @@
+{
+  "name": "Serpiente",
+  "tagline": "Come, crece y no te muerdas la cola.",
+  "description": "Juega a la serpiente gratis en tu navegador: guíala hasta la comida y crece todo lo que puedas. Tres velocidades, con paredes o sin bordes, incluso sin conexión.",
+  "about": [
+    "Snake is one of the oldest arcade ideas there is. You steer a snake around a grid toward a piece of food. Each piece you eat makes the snake one segment longer and adds to your score, and a new piece appears somewhere else. The longer the snake gets, the less room you have, and the game ends when the snake runs into its own body.",
+    "This version has three speeds. Slow is relaxed and good for learning, normal is the classic pace, and fast is for quick reflexes. Faster speeds earn more points per piece of food, and the snake speeds up a little more with every piece it eats. You can also choose the edges: with walls the game ends if you hit the border, and with wrap-around the snake comes out on the opposite side.",
+    "The game runs in your browser, with nothing to install and no account. Your best score for each speed and edge setting is kept on this device, and once you have played, the game also works without an internet connection."
+  ],
+  "howToPlay": [
+    "Choose a speed and whether the edges are walls or wrap around, then press Start.",
+    "The snake waits until you give it a direction. Swipe, tap an arrow or press an arrow key to set off.",
+    "Steer toward the food. Each piece makes the snake longer and adds points: 1 at slow speed, 2 at normal and 3 at fast.",
+    "The snake can't turn back on itself. It can turn left or right, and quick turns are remembered in order.",
+    "The game ends when the snake hits its own body, or a wall when walls are on."
+  ],
+  "controls": [
+    "Phones and tablets: swipe on the board, or use the arrow buttons below it.",
+    "Keyboard: arrow keys or W, A, S, D.",
+    "Escape pauses the game."
+  ],
+  "tips": [
+    "Stay near the edges early on and keep the middle of the board open for later.",
+    "When the snake gets long, move in wide loops so the tail always has room to clear the way.",
+    "Plan two turns ahead at fast speed: you can press both turns quickly, and the snake takes them in order.",
+    "Try wrap-around to learn the game. The edges can't end your run there, so only your own tail can."
+  ],
+  "faq": [
+    {
+      "question": "Why didn't the snake turn when I pressed the opposite direction?",
+      "answer": "Turning straight back would run into its own body, so the game ignores it. Turn left or right first, then turn again."
+    },
+    {
+      "question": "Does the snake speed up?",
+      "answer": "Yes. Each piece of food makes it a little faster, up to a limit, so long games get harder."
+    },
+    {
+      "question": "Is my best score saved?",
+      "answer": "Yes, on this device, separately for each speed and edge setting."
+    },
+    {
+      "question": "Is Snake free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    }
+  ],
+  "ui": {
+    "speed": "Velocidad",
+    "slow": "Lenta",
+    "normal": "Normal",
+    "fast": "Rápida",
+    "edges": "Bordes",
+    "walls": "Paredes",
+    "wrap": "Sin bordes",
+    "start": "Empezar",
+    "best": "Récord {score}",
+    "score": "Puntos",
+    "bestLabel": "Récord",
+    "startHint": "Desliza, toca una flecha o pulsa una tecla de flecha para empezar",
+    "boardLabel": "Tablero de la serpiente. Puntos {score}.",
+    "controlsLabel": "Dirección",
+    "up": "Arriba",
+    "down": "Abajo",
+    "left": "Izquierda",
+    "right": "Derecha"
+  }
+}
