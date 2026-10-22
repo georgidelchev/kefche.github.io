@@ -1,11 +1,9 @@
 // Client behavior for the static shell (no framework): popovers built on
 // <details data-popover>, remembering language choices, and the rail toggle.
+import { rememberLocale } from "@/features/i18n/locale-preference";
 import { isLocale } from "@/i18n/locales";
-import { LOCALE_COOKIE, LOCALE_STORAGE_KEY } from "@/i18n/negotiate";
 
 import { RAIL_STORAGE_KEY } from "./rail";
-
-const ONE_YEAR = 60 * 60 * 24 * 365;
 
 function closeOthers(except?: HTMLDetailsElement) {
   for (const d of document.querySelectorAll<HTMLDetailsElement>("details[data-popover][open]")) {
@@ -34,15 +32,7 @@ document.addEventListener("click", (event) => {
   // An explicit language choice is remembered for `/` and future visits (SPEC §5).
   const link = target.closest<HTMLAnchorElement>("a[data-locale]");
   const locale = link?.dataset.locale;
-  if (isLocale(locale)) {
-    const secure = location.protocol === "https:" ? "; Secure" : "";
-    document.cookie = `${LOCALE_COOKIE}=${locale}; Path=/; Max-Age=${String(ONE_YEAR)}; SameSite=Lax${secure}`;
-    try {
-      localStorage.setItem(LOCALE_STORAGE_KEY, locale);
-    } catch {
-      // The cookie alone is enough.
-    }
-  }
+  if (isLocale(locale)) rememberLocale(locale, { announce: true });
 
   // Side rail compact toggle (large screens).
   const toggle = target.closest<HTMLButtonElement>("button[data-rail-toggle]");

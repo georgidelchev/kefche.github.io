@@ -1,4 +1,5 @@
 import { syncAccount } from "@/features/account/account-state";
+import { localizePath, storedLocale } from "@/features/i18n/locale-preference";
 import type { Supabase } from "@/lib/supabase/client";
 
 import { forgetGuest, pendingMerge } from "./guest";
@@ -46,10 +47,14 @@ export async function routeAfterSignIn(supabase: Supabase, paths: AuthPaths, nex
   }
   // Upgraded in place (same id) or still a guest: nothing to merge.
   if (guest) forgetGuest();
+  // Also applies the profile's theme and language; the language decides
+  // which locale the next page opens in.
   await syncAccount(supabase);
+  const locale = storedLocale();
+  const localized = (path: string) => (locale ? localizePath(path, locale) : path);
   if (await needsOnboarding(supabase, data.user.id)) {
-    location.assign(withNext(paths.onboarding, next));
+    location.assign(withNext(localized(paths.onboarding), next && localized(next)));
   } else {
-    location.assign(next ?? paths.home);
+    location.assign(localized(next ?? paths.home));
   }
 }
