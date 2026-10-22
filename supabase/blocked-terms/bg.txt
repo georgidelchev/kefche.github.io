@@ -1,0 +1,72 @@
+# Bulgarian blocked terms: drafted for kefche, pending the owner's review
+# (docs/PROGRESS.md, Phase 2 Q3). One term per line; whole-word matching.
+# Cyrillic forms first, then common Latin transliterations.
+путка
+путки
+путката
+пичка
+пички
+пичката
+хуй
+хуя
+хуйове
+курва
+курви
+курвата
+курвенски
+курец
+курът
+шибан
+шибана
+шибано
+шибаняк
+шибаняци
+ебан
+ебана
+ебано
+ебал
+ебала
+ебах
+ебеш
+еба
+ебе
+ебем
+да ти еба майката
+майка ти да еба
+мамка ти
+мамицата ти
+педал
+педали
+педераст
+педерасти
+лайно
+лайна
+лайнар
+лайнари
+гъз
+гъза
+гъзар
+копеле
+копелета
+чекия
+чекиджия
+духач
+духачка
+духачи
+проститутка
+putka
+putki
+pichka
+kurva
+kurvi
+shiban
+shibana
+ebal
+ebala
+eban
+ebana
+laino
+kopele
+chekiya
+duhach
+duhachka

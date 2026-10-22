@@ -16,6 +16,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 | `pnpm i18n:check`                        | All 11 locales match English: keys, ICU, placeholders, no unused keys.      |
 | `pnpm icons:generate`                    | Rebuild favicon and app icons from `packages/ui/src/brand/marks.ts`.        |
 | `pnpm db:start` / `db:stop` / `db:reset` | Local Supabase (needs Docker).                                              |
+| `pnpm db:terms`                          | New migration from the word lists in `supabase/blocked-terms/`.             |
 | `pnpm --filter web run cf:deploy`        | Deploy to Cloudflare Workers (CI does this on `main`).                      |
 
 **Green before every commit:** `pnpm format:check && pnpm lint && pnpm check:contrast && pnpm i18n:check && pnpm typecheck && pnpm build`. The dev-only component gallery is at `/en/dev/ui/` (and `/ar/dev/ui/` for RTL).

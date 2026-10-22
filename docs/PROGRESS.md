@@ -347,6 +347,8 @@ All 10 steps are committed on `main` (local, not yet pushed). Format, lint, cont
 ## Known issues
 
 - **Performance is not tuned yet (Phase 18):** Lighthouse mobile performance was 82–92 (LCP 3.3–4.1 s) against the local preview, which serves files uncompressed. Production on Cloudflare compresses, so re-measure there. Candidate fixes when tuning: a smaller preloaded font subset, and inlining critical CSS.
+- **Credits attribution (Phase 17):** the blocked-terms lists are adapted from LDNOOBW (CC BY 4.0), and the Credits page must say so (`supabase/blocked-terms/README.md`).
+- **Blocked terms need review:** the owner reviews the drafted Bulgarian list (`supabase/blocked-terms/bg.txt`). Native speakers review the other non-English lists in Phase 15. Russian lacks some common Cyrillic slurs, and Phase 8 improves free-text matching for chat.
 - **Translations need native review (Phase 15):** all strings in the 9 locales other than en/bg are my translations and haven't been reviewed by native speakers. Bulgarian should be reviewed by the owner.
 
 ## Tracked TODOs

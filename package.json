@@ -26,7 +26,8 @@
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
-    "db:status": "supabase status"
+    "db:status": "supabase status",
+    "db:terms": "node scripts/blocked-terms.mjs"
   },
   "devDependencies": {
     "@formatjs/icu-messageformat-parser": "3.5.22",
