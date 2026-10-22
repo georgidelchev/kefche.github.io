@@ -320,7 +320,10 @@ function Board({
 
     const turn = (direction: Direction) => {
       if (handle.paused || state.over) return;
+      const before = state;
       state = engine.apply(state, { type: "turn", direction });
+      // Only a turn the snake will take makes a sound.
+      if (state !== before) sounds.play("turn");
       if (!started) {
         started = true;
         setWaiting(false);

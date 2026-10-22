@@ -1,10 +1,9 @@
-// Sound effects (SPEC §16): Howler.js, loaded only when the first sound plays.
-// Browsers block audio until the player interacts, and games only play sounds
-// in response to input, so the first sound also unlocks audio. One mute
-// switch is shared by every game on this device.
+// Sound effects (SPEC §16): synthesized designs from ./synth, played through
+// Web Audio. Browsers keep audio locked until the player interacts, so the
+// first tap or key press after preload() unlocks it. One mute switch is
+// shared by every game on this device.
 
-import type * as HowlerModule from "howler";
-import type { Howl } from "howler";
+import { SOUND_DESIGNS, type SoundDesign } from "./synth";
 
 const MUTE_KEY = "kefche:sound-muted";
 
@@ -28,66 +27,70 @@ export function setMuted(muted: boolean): void {
 export interface SoundService<Name extends string> {
   play(name: Name): void;
   /**
-   * Loads Howler and every sound ahead of time, so the first sound isn't
-   * late. Call when the game mounts; skipped while sound is muted.
+   * Renders every sound ahead of time and unlocks audio on the next tap or
+   * key press, so the first sound isn't late. Call when the game mounts;
+   * skipped while sound is muted.
    */
   preload(): void;
-  /** Releases the loaded sounds when the game closes. */
+  /** Stops playing new sounds and listening for the unlock when the game closes. */
   dispose(): void;
 }
 
-/** Howler's format name for a URL; small files may arrive as data URLs. */
-function formatOf(url: string): string {
-  const mime = /^data:audio\/([\w+-]+)/i.exec(url)?.[1]?.toLowerCase();
-  if (mime) return mime === "mpeg" ? "mp3" : mime;
-  return /\.(\w+)(?:[?#].*)?$/.exec(url)?.[1]?.toLowerCase() ?? "mp3";
+let context: AudioContext | null = null;
+const rendered = new Map<SoundDesign, AudioBuffer>();
+
+function buffer(design: SoundDesign): AudioBuffer {
+  let buf = rendered.get(design);
+  if (!buf) {
+    const { make, quiet = 1 } = SOUND_DESIGNS[design];
+    const raw = make();
+    let peak = 0;
+    for (const v of raw) peak = Math.max(peak, Math.abs(v));
+    const gain = quiet / (peak || 1);
+    buf = new AudioBuffer({ length: raw.length, numberOfChannels: 1, sampleRate: 44100 });
+    buf.copyToChannel(
+      raw.map((v) => v * gain),
+      0,
+    );
+    rendered.set(design, buf);
+  }
+  return buf;
 }
 
 /**
- * `sources` maps each sound to its file URLs (first supported format wins).
- * `volume` returns 0–1, combining the player's master and effects volumes.
+ * `designs` maps each of the game's moments to a design from the shared
+ * palette. `volume` returns 0–1, the player's level for effects.
  */
 export function createSoundService<Name extends string>(
-  sources: Record<Name, string[]>,
-  volume: () => number = () => 0.8,
+  designs: Record<Name, SoundDesign>,
+  volume: () => number,
 ): SoundService<Name> {
-  const sounds = new Map<Name, Howl>();
-  let loading: Promise<typeof HowlerModule> | null = null;
   let disposed = false;
-
-  const load = (Howl: typeof HowlerModule.Howl, name: Name): Howl => {
-    let sound = sounds.get(name);
-    if (!sound) {
-      const src = sources[name];
-      sound = new Howl({ src, format: src.map(formatOf), preload: true });
-      sounds.set(name, sound);
-    }
-    return sound;
+  const unlock = () => {
+    context ??= new AudioContext();
+    void context.resume();
   };
 
   return {
     play(name) {
       if (disposed || isMuted() || volume() <= 0) return;
-      loading ??= import("howler");
-      void loading.then(({ Howl }) => {
-        if (disposed) return;
-        const sound = load(Howl, name);
-        sound.volume(volume());
-        sound.play();
-      });
+      unlock();
+      if (!context) return;
+      const source = new AudioBufferSourceNode(context, { buffer: buffer(designs[name]) });
+      const gain = new GainNode(context, { gain: volume() });
+      source.connect(gain).connect(context.destination);
+      source.start();
     },
     preload() {
       if (disposed || isMuted()) return;
-      loading ??= import("howler");
-      void loading.then(({ Howl }) => {
-        if (disposed) return;
-        for (const name of Object.keys(sources) as Name[]) load(Howl, name);
-      });
+      for (const design of Object.values<SoundDesign>(designs)) buffer(design);
+      document.addEventListener("pointerdown", unlock, { once: true, capture: true });
+      document.addEventListener("keydown", unlock, { once: true, capture: true });
     },
     dispose() {
       disposed = true;
-      for (const sound of sounds.values()) sound.unload();
-      sounds.clear();
+      document.removeEventListener("pointerdown", unlock, { capture: true });
+      document.removeEventListener("keydown", unlock, { capture: true });
     },
   };
 }

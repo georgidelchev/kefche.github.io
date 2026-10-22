@@ -218,3 +218,25 @@ The Web Push service worker (Phase 8) is still allowed and handles push events o
 - A deploy reaches players on their next page load, so there is no update prompt to build, and no risk of an update mid-game.
 - Phase 16 covers install to the home screen, audio and haptics.
 - Adding offline play later would need a new ADR, a service worker and the claims put back.
+
+---
+
+## ADR-0015: Synthesized sound effects instead of recorded ones
+
+**Date:** 2026-10-23 · **Status:** Accepted (owner decision)
+
+**Context.** The SPEC named Howler.js for audio, and Phase 3 first shipped CC0 recordings from Kenney's Interface Sounds and Music Jingles. The owner found them too computer-like and too loud. Other recorded libraries either have uneven quality (Freesound, OpenGameArt) or licences that forbid sharing the raw files, which a public repository does (Pixabay, Mixkit).
+
+**Decision.** Sound effects are synthesized in code, sample by sample, in `@kefche/game-sdk/browser` (`synth.ts`):
+
+- The voices are soft acoustic ones: marimba, wood, kalimba, music box, Karplus–Strong plucked strings, bubbles, bells, a felt tap and a swish.
+- Each design is normalized to the same peak, with frequent sounds softer.
+- Games map their moments to named designs in a shared palette. The owner picked each game's sounds and the "Quiet" level (volume 0.22) in a sound picker page.
+- Playback is plain Web Audio, unlocked by the first tap or key press; Howler.js is removed.
+
+**Consequences.**
+
+- There are no audio files, licences or credits to track, and nothing to download beyond a few KB of code.
+- Sounds stay consistent across games and can be tuned in code.
+- The palette can't produce realistic recorded sounds (a real crash, a voice). A game that needs those brings Howler.js back, with licensed and credited files.
+- New designs go into `SOUND_DESIGNS`. The picker's other designs are a starting point.

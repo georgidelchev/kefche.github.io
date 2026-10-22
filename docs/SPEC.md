@@ -71,7 +71,7 @@ You are the lead engineer building **kefche**, a production-grade, multilingual,
 | 2D rendering | **Canvas 2D** for simple games, **PixiJS** for sprite-heavy/real-time arenas | Board and card games use DOM/SVG for accessibility. |
 | Physics | **Matter.js** (billiards, mini golf, air hockey, bumper cars, sports) | Lazy-loaded. |
 | Chess | **chess.js** (rules, PGN/FEN) + **Stockfish (WASM)** in a Web Worker | |
-| Audio | **Howler.js** | Lazy-loaded; muted until first interaction. |
+| Audio | **Web Audio**, sounds synthesized in code (ADR-0015) | No audio files; locked until the first interaction. Howler.js only if a game ever needs recorded audio. |
 | GIFs | **GIPHY API** via an Edge Function proxy | Rating `pg-13`, attribution "Powered by GIPHY". |
 | Profanity filter | Multilingual word lists + the `obscenity` library for English | Server-side enforcement in Edge Functions/DB; client-side pre-check for UX only. |
 | PWA | Web App Manifest; no offline caching (ADR-0014) | Install to the home screen. |

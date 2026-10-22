@@ -6,4 +6,5 @@ export * from "./loop";
 export * from "./sound";
 export * from "./stage";
 export * from "./stopwatch";
+export { SOUND_DESIGNS, type SoundDesign } from "./synth";
 export * from "./worker";

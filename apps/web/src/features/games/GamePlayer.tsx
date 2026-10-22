@@ -79,7 +79,9 @@ export function GamePlayer({ id, name, locale, dir, strings, ui }: Props) {
         seed: randomSeed(),
         t: (key, values) => fill(ui[key] ?? key, values),
         settings: {
-          volume: 0.64,
+          // "Quiet", the owner's pick in the Phase 3 sound picker. A volume
+          // slider arrives with the settings in Phase 16.
+          volume: 0.22,
           haptics: true,
           reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
         },

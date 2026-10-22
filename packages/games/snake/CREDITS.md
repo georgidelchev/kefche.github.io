@@ -4,10 +4,4 @@ The rules implementation, the board drawing, the controls and the graphics were 
 
 ## Sounds
 
-By Kenney (www.kenney.nl), released under **CC0 1.0** (public domain), converted from OGG to mono MP3 with trailing silence trimmed:
-
-| File                     | Source                                      |
-| ------------------------ | ------------------------------------------- |
-| `assets/sounds/eat.mp3`  | Interface Sounds 1.0, `pluck_002`           |
-| `assets/sounds/win.mp3`  | Music Jingles, Pizzicato, `jingles_PIZZI02` |
-| `assets/sounds/lose.mp3` | Music Jingles, Pizzicato, `jingles_PIZZI12` |
+Synthesized in code by the shared game SDK (packages/game-sdk/src/browser/synth.ts); no recordings or third-party audio.
