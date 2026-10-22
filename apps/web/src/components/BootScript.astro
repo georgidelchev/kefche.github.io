@@ -1,4 +1,5 @@
 ---
+import { ACCOUNT_STORAGE_KEY } from "@/features/account/account-summary";
 import { RAIL_STORAGE_KEY } from "@/features/shell/rail";
 import { THEME_STORAGE_KEY } from "@/features/theme/theme";
 
@@ -7,12 +8,21 @@ import { THEME_STORAGE_KEY } from "@/features/theme/theme";
 // Phase 17: this inline script needs a CSP hash.
 ---
 
-<script is:inline define:vars={{ themeKey: THEME_STORAGE_KEY, railKey: RAIL_STORAGE_KEY }}>
+<script
+  is:inline
+  define:vars={{
+    themeKey: THEME_STORAGE_KEY,
+    railKey: RAIL_STORAGE_KEY,
+    accountKey: ACCOUNT_STORAGE_KEY,
+  }}
+>
   try {
     const root = document.documentElement;
     const theme = localStorage.getItem(themeKey);
     if (theme === "light" || theme === "dark") root.dataset.theme = theme;
     if (localStorage.getItem(railKey) === "compact") root.dataset.rail = "compact";
+    // Only a hint for the header; account.client.ts validates the summary.
+    if (localStorage.getItem(accountKey)) root.dataset.account = "signed-in";
   } catch {
     // Storage unavailable: defaults apply.
   }

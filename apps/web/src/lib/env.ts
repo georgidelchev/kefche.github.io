@@ -23,10 +23,23 @@ export function parsePublicEnv(source: Record<string, unknown>): PublicEnv {
   return result.data;
 }
 
-let cached: PublicEnv | undefined;
+/**
+ * Supabase settings for this build, or null when none are set. Without them
+ * the site builds without account features (production until the hosted
+ * project exists, SPEC Phase 21). Setting only one, or an invalid value, fails.
+ */
+export function parseSupabaseEnv(source: Record<string, unknown>): PublicEnv | null {
+  const isBlank = (value: unknown) => value === undefined || value === "";
+  if (isBlank(source.PUBLIC_SUPABASE_URL) && isBlank(source.PUBLIC_SUPABASE_PUBLISHABLE_KEY)) {
+    return null;
+  }
+  return parsePublicEnv(source);
+}
 
-/** Validated public env for the running app, parsed once on first use. */
-export function getPublicEnv(): PublicEnv {
-  cached ??= parsePublicEnv(import.meta.env);
+let cached: PublicEnv | null | undefined;
+
+/** {@link parseSupabaseEnv} for the running build, parsed once. Server and build time only. */
+export function getSupabaseEnv(): PublicEnv | null {
+  if (cached === undefined) cached = parseSupabaseEnv(import.meta.env);
   return cached;
 }

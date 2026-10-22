@@ -3,6 +3,7 @@ import BootScript from "@/components/BootScript.astro";
 import Fonts from "@/components/Fonts.astro";
 import SeoHead from "@/components/SeoHead.astro";
 import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+import { getSupabaseEnv } from "@/lib/env";
 import "@/styles/global.css";
 
 interface Props {
@@ -16,10 +17,15 @@ interface Props {
 
 const { locale, path, title, description, noindex } = Astro.props;
 const { bcp47, dir, script } = LOCALE_INFO[locale];
+// Fails the build on invalid Supabase settings before client code inlines them.
+getSupabaseEnv();
 ---
 
 <!doctype html>
-<!-- `group/root` lets components react to root data attributes (data-rail, data-theme). -->
+<!--
+  `group/root` lets components react to root data attributes (data-rail,
+  data-theme, data-account).
+-->
 <html lang={bcp47} dir={dir} class="group/root">
   <head>
     <meta charset="utf-8" />

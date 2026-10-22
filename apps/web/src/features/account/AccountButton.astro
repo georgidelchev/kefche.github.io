@@ -1,0 +1,55 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { CircleUser } from "lucide-react";
+
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getT(locale);
+const focusRing =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
+---
+
+<!--
+  Header account control. Signed out: a "Sign in" link. Signed in (not a
+  guest): the user's avatar, linking to settings. The state comes from
+  <html data-account>, set before paint by BootScript from the cached summary
+  and kept current by account.client.ts.
+-->
+<div class="flex items-center">
+  <a
+    href={getRelativeLocaleUrl(locale, "/auth/sign-in/")}
+    class:list={[
+      "flex min-h-11 items-center rounded-full border border-border-strong bg-surface-2 px-4 text-sm font-semibold whitespace-nowrap text-text hover:bg-surface group-data-[account=signed-in]/root:hidden",
+      focusRing,
+    ]}
+  >
+    {t("account:signIn")}
+  </a>
+  <a
+    href={getRelativeLocaleUrl(locale, "/settings/")}
+    aria-label={t("account:yourAccount")}
+    class:list={[
+      "hidden size-11 items-center justify-center rounded-full group-data-[account=signed-in]/root:flex",
+      focusRing,
+    ]}
+  >
+    <span
+      data-account-avatar
+      aria-hidden="true"
+      class="flex size-9 items-center justify-center overflow-hidden rounded-full bg-surface-2 bg-cover bg-center text-sm font-bold text-text"
+    >
+      <CircleUser data-account-icon className="size-6" />
+      <span data-account-initials></span>
+    </span>
+  </a>
+</div>
+
+<script>
+  import "@/features/account/account.client";
+</script>

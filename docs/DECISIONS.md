@@ -138,3 +138,20 @@ Short ADRs: context, decision, consequences. Newest last. Never rewrite an accep
 - `components.css` adds `tw-animate-css`, the `@source` for the package, and a global reduced-motion rule that also honors a future in-app `data-motion` override.
 
 **Consequences.** Static components render to plain HTML in Astro with zero JS. Only interactive ones (dialog, sheet, tabs, toast) need a client island.
+
+---
+
+## ADR-0011: Browser-held Supabase sessions, lazy client, optional accounts per build
+
+**Date:** 2026-10-22 · **Status:** Accepted
+
+**Context.** Every SEO page is pre-rendered static HTML (ADR-0002), and the content-page JS budget is 120 KB gzip (SPEC §2). The header must still show whether someone is signed in. supabase-js is about 55 KB gzip. Production has no hosted Supabase project until Phase 21, and real accounts shouldn't be collected before the privacy policy exists (Phase 17).
+
+**Decision.**
+
+- **Sessions live in the browser** (supabase-js with `localStorage`, key `kefche:auth`, PKCE flow). There are no auth cookies, so static pages stay static and cacheable, and the Worker never handles sessions. Worker-rendered pages, such as public profiles, show only public data.
+- **supabase-js loads lazily.** It's fetched only on pages that need it, or in idle time when a stored session exists, to refresh the session and the header.
+- **A cached account summary** (`kefche:account`: id, nickname, avatar URL, validated with Zod) lets the inline boot script mark `<html data-account="signed-in">` before first paint. The header shows the avatar or "Sign in" with no flash and no network request. Guests (anonymous sessions) count as signed out in the header.
+- **Accounts are optional per build.** With no `PUBLIC_SUPABASE_*` variables, the build leaves out all account UI. Setting only one, or an invalid value (for example a secret key), fails the build.
+
+**Consequences.** Signed-out visitors load about 8 KB of JS on content pages, and signed-in visitors load supabase-js after the page is idle. Server-side rendering for the signed-in user isn't possible; pages that need it would need cookie sessions (`@supabase/ssr`), which would require a new ADR. A stolen `localStorage` token is an XSS risk, which the strict CSP (Phase 17) and the ban on HTML injection mitigate.

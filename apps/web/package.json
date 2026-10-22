@@ -17,6 +17,7 @@
     "@astrojs/cloudflare": "14.4.1",
     "@astrojs/react": "7.1.0",
     "@kefche/ui": "workspace:*",
+    "@supabase/supabase-js": "2.118.0",
     "@tailwindcss/vite": "4.3.3",
     "astro": "7.4.1",
     "i18next": "26.5.3",
