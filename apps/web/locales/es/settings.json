@@ -1,0 +1,71 @@
+{
+  "title": "Ajustes",
+  "description": "Tu perfil, preferencias, privacidad y cuenta.",
+  "sections": {
+    "profile": "Perfil",
+    "preferences": "Preferencias",
+    "privacy": "Privacidad",
+    "account": "Cuenta"
+  },
+  "saved": "Guardado.",
+  "saveFailed": "No pudimos guardarlo. Revisa tu conexión y vuelve a intentarlo.",
+  "profile": {
+    "avatar": "Avatar",
+    "initials": "Iniciales",
+    "presets": "Elige un avatar",
+    "preset": "Avatar {number}",
+    "upload": "Subir una foto",
+    "uploadHint": "JPG, PNG o WebP. La recortamos en cuadrado y la reducimos a 256 × 256 píxeles.",
+    "uploadLocked": "Podrás subir una foto cuando tu cuenta tenga un día.",
+    "uploading": "Subiendo…",
+    "uploadInvalid": "No podemos usar este archivo. Prueba con una imagen JPG, PNG o WebP.",
+    "nicknameHint": "Puedes cambiar tu apodo una vez cada 30 días.",
+    "nicknameCooldown": "Podrás volver a cambiar tu apodo el {date}.",
+    "country": "País",
+    "countryNone": "No mostrar",
+    "bio": "Sobre ti",
+    "bioHint": "Hasta 160 caracteres. Todos pueden verlo.",
+    "bioBlocked": "Este texto contiene palabras que no están permitidas.",
+    "save": "Guardar perfil",
+    "view": "Ver tu perfil público"
+  },
+  "preferences": {
+    "language": "Idioma",
+    "sound": "Sonido",
+    "master": "Volumen general",
+    "music": "Música",
+    "effects": "Efectos de sonido",
+    "haptics": "Vibración",
+    "hapticsHint": "En teléfonos que la admiten.",
+    "motion": "Animaciones",
+    "motionSystem": "Como en el dispositivo",
+    "motionReduce": "Reducidas",
+    "motionFull": "Completas",
+    "gamesHint": "Los ajustes de sonido, vibración y animaciones se aplican a los juegos, que llegarán pronto."
+  },
+  "privacy": {
+    "messages": "Quién puede escribirme",
+    "invites": "Quién puede invitarme a juegos",
+    "everyone": "Todos",
+    "friends": "Solo amigos",
+    "nobody": "Nadie",
+    "showOnline": "Mostrar cuándo estoy en línea",
+    "showInLeaderboards": "Mostrarme en las clasificaciones"
+  },
+  "account": {
+    "email": "Correo electrónico",
+    "newEmail": "Nuevo correo",
+    "changeEmail": "Cambiar correo",
+    "emailSent": "Enviamos un enlace de confirmación a {email}. Tu correo cambiará cuando lo abras.",
+    "changePassword": "Cambiar contraseña",
+    "passwordChanged": "Tu contraseña se ha cambiado.",
+    "reauth": "Por tu seguridad, cierra sesión, vuelve a entrar y luego cambia tu contraseña.",
+    "methods": "Formas de iniciar sesión",
+    "connect": "Conectar",
+    "disconnect": "Desconectar",
+    "lastMethod": "No puedes desconectar tu única forma de iniciar sesión.",
+    "emailMethod": "Correo y contraseña",
+    "signOut": "Cerrar sesión",
+    "signOutEverywhere": "Cerrar sesión en todos los dispositivos"
+  }
+}

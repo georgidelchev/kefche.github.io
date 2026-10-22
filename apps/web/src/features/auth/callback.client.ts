@@ -5,7 +5,7 @@
 // Then routes to the new-password page (recovery), onboarding, or home.
 import { getSupabase } from "@/lib/supabase/client";
 
-import { routeAfterSignIn } from "./session";
+import { routeAfterSignIn, safeNext } from "./session";
 
 import type { AuthPaths } from "./paths";
 import type { EmailOtpType } from "@supabase/supabase-js";
@@ -40,7 +40,8 @@ async function complete(paths: AuthPaths): Promise<void> {
     location.replace(paths.reset);
     return;
   }
-  await routeAfterSignIn(supabase, paths, null);
+  // e.g. connecting a sign-in method from settings returns there.
+  await routeAfterSignIn(supabase, paths, safeNext(params.get("next")));
 }
 
 /** Provider errors arrive in the query (PKCE) or, for some flows, the fragment. */

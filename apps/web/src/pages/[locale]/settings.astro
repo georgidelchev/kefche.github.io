@@ -1,0 +1,115 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import { authStaticPaths } from "@/features/auth/page-helpers";
+import { authPaths } from "@/features/auth/paths";
+import { authStrings } from "@/features/auth/strings";
+import LanguageSwitcher from "@/features/i18n/LanguageSwitcher.astro";
+import { AccountSettings } from "@/features/settings/AccountSettings";
+import { countryOptions } from "@/features/settings/countries";
+import { OptionsSettings } from "@/features/settings/OptionsSettings";
+import { ProfileSettings } from "@/features/settings/ProfileSettings";
+import { settingsStrings } from "@/features/settings/strings";
+import AppShell from "@/features/shell/AppShell.astro";
+import ThemeSwitcher from "@/features/theme/ThemeSwitcher.astro";
+import { getT } from "@/i18n/i18n";
+import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+
+// Settings (SPEC §7.3): private and noindex; only in builds with accounts.
+// Theme and language use the site-wide switchers, which save to the profile
+// (preferences-sync.ts); everything else is a React island per section.
+export const getStaticPaths = authStaticPaths;
+
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+const { bcp47 } = LOCALE_INFO[locale];
+const strings = settingsStrings(t);
+const auth = authStrings(t);
+const paths = authPaths(locale, getRelativeLocaleUrl);
+const title = t("settings:title");
+const section = "grid gap-5 rounded-2xl border border-border bg-surface p-5 md:p-6";
+---
+
+<AppShell
+  locale={locale}
+  path="/settings/"
+  title={t("common:meta.sectionTitle", { section: title })}
+  description={t("settings:description")}
+  noindex
+>
+  <div class="mx-auto grid w-full max-w-2xl gap-6 pb-6">
+    <header class="grid gap-2">
+      <h1 class="text-3xl md:text-4xl">{title}</h1>
+      <p class="text-muted">{t("settings:description")}</p>
+    </header>
+
+    <section class={section} aria-labelledby="settings-profile">
+      <h2 id="settings-profile" class="text-2xl">
+        {strings.sections.profile}
+      </h2>
+      <ProfileSettings
+        client:load
+        strings={strings}
+        auth={auth}
+        countries={countryOptions(bcp47)}
+        bcp47={bcp47}
+        signInPath={paths.signIn}
+        profileBase={getRelativeLocaleUrl(locale, "/u/")}
+      />
+    </section>
+
+    <section class={section} aria-labelledby="settings-preferences">
+      <h2 id="settings-preferences" class="text-2xl">
+        {strings.sections.preferences}
+      </h2>
+      <div class="grid gap-2">
+        <p class="font-semibold">{t("settings:preferences.language")}</p>
+        <LanguageSwitcher
+          locale={locale}
+          path="/settings/"
+          label={t("settings:preferences.language")}
+          variant="list"
+        />
+      </div>
+      <div class="grid justify-items-start gap-2">
+        <p class="font-semibold">{t("common:theme.legend")}</p>
+        <ThemeSwitcher
+          name="theme-settings"
+          labels={{
+            legend: t("common:theme.legend"),
+            light: t("common:theme.light"),
+            dark: t("common:theme.dark"),
+            system: t("common:theme.system"),
+          }}
+        />
+      </div>
+      <OptionsSettings
+        client:load
+        strings={strings}
+        group="preferences"
+        signInPath={paths.signIn}
+      />
+    </section>
+
+    <section class={section} aria-labelledby="settings-privacy">
+      <h2 id="settings-privacy" class="text-2xl">
+        {strings.sections.privacy}
+      </h2>
+      <OptionsSettings client:load strings={strings} group="privacy" signInPath={paths.signIn} />
+    </section>
+
+    <section class={section} aria-labelledby="settings-account">
+      <h2 id="settings-account" class="text-2xl">
+        {strings.sections.account}
+      </h2>
+      <AccountSettings
+        client:load
+        strings={strings}
+        auth={auth}
+        signInPath={paths.signIn}
+        homePath={paths.home}
+        callbackPath={paths.callback}
+      />
+    </section>
+  </div>
+</AppShell>

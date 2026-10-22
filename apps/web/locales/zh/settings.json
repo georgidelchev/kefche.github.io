@@ -1,0 +1,71 @@
+{
+  "title": "设置",
+  "description": "你的个人资料、偏好、隐私和账户。",
+  "sections": {
+    "profile": "个人资料",
+    "preferences": "偏好",
+    "privacy": "隐私",
+    "account": "账户"
+  },
+  "saved": "已保存。",
+  "saveFailed": "无法保存。请检查网络后重试。",
+  "profile": {
+    "avatar": "头像",
+    "initials": "姓名首字母",
+    "presets": "选择头像",
+    "preset": "头像 {number}",
+    "upload": "上传照片",
+    "uploadHint": "JPG、PNG 或 WebP。我们会裁成正方形并缩小到 256 × 256 像素。",
+    "uploadLocked": "账户注册满一天后才能上传照片。",
+    "uploading": "正在上传…",
+    "uploadInvalid": "无法使用此文件。请尝试 JPG、PNG 或 WebP 图片。",
+    "nicknameHint": "昵称每 30 天可以修改一次。",
+    "nicknameCooldown": "你可以在 {date} 再次修改昵称。",
+    "country": "国家/地区",
+    "countryNone": "不显示",
+    "bio": "关于你",
+    "bioHint": "最多 160 个字符，所有人都能看到。",
+    "bioBlocked": "这段文字包含不允许的词语。",
+    "save": "保存个人资料",
+    "view": "查看你的公开资料"
+  },
+  "preferences": {
+    "language": "语言",
+    "sound": "声音",
+    "master": "总音量",
+    "music": "音乐",
+    "effects": "音效",
+    "haptics": "振动",
+    "hapticsHint": "仅限支持振动的手机。",
+    "motion": "动画",
+    "motionSystem": "跟随设备设置",
+    "motionReduce": "减少",
+    "motionFull": "完整",
+    "gamesHint": "声音、振动和动画设置适用于即将推出的游戏。"
+  },
+  "privacy": {
+    "messages": "谁可以给我发消息",
+    "invites": "谁可以邀请我玩游戏",
+    "everyone": "所有人",
+    "friends": "仅好友",
+    "nobody": "没有人",
+    "showOnline": "显示我在线",
+    "showInLeaderboards": "在排行榜中显示我"
+  },
+  "account": {
+    "email": "电子邮箱",
+    "newEmail": "新邮箱",
+    "changeEmail": "更改邮箱",
+    "emailSent": "我们已向 {email} 发送确认链接。打开链接后邮箱才会更改。",
+    "changePassword": "更改密码",
+    "passwordChanged": "你的密码已更改。",
+    "reauth": "为了安全，请先退出并重新登录，再更改密码。",
+    "methods": "登录方式",
+    "connect": "关联",
+    "disconnect": "取消关联",
+    "lastMethod": "不能取消唯一的登录方式。",
+    "emailMethod": "邮箱和密码",
+    "signOut": "退出登录",
+    "signOutEverywhere": "在所有设备上退出"
+  }
+}

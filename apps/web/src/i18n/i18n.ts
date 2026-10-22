@@ -4,7 +4,15 @@ import ICU from "i18next-icu";
 import { isLocale, type Locale } from "./locales";
 
 /** UI namespaces (SPEC §5). Add one here and in `locales/<locale>/<ns>.json` for every locale. */
-export const NAMESPACES = ["common", "nav", "errors", "account", "auth", "profile"] as const;
+export const NAMESPACES = [
+  "common",
+  "nav",
+  "errors",
+  "account",
+  "auth",
+  "profile",
+  "settings",
+] as const;
 export type Namespace = (typeof NAMESPACES)[number];
 
 type Resources = Partial<Record<Namespace, Record<string, unknown>>>;

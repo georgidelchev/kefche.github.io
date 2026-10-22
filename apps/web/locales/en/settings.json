@@ -1,0 +1,71 @@
+{
+  "title": "Settings",
+  "description": "Your profile, preferences, privacy and account.",
+  "sections": {
+    "profile": "Profile",
+    "preferences": "Preferences",
+    "privacy": "Privacy",
+    "account": "Account"
+  },
+  "saved": "Saved.",
+  "saveFailed": "We couldn't save that. Check your connection and try again.",
+  "profile": {
+    "avatar": "Avatar",
+    "initials": "Initials",
+    "presets": "Pick an avatar",
+    "preset": "Avatar {number}",
+    "upload": "Upload a photo",
+    "uploadHint": "JPG, PNG or WebP. We crop it to a square and shrink it to 256 × 256 pixels.",
+    "uploadLocked": "You can upload a photo once your account is a day old.",
+    "uploading": "Uploading…",
+    "uploadInvalid": "We can't use this file. Try a JPG, PNG or WebP image.",
+    "nicknameHint": "You can change your nickname once every 30 days.",
+    "nicknameCooldown": "You can change your nickname again on {date}.",
+    "country": "Country",
+    "countryNone": "Don't show",
+    "bio": "About you",
+    "bioHint": "Up to 160 characters. Everyone can see this.",
+    "bioBlocked": "This text contains words that aren't allowed.",
+    "save": "Save profile",
+    "view": "View your public profile"
+  },
+  "preferences": {
+    "language": "Language",
+    "sound": "Sound",
+    "master": "Master volume",
+    "music": "Music",
+    "effects": "Sound effects",
+    "haptics": "Vibration",
+    "hapticsHint": "On phones that support it.",
+    "motion": "Animations",
+    "motionSystem": "Follow device setting",
+    "motionReduce": "Reduce",
+    "motionFull": "Full",
+    "gamesHint": "Sound, vibration and animation settings apply to games, which arrive soon."
+  },
+  "privacy": {
+    "messages": "Who can message me",
+    "invites": "Who can invite me to games",
+    "everyone": "Everyone",
+    "friends": "Friends only",
+    "nobody": "Nobody",
+    "showOnline": "Show when I'm online",
+    "showInLeaderboards": "Show me on leaderboards"
+  },
+  "account": {
+    "email": "Email",
+    "newEmail": "New email",
+    "changeEmail": "Change email",
+    "emailSent": "We sent a confirmation link to {email}. Your email changes once you open it.",
+    "changePassword": "Change password",
+    "passwordChanged": "Your password has been changed.",
+    "reauth": "For your security, sign out, sign in again, then change your password.",
+    "methods": "Sign-in methods",
+    "connect": "Connect",
+    "disconnect": "Disconnect",
+    "lastMethod": "You can't disconnect your only sign-in method.",
+    "emailMethod": "Email and password",
+    "signOut": "Sign out",
+    "signOutEverywhere": "Sign out on all devices"
+  }
+}

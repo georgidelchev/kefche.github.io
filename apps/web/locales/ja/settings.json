@@ -1,0 +1,71 @@
+{
+  "title": "設定",
+  "description": "プロフィール、各種設定、プライバシー、アカウント。",
+  "sections": {
+    "profile": "プロフィール",
+    "preferences": "各種設定",
+    "privacy": "プライバシー",
+    "account": "アカウント"
+  },
+  "saved": "保存しました。",
+  "saveFailed": "保存できませんでした。通信環境を確認して、もう一度お試しください。",
+  "profile": {
+    "avatar": "アバター",
+    "initials": "イニシャル",
+    "presets": "アバターを選ぶ",
+    "preset": "アバター {number}",
+    "upload": "写真をアップロード",
+    "uploadHint": "JPG、PNG、WebP。正方形に切り抜き、256 × 256 ピクセルに縮小します。",
+    "uploadLocked": "アカウント作成から 1 日たつと写真をアップロードできます。",
+    "uploading": "アップロード中…",
+    "uploadInvalid": "このファイルは使用できません。JPG、PNG、WebP の画像をお試しください。",
+    "nicknameHint": "ニックネームは 30 日に 1 回変更できます。",
+    "nicknameCooldown": "{date} にニックネームを再び変更できます。",
+    "country": "国・地域",
+    "countryNone": "表示しない",
+    "bio": "自己紹介",
+    "bioHint": "160 文字まで。全員に表示されます。",
+    "bioBlocked": "使用できない言葉が含まれています。",
+    "save": "プロフィールを保存",
+    "view": "公開プロフィールを見る"
+  },
+  "preferences": {
+    "language": "言語",
+    "sound": "サウンド",
+    "master": "全体の音量",
+    "music": "音楽",
+    "effects": "効果音",
+    "haptics": "バイブレーション",
+    "hapticsHint": "対応しているスマートフォンのみ。",
+    "motion": "アニメーション",
+    "motionSystem": "端末の設定に従う",
+    "motionReduce": "減らす",
+    "motionFull": "すべて表示",
+    "gamesHint": "サウンド、バイブレーション、アニメーションの設定は、近日公開のゲームで使われます。"
+  },
+  "privacy": {
+    "messages": "メッセージを送れる人",
+    "invites": "ゲームに招待できる人",
+    "everyone": "全員",
+    "friends": "フレンドのみ",
+    "nobody": "誰も不可",
+    "showOnline": "オンライン状態を表示する",
+    "showInLeaderboards": "ランキングに表示する"
+  },
+  "account": {
+    "email": "メールアドレス",
+    "newEmail": "新しいメールアドレス",
+    "changeEmail": "メールアドレスを変更",
+    "emailSent": "{email} に確認リンクを送りました。リンクを開くとメールアドレスが変更されます。",
+    "changePassword": "パスワードを変更",
+    "passwordChanged": "パスワードを変更しました。",
+    "reauth": "安全のため、一度ログアウトしてログインし直してから、パスワードを変更してください。",
+    "methods": "ログイン方法",
+    "connect": "連携する",
+    "disconnect": "連携を解除",
+    "lastMethod": "唯一のログイン方法は解除できません。",
+    "emailMethod": "メールアドレスとパスワード",
+    "signOut": "ログアウト",
+    "signOutEverywhere": "すべての端末でログアウト"
+  }
+}

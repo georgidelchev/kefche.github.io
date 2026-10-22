@@ -1,0 +1,71 @@
+{
+  "title": "Paramètres",
+  "description": "Votre profil, vos préférences, votre confidentialité et votre compte.",
+  "sections": {
+    "profile": "Profil",
+    "preferences": "Préférences",
+    "privacy": "Confidentialité",
+    "account": "Compte"
+  },
+  "saved": "Enregistré.",
+  "saveFailed": "Impossible d’enregistrer. Vérifiez votre connexion et réessayez.",
+  "profile": {
+    "avatar": "Avatar",
+    "initials": "Initiales",
+    "presets": "Choisir un avatar",
+    "preset": "Avatar {number}",
+    "upload": "Importer une photo",
+    "uploadHint": "JPG, PNG ou WebP. Nous la recadrons en carré et la réduisons à 256 × 256 pixels.",
+    "uploadLocked": "Vous pourrez importer une photo quand votre compte aura un jour.",
+    "uploading": "Importation…",
+    "uploadInvalid": "Nous ne pouvons pas utiliser ce fichier. Essayez une image JPG, PNG ou WebP.",
+    "nicknameHint": "Vous pouvez changer de pseudo une fois tous les 30 jours.",
+    "nicknameCooldown": "Vous pourrez changer de pseudo à nouveau le {date}.",
+    "country": "Pays",
+    "countryNone": "Ne pas afficher",
+    "bio": "À propos de vous",
+    "bioHint": "160 caractères maximum. Tout le monde peut le voir.",
+    "bioBlocked": "Ce texte contient des mots interdits.",
+    "save": "Enregistrer le profil",
+    "view": "Voir votre profil public"
+  },
+  "preferences": {
+    "language": "Langue",
+    "sound": "Son",
+    "master": "Volume général",
+    "music": "Musique",
+    "effects": "Effets sonores",
+    "haptics": "Vibration",
+    "hapticsHint": "Sur les téléphones compatibles.",
+    "motion": "Animations",
+    "motionSystem": "Comme l’appareil",
+    "motionReduce": "Réduites",
+    "motionFull": "Complètes",
+    "gamesHint": "Les réglages de son, de vibration et d’animation s’appliquent aux jeux, qui arrivent bientôt."
+  },
+  "privacy": {
+    "messages": "Qui peut m’écrire",
+    "invites": "Qui peut m’inviter à jouer",
+    "everyone": "Tout le monde",
+    "friends": "Mes amis uniquement",
+    "nobody": "Personne",
+    "showOnline": "Montrer quand je suis en ligne",
+    "showInLeaderboards": "M’afficher dans les classements"
+  },
+  "account": {
+    "email": "E-mail",
+    "newEmail": "Nouvel e-mail",
+    "changeEmail": "Changer d’e-mail",
+    "emailSent": "Nous avons envoyé un lien de confirmation à {email}. Votre e-mail changera quand vous l’ouvrirez.",
+    "changePassword": "Changer le mot de passe",
+    "passwordChanged": "Votre mot de passe a été modifié.",
+    "reauth": "Pour votre sécurité, déconnectez-vous, reconnectez-vous, puis changez votre mot de passe.",
+    "methods": "Méthodes de connexion",
+    "connect": "Connecter",
+    "disconnect": "Déconnecter",
+    "lastMethod": "Vous ne pouvez pas retirer votre seule méthode de connexion.",
+    "emailMethod": "E-mail et mot de passe",
+    "signOut": "Se déconnecter",
+    "signOutEverywhere": "Se déconnecter de tous les appareils"
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "title": "Configurações",
+  "description": "Seu perfil, preferências, privacidade e conta.",
+  "sections": {
+    "profile": "Perfil",
+    "preferences": "Preferências",
+    "privacy": "Privacidade",
+    "account": "Conta"
+  },
+  "saved": "Salvo.",
+  "saveFailed": "Não conseguimos salvar. Verifique sua conexão e tente de novo.",
+  "profile": {
+    "avatar": "Avatar",
+    "initials": "Iniciais",
+    "presets": "Escolha um avatar",
+    "preset": "Avatar {number}",
+    "upload": "Enviar uma foto",
+    "uploadHint": "JPG, PNG ou WebP. Cortamos em quadrado e reduzimos para 256 × 256 pixels.",
+    "uploadLocked": "Você pode enviar uma foto quando sua conta tiver um dia.",
+    "uploading": "Enviando…",
+    "uploadInvalid": "Não podemos usar este arquivo. Tente uma imagem JPG, PNG ou WebP.",
+    "nicknameHint": "Você pode mudar seu apelido uma vez a cada 30 dias.",
+    "nicknameCooldown": "Você poderá mudar seu apelido de novo em {date}.",
+    "country": "País",
+    "countryNone": "Não mostrar",
+    "bio": "Sobre você",
+    "bioHint": "Até 160 caracteres. Todos podem ver.",
+    "bioBlocked": "Este texto contém palavras que não são permitidas.",
+    "save": "Salvar perfil",
+    "view": "Ver seu perfil público"
+  },
+  "preferences": {
+    "language": "Idioma",
+    "sound": "Som",
+    "master": "Volume geral",
+    "music": "Música",
+    "effects": "Efeitos sonoros",
+    "haptics": "Vibração",
+    "hapticsHint": "Em celulares compatíveis.",
+    "motion": "Animações",
+    "motionSystem": "Seguir o dispositivo",
+    "motionReduce": "Reduzidas",
+    "motionFull": "Completas",
+    "gamesHint": "As configurações de som, vibração e animações valem para os jogos, que chegam em breve."
+  },
+  "privacy": {
+    "messages": "Quem pode me mandar mensagens",
+    "invites": "Quem pode me convidar para jogos",
+    "everyone": "Todos",
+    "friends": "Só amigos",
+    "nobody": "Ninguém",
+    "showOnline": "Mostrar quando estou online",
+    "showInLeaderboards": "Mostrar-me nos rankings"
+  },
+  "account": {
+    "email": "E-mail",
+    "newEmail": "Novo e-mail",
+    "changeEmail": "Alterar e-mail",
+    "emailSent": "Enviamos um link de confirmação para {email}. Seu e-mail muda quando você abri-lo.",
+    "changePassword": "Alterar senha",
+    "passwordChanged": "Sua senha foi alterada.",
+    "reauth": "Por segurança, saia, entre de novo e depois altere sua senha.",
+    "methods": "Formas de entrar",
+    "connect": "Conectar",
+    "disconnect": "Desconectar",
+    "lastMethod": "Você não pode desconectar sua única forma de entrar.",
+    "emailMethod": "E-mail e senha",
+    "signOut": "Sair",
+    "signOutEverywhere": "Sair de todos os dispositivos"
+  }
+}

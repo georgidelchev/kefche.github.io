@@ -6,6 +6,7 @@ import type common from "../../locales/en/common.json";
 import type errors from "../../locales/en/errors.json";
 import type nav from "../../locales/en/nav.json";
 import type profile from "../../locales/en/profile.json";
+import type settings from "../../locales/en/settings.json";
 
 declare module "i18next" {
   interface CustomTypeOptions {
@@ -17,6 +18,7 @@ declare module "i18next" {
       account: typeof account;
       auth: typeof auth;
       profile: typeof profile;
+      settings: typeof settings;
     };
   }
 }
