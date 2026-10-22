@@ -7,8 +7,8 @@
 | Phase | Title                                                      | Status                                |
 | ----- | ---------------------------------------------------------- | ------------------------------------- |
 | 0     | Foundation & tooling                                       | ✅ Done (owner signed off 2026-10-21) |
-| 1     | Design system, layout, theming, i18n skeleton              | ✅ DoD met; awaiting owner sign-off   |
-| 2     | Supabase core, auth & profiles                             | ⏳ Not started                        |
+| 1     | Design system, layout, theming, i18n skeleton              | ✅ Done (owner signed off 2026-10-22) |
+| 2     | Supabase core, auth & profiles                             | 📝 Plan awaiting owner approval       |
 | 3     | Game SDK & first games (2048, Sudoku, Snake)               | ⏳ Not started                        |
 | 4     | Bots, hotseat & timers                                     | ⏳ Not started                        |
 | 5     | Multiplayer core                                           | ⏳ Not started                        |
@@ -218,7 +218,129 @@ All 10 steps are committed on `main` (local, not yet pushed). Format, lint, cont
 - [x] DoD: dev-only `/[locale]/dev/ui` shows all components in both themes and in RTL
 - [x] DoD: Lighthouse accessibility ≥ 95 (100 measured)
 - [x] Standing DoD: checks green, no console errors, responsive at 360/768/1280 in both themes, all strings translated in all 11 locales
-- [ ] Owner sign-off; push to deploy
+- [x] Owner sign-off; push to deploy (deployed 2026-10-22; owner said "continue" to move on)
+
+---
+
+## Phase 2 — Supabase core, auth & profiles
+
+**Goal (SPEC §22):** migrations for profiles, roles, settings, consent, audit log and rate limits; RLS; email/password auth with confirmation and reset; OAuth (Google, Discord, Twitch, Facebook) with documented provider setup; anonymous guests with identity linking and merging; age gate; nickname rules; initials avatars, a preset gallery and uploads; profile page; settings page (language, theme synced to the DB, sound, haptics, privacy); data export and account deletion.
+**DoD:** all auth flows work locally; theme and language persist across devices for logged-in users. Plus the standing DoD.
+
+### Prerequisites (owner)
+
+- **Docker Desktop** must be installed and running. `supabase start` (database, auth, Mailpit, Storage, Edge Functions) needs it, and it is still missing on this machine.
+- **OAuth dev apps** for Google, Discord, Twitch and Facebook, with the local callback `http://127.0.0.1:54321/auth/v1/callback`. Step 2 adds the step-by-step setup to `RUNBOOK.md`. The client IDs and secrets go into `supabase/.env` (git-ignored), never into chat or git. Facebook works in development mode for the app's own admins; public use needs app review (Phase 21).
+
+### Steps (one Conventional Commit each)
+
+1. **Lighter content pages.** Rewrite the theme switcher as static markup plus a small script, so content pages ship no React (74 KB → about 10 KB gzip). This frees the budget for the account code below. React islands stay on the account pages that need forms.
+2. **Supabase config.** `config.toml`:
+   - Email confirmations on.
+   - Passwords at least 10 characters, with letters and digits required.
+   - Anonymous sign-ins on, with the built-in per-IP rate limits.
+   - PKCE flow, plus redirect URLs for `localhost:4321`.
+   - The four OAuth providers read from `env(...)`, with `supabase/.env.example` documenting them.
+   - Mailpit for local email.
+   - `RUNBOOK.md` gets the provider setup.
+3. **Foundation migration.**
+   - Extensions: `citext`, `pg_cron`, `pg_net`.
+   - An `updated_at` trigger function.
+   - `audit_log`: insert-only, with no update or delete policy for anyone, and hashed IPs.
+   - `rate_limits` plus a token-bucket function `rate_limit_take(key, capacity, refill_per_sec)`.
+   - `consent_records`: the table only; the banner is Phase 17.
+4. **Roles migration.**
+   - `user_roles` (moderator/admin).
+   - `has_role()`.
+   - A custom access-token hook that puts the roles into the JWT.
+   - Only admins can change roles, and every change is audited.
+5. **Profiles migration.**
+   - Tables:
+     - `profiles`: public fields only.
+     - `user_settings`: owner-only fields (birth year, locale, theme, sound, haptics, reduced motion, privacy). `birth_year` therefore can never leak through a public profile read. This deviates from SPEC §13's column list and will be documented.
+   - Rules:
+     - Nickname: `citext` unique, 3–20 characters (Unicode letters, digits, `_`, `.`), reserved words, a blocked-terms check (Q3), and one change per 30 days. The first choice doesn't count.
+   - Hooks and triggers:
+     - A before-user-created auth hook refuses sign-ups under 13, so nothing is stored.
+     - A trigger creates the profile and settings rows.
+   - Policies: RLS on everything, with explicit policies.
+   - Generated types: committed DB types from `supabase gen types`.
+6. **CI database job.** On GitHub's Ubuntu runners, which have Docker:
+   - `supabase start`;
+   - `supabase db reset` to apply every migration from scratch;
+   - `supabase db lint`;
+   - a check that the committed DB types are current;
+   - `deno check` and `deno lint` for Edge Functions.
+7. **Client and session.**
+   - Add `@supabase/supabase-js`, lazy-loaded only when needed.
+   - Sessions live in the browser (localStorage). Static pages stay static, and the Worker never sees a session. This gets an ADR.
+   - A header account button as plain markup and script. It shows a cached nickname and avatar, then refreshes in the background.
+   - TanStack Query and React Hook Form are used on account pages only.
+   - When the Supabase env vars are absent, as on today's production deploy, the build leaves out all account UI.
+8. **Auth pages** under `/[locale]/auth/`, all `noindex`:
+   - Sign in, with email/password and the four OAuth buttons.
+   - Sign up, with age gate (birth year + month; only the year is stored), nickname, email, password and a link to the guidelines.
+   - Confirm email, forgot password, set a new password.
+   - The OAuth/email callback.
+   - Onboarding for OAuth sign-ups: age and nickname, before the account becomes usable. An under-13 answer deletes the new account at once.
+   - Every string goes into all 11 locales.
+9. **Guests.**
+   - `ensureIdentity()` creates an anonymous user on first need (used from Phase 5), plus the reusable "I am 13 or older" confirmation.
+   - Upgrade keeps the same user id: email/password via `updateUser`, or OAuth via `linkIdentity`.
+   - Signing in to an existing account offers a merge: the Edge Function `merge-guest` checks both sessions, moves the guest's rows, deletes the guest and writes the audit log. There's a clear confirmation screen.
+   - Inactive anonymous users are cleaned up (Q4).
+10. **Profile page.**
+    - `/[locale]/u/[nickname]` is Worker-rendered for link previews, with Open Graph tags.
+    - It shows only public fields: avatar, nickname, level, join date, country flag and bio.
+    - Stats, friends and the action buttons arrive with their own phases, and no inactive buttons are shown.
+11. **Avatars.**
+    - Initials avatars already exist.
+    - The preset gallery is our own SVG set, so there's no licensing. I'll show 2–3 styles to pick from, as with the logo.
+    - Uploads:
+      - registered users only, with accounts at least 24 h old;
+      - the image is cropped and resized in the browser to a 256×256 WebP, at most 300 KB, with EXIF removed;
+      - a Storage bucket with per-user-folder policies that also check type, size and account age.
+12. **Settings page** `/[locale]/settings/` (`noindex`).
+    - Profile: nickname, avatar, country, bio.
+    - Preferences: language, theme, sound volumes, haptics, reduced motion.
+    - Privacy: messages, invites, online status, leaderboards.
+    - Account: change email or password, link or unlink providers (keeping at least one sign-in method), sign out everywhere.
+    - Sync rule: a change while signed in writes to the DB. On sign-in, the DB values win and are applied, setting the locale cookie and redirecting.
+13. **Data rights.**
+    - "Download my data" calls the Edge Function `export-data`, which returns JSON.
+    - "Delete my account" asks for confirmation and starts a 7-day grace period, which signing back in can cancel.
+    - After that, `pg_cron` → `pg_net` → the Edge Function `purge-accounts` deletes the Storage files through the Storage API (a SQL delete would orphan them) and the auth user. Match records are anonymized from Phase 7 on.
+    - Every step is audited.
+14. **Verification and docs.**
+    - Browser checks of every flow against local Supabase, including Mailpit emails, two browser profiles for cross-device theme and language, RTL and 360 px.
+    - Lighthouse and the JS budget.
+    - ADRs for sessions, the profile/settings split and rate limiting.
+    - Updates to ARCHITECTURE (auth and data model), RUNBOOK and CLAUDE.md.
+
+### Decisions (ADRs as they're made)
+
+- **No hosted Supabase in this phase.** It stays local, per the DoD. The production site keeps account features hidden until a hosted project exists, which SPEC places in Phase 21. That also avoids collecting real accounts before the privacy policy (Phase 17).
+- **Bot protection:** Supabase supports Cloudflare Turnstile CAPTCHA on sign-up, anonymous sign-in and password reset. It's free and cookieless, but it is a third party, so it waits for the owner's decision when the hosted project is set up (Phase 19/21). Locally, the built-in rate limits cover it.
+- **Breached-password check:** Supabase offers it only on paid plans, so it stays off. SPEC says "if available". This will be re-checked against the docs in step 2.
+
+### Risks
+
+- **Docker missing** blocks steps 3–14 locally. Steps 1–2 can go first.
+- **Bundle budget:** supabase-js is about 40–50 KB gzip, which step 1 and lazy loading offset.
+- **The React Hook Form resolver with `zod/mini`** isn't documented. The fallback is a few-line resolver around `safeParse`.
+- **Edge Functions run on Deno,** so they need their own lint and typecheck path in CI (step 6).
+- **OAuth testing depends on the owner's dev apps.** Facebook may only work for app admins.
+
+### Open questions for the owner
+
+- **Q1:** Docker Desktop: can you install it now? (Required.)
+- **Q2:** OAuth dev apps: create them as step 2's RUNBOOK section describes. Which providers can you set up now?
+- **Q3:** Blocked-terms list for nicknames and bios: proposed source is the LDNOOBW lists (CC BY 4.0, many of our languages, credited on the Credits page), plus a Bulgarian list from you or one I draft for your review. Phase 8 reuses it for chat.
+- **Q4:** Inactive guest accounts: delete anonymous users with no activity for 30 days?
+
+### Status
+
+- [ ] Plan approved by owner
 
 ---
 
