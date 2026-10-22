@@ -63,7 +63,13 @@ const jsonLd = {
       <p class="max-w-prose text-lg text-muted">{t("games:catalog.intro")}</p>
     </header>
 
-    <form role="search" method="get" class="max-w-md" data-catalog-search>
+    <form
+      role="search"
+      aria-label={t("games:catalog.search")}
+      method="get"
+      class="max-w-md"
+      data-catalog-search
+    >
       <label for="catalog-search" class="mb-1 block text-sm font-semibold">
         {t("games:catalog.search")}
       </label>

@@ -113,6 +113,7 @@ const focusRing =
 
       <form
         role="search"
+        aria-label={t("nav:search")}
         action={searchHref}
         method="get"
         class="ms-auto hidden min-w-0 flex-1 items-center lg:flex lg:max-w-xs"
@@ -161,7 +162,7 @@ const focusRing =
           <span class="sr-only">{t("nav:settings")}</span>
         </summary>
         <div class="absolute end-0 top-full z-50 mt-2 grid w-[min(20rem,calc(100vw-2rem))] gap-4 rounded-2xl border border-border bg-surface p-4 shadow-xl">
-          <form role="search" action={searchHref} method="get">
+          <form role="search" aria-label={t("nav:search")} action={searchHref} method="get">
             <label for="site-search-panel" class="sr-only">
               {t("nav:search")}
             </label>
