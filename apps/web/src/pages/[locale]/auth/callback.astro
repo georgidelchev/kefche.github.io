@@ -1,0 +1,45 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { LoaderCircle } from "lucide-react";
+
+import { buttonVariants } from "@kefche/ui/components/button";
+
+import AuthLayout from "@/features/auth/AuthLayout.astro";
+import { authStaticPaths } from "@/features/auth/page-helpers";
+import { authPaths } from "@/features/auth/paths";
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+// OAuth providers and email links return here; callback.client.ts finishes
+// the sign-in and moves on.
+export const getStaticPaths = authStaticPaths;
+
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+const paths = authPaths(locale, getRelativeLocaleUrl);
+---
+
+<AuthLayout locale={locale} path="/auth/callback/" heading={t("auth:signIn.title")}>
+  <div
+    data-auth-callback
+    data-paths={JSON.stringify(paths)}
+    class="grid justify-items-center gap-4 text-center"
+  >
+    <p data-working role="status" class="flex items-center gap-3 text-lg">
+      <LoaderCircle aria-hidden="true" className="size-6 animate-spin motion-reduce:animate-none" />
+      {t("auth:callback.working")}
+    </p>
+    <div data-failed hidden class="grid justify-items-center gap-4">
+      <p role="alert" class="text-lg">
+        {t("auth:callback.failed")}
+      </p>
+      <a href={paths.signIn} class={buttonVariants({ variant: "primary" })}>
+        {t("auth:callback.back")}
+      </a>
+    </div>
+  </div>
+</AuthLayout>
+
+<script>
+  import "@/features/auth/callback.client";
+</script>

@@ -355,6 +355,8 @@ All 10 steps are committed on `main` (local, not yet pushed). Format, lint, cont
 
 Each code `TODO` must reference an entry here (`TODO #n`). Resolved entries stay listed so the numbers aren't reused.
 
-| #   | Where                                                        | What                                                                  | Status                          |
-| --- | ------------------------------------------------------------ | --------------------------------------------------------------------- | ------------------------------- |
-| 1   | `apps/web/src/pages/[locale]/index.astro`, `astro.config.ts` | Only `en` generated, hard-coded English copy, fixed `/` → `/en/` 302. | ✅ Resolved (Phase 1 steps 4–5) |
+| #   | Where                                                        | What                                                                  | Status                             |
+| --- | ------------------------------------------------------------ | --------------------------------------------------------------------- | ---------------------------------- |
+| 1   | `apps/web/src/pages/[locale]/index.astro`, `astro.config.ts` | Only `en` generated, hard-coded English copy, fixed `/` → `/en/` 302. | ✅ Resolved (Phase 1 steps 4–5)    |
+| 2   | `apps/web/src/features/auth/SignUpForm.tsx`                  | Link the Community Guidelines page from sign-up (SPEC §8.3).          | Open: the page arrives in Phase 17 |
+| 3   | `supabase/templates/*.html`                                  | Auth emails are English only; localize and brand them (SPEC §3).      | Open: Phase 21, with Resend        |

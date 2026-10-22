@@ -1,0 +1,33 @@
+---
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+interface Props {
+  locale: Locale;
+  /** Locale-independent path, e.g. "/auth/sign-in/". */
+  path: string;
+  heading: string;
+  description?: string;
+}
+
+const { locale, path, heading, description } = Astro.props;
+const t = getT(locale);
+---
+
+<!-- Account pages are private: noindex (SPEC §15), and they exist only in builds with Supabase. -->
+<AppShell
+  locale={locale}
+  path={path}
+  title={t("common:meta.sectionTitle", { section: heading })}
+  description={description ?? heading}
+  noindex
+>
+  <section class="mx-auto grid w-full max-w-md gap-6 py-6 md:py-12">
+    <header class="grid gap-2 text-center">
+      <h1 class="text-3xl md:text-4xl">{heading}</h1>
+      {description && <p class="text-muted">{description}</p>}
+    </header>
+    <slot />
+  </section>
+</AppShell>

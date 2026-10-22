@@ -30,6 +30,12 @@ export function getSupabase(): Promise<Supabase> | null {
   return client;
 }
 
+/**
+ * Generated types can't express that a SQL function returning `text` may
+ * return null (our RPCs use null for "no problem"), so widen them here.
+ */
+export const nullable = <T>(value: T): T | null => value;
+
 /** True when this browser holds a stored session (no network, no supabase-js). */
 export function hasStoredSession(): boolean {
   try {

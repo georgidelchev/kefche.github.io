@@ -1,0 +1,29 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import AuthLayout from "@/features/auth/AuthLayout.astro";
+import { authStaticPaths } from "@/features/auth/page-helpers";
+import { authPaths } from "@/features/auth/paths";
+import { SignInForm } from "@/features/auth/SignInForm";
+import { authStrings } from "@/features/auth/strings";
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+export const getStaticPaths = authStaticPaths;
+
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+---
+
+<AuthLayout
+  locale={locale}
+  path="/auth/sign-in/"
+  heading={t("auth:signIn.title")}
+  description={t("auth:signIn.description")}
+>
+  <SignInForm
+    client:load
+    strings={authStrings(t)}
+    paths={authPaths(locale, getRelativeLocaleUrl)}
+  />
+</AuthLayout>

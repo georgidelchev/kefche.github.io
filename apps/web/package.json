@@ -16,6 +16,7 @@
   "dependencies": {
     "@astrojs/cloudflare": "14.4.1",
     "@astrojs/react": "7.1.0",
+    "@hookform/resolvers": "6.0.0",
     "@kefche/ui": "workspace:*",
     "@supabase/supabase-js": "2.118.0",
     "@tailwindcss/vite": "4.3.3",
@@ -26,6 +27,7 @@
     "lucide-react": "1.60.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
+    "react-hook-form": "7.90.0",
     "tailwindcss": "4.3.3",
     "zod": "4.6.7"
   },
