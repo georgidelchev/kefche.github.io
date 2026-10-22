@@ -5,14 +5,17 @@ import { createRoot } from "react-dom/client";
 import type { GameContext, GameInstance } from "@kefche/game-sdk/browser";
 
 import { Game, type GameHandle } from "./Game";
+import { createSounds } from "./sounds";
 
 export function mount(container: HTMLElement, context: GameContext): GameInstance {
   const root = createRoot(container);
   // Read by the board's input handlers and clock; a pause doesn't need a re-render.
   const handle: GameHandle = { paused: false };
+  const sounds = createSounds(context);
+  sounds.preload();
   const render = (seed: string) => {
     // A new key (seed) remounts the board, back to the difficulty menu.
-    root.render(createElement(Game, { key: seed, context, seed, handle }));
+    root.render(createElement(Game, { key: seed, context, seed, handle, sounds }));
   };
   render(context.seed);
   context.report({ type: "start" });
@@ -30,6 +33,7 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
     },
     destroy() {
       root.unmount();
+      sounds.dispose();
     },
   };
 }

@@ -7,6 +7,8 @@ import type { GameContext } from "@kefche/game-sdk/browser";
 
 import { engine, bestTile, SIZE, type Direction, type State } from "../engine";
 
+import type { Sounds } from "./sounds";
+
 export interface GameHandle {
   paused: boolean;
 }
@@ -15,11 +17,12 @@ interface Props {
   context: GameContext;
   seed: string;
   handle: GameHandle;
+  sounds: Sounds;
 }
 
 const BEST_KEY = "best";
 
-export function Game({ context, seed, handle }: Props) {
+export function Game({ context, seed, handle, sounds }: Props) {
   const { t } = context;
   const [state, setState] = useState<State>(() => engine.initialState(undefined, seed));
   // Best score from earlier games; the live best also counts this game.
@@ -27,6 +30,8 @@ export function Game({ context, seed, handle }: Props) {
   const best = Math.max(storedBest, state.score);
   const boardRef = useRef<HTMLDivElement>(null);
   const finishedRef = useRef(false);
+  // What the last state already sounded, so undo and re-renders stay quiet.
+  const heardRef = useRef({ moves: 0, won: false });
 
   // Input: arrows, WASD and swipes.
   useEffect(() => {
@@ -42,19 +47,27 @@ export function Game({ context, seed, handle }: Props) {
     };
   }, [handle]);
 
-  // Side effects of a new state: best score, haptics, reporting.
+  // Side effects of a new state: best score, sound, haptics, reporting.
   useEffect(() => {
     if (state.moves === 0) return;
     context.report({ type: "score", score: state.score });
     if (state.score > storedBest) context.storage.set(BEST_KEY, String(state.score));
-    if (state.tiles.some((tile) => tile.merged)) vibrate(HAPTICS.tap, context.settings.haptics);
+    const merged = state.tiles.some((tile) => tile.merged);
+    if (merged) vibrate(HAPTICS.tap, context.settings.haptics);
+    const heard = heardRef.current;
+    if (state.moves > heard.moves) {
+      if (state.won && !heard.won) sounds.play("win");
+      else sounds.play(merged ? "merge" : "move");
+    }
+    heardRef.current = { moves: state.moves, won: state.won };
     const result = engine.result(state);
     if (result && !finishedRef.current) {
       finishedRef.current = true;
+      sounds.play("lose");
       vibrate(HAPTICS.lose, context.settings.haptics);
       context.report({ type: "finish", result });
     }
-  }, [state, storedBest, context]);
+  }, [state, storedBest, context, sounds]);
 
   const motion = !context.settings.reducedMotion;
   const showWin = state.won && !state.continued;
@@ -75,6 +88,7 @@ export function Game({ context, seed, handle }: Props) {
           className="g2048-undo"
           disabled={!state.undo || state.undoUsed}
           onClick={() => {
+            sounds.play("undo");
             setState((s) => engine.apply(s, { type: "undo" }));
           }}
         >

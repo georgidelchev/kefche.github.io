@@ -24,6 +24,8 @@ import {
 } from "../engine";
 import { bestTime, loadSaved, newGame, recordTime, save } from "./puzzle";
 
+import type { Sounds } from "./sounds";
+
 export interface GameHandle {
   paused: boolean;
 }
@@ -32,6 +34,7 @@ interface Props {
   context: GameContext;
   seed: string;
   handle: GameHandle;
+  sounds: Sounds;
 }
 
 type Screen =
@@ -50,7 +53,7 @@ const DIFFICULTY_KEYS = {
   expert: "expert",
 } as const satisfies Record<Difficulty, string>;
 
-export function Game({ context, seed, handle }: Props) {
+export function Game({ context, seed, handle, sounds }: Props) {
   const { t, storage } = context;
   const [screen, setScreen] = useState<Screen>({ kind: "menu" });
   const [state, setState] = useState<State | null>(null);
@@ -101,16 +104,21 @@ export function Game({ context, seed, handle }: Props) {
       setScreen({ kind: "solved" });
       save(storage, null);
       recordTime(storage, next.difficulty, ms);
+      sounds.play("win");
       vibrate(HAPTICS.win, context.settings.haptics);
       context.report({ type: "finish", result: { completed: true, timeMs: ms } });
       return;
     }
     liveRef.current = next;
     save(storage, { state: next, elapsedMs: ms });
-    const wrong =
-      action.type === "enter" &&
-      next.values[action.cell] === action.digit &&
-      next.solution[action.cell] !== action.digit;
+    const placed = action.type === "enter" && next.values[action.cell] === action.digit;
+    const wrong = placed && next.solution[action.cell] !== action.digit;
+    // A wrong digit only sounds wrong when mistakes are shown.
+    if (wrong && showErrors) sounds.play("mistake");
+    else if (placed) sounds.play("place");
+    else if (action.type === "note") sounds.play("note");
+    else if (action.type === "hint") sounds.play("hint");
+    else sounds.play("erase"); // erase, undo, or the same digit again
     vibrate(wrong && showErrors ? HAPTICS.hit : HAPTICS.tap, context.settings.haptics);
   }
 

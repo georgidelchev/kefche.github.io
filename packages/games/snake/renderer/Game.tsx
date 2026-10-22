@@ -28,6 +28,8 @@ import {
   type State,
 } from "../engine";
 
+import type { Sounds } from "./sounds";
+
 export interface GameHandle {
   paused: boolean;
 }
@@ -36,6 +38,7 @@ interface Props {
   context: GameContext;
   seed: string;
   handle: GameHandle;
+  sounds: Sounds;
   /** Skip the menu and play again with the last settings (restart). */
   quickStart: boolean;
 }
@@ -64,12 +67,14 @@ function loadSettings(storage: GameStorage): Config {
 const bestScore = (storage: GameStorage, config: Config) =>
   Math.max(0, Number(storage.get(bestKey(config))) || 0);
 
-export function Game({ context, seed, handle, quickStart }: Props) {
+export function Game({ context, seed, handle, sounds, quickStart }: Props) {
   const { t, storage } = context;
   const [config, setConfig] = useState(() => loadSettings(storage));
   const [playing, setPlaying] = useState(quickStart);
 
-  if (playing) return <Board context={context} seed={seed} handle={handle} config={config} />;
+  if (playing) {
+    return <Board context={context} seed={seed} handle={handle} sounds={sounds} config={config} />;
+  }
 
   const choose = (next: Config) => {
     setConfig(next);
@@ -146,7 +151,13 @@ const DPAD = [
   { direction: "down", rotate: 180 },
 ] as const satisfies readonly { direction: Direction; rotate: number }[];
 
-function Board({ context, seed, handle, config }: Omit<Props, "quickStart"> & { config: Config }) {
+function Board({
+  context,
+  seed,
+  handle,
+  sounds,
+  config,
+}: Omit<Props, "quickStart"> & { config: Config }) {
   const { t, storage } = context;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
@@ -274,6 +285,7 @@ function Board({ context, seed, handle, config }: Omit<Props, "quickStart"> & { 
       draw(1);
       const previous = bestScore(storage, config);
       if (state.score > previous) storage.set(bestKey(config), String(state.score));
+      sounds.play(state.won ? "win" : "lose");
       vibrate(state.won ? HAPTICS.win : HAPTICS.lose, context.settings.haptics);
       context.report({ type: "finish", result: { score: state.score, completed: state.won } });
     };
@@ -294,6 +306,7 @@ function Board({ context, seed, handle, config }: Omit<Props, "quickStart"> & { 
         if (state.eaten !== eaten) {
           setScore(state.score);
           context.report({ type: "score", score: state.score });
+          if (!state.over) sounds.play("eat");
           vibrate(HAPTICS.tap, context.settings.haptics);
         }
         if (state.over) finish();
@@ -342,7 +355,7 @@ function Board({ context, seed, handle, config }: Omit<Props, "quickStart"> & { 
       theme.disconnect();
       scheme.removeEventListener("change", recolor);
     };
-  }, [config, seed, handle, context, storage]);
+  }, [config, seed, handle, context, storage, sounds]);
 
   return (
     <div className="gsnk">

@@ -5,15 +5,18 @@ import { createRoot } from "react-dom/client";
 import type { GameContext, GameInstance } from "@kefche/game-sdk/browser";
 
 import { Game, type GameHandle } from "./Game";
+import { createSounds } from "./sounds";
 
 export function mount(container: HTMLElement, context: GameContext): GameInstance {
   const root = createRoot(container);
   // Read by the game loop and input handlers; a pause doesn't need a re-render.
   const handle: GameHandle = { paused: false };
+  const sounds = createSounds(context);
+  sounds.preload();
   const render = (seed: string, quickStart: boolean) => {
     // A new key (seed) remounts the game. The first game opens the settings
     // menu; New game and Play again start straight away with the same ones.
-    root.render(createElement(Game, { key: seed, context, seed, handle, quickStart }));
+    root.render(createElement(Game, { key: seed, context, seed, handle, sounds, quickStart }));
   };
   render(context.seed, false);
   context.report({ type: "start" });
@@ -31,6 +34,7 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
     },
     destroy() {
       root.unmount();
+      sounds.dispose();
     },
   };
 }
