@@ -142,6 +142,15 @@ import { mount } from "./renderer/mount";
 
 export const game: GameModule = { mount };
 `,
+  "assets/art.mjs": `// ${id} sticker art for \`pnpm art:generate\`, drawn in a 160 × 120 box with
+// the shared kit (scripts/game-art/kit.mjs). ${TODO}: draw the game's emblem;
+// art:generate refuses this file until the marker is gone.
+
+/** @param {typeof import("../../../../scripts/game-art/kit.mjs")} kit */
+export function emblem({ INK, WHITE, shadowed }) {
+  return shadowed(\`<rect x="40" y="20" width="80" height="80" rx="14" fill="\${WHITE}" stroke="\${INK}" stroke-width="4"/>\`);
+}
+`,
   "CREDITS.md": `# ${id}: credits
 
 Every asset and content source with its license (SPEC §19). ${TODO}: list sources, or write "No third-party assets."
@@ -167,5 +176,5 @@ for (const [file, content] of Object.entries(files)) {
   writeFileSync(path, content.endsWith("\n") ? content : `${content}\n`);
 }
 console.log(
-  `Created packages/games/${id}. Next: pnpm install, then replace every ${TODO} (pnpm i18n:check lists them).`,
+  `Created packages/games/${id}. Next: pnpm install, replace every ${TODO} (pnpm i18n:check lists the text ones), then pnpm art:generate.`,
 );

@@ -126,6 +126,16 @@ const crumb = "rounded-sm hover:underline";
     </nav>
 
     <header class="grid gap-4">
+      <!-- Decorative: the heading below names the game. -->
+      <img
+        src={game.art.hero}
+        alt=""
+        width="1200"
+        height="450"
+        fetchpriority="high"
+        decoding="async"
+        class="aspect-[8/3] w-full rounded-2xl"
+      />
       <h1 class="text-4xl md:text-5xl">{text.name}</h1>
       <p class="text-lg text-muted">{text.tagline}</p>
       <ul class="flex flex-wrap gap-2">

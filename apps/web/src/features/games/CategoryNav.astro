@@ -7,7 +7,7 @@ import type { GameCategory } from "@kefche/game-sdk";
 import { getT } from "@/i18n/i18n";
 import { LOCALE_INFO, type Locale } from "@/i18n/locales";
 
-import { CATEGORY_KEYS, CATEGORY_STYLE, categoriesWithGames } from "./catalog";
+import { CATEGORY_ICONS, CATEGORY_KEYS, categoriesWithGames } from "./catalog";
 import { listGames } from "./registry";
 
 // Category chips: "All games" plus every category that has games. Scrolls
@@ -33,7 +33,7 @@ const chips = [
     href: getRelativeLocaleUrl(locale, `/games/${category}/`),
     label: t(CATEGORY_KEYS[category].name),
     count: games.filter((game) => game.manifest.category === category).length,
-    Icon: CATEGORY_STYLE[category].Icon,
+    Icon: CATEGORY_ICONS[category],
     current: category === current,
   })),
 ];

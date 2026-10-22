@@ -19,6 +19,7 @@ How to add game #101 and beyond without editing core code (SPEC §9, §20). The 
 - [ ] Leaderboards and achievements defined
 - [ ] i18n strings in all 11 locales; content packs only from licensed sources
 - [ ] SEO content: about, how to play, controls, tips, FAQ (250–600 words per locale)
+- [ ] Card art: `assets/art.mjs` draws the emblem in the sticker style (thick ink outline, hard shadow, the kit's hand-drawn digits); `pnpm art:generate` run and both SVGs committed (CI fails on stale art)
 - [ ] Accessibility: keyboard support, color-blind-safe player colors with shapes, screen-reader move announcements (board games)
 - [ ] Performance: lazy-loaded, 60 fps target, DPR capped at 2, heavy libs only when needed
 - [ ] `CREDITS.md` lists every asset and content source with its license

@@ -47,18 +47,18 @@ export const CATEGORY_KEYS = {
   { name: `games:${string}`; description: `games:${string}` }
 >;
 
-/** Icon and color tile per category (the `--cat-*` tokens). */
-export const CATEGORY_STYLE: Record<GameCategory, { Icon: LucideIcon; tile: string }> = {
-  board: { Icon: Crown, tile: "bg-cat-board text-cat-board-ink" },
-  cards: { Icon: Spade, tile: "bg-cat-cards text-cat-cards-ink" },
-  logic: { Icon: Puzzle, tile: "bg-cat-logic text-cat-logic-ink" },
-  arcade: { Icon: Joystick, tile: "bg-cat-arcade text-cat-arcade-ink" },
-  arenas: { Icon: Swords, tile: "bg-cat-arenas text-cat-arenas-ink" },
-  party: { Icon: PartyPopper, tile: "bg-cat-party text-cat-party-ink" },
-  word: { Icon: WholeWord, tile: "bg-cat-word text-cat-word-ink" },
-  speed: { Icon: Zap, tile: "bg-cat-speed text-cat-speed-ink" },
-  strategy: { Icon: Castle, tile: "bg-cat-strategy text-cat-strategy-ink" },
-  sports: { Icon: Trophy, tile: "bg-cat-sports text-cat-sports-ink" },
+/** Line icon per category, for the small category chips. */
+export const CATEGORY_ICONS: Record<GameCategory, LucideIcon> = {
+  board: Crown,
+  cards: Spade,
+  logic: Puzzle,
+  arcade: Joystick,
+  arenas: Swords,
+  party: PartyPopper,
+  word: WholeWord,
+  speed: Zap,
+  strategy: Castle,
+  sports: Trophy,
 };
 
 /**

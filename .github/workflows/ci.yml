@@ -51,6 +51,12 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
+      - name: Game art is up to date
+        run: |
+          pnpm art:generate
+          git diff --exit-code -- 'packages/games/*/assets/*.svg' \
+            || { echo "::error::Game art is stale. Run 'pnpm art:generate' and commit the result."; exit 1; }
+
       - name: Build
         run: pnpm build
 

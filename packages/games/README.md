@@ -14,7 +14,10 @@ packages/games/<id>/
 ├─ renderer/              # React component(s) and/or Canvas / Pixi scene
 ├─ content/<locale>.json  # optional language content packs (licensed sources only)
 ├─ i18n/<locale>.json     # game-specific strings: name, how to play, tips, FAQ
-├─ assets/                # sprites, sounds (licensed and credited)
+├─ assets/                # sprites, sounds (licensed and credited), and the card art:
+│  ├─ art.mjs             #   the game's sticker emblem, drawn with scripts/game-art/kit.mjs
+│  ├─ thumbnail.svg       #   catalog card (4:3), written by `pnpm art:generate`
+│  └─ hero.svg            #   game-page banner (8:3), written by `pnpm art:generate`
 ├─ CREDITS.md             # asset and content sources with licenses
 └─ index.ts               # public entry (lazy-loaded)
 ```
