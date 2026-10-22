@@ -8,8 +8,8 @@
 | ----- | ---------------------------------------------------------- | ------------------------------------- |
 | 0     | Foundation & tooling                                       | ✅ Done (owner signed off 2026-10-21) |
 | 1     | Design system, layout, theming, i18n skeleton              | ✅ Done (owner signed off 2026-10-22) |
-| 2     | Supabase core, auth & profiles                             | ✅ DoD met; awaiting owner sign-off   |
-| 3     | Game SDK & first games (2048, Sudoku, Snake)               | ⏳ Not started                        |
+| 2     | Supabase core, auth & profiles                             | ✅ Done (owner signed off 2026-10-22) |
+| 3     | Game SDK & first games (2048, Sudoku, Snake)               | 📝 Plan awaiting owner approval       |
 | 4     | Bots, hotseat & timers                                     | ⏳ Not started                        |
 | 5     | Multiplayer core                                           | ⏳ Not started                        |
 | 6     | Chess                                                      | ⏳ Not started                        |
@@ -382,8 +382,70 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
 - [x] DoD: all auth flows work locally
 - [x] DoD: theme and language persist across devices for logged-in users
 - [x] Standing DoD: checks green, no console errors, 360/768/1280 in both themes, all strings in all 11 locales
-- [ ] Owner sign-off
+- [x] Owner sign-off (2026-10-22, "ok, continue")
 - [ ] Owner: create the OAuth dev apps (RUNBOOK) to try Google, Discord, Twitch and Facebook end to end
+
+---
+
+## Phase 3 — Game SDK & first games
+
+**Goal (SPEC §22):** `game-sdk` (manifest schema, registry, seeded PRNG, engine kinds, timers, bot worker harness, renderer helpers, input/touch controls, stage scaling, pause/resume, sound/haptics service), the `new:game` generator, a game page template with SEO sections, catalog and category pages, solo mode, and **2048, Sudoku, Snake** end to end.
+**DoD:** the three games are fully playable on phones, tablets and desktop, offline-capable, and documented in `ADDING_A_GAME.md`. Plus the standing DoD.
+
+### Steps (one Conventional Commit each)
+
+1. **SDK contracts.** In `packages/game-sdk`:
+   - the `GameManifest` Zod schema (SPEC §9.3) and its types;
+   - a seeded PRNG (sfc32) with serializable state;
+   - the engine-kind interfaces from SPEC §9.4. The turn and race engines are implemented now; the realtime and round engines get their interfaces, implemented in Phases 9 and 11.
+   - All of it is pure TypeScript, so it runs in browsers, workers, Vitest and Deno.
+2. **Runtime helpers.** These are browser code, in `game-sdk/browser`:
+   - a fixed-timestep loop with pause and resume (also on tab hide);
+   - stage scaling with letterboxing, a devicePixelRatio cap of 2, and orientation handling;
+   - input: keyboard, swipe and tap gestures, a D-pad;
+   - a sound and haptics service (muted until the first tap; volumes and vibration from settings);
+   - timers;
+   - a Web Worker bot harness with a time budget per move.
+3. **Registry.** `import.meta.glob` over `packages/games/*/manifest.ts`, validated with Zod at build time; a build fails on an invalid manifest. Games load lazily, one chunk each.
+4. **`pnpm new:game <slug> --kind=…`.** Scaffolds the SPEC §9.2 folder: manifest, engine, renderer, i18n (English filled in, other languages flagged by `i18n:check`), CREDITS.md and the registry entry.
+5. **Game page and player.**
+   - `/[locale]/games/[id]/` is pre-rendered. Above the fold: big Play, how-to-play and controls. Below: about, tips and FAQ with JSON-LD (`VideoGame`, `BreadcrumbList`, `FAQPage`), canonical and hreflang.
+   - The player island has full-screen stage, pause menu, restart, results screen, and keeps the screen awake while playing.
+6. **Catalog.** `/[locale]/games/` and the category pages. The Games tab becomes available. Only implemented games are listed; no fake entries.
+7. **2048:** swipe and arrow keys, animated tiles, undo once per game (catalog note), best score saved locally.
+8. **Sudoku:**
+   - a generator that guarantees a unique solution, with difficulty grading (easy to expert by solving techniques);
+   - notes, hints, an "highlight errors" toggle and keyboard entry;
+   - generation in a Web Worker so the UI never freezes.
+9. **Snake:** classic grid snake on Canvas; swipe, D-pad and arrow keys; speed levels; walls or wrap-around.
+10. **Offline.** Q2 below.
+11. **Art.** A thumbnail and hero art per game, plus category icons, all generated as SVG in the site's style. Q1 below.
+12. **Verification and docs.**
+    - Play each game on 360, 768 and 1280 px in both themes, plus Arabic. The game boards are never mirrored.
+    - Lighthouse on the game pages; per-game bundle sizes.
+    - Docs: `ADDING_A_GAME.md` (the full checklist), ARCHITECTURE (game platform), and ADRs (SDK design, renderer choices).
+
+### Decisions (ADRs as they're made)
+
+- **Solo only** in this phase. Race mode (several players on the same seed) needs multiplayer (Phase 5). Leaderboards, stats and achievements need Phase 7, so best scores are stored on the device for now.
+- **No heavy libraries yet:** 2048 and Sudoku use the DOM, and Snake uses Canvas 2D (SPEC §3). PixiJS, Matter.js and Howler arrive with the games that need them.
+- **SEO text:** each game gets 250–600 words of real content (SPEC §15) written in English and Bulgarian now. The other 9 languages come in Phase 15, as the SPEC allows; `i18n:check` stays green because their files carry English copies marked for translation.
+
+### Risks
+
+- Sudoku generation with unique solutions and grading must stay fast on phones, which is why it runs in a worker and has a time budget.
+- Phone gestures: swipes must not scroll or zoom the page, and Safari's edge swipe can interfere.
+- JS budget: the game pages must stay small and load each game only after Play is pressed.
+
+### Open questions for the owner
+
+- **Q1 — Art style:** game thumbnails and hero art. I'd show 2–3 directions to pick from, as with the logo and avatars.
+- **Q2 — Offline:** the DoD asks for offline-capable games, but the service worker is Phase 16. Proposal: add a minimal service worker now (via `@vite-pwa/astro`) that caches the three games after first play, and leave install prompts and update flow polish for Phase 16. The alternative is to make the games work without network calls and keep the "offline" check for Phase 16.
+- **Q3 — Sound:** CC0 sound effects (Kenney) with a mute button now, or silent games until Phase 16 (audio polish)?
+
+### Status
+
+- [ ] Plan approved by owner
 
 ---
 
