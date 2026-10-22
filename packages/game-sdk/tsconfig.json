@@ -1,6 +1,8 @@
 {
-  // No DOM and no Node types: the SDK must run unchanged in browsers, Web
-  // Workers, Vitest and Deno Edge Functions (SPEC §4).
+  // No DOM and no Node types: the SDK core must run unchanged in browsers, Web
+  // Workers, Vitest and Deno Edge Functions (SPEC §4). Browser-only helpers
+  // live in src/browser and have their own tsconfig.json there.
   "extends": "@kefche/config/tsconfig.base.json",
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/browser"]
 }

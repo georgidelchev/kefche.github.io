@@ -7,16 +7,19 @@
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
-    "./manifest-schema": "./src/manifest-schema.ts"
+    "./manifest-schema": "./src/manifest-schema.ts",
+    "./browser": "./src/browser/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc -p ."
+    "typecheck": "tsc -p . && tsc -p src/browser"
   },
   "devDependencies": {
     "@kefche/config": "workspace:*",
+    "@types/howler": "2.2.13",
     "typescript": "6.0.3"
   },
   "dependencies": {
+    "howler": "2.2.4",
     "zod": "4.6.7"
   }
 }

@@ -1,0 +1,9 @@
+{
+  // Browser runtime helpers (@kefche/game-sdk/browser): loop, stage, input,
+  // sound, haptics, timers, workers. The isomorphic core (../) stays DOM-free.
+  "extends": "@kefche/config/tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["es2024", "dom", "dom.iterable"]
+  },
+  "include": ["."]
+}

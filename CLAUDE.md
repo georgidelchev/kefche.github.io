@@ -84,6 +84,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 
 - ESLint 10 uses the nearest `eslint.config.*` for each file, so shared presets must not be named `eslint.config.js`.
 - `pnpm -r <script>` fails when a package lacks the script; root scripts use `--if-present`.
+- Type-aware ESLint finds each file's nearest file named `tsconfig.json`. A folder with different compiler options needs its own `tsconfig.json`, like `packages/game-sdk/src/browser/`, which adds DOM types. After adding or moving one, delete `.eslintcache`.
 - Never run `pnpm deploy`, which is a built-in pnpm command. Use `pnpm --filter web run cf:deploy`.
 - `public/_headers` applies only to static assets. `src/middleware.ts` copies its `/*` headers onto Worker-rendered responses, so edit only `_headers`.
 - Never add an Astro `redirects` entry for a dynamic path: Cloudflare applies `_redirects` before the Worker runs.
