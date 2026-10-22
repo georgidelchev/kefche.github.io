@@ -30,10 +30,58 @@ Deploys run from GitHub Actions (ADR-0003). The `deploy` job is skipped until th
 ## Local services
 
 - `pnpm db:start` starts local Supabase (Docker required). `pnpm db:status` prints the URLs and keys, `pnpm db:reset` re-applies migrations and the seed, and `pnpm db:stop` stops it.
+- Local emails (sign-up confirmation, password reset) never leave the machine. Read them in Mailpit at http://127.0.0.1:54324.
+- After changing `supabase/config.toml` or `supabase/.env`, run `pnpm db:stop && pnpm db:start` to apply it.
+
+## OAuth providers (local development)
+
+Sign-in with Google, Discord, Twitch and Facebook needs one development app per provider. Each app gets this redirect (callback) URL, exactly:
+
+```
+http://localhost:54321/auth/v1/callback
+```
+
+Copy `supabase/.env.example` to `supabase/.env` and paste each client ID and secret there. That file is git-ignored. Never commit it or paste the secrets into chat or issues. Restart Supabase afterwards. Supabase starts without them. A provider whose values are empty just sends you to that provider's error page, and the other providers keep working.
+
+### Google
+
+1. Open https://console.cloud.google.com and create a project (for example `kefche-dev`).
+2. Go to _Google Auth Platform_ (or _APIs & Services → OAuth consent screen_):
+   - **Branding:** app name `kefche`, your support email.
+   - **Audience:** _External_. While the app is in _Testing_, only the test users you add here can sign in, so add your own Google account.
+   - **Data access:** the scopes `openid`, `…/auth/userinfo.email` and `…/auth/userinfo.profile`.
+3. Go to _Clients → Create client → Web application_:
+   - **Authorized JavaScript origins:** `http://localhost:4321`
+   - **Authorized redirect URIs:** the callback URL above
+4. Copy the client ID and client secret into `SUPABASE_AUTH_EXTERNAL_GOOGLE_CLIENT_ID` and `…_SECRET`.
+
+### Discord
+
+1. Open https://discord.com/developers/applications → _New Application_ (name `kefche dev`).
+2. Go to _OAuth2_ and add the callback URL under _Redirects_. Save.
+3. Copy the _Client ID_, and the secret from _Reset Secret_, into `SUPABASE_AUTH_EXTERNAL_DISCORD_CLIENT_ID` and `…_SECRET`.
+
+### Twitch
+
+1. Open https://dev.twitch.tv/console/apps → _Register Your Application_. Twitch requires two-factor authentication on your account first.
+2. Fill in the form:
+   - **Name:** something unique, for example `kefche-dev-<you>`.
+   - **OAuth Redirect URLs:** the callback URL above.
+   - **Category:** _Website Integration_.
+   - **Client type:** _Confidential_.
+3. Open _Manage_. Copy the _Client ID_, then click _New Secret_ and copy the secret, into `SUPABASE_AUTH_EXTERNAL_TWITCH_CLIENT_ID` and `…_SECRET`.
+
+### Facebook
+
+1. Open https://developers.facebook.com/apps → _Create app_. Choose the use case _Authenticate and request data from users with Facebook Login_, and no business portfolio.
+2. Under _Use cases → Customize_, make sure `email` and `public_profile` are added.
+3. _Facebook Login → Settings:_ while the app is in development mode, `localhost` redirects are allowed automatically. Add the callback URL under _Valid OAuth Redirect URIs_ anyway, if the field accepts it.
+4. Go to _App settings → Basic_. Copy the _App ID_ and _App secret_ into `SUPABASE_AUTH_EXTERNAL_FACEBOOK_CLIENT_ID` and `…_SECRET`.
+5. In development mode, only people with a role on the app (you, plus any testers you add under _App roles_) can sign in. Going public needs app review, which comes with production (Phase 21).
 
 ## Sections to come
 
-- Supabase projects, migrations with manual approval, backups _(Phase 2, 21)_
+- Hosted Supabase project, migrations with manual approval, backups _(Phase 21)_
 - Edge Function secrets and deploys _(Phase 7)_
 - Moderation escalation _(Phase 8, 10)_
 - Custom domain, DNS, email (Resend), production OAuth apps _(Phase 21)_
