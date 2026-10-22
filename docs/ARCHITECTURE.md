@@ -49,7 +49,7 @@ Isomorphism is enforced by the type system: the base tsconfig has no DOM lib and
 ## Styling and theming
 
 - Tokens live in `packages/ui/src/tokens.css` (light on `:root`, dark through the system preference or `[data-theme="dark"]`) and are mapped to Tailwind colors in `packages/ui/src/theme.css` (ADR-0004). `pnpm check:contrast` enforces WCAG ratios for every text/surface pair in both themes, plus the player and category ink-on-fill pairs.
-- `components/BootScript.astro` is a tiny inline script that applies the stored theme and side-menu state before first paint (no flash). The theme switcher shares a Zustand store across islands and tabs.
+- `components/BootScript.astro` is a tiny inline script that applies the stored theme and side-menu state before first paint (no flash). The theme switcher (`features/theme/ThemeSwitcher.astro`) is a static radio group: its highlight follows `<html data-theme>` in CSS, and `theme.client.ts` saves the choice and keeps every switcher and open tab in sync.
 - Components live in `packages/ui/src/components` (ADR-0010). Static ones render to plain HTML; dialog, sheet, tabs and toast need a client island.
 
 ## App shell
@@ -75,7 +75,7 @@ The marks' geometry lives once in `packages/ui/src/brand/marks.ts`. `components/
 
 Measured on the production build:
 
-- JS on content pages is 74 KB gzip (budget 120 KB). About 63 KB of that is React DOM for the theme-switcher island.
+- JS on content pages is about 4 KB gzip (budget 120 KB). It was 74 KB while the theme switcher was a React island; Phase 2 made it static, so content pages load no React.
 - The home page HTML is about 8 KB gzip.
 - Lighthouse mobile scored accessibility 100, best practices 100 and SEO 100 on the home pages. Performance was 82–92 against the uncompressed local preview. Phase 18 owns the final tuning.
 

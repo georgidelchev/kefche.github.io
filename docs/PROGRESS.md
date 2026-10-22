@@ -8,7 +8,7 @@
 | ----- | ---------------------------------------------------------- | ------------------------------------- |
 | 0     | Foundation & tooling                                       | ✅ Done (owner signed off 2026-10-21) |
 | 1     | Design system, layout, theming, i18n skeleton              | ✅ Done (owner signed off 2026-10-22) |
-| 2     | Supabase core, auth & profiles                             | 📝 Plan awaiting owner approval       |
+| 2     | Supabase core, auth & profiles                             | 🚧 In progress                        |
 | 3     | Game SDK & first games (2048, Sudoku, Snake)               | ⏳ Not started                        |
 | 4     | Bots, hotseat & timers                                     | ⏳ Not started                        |
 | 5     | Multiplayer core                                           | ⏳ Not started                        |
@@ -288,7 +288,7 @@ All 10 steps are committed on `main` (local, not yet pushed). Format, lint, cont
    - `ensureIdentity()` creates an anonymous user on first need (used from Phase 5), plus the reusable "I am 13 or older" confirmation.
    - Upgrade keeps the same user id: email/password via `updateUser`, or OAuth via `linkIdentity`.
    - Signing in to an existing account offers a merge: the Edge Function `merge-guest` checks both sessions, moves the guest's rows, deletes the guest and writes the audit log. There's a clear confirmation screen.
-   - Inactive anonymous users are cleaned up (Q4).
+   - Guest accounts are kept indefinitely (Q4).
 10. **Profile page.**
     - `/[locale]/u/[nickname]` is Worker-rendered for link previews, with Open Graph tags.
     - It shows only public fields: avatar, nickname, level, join date, country flag and bio.
@@ -331,16 +331,16 @@ All 10 steps are committed on `main` (local, not yet pushed). Format, lint, cont
 - **Edge Functions run on Deno,** so they need their own lint and typecheck path in CI (step 6).
 - **OAuth testing depends on the owner's dev apps.** Facebook may only work for app admins.
 
-### Open questions for the owner
+### Owner answers (2026-10-22)
 
-- **Q1:** Docker Desktop: can you install it now? (Required.)
-- **Q2:** OAuth dev apps: create them as step 2's RUNBOOK section describes. Which providers can you set up now?
-- **Q3:** Blocked-terms list for nicknames and bios: proposed source is the LDNOOBW lists (CC BY 4.0, many of our languages, credited on the Credits page), plus a Bulgarian list from you or one I draft for your review. Phase 8 reuses it for chat.
-- **Q4:** Inactive guest accounts: delete anonymous users with no activity for 30 days?
+- **Q1 — Docker Desktop:** installed.
+- **Q2 — OAuth:** the owner will create dev apps for all four providers (Google, Discord, Twitch, Facebook) following the RUNBOOK section from step 2.
+- **Q3 — Blocked terms:** LDNOOBW lists (CC BY 4.0, credited on the Credits page), plus a Bulgarian list I draft for the owner's review.
+- **Q4 — Guest accounts:** **keep them forever**. No automatic cleanup of anonymous users. They hold no personal data (no email, no birth year), only gameplay data from later phases.
 
 ### Status
 
-- [ ] Plan approved by owner
+- [x] Plan approved by owner (answers above, 2026-10-22)
 
 ---
 

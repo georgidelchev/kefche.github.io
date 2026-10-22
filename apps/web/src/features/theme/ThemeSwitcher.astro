@@ -1,0 +1,62 @@
+---
+import { Monitor, Moon, Sun, type LucideIcon } from "lucide-react";
+
+import type { ThemePreference } from "./theme";
+
+export interface ThemeSwitcherLabels {
+  legend: string;
+  light: string;
+  dark: string;
+  system: string;
+}
+
+interface Props {
+  labels: ThemeSwitcherLabels;
+  /** Radio group name; must be unique on the page. */
+  name: string;
+}
+
+const { labels, name } = Astro.props;
+
+const OPTIONS: readonly { value: ThemePreference; Icon: LucideIcon }[] = [
+  { value: "light", Icon: Sun },
+  { value: "dark", Icon: Moon },
+  { value: "system", Icon: Monitor },
+];
+---
+
+<!--
+  Light / Dark / System as a native radio group (keyboard and screen readers for
+  free). The highlight follows <html data-theme>, which BootScript sets before
+  paint, so it never flickers; theme.client.ts keeps the radios' checked state
+  in sync.
+-->
+<fieldset class="inline-flex rounded-full border border-border-strong bg-surface-2 p-0.5">
+  <legend class="sr-only">{labels.legend}</legend>
+  {OPTIONS.map(({ value, Icon }) => (
+    <label
+      data-theme-option={value}
+      class="relative inline-flex size-11 cursor-pointer items-center justify-center rounded-full text-muted transition-colors hover:text-text has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-focus motion-reduce:transition-none"
+    >
+      <input type="radio" name={name} value={value} data-theme-input class="sr-only" />
+      <Icon aria-hidden="true" className="size-5" />
+      <span class="sr-only">{labels[value]}</span>
+    </label>
+  ))}
+</fieldset>
+
+<style>
+  :global(:root:not([data-theme])) [data-theme-option="system"],
+  :global(:root[data-theme="light"]) [data-theme-option="light"],
+  :global(:root[data-theme="dark"]) [data-theme-option="dark"] {
+    background-color: var(--surface);
+    color: var(--text);
+    box-shadow:
+      0 1px 3px 0 rgb(0 0 0 / 0.1),
+      0 1px 2px -1px rgb(0 0 0 / 0.1);
+  }
+</style>
+
+<script>
+  import "@/features/theme/theme.client";
+</script>

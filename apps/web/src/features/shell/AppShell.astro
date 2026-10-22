@@ -14,7 +14,7 @@ import {
 
 import Logo from "@/components/Logo.astro";
 import LanguageSwitcher from "@/features/i18n/LanguageSwitcher.astro";
-import { ThemeSwitcher } from "@/features/theme/ThemeSwitcher";
+import ThemeSwitcher from "@/features/theme/ThemeSwitcher.astro";
 import { getT } from "@/i18n/i18n";
 import type { Locale } from "@/i18n/locales";
 import BaseLayout from "@/layouts/BaseLayout.astro";
@@ -136,7 +136,7 @@ const focusRing =
       <!-- Inline controls from 1024px; below that they live in the settings panel. -->
       <div class="hidden items-center gap-2 lg:flex">
         <LanguageSwitcher locale={locale} path={path} label={t("common:language.label")} />
-        <ThemeSwitcher client:idle labels={themeLabels} />
+        <ThemeSwitcher labels={themeLabels} name="theme-header" />
       </div>
 
       <details class="relative ms-auto lg:hidden" data-popover>
@@ -167,7 +167,7 @@ const focusRing =
           </form>
           <div class="grid gap-2">
             <p class="text-sm font-semibold text-muted">{t("common:theme.legend")}</p>
-            <ThemeSwitcher client:visible labels={themeLabels} />
+            <ThemeSwitcher labels={themeLabels} name="theme-panel" />
           </div>
           <div class="grid gap-2">
             <p class="text-sm font-semibold text-muted">{t("common:language.label")}</p>
