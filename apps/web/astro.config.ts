@@ -71,9 +71,10 @@ export default defineConfig({
   ],
   vite: {
     plugins: [tailwindcss()],
-    // Dev only: pre-bundle these up front. Otherwise Vite discovers
-    // astro:i18n late on a cold start, re-optimizes mid-request and React
-    // renders with two copies ("Invalid hook call") until the reload.
+    // Dev only: pre-bundle these up front. Otherwise Vite discovers them late
+    // (on a cold start or after new packages are installed), re-optimizes
+    // mid-request, and the page fails ("Invalid hook call", or a missing
+    // .vite/deps_ssr file) until the dev server restarts.
     ssr: {
       optimizeDeps: {
         include: [
@@ -81,6 +82,9 @@ export default defineConfig({
           "react",
           "react-dom/server.edge",
           "lucide-react",
+          "i18next",
+          "i18next-icu",
+          "zod",
         ],
       },
     },
