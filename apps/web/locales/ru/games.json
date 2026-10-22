@@ -19,7 +19,6 @@
   "players": "{min, plural, one {# игрок} few {# игрока} many {# игроков} other {# игрока}}",
   "playersRange": "{min}–{max} игроков",
   "minutes": "{min}–{max} мин",
-  "offline": "Работает офлайн",
   "sections": {
     "about": "Об игре {name}",
     "howToPlay": "Как играть",

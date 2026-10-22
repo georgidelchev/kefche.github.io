@@ -1,11 +1,11 @@
 {
   "name": "सुडोकू",
   "tagline": "ग्रिड भरें ताकि हर पंक्ति, स्तंभ और बॉक्स में 1 से 9 तक के अंक हों।",
-  "description": "अपने ब्राउज़र में मुफ़्त सुडोकू खेलें: आसान से विशेषज्ञ तक नई पहेलियाँ, नोट्स, संकेत और पूर्ववत के साथ। फ़ोन, टैबलेट और कंप्यूटर पर, ऑफ़लाइन भी।",
+  "description": "अपने ब्राउज़र में मुफ़्त सुडोकू खेलें: आसान से विशेषज्ञ तक नई पहेलियाँ, नोट्स, संकेत और पूर्ववत के साथ। फ़ोन, टैबलेट और कंप्यूटर पर।",
   "about": [
     "Sudoku is a logic puzzle played on a 9 × 9 grid divided into nine 3 × 3 boxes. Some cells start with a digit. Your job is to fill every empty cell so that each row, each column and each box contains the digits 1 to 9 exactly once. There is no arithmetic: the numbers are just symbols, and every step comes from working out where a digit can and cannot go.",
     "Every puzzle here is created fresh when you start, and each one has exactly one solution, so you never need to guess. The four levels are graded by the techniques a person needs. Easy and medium puzzles fall to singles, the only place left for a digit. Hard puzzles need pointing pairs and naked pairs, and expert puzzles call for advanced patterns such as the X-wing.",
-    "The game runs in your browser, with nothing to install and no account. Your unfinished puzzle and your best time for each level stay on this device, so you can close the page and continue later. Once you have played, the game also works without an internet connection."
+    "The game runs in your browser, with nothing to install and no account. Your unfinished puzzle and your best time for each level stay on this device, so you can close the page and continue later."
   ],
   "howToPlay": [
     "Choose a difficulty, or continue the puzzle you left.",

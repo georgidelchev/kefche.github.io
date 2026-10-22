@@ -195,3 +195,26 @@ Storage files must be deleted through the Storage API, because deleting rows in 
 - **Scheduled work:** `pg_cron` runs `private.invoke_purge_accounts()` hourly, and it calls `purge-accounts` through `pg_net`. That function accepts only a shared secret (`verify_jwt = false`), compared in constant time. The function's URL and secret live in Vault, so the job does nothing until they're configured (RUNBOOK, "Account deletion job").
 
 **Consequences.** No service-role key appears outside Supabase. Scheduled work needs per-environment setup (Vault entries plus a function secret), which is documented in the RUNBOOK and part of Phase 21. Deno code follows its own lint rules rather than the repo's ESLint.
+
+---
+
+## ADR-0014: No offline mode
+
+**Date:** 2026-10-23 · **Status:** Accepted (owner decision)
+
+**Context.** The SPEC asked for single-player games that work offline after the first play, through a Workbox service worker (`@vite-pwa/astro`), an offline page and an `offline` flag per game. Phase 3 was about to add a minimal version. `@vite-pwa/astro` supports Astro only up to version 5, and the site runs Astro 7.
+
+**Decision.** The owner dropped offline mode from the requirements:
+
+- no service worker that caches pages, games or assets;
+- no offline page;
+- no `offline` field in game manifests, and no "works offline" badge or claim in any language.
+
+The Web Push service worker (Phase 8) is still allowed and handles push events only. Errors for a lost connection stay, as ordinary error states.
+
+**Consequences.**
+
+- The site needs a connection, and the game texts never promise otherwise.
+- A deploy reaches players on their next page load, so there is no update prompt to build, and no risk of an update mid-game.
+- Phase 16 covers install to the home screen, audio and haptics.
+- Adding offline play later would need a new ADR, a service worker and the claims put back.

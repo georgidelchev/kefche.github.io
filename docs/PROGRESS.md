@@ -19,7 +19,7 @@
 | 10    | Admin panel                                                | ⏳ Not started                        |
 | 11–14 | Game batches                                               | ⏳ Not started                        |
 | 15    | Translation pass & content packs                           | ⏳ Not started                        |
-| 16    | PWA, offline, audio & haptics polish                       | ⏳ Not started                        |
+| 16    | PWA, audio & haptics polish                                | ⏳ Not started                        |
 | 17    | Consent, legal, analytics, monitoring                      | ⏳ Not started                        |
 | 18    | Performance & accessibility pass                           | ⏳ Not started                        |
 | 19    | Security review                                            | ⏳ Not started                        |
@@ -153,7 +153,7 @@ All 10 steps are implemented as separate commits on `main` (local and not yet pu
 9. **Pages.**
    - Localized home: a minimal hero, with no fake content.
    - Localized 404 per locale (`/<locale>/404.html`; Cloudflare serves the nearest one).
-   - Localized offline page, used by the service worker in Phase 16.
+   - Localized offline page, used by the service worker in Phase 16. _(Removed on 2026-10-23: no offline mode, ADR-0014.)_
    - Dev-only `/[locale]/dev/ui` gallery with theme and RTL toggles. It isn't generated in production builds.
 10. **Verification and docs.** Run Lighthouse against `astro preview` on the home, 404 and dev/ui pages (accessibility ≥ 95). Take screenshots at 360/768/1280 px in both themes plus Arabic RTL. Finish `ADDING_A_LANGUAGE.md`, add the i18n section of `ARCHITECTURE.md`, and add ADRs (fonts, i18n stack, component library).
 
@@ -390,7 +390,7 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
 ## Phase 3 — Game SDK & first games
 
 **Goal (SPEC §22):** `game-sdk` (manifest schema, registry, seeded PRNG, engine kinds, timers, bot worker harness, renderer helpers, input/touch controls, stage scaling, pause/resume, sound/haptics service), the `new:game` generator, a game page template with SEO sections, catalog and category pages, solo mode, and **2048, Sudoku, Snake** end to end.
-**DoD:** the three games are fully playable on phones, tablets and desktop, offline-capable, and documented in `ADDING_A_GAME.md`. Plus the standing DoD.
+**DoD:** the three games are fully playable on phones, tablets and desktop, and documented in `ADDING_A_GAME.md`. Plus the standing DoD.
 
 ### Steps (one Conventional Commit each)
 
@@ -418,7 +418,7 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
    - notes, hints, an "highlight errors" toggle and keyboard entry;
    - generation in a Web Worker so the UI never freezes.
 9. **Snake:** classic grid snake on Canvas; swipe, D-pad and arrow keys; speed levels; walls or wrap-around.
-10. **Offline.** Q2 below.
+10. _(Dropped on 2026-10-23: the owner removed offline mode from the requirements, ADR-0014.)_
 11. **Art.** A thumbnail and hero art per game, plus category icons, all generated as SVG in the site's style. Q1 below.
 12. **Verification and docs.**
     - Play each game on 360, 768 and 1280 px in both themes, plus Arabic. The game boards are never mirrored.
@@ -429,7 +429,7 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
 
 - **Solo only** in this phase. Race mode (several players on the same seed) needs multiplayer (Phase 5). Leaderboards, stats and achievements need Phase 7, so best scores are stored on the device for now.
 - **No heavy libraries yet:** 2048 and Sudoku use the DOM, and Snake uses Canvas 2D (SPEC §3). PixiJS, Matter.js and Howler arrive with the games that need them.
-- **Catalog filters (step 6):** search over localized names, category chips and A–Z order now. SPEC §6.6 also lists filters by player count, mode, duration and offline, and sorting by popular and new. The filters come when games differ on them (modes in Phases 4–5), "popular" needs play stats (Phase 7), and "new" needs a release date in the admin `games` table (Phase 10). Categories with no games get no page.
+- **Catalog filters (step 6):** search over localized names, category chips and A–Z order now. SPEC §6.6 also lists filters by player count, mode and duration, and sorting by popular and new. The filters come when games differ on them (modes in Phases 4–5), "popular" needs play stats (Phase 7), and "new" needs a release date in the admin `games` table (Phase 10). Categories with no games get no page.
 - **Sudoku levels (step 8):** graded by the hardest technique a logic solver needs. Easy: singles only, 38 givens. Medium: singles only, at most 34 givens. Hard: pointing/claiming or naked/hidden pairs and triples. Expert: X-wing or more. Every puzzle has exactly one solution, comes from the seed (race mode and replays get the same grid) and is generated in a Web Worker in a few milliseconds. The unfinished puzzle and the best time per level are kept on the device.
 - **Snake (step 9):** a 20 × 20 grid. There are three speeds (160, 115 and 80 ms per step at the start, then 2% faster per food down to 60%), worth 1, 2 and 3 points per food. The edges are walls or wrap-around, and the best score is kept per speed and edge setting. Time is a stream of `tick` actions in the engine, so a game replays exactly from its seed and inputs. The D-pad shows on touch screens (`pointer: coarse`), the game waits for the first direction, and New game or Play again restart with the same settings.
 - **URLs:** games and categories share `/[locale]/games/<slug>/`; the registry fails the build if a game id is also a category name. The header search opens the catalog with `?q=`.
@@ -452,6 +452,10 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
 - **Q1 — Art:** yes, show 2–3 directions to pick from.
 - **Q2 — Offline:** add a minimal service worker now that caches each game after first play; install prompts and update-flow polish stay in Phase 16.
 - **Q3 — Sound:** CC0 sound effects (Kenney) with a mute button now.
+
+### Owner decision (2026-10-23)
+
+- **Offline mode dropped** from the requirements (ADR-0014), replacing the Q2 answer. There's no service worker cache, no offline page, no `offline` manifest field, and no offline claims in any language. The Web Push service worker (Phase 8) stays allowed for push only.
 
 ### Status
 

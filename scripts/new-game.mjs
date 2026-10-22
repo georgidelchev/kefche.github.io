@@ -77,7 +77,6 @@ export const manifest = defineManifest({
   orientation: "any",
   controls: ["tap", "keyboard"],
   renderer: "dom",
-  offline: true,
   estimatedMinutes: [2, 10],
   leaderboards: [{ id: "best-score", metric: "score", order: "desc" }],
   achievements: [],

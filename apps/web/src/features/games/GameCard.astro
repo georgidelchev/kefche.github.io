@@ -1,6 +1,6 @@
 ---
 import { getRelativeLocaleUrl } from "astro:i18n";
-import { Clock, Users, WifiOff } from "lucide-react";
+import { Clock, Users } from "lucide-react";
 
 import { getT } from "@/i18n/i18n";
 import type { Locale } from "@/i18n/locales";
@@ -67,12 +67,6 @@ const search = [text.name, game.text.en.name, text.tagline, category]
           max: manifest.estimatedMinutes[1],
         })}
       </li>
-      {manifest.offline && (
-        <li class="flex items-center gap-1">
-          <WifiOff aria-hidden="true" className="size-3.5" />
-          {t("games:offline")}
-        </li>
-      )}
     </ul>
   </article>
 </li>

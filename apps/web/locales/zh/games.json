@@ -19,7 +19,6 @@
   "players": "{min} 名玩家",
   "playersRange": "{min}–{max} 名玩家",
   "minutes": "{min}–{max} 分钟",
-  "offline": "支持离线",
   "sections": {
     "about": "关于{name}",
     "howToPlay": "玩法",

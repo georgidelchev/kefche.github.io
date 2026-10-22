@@ -13,7 +13,7 @@ You are the lead engineer building **kefche**, a production-grade, multilingual,
 
 1. **Work in phases** (Section 22). Do one phase at a time. Each phase is split into small, reviewable steps. Never start the next phase until the current one meets its Definition of Done and the owner confirms.
 2. **Plan before coding.** At the start of each phase, write a short plan (files to create/change, decisions, risks) into `docs/PROGRESS.md` and show it to the owner. Use plan mode for anything non-trivial.
-3. **Verify, don't assume.** Library APIs change. Before using any library or service (Astro, Supabase, Tailwind, PixiJS, Matter.js, chess.js, Stockfish, i18next, Workbox/vite-pwa, GIPHY, Sentry, Resend, Cloudflare), check its current official documentation and use the **latest stable version**. Pin exact versions in `package.json`. Record notable choices in `docs/DECISIONS.md` (short ADR entries: context, decision, consequences).
+3. **Verify, don't assume.** Library APIs change. Before using any library or service (Astro, Supabase, Tailwind, PixiJS, Matter.js, chess.js, Stockfish, i18next, GIPHY, Sentry, Resend, Cloudflare), check its current official documentation and use the **latest stable version**. Pin exact versions in `package.json`. Record notable choices in `docs/DECISIONS.md` (short ADR entries: context, decision, consequences).
 4. **Every step must leave the repo green:** `pnpm lint`, `pnpm typecheck`, `pnpm build` pass. The full automated test suite is written in the dedicated testing phases at the end (owner's request), but write code so it is easy to test: pure functions, dependency injection, no hidden globals.
 5. **Commit per step** using Conventional Commits (`feat(games): add reversi engine`). Keep commits small and focused.
 6. **No placeholders in shipped code.** No `TODO` without an issue reference in `docs/PROGRESS.md`, no lorem ipsum, no fake data presented as real. Seed/demo data lives only in `supabase/seed.sql` and is clearly marked.
@@ -46,7 +46,7 @@ You are the lead engineer building **kefche**, a production-grade, multilingual,
 - **Accessibility:** WCAG 2.2 AA for all non-game UI. Keyboard navigable, visible focus, proper labels, color contrast ≥ 4.5:1 for text, `prefers-reduced-motion` respected. Games: keyboard support where it makes sense, color-blind-safe player colors (always paired with a shape or pattern), screen-reader move announcements for board games (chess, checkers, etc.).
 - **Performance budgets (mobile, mid-range Android, 4G):** LCP < 2.5 s, CLS < 0.05, INP < 200 ms on content pages. Initial JS on content pages ≤ 120 KB gzip. Each game is lazy-loaded; heavy libraries (PixiJS, Matter.js, Stockfish) load only for games that need them. Games target 60 fps; cap devicePixelRatio at 2 for canvases.
 - **Security:** Row Level Security on every table, least privilege, no service-role key in client code, strict CSP, no `dangerouslySetInnerHTML` with user content, rate limiting on all write endpoints (Section 18).
-- **Resilience:** Every async UI state has loading, empty, error and offline variants. Network failures never crash a game; show a reconnecting state.
+- **Resilience:** Every async UI state has loading, empty and error variants (a lost connection included). Network failures never crash a game; show a reconnecting state.
 - **Internationalization:** No hard-coded user-facing strings anywhere, including games, bots' chat lines, errors, emails and notifications.
 - **Observability:** Sentry for client and Edge Function errors (after consent where required), structured logs in Edge Functions.
 - **Docs:** README with setup in ≤ 10 commands, architecture overview, how to add a game, how to add a language, deployment runbook.
@@ -74,7 +74,7 @@ You are the lead engineer building **kefche**, a production-grade, multilingual,
 | Audio | **Howler.js** | Lazy-loaded; muted until first interaction. |
 | GIFs | **GIPHY API** via an Edge Function proxy | Rating `pg-13`, attribution "Powered by GIPHY". |
 | Profanity filter | Multilingual word lists + the `obscenity` library for English | Server-side enforcement in Edge Functions/DB; client-side pre-check for UX only. |
-| PWA | **@vite-pwa/astro** (Workbox) | Offline single-player games, install prompt, update prompt. |
+| PWA | Web App Manifest; no offline caching (ADR-0014) | Install to the home screen. |
 | Push | Web Push (VAPID) via Edge Function | iOS requires installed PWA (iOS 16.4+). |
 | Email | Supabase Auth with custom SMTP via **Resend** | Configured at the end when the domain exists (Phase 21). |
 | Hosting | **Cloudflare Pages** | `_headers` for CSP and caching. |
@@ -185,12 +185,12 @@ Define as CSS variables, with full light and dark sets. Colors must pass contras
 
 ### 6.6 Key Screens
 - **Home:** quick "Play now" hero with a random featured game, Continue Playing (recent games), Daily Challenge card, categories rail, Featured/New/Hot games, Live public lobbies, Friends online (if logged in), mini leaderboards, news ticker (admin-managed, multilingual).
-- **Games catalog:** search (fuzzy, localized names), filters (category, player count, mode, duration, offline-capable), sort (popular, new, A–Z). Grid of game cards with thumbnail, name, player range badge (e.g. "1–4"), mode icons.
+- **Games catalog:** search (fuzzy, localized names), filters (category, player count, mode, duration), sort (popular, new, A–Z). Grid of game cards with thumbnail, name, player range badge (e.g. "1–4"), mode icons.
 - **Game page (SEO page):** title, hero art, primary actions: **Play solo vs bots**, **Play on this device**, **Create lobby**, **Quick match**, **Join with code**; player-count selector within the game's limits; then localized sections: About, How to play, Controls (touch/keyboard), Tips, FAQ; your stats (if logged in), top-10 leaderboard, related games.
 - **Lobby:** game settings (Section 10.3), seat list with avatars, ready states, per-seat "add bot" with difficulty, host controls (kick, transfer host, start), invite panel (copy link, share sheet via `navigator.share`, QR code, room code), lobby chat, spectator count.
 - **In-game HUD:** players with avatars, scores, timers, turn indicator, connection status per player, chat drawer, emoji reactions, menu (pause in solo, settings, rules, report player, leave).
 - **Results screen:** placement, score, rating change, XP gained, achievements unlocked, rematch, back to lobby, share result.
-- **Profile, Friends, Messages, Notifications, Leaderboards, Achievements, Daily, Settings, Admin, Legal pages, Credits, 404, Offline page.**
+- **Profile, Friends, Messages, Notifications, Leaderboards, Achievements, Daily, Settings, Admin, Legal pages, Credits, 404.**
 
 ---
 
@@ -284,7 +284,6 @@ interface GameManifest {
   controls: Array<'tap' | 'drag' | 'swipe' | 'joystick' | 'keyboard' | 'mouse'>;
   renderer: 'dom' | 'canvas' | 'pixi';
   physics?: 'matter';
-  offline: boolean;            // playable offline (solo/hotseat)
   estimatedMinutes: [number, number];
   contentPacks?: string[];     // locales with content packs
   leaderboards: LeaderboardDef[]; // e.g. best score, fastest time, rating
@@ -461,11 +460,10 @@ Use SQL migrations. Every table has RLS enabled with explicit policies, `created
 
 ---
 
-## 16. PWA, Offline, Audio & Haptics
+## 16. PWA, Audio & Haptics
 
 - Web App Manifest (name, short_name "kefche", icons incl. maskable, theme colors for both themes, `display: standalone`, shortcuts to Daily Challenge and Continue Playing).
-- Service worker (Workbox via @vite-pwa/astro): precache the app shell; runtime-cache game bundles and assets after first play so **single-player and hotseat modes of games marked `offline: true` work offline**. Offline page lists available offline games. Online-only features show a clear offline state.
-- Update flow: "New version available — Reload" toast; never update mid-game.
+- **No offline mode** (owner decision, ADR-0014): the site and its games need a connection. No service worker caches pages, games or assets, so a deploy reaches players on their next page load. The only service worker is the one Web Push needs (Phase 8), and it handles push events only.
 - Install prompt: custom, non-intrusive banner after the 2nd visit or 3rd game, dismissible, with iOS "Add to Home Screen" instructions.
 - **Audio:** sound effects and optional music per game (licensed), master/music/effects volume, mute toggle in HUD, audio unlocked only after user interaction.
 - **Haptics:** `navigator.vibrate` where supported for key events (hit, win, low time), toggle in settings.
@@ -648,7 +646,7 @@ Players column = min–max (default in parentheses). "Bots" means bots can fill 
 | 99 | `kart-race` | Kart Race | 1–8 (4) | realtime | Top-down tracks, items limited to fair power-ups. |
 | 100 | `beach-volley` | Beach Volleyball | 2–4 (2) | realtime | 1v1 or 2v2, simple physics. |
 
-> **Adding game #101 and beyond:** run `pnpm new:game`, implement engine/renderer/bots/i18n, add credits, register nothing manually. Document the process in `docs/ADDING_A_GAME.md` with a checklist (engine rules, determinism, bots, lobby limits, timers, leaderboards, achievements, i18n in all locales, SEO content, offline flag, accessibility, performance budget, credits).
+> **Adding game #101 and beyond:** run `pnpm new:game`, implement engine/renderer/bots/i18n, add credits, register nothing manually. Document the process in `docs/ADDING_A_GAME.md` with a checklist (engine rules, determinism, bots, lobby limits, timers, leaderboards, achievements, i18n in all locales, SEO content, accessibility, performance budget, credits).
 
 ---
 
@@ -659,7 +657,7 @@ Players column = min–max (default in parentheses). "Bots" means bots can fill 
 - **Component (Testing Library):** auth forms, lobby settings, chat input, consent banner, settings.
 - **Database (pgTAP via `supabase test db`):** every RLS policy (positive and negative cases), role checks, `room_secrets` isolation, audit-log immutability, rate-limit functions.
 - **Edge Functions:** unit tests in Deno for `submit-match`, `deal-secrets`, `gif-search`, moderation, matchmaking, data export/delete.
-- **E2E (Playwright):** mobile (iPhone/Android emulation), tablet and desktop projects. Critical flows: guest plays a solo game; register and verify (Supabase local Inbucket/Mailpit); OAuth mocked; create lobby → second browser context joins via link → play a full Four in a Row match → stats updated; chess rated match with clocks; reconnect and seat reclaim; host migration; chat with report and moderation action; admin disables a game; language switching incl. Arabic RTL; theme persistence across devices; offline solo play; consent banner blocks analytics until accepted.
+- **E2E (Playwright):** mobile (iPhone/Android emulation), tablet and desktop projects. Critical flows: guest plays a solo game; register and verify (Supabase local Inbucket/Mailpit); OAuth mocked; create lobby → second browser context joins via link → play a full Four in a Row match → stats updated; chess rated match with clocks; reconnect and seat reclaim; host migration; chat with report and moderation action; admin disables a game; language switching incl. Arabic RTL; theme persistence across devices; consent banner blocks analytics until accepted.
 - **Accessibility:** axe-core checks in Playwright for all main pages in light and dark themes.
 - **Performance:** Lighthouse CI on key pages (home, catalog, a game page) with budgets from Section 2.
 - **CI:** GitHub Actions running all of the above on pull requests; main branch deploys to Cloudflare Pages; migrations applied to Supabase via CLI with a manual approval step.
@@ -675,7 +673,7 @@ pnpm monorepo, Astro + React + TS strict, Tailwind with tokens, ESLint/Prettier,
 *DoD:* `pnpm dev` runs; CI green; preview deploy URL works.
 
 **Phase 1 — Design system, layout, theming, i18n skeleton**
-Tokens (light/dark), theme switching without flash, typography, core components (button, input, card, dialog, sheet, tabs, toast, avatar, badge, skeleton, empty/error states), app shell with responsive navigation (bottom bar on phones), logo SVG, i18n routing for all 11 locales with locale detection and switcher, RTL support verified in Arabic, 404 and offline pages.
+Tokens (light/dark), theme switching without flash, typography, core components (button, input, card, dialog, sheet, tabs, toast, avatar, badge, skeleton, empty/error states), app shell with responsive navigation (bottom bar on phones), logo SVG, i18n routing for all 11 locales with locale detection and switcher, RTL support verified in Arabic, 404 page.
 *DoD:* Storybook-like `/[locale]/dev/ui` page (dev only) shows all components in both themes and in RTL; Lighthouse accessibility ≥ 95.
 
 **Phase 2 — Supabase core, auth & profiles**
@@ -684,7 +682,7 @@ Migrations for profiles, roles, settings, consent, audit log, rate limits; RLS; 
 
 **Phase 3 — Game SDK & first games**
 `game-sdk` (manifest schema, registry, seeded PRNG, engine kinds, timers, bot worker harness, renderer helpers, input/touch controls, game stage scaling, pause/resume, sound/haptics service), `new:game` generator, game page template with SEO sections, catalog and category pages, solo mode. Implement **2048, Sudoku, Snake** end-to-end as reference games.
-*DoD:* The three games are fully playable on phones/tablets/desktop, offline-capable, documented in `ADDING_A_GAME.md`.
+*DoD:* The three games are fully playable on phones/tablets/desktop, documented in `ADDING_A_GAME.md`.
 
 **Phase 4 — Bots, hotseat & timers**
 Bot difficulties, Web Worker bots, hotseat mode, timer presets UI. Implement **Four in a Row, Reversi, Dots and Boxes** with bots and hotseat.
@@ -715,16 +713,16 @@ All sections in Section 14 with role checks, audit logging, and responsive layou
 *DoD:* Moderators and admins can perform every listed action; every action appears in the audit log.
 
 **Phases 11–14 — Game batches**
-Implement the remaining games in batches of ~20–25, grouped by shared mechanics to maximize reuse (e.g. card-game toolkit with server-side dealing in one batch; physics games together; word games with content pipeline together; party games with secret roles together). For each game: engine, bots, renderer, controls (touch + keyboard), lobby limits, timers, leaderboards, achievements, i18n strings, SEO content, credits, offline flag.
+Implement the remaining games in batches of ~20–25, grouped by shared mechanics to maximize reuse (e.g. card-game toolkit with server-side dealing in one batch; physics games together; word games with content pipeline together; party games with secret roles together). For each game: engine, bots, renderer, controls (touch + keyboard), lobby limits, timers, leaderboards, achievements, i18n strings, SEO content, credits.
 *DoD per batch:* every game in the batch is complete per `ADDING_A_GAME.md` checklist and playable in all its declared modes.
 
 **Phase 15 — Translation pass & content packs**
 Complete UI translations for all 11 locales (natural, reviewed quality; no machine-literal phrasing), SEO content per game per locale, content packs for word/party games per language with licensing recorded; hide games for languages without packs.
 *DoD:* `pnpm i18n:check` passes for all locales; spot-check RTL and CJK layouts.
 
-**Phase 16 — PWA, offline, audio & haptics polish**
+**Phase 16 — PWA, audio & haptics polish**
 Per Section 16.
-*DoD:* Installable on Android and iOS; offline solo games verified; update flow safe mid-game.
+*DoD:* Installable on Android and iOS; audio and haptics verified on phones.
 
 **Phase 17 — Consent, legal, analytics, monitoring**
 Consent banner and records, legal page templates, Credits page, Cloudflare Web Analytics and Sentry gated by consent, security headers/CSP.

@@ -1,11 +1,11 @@
 {
   "name": "スネーク",
   "tagline": "食べて、伸びて、自分のしっぽはかまないで。",
-  "description": "ブラウザで無料で遊べるスネーク。ヘビをエサへ導いて、できるだけ長く伸ばそう。3 段階のスピード、壁あり・壁なしを選べて、オフラインでも遊べます。",
+  "description": "ブラウザで無料で遊べるスネーク。ヘビをエサへ導いて、できるだけ長く伸ばそう。3 段階のスピードと、壁あり・壁なしを選べます。",
   "about": [
     "Snake is one of the oldest arcade ideas there is. You steer a snake around a grid toward a piece of food. Each piece you eat makes the snake one segment longer and adds to your score, and a new piece appears somewhere else. The longer the snake gets, the less room you have, and the game ends when the snake runs into its own body.",
     "This version has three speeds. Slow is relaxed and good for learning, normal is the classic pace, and fast is for quick reflexes. Faster speeds earn more points per piece of food, and the snake speeds up a little more with every piece it eats. You can also choose the edges: with walls the game ends if you hit the border, and with wrap-around the snake comes out on the opposite side.",
-    "The game runs in your browser, with nothing to install and no account. Your best score for each speed and edge setting is kept on this device, and once you have played, the game also works without an internet connection."
+    "The game runs in your browser, with nothing to install and no account, and your best score for each speed and edge setting is kept on this device."
   ],
   "howToPlay": [
     "Choose a speed and whether the edges are walls or wrap around, then press Start.",

@@ -3,10 +3,5 @@
     "title": "Página não encontrada",
     "body": "Não encontramos esta página. O link pode estar errado ou a página pode ter mudado de lugar.",
     "home": "Ir para o início"
-  },
-  "offline": {
-    "title": "Você está offline",
-    "body": "Verifique sua conexão com a internet e tente de novo.",
-    "retry": "Tentar de novo"
   }
 }

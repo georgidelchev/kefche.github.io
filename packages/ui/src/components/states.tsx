@@ -2,8 +2,9 @@ import { cn } from "../lib/cn";
 
 import type * as React from "react";
 
-// Shared empty / error / offline views (SPEC §2: every async UI state has
-// loading, empty, error and offline variants). All text arrives translated.
+// Shared empty and error views (SPEC §2: every async UI state has loading,
+// empty and error variants, a lost connection included). All text arrives
+// translated.
 
 interface StateProps {
   icon?: React.ReactNode;

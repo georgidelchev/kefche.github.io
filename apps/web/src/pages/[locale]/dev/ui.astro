@@ -1,6 +1,6 @@
 ---
 import { getRelativeLocaleUrl } from "astro:i18n";
-import { Inbox, RefreshCw, TriangleAlert, WifiOff } from "lucide-react";
+import { Inbox, RefreshCw, TriangleAlert } from "lucide-react";
 
 import { UserAvatar } from "@kefche/ui/components/avatar";
 import { Badge } from "@kefche/ui/components/badge";
@@ -254,9 +254,9 @@ const h2Class = "text-2xl";
 
     <section class={sectionClass} aria-labelledby="states">
       <h2 id="states" class={h2Class}>
-        Empty, error and offline states
+        Empty and error states
       </h2>
-      <div class="grid gap-4 md:grid-cols-3">
+      <div class="grid gap-4 md:grid-cols-2">
         <EmptyState
           title="No friends yet"
           description="Invite someone with a link, or add a player from a match."
@@ -269,9 +269,6 @@ const h2Class = "text-2xl";
         >
           <TriangleAlert slot="icon" />
         </ErrorState>
-        <EmptyState title={t("errors:offline.title")} description={t("errors:offline.body")}>
-          <WifiOff slot="icon" />
-        </EmptyState>
       </div>
     </section>
 

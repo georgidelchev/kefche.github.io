@@ -17,7 +17,6 @@ export const manifest = defineManifest({
   orientation: "any",
   controls: ["tap", "keyboard"],
   renderer: "dom",
-  offline: true,
   estimatedMinutes: [5, 40],
   leaderboards: [
     { id: "best-time-easy", metric: "time", order: "asc" },

@@ -19,7 +19,6 @@
   "players": "{min} 人用",
   "playersRange": "{min}～{max} 人",
   "minutes": "{min}～{max} 分",
-  "offline": "オフラインで遊べる",
   "sections": {
     "about": "{name}について",
     "howToPlay": "遊び方",

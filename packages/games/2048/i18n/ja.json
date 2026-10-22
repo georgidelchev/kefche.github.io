@@ -1,11 +1,11 @@
 {
   "name": "2048",
   "tagline": "スライドして合体、2048 のタイルを目指そう。",
-  "description": "ブラウザで 2048 を無料でプレイ。タイルをスライドして同じ数字を合体させ、2048 を目指します。スマホ、タブレット、PC で、オフラインでも遊べます。",
+  "description": "ブラウザで 2048 を無料でプレイ。タイルをスライドして同じ数字を合体させ、2048 を目指します。スマホ、タブレット、PC で遊べます。",
   "about": [
     "2048 is a sliding puzzle played on a 4 × 4 grid. Every move pushes all tiles as far as they can go in one direction. When two tiles with the same number collide, they merge into one tile worth their sum, and a new 2 or 4 appears in an empty cell.",
     "The goal is simple to explain and hard to reach: build a single tile with the number 2048. Each merge also adds its value to your score, so even when the board fills up you can keep chasing a better result. Reaching 2048 doesn't end the game; you can keep going for 4096 and beyond.",
-    "The game here runs entirely in your browser. There is nothing to install and no account is needed, your best score is remembered on this device, and once you have played it the game also works without an internet connection."
+    "The game here runs entirely in your browser. There is nothing to install and no account is needed, and your best score is remembered on this device."
   ],
   "howToPlay": [
     "Swipe on the board, or press an arrow key or W, A, S or D, to slide every tile in that direction.",
@@ -39,8 +39,8 @@
       "answer": "Yes, once per game. The undo button takes back your last move."
     },
     {
-      "question": "Does it work offline?",
-      "answer": "Yes. After you have played once, the game is saved on your device and works without a connection."
+      "question": "Is my best score saved?",
+      "answer": "Yes. Your best score is kept on this device, so it's still there the next time you play here."
     }
   ],
   "ui": {

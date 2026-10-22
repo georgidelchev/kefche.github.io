@@ -1,6 +1,6 @@
 ---
 import { getRelativeLocaleUrl } from "astro:i18n";
-import { Clock, Users, WifiOff } from "lucide-react";
+import { Clock, Users } from "lucide-react";
 
 import JsonLd from "@/components/JsonLd.astro";
 import AppShell from "@/features/shell/AppShell.astro";
@@ -45,7 +45,6 @@ const facts = [
       max: manifest.estimatedMinutes[1],
     }),
   },
-  ...(manifest.offline ? [{ Icon: WifiOff, label: t("games:offline") }] : []),
 ];
 
 const jsonLd = [

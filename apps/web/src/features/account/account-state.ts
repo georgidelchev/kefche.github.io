@@ -62,7 +62,7 @@ export function setAccount(summary: AccountSummary | null): void {
  */
 export async function syncAccount(supabase: Supabase): Promise<AccountSummary | null> {
   const { data, error } = await supabase.auth.getSession();
-  if (error) return readAccountSummary(localStorageOrUndefined()); // offline: keep the cache
+  if (error) return readAccountSummary(localStorageOrUndefined()); // no connection: keep the cache
   const user = data.session?.user;
   if (!user || user.is_anonymous === true) {
     setAccount(null);

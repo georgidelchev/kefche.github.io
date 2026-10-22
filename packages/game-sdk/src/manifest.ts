@@ -77,8 +77,6 @@ export interface GameManifest {
   controls: Control[];
   renderer: "dom" | "canvas" | "pixi";
   physics?: "matter";
-  /** Playable offline (solo and hotseat). */
-  offline: boolean;
   estimatedMinutes: [number, number];
   /** Locales with content packs (word and party games). */
   contentPacks?: string[];

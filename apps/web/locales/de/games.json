@@ -19,7 +19,6 @@
   "players": "{min, plural, =1 {1 Spieler} other {# Spieler}}",
   "playersRange": "{min}–{max} Spieler",
   "minutes": "{min}–{max} Min.",
-  "offline": "Funktioniert offline",
   "sections": {
     "about": "Über {name}",
     "howToPlay": "So wird gespielt",

@@ -47,7 +47,6 @@ export const gameManifestSchema = z
     controls: z.array(z.enum(["tap", "drag", "swipe", "joystick", "keyboard", "mouse"])).min(1),
     renderer: z.enum(["dom", "canvas", "pixi"]),
     physics: z.literal("matter").optional(),
-    offline: z.boolean(),
     estimatedMinutes: z.tuple([z.int().positive(), z.int().positive()]),
     contentPacks: z.array(z.string()).optional(),
     leaderboards: z.array(

@@ -19,7 +19,6 @@
   "players": "{min, plural, =1 {1 играч} other {# играчи}}",
   "playersRange": "{min}–{max} играчи",
   "minutes": "{min}–{max} мин",
-  "offline": "Работи офлайн",
   "sections": {
     "about": "За {name}",
     "howToPlay": "Как се играе",

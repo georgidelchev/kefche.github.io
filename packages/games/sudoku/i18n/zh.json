@@ -1,11 +1,11 @@
 {
   "name": "数独",
   "tagline": "填满方格，让每行、每列和每个宫都包含 1 到 9。",
-  "description": "在浏览器中免费玩数独：从简单到专家的全新谜题，支持笔记、提示和撤销。手机、平板和电脑都能玩，离线也可以。",
+  "description": "在浏览器中免费玩数独：从简单到专家的全新谜题，支持笔记、提示和撤销。手机、平板和电脑都能玩。",
   "about": [
     "Sudoku is a logic puzzle played on a 9 × 9 grid divided into nine 3 × 3 boxes. Some cells start with a digit. Your job is to fill every empty cell so that each row, each column and each box contains the digits 1 to 9 exactly once. There is no arithmetic: the numbers are just symbols, and every step comes from working out where a digit can and cannot go.",
     "Every puzzle here is created fresh when you start, and each one has exactly one solution, so you never need to guess. The four levels are graded by the techniques a person needs. Easy and medium puzzles fall to singles, the only place left for a digit. Hard puzzles need pointing pairs and naked pairs, and expert puzzles call for advanced patterns such as the X-wing.",
-    "The game runs in your browser, with nothing to install and no account. Your unfinished puzzle and your best time for each level stay on this device, so you can close the page and continue later. Once you have played, the game also works without an internet connection."
+    "The game runs in your browser, with nothing to install and no account. Your unfinished puzzle and your best time for each level stay on this device, so you can close the page and continue later."
   ],
   "howToPlay": [
     "Choose a difficulty, or continue the puzzle you left.",

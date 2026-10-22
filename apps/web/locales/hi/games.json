@@ -19,7 +19,6 @@
   "players": "{min, plural, =1 {1 खिलाड़ी} other {# खिलाड़ी}}",
   "playersRange": "{min}–{max} खिलाड़ी",
   "minutes": "{min}–{max} मिनट",
-  "offline": "ऑफ़लाइन चलता है",
   "sections": {
     "about": "{name} के बारे में",
     "howToPlay": "कैसे खेलें",

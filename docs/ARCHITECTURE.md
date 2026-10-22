@@ -106,5 +106,5 @@ GitHub Actions `CI` runs format check → lint → contrast → translations →
 - Realtime message budget per game kind (SPEC §10.9) _(Phase 5, 9)_
 - Stats, ratings and result integrity _(Phase 6–7)_
 - Social, chat and moderation _(Phase 8)_
-- PWA and offline _(Phase 16)_
+- PWA install, audio and haptics _(Phase 16; no offline mode, ADR-0014)_
 - Consent, analytics and monitoring _(Phase 17)_
