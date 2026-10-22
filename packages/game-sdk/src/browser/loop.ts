@@ -42,7 +42,8 @@ export function createLoop(options: LoopOptions): Loop {
       if (!running) return; // the step ended or paused the game
     }
     options.render?.(accumulator / stepMs);
-    frame = requestAnimationFrame(tick);
+    // Render may pause the loop too (e.g. the player paused mid-step).
+    if (running) frame = requestAnimationFrame(tick);
   };
 
   const onVisibility = () => {
