@@ -17,6 +17,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 | `pnpm icons:generate`                    | Rebuild favicon and app icons from `packages/ui/src/brand/marks.ts`.        |
 | `pnpm db:start` / `db:stop` / `db:reset` | Local Supabase (needs Docker).                                              |
 | `pnpm db:terms`                          | New migration from the word lists in `supabase/blocked-terms/`.             |
+| `pnpm db:types`                          | Regenerate `apps/web/src/lib/supabase/database.gen.ts` (CI checks drift).   |
 | `pnpm --filter web run cf:deploy`        | Deploy to Cloudflare Workers (CI does this on `main`).                      |
 
 **Green before every commit:** `pnpm format:check && pnpm lint && pnpm check:contrast && pnpm i18n:check && pnpm typecheck && pnpm build`. The dev-only component gallery is at `/en/dev/ui/` (and `/ar/dev/ui/` for RTL).
@@ -44,6 +45,13 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 - **Client bundles:** use `zod/mini` in code that ships to the browser, and full `zod` on the server and at build time. Prefer static Astro markup plus a small `<script>` over a React island unless the component needs Radix or state.
 - **Components:** labels are props (no English defaults). Corner close buttons need a `closeLabel`. Pass `dir` to Radix components that use arrow keys.
 - **New pages:** wrap them in `AppShell`. A section's real page replaces its coming-soon entry: flip it to `available` in `features/shell/nav.ts`.
+- **Database:**
+  - **Migrations:** they live in `supabase/migrations/`. Never edit one that's already on `main`; add a new one.
+  - **After a schema change:** run `pnpm db:reset && pnpm db:types && pnpm exec supabase db lint --level warning`, and commit the regenerated types.
+  - **`private` schema:** internal tables and functions go there; the Data API doesn't expose it.
+  - **Public RPCs:** use `security definer` with `set search_path = ''`, check `auth.uid()`, and grant `execute` explicitly (revoke from `public`).
+  - **Under `search_path = ''`:** extension types and operators need their schema, as in `nickname operator(extensions.=) x::extensions.citext`.
+  - **Error codes:** errors meant for the client carry a stable code as the message (`nickname_taken`), which the app translates.
 - **Commits:** Conventional Commits, one small focused commit per step.
 
 ## Dependencies

@@ -54,6 +54,39 @@ jobs:
       - name: Build
         run: pnpm build
 
+  # Applies every migration to a fresh local Postgres, lints the schema, and
+  # checks that the committed database types match it. Auth, REST and the
+  # other services aren't needed: `supabase start` still runs their schema setup.
+  database:
+    name: Database
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SUPABASE_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+        with:
+          cache: true
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Start Postgres and apply migrations
+        run: pnpm exec supabase start -x gotrue,realtime,storage-api,imgproxy,kong,mailpit,postgrest,studio,edge-runtime,logflare,vector,supavisor
+
+      - name: Lint schema
+        run: pnpm exec supabase db lint --level warning --fail-on warning
+
+      - name: Database types are up to date
+        run: |
+          pnpm db:types
+          git diff --exit-code -- apps/web/src/lib/supabase/database.gen.ts \
+            || { echo "::error::Database types are stale. Run 'pnpm db:types' and commit the result."; exit 1; }
+
   # Cloudflare Workers deploy: production on pushes to main, a preview URL
   # (pr-<number>-kefche.<subdomain>.workers.dev) for each same-repo pull request.
   # Needs repo variable CLOUDFLARE_ACCOUNT_ID and secret CLOUDFLARE_API_TOKEN
@@ -61,7 +94,7 @@ jobs:
   deploy:
     # Static name: GitHub does not evaluate expressions in the name of a skipped job.
     name: Deploy
-    needs: verify
+    needs: [verify, database]
     if: >-
       vars.CLOUDFLARE_ACCOUNT_ID != '' &&
       ((github.event_name == 'push' && github.ref == 'refs/heads/main') ||

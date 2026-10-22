@@ -27,7 +27,8 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
     "db:status": "supabase status",
-    "db:terms": "node scripts/blocked-terms.mjs"
+    "db:terms": "node scripts/blocked-terms.mjs",
+    "db:types": "supabase gen types --local --schema public > apps/web/src/lib/supabase/database.gen.ts"
   },
   "devDependencies": {
     "@formatjs/icu-messageformat-parser": "3.5.22",

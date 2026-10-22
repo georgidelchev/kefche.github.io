@@ -3,5 +3,6 @@ pnpm-lock.yaml
 **/.astro/
 **/.wrangler/
 **/coverage/
+**/*.gen.ts
 # Owner-authored source of truth; keep its formatting as written.
 docs/SPEC.md
