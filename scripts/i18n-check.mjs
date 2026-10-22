@@ -154,11 +154,61 @@ for (const [id, file] of used) {
     errors.push(`${file}: "${id}" is not defined in ${DEFAULT_LOCALE}/${ns}.json`);
 }
 
+// Games: packages/games/<id>/i18n/<locale>.json. Same keys and placeholders
+// as English in every locale, and no TODO(new-game) markers left by
+// `pnpm new:game`. (Shape and lengths are validated by the registry at build.)
+const gamesDir = join(root, "packages/games");
+const gameIds = listDir(gamesDir, (d) => d.isDirectory());
+for (const id of gameIds) {
+  const textDir = join(gamesDir, id, "i18n");
+  const byLocale = new Map();
+  for (const locale of LOCALES) {
+    const path = join(textDir, `${locale}.json`);
+    try {
+      const raw = readFileSync(path, "utf8");
+      if (raw.includes("TODO(new-game)"))
+        errors.push(`${rel(path)}: replace the TODO(new-game) placeholders`);
+      const flat = flatten(JSON.parse(raw), rel(path));
+      for (const [key, message] of flat) {
+        try {
+          flat.set(key, { message, args: icuArgs(parse(message)) });
+        } catch (e) {
+          errors.push(`${rel(path)}: "${key}" has invalid ICU syntax (${e.message})`);
+        }
+      }
+      byLocale.set(locale, flat);
+    } catch (e) {
+      errors.push(
+        `${rel(path)}: ${e.code === "ENOENT" ? "missing" : `invalid JSON (${e.message})`}`,
+      );
+    }
+  }
+  const en = byLocale.get(DEFAULT_LOCALE);
+  if (!en) continue;
+  for (const [locale, flat] of byLocale) {
+    if (locale === DEFAULT_LOCALE) continue;
+    for (const [key, entry] of en) {
+      const other = flat.get(key);
+      if (!other) errors.push(`games/${id}/${locale}: missing "${key}"`);
+      else if (
+        entry.args &&
+        other.args &&
+        !sameSet([...entry.args].sort(), [...other.args].sort())
+      ) {
+        errors.push(`games/${id}/${locale}: "${key}" placeholders differ from ${DEFAULT_LOCALE}`);
+      }
+    }
+    for (const key of flat.keys()) {
+      if (!en.has(key)) errors.push(`games/${id}/${locale}: extra key "${key}"`);
+    }
+  }
+}
+
 if (errors.length > 0) {
   console.error(`i18n check failed (${errors.length}):\n- ${errors.join("\n- ")}`);
   process.exit(1);
 }
 const keyCount = namespaces.reduce((n, ns) => n + source.get(ns).size, 0);
 console.log(
-  `i18n check passed: ${LOCALES.length} locales × ${namespaces.length} namespaces, ${keyCount} keys.`,
+  `i18n check passed: ${LOCALES.length} locales × ${namespaces.length} namespaces, ${keyCount} keys; ${gameIds.length} games.`,
 );

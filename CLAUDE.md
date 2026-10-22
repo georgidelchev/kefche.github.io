@@ -15,6 +15,8 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 | `pnpm check:contrast`                    | WCAG contrast of every token pair in both themes (`tokens.css`).            |
 | `pnpm i18n:check`                        | All 11 locales match English: keys, ICU, placeholders, no unused keys.      |
 | `pnpm icons:generate`                    | Rebuild favicon and app icons from `packages/ui/src/brand/marks.ts`.        |
+| `pnpm avatars:generate`                  | Rebuild the 24 preset avatars in `apps/web/public/avatars/`.                |
+| `pnpm new:game <id> --kind=race\|turn`   | Scaffold `packages/games/<id>/`; then replace every `TODO(new-game)`.       |
 | `pnpm db:start` / `db:stop` / `db:reset` | Local Supabase (needs Docker).                                              |
 | `pnpm db:terms`                          | New migration from the word lists in `supabase/blocked-terms/`.             |
 | `pnpm db:types`                          | Regenerate `apps/web/src/lib/supabase/database.gen.ts` (CI checks drift).   |

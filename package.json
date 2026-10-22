@@ -24,6 +24,7 @@
     "i18n:check": "node scripts/i18n-check.mjs",
     "icons:generate": "node scripts/generate-icons.mjs",
     "avatars:generate": "node scripts/generate-avatars.mjs",
+    "new:game": "node scripts/new-game.mjs",
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
