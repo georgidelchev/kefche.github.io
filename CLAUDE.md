@@ -87,6 +87,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 - ESLint 10 uses the nearest `eslint.config.*` for each file, so shared presets must not be named `eslint.config.js`.
 - `pnpm -r <script>` fails when a package lacks the script; root scripts use `--if-present`.
 - Type-aware ESLint finds each file's nearest file named `tsconfig.json`. A folder with different compiler options needs its own `tsconfig.json`, like `packages/game-sdk/src/browser/`, which adds DOM types. After adding or moving one, delete `.eslintcache`.
+- Restart `pnpm dev` after `pnpm install` adds packages. A dev server that keeps running re-bundles dependencies mid-session and can end up with two copies of React. Pages then render blank, and the log shows "Cannot read properties of null (reading 'useState')" or a missing `.vite/deps_ssr` file. To fix it, stop the server, delete `apps/web/node_modules/.vite` and start `pnpm dev` again.
 - Never run `pnpm deploy`, which is a built-in pnpm command. Use `pnpm --filter web run cf:deploy`.
 - `public/_headers` applies only to static assets. `src/middleware.ts` copies its `/*` headers onto Worker-rendered responses, so edit only `_headers`.
 - Never add an Astro `redirects` entry for a dynamic path: Cloudflare applies `_redirects` before the Worker runs.
