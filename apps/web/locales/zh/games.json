@@ -1,0 +1,30 @@
+{
+  "play": "开始游戏",
+  "loading": "正在加载游戏…",
+  "loadFailed": "游戏加载失败。请检查网络后重试。",
+  "retry": "重试",
+  "pause": "暂停",
+  "paused": "已暂停",
+  "resume": "继续",
+  "restart": "新游戏",
+  "exit": "退出游戏",
+  "mute": "静音",
+  "unmute": "打开声音",
+  "won": "你赢了！",
+  "gameOver": "游戏结束",
+  "score": "分数 {score}",
+  "breadcrumb": "导航路径",
+  "time": "用时 {time}",
+  "playAgain": "再玩一次",
+  "players": "{min} 名玩家",
+  "playersRange": "{min}–{max} 名玩家",
+  "minutes": "{min}–{max} 分钟",
+  "offline": "支持离线",
+  "sections": {
+    "about": "关于{name}",
+    "howToPlay": "玩法",
+    "controls": "操作",
+    "tips": "技巧",
+    "faq": "常见问题"
+  }
+}

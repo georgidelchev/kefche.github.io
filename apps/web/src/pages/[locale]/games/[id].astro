@@ -1,0 +1,202 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { Clock, Users, WifiOff } from "lucide-react";
+
+import { GamePlayer } from "@/features/games/GamePlayer";
+import { listGames, type RegisteredGame } from "@/features/games/registry";
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import { LOCALE_INFO, LOCALES, type Locale } from "@/i18n/locales";
+
+import type { GetStaticPaths } from "astro";
+
+// One pre-rendered page per game and locale (SPEC §15): play first, then the
+// about / how to play / controls / tips / FAQ sections with JSON-LD.
+export const getStaticPaths = (() =>
+  LOCALES.flatMap((locale) =>
+    listGames().map((game) => ({ params: { locale, id: game.manifest.id }, props: { game } })),
+  )) satisfies GetStaticPaths;
+
+const { game } = Astro.props as { game: RegisteredGame };
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+const { bcp47, dir } = LOCALE_INFO[locale];
+const { manifest } = game;
+const text = game.text[locale];
+const path = `/games/${manifest.id}/`;
+const url = (l: Locale, p: string) => new URL(getRelativeLocaleUrl(l, p), Astro.site).href;
+
+const players =
+  manifest.players.min === manifest.players.max
+    ? t("games:players", { min: manifest.players.min })
+    : t("games:playersRange", { min: manifest.players.min, max: manifest.players.max });
+const facts = [
+  { Icon: Users, label: players },
+  {
+    Icon: Clock,
+    label: t("games:minutes", {
+      min: manifest.estimatedMinutes[0],
+      max: manifest.estimatedMinutes[1],
+    }),
+  },
+  ...(manifest.offline ? [{ Icon: WifiOff, label: t("games:offline") }] : []),
+];
+
+// Structured data. JSON.stringify output with "<" escaped can't close the
+// script element, so it's safe to inline.
+const jsonLd = JSON.stringify([
+  {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    name: text.name,
+    description: text.description,
+    url: url(locale, path),
+    inLanguage: bcp47,
+    genre: manifest.category,
+    gamePlatform: "Web browser",
+    applicationCategory: "Game",
+    operatingSystem: "Any",
+    numberOfPlayers: {
+      "@type": "QuantitativeValue",
+      minValue: manifest.players.min,
+      maxValue: manifest.players.max,
+    },
+    offers: { "@type": "Offer", price: 0, priceCurrency: "EUR" },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: t("nav:home"), item: url(locale, "/") },
+      { "@type": "ListItem", position: 2, name: t("nav:games"), item: url(locale, "/games/") },
+      { "@type": "ListItem", position: 3, name: text.name, item: url(locale, path) },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: text.faq.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  },
+]).replaceAll("<", "\\u003c");
+
+const playerStrings = {
+  play: t("games:play"),
+  loading: t("games:loading"),
+  loadFailed: t("games:loadFailed"),
+  retry: t("games:retry"),
+  pause: t("games:pause"),
+  paused: t("games:paused"),
+  resume: t("games:resume"),
+  restart: t("games:restart"),
+  exit: t("games:exit"),
+  mute: t("games:mute"),
+  unmute: t("games:unmute"),
+  won: t("games:won"),
+  gameOver: t("games:gameOver"),
+  // Placeholders survive here and are filled by the player.
+  score: t("games:score", { score: "{score}" }),
+  time: t("games:time", { time: "{time}" }),
+  playAgain: t("games:playAgain"),
+};
+const section = "grid gap-3";
+---
+
+<AppShell
+  locale={locale}
+  path={path}
+  section="games"
+  title={t("common:meta.sectionTitle", { section: text.name })}
+  description={text.description}
+>
+  <article class="mx-auto grid w-full max-w-3xl gap-10 pb-6">
+    <nav aria-label={t("games:breadcrumb")} class="text-sm text-muted">
+      <a href={getRelativeLocaleUrl(locale, "/games/")} class="hover:underline">
+        {t("nav:games")}
+      </a>
+      <span aria-hidden="true"> / </span>
+      <span>{text.name}</span>
+    </nav>
+
+    <header class="grid gap-4">
+      <h1 class="text-4xl md:text-5xl">{text.name}</h1>
+      <p class="text-lg text-muted">{text.tagline}</p>
+      <ul class="flex flex-wrap gap-2">
+        {facts.map(({ Icon, label }) => (
+          <li class="flex items-center gap-2 rounded-full bg-surface-2 px-3 py-1 text-sm font-semibold">
+            <Icon aria-hidden="true" className="size-4" />
+            {label}
+          </li>
+        ))}
+      </ul>
+      <div>
+        <GamePlayer
+          client:load
+          id={manifest.id}
+          name={text.name}
+          locale={bcp47}
+          dir={dir}
+          strings={playerStrings}
+          ui={text.ui}
+        />
+      </div>
+    </header>
+
+    <section class={section} aria-labelledby="about">
+      <h2 id="about" class="text-2xl">
+        {t("games:sections.about", { name: text.name })}
+      </h2>
+      {text.about.map((p) => (
+        <p class="max-w-prose">{p}</p>
+      ))}
+    </section>
+    <section class={section} aria-labelledby="how-to-play">
+      <h2 id="how-to-play" class="text-2xl">
+        {t("games:sections.howToPlay")}
+      </h2>
+      <ol class="grid max-w-prose list-decimal gap-2 ps-6">
+        {text.howToPlay.map((s) => (
+          <li>{s}</li>
+        ))}
+      </ol>
+    </section>
+    <section class={section} aria-labelledby="controls">
+      <h2 id="controls" class="text-2xl">
+        {t("games:sections.controls")}
+      </h2>
+      <ul class="grid max-w-prose list-disc gap-2 ps-6">
+        {text.controls.map((s) => (
+          <li>{s}</li>
+        ))}
+      </ul>
+    </section>
+    <section class={section} aria-labelledby="tips">
+      <h2 id="tips" class="text-2xl">
+        {t("games:sections.tips")}
+      </h2>
+      <ul class="grid max-w-prose list-disc gap-2 ps-6">
+        {text.tips.map((s) => (
+          <li>{s}</li>
+        ))}
+      </ul>
+    </section>
+    <section class={section} aria-labelledby="faq">
+      <h2 id="faq" class="text-2xl">
+        {t("games:sections.faq")}
+      </h2>
+      <dl class="grid max-w-prose gap-4">
+        {text.faq.map((f) => (
+          <div class="grid gap-1">
+            <dt class="font-semibold">{f.question}</dt>
+            <dd class="text-muted">{f.answer}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  </article>
+  {/* eslint-disable-next-line astro/no-set-html-directive -- our own JSON with "<" escaped (see above) */}
+  <script type="application/ld+json" set:html={jsonLd} />
+</AppShell>

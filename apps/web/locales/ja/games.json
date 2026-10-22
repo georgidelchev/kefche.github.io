@@ -1,0 +1,30 @@
+{
+  "play": "プレイ",
+  "loading": "ゲームを読み込んでいます…",
+  "loadFailed": "ゲームを読み込めませんでした。通信環境を確認して、もう一度お試しください。",
+  "retry": "再試行",
+  "pause": "一時停止",
+  "paused": "一時停止中",
+  "resume": "再開",
+  "restart": "新しいゲーム",
+  "exit": "ゲームを終了",
+  "mute": "ミュート",
+  "unmute": "サウンドをオン",
+  "won": "勝利！",
+  "gameOver": "ゲームオーバー",
+  "score": "スコア {score}",
+  "breadcrumb": "パンくずリスト",
+  "time": "タイム {time}",
+  "playAgain": "もう一度遊ぶ",
+  "players": "{min} 人用",
+  "playersRange": "{min}～{max} 人",
+  "minutes": "{min}～{max} 分",
+  "offline": "オフラインで遊べる",
+  "sections": {
+    "about": "{name}について",
+    "howToPlay": "遊び方",
+    "controls": "操作方法",
+    "tips": "コツ",
+    "faq": "よくある質問"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "play": "Play",
+  "loading": "Loading the game…",
+  "loadFailed": "The game didn't load. Check your connection and try again.",
+  "retry": "Try again",
+  "pause": "Pause",
+  "paused": "Paused",
+  "resume": "Resume",
+  "restart": "New game",
+  "exit": "Exit game",
+  "mute": "Mute sound",
+  "unmute": "Turn sound on",
+  "won": "You won!",
+  "gameOver": "Game over",
+  "score": "Score {score}",
+  "breadcrumb": "Breadcrumb",
+  "time": "Time {time}",
+  "playAgain": "Play again",
+  "players": "{min, plural, =1 {1 player} other {# players}}",
+  "playersRange": "{min}–{max} players",
+  "minutes": "{min}–{max} min",
+  "offline": "Works offline",
+  "sections": {
+    "about": "About {name}",
+    "howToPlay": "How to play",
+    "controls": "Controls",
+    "tips": "Tips",
+    "faq": "Questions and answers"
+  }
+}

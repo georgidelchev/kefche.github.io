@@ -1,7 +1,7 @@
 {
   "name": "2048",
   "tagline": "Faites glisser, fusionnez et doublez jusqu’à la tuile 2048.",
-  "description": "Jouez gratuitement à 2048 dans votre navigateur : faites glisser les tuiles, fusionnez les nombres égaux et atteignez 2048. Sur mobile, tablette et ordinateur, même hors ligne.",
+  "description": "Jouez gratuitement à 2048 dans votre navigateur : faites glisser les tuiles, fusionnez les nombres égaux et atteignez 2048. Sur mobile, tablette et ordinateur.",
   "about": [
     "2048 is a sliding puzzle played on a 4 × 4 grid. Every move pushes all tiles as far as they can go in one direction. When two tiles with the same number collide, they merge into one tile worth their sum, and a new 2 or 4 appears in an empty cell.",
     "The goal is simple to explain and hard to reach: build a single tile with the number 2048. Each merge also adds its value to your score, so even when the board fills up you can keep chasing a better result. Reaching 2048 doesn't end the game; you can keep going for 4096 and beyond.",

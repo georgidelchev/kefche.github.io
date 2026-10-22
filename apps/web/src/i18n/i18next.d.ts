@@ -4,6 +4,7 @@ import type account from "../../locales/en/account.json";
 import type auth from "../../locales/en/auth.json";
 import type common from "../../locales/en/common.json";
 import type errors from "../../locales/en/errors.json";
+import type games from "../../locales/en/games.json";
 import type nav from "../../locales/en/nav.json";
 import type profile from "../../locales/en/profile.json";
 import type settings from "../../locales/en/settings.json";
@@ -19,6 +20,7 @@ declare module "i18next" {
       auth: typeof auth;
       profile: typeof profile;
       settings: typeof settings;
+      games: typeof games;
     };
   }
 }

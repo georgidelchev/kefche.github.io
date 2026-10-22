@@ -1,0 +1,30 @@
+{
+  "play": "Jouer",
+  "loading": "Chargement du jeu…",
+  "loadFailed": "Le jeu ne s’est pas chargé. Vérifiez votre connexion et réessayez.",
+  "retry": "Réessayer",
+  "pause": "Pause",
+  "paused": "En pause",
+  "resume": "Reprendre",
+  "restart": "Nouvelle partie",
+  "exit": "Quitter le jeu",
+  "mute": "Couper le son",
+  "unmute": "Activer le son",
+  "won": "Gagné !",
+  "gameOver": "Partie terminée",
+  "score": "Score {score}",
+  "breadcrumb": "Fil d’Ariane",
+  "time": "Temps {time}",
+  "playAgain": "Rejouer",
+  "players": "{min, plural, =1 {1 joueur} other {# joueurs}}",
+  "playersRange": "{min} à {max} joueurs",
+  "minutes": "{min} à {max} min",
+  "offline": "Fonctionne hors ligne",
+  "sections": {
+    "about": "À propos de {name}",
+    "howToPlay": "Comment jouer",
+    "controls": "Commandes",
+    "tips": "Astuces",
+    "faq": "Questions et réponses"
+  }
+}

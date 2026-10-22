@@ -1,0 +1,30 @@
+{
+  "play": "Spielen",
+  "loading": "Spiel wird geladen…",
+  "loadFailed": "Das Spiel wurde nicht geladen. Prüfe deine Verbindung und versuche es erneut.",
+  "retry": "Erneut versuchen",
+  "pause": "Pause",
+  "paused": "Pausiert",
+  "resume": "Weiter",
+  "restart": "Neues Spiel",
+  "exit": "Spiel verlassen",
+  "mute": "Ton aus",
+  "unmute": "Ton an",
+  "won": "Gewonnen!",
+  "gameOver": "Spiel vorbei",
+  "score": "Punkte {score}",
+  "breadcrumb": "Brotkrumen-Navigation",
+  "time": "Zeit {time}",
+  "playAgain": "Nochmal spielen",
+  "players": "{min, plural, =1 {1 Spieler} other {# Spieler}}",
+  "playersRange": "{min}–{max} Spieler",
+  "minutes": "{min}–{max} Min.",
+  "offline": "Funktioniert offline",
+  "sections": {
+    "about": "Über {name}",
+    "howToPlay": "So wird gespielt",
+    "controls": "Steuerung",
+    "tips": "Tipps",
+    "faq": "Fragen und Antworten"
+  }
+}

@@ -89,7 +89,8 @@ export const gameTextSchema = z
   .object({
     name: z.string().min(1).max(40),
     tagline: z.string().min(1).max(90),
-    description: z.string().min(50).max(170),
+    // CJK descriptions are short in characters, hence the low minimum.
+    description: z.string().min(20).max(170),
     about: z.array(line).min(1),
     howToPlay: z.array(line).min(1),
     controls: z.array(line).min(1),
