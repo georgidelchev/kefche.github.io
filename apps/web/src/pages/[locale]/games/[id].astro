@@ -26,10 +26,15 @@ const text = game.text[locale];
 const path = `/games/${manifest.id}/`;
 const url = (l: Locale, p: string) => new URL(getRelativeLocaleUrl(l, p), Astro.site).href;
 
+// The manifest's range is the game's full design (race mode included). Until a
+// game lists a mode beyond solo, only one person can play it.
+const soloOnly = manifest.modes.every((mode) => mode === "solo");
+const minPlayers = soloOnly ? 1 : manifest.players.min;
+const maxPlayers = soloOnly ? 1 : manifest.players.max;
 const players =
-  manifest.players.min === manifest.players.max
-    ? t("games:players", { min: manifest.players.min })
-    : t("games:playersRange", { min: manifest.players.min, max: manifest.players.max });
+  minPlayers === maxPlayers
+    ? t("games:players", { min: minPlayers })
+    : t("games:playersRange", { min: minPlayers, max: maxPlayers });
 const facts = [
   { Icon: Users, label: players },
   {
@@ -58,8 +63,8 @@ const jsonLd = JSON.stringify([
     operatingSystem: "Any",
     numberOfPlayers: {
       "@type": "QuantitativeValue",
-      minValue: manifest.players.min,
-      maxValue: manifest.players.max,
+      minValue: minPlayers,
+      maxValue: maxPlayers,
     },
     offers: { "@type": "Offer", price: 0, priceCurrency: "EUR" },
   },
