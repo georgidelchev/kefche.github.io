@@ -261,7 +261,7 @@ packages/games/<slug>/
 ├─ renderer/           # React component(s) and/or canvas/Pixi scene
 ├─ content/<locale>.json  # optional language content packs
 ├─ i18n/<locale>.json  # game-specific strings (name, how to play, tips, FAQ)
-├─ assets/             # sprites, sounds (licensed, credited)
+├─ assets/             # card art (art.mjs → thumbnail.svg, hero.svg); sprites and any recorded sounds (licensed, credited)
 ├─ CREDITS.md          # asset and content sources with licenses
 └─ index.ts            # public entry (lazy-loaded)
 ```
@@ -275,7 +275,7 @@ interface GameManifest {
   category: GameCategory;
   kind: 'turn' | 'realtime' | 'simultaneous' | 'race';
   players: { min: number; max: number; default: number };  // e.g. chess {2,2,2}, worm-rush {1,30,10}
-  modes: Array<'solo-bots' | 'hotseat' | 'online-private' | 'online-public' | 'quick-match' | 'race'>;
+  modes: Array<'solo' | 'solo-bots' | 'hotseat' | 'online-private' | 'online-public' | 'quick-match' | 'race'>;  // 'solo': no opponent (ADR-0016)
   bots: { supported: boolean; difficulties: Array<'easy' | 'medium' | 'hard'>; canFillSeats: boolean };
   timers: TimerPreset[];       // allowed presets + default (see Section 11)
   rated: false | { system: 'glicko2'; pools: string[] };   // e.g. chess pools: bullet, blitz, rapid
@@ -294,6 +294,7 @@ interface GameManifest {
 ```
 
 ### 9.4 Engine kinds provided by `game-sdk`
+The SDK provides these as TypeScript interfaces that each game implements with pure functions, rather than `create*` factories (ADR-0016).
 1. **Turn-based** (`createTurnEngine`): `initialState(config, seed)`, `legalActions(state, seat)`, `applyAction(state, action) → state`, `currentSeats(state)`, `result(state)`. Supports simultaneous turns where needed, skipping absent players, extra turns, pass rules.
 2. **Real-time** (`createRealtimeEngine`): fixed-timestep simulation (e.g. 30 Hz), input commands per player per tick, `step(state, inputs, dt)`, snapshot serialization with quantization and delta compression, client-side prediction and interpolation helpers.
 3. **Simultaneous-choice rounds** (`createRoundEngine`): collect hidden choices, reveal when all submitted or timer expires, scoring per round, best-of-N.

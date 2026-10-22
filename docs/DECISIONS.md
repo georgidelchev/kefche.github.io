@@ -240,3 +240,47 @@ The Web Push service worker (Phase 8) is still allowed and handles push events o
 - Sounds stay consistent across games and can be tuned in code.
 - The palette can't produce realistic recorded sounds (a real crash, a voice). A game that needs those brings Howler.js back, with licensed and credited files.
 - New designs go into `SOUND_DESIGNS`. The picker's other designs are a starting point.
+
+---
+
+## ADR-0016: Game SDK as plain contracts, a mount interface and a build-time registry
+
+**Date:** 2026-10-23 · **Status:** Accepted
+
+**Context.** SPEC §9 asks for 100+ games added without touching core code. Engines must also run in Web Workers, in tests and in Deno, which validates results on the server (Phase 7). SPEC §9.4 sketches factory functions (`createTurnEngine`, `createRaceEngine`). SPEC §9.3 lists modes starting at `solo-bots`, with no plain solo mode for puzzles like Sudoku.
+
+**Decision.**
+
+- **Engines are interfaces, not factories.** `RaceEngine`, `TurnEngine`, `RealtimeEngine` and `RoundEngine` in `@kefche/game-sdk` are plain objects with pure functions. State is plain data: randomness comes from the seeded sfc32 `Rng`, whose state lives in the game state, and time comes in as actions. `replay()` rebuilds any game from its seed and actions. A factory would add nothing a type doesn't already check.
+- **Two entry points.** `@kefche/game-sdk` holds the isomorphic code: contracts, PRNG, manifest types. Its tsconfig has no DOM, so a browser global in an engine is a type error. `@kefche/game-sdk/browser` has the runtime helpers: a fixed-step loop, canvas stage, keyboard and swipe input, sound, haptics, a stopwatch and the worker runner.
+- **A game is a `mount(container, context)` function.** It returns `pause`, `resume`, `restart` and `destroy`. The site's player owns the chrome: full screen, the pause menu, results, mute and wake lock. The game owns everything inside its container. It receives its seed, its translated strings, settings, device storage and a `report()` callback, and it never imports app code.
+- **The registry is `import.meta.glob`.** It covers `packages/games/*/manifest.ts`, the i18n files and the art. Every manifest and translation file is checked with Zod at build time, so a bad game fails the build, and no validation code ships to players. A second glob over `index.ts` gives each game its own chunk, loaded only when Play is pressed.
+- **A `solo` mode** is added beside `solo-bots`, for games with no opponent. The page shows "1 player" when it is a game's only mode.
+
+**Consequences.**
+
+- Adding a game means adding a folder: `pnpm new:game` scaffolds it, and nothing else changes.
+- A game page loads 96 KB of JS gzip (React plus the player) before Play, and each game adds 4–10 KB on Play.
+- Games may render with React, DOM or Canvas, but each must clean up after itself in `destroy()`.
+- Manifests also carry fields for later phases (leaderboards, score validation, timers). The build already validates them.
+
+---
+
+## ADR-0017: Renderers for the first games: React DOM and Canvas 2D
+
+**Date:** 2026-10-23 · **Status:** Accepted
+
+**Context.** SPEC §3 allows DOM, Canvas and PixiJS renderers. The first three games are a sliding-tile puzzle (2048), a 9 × 9 grid with notes (Sudoku) and a fast grid game (Snake). Each game page must stay small (SPEC §2).
+
+**Decision.**
+
+- **2048 and Sudoku** render with React into the DOM. Tiles and cells are real elements, so they get keyboard focus, screen-reader labels and CSS transitions. Sudoku uses a roving-focus grid and generates its puzzles in a Web Worker (`runInWorker`, with a main-thread fallback).
+- **Snake** renders on Canvas 2D through the SDK's canvas stage, which caps devicePixelRatio at 2. The engine steps on a fixed timestep, and the renderer interpolates between steps, so the snake glides at the display's frame rate.
+- **No PixiJS or Matter.js yet.** They arrive with the first game that needs them, in its own chunk.
+- **Boards are never mirrored** in right-to-left languages: boards and direction pads set `direction: ltr` in CSS, while the text around them follows the page.
+
+**Consequences.**
+
+- React is already on the game page for the player, so DOM games add only their own code.
+- Canvas games must describe the board themselves: Snake's board is `role="img"` with a label that includes the score, and its D-pad buttons have labels.
+- A game that needs sprites or many moving objects should use PixiJS, behind a new ADR if it changes the budget.

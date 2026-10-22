@@ -48,6 +48,31 @@ Isomorphism is enforced by the type system: the base tsconfig has no DOM lib and
 - **Theme and language** sync across devices through `user_settings` (`features/account/preferences-sync.ts`).
 - **Data rights:** `export-data` returns a JSON download. Deletion waits 7 days, then `pg_cron` → `pg_net` → `purge-accounts` deletes the account (ADR-0013).
 
+## Game platform (Phase 3)
+
+```mermaid
+flowchart LR
+  G["packages/games/&lt;id&gt;<br/>manifest · engine · renderer · i18n · art"] -->|import.meta.glob + Zod, build time| R[registry.ts]
+  R --> P["/games/&lt;id&gt;/ page<br/>catalog · category pages"]
+  P -->|Play| L["loaders.ts<br/>lazy chunk per game"]
+  L -->|"mount(container, context)"| GP[GamePlayer island]
+```
+
+- **SDK** (`packages/game-sdk`, ADR-0016):
+  - The root entry is isomorphic: the engine interfaces (`RaceEngine`, `TurnEngine`, `RealtimeEngine`, `RoundEngine`), the seeded sfc32 `Rng` and `replay()`, plus the manifest types and `defineManifest`.
+  - `manifest-schema` holds the Zod schemas, used only at build time.
+  - `browser` holds the runtime helpers: the `GameModule` contract, a fixed-step loop, canvas stage, keyboard and swipe input, the stopwatch, haptics, sound (synthesized, ADR-0015) and `runInWorker`.
+- **Registry** (`apps/web/src/features/games/registry.ts`): globs every game's manifest, translations and art at build time, validates them, and fails the build on any problem. `loaders.ts` globs each game's `index.ts` lazily, so every game is its own chunk.
+- **Pages:**
+  - `/[locale]/games/[slug]/` serves both games and categories. A game page has the hero art, Play, how to play and controls, then about, tips and FAQ, with `VideoGame`, `BreadcrumbList` and `FAQPage` JSON-LD.
+  - The catalog (`/[locale]/games/`) filters by name with `?q=`, which the header search also uses. Category chips appear only for categories that have games.
+- **Player** (`GamePlayer.tsx`): the full-screen island that loads a game on Play and mounts it. It owns the pause menu (Escape, and automatically when the tab is hidden), restart, results, the mute switch and the screen wake lock. It gives the game a seed, its translated `ui` strings, settings and namespaced `localStorage`.
+- **Games:**
+  - 2048 and Sudoku render with React into the DOM, and Snake with Canvas 2D (ADR-0017). Boards stay left-to-right in Arabic.
+  - Sudoku generates and grades puzzles in a Web Worker. Easy and medium need singles only, hard needs locked candidates or subsets, and expert needs X-wing or more.
+- **Art:** `pnpm art:generate` draws each game's `assets/art.mjs` emblem with `scripts/game-art/kit.mjs` into `thumbnail.svg` and `hero.svg`, and CI fails on stale art.
+- **Adding a game:** `pnpm new:game`, then the checklist in [`ADDING_A_GAME.md`](ADDING_A_GAME.md).
+
 ## Internationalization
 
 - **Registry:** `src/i18n/locales.ts` lists every locale with its native name, BCP 47 tag, `dir`, script and OG locale. Routing, fonts, `<html lang dir>`, hreflang and the language switcher all derive from it.
@@ -56,7 +81,7 @@ Isomorphism is enforced by the type system: the base tsconfig has no DOM lib and
 - **Integrity:** `pnpm i18n:check` (CI) compares every locale with English: namespaces, keys, ICU validity and placeholders. It also fails on unused or undefined keys, found as string literals in the source.
 - **Language choice:** the switcher stores an explicit choice in the `kefche_locale` cookie (read by `/` and the 404 page) and in localStorage.
 - **RTL:** `dir="rtl"` on `<html>`, with logical properties only. Directional icons mirror with `rtl:-scale-x-100`, and Radix components get `dir` from the page locale. Game boards (Phase 3+) are never mirrored.
-- **Fonts:** `components/Fonts.astro` emits only the faces for the page's script. `packages/ui/typography.css` picks the stack with `:lang()` (ADR-0008).
+- **Fonts:** `components/Fonts.astro` emits only the faces for the page's script. `packages/ui/typography.css` picks the stack with `:lang()` (ADR-0008). The Arabic and Devanagari faces have no fallbacks of their own, so Latin letters and digits on those pages fall through to Inter.
 
 ## Styling and theming
 
@@ -91,6 +116,13 @@ Measured on the production build:
 - The home page HTML is about 8 KB gzip.
 - Lighthouse mobile scored accessibility 100, best practices 100 and SEO 100 on the home pages. Performance was 82–92 against the uncompressed local preview. Phase 18 owns the final tuning.
 
+## Game pages (Phase 3)
+
+Measured on the production build:
+
+- **JavaScript:** a game page loads 96 KB gzip before Play: React, the player and the shell. Play adds the game's own chunk: 2048 3.8 KB, Snake 5.6 KB, and Sudoku 9.7 KB including its worker.
+- **Lighthouse mobile** (production): accessibility, best practices and SEO 100, CLS 0 and TBT 0 ms on every game page and the catalog. Performance is 85–99 between runs, and LCP 2.0–3.3 s on English pages. Arabic pages are slower (LCP about 4 s) because they preload a 277 KB Arabic font.
+
 ## Configuration and environment
 
 Public variables (`PUBLIC_*`) are validated with Zod in `apps/web/src/lib/env.ts` and documented in `apps/web/.env.example`. Secrets never reach client code.
@@ -101,7 +133,7 @@ GitHub Actions `CI` runs format check → lint → contrast → translations →
 
 ## Sections to come
 
-- Game platform: registry, engine kinds, bots in workers _(Phase 3–4)_
+- Bots in workers, turn engines and timers _(Phase 4)_
 - Multiplayer: transport, rooms, host authority, migration, reconnection _(Phase 5)_
 - Realtime message budget per game kind (SPEC §10.9) _(Phase 5, 9)_
 - Stats, ratings and result integrity _(Phase 6–7)_

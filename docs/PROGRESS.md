@@ -453,21 +453,42 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
 
 - **Q1 — Art:** yes, show 2–3 directions to pick from.
 - **Q2 — Offline:** add a minimal service worker now that caches each game after first play; install prompts and update-flow polish stay in Phase 16.
-- **Q3 — Sound:** CC0 sound effects (Kenney) with a mute button now.
+- **Q3 — Sound:** CC0 sound effects (Kenney) with a mute button now. _(Replaced on 2026-10-23 by synthesized sounds the owner picked, ADR-0015.)_
 
 ### Owner decision (2026-10-23)
 
 - **Offline mode dropped** from the requirements (ADR-0014), replacing the Q2 answer. There's no service worker cache, no offline page, no `offline` manifest field, and no offline claims in any language. The Web Push service worker (Phase 8) stays allowed for push only.
 
+### Verification (step 12, 2026-10-23)
+
+- **Browser check, 130 of 130 passing** (production build):
+  - each game page and its open player at 360, 768 and 1280 px in light and dark, and in Arabic at 360 and 1280 px;
+  - no horizontal scroll, and the board fits the screen;
+  - axe (WCAG 2.2 AA) clean on every page and in every open player;
+  - boards and the D-pad stay left-to-right in Arabic;
+  - the catalog and both category pages; no page errors.
+- **Fixed along the way:**
+  - Arabic and Hindi pages drew Latin letters and digits in plain Arial instead of Inter, so game boards had thin digits.
+  - The header and catalog searches were two unnamed search landmarks.
+- **Earlier step checks still pass:** 2048 play, Sudoku 22/22, Snake 19/19, sounds 9/9, art rendering.
+- **JS, gzip:** 96 KB on a game page before Play, against a budget of 120 KB. Play adds 3.8 KB (2048), 9.7 KB (Sudoku, worker included) or 5.6 KB (Snake).
+- **Lighthouse mobile, production:**
+  - accessibility, best practices and SEO 100 on all three game pages and the catalog;
+  - CLS 0 and TBT 0 ms;
+  - performance 85–99, LCP 2.0–3.3 s in English and about 4 s in Arabic (known issue below).
+- **Docs:** ADDING_A_GAME.md (steps, full checklist, worked examples), the ARCHITECTURE game platform section, ADR-0016 (SDK design and the `solo` mode) and ADR-0017 (renderers). The SPEC manifest now lists `solo`.
+
 ### Status
 
 - [x] Plan approved by owner (2026-10-22)
+- [x] Steps 1–9, 11 and 12 done (step 10 dropped)
+- [ ] Owner sign-off
 
 ---
 
 ## Known issues
 
-- **Performance is not tuned yet (Phase 18):** Lighthouse mobile performance was 82–92 (LCP 3.3–4.1 s) against the local preview, which serves files uncompressed. Production on Cloudflare compresses, so re-measure there. Candidate fixes when tuning: a smaller preloaded font subset, and inlining critical CSS. The account pages (React forms) scored 80–95 locally.
+- **Performance is not tuned yet (Phase 18):** Lighthouse mobile performance was 82–92 (LCP 3.3–4.1 s) against the local preview, which serves files uncompressed. Production on Cloudflare compresses, so re-measure there. Candidate fixes when tuning: a smaller preloaded font subset, and inlining critical CSS. The account pages (React forms) scored 80–95 locally. Game pages in production score 85–99 with LCP 2.0–3.3 s. Arabic pages reach about 4 s, because they preload the whole 277 KB variable Noto Sans Arabic font (weights 100–900): subset it, or load only the weights in use.
 - **Auth pages are near the JS budget:** sign-up 110 KB and settings 116 KB gzip before supabase-js. New React on these pages needs a size check (Phase 18 may split islands further).
 - **Guest identity creation moves to Phase 5:** step 9 built the upgrade (sign-up or OAuth link keeps the guest's user id) and the merge (Edge Function `merge-guest` plus a confirmation page). `ensureIdentity()` and the guests' "I am 13 or older" confirmation are built with their first users, rooms and lobby chat, in Phase 5. Until then no page creates guest sessions.
 - **Credits attribution (Phase 17):** the blocked-terms lists are adapted from LDNOOBW (CC BY 4.0), and the Credits page must say so (`supabase/blocked-terms/README.md`).
