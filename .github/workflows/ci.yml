@@ -55,8 +55,9 @@ jobs:
         run: pnpm build
 
   # Applies every migration to a fresh local Postgres, lints the schema, and
-  # checks that the committed database types match it. Auth, REST and the
-  # other services aren't needed: `supabase start` still runs their schema setup.
+  # checks that the committed database types match it. Storage runs because
+  # migrations create buckets and storage policies; the other services aren't
+  # needed (`supabase start` still runs their schema setup).
   database:
     name: Database
     runs-on: ubuntu-latest
@@ -76,7 +77,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Start Postgres and apply migrations
-        run: pnpm exec supabase start -x gotrue,realtime,storage-api,imgproxy,kong,mailpit,postgrest,studio,edge-runtime,logflare,vector,supavisor
+        run: pnpm exec supabase start -x gotrue,realtime,imgproxy,kong,mailpit,postgrest,studio,edge-runtime,logflare,vector,supavisor
 
       - name: Lint schema
         run: pnpm exec supabase db lint --level warning --fail-on warning

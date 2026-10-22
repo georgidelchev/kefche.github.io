@@ -81,7 +81,10 @@ export type Database = {
             [_ in never]: never
           }
           Functions: {
-            "check_nickname":
+            "avatar_upload_allowed":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"check_nickname":
 { Args: { "p_nickname": string }; Returns: string
                            },
 "complete_profile":
