@@ -1,0 +1,71 @@
+{
+  "name": "सुडोकू",
+  "tagline": "ग्रिड भरें ताकि हर पंक्ति, स्तंभ और बॉक्स में 1 से 9 तक के अंक हों।",
+  "description": "अपने ब्राउज़र में मुफ़्त सुडोकू खेलें: आसान से विशेषज्ञ तक नई पहेलियाँ, नोट्स, संकेत और पूर्ववत के साथ। फ़ोन, टैबलेट और कंप्यूटर पर, ऑफ़लाइन भी।",
+  "about": [
+    "Sudoku is a logic puzzle played on a 9 × 9 grid divided into nine 3 × 3 boxes. Some cells start with a digit. Your job is to fill every empty cell so that each row, each column and each box contains the digits 1 to 9 exactly once. There is no arithmetic: the numbers are just symbols, and every step comes from working out where a digit can and cannot go.",
+    "Every puzzle here is created fresh when you start, and each one has exactly one solution, so you never need to guess. The four levels are graded by the techniques a person needs. Easy and medium puzzles fall to singles, the only place left for a digit. Hard puzzles need pointing pairs and naked pairs, and expert puzzles call for advanced patterns such as the X-wing.",
+    "The game runs in your browser, with nothing to install and no account. Your unfinished puzzle and your best time for each level stay on this device, so you can close the page and continue later. Once you have played, the game also works without an internet connection."
+  ],
+  "howToPlay": [
+    "Choose a difficulty, or continue the puzzle you left.",
+    "Tap a cell to select it, then tap a number to place it. Tap the same number again to remove it.",
+    "Each row, each column and each 3 × 3 box must end up with the digits 1 to 9, each exactly once.",
+    "Turn on Notes to pencil in the digits a cell could still take. Placing a digit removes it from the notes in the same row, column and box.",
+    "The puzzle is solved when every cell is filled in correctly. Your time is shown at the end."
+  ],
+  "controls": [
+    "Phones and tablets: tap a cell, then a number on the pad below the grid. The small number under each digit shows how many are left to place.",
+    "Keyboard: the arrow keys move, 1 to 9 place a digit, Shift with a digit adds a note, and Backspace or Delete clears a cell.",
+    "Shortcuts: N switches notes on and off, H gives a hint, and Ctrl+Z or U undoes the last change."
+  ],
+  "tips": [
+    "Start with the digit that already appears most often, and look for the one box, row or column where it still fits.",
+    "When a cell has only one possible digit left, fill it in. When a digit has only one possible cell left in a row, column or box, it goes there.",
+    "Use notes on the harder levels. When two cells in a row, column or box can only hold the same two digits, those digits can't go anywhere else in that row, column or box.",
+    "Turn off Highlight mistakes for a real challenge. With it on, a wrong digit shows in red right away."
+  ],
+  "faq": [
+    {
+      "question": "Does every puzzle have exactly one solution?",
+      "answer": "Yes. Each puzzle is checked when it is created, and only puzzles with exactly one solution are used."
+    },
+    {
+      "question": "What does a hint do?",
+      "answer": "It fills in the selected cell if it is empty or wrong. If that cell is already right, it fills a cell you could work out next from the current grid."
+    },
+    {
+      "question": "Will I lose my puzzle if I close the page?",
+      "answer": "No. Your current puzzle and time are saved on this device. Press Play again and choose Continue."
+    },
+    {
+      "question": "Is Sudoku free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    }
+  ],
+  "ui": {
+    "chooseDifficulty": "कठिनाई चुनें",
+    "easy": "आसान",
+    "medium": "मध्यम",
+    "hard": "कठिन",
+    "expert": "विशेषज्ञ",
+    "best": "सबसे अच्छा {time}",
+    "continue": "जारी रखें",
+    "continueDetail": "{difficulty} · {time}",
+    "generating": "आपकी पहेली बन रही है…",
+    "generateFailed": "पहेली नहीं बन सकी। फिर से कोशिश करने के लिए कठिनाई चुनें।",
+    "time": "समय",
+    "mistakes": "गलतियाँ",
+    "highlightMistakes": "गलतियाँ दिखाएँ",
+    "undo": "पूर्ववत करें",
+    "erase": "मिटाएँ",
+    "notes": "नोट्स",
+    "hint": "संकेत",
+    "boardLabel": "सुडोकू ग्रिड",
+    "cellGiven": "पंक्ति {row}, स्तंभ {col}: {value}, दिया गया",
+    "cellValue": "पंक्ति {row}, स्तंभ {col}: {value}",
+    "cellNotes": "पंक्ति {row}, स्तंभ {col}: खाली, नोट्स {notes}",
+    "cellEmpty": "पंक्ति {row}, स्तंभ {col}: खाली",
+    "digitLabel": "{digit}, {count} बाकी"
+  }
+}

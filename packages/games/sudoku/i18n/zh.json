@@ -1,0 +1,71 @@
+{
+  "name": "数独",
+  "tagline": "填满方格，让每行、每列和每个宫都包含 1 到 9。",
+  "description": "在浏览器中免费玩数独：从简单到专家的全新谜题，支持笔记、提示和撤销。手机、平板和电脑都能玩，离线也可以。",
+  "about": [
+    "Sudoku is a logic puzzle played on a 9 × 9 grid divided into nine 3 × 3 boxes. Some cells start with a digit. Your job is to fill every empty cell so that each row, each column and each box contains the digits 1 to 9 exactly once. There is no arithmetic: the numbers are just symbols, and every step comes from working out where a digit can and cannot go.",
+    "Every puzzle here is created fresh when you start, and each one has exactly one solution, so you never need to guess. The four levels are graded by the techniques a person needs. Easy and medium puzzles fall to singles, the only place left for a digit. Hard puzzles need pointing pairs and naked pairs, and expert puzzles call for advanced patterns such as the X-wing.",
+    "The game runs in your browser, with nothing to install and no account. Your unfinished puzzle and your best time for each level stay on this device, so you can close the page and continue later. Once you have played, the game also works without an internet connection."
+  ],
+  "howToPlay": [
+    "Choose a difficulty, or continue the puzzle you left.",
+    "Tap a cell to select it, then tap a number to place it. Tap the same number again to remove it.",
+    "Each row, each column and each 3 × 3 box must end up with the digits 1 to 9, each exactly once.",
+    "Turn on Notes to pencil in the digits a cell could still take. Placing a digit removes it from the notes in the same row, column and box.",
+    "The puzzle is solved when every cell is filled in correctly. Your time is shown at the end."
+  ],
+  "controls": [
+    "Phones and tablets: tap a cell, then a number on the pad below the grid. The small number under each digit shows how many are left to place.",
+    "Keyboard: the arrow keys move, 1 to 9 place a digit, Shift with a digit adds a note, and Backspace or Delete clears a cell.",
+    "Shortcuts: N switches notes on and off, H gives a hint, and Ctrl+Z or U undoes the last change."
+  ],
+  "tips": [
+    "Start with the digit that already appears most often, and look for the one box, row or column where it still fits.",
+    "When a cell has only one possible digit left, fill it in. When a digit has only one possible cell left in a row, column or box, it goes there.",
+    "Use notes on the harder levels. When two cells in a row, column or box can only hold the same two digits, those digits can't go anywhere else in that row, column or box.",
+    "Turn off Highlight mistakes for a real challenge. With it on, a wrong digit shows in red right away."
+  ],
+  "faq": [
+    {
+      "question": "Does every puzzle have exactly one solution?",
+      "answer": "Yes. Each puzzle is checked when it is created, and only puzzles with exactly one solution are used."
+    },
+    {
+      "question": "What does a hint do?",
+      "answer": "It fills in the selected cell if it is empty or wrong. If that cell is already right, it fills a cell you could work out next from the current grid."
+    },
+    {
+      "question": "Will I lose my puzzle if I close the page?",
+      "answer": "No. Your current puzzle and time are saved on this device. Press Play again and choose Continue."
+    },
+    {
+      "question": "Is Sudoku free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    }
+  ],
+  "ui": {
+    "chooseDifficulty": "选择难度",
+    "easy": "简单",
+    "medium": "中等",
+    "hard": "困难",
+    "expert": "专家",
+    "best": "最佳 {time}",
+    "continue": "继续",
+    "continueDetail": "{difficulty} · {time}",
+    "generating": "正在生成谜题…",
+    "generateFailed": "谜题生成失败。请选择难度重试。",
+    "time": "用时",
+    "mistakes": "错误",
+    "highlightMistakes": "标出错误",
+    "undo": "撤销",
+    "erase": "擦除",
+    "notes": "笔记",
+    "hint": "提示",
+    "boardLabel": "数独方格",
+    "cellGiven": "第 {row} 行第 {col} 列：{value}，题目给定",
+    "cellValue": "第 {row} 行第 {col} 列：{value}",
+    "cellNotes": "第 {row} 行第 {col} 列：空，笔记 {notes}",
+    "cellEmpty": "第 {row} 行第 {col} 列：空",
+    "digitLabel": "{digit}，还剩 {count} 个"
+  }
+}
