@@ -1,0 +1,78 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { Clock, Users, WifiOff } from "lucide-react";
+
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+import { CATEGORY_KEYS, CATEGORY_STYLE, playablePlayers } from "./catalog";
+
+import type { RegisteredGame } from "./registry";
+
+// One catalog card. The whole card is clickable through the title link's
+// stretched ::after, so the link's accessible name is just the game name.
+interface Props {
+  locale: Locale;
+  game: RegisteredGame;
+}
+
+const { locale, game } = Astro.props;
+const t = getT(locale);
+const { manifest } = game;
+const text = game.text[locale];
+const { Icon, tile } = CATEGORY_STYLE[manifest.category];
+const category = t(CATEGORY_KEYS[manifest.category].name);
+const players = playablePlayers(manifest);
+const playersLabel =
+  players.min === players.max
+    ? t("games:players", { min: players.min })
+    : t("games:playersRange", { min: players.min, max: players.max });
+// What the catalog search matches: the localized and English names, the
+// tagline and the category, without accents or case.
+const search = [text.name, game.text.en.name, text.tagline, category]
+  .join(" ")
+  .normalize("NFD")
+  .replace(/\p{M}/gu, "")
+  .toLocaleLowerCase();
+---
+
+<li data-game data-search={search} class="relative">
+  <article class="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-surface p-2 transition-colors focus-within:border-border-strong hover:border-border-strong motion-reduce:transition-none">
+    <div
+      aria-hidden="true"
+      class:list={["flex aspect-[4/3] items-center justify-center rounded-xl", tile]}
+    >
+      <Icon className="size-12 transition-transform group-hover:scale-110 motion-reduce:transition-none md:size-14" />
+    </div>
+    <div class="grid gap-1 px-1">
+      <h2 class="text-base leading-tight font-semibold md:text-lg">
+        <a
+          href={getRelativeLocaleUrl(locale, `/games/${manifest.id}/`)}
+          class="rounded-sm after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-offset-2 focus-visible:after:outline-focus"
+        >
+          {text.name}
+        </a>
+      </h2>
+      <p class="line-clamp-2 text-sm text-muted">{text.tagline}</p>
+    </div>
+    <ul class="mt-auto flex flex-wrap gap-x-3 gap-y-1 px-1 pb-1 text-xs font-semibold text-muted">
+      <li class="flex items-center gap-1">
+        <Users aria-hidden="true" className="size-3.5" />
+        {playersLabel}
+      </li>
+      <li class="flex items-center gap-1">
+        <Clock aria-hidden="true" className="size-3.5" />
+        {t("games:minutes", {
+          min: manifest.estimatedMinutes[0],
+          max: manifest.estimatedMinutes[1],
+        })}
+      </li>
+      {manifest.offline && (
+        <li class="flex items-center gap-1">
+          <WifiOff aria-hidden="true" className="size-3.5" />
+          {t("games:offline")}
+        </li>
+      )}
+    </ul>
+  </article>
+</li>

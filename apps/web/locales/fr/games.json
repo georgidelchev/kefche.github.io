@@ -26,5 +26,59 @@
     "controls": "Commandes",
     "tips": "Astuces",
     "faq": "Questions et réponses"
+  },
+  "catalog": {
+    "intro": "Des jeux gratuits qui fonctionnent directement dans votre navigateur. Sans téléchargement et sans compte.",
+    "description": "Des jeux gratuits dans le navigateur de votre téléphone, tablette ou ordinateur. Sans téléchargement ni inscription.",
+    "search": "Rechercher des jeux",
+    "searchPlaceholder": "Rechercher par nom",
+    "categories": "Catégories",
+    "all": "Tous les jeux",
+    "results": "{count, plural, =0 {Aucun jeu trouvé} one {# jeu} other {# jeux}}",
+    "noMatch": "Aucun jeu ne correspond à « {query} »",
+    "noMatchHint": "Vérifiez l’orthographe ou essayez un mot plus court.",
+    "clear": "Effacer la recherche"
+  },
+  "categories": {
+    "board": {
+      "name": "Classiques de plateau",
+      "description": "Des jeux de plateau intemporels, d’adresse et de hasard, gratuits dans votre navigateur."
+    },
+    "cards": {
+      "name": "Jeux de cartes",
+      "description": "Des jeux de cartes pour tous les goûts, gratuits dans votre navigateur, sans mise et sans argent."
+    },
+    "logic": {
+      "name": "Logique et casse-tête",
+      "description": "Des casse-tête qui font réfléchir, des jeux de chiffres aux grilles logiques, gratuits dans votre navigateur."
+    },
+    "arcade": {
+      "name": "Arcade",
+      "description": "Des jeux d’action rapides, aux commandes simples, avec des records à battre, gratuits dans votre navigateur."
+    },
+    "arenas": {
+      "name": "Arènes en ligne",
+      "description": "Des jeux d’arène en temps réel où de nombreux joueurs partagent une carte, gratuits dans votre navigateur."
+    },
+    "party": {
+      "name": "Jeux d’ambiance",
+      "description": "Des jeux entre amis, dans la même pièce ou en ligne, gratuits dans votre navigateur."
+    },
+    "word": {
+      "name": "Jeux de mots",
+      "description": "Des jeux de lettres et de mots dans votre langue, gratuits dans votre navigateur."
+    },
+    "speed": {
+      "name": "Vitesse et réflexes",
+      "description": "De courts défis qui testent la rapidité de vos yeux et de vos doigts, gratuits dans votre navigateur."
+    },
+    "strategy": {
+      "name": "Stratégie",
+      "description": "Des jeux de planification et de tactique où chaque coup compte, gratuits dans votre navigateur."
+    },
+    "sports": {
+      "name": "Sports",
+      "description": "Des jeux de sport aux commandes simples, gratuits dans votre navigateur."
+    }
   }
 }

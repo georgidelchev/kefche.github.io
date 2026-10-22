@@ -26,5 +26,59 @@
     "controls": "Controles",
     "tips": "Consejos",
     "faq": "Preguntas y respuestas"
+  },
+  "catalog": {
+    "intro": "Juegos gratis que funcionan directamente en tu navegador. Sin descargas y sin necesidad de cuenta.",
+    "description": "Juegos gratis en el navegador de tu móvil, tableta u ordenador. Sin descargas ni registro. Elige un juego y pulsa Jugar.",
+    "search": "Buscar juegos",
+    "searchPlaceholder": "Buscar por nombre",
+    "categories": "Categorías",
+    "all": "Todos los juegos",
+    "results": "{count, plural, =0 {No se encontraron juegos} one {# juego} other {# juegos}}",
+    "noMatch": "Ningún juego coincide con «{query}»",
+    "noMatchHint": "Revisa la ortografía o prueba con una palabra más corta.",
+    "clear": "Borrar búsqueda"
+  },
+  "categories": {
+    "board": {
+      "name": "Clásicos de mesa",
+      "description": "Juegos de mesa de toda la vida, de habilidad y de suerte, gratis en tu navegador."
+    },
+    "cards": {
+      "name": "Juegos de cartas",
+      "description": "Juegos de cartas para todos los gustos, gratis en tu navegador, sin apuestas ni dinero."
+    },
+    "logic": {
+      "name": "Lógica y puzles",
+      "description": "Puzles que te hacen pensar, desde juegos de números hasta cuadrículas de lógica, gratis en tu navegador."
+    },
+    "arcade": {
+      "name": "Arcade",
+      "description": "Juegos de acción rápidos, con controles sencillos y récords que batir, gratis en tu navegador."
+    },
+    "arenas": {
+      "name": "Arenas en línea",
+      "description": "Juegos de arena en tiempo real donde muchos jugadores comparten un mapa, gratis en tu navegador."
+    },
+    "party": {
+      "name": "Juegos de grupo",
+      "description": "Juegos para grupos de amigos, en la misma sala o en línea, gratis en tu navegador."
+    },
+    "word": {
+      "name": "Juegos de palabras",
+      "description": "Juegos con letras y palabras en tu propio idioma, gratis en tu navegador."
+    },
+    "speed": {
+      "name": "Velocidad y reflejos",
+      "description": "Retos cortos que ponen a prueba la rapidez de tus ojos y tus dedos, gratis en tu navegador."
+    },
+    "strategy": {
+      "name": "Estrategia",
+      "description": "Juegos de planificación y táctica donde cada movimiento cuenta, gratis en tu navegador."
+    },
+    "sports": {
+      "name": "Deportes",
+      "description": "Juegos de deportes con controles sencillos, gratis en tu navegador."
+    }
   }
 }

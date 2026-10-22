@@ -2,41 +2,42 @@
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { Clock, Users, WifiOff } from "lucide-react";
 
-import { GamePlayer } from "@/features/games/GamePlayer";
-import { listGames, type RegisteredGame } from "@/features/games/registry";
+import JsonLd from "@/components/JsonLd.astro";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
-import { LOCALE_INFO, LOCALES, type Locale } from "@/i18n/locales";
+import { LOCALE_INFO, type Locale } from "@/i18n/locales";
 
-import type { GetStaticPaths } from "astro";
+import { CATEGORY_KEYS, playablePlayers } from "./catalog";
+import { GamePlayer } from "./GamePlayer";
 
-// One pre-rendered page per game and locale (SPEC §15): play first, then the
-// about / how to play / controls / tips / FAQ sections with JSON-LD.
-export const getStaticPaths = (() =>
-  LOCALES.flatMap((locale) =>
-    listGames().map((game) => ({ params: { locale, id: game.manifest.id }, props: { game } })),
-  )) satisfies GetStaticPaths;
+import type { RegisteredGame } from "./registry";
 
-const { game } = Astro.props as { game: RegisteredGame };
-const locale = Astro.params.locale as Locale;
+// A game's page (SPEC §15): play first, then the about / how to play /
+// controls / tips / FAQ sections with JSON-LD.
+interface Props {
+  locale: Locale;
+  game: RegisteredGame;
+}
+
+const { locale, game } = Astro.props;
 const t = getT(locale);
 const { bcp47, dir } = LOCALE_INFO[locale];
 const { manifest } = game;
 const text = game.text[locale];
 const path = `/games/${manifest.id}/`;
-const url = (l: Locale, p: string) => new URL(getRelativeLocaleUrl(l, p), Astro.site).href;
+const categoryPath = `/games/${manifest.category}/`;
+const categoryName = t(CATEGORY_KEYS[manifest.category].name);
+const url = (p: string) => new URL(getRelativeLocaleUrl(locale, p), Astro.site).href;
 
-// The manifest's range is the game's full design (race mode included). Until a
-// game lists a mode beyond solo, only one person can play it.
-const soloOnly = manifest.modes.every((mode) => mode === "solo");
-const minPlayers = soloOnly ? 1 : manifest.players.min;
-const maxPlayers = soloOnly ? 1 : manifest.players.max;
-const players =
-  minPlayers === maxPlayers
-    ? t("games:players", { min: minPlayers })
-    : t("games:playersRange", { min: minPlayers, max: maxPlayers });
+const players = playablePlayers(manifest);
 const facts = [
-  { Icon: Users, label: players },
+  {
+    Icon: Users,
+    label:
+      players.min === players.max
+        ? t("games:players", { min: players.min })
+        : t("games:playersRange", { min: players.min, max: players.max }),
+  },
   {
     Icon: Clock,
     label: t("games:minutes", {
@@ -47,34 +48,28 @@ const facts = [
   ...(manifest.offline ? [{ Icon: WifiOff, label: t("games:offline") }] : []),
 ];
 
-// Structured data. JSON.stringify output with "<" escaped can't close the
-// script element, so it's safe to inline.
-const jsonLd = JSON.stringify([
+const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "VideoGame",
     name: text.name,
     description: text.description,
-    url: url(locale, path),
+    url: url(path),
     inLanguage: bcp47,
-    genre: manifest.category,
+    genre: categoryName,
     gamePlatform: "Web browser",
     applicationCategory: "Game",
     operatingSystem: "Any",
-    numberOfPlayers: {
-      "@type": "QuantitativeValue",
-      minValue: minPlayers,
-      maxValue: maxPlayers,
-    },
+    numberOfPlayers: { "@type": "QuantitativeValue", minValue: players.min, maxValue: players.max },
     offers: { "@type": "Offer", price: 0, priceCurrency: "EUR" },
   },
   {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: t("nav:home"), item: url(locale, "/") },
-      { "@type": "ListItem", position: 2, name: t("nav:games"), item: url(locale, "/games/") },
-      { "@type": "ListItem", position: 3, name: text.name, item: url(locale, path) },
+      { "@type": "ListItem", position: 1, name: t("nav:games"), item: url("/games/") },
+      { "@type": "ListItem", position: 2, name: categoryName, item: url(categoryPath) },
+      { "@type": "ListItem", position: 3, name: text.name, item: url(path) },
     ],
   },
   {
@@ -86,7 +81,7 @@ const jsonLd = JSON.stringify([
       acceptedAnswer: { "@type": "Answer", text: f.answer },
     })),
   },
-]).replaceAll("<", "\\u003c");
+];
 
 const playerStrings = {
   play: t("games:play"),
@@ -108,6 +103,7 @@ const playerStrings = {
   playAgain: t("games:playAgain"),
 };
 const section = "grid gap-3";
+const crumb = "rounded-sm hover:underline";
 ---
 
 <AppShell
@@ -119,11 +115,15 @@ const section = "grid gap-3";
 >
   <article class="mx-auto grid w-full max-w-3xl gap-10 pb-6">
     <nav aria-label={t("games:breadcrumb")} class="text-sm text-muted">
-      <a href={getRelativeLocaleUrl(locale, "/games/")} class="hover:underline">
+      <a href={getRelativeLocaleUrl(locale, "/games/")} class={crumb}>
         {t("nav:games")}
       </a>
       <span aria-hidden="true"> / </span>
-      <span>{text.name}</span>
+      <a href={getRelativeLocaleUrl(locale, categoryPath)} class={crumb}>
+        {categoryName}
+      </a>
+      <span aria-hidden="true"> / </span>
+      <span aria-current="page">{text.name}</span>
     </nav>
 
     <header class="grid gap-4">
@@ -202,6 +202,5 @@ const section = "grid gap-3";
       </dl>
     </section>
   </article>
-  {/* eslint-disable-next-line astro/no-set-html-directive -- our own JSON with "<" escaped (see above) */}
-  <script type="application/ld+json" set:html={jsonLd} />
+  <JsonLd data={jsonLd} />
 </AppShell>

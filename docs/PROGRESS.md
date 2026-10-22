@@ -429,6 +429,8 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
 
 - **Solo only** in this phase. Race mode (several players on the same seed) needs multiplayer (Phase 5). Leaderboards, stats and achievements need Phase 7, so best scores are stored on the device for now.
 - **No heavy libraries yet:** 2048 and Sudoku use the DOM, and Snake uses Canvas 2D (SPEC §3). PixiJS, Matter.js and Howler arrive with the games that need them.
+- **Catalog filters (step 6):** search over localized names, category chips and A–Z order now. SPEC §6.6 also lists filters by player count, mode, duration and offline, and sorting by popular and new. The filters come when games differ on them (modes in Phases 4–5), "popular" needs play stats (Phase 7), and "new" needs a release date in the admin `games` table (Phase 10). Categories with no games get no page.
+- **URLs:** games and categories share `/[locale]/games/<slug>/`; the registry fails the build if a game id is also a category name. The header search opens the catalog with `?q=`.
 - **SEO text:** each game gets 250–600 words of real content (SPEC §15) written in English and Bulgarian now. The other 9 languages come in Phase 15, as the SPEC allows; `i18n:check` stays green because their files carry English copies marked for translation.
 
 ### Risks

@@ -1,0 +1,94 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import type { GameCategory } from "@kefche/game-sdk";
+
+import JsonLd from "@/components/JsonLd.astro";
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+
+import { CATEGORY_KEYS, sortByName } from "./catalog";
+import CategoryNav from "./CategoryNav.astro";
+import GameCard from "./GameCard.astro";
+import { listGames } from "./registry";
+
+// A category's page (SPEC §15): its games, A–Z. Only categories with games
+// get one.
+interface Props {
+  locale: Locale;
+  category: GameCategory;
+}
+
+const { locale, category } = Astro.props;
+const t = getT(locale);
+const path = `/games/${category}/`;
+const name = t(CATEGORY_KEYS[category].name);
+const description = t(CATEGORY_KEYS[category].description);
+const games = sortByName(
+  listGames().filter((game) => game.manifest.category === category),
+  locale,
+  LOCALE_INFO[locale].bcp47,
+);
+const url = (p: string) => new URL(getRelativeLocaleUrl(locale, p), Astro.site).href;
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name,
+    description,
+    url: url(path),
+    inLanguage: LOCALE_INFO[locale].bcp47,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: games.map((game, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: game.text[locale].name,
+        url: url(`/games/${game.manifest.id}/`),
+      })),
+    },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: t("nav:games"), item: url("/games/") },
+      { "@type": "ListItem", position: 2, name, item: url(path) },
+    ],
+  },
+];
+---
+
+<AppShell
+  locale={locale}
+  path={path}
+  section="games"
+  title={t("common:meta.sectionTitle", { section: name })}
+  description={description}
+>
+  <div class="mx-auto grid w-full max-w-7xl gap-6 pb-6">
+    <nav aria-label={t("games:breadcrumb")} class="text-sm text-muted">
+      <a href={getRelativeLocaleUrl(locale, "/games/")} class="rounded-sm hover:underline">
+        {t("nav:games")}
+      </a>
+      <span aria-hidden="true"> / </span>
+      <span aria-current="page">{name}</span>
+    </nav>
+    <header class="grid gap-2">
+      <h1 class="text-4xl md:text-5xl">{name}</h1>
+      <p class="max-w-prose text-lg text-muted">{description}</p>
+    </header>
+    <CategoryNav locale={locale} current={category} />
+    <p class="text-sm font-semibold text-muted">
+      {t("games:catalog.results", { count: games.length })}
+    </p>
+    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-5">
+      {games.map((game) => (
+        <GameCard locale={locale} game={game} />
+      ))}
+    </ul>
+  </div>
+  <JsonLd data={jsonLd} />
+</AppShell>

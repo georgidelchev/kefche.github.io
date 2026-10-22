@@ -26,5 +26,59 @@
     "controls": "操作",
     "tips": "技巧",
     "faq": "常见问题"
+  },
+  "catalog": {
+    "intro": "直接在浏览器中运行的免费游戏。无需下载，也无需注册账号。",
+    "description": "在手机、平板或电脑的浏览器中畅玩免费游戏。无需下载，无需注册。选择一款游戏，点击“开始游戏”即可。",
+    "search": "搜索游戏",
+    "searchPlaceholder": "按名称搜索",
+    "categories": "分类",
+    "all": "全部游戏",
+    "results": "{count, plural, =0 {未找到游戏} other {# 款游戏}}",
+    "noMatch": "没有与“{query}”匹配的游戏",
+    "noMatchHint": "请检查拼写，或尝试更短的关键词。",
+    "clear": "清除搜索"
+  },
+  "categories": {
+    "board": {
+      "name": "经典棋盘游戏",
+      "description": "考验技巧与运气的经典棋盘游戏，在浏览器中免费畅玩。"
+    },
+    "cards": {
+      "name": "纸牌游戏",
+      "description": "适合各种口味的纸牌游戏，在浏览器中免费畅玩，不涉及下注和金钱。"
+    },
+    "logic": {
+      "name": "逻辑与益智",
+      "description": "让你动脑的益智游戏，从数字游戏到逻辑网格，在浏览器中免费畅玩。"
+    },
+    "arcade": {
+      "name": "街机",
+      "description": "操作简单、节奏明快的动作游戏，挑战最高分，在浏览器中免费畅玩。"
+    },
+    "arenas": {
+      "name": "在线竞技场",
+      "description": "许多玩家共享同一张地图的实时竞技场游戏，在浏览器中免费畅玩。"
+    },
+    "party": {
+      "name": "派对游戏",
+      "description": "适合朋友一起玩的游戏，同处一室或在线皆可，在浏览器中免费畅玩。"
+    },
+    "word": {
+      "name": "文字游戏",
+      "description": "用你的语言玩字母和单词游戏，在浏览器中免费畅玩。"
+    },
+    "speed": {
+      "name": "速度与反应",
+      "description": "考验眼疾手快的简短挑战，在浏览器中免费畅玩。"
+    },
+    "strategy": {
+      "name": "策略",
+      "description": "每一步都很关键的规划与战术游戏，在浏览器中免费畅玩。"
+    },
+    "sports": {
+      "name": "体育",
+      "description": "操作简单的体育游戏，在浏览器中免费畅玩。"
+    }
   }
 }

@@ -26,5 +26,59 @@
     "controls": "Steuerung",
     "tips": "Tipps",
     "faq": "Fragen und Antworten"
+  },
+  "catalog": {
+    "intro": "Kostenlose Spiele, die direkt im Browser laufen. Ohne Download und ohne Konto.",
+    "description": "Kostenlose Spiele im Browser auf Handy, Tablet oder Computer. Ohne Download, ohne Anmeldung. Spiel auswählen und loslegen.",
+    "search": "Spiele suchen",
+    "searchPlaceholder": "Nach Namen suchen",
+    "categories": "Kategorien",
+    "all": "Alle Spiele",
+    "results": "{count, plural, =0 {Keine Spiele gefunden} one {# Spiel} other {# Spiele}}",
+    "noMatch": "Kein Spiel passt zu „{query}“",
+    "noMatchHint": "Prüfe die Schreibweise oder versuche ein kürzeres Wort.",
+    "clear": "Suche löschen"
+  },
+  "categories": {
+    "board": {
+      "name": "Brettspiel-Klassiker",
+      "description": "Zeitlose Brettspiele mit Können und Glück, kostenlos im Browser."
+    },
+    "cards": {
+      "name": "Kartenspiele",
+      "description": "Kartenspiele für jeden Geschmack, kostenlos im Browser, ohne Einsätze und ohne Geld."
+    },
+    "logic": {
+      "name": "Logik & Rätsel",
+      "description": "Rätsel zum Nachdenken, von Zahlenspielen bis zu Logikgittern, kostenlos im Browser."
+    },
+    "arcade": {
+      "name": "Arcade",
+      "description": "Schnelle Actionspiele mit einfacher Steuerung und Rekorden zum Knacken, kostenlos im Browser."
+    },
+    "arenas": {
+      "name": "Online-Arenen",
+      "description": "Arenaspiele in Echtzeit, in denen viele Spieler eine Karte teilen, kostenlos im Browser."
+    },
+    "party": {
+      "name": "Partyspiele",
+      "description": "Spiele für Freundesgruppen, im selben Raum oder online, kostenlos im Browser."
+    },
+    "word": {
+      "name": "Wortspiele",
+      "description": "Spiele mit Buchstaben und Wörtern in deiner Sprache, kostenlos im Browser."
+    },
+    "speed": {
+      "name": "Tempo & Reaktion",
+      "description": "Kurze Herausforderungen, die testen, wie schnell deine Augen und Finger sind, kostenlos im Browser."
+    },
+    "strategy": {
+      "name": "Strategie",
+      "description": "Spiele mit Planung und Taktik, bei denen jeder Zug zählt, kostenlos im Browser."
+    },
+    "sports": {
+      "name": "Sport",
+      "description": "Sportspiele mit einfacher Steuerung, kostenlos im Browser."
+    }
   }
 }

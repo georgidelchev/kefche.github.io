@@ -26,5 +26,59 @@
     "controls": "Controls",
     "tips": "Tips",
     "faq": "Questions and answers"
+  },
+  "catalog": {
+    "intro": "Free games that run right in your browser. No downloads, and no account needed.",
+    "description": "Free games you play in the browser on your phone, tablet or computer. No downloads, no sign-up. Pick a game and press Play.",
+    "search": "Search games",
+    "searchPlaceholder": "Search by name",
+    "categories": "Categories",
+    "all": "All games",
+    "results": "{count, plural, =0 {No games found} one {# game} other {# games}}",
+    "noMatch": "No games match “{query}”",
+    "noMatchHint": "Check the spelling, or try a shorter word.",
+    "clear": "Clear search"
+  },
+  "categories": {
+    "board": {
+      "name": "Board classics",
+      "description": "Timeless board games of skill and luck, free to play in your browser."
+    },
+    "cards": {
+      "name": "Card games",
+      "description": "Card games for every taste, free to play in your browser, with no betting and no money involved."
+    },
+    "logic": {
+      "name": "Logic & puzzles",
+      "description": "Puzzles that make you think, from number games to grid logic, free to play in your browser."
+    },
+    "arcade": {
+      "name": "Arcade",
+      "description": "Quick action games with simple controls and high scores to beat, free in your browser."
+    },
+    "arenas": {
+      "name": "Online arenas",
+      "description": "Real-time arena games where many players share one map, free in your browser."
+    },
+    "party": {
+      "name": "Party games",
+      "description": "Games for groups of friends, in the same room or online, free in your browser."
+    },
+    "word": {
+      "name": "Word games",
+      "description": "Games with letters and words in your own language, free in your browser."
+    },
+    "speed": {
+      "name": "Speed & reaction",
+      "description": "Short challenges that test how fast your eyes and fingers are, free in your browser."
+    },
+    "strategy": {
+      "name": "Strategy",
+      "description": "Games of planning and tactics where every move counts, free in your browser."
+    },
+    "sports": {
+      "name": "Sports",
+      "description": "Sports games with simple controls, free to play in your browser."
+    }
   }
 }

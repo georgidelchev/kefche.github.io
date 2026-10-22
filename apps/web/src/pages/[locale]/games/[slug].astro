@@ -1,0 +1,38 @@
+---
+import type { GameCategory } from "@kefche/game-sdk";
+
+import { categoriesWithGames } from "@/features/games/catalog";
+import CategoryPage from "@/features/games/CategoryPage.astro";
+import GamePage from "@/features/games/GamePage.astro";
+import { listGames, type RegisteredGame } from "@/features/games/registry";
+import { LOCALES, type Locale } from "@/i18n/locales";
+
+import type { GetStaticPaths } from "astro";
+
+// Games and categories share /games/<slug>/ (the registry rejects a game id
+// that is also a category). One pre-rendered page per slug and locale.
+type Props = { kind: "game"; game: RegisteredGame } | { kind: "category"; category: GameCategory };
+
+export const getStaticPaths = (() => {
+  const games = listGames();
+  return LOCALES.flatMap((locale) => [
+    ...games.map((game) => ({
+      params: { locale, slug: game.manifest.id },
+      props: { kind: "game", game } satisfies Props,
+    })),
+    ...categoriesWithGames(games).map((category) => ({
+      params: { locale, slug: category },
+      props: { kind: "category", category } satisfies Props,
+    })),
+  ]);
+}) satisfies GetStaticPaths;
+
+const props = Astro.props as Props;
+const locale = Astro.params.locale as Locale;
+---
+
+{props.kind === "game" ? (
+  <GamePage locale={locale} game={props.game} />
+) : (
+  <CategoryPage locale={locale} category={props.category} />
+)}

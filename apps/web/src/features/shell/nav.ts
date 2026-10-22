@@ -5,7 +5,7 @@
  */
 export const NAV_ITEMS = [
   { id: "home", path: "/", status: "available" },
-  { id: "games", path: "/games/", status: "soon" }, // Phase 3
+  { id: "games", path: "/games/", status: "available" },
   { id: "play", path: "/play/", status: "soon" }, // Phase 5
   { id: "friends", path: "/friends/", status: "soon" }, // Phase 8
   // Needs accounts: "soon" in builds without Supabase (ADR-0011).
@@ -18,15 +18,14 @@ export const NAV_ITEMS = [
 
 export type NavId = (typeof NAV_ITEMS)[number]["id"];
 
-/** Sections that may show "coming soon", plus header search (catalog search, Phase 3). */
-export type SoonSection = Exclude<NavId, "home"> | "search";
+/** Sections that may show "coming soon". */
+export type SoonSection = Exclude<NavId, "home" | "games">;
 
 /** Sections without a real page in this build. */
 export function soonSections(accounts: boolean): SoonSection[] {
-  const soon = NAV_ITEMS.filter(
+  return NAV_ITEMS.filter(
     (item) => item.status === "soon" || (item.status === "accounts" && !accounts),
   ).map((item) => item.id as SoonSection);
-  return [...soon, "search"];
 }
 
 /** Literal keys (not built from the id) so typed `t()` and `pnpm i18n:check` can see them. */
@@ -36,5 +35,4 @@ export const NAV_LABEL_KEYS = {
   play: "nav:play",
   friends: "nav:friends",
   profile: "nav:profile",
-  search: "nav:search",
-} as const satisfies Record<NavId | SoonSection, `nav:${string}`>;
+} as const satisfies Record<NavId, `nav:${string}`>;

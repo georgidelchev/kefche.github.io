@@ -1,0 +1,60 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { LayoutGrid } from "lucide-react";
+
+import type { GameCategory } from "@kefche/game-sdk";
+
+import { getT } from "@/i18n/i18n";
+import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+
+import { CATEGORY_KEYS, CATEGORY_STYLE, categoriesWithGames } from "./catalog";
+import { listGames } from "./registry";
+
+// Category chips: "All games" plus every category that has games. Scrolls
+// sideways on phones instead of wrapping into several rows.
+interface Props {
+  locale: Locale;
+  /** The page's category; none on the catalog itself. */
+  current?: GameCategory;
+}
+
+const { locale, current } = Astro.props;
+const t = getT(locale);
+const games = listGames();
+const chips = [
+  {
+    href: getRelativeLocaleUrl(locale, "/games/"),
+    label: t("games:catalog.all"),
+    count: games.length,
+    Icon: LayoutGrid,
+    current: current === undefined,
+  },
+  ...categoriesWithGames(games).map((category) => ({
+    href: getRelativeLocaleUrl(locale, `/games/${category}/`),
+    label: t(CATEGORY_KEYS[category].name),
+    count: games.filter((game) => game.manifest.category === category).length,
+    Icon: CATEGORY_STYLE[category].Icon,
+    current: category === current,
+  })),
+];
+---
+
+<nav aria-label={t("games:catalog.categories")} class="-mx-4 overflow-x-auto px-4 pb-1">
+  <ul class="flex w-max gap-2">
+    {chips.map(({ href, label, count, Icon, current: isCurrent }) => (
+      <li>
+        <a
+          href={href}
+          aria-current={isCurrent ? "page" : undefined}
+          class="flex min-h-11 items-center gap-2 rounded-full border border-border bg-surface px-4 font-semibold whitespace-nowrap text-text hover:border-border-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus aria-[current=page]:border-text aria-[current=page]:bg-text aria-[current=page]:text-bg"
+        >
+          <Icon aria-hidden="true" className="size-4" />
+          {label}
+          <span class="text-sm opacity-70 tabular-nums">
+            {count.toLocaleString(LOCALE_INFO[locale].bcp47)}
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

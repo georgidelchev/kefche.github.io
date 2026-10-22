@@ -1,0 +1,12 @@
+---
+// Structured data (SPEC §15). JSON.stringify output with "<" escaped can't
+// close the script element, so it's safe to inline.
+interface Props {
+  data: unknown;
+}
+
+const json = JSON.stringify(Astro.props.data).replaceAll("<", "\\u003c");
+---
+
+{/* eslint-disable-next-line astro/no-set-html-directive -- our own JSON with "<" escaped (see above) */}
+<script type="application/ld+json" set:html={json} />

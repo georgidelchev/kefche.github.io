@@ -2,7 +2,7 @@
 // packages/games/<id>/ through import.meta.glob, validates its manifest and
 // translations with Zod, and fails the build on any problem. Adding a game
 // never requires editing this file.
-import type { GameManifest, GameText } from "@kefche/game-sdk";
+import { GAME_CATEGORIES, type GameManifest, type GameText } from "@kefche/game-sdk";
 import { parseGameManifest, parseGameText } from "@kefche/game-sdk/manifest-schema";
 
 import { LOCALES, type Locale } from "@/i18n/locales";
@@ -30,6 +30,10 @@ function discover(): Map<string, RegisteredGame> {
       throw new Error(
         `Game id "${manifest.id}" must match its folder name "${String(folder)}" (${path})`,
       );
+    }
+    // Games and categories share /games/<slug>/.
+    if ((GAME_CATEGORIES as readonly string[]).includes(manifest.id)) {
+      throw new Error(`Game id "${manifest.id}" is taken by a category (${path})`);
     }
     const text = Object.fromEntries(
       LOCALES.map((locale) => {
