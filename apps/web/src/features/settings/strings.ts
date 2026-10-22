@@ -73,6 +73,17 @@ export function settingsStrings(t: AppT) {
       signOut: t("settings:account.signOut"),
       signOutEverywhere: t("settings:account.signOutEverywhere"),
     },
+    data: {
+      download: t("settings:data.download"),
+      downloadHint: t("settings:data.downloadHint"),
+      downloadFailed: t("settings:data.downloadFailed"),
+      delete: t("settings:data.delete"),
+      deleteWarning: t("settings:data.deleteWarning"),
+      deleteConfirm: t("settings:data.deleteConfirm"),
+      keep: t("settings:data.keep"),
+      pending: t("settings:data.pending", { date: "{date}" }),
+      cancel: t("settings:data.cancel"),
+    },
   };
 }
 

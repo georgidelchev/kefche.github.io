@@ -5,7 +5,8 @@
     "profile": "个人资料",
     "preferences": "偏好",
     "privacy": "隐私",
-    "account": "账户"
+    "account": "账户",
+    "data": "你的数据"
   },
   "saved": "已保存。",
   "saveFailed": "无法保存。请检查网络后重试。",
@@ -67,5 +68,16 @@
     "emailMethod": "邮箱和密码",
     "signOut": "退出登录",
     "signOutEverywhere": "在所有设备上退出"
+  },
+  "data": {
+    "download": "下载我的数据",
+    "downloadHint": "一个包含我们为你保存的全部数据的 JSON 文件。",
+    "downloadFailed": "无法准备你的数据，请几分钟后再试。",
+    "delete": "删除我的账户",
+    "deleteWarning": "确认后 7 天，你的账户、个人资料、头像和设置将被删除。如要取消，请在这 7 天内登录。之后将无法恢复。",
+    "deleteConfirm": "我明白",
+    "keep": "保留我的账户",
+    "pending": "你的账户将于 {date} 删除。",
+    "cancel": "保留我的账户"
   }
 }

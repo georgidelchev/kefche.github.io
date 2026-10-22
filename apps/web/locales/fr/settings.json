@@ -5,7 +5,8 @@
     "profile": "Profil",
     "preferences": "Préférences",
     "privacy": "Confidentialité",
-    "account": "Compte"
+    "account": "Compte",
+    "data": "Vos données"
   },
   "saved": "Enregistré.",
   "saveFailed": "Impossible d’enregistrer. Vérifiez votre connexion et réessayez.",
@@ -67,5 +68,16 @@
     "emailMethod": "E-mail et mot de passe",
     "signOut": "Se déconnecter",
     "signOutEverywhere": "Se déconnecter de tous les appareils"
+  },
+  "data": {
+    "download": "Télécharger mes données",
+    "downloadHint": "Un fichier JSON avec tout ce que nous conservons sur vous.",
+    "downloadFailed": "Impossible de préparer vos données. Réessayez dans quelques minutes.",
+    "delete": "Supprimer mon compte",
+    "deleteWarning": "Votre compte, votre profil, votre avatar et vos réglages seront supprimés 7 jours après votre confirmation. Pour annuler, connectez-vous pendant ces 7 jours. Ensuite, c’est définitif.",
+    "deleteConfirm": "Je comprends",
+    "keep": "Garder mon compte",
+    "pending": "Votre compte sera supprimé le {date}.",
+    "cancel": "Garder mon compte"
   }
 }

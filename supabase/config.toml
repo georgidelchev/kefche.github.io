@@ -429,8 +429,13 @@ inspector_port = 8083
 # The Deno major version to use.
 deno_version = 2
 
-# [edge_runtime.secrets]
-# secret_key = "env(SECRET_VALUE)"
+# kefche: shared secret between the pg_cron job and purge-accounts (supabase/.env).
+[edge_runtime.secrets]
+PURGE_ACCOUNTS_SECRET = "env(PURGE_ACCOUNTS_SECRET)"
+
+# Called by pg_cron with PURGE_ACCOUNTS_SECRET, not with a user's token.
+[functions.purge-accounts]
+verify_jwt = false
 
 [analytics]
 enabled = true

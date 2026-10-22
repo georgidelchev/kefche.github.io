@@ -5,7 +5,8 @@
     "profile": "Profile",
     "preferences": "Preferences",
     "privacy": "Privacy",
-    "account": "Account"
+    "account": "Account",
+    "data": "Your data"
   },
   "saved": "Saved.",
   "saveFailed": "We couldn't save that. Check your connection and try again.",
@@ -67,5 +68,16 @@
     "emailMethod": "Email and password",
     "signOut": "Sign out",
     "signOutEverywhere": "Sign out on all devices"
+  },
+  "data": {
+    "download": "Download my data",
+    "downloadHint": "A JSON file with everything we store about you.",
+    "downloadFailed": "We couldn't prepare your data. Try again in a few minutes.",
+    "delete": "Delete my account",
+    "deleteWarning": "Your account, profile, avatar and settings will be deleted 7 days after you confirm. To cancel, sign in during those 7 days. After that, it can't be undone.",
+    "deleteConfirm": "I understand",
+    "keep": "Keep my account",
+    "pending": "Your account will be deleted on {date}.",
+    "cancel": "Keep my account"
   }
 }

@@ -5,7 +5,8 @@
     "profile": "Perfil",
     "preferences": "Preferencias",
     "privacy": "Privacidad",
-    "account": "Cuenta"
+    "account": "Cuenta",
+    "data": "Tus datos"
   },
   "saved": "Guardado.",
   "saveFailed": "No pudimos guardarlo. Revisa tu conexión y vuelve a intentarlo.",
@@ -67,5 +68,16 @@
     "emailMethod": "Correo y contraseña",
     "signOut": "Cerrar sesión",
     "signOutEverywhere": "Cerrar sesión en todos los dispositivos"
+  },
+  "data": {
+    "download": "Descargar mis datos",
+    "downloadHint": "Un archivo JSON con todo lo que guardamos sobre ti.",
+    "downloadFailed": "No pudimos preparar tus datos. Inténtalo de nuevo en unos minutos.",
+    "delete": "Eliminar mi cuenta",
+    "deleteWarning": "Tu cuenta, perfil, avatar y ajustes se eliminarán 7 días después de que lo confirmes. Para cancelarlo, inicia sesión durante esos 7 días. Después no se podrá deshacer.",
+    "deleteConfirm": "Lo entiendo",
+    "keep": "Conservar mi cuenta",
+    "pending": "Tu cuenta se eliminará el {date}.",
+    "cancel": "Conservar mi cuenta"
   }
 }

@@ -7,6 +7,7 @@ import { authStrings } from "@/features/auth/strings";
 import LanguageSwitcher from "@/features/i18n/LanguageSwitcher.astro";
 import { AccountSettings } from "@/features/settings/AccountSettings";
 import { countryOptions } from "@/features/settings/countries";
+import { DataSettings } from "@/features/settings/DataSettings";
 import { OptionsSettings } from "@/features/settings/OptionsSettings";
 import { ProfileSettings } from "@/features/settings/ProfileSettings";
 import { settingsStrings } from "@/features/settings/strings";
@@ -109,6 +110,19 @@ const section = "grid gap-5 rounded-2xl border border-border bg-surface p-5 md:p
         signInPath={paths.signIn}
         homePath={paths.home}
         callbackPath={paths.callback}
+      />
+    </section>
+
+    <section id="data" class={section} aria-labelledby="settings-data">
+      <h2 id="settings-data" class="text-2xl">
+        {t("settings:sections.data")}
+      </h2>
+      <DataSettings
+        client:load
+        strings={strings}
+        bcp47={bcp47}
+        signInPath={paths.signIn}
+        homePath={paths.home}
       />
     </section>
   </div>

@@ -81,8 +81,14 @@ export type Database = {
             [_ in never]: never
           }
           Functions: {
-            "avatar_upload_allowed":
+            "account_deletion_date":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
+"avatar_upload_allowed":
 { Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"cancel_account_deletion":
+{ Args: Record<PropertyKey, never>; Returns: undefined
                            },
 "check_nickname":
 { Args: { "p_nickname": string }; Returns: string
@@ -90,14 +96,26 @@ export type Database = {
 "complete_profile":
 { Args: { "p_birth_month"?: number,"p_birth_year"?: number,"p_nickname"?: string }; Returns: string
                            },
+"due_account_deletions":
+{ Args: { "p_limit"?: number }; Returns: string[]
+                           },
 "has_role":
 { Args: { "p_role": Database["public"]['Enums']["app_role"] }; Returns: boolean
                            },
 "merge_guest":
 { Args: { "p_guest": string,"p_target": string }; Returns: undefined
                            },
+"purge_account":
+{ Args: { "p_user": string }; Returns: undefined
+                           },
+"request_account_deletion":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
 "set_user_role":
 { Args: { "p_granted": boolean,"p_role": Database["public"]['Enums']["app_role"],"p_user_id": string }; Returns: undefined
+                           },
+"take_rate_limit":
+{ Args: { "p_capacity": number,"p_key": string,"p_refill_per_second": number }; Returns: boolean
                            }
           }
           Enums: {

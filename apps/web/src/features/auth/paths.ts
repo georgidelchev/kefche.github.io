@@ -10,6 +10,7 @@ export interface AuthPaths {
   callback: string;
   onboarding: string;
   merge: string;
+  settings: string;
 }
 
 /** Built on the server (Astro's i18n helpers) and passed to islands as props. */
@@ -26,5 +27,6 @@ export function authPaths(
     callback: localeUrl(locale, "/auth/callback/"),
     onboarding: localeUrl(locale, "/auth/onboarding/"),
     merge: localeUrl(locale, "/auth/merge/"),
+    settings: localeUrl(locale, "/settings/"),
   };
 }

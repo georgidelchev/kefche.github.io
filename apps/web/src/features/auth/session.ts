@@ -1,6 +1,6 @@
 import { syncAccount } from "@/features/account/account-state";
 import { localizePath, storedLocale } from "@/features/i18n/locale-preference";
-import type { Supabase } from "@/lib/supabase/client";
+import { nullable, type Supabase } from "@/lib/supabase/client";
 
 import { forgetGuest, pendingMerge } from "./guest";
 
@@ -54,6 +54,9 @@ export async function routeAfterSignIn(supabase: Supabase, paths: AuthPaths, nex
   const localized = (path: string) => (locale ? localizePath(path, locale) : path);
   if (await needsOnboarding(supabase, data.user.id)) {
     location.assign(withNext(localized(paths.onboarding), next && localized(next)));
+  } else if (nullable((await supabase.rpc("account_deletion_date")).data)) {
+    // Deletion pending: show where to cancel it (SPEC §17 grace period).
+    location.assign(`${localized(paths.settings)}#data`);
   } else {
     location.assign(localized(next ?? paths.home));
   }

@@ -46,6 +46,24 @@ select id, 'admin' from auth.users where email = 'you@example.com';
 
 Roles travel in the access token (`app_roles` claim), so a change applies at the user's next token refresh, at most an hour later. Signing out and in again applies it immediately. Privileged actions re-check the table, so a revoked admin can't perform admin actions in the meantime.
 
+## Account deletion job
+
+"Delete my account" schedules a hard delete 7 days later. Every hour, `pg_cron` runs `private.invoke_purge_accounts()`, which calls the `purge-accounts` Edge Function through `pg_net`. The function removes the account's Storage files and then the account. The job does nothing until both pieces below exist.
+
+1. **Shared secret:** generate a long random string, for example `openssl rand -hex 32`.
+   - **Locally:** put it in `supabase/.env` as `PURGE_ACCOUNTS_SECRET` and restart Supabase.
+   - **Hosted:** run `pnpm exec supabase secrets set PURGE_ACCOUNTS_SECRET=…` (Phase 21).
+2. **Vault entries:** in the SQL editor, store the same secret plus the project URL the database can reach:
+
+   ```sql
+   -- Locally the database reaches the API at http://supabase_kong_kefche:8000;
+   -- hosted, use https://<project-ref>.supabase.co.
+   select vault.create_secret('http://supabase_kong_kefche:8000', 'project_url');
+   select vault.create_secret('<the same secret>', 'purge_accounts_secret');
+   ```
+
+Check it with `select * from cron.job_run_details order by start_time desc limit 5;` and the Edge Function logs.
+
 ## OAuth providers (local development)
 
 Sign-in with Google, Discord, Twitch and Facebook needs one development app per provider. Each app gets this redirect (callback) URL, exactly:
