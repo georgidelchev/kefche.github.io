@@ -33,6 +33,19 @@ Deploys run from GitHub Actions (ADR-0003). The `deploy` job is skipped until th
 - Local emails (sign-up confirmation, password reset) never leave the machine. Read them in Mailpit at http://127.0.0.1:54324.
 - After changing `supabase/config.toml` or `supabase/.env`, run `pnpm db:stop && pnpm db:start` to apply it.
 
+## Staff roles
+
+Admins and moderators are rows in `public.user_roles`. Admins change roles in the admin panel (Phase 10), which calls `public.set_user_role()`. Every change is audited, and the last admin can't be removed.
+
+**First admin.** Run this once in the SQL editor: locally, Studio at http://127.0.0.1:54323 → _SQL Editor_.
+
+```sql
+insert into public.user_roles (user_id, role)
+select id, 'admin' from auth.users where email = 'you@example.com';
+```
+
+Roles travel in the access token (`app_roles` claim), so a change applies at the user's next token refresh, at most an hour later. Signing out and in again applies it immediately. Privileged actions re-check the table, so a revoked admin can't perform admin actions in the meantime.
+
 ## OAuth providers (local development)
 
 Sign-in with Google, Discord, Twitch and Facebook needs one development app per provider. Each app gets this redirect (callback) URL, exactly:
