@@ -1,4 +1,5 @@
 // @kefche/game-sdk/browser: runtime helpers for game renderers (browser only).
+export * from "./game-module";
 export * from "./haptics";
 export * from "./input";
 export * from "./loop";

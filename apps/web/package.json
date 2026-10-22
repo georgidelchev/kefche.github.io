@@ -17,6 +17,7 @@
     "@astrojs/cloudflare": "14.4.1",
     "@astrojs/react": "7.1.0",
     "@hookform/resolvers": "6.0.0",
+    "@kefche/game-sdk": "workspace:*",
     "@kefche/ui": "workspace:*",
     "@supabase/supabase-js": "2.118.0",
     "@tailwindcss/vite": "4.3.3",

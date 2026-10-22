@@ -4,6 +4,8 @@ import { z } from "zod";
 
 import { ENGINE_KINDS, GAME_CATEGORIES, GAME_MODES, type GameManifest } from "./manifest";
 
+import type { GameText } from "./game-text";
+
 const kebab = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const difficulty = z.enum(["easy", "medium", "hard"]);
 
@@ -80,6 +82,31 @@ export const gameManifestSchema = z
     message: "bots: list at least one difficulty when bots are supported",
     path: ["bots"],
   });
+
+const line = z.string().min(1).max(600);
+
+export const gameTextSchema = z
+  .object({
+    name: z.string().min(1).max(40),
+    tagline: z.string().min(1).max(90),
+    description: z.string().min(50).max(170),
+    about: z.array(line).min(1),
+    howToPlay: z.array(line).min(1),
+    controls: z.array(line).min(1),
+    tips: z.array(line).min(1),
+    faq: z.array(z.object({ question: line, answer: line }).strict()).min(1),
+    ui: z.record(z.string().regex(/^[a-z][a-zA-Z0-9.]*$/), z.string().min(1)),
+  })
+  .strict();
+
+/** Validates a game's translations; throws an error naming the file. */
+export function parseGameText(input: unknown, source: string): GameText {
+  const result = gameTextSchema.safeParse(input);
+  if (!result.success) {
+    throw new Error(`Invalid game text in ${source}:\n${z.prettifyError(result.error)}`);
+  }
+  return result.data;
+}
 
 /** Validates a manifest; throws an error naming the game and every problem. */
 export function parseGameManifest(input: unknown, source: string): GameManifest {
