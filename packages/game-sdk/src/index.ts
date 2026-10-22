@@ -1,3 +1,6 @@
-// Public entry of @kefche/game-sdk. The SDK surface (manifest schema, registry,
-// seeded PRNG, engine kinds, timers, bot worker harness) is built in Phase 3.
-export {};
+// Public entry of @kefche/game-sdk: isomorphic contracts and helpers (no DOM).
+// Browser runtime helpers live in `@kefche/game-sdk/browser`; build-time
+// manifest validation in `@kefche/game-sdk/manifest-schema`.
+export * from "./engines";
+export * from "./manifest";
+export * from "./prng";

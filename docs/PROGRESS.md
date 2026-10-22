@@ -9,7 +9,7 @@
 | 0     | Foundation & tooling                                       | ✅ Done (owner signed off 2026-10-21) |
 | 1     | Design system, layout, theming, i18n skeleton              | ✅ Done (owner signed off 2026-10-22) |
 | 2     | Supabase core, auth & profiles                             | ✅ Done (owner signed off 2026-10-22) |
-| 3     | Game SDK & first games (2048, Sudoku, Snake)               | 📝 Plan awaiting owner approval       |
+| 3     | Game SDK & first games (2048, Sudoku, Snake)               | 🚧 In progress                        |
 | 4     | Bots, hotseat & timers                                     | ⏳ Not started                        |
 | 5     | Multiplayer core                                           | ⏳ Not started                        |
 | 6     | Chess                                                      | ⏳ Not started                        |
@@ -443,9 +443,15 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
 - **Q2 — Offline:** the DoD asks for offline-capable games, but the service worker is Phase 16. Proposal: add a minimal service worker now (via `@vite-pwa/astro`) that caches the three games after first play, and leave install prompts and update flow polish for Phase 16. The alternative is to make the games work without network calls and keep the "offline" check for Phase 16.
 - **Q3 — Sound:** CC0 sound effects (Kenney) with a mute button now, or silent games until Phase 16 (audio polish)?
 
+### Owner answers (2026-10-22)
+
+- **Q1 — Art:** yes, show 2–3 directions to pick from.
+- **Q2 — Offline:** add a minimal service worker now that caches each game after first play; install prompts and update-flow polish stay in Phase 16.
+- **Q3 — Sound:** CC0 sound effects (Kenney) with a mute button now.
+
 ### Status
 
-- [ ] Plan approved by owner
+- [x] Plan approved by owner (2026-10-22)
 
 ---
 
