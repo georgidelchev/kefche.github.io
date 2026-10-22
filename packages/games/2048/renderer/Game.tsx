@@ -143,7 +143,7 @@ const CSS = `
 .g2048 { display: grid; gap: 0.75rem; width: min(100%, 30rem); margin-inline: auto; user-select: none; }
 .g2048-hud { display: flex; gap: 0.5rem; align-items: stretch; }
 .g2048-stat { flex: 1; display: grid; place-items: center; padding: 0.35rem; border-radius: 0.75rem; background: var(--surface-2); }
-.g2048-stat span { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.g2048-stat span { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); }
 .g2048-stat strong { font-size: 1.25rem; font-variant-numeric: tabular-nums; }
 .g2048-undo, .g2048-overlay button { min-height: 2.75rem; padding-inline: 1rem; border-radius: 0.75rem; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font-weight: 600; cursor: pointer; }
 .g2048-undo:disabled { opacity: 0.45; cursor: not-allowed; }
