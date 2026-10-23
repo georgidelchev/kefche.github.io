@@ -32,8 +32,8 @@ import {
   type TurnMode,
 } from "./turn/match-setup";
 
-const TurnSetup = lazy(() => import("./turn/TurnUi").then((m) => ({ default: m.TurnSetup })));
-const TurnHud = lazy(() => import("./turn/TurnUi").then((m) => ({ default: m.TurnHud })));
+// One lazy component for the setup screen and the HUD: loaded once, for setup.
+const TurnUi = lazy(() => import("./turn/TurnUi").then((m) => ({ default: m.TurnUi })));
 
 export interface PlayerStrings {
   play: string;
@@ -376,7 +376,8 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
 
         {showHud && (
           <Suspense fallback={null}>
-            <TurnHud
+            <TurnUi
+              part="hud"
               seats={match.seats}
               timer={match.timer}
               report={report}
@@ -391,7 +392,8 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
           {phase === "setup" && turn && choice && (
             <div className="absolute inset-0 z-10 overflow-auto bg-bg p-4">
               <Suspense fallback={null}>
-                <TurnSetup
+                <TurnUi
+                  part="setup"
                   mode={mode}
                   config={turn.config}
                   choice={choice}

@@ -78,7 +78,7 @@ interface SetupProps {
   onStart: () => void;
 }
 
-export function TurnSetup({
+function TurnSetup({
   mode,
   config,
   choice,
@@ -200,7 +200,15 @@ interface HudProps {
   strings: TurnStrings;
 }
 
-export function TurnHud({ seats, timer, report, strings: s }: HudProps) {
+/**
+ * The player loads this module once, for the setup screen; the HUD then
+ * comes from the same loaded component, so it shows with the first move.
+ */
+export function TurnUi(props: ({ part: "setup" } & SetupProps) | ({ part: "hud" } & HudProps)) {
+  return props.part === "setup" ? <TurnSetup {...props} /> : <TurnHud {...props} />;
+}
+
+function TurnHud({ seats, timer, report, strings: s }: HudProps) {
   const moving = report?.toMove[0];
   const mover = moving === undefined ? undefined : seats[moving];
   const announcement =

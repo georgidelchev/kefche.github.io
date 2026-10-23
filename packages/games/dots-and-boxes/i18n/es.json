@@ -1,0 +1,57 @@
+{
+  "name": "Puntos y cajas",
+  "tagline": "Traza líneas entre puntos y cierra más cajas que nadie.",
+  "description": "Juega a Puntos y cajas gratis en el navegador: traza líneas, cierra cajas y vuelve a jugar. Contra bots o amigos en un dispositivo, de 2 a 5 jugadores.",
+  "about": [
+    "Dots and Boxes is a pencil-and-paper classic. The board is a grid of dots. Players take turns drawing one line between two neighbouring dots, across or down. Whoever draws the fourth side of a box claims it, marks it with their colour, and must draw another line straight away. When every line is drawn, the player with the most boxes wins.",
+    "Early on, the game seems calm: everyone draws lines that don't give anything away. Then the safe lines run out, and every new line hands boxes to someone. From that moment the game is about chains, rows of boxes that fall one after another once the first is opened. Good players count chains long before then, and sometimes give away two boxes on purpose to win the rest.",
+    "Here you can play against bots on three levels, or pass one device around for up to five players. The grid grows with the number of players: 4 × 4 boxes for two, 5 × 5 for three, 6 × 5 for four and 6 × 6 for five. Every player's boxes show their shape as well as a colour."
+  ],
+  "howToPlay": [
+    "Choose Play vs bots or Play on this device, and the number of players.",
+    "On your turn, draw one line between two neighbouring dots, across or down.",
+    "If your line closes a box, the box is yours and you draw again. One line can close two boxes at once.",
+    "If your line closes no box, the next player goes.",
+    "When every line is drawn, the most boxes wins. Players tied for the most share the win."
+  ],
+  "controls": [
+    "Phones and tablets: tap a line between two dots.",
+    "Mouse: click a line; it lights up in your colour first.",
+    "Keyboard: move between lines with the arrow keys and press Enter or Space to draw.",
+    "Against bots, Undo takes back your last line and the bots' replies."
+  ],
+  "tips": [
+    "Avoid drawing the third side of a box. The next player will close it and go again.",
+    "Count the safe lines left. Whoever draws the last safe line forces the next player to open a chain.",
+    "When you have to give something away, open the shortest chain.",
+    "When you take a long chain, consider leaving the last two boxes: the other player takes them and must open the next chain for you.",
+    "With more players, watch who goes after you: they get whatever you leave open."
+  ],
+  "faq": [
+    {
+      "question": "Is Dots and Boxes free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How many players can play?",
+      "answer": "Two to five. Play against bots, or share one phone, tablet or computer. Online games with friends are coming."
+    },
+    {
+      "question": "Why did I get another turn?",
+      "answer": "Closing a box always earns another line. If that line closes a box too, you keep going."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "Easy often gives boxes away. Medium never draws a third side while it can avoid it. Hard also plays the endgame, counting chains and giving away two boxes on purpose to keep control."
+    }
+  ],
+  "ui": {
+    "boardLabel": "Tablero de Puntos y cajas",
+    "line": "Línea {from}–{to}",
+    "lineDrawn": "Línea {from}–{to}, de {name}",
+    "drew": "{name} trazó {from}–{to}.",
+    "closed": "{name} trazó {from}–{to} y cerró cajas: {count}. {name} vuelve a jugar.",
+    "score": "{name}: {count}",
+    "undo": "Deshacer"
+  }
+}

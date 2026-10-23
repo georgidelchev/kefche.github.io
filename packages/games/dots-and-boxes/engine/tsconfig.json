@@ -1,0 +1,6 @@
+{
+  // Rules only: no DOM, no Node, so the engine runs in browsers, workers,
+  // tests and Deno (server-side validation).
+  "extends": "@kefche/config/tsconfig.base.json",
+  "include": ["."]
+}
