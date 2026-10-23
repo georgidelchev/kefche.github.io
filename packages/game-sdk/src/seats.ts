@@ -5,22 +5,25 @@
 import type { BotDifficulty } from "./manifest";
 import type { Rng } from "./prng";
 
-/** One per `--player-<n>` colour token, in the same order. */
+/**
+ * One per `--player-<n>` colour token, in the same order, matching
+ * `PlayerMarker` in `@kefche/ui`.
+ */
 export const PLAYER_SHAPES = [
-  "disc",
-  "ring",
+  "circle",
   "square",
   "triangle",
   "diamond",
   "star",
   "hexagon",
   "cross",
+  "heart",
 ] as const;
 export type PlayerShape = (typeof PLAYER_SHAPES)[number];
 
 export const MAX_SEATS = PLAYER_SHAPES.length;
 
-export const seatShape = (seat: number): PlayerShape => PLAYER_SHAPES[seat % MAX_SEATS] ?? "disc";
+export const seatShape = (seat: number): PlayerShape => PLAYER_SHAPES[seat % MAX_SEATS] ?? "circle";
 
 /**
  * Bot names, translated by the app (each locale spells them in its own

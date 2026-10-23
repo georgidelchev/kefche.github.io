@@ -7,10 +7,12 @@ import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALE_INFO, type Locale } from "@/i18n/locales";
 
-import { CATEGORY_KEYS, playablePlayers } from "./catalog";
+import { BOT_NAME_KEYS, CATEGORY_KEYS, playablePlayers } from "./catalog";
 import { GamePlayer } from "./GamePlayer";
 
 import type { RegisteredGame } from "./registry";
+import type { TurnStrings } from "./turn/labels";
+import type { TurnConfig, TurnMode } from "./turn/match-setup";
 
 // A game's page (SPEC §15): play first, then the about / how to play /
 // controls / tips / FAQ sections with JSON-LD.
@@ -101,6 +103,54 @@ const playerStrings = {
   time: t("games:time", { time: "{time}" }),
   playAgain: t("games:playAgain"),
 };
+// Turn-based games open a setup screen (seats, bots, timer) instead of starting at once.
+const turnModes = manifest.modes.filter((m): m is TurnMode => m === "solo-bots" || m === "hotseat");
+const turnConfig: TurnConfig | null =
+  manifest.kind === "turn" && turnModes.length > 0
+    ? {
+        modes: turnModes,
+        players: manifest.players,
+        difficulties: manifest.bots.supported ? manifest.bots.difficulties : [],
+        timers: manifest.timers,
+      }
+    : null;
+const turnStrings: TurnStrings = {
+  start: { "solo-bots": t("games:turn.start.soloBots"), hotseat: t("games:turn.start.hotseat") },
+  setupTitle: {
+    "solo-bots": t("games:turn.setupTitle.soloBots"),
+    hotseat: t("games:turn.setupTitle.hotseat"),
+  },
+  players: t("games:turn.players"),
+  player: t("games:turn.player", { n: "{n}" }),
+  you: t("games:turn.you"),
+  person: t("games:turn.person"),
+  bot: t("games:turn.bot"),
+  difficulty: t("games:turn.difficulty"),
+  difficulties: {
+    easy: t("games:turn.difficulties.easy"),
+    medium: t("games:turn.difficulties.medium"),
+    hard: t("games:turn.difficulties.hard"),
+  },
+  timer: t("games:turn.timer"),
+  timerNone: t("games:turn.timerNone"),
+  timerPerMove: t("games:turn.timerPerMove", { seconds: "{seconds}" }),
+  timerClock: t("games:turn.timerClock", { minutes: "{minutes}", increment: "{increment}" }),
+  begin: t("games:turn.begin"),
+  changeSetup: t("games:turn.changeSetup"),
+  botBadge: t("games:turn.botBadge", { difficulty: "{difficulty}" }),
+  toMove: t("games:turn.toMove", { name: "{name}" }),
+  thinking: t("games:turn.thinking", { name: "{name}" }),
+  clockLabel: t("games:turn.clockLabel", { name: "{name}", time: "{time}" }),
+  wins: t("games:turn.wins", { name: "{name}" }),
+  winners: t("games:turn.winners", { names: "{names}" }),
+  youWin: t("games:turn.youWin"),
+  youLose: t("games:turn.youLose"),
+  draw: t("games:turn.draw"),
+  outOfTime: t("games:turn.outOfTime", { name: "{name}" }),
+  botNames: Object.fromEntries(
+    Object.entries(BOT_NAME_KEYS).map(([id, key]) => [id, t(key)]),
+  ) as TurnStrings["botNames"],
+};
 const section = "grid gap-3";
 const crumb = "rounded-sm hover:underline";
 ---
@@ -155,6 +205,7 @@ const crumb = "rounded-sm hover:underline";
           dir={dir}
           strings={playerStrings}
           ui={text.ui}
+          {...(turnConfig ? { turn: { config: turnConfig, strings: turnStrings } } : {})}
         />
       </div>
     </header>

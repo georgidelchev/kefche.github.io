@@ -79,5 +79,56 @@
       "name": "スポーツ",
       "description": "操作がかんたんなスポーツゲームを、ブラウザで無料で。"
     }
+  },
+  "turn": {
+    "start": {
+      "soloBots": "ボットと対戦",
+      "hotseat": "この端末で対戦"
+    },
+    "setupTitle": {
+      "soloBots": "ボットと対戦",
+      "hotseat": "この端末で対戦"
+    },
+    "players": "人数",
+    "player": "プレイヤー{n}",
+    "you": "あなた",
+    "person": "人",
+    "bot": "ボット",
+    "difficulty": "難易度",
+    "difficulties": {
+      "easy": "やさしい",
+      "medium": "ふつう",
+      "hard": "むずかしい"
+    },
+    "timer": "タイマー",
+    "timerNone": "タイマーなし",
+    "timerPerMove": "1手 {seconds} 秒",
+    "timerClock": "{minutes} 分 + {increment} 秒",
+    "begin": "スタート",
+    "changeSetup": "設定を変更",
+    "botBadge": "ボット、{difficulty}",
+    "toMove": "手番：{name}",
+    "thinking": "{name} が考え中",
+    "clockLabel": "{name}：残り {time}",
+    "wins": "{name} の勝ち！",
+    "winners": "{names} の勝ち！",
+    "youWin": "あなたの勝ち！",
+    "youLose": "あなたの負け",
+    "draw": "引き分け",
+    "outOfTime": "{name} の時間切れ"
+  },
+  "bots": {
+    "mila": "ミラ",
+    "teo": "テオ",
+    "ana": "アナ",
+    "niko": "ニコ",
+    "lea": "レア",
+    "omar": "オマル",
+    "yuki": "ユキ",
+    "ravi": "ラヴィ",
+    "sara": "サラ",
+    "ivo": "イヴォ",
+    "zara": "ザラ",
+    "leo": "レオ"
   }
 }

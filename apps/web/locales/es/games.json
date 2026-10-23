@@ -79,5 +79,56 @@
       "name": "Deportes",
       "description": "Juegos de deportes con controles sencillos, gratis en tu navegador."
     }
+  },
+  "turn": {
+    "start": {
+      "soloBots": "Jugar contra bots",
+      "hotseat": "Jugar en este dispositivo"
+    },
+    "setupTitle": {
+      "soloBots": "Partida contra bots",
+      "hotseat": "Partida en este dispositivo"
+    },
+    "players": "Jugadores",
+    "player": "Jugador {n}",
+    "you": "Tú",
+    "person": "Persona",
+    "bot": "Bot",
+    "difficulty": "Dificultad",
+    "difficulties": {
+      "easy": "Fácil",
+      "medium": "Media",
+      "hard": "Difícil"
+    },
+    "timer": "Temporizador",
+    "timerNone": "Sin temporizador",
+    "timerPerMove": "{seconds} s por jugada",
+    "timerClock": "{minutes} min + {increment} s",
+    "begin": "Empezar",
+    "changeSetup": "Cambiar ajustes",
+    "botBadge": "Bot, {difficulty}",
+    "toMove": "Turno: {name}",
+    "thinking": "{name} está pensando",
+    "clockLabel": "{name}: quedan {time}",
+    "wins": "¡Gana {name}!",
+    "winners": "¡Ganan {names}!",
+    "youWin": "¡Has ganado!",
+    "youLose": "Has perdido",
+    "draw": "Empate",
+    "outOfTime": "A {name} se le acabó el tiempo"
+  },
+  "bots": {
+    "mila": "Mila",
+    "teo": "Teo",
+    "ana": "Ana",
+    "niko": "Niko",
+    "lea": "Lea",
+    "omar": "Omar",
+    "yuki": "Yuki",
+    "ravi": "Ravi",
+    "sara": "Sara",
+    "ivo": "Ivo",
+    "zara": "Zara",
+    "leo": "Leo"
   }
 }

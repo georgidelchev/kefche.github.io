@@ -79,5 +79,56 @@
       "name": "खेल",
       "description": "आसान नियंत्रण वाले खेल गेम, आपके ब्राउज़र में मुफ़्त।"
     }
+  },
+  "turn": {
+    "start": {
+      "soloBots": "बॉट्स के ख़िलाफ़ खेलें",
+      "hotseat": "इसी डिवाइस पर खेलें"
+    },
+    "setupTitle": {
+      "soloBots": "बॉट्स के ख़िलाफ़ खेल",
+      "hotseat": "इसी डिवाइस पर खेल"
+    },
+    "players": "खिलाड़ी",
+    "player": "खिलाड़ी {n}",
+    "you": "आप",
+    "person": "इंसान",
+    "bot": "बॉट",
+    "difficulty": "कठिनाई",
+    "difficulties": {
+      "easy": "आसान",
+      "medium": "मध्यम",
+      "hard": "कठिन"
+    },
+    "timer": "टाइमर",
+    "timerNone": "कोई टाइमर नहीं",
+    "timerPerMove": "हर चाल के लिए {seconds} सेकंड",
+    "timerClock": "{minutes} मिनट + {increment} सेकंड",
+    "begin": "शुरू करें",
+    "changeSetup": "सेटिंग बदलें",
+    "botBadge": "बॉट, {difficulty}",
+    "toMove": "बारी: {name}",
+    "thinking": "{name} सोच रहा है",
+    "clockLabel": "{name}: {time} बाकी",
+    "wins": "{name} जीता!",
+    "winners": "{names} जीते!",
+    "youWin": "आप जीत गए!",
+    "youLose": "आप हार गए",
+    "draw": "बराबरी",
+    "outOfTime": "{name} का समय ख़त्म हो गया"
+  },
+  "bots": {
+    "mila": "मिला",
+    "teo": "तेओ",
+    "ana": "आना",
+    "niko": "निको",
+    "lea": "लिया",
+    "omar": "ओमर",
+    "yuki": "युकी",
+    "ravi": "रवि",
+    "sara": "सारा",
+    "ivo": "ईवो",
+    "zara": "ज़ारा",
+    "leo": "लियो"
   }
 }

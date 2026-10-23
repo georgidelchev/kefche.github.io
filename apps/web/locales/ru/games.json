@@ -79,5 +79,56 @@
       "name": "Спорт",
       "description": "Спортивные игры с простым управлением, бесплатно в браузере."
     }
+  },
+  "turn": {
+    "start": {
+      "soloBots": "Играть с ботами",
+      "hotseat": "Играть на этом устройстве"
+    },
+    "setupTitle": {
+      "soloBots": "Игра с ботами",
+      "hotseat": "Игра на этом устройстве"
+    },
+    "players": "Игроки",
+    "player": "Игрок {n}",
+    "you": "Вы",
+    "person": "Человек",
+    "bot": "Бот",
+    "difficulty": "Сложность",
+    "difficulties": {
+      "easy": "Легко",
+      "medium": "Средне",
+      "hard": "Сложно"
+    },
+    "timer": "Таймер",
+    "timerNone": "Без таймера",
+    "timerPerMove": "{seconds} с на ход",
+    "timerClock": "{minutes} мин + {increment} с",
+    "begin": "Начать",
+    "changeSetup": "Изменить настройки",
+    "botBadge": "Бот, {difficulty}",
+    "toMove": "Ходит: {name}",
+    "thinking": "{name} думает",
+    "clockLabel": "{name}: осталось {time}",
+    "wins": "{name} побеждает!",
+    "winners": "Побеждают: {names}!",
+    "youWin": "Вы победили!",
+    "youLose": "Вы проиграли",
+    "draw": "Ничья",
+    "outOfTime": "У игрока {name} закончилось время"
+  },
+  "bots": {
+    "mila": "Мила",
+    "teo": "Тео",
+    "ana": "Ана",
+    "niko": "Нико",
+    "lea": "Леа",
+    "omar": "Омар",
+    "yuki": "Юки",
+    "ravi": "Рави",
+    "sara": "Сара",
+    "ivo": "Иво",
+    "zara": "Зара",
+    "leo": "Лео"
   }
 }

@@ -79,5 +79,56 @@
       "name": "体育",
       "description": "操作简单的体育游戏，在浏览器中免费畅玩。"
     }
+  },
+  "turn": {
+    "start": {
+      "soloBots": "与机器人对战",
+      "hotseat": "在此设备上对战"
+    },
+    "setupTitle": {
+      "soloBots": "与机器人对战",
+      "hotseat": "在此设备上对战"
+    },
+    "players": "玩家人数",
+    "player": "玩家 {n}",
+    "you": "你",
+    "person": "真人",
+    "bot": "机器人",
+    "difficulty": "难度",
+    "difficulties": {
+      "easy": "简单",
+      "medium": "中等",
+      "hard": "困难"
+    },
+    "timer": "计时",
+    "timerNone": "不计时",
+    "timerPerMove": "每步 {seconds} 秒",
+    "timerClock": "{minutes} 分钟 + {increment} 秒",
+    "begin": "开始",
+    "changeSetup": "修改设置",
+    "botBadge": "机器人，{difficulty}",
+    "toMove": "轮到：{name}",
+    "thinking": "{name} 正在思考",
+    "clockLabel": "{name}：剩余 {time}",
+    "wins": "{name} 获胜！",
+    "winners": "{names} 获胜！",
+    "youWin": "你赢了！",
+    "youLose": "你输了",
+    "draw": "平局",
+    "outOfTime": "{name} 用完了时间"
+  },
+  "bots": {
+    "mila": "米拉",
+    "teo": "泰奥",
+    "ana": "安娜",
+    "niko": "尼科",
+    "lea": "莉亚",
+    "omar": "奥马尔",
+    "yuki": "由纪",
+    "ravi": "拉维",
+    "sara": "萨拉",
+    "ivo": "伊沃",
+    "zara": "扎拉",
+    "leo": "里奥"
   }
 }

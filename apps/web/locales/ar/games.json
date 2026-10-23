@@ -79,5 +79,56 @@
       "name": "رياضة",
       "description": "ألعاب رياضية بتحكم بسيط، مجانًا في متصفحك."
     }
+  },
+  "turn": {
+    "start": {
+      "soloBots": "العب ضد الروبوتات",
+      "hotseat": "العب على هذا الجهاز"
+    },
+    "setupTitle": {
+      "soloBots": "اللعب ضد الروبوتات",
+      "hotseat": "اللعب على هذا الجهاز"
+    },
+    "players": "اللاعبون",
+    "player": "اللاعب {n}",
+    "you": "أنت",
+    "person": "شخص",
+    "bot": "روبوت",
+    "difficulty": "الصعوبة",
+    "difficulties": {
+      "easy": "سهل",
+      "medium": "متوسط",
+      "hard": "صعب"
+    },
+    "timer": "المؤقت",
+    "timerNone": "بدون مؤقت",
+    "timerPerMove": "{seconds} ث لكل نقلة",
+    "timerClock": "{minutes} د + {increment} ث",
+    "begin": "ابدأ",
+    "changeSetup": "تغيير الإعدادات",
+    "botBadge": "روبوت، {difficulty}",
+    "toMove": "الدور: {name}",
+    "thinking": "{name} يفكر",
+    "clockLabel": "{name}: تبقّى {time}",
+    "wins": "{name} يفوز!",
+    "winners": "الفائزون: {names}!",
+    "youWin": "لقد فزت!",
+    "youLose": "لقد خسرت",
+    "draw": "تعادل",
+    "outOfTime": "نفد وقت {name}"
+  },
+  "bots": {
+    "mila": "ميلا",
+    "teo": "تيو",
+    "ana": "آنا",
+    "niko": "نيكو",
+    "lea": "ليا",
+    "omar": "عمر",
+    "yuki": "يوكي",
+    "ravi": "رافي",
+    "sara": "سارة",
+    "ivo": "إيفو",
+    "zara": "زارا",
+    "leo": "ليو"
   }
 }

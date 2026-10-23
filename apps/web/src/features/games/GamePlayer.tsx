@@ -1,19 +1,39 @@
 // Full-screen game player (SPEC §9.1): loads the game's code when Play is
 // pressed, mounts it, and owns the chrome around it: pause menu, mute, exit,
 // results, screen wake lock. The game draws everything inside the stage.
-import { LoaderCircle, Pause, Play, Volume2, VolumeX, X } from "lucide-react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+// Turn-based games (Phase 4) first get a setup screen (seats, bots, timer)
+// and a HUD with every seat, whose turn it is and the clocks.
+import { LoaderCircle, Pause, Play, Users, Bot, Volume2, VolumeX, X } from "lucide-react";
+import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from "react";
 
 import { randomSeed, type GameResult } from "@kefche/game-sdk";
 import {
+  HAPTICS,
+  createSoundService,
   formatDuration,
   isMuted,
   setMuted as saveMuted,
+  vibrate,
   type GameInstance,
+  type GameStorage,
+  type MatchSetup,
+  type TurnReport,
 } from "@kefche/game-sdk/browser";
 import { Button } from "@kefche/ui/components/button";
 
 import { loadGame } from "./loaders";
+import { fill, resultText, seatName, type TurnStrings } from "./turn/labels";
+import {
+  loadChoice,
+  saveChoice,
+  toMatch,
+  type SetupChoice,
+  type TurnConfig,
+  type TurnMode,
+} from "./turn/match-setup";
+
+const TurnSetup = lazy(() => import("./turn/TurnUi").then((m) => ({ default: m.TurnSetup })));
+const TurnHud = lazy(() => import("./turn/TurnUi").then((m) => ({ default: m.TurnHud })));
 
 export interface PlayerStrings {
   play: string;
@@ -43,31 +63,64 @@ interface Props {
   strings: PlayerStrings;
   /** The game's own UI strings (i18n/<locale>.json "ui"). */
   ui: Record<string, string>;
+  /** Turn-based games: what the setup screen offers, and its text. */
+  turn?: { config: TurnConfig; strings: TurnStrings };
 }
 
-type Phase = "idle" | "loading" | "playing" | "paused" | "finished" | "error";
+type Phase = "idle" | "setup" | "loading" | "playing" | "paused" | "finished" | "error";
 
-const fill = (template: string, values: Record<string, string | number> = {}) =>
-  template.replace(/\{(\w+)\}/g, (match, key: string) =>
-    key in values ? String(values[key]) : match,
-  );
+// "Quiet", the owner's pick in the Phase 3 sound picker. A volume slider
+// arrives with the settings in Phase 16.
+const VOLUME = 0.22;
 
-export function GamePlayer({ id, name, locale, dir, strings, ui }: Props) {
+function gameStorage(id: string): GameStorage {
+  return {
+    get: (key) => {
+      try {
+        return localStorage.getItem(`kefche:game:${id}:${key}`);
+      } catch {
+        return null;
+      }
+    },
+    set: (key, value) => {
+      try {
+        if (value === null) localStorage.removeItem(`kefche:game:${id}:${key}`);
+        else localStorage.setItem(`kefche:game:${id}:${key}`, value);
+      } catch {
+        // Not saved; the game goes on.
+      }
+    },
+  };
+}
+
+const MODE_ICONS = { "solo-bots": Bot, hotseat: Users } as const;
+
+export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<GameResult | null>(null);
   const [muted, setMuted] = useState(false);
+  const [mode, setMode] = useState<TurnMode>("solo-bots");
+  const [choice, setChoice] = useState<SetupChoice | null>(null);
+  const [match, setMatch] = useState<MatchSetup | null>(null);
+  const [report, setReport] = useState<TurnReport | null>(null);
+  const [codeReady, setCodeReady] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
   const instanceRef = useRef<GameInstance | null>(null);
   const pauseRef = useRef<HTMLButtonElement>(null);
-  // The main button of the pause or results overlay, focused when it opens.
+  // The main button of the pause, results or setup screen, focused when it opens.
   const overlayActionRef = useRef<HTMLButtonElement>(null);
   const wakeRef = useRef<WakeLockSentinel | null>(null);
+  const storage = useRef(gameStorage(id)).current;
+  const lowTimeSoundRef = useRef<ReturnType<typeof createLowTimeSound> | null>(null);
 
   const open = phase !== "idle";
 
-  async function start() {
+  async function mount(seed: string, setup: MatchSetup | null) {
+    instanceRef.current?.destroy();
+    instanceRef.current = null;
     setPhase("loading");
     setResult(null);
+    setReport(null);
     setMuted(isMuted());
     try {
       const game = await loadGame(id);
@@ -76,34 +129,22 @@ export function GamePlayer({ id, name, locale, dir, strings, ui }: Props) {
       instanceRef.current = game.mount(stage, {
         locale,
         dir,
-        seed: randomSeed(),
+        seed,
         t: (key, values) => fill(ui[key] ?? key, values),
         settings: {
-          // "Quiet", the owner's pick in the Phase 3 sound picker. A volume
-          // slider arrives with the settings in Phase 16.
-          volume: 0.22,
+          volume: VOLUME,
           haptics: true,
           reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
         },
-        storage: {
-          get: (key) => {
-            try {
-              return localStorage.getItem(`kefche:game:${id}:${key}`);
-            } catch {
-              return null;
-            }
-          },
-          set: (key, value) => {
-            try {
-              if (value === null) localStorage.removeItem(`kefche:game:${id}:${key}`);
-              else localStorage.setItem(`kefche:game:${id}:${key}`, value);
-            } catch {
-              // Not saved; the game goes on.
-            }
-          },
-        },
+        storage,
+        ...(setup ? { match: setup } : {}),
         report: (event) => {
-          if (event.type === "finish") {
+          if (event.type === "turn") {
+            setReport((previous) => {
+              warnLowTime(previous, event, setup);
+              return event;
+            });
+          } else if (event.type === "finish") {
             setResult(event.result);
             setPhase("finished");
           }
@@ -113,6 +154,49 @@ export function GamePlayer({ id, name, locale, dir, strings, ui }: Props) {
     } catch {
       setPhase("error");
     }
+  }
+
+  /** Colour in the HUD, plus a sound and a buzz when a person's time runs low. */
+  function warnLowTime(previous: TurnReport | null, next: TurnReport, setup: MatchSetup | null) {
+    const started = next.lowTime.some(
+      (low, seat) => low && !previous?.lowTime[seat] && setup?.seats[seat]?.kind === "human",
+    );
+    if (!started) return;
+    lowTimeSoundRef.current ??= createLowTimeSound();
+    lowTimeSoundRef.current.play("low");
+    vibrate(HAPTICS.hit);
+  }
+
+  function openSetup(next: TurnMode) {
+    if (!turn) return;
+    setMode(next);
+    setChoice(loadChoice(storage, turn.config, next));
+    setResult(null);
+    setPhase("setup");
+    setMuted(isMuted());
+    // Fetch the game's code while the player picks seats.
+    void loadGame(id).then(
+      () => {
+        setCodeReady(true);
+      },
+      () => {
+        setCodeReady(true);
+      },
+    );
+  }
+
+  function beginMatch() {
+    if (!turn || !choice) return;
+    saveChoice(storage, mode, choice);
+    const seed = randomSeed();
+    const setup = toMatch(
+      choice,
+      turn.config,
+      { you: turn.strings.you, player: turn.strings.player },
+      seed,
+    );
+    setMatch(setup);
+    void mount(seed, setup);
   }
 
   function pause() {
@@ -125,12 +209,22 @@ export function GamePlayer({ id, name, locale, dir, strings, ui }: Props) {
   }
   function restart() {
     setResult(null);
+    setReport(null);
     instanceRef.current?.restart(randomSeed());
     setPhase("playing");
+  }
+  function changeSetup() {
+    instanceRef.current?.destroy();
+    instanceRef.current = null;
+    setResult(null);
+    setReport(null);
+    setPhase("setup");
   }
   function exit() {
     instanceRef.current?.destroy();
     instanceRef.current = null;
+    setMatch(null);
+    setReport(null);
     setPhase("idle");
   }
 
@@ -167,16 +261,19 @@ export function GamePlayer({ id, name, locale, dir, strings, ui }: Props) {
     };
   }, [open]);
 
-  // Move focus to the overlay's main button when the pause menu or the
-  // results screen opens (keyboard and screen-reader users land on it).
+  // Move focus to the overlay's main button when the pause menu, the results
+  // or the setup screen opens (keyboard and screen-reader users land on it).
   useEffect(() => {
-    if (phase === "paused" || phase === "finished") overlayActionRef.current?.focus();
+    if (phase === "paused" || phase === "finished" || phase === "setup") {
+      overlayActionRef.current?.focus();
+    }
   }, [phase]);
 
   // The game is torn down if the page unmounts mid-game.
   useEffect(
     () => () => {
       instanceRef.current?.destroy();
+      lowTimeSoundRef.current?.dispose();
     },
     [],
   );
@@ -189,13 +286,56 @@ export function GamePlayer({ id, name, locale, dir, strings, ui }: Props) {
     result?.timeMs !== undefined
       ? fill(strings.time, { time: formatDuration(result.timeMs) })
       : null;
+  const headline =
+    result && match && turn
+      ? resultText(result, match.seats, match.mode, turn.strings, locale)
+      : result?.completed
+        ? strings.won
+        : strings.gameOver;
+  // Only when running out of time loses; a per-move timer that plays a random
+  // move leaves a zero on the clock without ending the match.
+  const losesOnTime =
+    match?.timer.kind === "clock" ||
+    (match?.timer.kind === "per-move" && match.timer.onExpiry === "loss");
+  const timedOut =
+    result && match && losesOnTime
+      ? match.seats.find((_, i) => report?.clocks[i] === 0)
+      : undefined;
+  const showHud =
+    match && turn && (phase === "playing" || phase === "paused" || phase === "finished");
 
   return (
     <>
-      <Button size="lg" className="w-full sm:w-auto sm:min-w-48" onClick={() => void start()}>
-        <Play aria-hidden="true" />
-        {strings.play}
-      </Button>
+      {turn ? (
+        <div className="flex flex-col gap-3 sm:flex-row">
+          {turn.config.modes.map((m) => {
+            const Icon = MODE_ICONS[m];
+            return (
+              <Button
+                key={m}
+                size="lg"
+                variant={m === turn.config.modes[0] ? "primary" : "outline"}
+                className="w-full sm:w-auto sm:min-w-48"
+                onClick={() => {
+                  openSetup(m);
+                }}
+              >
+                <Icon aria-hidden="true" />
+                {turn.strings.start[m]}
+              </Button>
+            );
+          })}
+        </div>
+      ) : (
+        <Button
+          size="lg"
+          className="w-full sm:w-auto sm:min-w-48"
+          onClick={() => void mount(randomSeed(), null)}
+        >
+          <Play aria-hidden="true" />
+          {strings.play}
+        </Button>
+      )}
 
       <div
         role="dialog"
@@ -233,9 +373,37 @@ export function GamePlayer({ id, name, locale, dir, strings, ui }: Props) {
           </Button>
         </div>
 
+        {showHud && (
+          <Suspense fallback={null}>
+            <TurnHud
+              seats={match.seats}
+              timer={match.timer}
+              report={report}
+              strings={turn.strings}
+            />
+          </Suspense>
+        )}
+
         <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-auto p-3">
           <div ref={stageRef} className="flex h-full w-full items-center justify-center" />
 
+          {phase === "setup" && turn && choice && (
+            <div className="absolute inset-0 z-10 overflow-auto bg-bg p-4">
+              <Suspense fallback={null}>
+                <TurnSetup
+                  mode={mode}
+                  config={turn.config}
+                  choice={choice}
+                  strings={turn.strings}
+                  locale={locale}
+                  loading={!codeReady}
+                  startRef={overlayActionRef}
+                  onChange={setChoice}
+                  onStart={beginMatch}
+                />
+              </Suspense>
+            </div>
+          )}
           {phase === "loading" && (
             <p
               role="status"
@@ -253,7 +421,14 @@ export function GamePlayer({ id, name, locale, dir, strings, ui }: Props) {
               <p role="alert" className="text-lg">
                 {strings.loadFailed}
               </p>
-              <Button onClick={() => void start()}>{strings.retry}</Button>
+              <Button
+                onClick={() => {
+                  if (match) void mount(randomSeed(), match);
+                  else void mount(randomSeed(), null);
+                }}
+              >
+                {strings.retry}
+              </Button>
             </Overlay>
           )}
           {phase === "paused" && (
@@ -265,6 +440,11 @@ export function GamePlayer({ id, name, locale, dir, strings, ui }: Props) {
               <Button variant="outline" onClick={restart}>
                 {strings.restart}
               </Button>
+              {turn && (
+                <Button variant="outline" onClick={changeSetup}>
+                  {turn.strings.changeSetup}
+                </Button>
+              )}
               <Button variant="ghost" onClick={exit}>
                 {strings.exit}
               </Button>
@@ -273,13 +453,23 @@ export function GamePlayer({ id, name, locale, dir, strings, ui }: Props) {
           {phase === "finished" && (
             <Overlay>
               <p role="status" className="text-3xl font-semibold">
-                {result?.completed ? strings.won : strings.gameOver}
+                {headline}
               </p>
+              {timedOut && turn && (
+                <p className="text-lg">
+                  {fill(turn.strings.outOfTime, { name: seatName(timedOut, turn.strings) })}
+                </p>
+              )}
               {scoreText && <p className="text-xl tabular-nums">{scoreText}</p>}
               {timeText && <p className="text-lg tabular-nums">{timeText}</p>}
               <Button ref={overlayActionRef} onClick={restart}>
                 {strings.playAgain}
               </Button>
+              {turn && (
+                <Button variant="outline" onClick={changeSetup}>
+                  {turn.strings.changeSetup}
+                </Button>
+              )}
               <Button variant="ghost" onClick={exit}>
                 {strings.exit}
               </Button>
@@ -289,6 +479,10 @@ export function GamePlayer({ id, name, locale, dir, strings, ui }: Props) {
       </div>
     </>
   );
+}
+
+function createLowTimeSound() {
+  return createSoundService({ low: "wood-block" }, () => VOLUME);
 }
 
 function Overlay({ children }: { children: ReactNode }) {

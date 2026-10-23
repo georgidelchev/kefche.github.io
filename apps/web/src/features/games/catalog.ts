@@ -14,7 +14,12 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
-import { GAME_CATEGORIES, type GameCategory, type GameManifest } from "@kefche/game-sdk";
+import {
+  GAME_CATEGORIES,
+  type BotNameId,
+  type GameCategory,
+  type GameManifest,
+} from "@kefche/game-sdk";
 
 import type { RegisteredGame } from "./registry";
 
@@ -46,6 +51,22 @@ export const CATEGORY_KEYS = {
   GameCategory,
   { name: `games:${string}`; description: `games:${string}` }
 >;
+
+/** Bot names per id, spelled in each locale's script. */
+export const BOT_NAME_KEYS = {
+  mila: "games:bots.mila",
+  teo: "games:bots.teo",
+  ana: "games:bots.ana",
+  niko: "games:bots.niko",
+  lea: "games:bots.lea",
+  omar: "games:bots.omar",
+  yuki: "games:bots.yuki",
+  ravi: "games:bots.ravi",
+  sara: "games:bots.sara",
+  ivo: "games:bots.ivo",
+  zara: "games:bots.zara",
+  leo: "games:bots.leo",
+} as const satisfies Record<BotNameId, `games:${string}`>;
 
 /** Line icon per category, for the small category chips. */
 export const CATEGORY_ICONS: Record<GameCategory, LucideIcon> = {
