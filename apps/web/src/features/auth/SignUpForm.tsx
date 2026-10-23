@@ -200,11 +200,6 @@ export function SignUpForm({ strings, paths, locale, monthNames }: Props) {
         </Button>
       </form>
 
-      <div className="flex items-center gap-3 text-sm text-muted" aria-hidden="true">
-        <span className="h-px flex-1 bg-border" />
-        {strings.signIn.or}
-        <span className="h-px flex-1 bg-border" />
-      </div>
       <OAuthButtons strings={strings} paths={paths} mode="signUp" />
 
       <p className="text-center">

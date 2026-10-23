@@ -80,11 +80,6 @@ export function SignInForm({ strings, paths }: { strings: AuthStrings; paths: Au
         </Button>
       </form>
 
-      <div className="flex items-center gap-3 text-sm text-muted" aria-hidden="true">
-        <span className="h-px flex-1 bg-border" />
-        {strings.signIn.or}
-        <span className="h-px flex-1 bg-border" />
-      </div>
       <OAuthButtons strings={strings} paths={paths} mode="signIn" />
 
       <p className="text-center">

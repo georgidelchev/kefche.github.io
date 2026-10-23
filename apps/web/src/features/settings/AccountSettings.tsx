@@ -11,6 +11,7 @@ import { messagesFor } from "@/features/auth/components/use-messages";
 import { authErrorKey } from "@/features/auth/errors";
 import { fill, type AuthStrings } from "@/features/auth/strings";
 import { emailField, passwordField } from "@/features/auth/validation";
+import { AUTH_PROVIDERS, OAUTH_PROVIDERS, type OAuthProvider } from "@/lib/auth-providers";
 import type { Supabase } from "@/lib/supabase/client";
 
 import { useAccount } from "./use-account";
@@ -18,9 +19,8 @@ import { useAccount } from "./use-account";
 import type { SettingsStrings } from "./strings";
 import type { User, UserIdentity } from "@supabase/supabase-js";
 
-const OAUTH = ["google", "discord", "twitch", "facebook"] as const;
 // Brand names, not translated.
-const PROVIDER_NAMES: Record<(typeof OAUTH)[number], string> = {
+const PROVIDER_NAMES: Record<OAuthProvider, string> = {
   google: "Google",
   discord: "Discord",
   twitch: "Twitch",
@@ -196,7 +196,8 @@ function SignInMethods({ strings, auth, supabase, callbackPath }: Inner) {
             <span className="font-semibold">{strings.account.emailMethod}</span>
           </li>
         )}
-        {OAUTH.map((provider) => {
+        {/* Providers this build offers, plus any already linked (so they can be unlinked). */}
+        {OAUTH_PROVIDERS.filter((p) => AUTH_PROVIDERS.includes(p) || linked(p)).map((provider) => {
           const identity = linked(provider);
           return (
             <li

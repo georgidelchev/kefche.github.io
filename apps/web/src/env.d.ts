@@ -8,6 +8,8 @@
 interface ImportMetaEnv {
   readonly PUBLIC_SUPABASE_URL?: string;
   readonly PUBLIC_SUPABASE_PUBLISHABLE_KEY?: string;
+  /** Read through `AUTH_PROVIDERS` in `@/lib/auth-providers`. */
+  readonly PUBLIC_AUTH_PROVIDERS?: string;
 }
 
 interface ImportMeta {

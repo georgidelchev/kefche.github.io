@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Button } from "@kefche/ui/components/button";
 
+import { AUTH_PROVIDERS, type OAuthProvider } from "@/lib/auth-providers";
 import { getSupabase } from "@/lib/supabase/client";
 
 import { authErrorKey } from "../errors";
@@ -10,8 +11,6 @@ import { FormMessage } from "./fields";
 
 import type { AuthPaths } from "../paths";
 import type { AuthStrings } from "../strings";
-
-const PROVIDERS = ["google", "discord", "twitch", "facebook"] as const;
 
 interface Props {
   strings: AuthStrings;
@@ -24,12 +23,15 @@ interface Props {
   mode: "signIn" | "signUp";
 }
 
-/** Sign-in with each OAuth provider (SPEC §7.1); returns to the callback page. */
+/**
+ * The "or" line and a sign-in button per OAuth provider this build offers
+ * (SPEC §7.1); returns to the callback page. Nothing when none are offered.
+ */
 export function OAuthButtons({ strings, paths, mode }: Props) {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function signInWith(provider: (typeof PROVIDERS)[number]) {
+  async function signInWith(provider: OAuthProvider) {
     setPending(true);
     setError(null);
     try {
@@ -52,10 +54,16 @@ export function OAuthButtons({ strings, paths, mode }: Props) {
     }
   }
 
+  if (AUTH_PROVIDERS.length === 0) return null;
   return (
     <div className="grid gap-2">
+      <div className="flex items-center gap-3 text-sm text-muted" aria-hidden="true">
+        <span className="h-px flex-1 bg-border" />
+        {strings.signIn.or}
+        <span className="h-px flex-1 bg-border" />
+      </div>
       {error && <FormMessage tone="error">{error}</FormMessage>}
-      {PROVIDERS.map((provider) => (
+      {AUTH_PROVIDERS.map((provider) => (
         <Button
           key={provider}
           type="button"
