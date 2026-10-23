@@ -13,24 +13,18 @@ import {
 
 import { seatShape } from "@kefche/game-sdk";
 import { HAPTICS, SHAPE_PATHS, vibrate } from "@kefche/game-sdk/browser";
-import type { GameContext, TurnView } from "@kefche/game-sdk/browser";
+import type { GameContext, TurnSession, TurnViewStore } from "@kefche/game-sdk/browser";
 
 import { engine, type Action, type State } from "../engine";
 
 import type { Sounds } from "./sounds";
 
-export interface ViewStore {
-  subscribe: (listener: () => void) => () => void;
-  get: () => TurnView<State, Action> | null;
-}
-
 interface Props {
   context: GameContext;
   seed: string;
-  store: ViewStore;
+  store: TurnViewStore<State, Action>;
+  session: TurnSession<Action>;
   sounds: Sounds;
-  act: (seat: number, action: Action) => boolean;
-  undo: () => void;
 }
 
 const player = (seat: number) => (seat % 8) + 1;
@@ -55,7 +49,7 @@ function Disc({ seat, fall, win }: { seat: number; fall?: number; win: boolean }
   );
 }
 
-export function Game({ context, seed, store, sounds, act, undo }: Props) {
+export function Game({ context, seed, store, session, sounds }: Props) {
   const { t, match } = context;
   const view = useSyncExternalStore(store.subscribe, store.get);
   const [initial] = useState(() => engine.initialState(undefined, match?.seats.length ?? 2, seed));
@@ -106,7 +100,7 @@ export function Game({ context, seed, store, sounds, act, undo }: Props) {
 
   const drop = (column: number) => {
     if (human === null) return;
-    act(human, { column });
+    session.act(human, { column });
   };
   const moveFocus = (column: number) => {
     const next = Math.max(0, Math.min(cols - 1, column));
@@ -193,7 +187,14 @@ export function Game({ context, seed, store, sounds, act, undo }: Props) {
       </div>
       {match?.mode === "solo-bots" && (
         <div className="gfr-bar">
-          <button type="button" className="gfr-undo" disabled={!view?.canUndo} onClick={undo}>
+          <button
+            type="button"
+            className="gfr-undo"
+            disabled={!view?.canUndo}
+            onClick={() => {
+              session.undo();
+            }}
+          >
             {t("undo")}
           </button>
         </div>

@@ -1,0 +1,25 @@
+{
+  "name": "@kefche/game-reversi",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts",
+    "./manifest": "./manifest.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p . && tsc -p engine && tsc -p bots"
+  },
+  "dependencies": {
+    "@kefche/game-sdk": "workspace:*",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@kefche/config": "workspace:*",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "typescript": "6.0.3"
+  }
+}

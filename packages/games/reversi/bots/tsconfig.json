@@ -1,0 +1,6 @@
+{
+  // Bot strategies: no DOM, no Node, like the engine. They run in a Web
+  // Worker, in tests and, for online rooms, on the host.
+  "extends": "@kefche/config/tsconfig.base.json",
+  "include": [".", "../engine"]
+}

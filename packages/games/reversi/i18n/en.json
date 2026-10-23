@@ -1,0 +1,58 @@
+{
+  "name": "Reversi",
+  "tagline": "Trap your opponent's discs between yours and flip them to your side.",
+  "description": "Play Reversi free in your browser: flip your opponent's discs, take the corners and end with the most. Against a bot or a friend on one device.",
+  "about": [
+    "Reversi is a strategy game for two players on an 8 × 8 board. Each player has discs of one colour, and the game starts with two discs each in the centre. On your turn you place a disc so that one or more straight lines of your opponent's discs sit between it and another of your discs. Every disc in those lines flips over to your side.",
+    "The board changes hands quickly, which is what makes the game interesting. A move that flips many discs can still be a bad one, because it hands your opponent new places to play. Experienced players care more about which squares they hold than how many: the corners can never be flipped back, while the squares right next to an empty corner often give it away.",
+    "If you have no legal move, you pass, and the game tells you so. When neither player can move, usually with a full board, the game ends and whoever has more discs wins. Here you can play against a bot on three levels, or with a friend on one device, with move hints you can turn on and off and an optional timer or chess-style clock."
+  ],
+  "howToPlay": [
+    "Choose Play vs bots or Play on this device. The first player moves first.",
+    "Place a disc on an empty square so that it traps at least one straight line of the other player's discs between it and one of yours: across, up and down, or diagonally.",
+    "All the trapped discs flip to your side. One move can flip several lines at once.",
+    "If you can't make a legal move, your turn passes automatically.",
+    "When neither player can move, the game ends. The player with more discs wins; equal counts are a draw."
+  ],
+  "controls": [
+    "Phones and tablets: tap a square. With hints on, dots mark every square where you can play.",
+    "Mouse: click a square.",
+    "Keyboard: move around the board with the arrow keys and press Enter or Space to play.",
+    "Against bots, Undo takes back your last move and the bot's reply."
+  ],
+  "tips": [
+    "Take the corners. A disc in a corner can never be flipped.",
+    "Stay away from the squares next to an empty corner, especially the diagonal one. They often give your opponent the corner.",
+    "Don't chase big flips early. Fewer discs and more choices of where to play is usually better in the opening and middle game.",
+    "Try to leave your opponent with few moves. A player with only bad moves left has to make one.",
+    "Edges are strong once you control them, but a lone disc on an edge can be trapped."
+  ],
+  "faq": [
+    {
+      "question": "Is Reversi free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What happens if I can't move?",
+      "answer": "Your turn passes automatically and the game says so. If neither player can move, the game ends."
+    },
+    {
+      "question": "Is Reversi the same as Othello?",
+      "answer": "They're the same kind of game. Reversi is the traditional name; this version starts with the usual four discs in the centre."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "Easy grabs corners and big flips but often plays carelessly. Medium values the right squares. Hard also counts how many moves each side has, and near the end it works out the game exactly."
+    }
+  ],
+  "ui": {
+    "boardLabel": "Reversi board",
+    "cellEmpty": "{cell}, empty",
+    "cellMove": "{cell}, empty, you can play here",
+    "cellDisc": "{cell}, {name}",
+    "played": "{name} played {cell} and flipped {count}.",
+    "passed": "{name} has no move and passes.",
+    "hints": "Show moves",
+    "undo": "Undo"
+  }
+}
