@@ -64,6 +64,38 @@ Roles travel in the access token (`app_roles` claim), so a change applies at the
 
 Check it with `select * from cron.job_run_details order by start_time desc limit 5;` and the Edge Function logs.
 
+## Hosted Supabase
+
+The live project is `kefche` (ref `qbwljmjabloprffjlean`), on the Free plan in Central EU (Frankfurt). It was set up in Phase 5 (owner decision). The database password and the secret key live only in the owner's password manager; never put them in chat, issues or git.
+
+**One-time link** (any machine): `pnpm exec supabase login`, then `pnpm exec supabase link --project-ref qbwljmjabloprffjlean`. Linking doesn't need the database password: the CLI uses a temporary login role.
+
+**After changing migrations, config or functions**, in this order:
+
+1. **Migrations:** `pnpm exec supabase db push --dry-run`, review, then `pnpm exec supabase db push`. Never edit a migration that's already on the hosted project.
+2. **Auth and project settings:** `pnpm exec supabase config diff`, review, then `pnpm exec supabase config push --yes`. The `[remotes.production]` block in `supabase/config.toml` holds the hosted overrides:
+   - the live site and redirect URLs;
+   - OAuth off until Phase 21;
+   - a minute between auth emails;
+   - the platform's pool sizes;
+   - the default email templates. Free projects on the built-in sender can't change templates; their links finish in the same browser through `?code=`. kefche's templates return with Resend in Phase 21.
+3. **Edge Functions:** `pnpm exec supabase functions deploy --use-api` (no Docker needed). Each function names `functions/deno.json` as its import map in `config.toml`.
+
+**Set up once (done):**
+
+- **`PURGE_ACCOUNTS_SECRET`:** set with `supabase secrets set`, and the same value stored in Vault as `purge_accounts_secret`. `project_url` is `https://qbwljmjabloprffjlean.supabase.co` ("Account deletion job" above).
+- **Checks:** run SQL with `pnpm exec supabase db query --linked "<sql>"`, for example `select jobname, schedule from cron.job`.
+
+**The site's build:** GitHub → repo → _Settings → Environments → production → Environment variables_:
+
+- `PUBLIC_SUPABASE_URL` = `https://qbwljmjabloprffjlean.supabase.co`
+- `PUBLIC_SUPABASE_PUBLISHABLE_KEY` = the project's `sb_publishable_…` key (public by design)
+- `PUBLIC_AUTH_PROVIDERS`: leave unset for email only (the build defaults to `none`).
+
+These sit on the production environment only, so PR previews build without accounts. The next push to `main` deploys with them.
+
+**Email:** the built-in sender is meant for testing. It sends only a few emails an hour to any address, and its messages are Supabase's generic English text. Resend, as a custom sender, comes in Phase 21.
+
 ## OAuth providers (local development)
 
 Sign-in with Google, Discord, Twitch and Facebook needs one development app per provider. Each app gets this redirect (callback) URL, exactly:
@@ -112,7 +144,7 @@ Copy `supabase/.env.example` to `supabase/.env` and paste each client ID and sec
 
 ## Sections to come
 
-- Hosted Supabase project, migrations with manual approval, backups _(Phase 21)_
+- Migrations through CI with manual approval, backups _(Phase 21)_
 - Edge Function secrets and deploys _(Phase 7)_
 - Moderation escalation _(Phase 8, 10)_
 - Custom domain, DNS, email (Resend), production OAuth apps _(Phase 21)_

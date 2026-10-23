@@ -434,8 +434,17 @@ deno_version = 2
 PURGE_ACCOUNTS_SECRET = "env(PURGE_ACCOUNTS_SECRET)"
 
 # Called by pg_cron with PURGE_ACCOUNTS_SECRET, not with a user's token.
+# Every function uses the shared, pinned imports in functions/deno.json; named
+# here so deploys upload it (the local runtime finds it on its own).
+[functions.export-data]
+import_map = "./functions/deno.json"
+
+[functions.merge-guest]
+import_map = "./functions/deno.json"
+
 [functions.purge-accounts]
 verify_jwt = false
+import_map = "./functions/deno.json"
 
 [analytics]
 enabled = true
@@ -486,3 +495,31 @@ enabled = false
 
 [remotes.production.auth.external.facebook]
 enabled = false
+
+# Hosted defaults kept: a minute between auth emails (anti-abuse), the
+# platform's pool sizes, and no vector buckets (a paid feature).
+[remotes.production.auth.email]
+max_frequency = "1m0s"
+
+[remotes.production.db.pooler]
+default_pool_size = 15
+max_client_conn = 200
+
+[remotes.production.storage.vector]
+enabled = false
+
+# Free-tier projects on Supabase's built-in email sender can't change email
+# templates, so the hosted project keeps the default ones (their links finish
+# in the same browser, through ?code=). kefche's templates return with a custom
+# sender (Resend, Phase 21).
+[remotes.production.auth.email.template.confirmation]
+subject = "Confirm your email address"
+content_path = ""
+
+[remotes.production.auth.email.template.email_change]
+subject = "Confirm your new email address"
+content_path = ""
+
+[remotes.production.auth.email.template.recovery]
+subject = "Reset your password"
+content_path = ""
