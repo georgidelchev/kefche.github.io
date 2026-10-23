@@ -11,7 +11,7 @@
       "guest": "Se você jogar online sem conta: um identificador de convidado aleatório e o apelido que escolher.",
       "settings": "Suas configurações, como idioma, tema, som e opções de privacidade.",
       "rooms": "As salas online em que você entra: seu lugar, as jogadas de cada partida e quando você se conectou pela última vez. Os registros de uma sala são apagados assim que o último jogador sai dela.",
-      "chat": "As mensagens do chat da sala, guardadas por 7 dias para que denúncias possam ser verificadas e depois apagadas.",
+      "chat": "As mensagens do chat da sala, apagadas junto com a sala.",
       "security": "Registros de segurança: limites de quantas vezes uma ação pode ser repetida e um registro das mudanças importantes na conta. Quando precisam do seu endereço IP, guardamos apenas um hash com sal, nunca o endereço em si."
     },
     "device": {

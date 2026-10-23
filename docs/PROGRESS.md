@@ -611,7 +611,7 @@ Online modes are enabled for the Phase 4 games.
      - deploy the Edge Functions with their secrets, and set up the Vault entries for the deletion job;
      - add `PUBLIC_SUPABASE_*` to the production build;
      - show only email sign-in on the live site until the production OAuth apps exist (Phase 21).
-   - **Privacy notice:** a short plain-language page in all 11 languages saying what is stored (account or anonymous ID, nickname, settings, rooms, lobby chat for 7 days), where (EU), and how to export or delete it. It's linked from sign-up, the footer and the guest nickname prompt. Phase 17 replaces it with the full policy and consent banner.
+   - **Privacy notice:** a short plain-language page in all 11 languages saying what is stored (account or anonymous ID, nickname, settings, rooms, lobby chat while its room exists), where (EU), and how to export or delete it. It's linked from sign-up, the footer and the guest nickname prompt. Phase 17 replaces it with the full policy and consent banner.
 1. **Protocol and transport contracts** (`@kefche/game-sdk`, isomorphic):
    - the `Transport` interface: connect, send, broadcast, onMessage, presence, latency, close;
    - the versioned message envelope `{ v, type, seq, roomId, from, payload }`, with Zod schemas for every message type and a size limit;
@@ -645,7 +645,7 @@ Online modes are enabled for the Phase 4 games.
    - results offer a rematch or a return to the lobby.
 7. **Lobby chat** (text only):
    - messages go through an RPC that masks blocked terms and rate-limits to 5 messages per 10 s, and Realtime delivers them;
-   - they're kept for 7 days for moderation, then purged (SPEC §8). Rooms are deleted as soon as they empty, so messages keep the room's id and code without a cascading foreign key;
+   - they're deleted with their room, which happens as soon as it empties (SPEC §8.2, §10.2);
    - guests confirm 13+ first;
    - reports and the moderation tools come in Phase 8.
 8. **Public lobby browser and quick match:**
@@ -687,7 +687,7 @@ Online modes are enabled for the Phase 4 games.
 ### Owner answers (2026-10-23)
 
 - **Q1 — Hosted Supabase:** set it up now. The live site allows guests and accounts; the region is EU (Frankfurt); a short privacy notice goes up now (step 0). The owner has no privacy address yet, so the notice points to the public GitHub issue tracker for now (TODO #4); a made-up address would bounce or reach someone else.
-- **Q2 — Lobby chat:** keep it 7 days, with masking and rate limits.
+- **Q2 — Lobby chat:** keep it 7 days, with masking and rate limits. _Changed 2026-10-24:_ rooms are deleted as soon as they empty, and their chat goes with them; nothing is kept for later.
 - **Q3 — Race mode:** include it. Everyone gets the same game and sees a live leaderboard that changes as they play (step 10).
 
 ### Status

@@ -11,7 +11,7 @@
       "guest": "Si vous jouez en ligne sans compte : un identifiant d'invité aléatoire et le pseudo que vous choisissez.",
       "settings": "Vos réglages, comme la langue, le thème, le son et les choix de confidentialité.",
       "rooms": "Les salons en ligne que vous rejoignez : votre place, les coups de chaque partie et votre dernière connexion. Les données d'un salon sont supprimées dès que son dernier joueur le quitte.",
-      "chat": "Les messages du chat des salons, conservés 7 jours pour pouvoir examiner les signalements, puis supprimés.",
+      "chat": "Les messages du chat des salons, supprimés en même temps que leur salon.",
       "security": "Données de sécurité : des limites sur la fréquence d'une action et un journal des changements importants du compte. Quand votre adresse IP est nécessaire, nous n'en gardons qu'un hachage salé, jamais l'adresse elle-même."
     },
     "device": {

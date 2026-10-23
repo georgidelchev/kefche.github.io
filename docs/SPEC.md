@@ -225,7 +225,7 @@ Language, theme, sound volume (master/music/effects), haptics on/off, reduced mo
 ### 8.2 Chat (all types)
 - **Global chat** (per language room, e.g. "English", "Български"), **lobby chat**, **in-game chat**, and **private messages (DMs)** between users (subject to privacy settings).
 - Content: free text (max 500 chars), emoji picker, and **GIFs via GIPHY** (search + trending, rating `pg-13`, only GIPHY media URLs allowed, stored as GIPHY IDs, never arbitrary URLs). Show "Powered by GIPHY" attribution in the picker.
-- Typing indicators in DMs, unread counts, message history with pagination (DMs and global chat persisted; lobby/in-game chat persisted for 7 days for moderation, then purged by pg_cron).
+- Typing indicators in DMs, unread counts, message history with pagination (DMs and global chat persisted; lobby/in-game chat lives only as long as its room and is deleted with it).
 - Message actions: report, delete own message, block user. Moderators: delete any message, mute user.
 - **Never render user content as HTML.** Linkify only safe `https://` URLs and show them as plain text links with `rel="nofollow ugc noopener"`.
 

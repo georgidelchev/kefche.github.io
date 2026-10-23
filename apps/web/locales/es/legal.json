@@ -11,7 +11,7 @@
       "guest": "Si juegas en línea sin cuenta: un identificador de invitado aleatorio y el apodo que elijas.",
       "settings": "Tus ajustes, como el idioma, el tema, el sonido y las opciones de privacidad.",
       "rooms": "Las salas en línea en las que entras: tu puesto, las jugadas de cada partida y cuándo te conectaste por última vez. Los registros de una sala se borran en cuanto sale su último jugador.",
-      "chat": "Los mensajes del chat de la sala, guardados 7 días para poder revisar las denuncias y después borrados.",
+      "chat": "Los mensajes del chat de la sala, que se borran junto con la sala.",
       "security": "Registros de seguridad: límites de cuántas veces se puede repetir una acción y un registro de los cambios importantes de la cuenta. Cuando necesitan tu dirección IP, guardamos solo un hash con sal, nunca la dirección."
     },
     "device": {
