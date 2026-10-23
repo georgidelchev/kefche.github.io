@@ -693,6 +693,8 @@ Online modes are enabled for the Phase 4 games.
 ### Status
 
 - [x] Plan approved by owner (2026-10-23, with the answers above)
+- [x] Steps 0–6 done (hosted Supabase has the Phase 2 schema; the Phase 5 migrations go up with the next deploy)
+- [ ] Owner: set the production environment variables in GitHub (`PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `PUBLIC_AUTH_PROVIDERS=none`) and turn off Realtime "Allow public access" (RUNBOOK)
 
 ---
 
