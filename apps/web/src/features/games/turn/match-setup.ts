@@ -98,11 +98,12 @@ export function saveChoice(storage: GameStorage, mode: TurnMode, choice: SetupCh
   storage.set(`setup:${mode}`, JSON.stringify(choice));
 }
 
-/** Labels for people's seats, from the page's strings. */
+/** Labels for seats, from the page's strings. */
 export interface SeatNames {
   you: string;
   /** "Player {n}" */
   player: string;
+  bots: BotNames;
 }
 
 export function toMatch(
@@ -110,6 +111,7 @@ export function toMatch(
   config: TurnConfig,
   names: SeatNames,
   seed: string,
+  locale: string,
 ): MatchSetup {
   const bots = choice.seats.filter((s) => s.kind === "bot").length;
   const botNames = pickBotNames(Rng.fromSeed(`${seed}:names`), bots);
@@ -121,12 +123,13 @@ export function toMatch(
     }
     return {
       kind: "human",
-      name: humans === 1 ? names.you : names.player.replace("{n}", String(i + 1)),
+      name: humans === 1 ? names.you : names.player.replace("{n}", (i + 1).toLocaleString(locale)),
     };
   });
   return {
     mode: humans === 1 ? "solo-bots" : "hotseat",
     seats,
+    names: seats.map((seat) => (seat.kind === "bot" ? names.bots[seat.nameId] : seat.name)),
     timer: config.timers[choice.timer] ?? { kind: "none" },
   };
 }

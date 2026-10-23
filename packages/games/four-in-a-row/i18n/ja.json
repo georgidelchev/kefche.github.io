@@ -1,0 +1,55 @@
+{
+  "name": "四目並べ",
+  "tagline": "コマを落として、だれよりも先に4つ並べよう。",
+  "description": "ブラウザで四目並べを無料でプレイ。コマを落として4つ並べ、ボットや友だちと1台の端末で対戦。2〜4人で遊べます。",
+  "about": [
+    "Four in a Row is a classic strategy game played on an upright grid. Players take turns dropping a disc into one of the columns, and the disc falls to the lowest free cell. The first player to line up four of their own discs in a row, across, up and down or diagonally, wins the game. If the grid fills up first, the game is a draw.",
+    "The rules take a minute to learn, but the game rewards planning. Because discs stack from the bottom, every move also decides which cells your opponent can reach next. Strong players build two threats at once, so the other side can only block one of them, and they avoid filling the cell right below their opponent's winning spot.",
+    "Here you can play against a bot on easy, medium or hard, or pass one device around for up to four players. With three players the grid grows to 9 × 7, and with four to 10 × 8, so there is room for everyone while the goal stays four in a row. Every disc carries its player's shape as well as a colour, so the board is easy to read for everyone."
+  ],
+  "howToPlay": [
+    "Choose Play vs bots or Play on this device, pick the number of players and, for each bot, how strong it plays.",
+    "On your turn, choose a column. Your disc drops to the lowest free cell in that column.",
+    "Line up four of your discs in a row, across, up and down, or diagonally, to win.",
+    "If every cell is filled and nobody has four in a row, the game is a draw.",
+    "With a timer on, a player who runs out of time gets a random move in a free column."
+  ],
+  "controls": [
+    "Phones and tablets: tap a column to drop your disc there.",
+    "Mouse: click a column; the faded disc shows where yours will land.",
+    "Keyboard: move between columns with the left and right arrows and press Enter or Space to drop, or press a column's number (1–9, and 0 for the tenth).",
+    "Against bots, Undo takes back your last move and the bot's reply."
+  ],
+  "tips": [
+    "Start in the middle. The centre column is part of more lines of four than any other.",
+    "Before every move, check whether your opponent could win on their next turn, and block it.",
+    "Look one cell higher too: don't drop a disc right below a cell your opponent needs.",
+    "Build two threats at the same time. Your opponent can block only one.",
+    "With three or four players, watch everyone. The player after you can often block the player before you, but not always."
+  ],
+  "faq": [
+    {
+      "question": "Is Four in a Row free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How many players can play?",
+      "answer": "Two to four. Play against bots, or share one phone, tablet or computer with friends. Online games with friends are coming."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "Easy plays loosely and is good for learning. Medium looks a few moves ahead. Hard searches as deep as it can in about a second and rarely misses a threat."
+    },
+    {
+      "question": "Why is the board bigger with more players?",
+      "answer": "With three or four players there are more discs on the board, so the grid grows to 9 × 7 or 10 × 8. You still need four in a row to win."
+    }
+  ],
+  "ui": {
+    "boardLabel": "四目並べの盤",
+    "columnLabel": "{column} 列目、空き {free}",
+    "columnFull": "{column} 列目、満杯",
+    "dropped": "{name}：{column} 列目",
+    "undo": "取り消し"
+  }
+}

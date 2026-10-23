@@ -1,7 +1,7 @@
 // The setup screen and the HUD for turn-based games (Phase 4). Loaded by the
 // player only for games of kind "turn", so other game pages don't carry it.
 import { Bot, LoaderCircle } from "lucide-react";
-import { useId, type RefObject } from "react";
+import { useEffect, useId, type RefObject } from "react";
 
 import type { Seat, TimerPreset } from "@kefche/game-sdk";
 import type { TurnReport } from "@kefche/game-sdk/browser";
@@ -38,10 +38,12 @@ function Segmented<T extends string | number>({
   onChange: (value: T) => void;
 }) {
   const groupId = useId();
+  // Longer lists (timers) go two to a row, so labels don't squeeze on phones.
+  const layout = options.length > 3 ? "grid grid-cols-2" : "flex flex-wrap";
   return (
     <fieldset className="grid gap-1.5">
       <legend className={hideLegend ? "sr-only" : "mb-1.5 text-sm font-semibold"}>{legend}</legend>
-      <div className="flex flex-wrap gap-1 rounded-xl bg-surface-2 p-1">
+      <div className={`${layout} gap-1 rounded-xl bg-surface-2 p-1`}>
         {options.map((option) => (
           <label key={String(option.value)} className="min-w-11 flex-1">
             <input
@@ -99,12 +101,17 @@ export function TurnSetup({
     ? "medium"
     : (config.difficulties[0] ?? "easy");
 
+  // This screen loads on demand, so it focuses Start itself once it's there.
+  useEffect(() => {
+    startRef.current?.focus();
+  }, [startRef]);
+
   return (
     <form
       className="mx-auto grid w-full max-w-md gap-5 rounded-2xl border border-border bg-surface p-5 shadow-lg"
       onSubmit={(e) => {
         e.preventDefault();
-        onStart();
+        if (!loading) onStart();
       }}
     >
       <h3 className="text-2xl">{s.setupTitle[mode]}</h3>
@@ -175,7 +182,8 @@ export function TurnSetup({
         />
       )}
 
-      <Button ref={startRef} type="submit" size="lg" disabled={loading}>
+      {/* aria-disabled rather than disabled, so it keeps focus while the game loads. */}
+      <Button ref={startRef} type="submit" size="lg" aria-disabled={loading}>
         {loading && (
           <LoaderCircle aria-hidden="true" className="animate-spin motion-reduce:animate-none" />
         )}

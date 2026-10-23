@@ -24,6 +24,8 @@ export interface GameStorage {
 export interface MatchSetup {
   mode: "solo-bots" | "hotseat";
   seats: Seat[];
+  /** Display names per seat in the page's language, for the game's own announcements. */
+  names: string[];
   timer: TimerPreset;
 }
 

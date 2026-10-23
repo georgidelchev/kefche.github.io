@@ -192,8 +192,9 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
     const setup = toMatch(
       choice,
       turn.config,
-      { you: turn.strings.you, player: turn.strings.player },
+      { you: turn.strings.you, player: turn.strings.player, bots: turn.strings.botNames },
       seed,
+      locale,
     );
     setMatch(setup);
     void mount(seed, setup);
@@ -451,7 +452,8 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
             </Overlay>
           )}
           {phase === "finished" && (
-            <Overlay>
+            // Board games keep the final position in view, with the results below it.
+            <Overlay placement={match ? "bottom" : "cover"}>
               <p role="status" className="text-3xl font-semibold">
                 {headline}
               </p>
@@ -485,9 +487,19 @@ function createLowTimeSound() {
   return createSoundService({ low: "wood-block" }, () => VOLUME);
 }
 
-function Overlay({ children }: { children: ReactNode }) {
-  return (
+function Overlay({
+  children,
+  placement = "cover",
+}: {
+  children: ReactNode;
+  placement?: "cover" | "bottom";
+}) {
+  return placement === "cover" ? (
     <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-bg/90 p-6 text-center backdrop-blur-sm">
+      {children}
+    </div>
+  ) : (
+    <div className="absolute inset-x-0 bottom-0 z-10 flex flex-wrap items-center justify-center gap-3 border-t border-border bg-surface/95 p-4 text-center shadow-[0_-8px_24px_rgb(0_0_0/0.12)] backdrop-blur-sm [&>p]:basis-full">
       {children}
     </div>
   );
