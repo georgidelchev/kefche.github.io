@@ -2,7 +2,7 @@
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 import { authStrings } from "@/features/auth/strings";
-import { playsOnline, turnConfig, turnStrings } from "@/features/games/page-props";
+import { playerStrings, playsOnline, turnConfig, turnStrings } from "@/features/games/page-props";
 import { listGames, type RegisteredGame } from "@/features/games/registry";
 import { OnlineRoom } from "@/features/lobby/OnlineRoom";
 import { guestStrings, roomStrings } from "@/features/lobby/strings";
@@ -25,7 +25,7 @@ export const getStaticPaths = (() =>
 const { game } = Astro.props as { game: RegisteredGame };
 const locale = Astro.params.locale as Locale;
 const t = getT(locale);
-const { bcp47 } = LOCALE_INFO[locale];
+const { bcp47, dir } = LOCALE_INFO[locale];
 const { manifest } = game;
 const text = game.text[locale];
 const config = turnConfig(manifest);
@@ -56,8 +56,10 @@ const strings = roomStrings(t);
     {config && (
       <OnlineRoom
         client:only="react"
-        game={{ id: manifest.id, version: manifest.version, name: text.name, config }}
+        game={{ id: manifest.id, version: manifest.version, name: text.name, config, ui: text.ui }}
         locale={bcp47}
+        dir={dir}
+        player={playerStrings(t)}
         strings={strings}
         guest={guestStrings(t, authStrings(t).errors)}
         turn={turnStrings(t)}

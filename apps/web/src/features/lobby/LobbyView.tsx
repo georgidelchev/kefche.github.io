@@ -13,6 +13,8 @@ import { fill, timerLabel, type TurnStrings } from "@/features/games/turn/labels
 import type { TurnConfig } from "@/features/games/turn/match-setup";
 import { Segmented, slot } from "@/features/games/turn/TurnUi";
 
+import { defaultDifficulty } from "./room-match";
+
 import type { RoomSettings } from "./room-settings";
 import type { RoomSnapshot } from "./room-store";
 import type { RoomStrings } from "./strings";
@@ -78,8 +80,7 @@ export function LobbyView({
   );
   const emptySeat = seats.some((i) => !room.bot_seats.includes(i) && !seated(i));
   const difficulty = (seat: number): BotDifficulty =>
-    settings.bots[String(seat)] ??
-    (config.difficulties.includes("medium") ? "medium" : (config.difficulties[0] ?? "easy"));
+    settings.bots[String(seat)] ?? defaultDifficulty(config);
   const counts = Array.from(
     { length: config.players.max - Math.max(config.players.min, 2) + 1 },
     (_, i) => Math.max(config.players.min, 2) + i,

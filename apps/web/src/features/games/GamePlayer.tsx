@@ -4,24 +4,23 @@
 // Turn-based games (Phase 4) first get a setup screen (seats, bots, timer)
 // and a HUD with every seat, whose turn it is and the clocks.
 import { LoaderCircle, Pause, Play, Users, Bot, Volume2, VolumeX, X } from "lucide-react";
-import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 
 import { randomSeed, type GameResult } from "@kefche/game-sdk";
 import {
   HAPTICS,
-  createSoundService,
   formatDuration,
   isMuted,
   setMuted as saveMuted,
   vibrate,
   type GameInstance,
-  type GameStorage,
   type MatchSetup,
   type TurnReport,
 } from "@kefche/game-sdk/browser";
 import { Button } from "@kefche/ui/components/button";
 
 import { loadGame } from "./loaders";
+import { createLowTimeSound, gameStorage, Overlay, useGameScreen, VOLUME } from "./player-parts";
 import { fill, resultText, seatName, type TurnStrings } from "./turn/labels";
 import {
   loadChoice,
@@ -69,30 +68,6 @@ interface Props {
 
 type Phase = "idle" | "setup" | "loading" | "playing" | "paused" | "finished" | "error";
 
-// "Quiet", the owner's pick in the Phase 3 sound picker. A volume slider
-// arrives with the settings in Phase 16.
-const VOLUME = 0.22;
-
-function gameStorage(id: string): GameStorage {
-  return {
-    get: (key) => {
-      try {
-        return localStorage.getItem(`kefche:game:${id}:${key}`);
-      } catch {
-        return null;
-      }
-    },
-    set: (key, value) => {
-      try {
-        if (value === null) localStorage.removeItem(`kefche:game:${id}:${key}`);
-        else localStorage.setItem(`kefche:game:${id}:${key}`, value);
-      } catch {
-        // Not saved; the game goes on.
-      }
-    },
-  };
-}
-
 const MODE_ICONS = { "solo-bots": Bot, hotseat: Users } as const;
 
 export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) {
@@ -109,7 +84,6 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
   const pauseRef = useRef<HTMLButtonElement>(null);
   // The main button of the pause, results or setup screen, focused when it opens.
   const overlayActionRef = useRef<HTMLButtonElement>(null);
-  const wakeRef = useRef<WakeLockSentinel | null>(null);
   const storage = useRef(gameStorage(id)).current;
   const lowTimeSoundRef = useRef<ReturnType<typeof createLowTimeSound> | null>(null);
 
@@ -231,17 +205,9 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
 
   // While open: no page scroll, screen stays awake, Escape pauses, tab
   // switches pause.
+  useGameScreen(open);
   useEffect(() => {
     if (!open) return;
-    const root = document.documentElement;
-    root.style.overflow = "hidden";
-    // Not every browser has the Wake Lock API.
-    if ("wakeLock" in navigator) {
-      void navigator.wakeLock.request("screen").then(
-        (lock) => (wakeRef.current = lock),
-        () => undefined,
-      );
-    }
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
@@ -254,9 +220,6 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
     document.addEventListener("keydown", onKey);
     document.addEventListener("visibilitychange", onHidden);
     return () => {
-      root.style.overflow = "";
-      void wakeRef.current?.release();
-      wakeRef.current = null;
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("visibilitychange", onHidden);
     };
@@ -482,28 +445,5 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
         </div>
       </div>
     </>
-  );
-}
-
-function createLowTimeSound() {
-  // The owner's pick in the Phase 4 sound picker.
-  return createSoundService({ low: "tick-tock" }, () => VOLUME);
-}
-
-function Overlay({
-  children,
-  placement = "cover",
-}: {
-  children: ReactNode;
-  placement?: "cover" | "bottom";
-}) {
-  return placement === "cover" ? (
-    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-bg/90 p-6 text-center backdrop-blur-sm">
-      {children}
-    </div>
-  ) : (
-    <div className="absolute inset-x-0 bottom-0 z-10 flex flex-wrap items-center justify-center gap-3 border-t border-border bg-surface/95 p-4 text-center shadow-[0_-8px_24px_rgb(0_0_0/0.12)] backdrop-blur-sm [&>p]:basis-full">
-      {children}
-    </div>
   );
 }

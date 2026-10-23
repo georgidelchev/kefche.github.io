@@ -2,8 +2,11 @@
 // nicknames, kept live through Realtime database changes (RLS decides what
 // arrives). Every change refetches both, so the view is always one
 // consistent read.
+
 import type { Supabase } from "@/lib/supabase/client";
 import type { Tables } from "@/lib/supabase/database.gen";
+
+import { ROOM_ERROR_CODES, type RoomErrorCode } from "./strings";
 
 export type RoomRow = Tables<"rooms">;
 
@@ -109,8 +112,10 @@ export function watchRoom(
   };
 }
 
-/** Readable error codes from the room functions (their message), else "unknown". */
-export function roomErrorCode(error: unknown): string {
+/** The room functions' error code (their message), or "unknown". */
+export function roomErrorCode(error: unknown): RoomErrorCode {
   const message = (error as { message?: unknown } | null)?.message;
-  return typeof message === "string" && /^[a-z_]+$/.test(message) ? message : "unknown";
+  return (ROOM_ERROR_CODES as readonly unknown[]).includes(message)
+    ? (message as RoomErrorCode)
+    : "unknown";
 }

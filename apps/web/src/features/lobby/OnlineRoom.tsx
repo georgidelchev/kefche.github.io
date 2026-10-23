@@ -11,33 +11,36 @@ import { Button } from "@kefche/ui/components/button";
 
 import { ensureIdentity, type Identity } from "@/features/account/identity";
 import { FormMessage, TextField } from "@/features/auth/components/fields";
+import type { PlayerStrings } from "@/features/games/GamePlayer";
 import type { TurnStrings } from "@/features/games/turn/labels";
 import type { TurnConfig } from "@/features/games/turn/match-setup";
 import { getSupabase, type Supabase } from "@/lib/supabase/client";
 
 import { GuestProfileForm } from "./GuestProfileForm";
 import { LobbyView, type LobbyActions } from "./LobbyView";
+import { OnlineMatch } from "./OnlineMatch";
+import { roomMatch, type RoomMatch } from "./room-match";
 import { parseRoomSettings, settingsJson } from "./room-settings";
 import { roomErrorCode, watchRoom, type RoomSnapshot } from "./room-store";
-import {
-  ROOM_ERROR_CODES,
-  type GuestStrings,
-  type RoomErrorCode,
-  type RoomStrings,
-} from "./strings";
 import { createSupabaseTransport } from "./supabase-transport";
+
+import type { GuestStrings, RoomErrorCode, RoomStrings } from "./strings";
 
 export interface OnlineGame {
   id: string;
   version: number;
   name: string;
   config: TurnConfig;
+  /** The game's own UI strings (i18n/<locale>.json "ui"). */
+  ui: Record<string, string>;
 }
 
 interface Props {
   game: OnlineGame;
   locale: string;
+  dir: "ltr" | "rtl";
   strings: RoomStrings;
+  player: PlayerStrings;
   guest: GuestStrings;
   turn: TurnStrings;
   paths: { game: string; privacy: string; onboarding: string };
@@ -53,14 +56,6 @@ type Stage =
   | { kind: "room"; supabase: Supabase; identity: Identity; roomId: string; code: string }
   | { kind: "gone"; code: RoomErrorCode };
 
-// The room functions' error codes; anything else reads as "unknown".
-const errorCode = (error: unknown): RoomErrorCode => {
-  const code = roomErrorCode(error);
-  return (ROOM_ERROR_CODES as readonly string[]).includes(code)
-    ? (code as RoomErrorCode)
-    : "unknown";
-};
-
 const CODE = /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/;
 const normalizeCode = (raw: string) => raw.trim().toUpperCase().replace(/[\s-]/g, "");
 
@@ -71,7 +66,7 @@ function intentFromUrl(): Intent | null {
   return params.has("new") ? { kind: "create" } : null;
 }
 
-export function OnlineRoom({ game, locale, strings: s, guest, turn, paths }: Props) {
+export function OnlineRoom({ game, locale, dir, strings: s, player, guest, turn, paths }: Props) {
   // A link with ?room= or ?new starts at once (the page renders only in the browser).
   const [stage, setStage] = useState<Stage>(() => {
     const intent = intentFromUrl();
@@ -116,7 +111,7 @@ export function OnlineRoom({ game, locale, strings: s, guest, turn, paths }: Pro
       history.replaceState(history.state, "", `${location.pathname}?room=${room.code}`);
       setStage({ kind: "room", supabase, identity, roomId: room.id, code: room.code });
     } catch (e) {
-      setError(s.errors[errorCode(e)]);
+      setError(s.errors[roomErrorCode(e)]);
       setStage({ kind: "choose" });
     }
   }
@@ -135,15 +130,7 @@ export function OnlineRoom({ game, locale, strings: s, guest, turn, paths }: Pro
     case "choose":
       return <Choose strings={s} error={error} onRun={begin} />;
     case "working":
-      return (
-        <p role="status" className="flex items-center gap-3 text-lg">
-          <LoaderCircle
-            aria-hidden="true"
-            className="size-6 animate-spin motion-reduce:animate-none"
-          />
-          {stage.intent.kind === "create" ? s.creating : s.joining}
-        </p>
-      );
+      return <Waiting label={stage.intent.kind === "create" ? s.creating : s.joining} />;
     case "profile":
       return (
         <div className="mx-auto w-full max-w-md rounded-2xl border border-border bg-surface p-5">
@@ -191,7 +178,9 @@ export function OnlineRoom({ game, locale, strings: s, guest, turn, paths }: Pro
           {...stage}
           game={game}
           locale={locale}
+          dir={dir}
           strings={s}
+          player={player}
           turn={turn}
           onGone={(code) => {
             history.replaceState(history.state, "", location.pathname);
@@ -266,7 +255,9 @@ interface RoomProps {
   code: string;
   game: OnlineGame;
   locale: string;
+  dir: "ltr" | "rtl";
   strings: RoomStrings;
+  player: PlayerStrings;
   turn: TurnStrings;
   onGone: (code: RoomErrorCode) => void;
   onLeft: () => void;
@@ -282,7 +273,9 @@ function Room({
   code,
   game,
   locale,
+  dir,
   strings: s,
+  player,
   turn,
   onGone,
   onLeft,
@@ -292,54 +285,77 @@ function Room({
   const [present, setPresent] = useState<ReadonlySet<string>>(() => new Set());
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const transportRef = useRef<Transport | null>(null);
+  const [transport, setTransport] = useState<Transport | null>(null);
+  const [match, setMatch] = useState<(RoomMatch & { seed: string; countdown: boolean }) | null>(
+    null,
+  );
   const seenRef = useRef(false);
   const gone = useEffectEvent(onGone);
 
   // The live room. Reading nothing back means this member was removed.
-  useEffect(
-    () =>
-      watchRoom(
-        supabase,
-        roomId,
-        (next) => {
-          const me = next?.members.find((m) => m.userId === self);
-          if (!next || !me || me.status === "kicked") {
-            gone(seenRef.current || me?.status === "kicked" ? "room_kicked" : "room_not_found");
-            return;
-          }
-          if (next.room.status === "closed") {
-            gone("room_closed");
-            return;
-          }
-          seenRef.current = true;
-          setError(null);
-          setSnapshot(next);
-        },
-        () => {
-          setError(s.errors.connection);
-        },
-      ),
-    [supabase, roomId, self, s],
-  );
+  useEffect(() => {
+    // The match is built once per seed, when the room starts playing.
+    let last: { status: string; seed: string | null } | null = null;
+    return watchRoom(
+      supabase,
+      roomId,
+      (next) => {
+        const me = next?.members.find((m) => m.userId === self);
+        if (!next || !me || me.status === "kicked") {
+          gone(seenRef.current || me?.status === "kicked" ? "room_kicked" : "room_not_found");
+          return;
+        }
+        if (next.room.status === "closed") {
+          gone("room_closed");
+          return;
+        }
+        seenRef.current = true;
+        setError(null);
+        setSnapshot(next);
+        const settings = parseRoomSettings(next.room.settings);
+        const playing = next.room.status === "playing" || next.room.status === "finished";
+        const seed = playing ? settings.seed : null;
+        if (seed !== (last?.seed ?? null)) {
+          setMatch(
+            seed === null
+              ? null
+              : {
+                  ...roomMatch(next, { ...settings, seed }, game.config, turn, self),
+                  seed,
+                  countdown: last?.status === "lobby",
+                },
+          );
+        }
+        last = { status: next.room.status, seed };
+      },
+      () => {
+        setError(s.errors.connection);
+      },
+    );
+  }, [supabase, roomId, self, s, game, turn]);
 
   // The room's channel: presence now, the match's messages later.
   const joinedAt = snapshot?.members.find((m) => m.userId === self)?.joinedAt ?? null;
   useEffect(() => {
-    if (joinedAt === null || transportRef.current) return;
-    const transport = createSupabaseTransport(supabase, { id: roomId, code }, self);
-    transportRef.current = transport;
+    if (joinedAt === null) return;
+    const channel = createSupabaseTransport(supabase, { id: roomId, code }, self);
     const presence: PresenceState = { memberId: self, joinedAt };
-    const stop = transport.onPresence((roster) => {
+    const stop = channel.onPresence((roster) => {
       setPresent(new Set(roster.map((p) => p.memberId)));
     });
-    transport.connect(presence).catch(() => {
-      setError(s.errors.connection);
-    });
+    // The match starts on a connected transport.
+    channel.connect(presence).then(
+      () => {
+        setTransport(channel);
+      },
+      () => {
+        setError(s.errors.connection);
+      },
+    );
     return () => {
       stop();
-      transport.close();
-      transportRef.current = null;
+      channel.close();
+      setTransport(null);
     };
   }, [supabase, roomId, code, self, joinedAt, s]);
 
@@ -351,17 +367,7 @@ function Room({
     };
   }, [supabase, roomId]);
 
-  if (!snapshot) {
-    return (
-      <p role="status" className="flex items-center gap-3 text-lg">
-        <LoaderCircle
-          aria-hidden="true"
-          className="size-6 animate-spin motion-reduce:animate-none"
-        />
-        {s.joining}
-      </p>
-    );
-  }
+  if (!snapshot) return <Waiting label={s.joining} />;
 
   const { room } = snapshot;
   const settings = parseRoomSettings(room.settings);
@@ -371,9 +377,9 @@ function Room({
     setError(null);
     try {
       const { error: rpcError } = await action();
-      if (rpcError) setError(s.errors[errorCode(rpcError)]);
+      if (rpcError) setError(s.errors[roomErrorCode(rpcError)]);
     } catch (e) {
-      setError(s.errors[errorCode(e)]);
+      setError(s.errors[roomErrorCode(e)]);
     } finally {
       setBusy(false);
     }
@@ -409,6 +415,34 @@ function Room({
       void call(() => supabase.rpc("transfer_host", { p_room: roomId, p_member: member })),
   };
 
+  if (match) {
+    if (!transport) return <Waiting label={s.joining} />;
+    const status = (userId: string) => snapshot.members.find((m) => m.userId === userId)?.status;
+    return (
+      <OnlineMatch
+        key={match.seed}
+        supabase={supabase}
+        transport={transport}
+        roomId={roomId}
+        self={self}
+        host={room.host_id}
+        match={match}
+        seed={match.seed}
+        away={match.seatMembers.map(
+          (member) => member !== null && (!present.has(member) || status(member) === "left"),
+        )}
+        countdown={match.countdown}
+        game={game}
+        locale={locale}
+        dir={dir}
+        strings={s}
+        player={player}
+        turn={turn}
+        onLeave={actions.leave}
+      />
+    );
+  }
+
   return (
     <LobbyView
       snapshot={snapshot}
@@ -425,5 +459,14 @@ function Room({
       error={error}
       actions={actions}
     />
+  );
+}
+
+function Waiting({ label }: { label: string }) {
+  return (
+    <p role="status" className="flex items-center gap-3 text-lg">
+      <LoaderCircle aria-hidden="true" className="size-6 animate-spin motion-reduce:animate-none" />
+      {label}
+    </p>
   );
 }
