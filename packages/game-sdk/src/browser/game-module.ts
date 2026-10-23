@@ -4,6 +4,8 @@
 // Canvas, Pixi). Games never import app code.
 
 import type { GameResult } from "../engines";
+import type { TimerPreset } from "../manifest";
+import type { Seat } from "../seats";
 
 export interface GameSettings {
   /** 0–1: the player's master × effects volume. */
@@ -18,8 +20,30 @@ export interface GameStorage {
   set(key: string, value: string | null): void;
 }
 
+/** A turn-based match as set up in the player: who sits where, and the timer. */
+export interface MatchSetup {
+  mode: "solo-bots" | "hotseat";
+  seats: Seat[];
+  timer: TimerPreset;
+}
+
+/** What the player's HUD shows for a turn-based match. */
+export interface TurnReport {
+  type: "turn";
+  /** Seats to move; empty once the match is over. */
+  toMove: readonly number[];
+  /** Milliseconds left per seat, or null without a timer. */
+  clocks: readonly (number | null)[];
+  lowTime: readonly boolean[];
+  /** A bot is choosing its move. */
+  thinking: boolean;
+}
+
 export type GameEvent =
-  { type: "start" } | { type: "score"; score: number } | { type: "finish"; result: GameResult };
+  | { type: "start" }
+  | { type: "score"; score: number }
+  | TurnReport
+  | { type: "finish"; result: GameResult };
 
 export interface GameContext {
   locale: string;
@@ -29,6 +53,8 @@ export interface GameContext {
   t: (key: string, values?: Record<string, string | number>) => string;
   settings: GameSettings;
   storage: GameStorage;
+  /** Set for turn-based games (manifest kind "turn"). */
+  match?: MatchSetup;
   /** Tells the player about progress; "finish" opens the results screen. */
   report: (event: GameEvent) => void;
 }
