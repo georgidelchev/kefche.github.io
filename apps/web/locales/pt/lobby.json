@@ -1,0 +1,10 @@
+{
+  "guest": {
+    "title": "Escolha um apelido",
+    "intro": "Os outros na sala vão vê-lo. Você está jogando como convidado; crie uma conta quando quiser para guardar seu progresso.",
+    "nickname": "Apelido",
+    "ageConfirm": "Tenho 13 anos ou mais",
+    "ageNeeded": "Confirme que você tem 13 anos ou mais para usar o chat.",
+    "submit": "Continuar"
+  }
+}

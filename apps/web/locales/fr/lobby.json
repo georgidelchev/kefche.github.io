@@ -1,0 +1,10 @@
+{
+  "guest": {
+    "title": "Choisissez un pseudo",
+    "intro": "Les autres joueurs du salon le verront. Vous jouez en tant qu'invité ; créez un compte quand vous voulez pour garder votre progression.",
+    "nickname": "Pseudo",
+    "ageConfirm": "J'ai 13 ans ou plus",
+    "ageNeeded": "Confirmez que vous avez 13 ans ou plus pour utiliser le chat.",
+    "submit": "Continuer"
+  }
+}

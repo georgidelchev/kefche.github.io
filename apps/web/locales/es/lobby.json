@@ -1,0 +1,10 @@
+{
+  "guest": {
+    "title": "Elige un apodo",
+    "intro": "Los demás en la sala lo verán. Juegas como invitado; crea una cuenta cuando quieras para guardar tu progreso.",
+    "nickname": "Apodo",
+    "ageConfirm": "Tengo 13 años o más",
+    "ageNeeded": "Confirma que tienes 13 años o más para usar el chat.",
+    "submit": "Continuar"
+  }
+}

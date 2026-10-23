@@ -1,0 +1,10 @@
+{
+  "guest": {
+    "title": "Wähle einen Spitznamen",
+    "intro": "Die anderen im Raum sehen ihn. Du spielst als Gast; lege jederzeit ein Konto an, um deinen Fortschritt zu behalten.",
+    "nickname": "Spitzname",
+    "ageConfirm": "Ich bin 13 Jahre oder älter",
+    "ageNeeded": "Bestätige, dass du mindestens 13 Jahre alt bist, um den Chat zu nutzen.",
+    "submit": "Weiter"
+  }
+}

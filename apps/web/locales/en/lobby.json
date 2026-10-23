@@ -1,0 +1,10 @@
+{
+  "guest": {
+    "title": "Pick a nickname",
+    "intro": "Others in the room will see it. You're playing as a guest; create an account any time to keep your progress.",
+    "nickname": "Nickname",
+    "ageConfirm": "I am 13 or older",
+    "ageNeeded": "Confirm that you are 13 or older to use chat.",
+    "submit": "Continue"
+  }
+}
