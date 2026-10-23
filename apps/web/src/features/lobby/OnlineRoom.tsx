@@ -386,10 +386,12 @@ function Room({
 
   // Shows the change right away, then reads the room as soon as the call
   // returns instead of waiting for Realtime to announce it (about a second).
-  // If the call fails, dropping the patch puts the room back.
+  // If the call fails, dropping the patch puts the room back. Only a call
+  // without a patch (start, leave) disables the buttons while it runs:
+  // disabling them for every change made them blink.
   async function call(action: () => PromiseLike<{ error: unknown }>, patch?: Patch) {
     if (patch) setPending((list) => [...list, patch]);
-    setBusy(true);
+    else setBusy(true);
     setError(null);
     try {
       const { error: rpcError } = await action();
@@ -397,7 +399,7 @@ function Room({
     } catch (e) {
       setError(s.errors[roomErrorCode(e)]);
     } finally {
-      setBusy(false);
+      if (!patch) setBusy(false);
       await refreshRef.current?.();
       if (patch) setPending((list) => list.filter((p) => p !== patch));
     }
