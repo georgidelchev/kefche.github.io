@@ -6,6 +6,8 @@ export * from "./engines";
 export * from "./game-text";
 export * from "./manifest";
 export * from "./prng";
+export * from "./protocol";
 export * from "./search";
 export * from "./seats";
 export * from "./timers";
+export * from "./transport";
