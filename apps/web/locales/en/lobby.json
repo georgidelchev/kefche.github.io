@@ -63,6 +63,16 @@
     "onboardingLink": "Finish setup",
     "backToGame": "Back to the game"
   },
+  "chat": {
+    "title": "Chat",
+    "label": "Message",
+    "send": "Send",
+    "empty": "No messages yet. Say hello!",
+    "ageSubmit": "Start chatting",
+    "tooFast": "You're sending messages too fast. Wait a few seconds.",
+    "tooLong": "Messages can be up to 300 characters.",
+    "hint": "Be kind. Messages are deleted when the room closes."
+  },
   "errors": {
     "room_not_found": "There's no room with this code.",
     "room_closed": "This room is closed.",

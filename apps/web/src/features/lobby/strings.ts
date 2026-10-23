@@ -86,6 +86,38 @@ export interface RoomStrings {
   errors: Record<RoomErrorCode, string>;
 }
 
+export interface ChatStrings {
+  title: string;
+  label: string;
+  send: string;
+  empty: string;
+  hint: string;
+  you: string;
+  ageNeeded: string;
+  ageConfirm: string;
+  ageSubmit: string;
+  tooFast: string;
+  tooLong: string;
+  failed: string;
+}
+
+export function chatStrings(t: AppT): ChatStrings {
+  return {
+    title: t("lobby:chat.title"),
+    label: t("lobby:chat.label"),
+    send: t("lobby:chat.send"),
+    empty: t("lobby:chat.empty"),
+    hint: t("lobby:chat.hint"),
+    you: t("lobby:room.you"),
+    ageNeeded: t("lobby:guest.ageNeeded"),
+    ageConfirm: t("lobby:guest.ageConfirm"),
+    ageSubmit: t("lobby:chat.ageSubmit"),
+    tooFast: t("lobby:chat.tooFast"),
+    tooLong: t("lobby:chat.tooLong"),
+    failed: t("lobby:errors.unknown"),
+  };
+}
+
 export const ROOM_ERROR_CODES = [
   "room_not_found",
   "room_closed",

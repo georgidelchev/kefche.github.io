@@ -1,9 +1,9 @@
 // The lobby before a match (SPEC §6.4, §10.2, §10.3): seats with people,
 // bots and empty places, ready checks, the host's settings and controls, and
-// the invite panel. All changes go through the room functions; the view
-// re-renders from the live room.
+// the invite panel, then the lobby chat. All changes go through the room
+// functions; the view re-renders from the live room.
 import { Copy, Crown, Lock, QrCode, Share2, WifiOff } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import type { BotDifficulty } from "@kefche/game-sdk";
 import { Button } from "@kefche/ui/components/button";
@@ -51,6 +51,8 @@ interface Props {
   busy: boolean;
   error: string | null;
   actions: LobbyActions;
+  /** The lobby chat, shown last. */
+  chat: ReactNode;
 }
 
 export function LobbyView({
@@ -67,6 +69,7 @@ export function LobbyView({
   busy,
   error,
   actions,
+  chat,
 }: Props) {
   const { room, members } = snapshot;
   const isHost = room.host_id === self;
@@ -329,6 +332,8 @@ export function LobbyView({
         <p className="text-sm text-muted">{emptySeat ? s.errors.seats_empty : s.startHint}</p>
       )}
       {me?.role === "spectator" && <p className="text-sm text-muted">{s.spectating}</p>}
+
+      {chat}
     </div>
   );
 }

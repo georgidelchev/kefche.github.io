@@ -63,6 +63,16 @@
     "onboardingLink": "Einrichtung abschließen",
     "backToGame": "Zurück zum Spiel"
   },
+  "chat": {
+    "title": "Chat",
+    "label": "Nachricht",
+    "send": "Senden",
+    "empty": "Noch keine Nachrichten. Sag hallo!",
+    "ageSubmit": "Zum Chat",
+    "tooFast": "Du schreibst zu schnell. Warte ein paar Sekunden.",
+    "tooLong": "Nachrichten dürfen höchstens 300 Zeichen lang sein.",
+    "hint": "Sei freundlich. Nachrichten werden gelöscht, wenn der Raum schließt."
+  },
   "errors": {
     "room_not_found": "Es gibt keinen Raum mit diesem Code.",
     "room_closed": "Dieser Raum ist geschlossen.",

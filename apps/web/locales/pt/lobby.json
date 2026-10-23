@@ -63,6 +63,16 @@
     "onboardingLink": "Concluir a configuração",
     "backToGame": "Voltar ao jogo"
   },
+  "chat": {
+    "title": "Chat",
+    "label": "Mensagem",
+    "send": "Enviar",
+    "empty": "Ainda não há mensagens. Diga oi!",
+    "ageSubmit": "Começar a conversar",
+    "tooFast": "Você está enviando mensagens rápido demais. Espere alguns segundos.",
+    "tooLong": "As mensagens podem ter até 300 caracteres.",
+    "hint": "Seja gentil. As mensagens são apagadas quando a sala fecha."
+  },
   "errors": {
     "room_not_found": "Não existe sala com este código.",
     "room_closed": "Esta sala está fechada.",

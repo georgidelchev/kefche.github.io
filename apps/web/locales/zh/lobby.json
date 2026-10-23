@@ -63,6 +63,16 @@
     "onboardingLink": "完成设置",
     "backToGame": "返回游戏"
   },
+  "chat": {
+    "title": "聊天",
+    "label": "消息",
+    "send": "发送",
+    "empty": "还没有消息。打个招呼吧！",
+    "ageSubmit": "开始聊天",
+    "tooFast": "你发消息太快了，请等几秒钟。",
+    "tooLong": "消息最多 300 个字符。",
+    "hint": "请友善发言。房间关闭后，消息会被删除。"
+  },
   "errors": {
     "room_not_found": "没有这个房间码对应的房间。",
     "room_closed": "这个房间已关闭。",

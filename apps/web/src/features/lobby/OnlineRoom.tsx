@@ -23,9 +23,10 @@ import { OnlineMatch } from "./OnlineMatch";
 import { roomMatch, type RoomMatch } from "./room-match";
 import { parseRoomSettings, settingsJson } from "./room-settings";
 import { roomErrorCode, watchRoom, type RoomMember, type RoomSnapshot } from "./room-store";
+import { RoomChat } from "./RoomChat";
 import { createSupabaseTransport } from "./supabase-transport";
 
-import type { GuestStrings, RoomErrorCode, RoomStrings } from "./strings";
+import type { ChatStrings, GuestStrings, RoomErrorCode, RoomStrings } from "./strings";
 
 export interface OnlineGame {
   id: string;
@@ -46,6 +47,7 @@ interface Props {
   strings: RoomStrings;
   player: PlayerStrings;
   guest: GuestStrings;
+  chat: ChatStrings;
   turn: TurnStrings;
   paths: { game: string; privacy: string; onboarding: string };
 }
@@ -70,7 +72,17 @@ function intentFromUrl(): Intent | null {
   return params.has("new") ? { kind: "create" } : null;
 }
 
-export function OnlineRoom({ game, locale, dir, strings: s, player, guest, turn, paths }: Props) {
+export function OnlineRoom({
+  game,
+  locale,
+  dir,
+  strings: s,
+  player,
+  guest,
+  chat,
+  turn,
+  paths,
+}: Props) {
   // A link with ?room= or ?new starts at once (the page renders only in the browser).
   const [stage, setStage] = useState<Stage>(() => {
     const intent = intentFromUrl();
@@ -185,6 +197,7 @@ export function OnlineRoom({ game, locale, dir, strings: s, player, guest, turn,
           dir={dir}
           strings={s}
           player={player}
+          chat={chat}
           turn={turn}
           onGone={(code) => {
             history.replaceState(history.state, "", location.pathname);
@@ -262,6 +275,7 @@ interface RoomProps {
   dir: "ltr" | "rtl";
   strings: RoomStrings;
   player: PlayerStrings;
+  chat: ChatStrings;
   turn: TurnStrings;
   onGone: (code: RoomErrorCode) => void;
   onLeft: () => void;
@@ -281,6 +295,7 @@ function Room({
   dir,
   strings: s,
   player,
+  chat,
   turn,
   onGone,
   onLeft,
@@ -557,6 +572,16 @@ function Room({
       busy={busy}
       error={error}
       actions={actions}
+      chat={
+        <RoomChat
+          supabase={supabase}
+          roomId={roomId}
+          self={self}
+          guest={identity.guest}
+          canChat={identity.canChat}
+          strings={chat}
+        />
+      }
     />
   );
 }
