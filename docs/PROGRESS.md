@@ -9,8 +9,8 @@
 | 0     | Foundation & tooling                                       | ✅ Done (owner signed off 2026-10-21) |
 | 1     | Design system, layout, theming, i18n skeleton              | ✅ Done (owner signed off 2026-10-22) |
 | 2     | Supabase core, auth & profiles                             | ✅ Done (owner signed off 2026-10-22) |
-| 3     | Game SDK & first games (2048, Sudoku, Snake)               | 🚧 In progress                        |
-| 4     | Bots, hotseat & timers                                     | ⏳ Not started                        |
+| 3     | Game SDK & first games (2048, Sudoku, Snake)               | ✅ Done (owner signed off 2026-10-23) |
+| 4     | Bots, hotseat & timers                                     | 📝 Plan awaiting approval             |
 | 5     | Multiplayer core                                           | ⏳ Not started                        |
 | 6     | Chess                                                      | ⏳ Not started                        |
 | 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                        |
@@ -482,7 +482,75 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
 
 - [x] Plan approved by owner (2026-10-22)
 - [x] Steps 1–9, 11 and 12 done (step 10 dropped)
-- [ ] Owner sign-off
+- [x] Owner sign-off (2026-10-23, "ok")
+
+---
+
+## Phase 4 — Bots, hotseat & timers
+
+**Goal (SPEC §22):** bot difficulties, bots in Web Workers, hotseat mode and the timer presets UI. **Four in a Row, Reversi, and Dots and Boxes** are playable with bots and hotseat.
+**DoD:** bots respond within their budget without UI jank, and timers behave as SPEC §11 says. Plus the standing DoD.
+
+### Steps (one Conventional Commit each)
+
+1. **Turn-game contracts** (`@kefche/game-sdk`, isomorphic):
+   - a seat model: human or bot, difficulty, display name, player colour and shape;
+   - a `Bot` interface that returns an action for a state, a seat, an `Rng` and a deadline;
+   - a search kit: iterative-deepening alpha-beta with move ordering, for two players; "paranoid" search for 3–5 players, which treats everyone else as one opponent; a hook for MCTS later;
+   - timers as pure state: per-move countdowns and Fischer clocks, with an expiry rule per game (pass, random legal move or loss). Time comes in as input, so a game still replays exactly.
+2. **Turn session runtime** (`@kefche/game-sdk/browser`):
+   - It drives a turn-based game: whose turn it is, asking the bot worker, applying expiries, pausing, and undo in solo games (if the game allows it).
+   - Bots run in a long-lived worker per game, cancelled when the game is paused or closed.
+   - Each difficulty has a time budget (about 150, 400 and 900 ms), and a bot move takes at least about 400 ms, so moves don't appear instantly.
+   - Games only render the state and send the human player's actions.
+3. **Setup, HUD and results** (the site's player):
+   - The game page's main actions become **Play vs bots** and **Play on this device**.
+   - A setup sheet sets the number of players (within the manifest limits) and, for each seat, human or bot plus difficulty, then a timer preset and the game's own options.
+   - The HUD bar shows each seat's colour and shape, name, whose turn it is and its clock, with a low-time warning (colour, sound and haptic).
+   - Results show each seat's outcome; Rematch keeps the same seats.
+   - Bots have localized names ("Mila (bot, hard)") and are marked as bots everywhere (SPEC §9.5).
+4. **Four in a Row** (2–4 players):
+   - The board grows with players: 7 × 6 for 2, 9 × 7 for 3, 10 × 8 for 4, and you still need four in a row.
+   - Columns are chosen by tap or with the arrow keys and Enter, with a drop animation and each move announced to screen readers.
+   - Bots: easy is random with blunder checks, medium searches 4 plies, hard uses deeper search with a threat heuristic.
+5. **Reversi** (2 players):
+   - 8 × 8, with automatic passes and a move-hints toggle (catalog note).
+   - Bots: easy is greedy with mistakes, medium uses alpha-beta with positional weights, hard uses deeper search with mobility, corners and stability, plus an exact endgame solve.
+6. **Dots and Boxes** (2–5 players):
+   - The grid grows with players: 4 × 4 boxes for 2, 5 × 5 for 3, 6 × 5 for 4 and 6 × 6 for 5. Completing a box earns an extra turn.
+   - Edges are chosen by tap or with keyboard focus moving along the edges.
+   - Bots: easy avoids giving away boxes some of the time; medium never draws a box's third side when it can avoid it; hard counts chains and plays the long-chain rule, with a search in the endgame.
+7. **Art and sounds** for the three games (sticker style B), CREDITS, and SEO text in English and Bulgarian with names, taglines and UI in all 11 locales.
+8. **Verification and docs:**
+   - **Bot timing:** measure every difficulty against its budget on a throttled CPU, check for UI jank (long tasks) while a bot thinks, and check strength with self-play (hard beats medium beats easy).
+   - **Timers:** expiry rules, pause in solo and hotseat, and clocks that stay correct after the tab is hidden.
+   - **Layout:** 360, 768 and 1280 px in both themes and in Arabic.
+   - **Docs:** ADDING_A_GAME for turn games and bots, ARCHITECTURE, and ADRs for the bot runtime, search, timers and seats.
+
+### Decisions (proposed)
+
+- **Modes:** `solo-bots` and `hotseat`, and a match can mix humans and bots, for example two people and a bot in Dots and Boxes. Online modes come in Phase 5, which reuses the same seats, timers and session runtime with a network host.
+- **No hidden information** in these three games, so hotseat needs no "pass the device" screen. Games with hidden information get one when they arrive.
+- **Timers:** per-move presets of none, 15, 30 and 60 seconds. When time runs out, Four in a Row and Reversi play a random legal move, and Dots and Boxes draws a random edge. Reversi also offers 3+2 and 5+0 clocks. Chess clocks use the same timer state in Phase 6. Timers pause only in solo and hotseat.
+- **Unfinished games aren't saved** in this phase. They take minutes, and online games will need a different resume model anyway (Phase 5).
+- **Renderers:** React with SVG boards, which scale cleanly and give real elements for focus and labels. Player colours come from the colour-blind-safe `--player-*` tokens, and every seat also has a shape (disc, ring, square, triangle, diamond).
+- **Bot names:** a short list of names that read well in every language, written in each locale's script, plus the difficulty.
+
+### Risks
+
+- **Bot strength versus time on slow phones:** search depth comes from the deadline, not a fixed depth, so a slow phone plays a little weaker but never slower.
+- **Multi-player search** (3–5 seats) grows fast. Paranoid search with a shallow depth keeps it bounded; hard bots for 4–5 players will be good, not perfect.
+- **Dots and Boxes endgame theory** is subtle. The hard bot uses known chain rules and doesn't need to be unbeatable.
+- **JS budget:** the setup sheet and HUD are new React on the game page, so measure the page before Play (now 96 KB of 120 KB).
+
+### Open questions for the owner
+
+- **Q1 — Sounds:** another sound picker for the three new games, or should I choose from the existing palette (which you can change later)?
+- **Q2 — Anything to change in the proposed decisions above** (board sizes, timer presets, bot names)?
+
+### Status
+
+- [ ] Plan approved by owner
 
 ---
 
