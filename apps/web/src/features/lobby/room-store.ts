@@ -58,35 +58,43 @@ async function read(supabase: Supabase, roomId: string): Promise<RoomSnapshot | 
   };
 }
 
+export interface RoomWatch {
+  stop: () => void;
+  /** Reads the room now, e.g. right after this member changed it. */
+  refresh: () => Promise<void>;
+}
+
 /**
  * Calls `onChange` with the room now and after every change; null when it
  * can't be read any more (closed for good, or the member was removed).
- * Returns a stop function.
  */
 export function watchRoom(
   supabase: Supabase,
   roomId: string,
   onChange: (snapshot: RoomSnapshot | null) => void,
   onError: (error: unknown) => void,
-): () => void {
+): RoomWatch {
   let stopped = false;
   let pending: ReturnType<typeof setTimeout> | null = null;
   let generation = 0;
+  const load = () => {
+    if (pending !== null) clearTimeout(pending);
+    pending = null;
+    // Only the latest read counts; an older one may land after it.
+    const mine = ++generation;
+    return read(supabase, roomId).then(
+      (snapshot) => {
+        if (!stopped && mine === generation) onChange(snapshot);
+      },
+      (error: unknown) => {
+        if (!stopped) onError(error);
+      },
+    );
+  };
   const refresh = () => {
     if (pending !== null) clearTimeout(pending);
     // Changes come in bursts (a member and the room at once): read once.
-    pending = setTimeout(() => {
-      pending = null;
-      const mine = ++generation;
-      read(supabase, roomId).then(
-        (snapshot) => {
-          if (!stopped && mine === generation) onChange(snapshot);
-        },
-        (error: unknown) => {
-          if (!stopped) onError(error);
-        },
-      );
-    }, 80);
+    pending = setTimeout(() => void load(), 80);
   };
   const channel = supabase
     .channel(`room-db:${roomId}`)
@@ -105,10 +113,13 @@ export function watchRoom(
       const state: string = status;
       if (state === "SUBSCRIBED") refresh();
     });
-  return () => {
-    stopped = true;
-    if (pending !== null) clearTimeout(pending);
-    void supabase.removeChannel(channel);
+  return {
+    stop: () => {
+      stopped = true;
+      if (pending !== null) clearTimeout(pending);
+      void supabase.removeChannel(channel);
+    },
+    refresh: load,
   };
 }
 

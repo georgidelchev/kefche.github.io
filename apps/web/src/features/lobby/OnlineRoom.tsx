@@ -21,7 +21,7 @@ import { LobbyView, type LobbyActions } from "./LobbyView";
 import { OnlineMatch } from "./OnlineMatch";
 import { roomMatch, type RoomMatch } from "./room-match";
 import { parseRoomSettings, settingsJson } from "./room-settings";
-import { roomErrorCode, watchRoom, type RoomSnapshot } from "./room-store";
+import { roomErrorCode, watchRoom, type RoomMember, type RoomSnapshot } from "./room-store";
 import { createSupabaseTransport } from "./supabase-transport";
 
 import type { GuestStrings, RoomErrorCode, RoomStrings } from "./strings";
@@ -34,6 +34,9 @@ export interface OnlineGame {
   /** The game's own UI strings (i18n/<locale>.json "ui"). */
   ui: Record<string, string>;
 }
+
+/** A change to the room as this browser shows it. */
+type Patch = (snapshot: RoomSnapshot) => RoomSnapshot;
 
 interface Props {
   game: OnlineGame;
@@ -289,14 +292,17 @@ function Room({
   const [match, setMatch] = useState<(RoomMatch & { seed: string; countdown: boolean }) | null>(
     null,
   );
+  // Changes this member made that the room hasn't confirmed yet, shown at once.
+  const [pending, setPending] = useState<readonly Patch[]>([]);
   const seenRef = useRef(false);
+  const refreshRef = useRef<(() => Promise<void>) | null>(null);
   const gone = useEffectEvent(onGone);
 
   // The live room. Reading nothing back means this member was removed.
   useEffect(() => {
     // The match is built once per seed, when the room starts playing.
     let last: { status: string; seed: string | null } | null = null;
-    return watchRoom(
+    const watch = watchRoom(
       supabase,
       roomId,
       (next) => {
@@ -332,6 +338,11 @@ function Room({
         setError(s.errors.connection);
       },
     );
+    refreshRef.current = watch.refresh;
+    return () => {
+      refreshRef.current = null;
+      watch.stop();
+    };
   }, [supabase, roomId, self, s, game, turn]);
 
   // The room's channel: presence now, the match's messages later.
@@ -369,10 +380,15 @@ function Room({
 
   if (!snapshot) return <Waiting label={s.joining} />;
 
-  const { room } = snapshot;
+  const view = pending.reduce((current, patch) => patch(current), snapshot);
+  const { room } = view;
   const settings = parseRoomSettings(room.settings);
 
-  async function call(action: () => PromiseLike<{ error: unknown }>) {
+  // Shows the change right away, then reads the room as soon as the call
+  // returns instead of waiting for Realtime to announce it (about a second).
+  // If the call fails, dropping the patch puts the room back.
+  async function call(action: () => PromiseLike<{ error: unknown }>, patch?: Patch) {
+    if (patch) setPending((list) => [...list, patch]);
     setBusy(true);
     setError(null);
     try {
@@ -382,42 +398,76 @@ function Room({
       setError(s.errors[roomErrorCode(e)]);
     } finally {
       setBusy(false);
+      await refreshRef.current?.();
+      if (patch) setPending((list) => list.filter((p) => p !== patch));
     }
   }
 
+  const patchRoom =
+    (change: Partial<RoomSnapshot["room"]>): Patch =>
+    (current) => ({ ...current, room: { ...current.room, ...change } });
+  const patchMember =
+    (userId: string, change: Partial<RoomMember>): Patch =>
+    (current) => ({
+      ...current,
+      members: current.members.map((m) => (m.userId === userId ? { ...m, ...change } : m)),
+    });
+
   const actions: LobbyActions = {
     setReady: (ready) =>
-      void call(() => supabase.rpc("set_ready", { p_room: roomId, p_ready: ready })),
+      void call(
+        () => supabase.rpc("set_ready", { p_room: roomId, p_ready: ready }),
+        patchMember(self, { ready }),
+      ),
     start: () => void call(() => supabase.rpc("start_room", { p_room: roomId })),
     leave: () => {
       void call(() => supabase.rpc("leave_room", { p_room: roomId })).then(onLeft);
     },
-    update: (change) =>
-      void call(() =>
-        supabase.rpc("update_room", {
-          p_room: roomId,
-          p_players: change.players ?? room.players,
-          p_bot_seats: change.botSeats ?? room.bot_seats,
-          p_visibility: change.visibility ?? room.visibility,
-          p_allow_spectators: change.allowSpectators ?? room.allow_spectators,
-          p_settings: settingsJson({
-            ...settings,
-            ...(change.timer === undefined ? {} : { timer: change.timer }),
-            ...(change.bots === undefined ? {} : { bots: change.bots }),
-          }),
+    update: (change) => {
+      const next = {
+        players: change.players ?? room.players,
+        bot_seats: change.botSeats ?? room.bot_seats,
+        visibility: change.visibility ?? room.visibility,
+        allow_spectators: change.allowSpectators ?? room.allow_spectators,
+        settings: settingsJson({
+          ...settings,
+          ...(change.timer === undefined ? {} : { timer: change.timer }),
+          ...(change.bots === undefined ? {} : { bots: change.bots }),
         }),
-      ),
+      };
+      void call(
+        () =>
+          supabase.rpc("update_room", {
+            p_room: roomId,
+            p_players: next.players,
+            p_bot_seats: next.bot_seats,
+            p_visibility: next.visibility,
+            p_allow_spectators: next.allow_spectators,
+            p_settings: next.settings,
+          }),
+        patchRoom(next),
+      );
+    },
     lock: (locked) =>
-      void call(() => supabase.rpc("lock_room", { p_room: roomId, p_locked: locked })),
+      void call(
+        () => supabase.rpc("lock_room", { p_room: roomId, p_locked: locked }),
+        patchRoom({ locked }),
+      ),
     kick: (member) =>
-      void call(() => supabase.rpc("kick_member", { p_room: roomId, p_member: member })),
+      void call(
+        () => supabase.rpc("kick_member", { p_room: roomId, p_member: member }),
+        patchMember(member, { status: "kicked" }),
+      ),
     makeHost: (member) =>
-      void call(() => supabase.rpc("transfer_host", { p_room: roomId, p_member: member })),
+      void call(
+        () => supabase.rpc("transfer_host", { p_room: roomId, p_member: member }),
+        patchRoom({ host_id: member }),
+      ),
   };
 
   if (match) {
     if (!transport) return <Waiting label={s.joining} />;
-    const status = (userId: string) => snapshot.members.find((m) => m.userId === userId)?.status;
+    const status = (userId: string) => view.members.find((m) => m.userId === userId)?.status;
     return (
       <OnlineMatch
         key={match.seed}
@@ -445,7 +495,7 @@ function Room({
 
   return (
     <LobbyView
-      snapshot={snapshot}
+      snapshot={view}
       settings={settings}
       self={self}
       present={present}
