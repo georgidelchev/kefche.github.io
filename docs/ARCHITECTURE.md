@@ -73,6 +73,24 @@ flowchart LR
 - **Art:** `pnpm art:generate` draws each game's `assets/art.mjs` emblem with `scripts/game-art/kit.mjs` into `thumbnail.svg` and `hero.svg`, and CI fails on stale art.
 - **Adding a game:** `pnpm new:game`, then the checklist in [`ADDING_A_GAME.md`](ADDING_A_GAME.md).
 
+## Turn games, bots and timers (Phase 4)
+
+```mermaid
+flowchart LR
+  S["Setup screen<br/>(player)"] -->|MatchSetup: seats, names, timer| M["game mount()<br/>runTurnGame"]
+  M --> TS[createTurnSession]
+  TS -->|bot's turn| W["bots.worker.ts<br/>serveBots"]
+  W -->|action| TS
+  TS -->|view| R[game renderer]
+  R -->|person's move: act| TS
+  TS -->|turn / finish reports| H["HUD and results<br/>(player)"]
+```
+
+- **Contracts** (ADR-0018): `TurnEngine`, `Seat` (person or bot), `Bot`, `searchBestAction` (alpha-beta against a deadline, paranoid for 3+ players) and timers as pure state (`createTimers`, `elapse`, `endTurn`, `expiryRule`), all isomorphic.
+- **Runtime:** `createTurnSession` decides whose turn it is and asks the game's long-lived bot worker for bot moves, with a budget per difficulty (150/400/900 ms) and at least 400 ms per bot move. It runs the clocks at 100 ms ticks, applies the expiry rule (random move, pass or loss) and pauses with the player, including when the tab is hidden. It offers undo against bots and reports `turn` and `finish` events. `runTurnGame` wraps it as a game's `mount()`.
+- **Player:** game pages of kind `turn` offer Play vs bots and Play on this device. The setup screen (`features/games/turn/`) covers players, a person or bot per seat, and the timer, saved per game and mode. The HUD shows seats with colour and shape, whose turn it is, bots thinking and clocks with a low-time warning (red, tick-tock, buzz). Results sit below the board. Setup and HUD are one lazy chunk (2.3 KB gzip) that only turn games load.
+- **Games:** Four in a Row (2–4 players, the board grows), Reversi (move hints, clocks) and Dots and Boxes (2–5 players, extra turns). All render with React. Each piece carries its seat's colour and shape, keyboard play uses roving focus, and moves are announced to screen readers.
+
 ## Internationalization
 
 - **Registry:** `src/i18n/locales.ts` lists every locale with its native name, BCP 47 tag, `dir`, script and OG locale. Routing, fonts, `<html lang dir>`, hreflang and the language switcher all derive from it.
@@ -122,6 +140,7 @@ Measured on the production build:
 
 - **JavaScript:** a game page loads 96 KB gzip before Play: React, the player and the shell. Play adds the game's own chunk: 2048 3.8 KB, Snake 5.6 KB, and Sudoku 9.7 KB including its worker.
 - **Lighthouse mobile** (production): accessibility, best practices and SEO 100, CLS 0 and TBT 0 ms on every game page and the catalog. Performance is 85–99 between runs, and LCP 2.0–3.3 s on English pages. Arabic pages are slower (LCP about 4 s) because they preload a 277 KB Arabic font.
+- **Phase 4:** game pages load 100 KB before Play; the player gained the setup and result logic. A turn match adds 8–9 KB (the game, the turn runtime and the setup/HUD chunk) plus a 2.3 KB bot worker. On a 4× slowed CPU, hard bots answered in 0.90–0.93 s; Four in a Row had one 75 ms main-thread task, and the other two games had none.
 
 ## Configuration and environment
 
@@ -133,7 +152,6 @@ GitHub Actions `CI` runs format check → lint → contrast → translations →
 
 ## Sections to come
 
-- Bots in workers, turn engines and timers _(Phase 4)_
 - Multiplayer: transport, rooms, host authority, migration, reconnection _(Phase 5)_
 - Realtime message budget per game kind (SPEC §10.9) _(Phase 5, 9)_
 - Stats, ratings and result integrity _(Phase 6–7)_

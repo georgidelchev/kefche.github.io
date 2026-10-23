@@ -554,9 +554,36 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
 - **Q2 — Decisions:** no changes; the proposed decisions stand.
 - **Sounds (step 7):** the owner kept the suggested picks in the board-game sound picker. Four in a Row: disc clack, marimba arpeggio, marimba falling, two even marimba notes. Reversi: wood block, soft swish for a pass, then the same win, lose and draw. Dots and Boxes: felt tap for a line, marimba for a box, the same win, lose and draw. Every board game: tick-tock when time runs low. The new designs (`disc-clack`, `marimba-even`, `tick-tock`) are in the SDK palette.
 
+### Verification (step 8, 2026-10-23)
+
+- **Layout and accessibility, 125 of 125 passing** (production build):
+  - each board game page and its open match at 360, 768 and 1280 px in light and dark, and in Arabic at 360 and 1280 px;
+  - no horizontal scroll, the board fits the screen, axe (WCAG 2.2 AA) clean, and boards stay left-to-right in Arabic;
+  - the catalog shows six cards, and the board category three.
+- **Per game** (browser):
+  - Four in a Row 30/30: setup, bot reply, undo, keyboard, pause, three-player win, change setup, Arabic.
+  - Reversi 22/22: clocks, hints and their saved choice, undo, keyboard.
+  - Dots and Boxes 19/19: extra turns, five players on a 360 px phone, tap areas, keyboard.
+  - Sounds play in all three. The Phase 3 games still pass.
+- **Rules and bots** (Node):
+  - Four in a Row 24/24, Reversi 14/14, Dots and Boxes 21/21, the SDK 17/17 and the turn runtime 24/24.
+  - In self-play, medium beats easy and hard beats medium in every game. Hard Dots and Boxes beat medium 34–5 over 40 games, after a double-dealing bug was found and fixed.
+- **Bots on a 4× slowed CPU:** hard bots replied in 0.90–0.93 s (budget 0.9 s), and Dots and Boxes in about 0.4 s (the minimum think time). The main thread had one 75 ms task in Four in a Row and none in the other two.
+- **Timers** (a real 15 s game): the countdown, the low-time warning, a random move on expiry, the next seat starting with a full clock, and no time lost while the tab is hidden.
+- **JS, gzip:** game pages load 100 KB before Play (budget 120 KB). A turn match adds 8–9 KB, plus a 2.3 KB bot worker after the first move.
+- **Lighthouse** (local preview, uncompressed): accessibility, best practices and SEO 100, CLS 0, TBT 0 ms on all three pages; performance 81–91 (known issue below).
+- **Docs:**
+  - ADR-0018 (turn games, bots and timers);
+  - the ARCHITECTURE section on turn games;
+  - ADDING_A_GAME (a turn-games step, bot checklist items, the new examples);
+  - the games README and CLAUDE.md.
+  - `pnpm new:game --kind=turn` now scaffolds a working turn game with bots and a worker, and the generator formats what it writes.
+
 ### Status
 
 - [x] Plan approved by owner (2026-10-23)
+- [x] Steps 1–8 done
+- [ ] Owner sign-off
 
 ---
 

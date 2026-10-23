@@ -1,14 +1,17 @@
 # Adding a game
 
-How to add game #4 through #101 and beyond without editing core code (SPEC §9, §20). Adding a game means adding a folder: the registry finds it, checks it at build time and gives it a page, a catalog card and its own lazy chunk. The folder layout is in [`packages/games/README.md`](../packages/games/README.md), and the design reasons are in ADR-0016 (SDK) and ADR-0017 (renderers).
+How to add game #4 through #101 and beyond without editing core code (SPEC §9, §20). Adding a game means adding a folder: the registry finds it, checks it at build time and gives it a page, a catalog card and its own lazy chunk. The folder layout is in [`packages/games/README.md`](../packages/games/README.md), and the design reasons are in ADR-0016 (SDK), ADR-0017 (renderers) and ADR-0018 (turn games, bots and timers).
 
-The three games built in Phase 3 are worked examples. Copy from the one closest to yours:
+The games built so far are worked examples. Copy from the one closest to yours:
 
-| Game                                  | Shows                                                                                                  |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------ |
-| [`2048`](../packages/games/2048/)     | A React DOM board, swipe and arrow keys, undo, best score on the device                                |
-| [`sudoku`](../packages/games/sudoku/) | Generation in a Web Worker, a roving-focus grid, notes and hints, an unfinished game saved and resumed |
-| [`snake`](../packages/games/snake/)   | Canvas 2D with the fixed-step loop and interpolation, a D-pad on touch screens, settings before play   |
+| Game                                                  | Shows                                                                                                    |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| [`2048`](../packages/games/2048/)                     | A React DOM board, swipe and arrow keys, undo, best score on the device                                  |
+| [`sudoku`](../packages/games/sudoku/)                 | Generation in a Web Worker, a roving-focus grid, notes and hints, an unfinished game saved and resumed   |
+| [`snake`](../packages/games/snake/)                   | Canvas 2D with the fixed-step loop and interpolation, a D-pad on touch screens, settings before play     |
+| [`four-in-a-row`](../packages/games/four-in-a-row/)   | A turn game for 2–4 players: the board grows with players, search bots, column buttons with roving focus |
+| [`reversi`](../packages/games/reversi/)               | Automatic passes, a move-hints toggle, chess-style clocks, a bot with an exact endgame                   |
+| [`dots-and-boxes`](../packages/games/dots-and-boxes/) | Extra turns, 2–5 players, rule-based bots with a chain endgame, wide tap areas on thin lines             |
 
 ## Steps
 
@@ -25,11 +28,17 @@ The three games built in Phase 3 are worked examples. Copy from the one closest 
    - Use `context.t` for every string, `context.storage` for best scores and saved games, and `context.report()` for `start`, `score` and `finish`.
    - Use the SDK helpers from `@kefche/game-sdk/browser`: `createLoop`, `createCanvasStage`, `onDirectionKeys`, `onSwipe`, `createStopwatch`, `runInWorker`, `vibrate`.
    - `destroy()` removes every listener, timer, worker and React root.
-5. **Sounds** (optional). Map the game's moments to designs in `SOUND_DESIGNS` with `createSoundService(designs, () => context.settings.volume)`. Call `preload()` on mount and `dispose()` on destroy. A new sound goes into the shared palette in `packages/game-sdk/src/browser/synth.ts` (ADR-0015).
-6. **Text** (`i18n/<locale>.json`, all 11 locales). Fill in name, tagline, description, about, how to play, controls, tips, FAQ, and the `ui` strings the renderer uses. `pnpm i18n:check` lists every remaining `TODO(new-game)`.
-7. **Art** (`assets/art.mjs`). Draw the sticker emblem with the kit in `scripts/game-art/kit.mjs`, then run `pnpm art:generate` and commit both SVGs.
-8. **Credits** (`CREDITS.md`). List every third-party asset and content source with its licence, or write "No third-party assets."
-9. **Check it.** Run the green checks from `CLAUDE.md`, then play it in `pnpm dev` (see "Verify" below).
+5. **Turn-based games and bots.** `--kind=turn` scaffolds a working two-player game, with bots and a worker, to replace piece by piece.
+   - **Manifest:** list `modes: ["solo-bots", "hotseat"]`, the bot difficulties and the timer presets. The first preset is the default; per-move presets say what happens on expiry (`random-move`, `pass` or `loss`). The site's setup screen offers them.
+   - **Engine:** `currentSeats()` decides who moves next, which covers extra turns, passes and skipped seats.
+   - **Bots** (`bots/index.ts`, isomorphic): one `Bot` per difficulty. `searchBestAction` gives alpha-beta search against the bot's deadline; pass it an `evaluate` and, for speed, an `order`. `renderer/bots.worker.ts` calls `serveBots(bots)`.
+   - **Renderer:** `mount()` returns `runTurnGame(context, { engine, createBotWorker, allowUndo, render, dispose })`. Read views from the store (`useSyncExternalStore(store.subscribe, store.get)`) and send the person's moves with `session.act(view.humanSeat, action)`. The player draws the HUD (seats, turns, clocks) and the results; the game draws the board, an undo button against bots (`view.canUndo`) and its own announcements, using `context.match.names`.
+   - **Pieces:** colour pieces with `var(--player-<seat + 1>)` and draw the seat's shape from `SHAPE_PATHS[seatShape(seat)]`.
+6. **Sounds** (optional). Map the game's moments to designs in `SOUND_DESIGNS` with `createSoundService(designs, () => context.settings.volume)`. Call `preload()` on mount and `dispose()` on destroy. A new sound goes into the shared palette in `packages/game-sdk/src/browser/synth.ts` (ADR-0015).
+7. **Text** (`i18n/<locale>.json`, all 11 locales). Fill in name, tagline, description, about, how to play, controls, tips, FAQ, and the `ui` strings the renderer uses. `pnpm i18n:check` lists every remaining `TODO(new-game)`.
+8. **Art** (`assets/art.mjs`). Draw the sticker emblem with the kit in `scripts/game-art/kit.mjs`, then run `pnpm art:generate` and commit both SVGs.
+9. **Credits** (`CREDITS.md`). List every third-party asset and content source with its licence, or write "No third-party assets."
+10. **Check it.** Run the green checks from `CLAUDE.md`, then play it in `pnpm dev` (see "Verify" below).
 
 ## Checklist
 
@@ -49,7 +58,9 @@ Tick every item before the game ships (SPEC §20). Items marked _(later)_ apply 
 - [ ] `restart(seed)` starts a fresh game; `destroy()` leaves nothing running
 - [ ] Results are reported with `context.report({ type: "finish", result })`
 - [ ] Best scores and unfinished games use `context.storage` and are validated when read back
-- [ ] Bots for each declared difficulty, in a Web Worker within the time budget _(Phase 4)_
+- [ ] Bots for each declared difficulty, in a Web Worker within the time budget (150/400/900 ms), and stronger at each level in self-play
+- [ ] Bots always take a win and, from medium up, block an immediate loss
+- [ ] Hotseat works for every player count; mixed people and bots work; timers expire as the manifest says
 - [ ] Leaderboards and achievements defined in the manifest _(stored in Phase 7)_
 
 **Layout and accessibility**
@@ -80,4 +91,5 @@ Tick every item before the game ships (SPEC §20). Items marked _(later)_ apply 
 
 - **Green checks:** `pnpm format:check && pnpm lint && pnpm check:contrast && pnpm i18n:check && pnpm typecheck && pnpm build`. The build fails on an invalid manifest, missing translations or missing art.
 - **Play it:** `pnpm dev`, then open `/en/games/<id>/` and `/ar/games/<id>/`. Play a full game on a phone-sized window with touch emulation, then with the keyboard at desktop width, in both themes.
-- **Size:** Play should add only the game's own chunk. Phase 3's games add 4–10 KB gzip on top of the page's 96 KB.
+- **Size:** Play should add only the game's own chunk. Phase 3's games add 4–10 KB gzip on top of the page's 100 KB; a turn match adds 8–9 KB plus its bot worker.
+- **Bots:** play a few self-play matches between difficulties, and time the hard bot with the CPU slowed down (DevTools, Performance, 4× slowdown).

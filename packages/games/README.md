@@ -2,7 +2,7 @@
 
 One folder per game, each a workspace package named `@kefche/game-<id>`. Games are discovered automatically at build time from `packages/games/*/manifest.ts` (SPEC §9.1), so adding a game never requires editing core code.
 
-The first games, 2048, Sudoku and Snake, are the worked examples. Start a new one with `pnpm new:game <id> --kind=<turn|race>`; the realtime and simultaneous kinds arrive in Phases 9 and 11.
+The games so far are the worked examples: 2048, Sudoku and Snake (single player), and Four in a Row, Reversi, and Dots and Boxes (turn-based, with bots). Start a new one with `pnpm new:game <id> --kind=<turn|race>`; the realtime and simultaneous kinds arrive in Phases 9 and 11.
 
 ## Folder template (SPEC §9.2)
 
@@ -10,8 +10,8 @@ The first games, 2048, Sudoku and Snake, are the worked examples. Start a new on
 packages/games/<id>/
 ├─ manifest.ts            # typed metadata, validated with Zod at build time (SPEC §9.3)
 ├─ engine/                # pure, deterministic TS: state, actions, reducer, rules, scoring, end
-├─ bots/                  # bot strategies per difficulty (easy / medium / hard)
-├─ renderer/              # React component(s) and/or Canvas / Pixi scene
+├─ bots/                  # bot strategies per difficulty (easy / medium / hard), with its own no-DOM tsconfig
+├─ renderer/              # React component(s) and/or Canvas / Pixi scene; bots.worker.ts runs the bots
 ├─ content/<locale>.json  # optional language content packs (licensed sources only)
 ├─ i18n/<locale>.json     # game-specific strings: name, how to play, tips, FAQ
 ├─ assets/                # sprites and recorded sounds, if any (licensed and credited), and the card art:

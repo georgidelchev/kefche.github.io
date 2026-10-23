@@ -284,3 +284,27 @@ The Web Push service worker (Phase 8) is still allowed and handles push events o
 - React is already on the game page for the player, so DOM games add only their own code.
 - Canvas games must describe the board themselves: Snake's board is `role="img"` with a label that includes the score, and its D-pad buttons have labels.
 - A game that needs sprites or many moving objects should use PixiJS, behind a new ADR if it changes the budget.
+
+---
+
+## ADR-0018: Turn games: one session runtime, bots in a worker, timers as state
+
+**Date:** 2026-10-23 · **Status:** Accepted
+
+**Context.** Phase 4 adds bots, hotseat and timers (SPEC §9.5, §11) with Four in a Row, Reversi, and Dots and Boxes, and many more turn-based games follow. Bots must never freeze the page, a match must replay exactly from its moves, and Phase 5 will run the same matches online with the host's browser in charge.
+
+**Decision.**
+
+- **Seats** are a person or a bot (difficulty and a name id). A seat's number picks its `--player-<n>` colour and a shape (`SHAPE_PATHS`), so colour is never the only cue. Bot names are translated by the site; games get display names in `MatchSetup.names`.
+- **Bots are pure strategies** (`Bot.choose(state, seat, { rng, deadline, now })`) in each game's isomorphic `bots/` folder. The SDK offers `searchBestAction`: iterative-deepening alpha-beta against the deadline, "paranoid" for three or more players, which stops early on a forced result or a fully searched tree. Each difficulty has a budget (150, 400 and 900 ms), so a slow phone plays a little weaker, never slower.
+- **One runtime, `createTurnSession`,** drives every match. It runs one long-lived bot worker (`serveBots`), cancelled on pause, undo or exit, and shows each bot move after at least 400 ms. It matches the worker's answer against the legal moves, so a failed or illegal answer becomes a seeded random move. It also runs the clocks, applies the timer's expiry rule and offers undo against bots. `runTurnGame` wraps it as a game's `mount()`, so a game only renders the state.
+- **Timers are pure state** (`createTimers`, `elapse`, `endTurn`…) fed elapsed milliseconds by the runtime: per-move countdowns, Fischer clocks and match countdowns, with low-time thresholds and expiry rules (random move, pass, loss).
+- **The site's player owns the setup screen, the HUD and the results.** The setup screen covers players, a person or a bot per seat, and the timer, remembered per game and mode. The HUD shows seats, turns, bots thinking and clocks with a low-time warning. Games report turns with a `turn` event. The setup screen and HUD load only for turn-based games.
+- **Per-game bots:** Four in a Row scores open lines of four; Reversi uses square weights, mobility and an exact endgame; Dots and Boxes uses chain rules and an exact double-dealing decision from the chains and loops still to come.
+
+**Consequences.**
+
+- A new turn-based game needs an engine, bots and a renderer; `pnpm new:game --kind=turn` scaffolds a working one.
+- On a 4× slowed CPU, hard bots answered within their 900 ms budget and the main thread stayed free.
+- Online play (Phase 5) can reuse seats, timers and the engine contract, with the host running the session and bots.
+- Unfinished matches aren't saved yet.
