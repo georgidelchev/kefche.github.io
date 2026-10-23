@@ -552,6 +552,7 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
 
 - **Q1 — Sounds:** build a new sound picker for the three games (step 7).
 - **Q2 — Decisions:** no changes; the proposed decisions stand.
+- **Sounds (step 7):** the owner kept the suggested picks in the board-game sound picker. Four in a Row: disc clack, marimba arpeggio, marimba falling, two even marimba notes. Reversi: wood block, soft swish for a pass, then the same win, lose and draw. Dots and Boxes: felt tap for a line, marimba for a box, the same win, lose and draw. Every board game: tick-tock when time runs low. The new designs (`disc-clack`, `marimba-even`, `tick-tock`) are in the SDK palette.
 
 ### Status
 

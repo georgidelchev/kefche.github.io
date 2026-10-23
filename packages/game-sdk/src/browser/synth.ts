@@ -207,6 +207,13 @@ const DESIGNS = {
   },
   // Single notes
   marimba: { make: () => sequence([["marimba", 72, 0]]) },
+  "disc-clack": {
+    make: () =>
+      sequence([
+        ["wood", 70, 0],
+        ["tap", 60, 0.004, 0.5],
+      ]),
+  },
   "wood-block": { make: () => sequence([["wood", 76, 0]]) },
   bubble: { make: () => sequence([["bubble", 67, 0]]) },
   // Going back
@@ -263,6 +270,22 @@ const DESIGNS = {
           { bright: 0.5, seconds: 1.2, seed: 21 + i },
         ]),
       ),
+  },
+  // Draws
+  "marimba-even": {
+    make: () =>
+      sequence([
+        ["marimba", 67, 0, 0.8],
+        ["marimba", 67, 0.16, 0.8],
+      ]),
+  },
+  // Time running low
+  "tick-tock": {
+    make: () =>
+      sequence([
+        ["wood", 88, 0, 0.8],
+        ["wood", 83, 0.18, 0.8],
+      ]),
   },
   // Game over
   "marimba-lose": { make: () => sequence(arpeggio("marimba", [67, 64, 60, 55], 0.14, 0.8)) },

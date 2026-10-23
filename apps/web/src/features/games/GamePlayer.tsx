@@ -486,7 +486,8 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
 }
 
 function createLowTimeSound() {
-  return createSoundService({ low: "wood-block" }, () => VOLUME);
+  // The owner's pick in the Phase 4 sound picker.
+  return createSoundService({ low: "tick-tock" }, () => VOLUME);
 }
 
 function Overlay({

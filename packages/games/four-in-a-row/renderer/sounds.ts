@@ -1,4 +1,5 @@
-// Four in a Row sound effects: designs from the SDK's synthesized palette.
+// Four in a Row sound effects: designs from the SDK's synthesized palette
+// (owner's picks, Phase 4).
 import { createSoundService, type GameContext } from "@kefche/game-sdk/browser";
 
 export type Sounds = ReturnType<typeof createSounds>;
@@ -6,10 +7,10 @@ export type Sounds = ReturnType<typeof createSounds>;
 export const createSounds = (context: GameContext) =>
   createSoundService(
     {
-      drop: "wood-block",
+      drop: "disc-clack",
       win: "marimba-win",
       lose: "marimba-lose",
-      draw: "marimba-down",
+      draw: "marimba-even",
     },
     () => context.settings.volume,
   );
