@@ -106,9 +106,10 @@ create policy "public lobbies and own rooms are readable" on public.rooms
     or public.is_room_member(id)
   );
 
+-- Everyone also sees their own row, so a kicked member learns of it (live).
 create policy "members see each other" on public.room_members
   for select to authenticated
-  using (public.is_room_member(room_id));
+  using (user_id = (select auth.uid()) or public.is_room_member(room_id));
 
 grant select on public.rooms to anon, authenticated;
 grant select on public.room_members to authenticated;
@@ -166,7 +167,7 @@ declare
 begin
   select * into v_room from public.rooms where id = p_room for update;
   if not found then
-    raise exception 'room_not_found' using errcode = 'no_data_found';
+    raise exception 'room_not_found' using errcode = 'invalid_parameter_value';
   end if;
   if v_room.host_id is distinct from p_user then
     raise exception 'not_host' using errcode = 'insufficient_privilege';
@@ -284,7 +285,7 @@ begin
   perform private.room_rate_limit(v_user, 'join', 20, 20.0 / 600);
   select * into v_room from public.rooms where code = upper(trim(p_code)) for update;
   if not found then
-    raise exception 'room_not_found' using errcode = 'no_data_found';
+    raise exception 'room_not_found' using errcode = 'invalid_parameter_value';
   end if;
   if v_room.status = 'closed' then
     raise exception 'room_closed' using errcode = 'invalid_parameter_value';
@@ -506,7 +507,7 @@ begin
   where id = p_room and host_id is not distinct from p_from and status in ('lobby', 'playing', 'finished')
   returning * into v_room;
   if not found then
-    raise exception 'host_changed' using errcode = 'serialization_failure';
+    raise exception 'host_changed' using errcode = 'invalid_parameter_value';
   end if;
   return v_room;
 end;
@@ -532,7 +533,16 @@ begin
   ) then
     raise exception 'not_ready' using errcode = 'invalid_parameter_value';
   end if;
-  update public.rooms set status = 'playing', last_active_at = now() where id = p_room returning * into v_room;
+  -- Every seat needs a person or a bot.
+  if private.free_seat(p_room) is not null then
+    raise exception 'seats_empty' using errcode = 'invalid_parameter_value';
+  end if;
+  -- A fresh seed per match: every member's browser builds the same match from it.
+  update public.rooms
+  set status = 'playing', last_active_at = now(),
+      settings = settings || jsonb_build_object('seed', gen_random_uuid()::text)
+  where id = p_room
+  returning * into v_room;
   return v_room;
 end;
 $$;
