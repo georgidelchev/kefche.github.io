@@ -121,6 +121,9 @@ isOneToOne: false
 "avatar_upload_allowed":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
+"can_use_room_channel":
+{ Args: { "p_topic": string }; Returns: boolean
+                           },
 "cancel_account_deletion":
 { Args: Record<PropertyKey, never>; Returns: undefined
                            },

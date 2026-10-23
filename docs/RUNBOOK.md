@@ -85,6 +85,7 @@ The live project is `kefche` (ref `qbwljmjabloprffjlean`), on the Free plan in C
 
 - **`PURGE_ACCOUNTS_SECRET`:** set with `supabase secrets set`, and the same value stored in Vault as `purge_accounts_secret`. `project_url` is `https://qbwljmjabloprffjlean.supabase.co` ("Account deletion job" above).
 - **Checks:** run SQL with `pnpm exec supabase db query --linked "<sql>"`, for example `select jobname, schedule from cron.job`.
+- **Realtime, private channels only** (owner, in the dashboard): _Realtime → Settings → "Allow public access"_ off. Room channels (`room:<code>`) are private, and only joined members may use them, through RLS on `realtime.messages`. With public access off, nobody can open a public channel at all.
 
 **The site's build:** GitHub → repo → _Settings → Environments → production → Environment variables_:
 
