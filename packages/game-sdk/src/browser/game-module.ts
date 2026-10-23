@@ -23,11 +23,24 @@ export interface GameStorage {
 
 /** A turn-based match as set up in the player: who sits where, and the timer. */
 export interface MatchSetup {
-  mode: "solo-bots" | "hotseat";
+  mode: "solo-bots" | "hotseat" | "online";
   seats: Seat[];
   /** Display names per seat in the page's language, for the game's own announcements. */
   names: string[];
   timer: TimerPreset;
+  /** Online: the seat this browser plays, if any (spectators have none). */
+  localSeat?: number;
+}
+
+/**
+ * The seat that is "you" for sounds and results: the person's seat against
+ * bots, your own seat online, none on one shared device.
+ */
+export function yourSeat(match: MatchSetup | undefined): number {
+  if (!match) return -1;
+  if (match.mode === "online") return match.localSeat ?? -1;
+  if (match.mode === "solo-bots") return match.seats.findIndex((s) => s.kind === "human");
+  return -1;
 }
 
 /**

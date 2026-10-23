@@ -289,7 +289,7 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
       : null;
   const headline =
     result && match && turn
-      ? resultText(result, match.seats, match.mode, turn.strings, locale)
+      ? resultText(result, match, turn.strings, locale)
       : result?.completed
         ? strings.won
         : strings.gameOver;

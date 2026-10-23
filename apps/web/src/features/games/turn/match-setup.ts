@@ -13,7 +13,8 @@ import {
 } from "@kefche/game-sdk";
 import type { GameStorage, MatchSetup } from "@kefche/game-sdk/browser";
 
-export type TurnMode = MatchSetup["mode"];
+/** The offline modes the setup screen offers (online matches are set up in a lobby). */
+export type TurnMode = Exclude<MatchSetup["mode"], "online">;
 
 /** From the manifest, for games of kind "turn". */
 export interface TurnConfig {

@@ -1,6 +1,7 @@
 // Text for turn-based games: translated on the page (GamePage.astro) and
 // passed to the player island, which fills in the {placeholders}.
 import type { BotDifficulty, GameResult, Seat, TimerPreset } from "@kefche/game-sdk";
+import { yourSeat, type MatchSetup } from "@kefche/game-sdk/browser";
 
 import type { BotNames, TurnMode } from "./match-setup";
 
@@ -78,19 +79,17 @@ export function formatClock(ms: number): string {
 /** The results headline for a finished match. */
 export function resultText(
   result: GameResult,
-  seats: readonly Seat[],
-  mode: TurnMode,
+  match: MatchSetup,
   s: TurnStrings,
   locale: string,
 ): string {
+  const { seats } = match;
   const outcome = result.outcome ?? [];
   const best = Math.max(...outcome);
   const winners = seats.filter((_, i) => outcome[i] === best);
   if (winners.length === seats.length) return s.draw;
-  if (mode === "solo-bots") {
-    const you = seats.findIndex((seat) => seat.kind === "human");
-    return outcome[you] === best ? s.youWin : s.youLose;
-  }
+  const you = yourSeat(match);
+  if (you >= 0) return outcome[you] === best ? s.youWin : s.youLose;
   const names = winners.map((seat) => seatName(seat, s));
   return names.length === 1
     ? fill(s.wins, { name: names[0] ?? "" })

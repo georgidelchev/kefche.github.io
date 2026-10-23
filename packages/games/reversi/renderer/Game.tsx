@@ -12,7 +12,7 @@ import {
 } from "react";
 
 import { seatShape } from "@kefche/game-sdk";
-import { HAPTICS, SHAPE_PATHS, vibrate } from "@kefche/game-sdk/browser";
+import { HAPTICS, SHAPE_PATHS, vibrate, yourSeat } from "@kefche/game-sdk/browser";
 import type { GameContext, TurnSession, TurnViewStore } from "@kefche/game-sdk/browser";
 
 import { countDiscs, engine, movesFor, SIZE, type Action, type State } from "../engine";
@@ -93,7 +93,7 @@ export function Game({ context, store, session, sounds }: Props) {
       return;
     }
     const outcome = result.outcome ?? [];
-    const you = match?.mode === "solo-bots" ? match.seats.findIndex((s) => s.kind === "human") : -1;
+    const you = yourSeat(match);
     if (outcome.every((o) => o === 0.5)) sounds.play("draw");
     else if (you >= 0 && outcome[you] !== 1) {
       sounds.play("lose");
