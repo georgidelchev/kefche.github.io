@@ -6,6 +6,7 @@
 import type { GameResult } from "../engines";
 import type { TimerPreset } from "../manifest";
 import type { Seat } from "../seats";
+import type { Transport } from "../transport";
 
 export interface GameSettings {
   /** 0–1: the player's master × effects volume. */
@@ -27,6 +28,25 @@ export interface MatchSetup {
   /** Display names per seat in the page's language, for the game's own announcements. */
   names: string[];
   timer: TimerPreset;
+}
+
+/**
+ * An online match: the room's transport (already connected), who sits where,
+ * and who hosts, as the database says (SPEC §10.4).
+ */
+export interface OnlineMatch {
+  transport: Transport;
+  roomId: string;
+  /** This browser's member id. */
+  self: string;
+  /** The member in each seat; null for bots and empty seats. */
+  seatMembers: readonly (string | null)[];
+  /** The host's member id now (from the rooms row). */
+  host: () => string | null;
+  /** Makes this member host if `from` still is; false when someone else got there first. */
+  claimHost: (from: string | null) => Promise<boolean>;
+  /** Called when the rooms row names a new host. */
+  onHostChange: (handler: (host: string | null) => void) => () => void;
 }
 
 /** What the player's HUD shows for a turn-based match. */
@@ -57,6 +77,8 @@ export interface GameContext {
   storage: GameStorage;
   /** Set for turn-based games (manifest kind "turn"). */
   match?: MatchSetup;
+  /** Set when the match is played online, in a room (Phase 5). */
+  online?: OnlineMatch;
   /** Tells the player about progress; "finish" opens the results screen. */
   report: (event: GameEvent) => void;
 }

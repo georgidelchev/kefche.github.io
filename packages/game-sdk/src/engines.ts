@@ -45,6 +45,11 @@ export interface TurnEngine<State, Action, Config = undefined> {
   /** Seats that may act now (more than one for simultaneous turns); empty once finished. */
   currentSeats(state: State): number[];
   result(state: State): GameResult | null;
+  /**
+   * Online: the turn of `seat`, whose player is away, passes (SPEC §10.5).
+   * Returns the same state when it can't be skipped.
+   */
+  skipTurn?(state: State, seat: number): State;
 }
 
 /** One move in a turn-based match, as stored for replays. */

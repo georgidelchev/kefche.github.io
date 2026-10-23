@@ -122,6 +122,12 @@ export const engine: TurnEngine<State, Action> = {
 
   currentSeats: (state) => (isOver(state) ? [] : [state.turn]),
 
+  // Online, an away player's turn passes to the next seat.
+  skipTurn: (state, seat) =>
+    seat !== state.turn || isOver(state)
+      ? state
+      : { ...state, turn: (state.turn + 1) % state.seats, last: null, claimed: [] },
+
   result(state): GameResult | null {
     if (!isOver(state)) return null;
     const scores = Array.from({ length: state.seats }, (_, seat) => score(state, seat));

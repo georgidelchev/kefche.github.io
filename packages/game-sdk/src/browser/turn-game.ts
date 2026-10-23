@@ -3,6 +3,7 @@
 // fits it), and restart, pause and teardown wired to the player. The game
 // only says how to render.
 
+import { createOnlineTurnSession } from "./online-session";
 import {
   createTurnSession,
   type TurnSession,
@@ -51,7 +52,9 @@ export function runTurnGame<State, Action, Config>(
   const start = (seed: string) => {
     session?.destroy();
     view = null;
-    session = createTurnSession({
+    // Online, the room's host runs the match and everyone else mirrors it.
+    const create = context.online ? createOnlineTurnSession : createTurnSession;
+    session = create({
       ...sessionOptions,
       context: { ...context, seed },
       onChange(next) {

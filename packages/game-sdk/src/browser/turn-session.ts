@@ -48,6 +48,26 @@ export interface TurnSessionOptions<State, Action, Config> {
   /** Lets the person take back moves against bots (not with clocks). */
   allowUndo?: boolean;
   onChange: (view: TurnView<State, Action>) => void;
+  /** Seats this browser plays (online: your own); by default every person's seat. */
+  localSeats?: readonly number[];
+  /** Start from a snapshot instead of a new match (a new host taking over). */
+  from?: TurnSnapshot<State, Action>;
+  /** After every change, with the full match: the online host shares it. */
+  onSnapshot?: (snapshot: TurnSnapshot<State, Action>) => void;
+  /** Online: is the person in this seat away? Their turns are skipped (SPEC §10.5). */
+  isAway?: (seat: number) => boolean;
+}
+
+/** Everything needed to show a match, or to carry it on from here. */
+export interface TurnSnapshot<State, Action> {
+  /** Moves (and skipped turns) so far. */
+  moves: number;
+  state: State;
+  /** Milliseconds left per timer slot (TimerState.remainingMs). */
+  timers: readonly number[];
+  last: TurnMove<Action> | null;
+  /** A result the engine doesn't know about: someone lost on time. */
+  timeout: GameResult | null;
 }
 
 export interface TurnSession<Action> {
@@ -57,6 +77,8 @@ export interface TurnSession<Action> {
   undo(): void;
   pause(): void;
   resume(): void;
+  /** Look again at who is away (online presence changed). */
+  refresh(): void;
   destroy(): void;
 }
 
@@ -74,6 +96,8 @@ export type BotReply =
   { id: number; ok: true; action: unknown } | { id: number; ok: false; error: string };
 
 const TICK_MS = 100;
+/** An away player's turn is skipped after this grace, in case they're back at once. */
+const AWAY_SKIP_MS = 3000;
 const sleep = (ms: number) =>
   new Promise<void>((resolve) => {
     setTimeout(resolve, ms);
@@ -149,11 +173,16 @@ export function createTurnSession<State, Action, Config>(
   if (!match) throw new Error("createTurnSession needs context.match");
   const { seats, timer } = match;
 
-  let state = engine.initialState(config, seats.length, seed);
+  const resumed = options.from;
+  let state = resumed ? resumed.state : engine.initialState(config, seats.length, seed);
+  /** This session's own moves, for undo (none of a match it took over). */
   let moves: TurnMove<Action>[] = [];
-  let timers = createTimers(timer, seats.length);
+  /** Moves and skipped turns in the whole match; seeds bots and random moves. */
+  let count = resumed?.moves ?? 0;
+  let lastMove: TurnMove<Action> | null = resumed?.last ?? null;
+  let timers = resumed ? { remainingMs: [...resumed.timers] } : createTimers(timer, seats.length);
   /** Set when someone loses on time; the engine doesn't know about clocks. */
-  let timeout: GameResult | null = null;
+  let timeout: GameResult | null = resumed?.timeout ?? null;
   let paused = false;
   let destroyed = false;
   let finished = false;
@@ -184,18 +213,26 @@ export function createTurnSession<State, Action, Config>(
       thinking,
     });
   };
+  const plays = (seat: number) =>
+    seats[seat]?.kind === "human" && (options.localSeats?.includes(seat) ?? true);
   const emit = () => {
     const seatsToMove = toMove();
     const next = seatsToMove[0];
     options.onChange({
       state,
       toMove: seatsToMove,
-      humanSeat:
-        next !== undefined && seats[next]?.kind === "human" && !paused && !destroyed ? next : null,
+      humanSeat: next !== undefined && plays(next) && !paused && !destroyed ? next : null,
       thinking,
-      lastMove: moves.at(-1) ?? null,
+      lastMove,
       result: result(),
       canUndo: canUndo(),
+    });
+    options.onSnapshot?.({
+      moves: count,
+      state,
+      timers: timers.remainingMs,
+      last: lastMove,
+      timeout,
     });
     report();
     const over = result();
@@ -209,20 +246,26 @@ export function createTurnSession<State, Action, Config>(
   const randomAction = (seat: number): Action | undefined => {
     const actions = engine.legalActions(state, seat);
     return actions.length > 0
-      ? Rng.fromSeed(`${seed}:auto:${String(moves.length)}`).pick(actions)
+      ? Rng.fromSeed(`${seed}:auto:${String(count)}`).pick(actions)
       : undefined;
+  };
+
+  const advance = (next: State, move: TurnMove<Action> | null, seat: number) => {
+    timers = endTurn(timer, timers, seat);
+    state = next;
+    count++;
+    lastMove = move;
+    if (move) moves = [...moves, move];
+    const following = mover();
+    if (following !== undefined) timers = startTurn(timer, timers, following);
+    emit();
+    schedule();
   };
 
   const apply = (seat: number, action: Action): boolean => {
     const next = engine.applyAction(state, seat, action);
     if (next === state) return false;
-    timers = endTurn(timer, timers, seat);
-    state = next;
-    moves = [...moves, { seat, action }];
-    const following = mover();
-    if (following !== undefined) timers = startTurn(timer, timers, following);
-    emit();
-    schedule();
+    advance(next, { seat, action }, seat);
     return true;
   };
 
@@ -237,6 +280,10 @@ export function createTurnSession<State, Action, Config>(
     const seat = mover();
     if (seat === undefined) return;
     const player = seats[seat];
+    if (player?.kind === "human") {
+      skipIfAway(seat);
+      return;
+    }
     if (player?.kind !== "bot") return;
     const id = ++request;
     const started = performance.now();
@@ -248,7 +295,7 @@ export function createTurnSession<State, Action, Config>(
         state,
         seat,
         difficulty: player.difficulty,
-        seed: `${seed}:bot:${String(moves.length)}`,
+        seed: `${seed}:bot:${String(count)}`,
         budgetMs,
       })
       .catch(() => undefined)
@@ -268,6 +315,25 @@ export function createTurnSession<State, Action, Config>(
     bots.cancel();
     thinking = false;
   };
+
+  /**
+   * An away player's turn passes after a short grace (SPEC §10.5). With a
+   * clock it doesn't: their clock keeps running and they lose on time.
+   */
+  let awayTimer: ReturnType<typeof setTimeout> | null = null;
+  function skipIfAway(seat: number): void {
+    if (awayTimer !== null) clearTimeout(awayTimer);
+    awayTimer = null;
+    if (!options.isAway?.(seat) || !engine.skipTurn || timer.kind === "clock") return;
+    const at = count;
+    awayTimer = setTimeout(() => {
+      awayTimer = null;
+      if (paused || destroyed || result() || count !== at || mover() !== seat) return;
+      if (!options.isAway?.(seat)) return;
+      const next = engine.skipTurn?.(state, seat) ?? state;
+      if (next !== state) advance(next, null, seat);
+    }, AWAY_SKIP_MS);
+  }
 
   const expire = (seat: number) => {
     stopBot();
@@ -299,7 +365,7 @@ export function createTurnSession<State, Action, Config>(
         }, TICK_MS);
 
   const first = mover();
-  if (first !== undefined) timers = startTurn(timer, timers, first);
+  if (first !== undefined && !resumed) timers = startTurn(timer, timers, first);
   // After the caller has its session object, so onChange may use it.
   queueMicrotask(() => {
     if (destroyed) return;
@@ -319,6 +385,8 @@ export function createTurnSession<State, Action, Config>(
       stopBot();
       const index = moves.findLastIndex((m) => seats[m.seat]?.kind === "human");
       moves = moves.slice(0, index);
+      count = moves.length;
+      lastMove = moves.at(-1) ?? null;
       state = replayTurns(engine, config, seats.length, seed, moves);
       timers = createTimers(timer, seats.length);
       const next = mover();
@@ -339,10 +407,14 @@ export function createTurnSession<State, Action, Config>(
       emit();
       schedule();
     },
+    refresh() {
+      if (!thinking) schedule();
+    },
     destroy() {
       destroyed = true;
       request++;
       if (interval !== null) clearInterval(interval);
+      if (awayTimer !== null) clearTimeout(awayTimer);
       bots.dispose();
     },
   };

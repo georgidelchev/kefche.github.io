@@ -27,6 +27,12 @@ export const PAYLOADS = {
     timers: z.array(z.number()),
     /** Short hash of `state`, to detect desyncs. */
     hash: z.string().check(z.maxLength(16)),
+    /** The move that led here, for animations and announcements. */
+    last: z.optional(z.object({ seat: z.int().check(z.nonnegative()), action: z.unknown() })),
+    /** Set when the match ended outside the rules, e.g. a loss on time. */
+    result: z.optional(
+      z.object({ completed: z.boolean(), outcome: z.optional(z.array(z.number())) }),
+    ),
   }),
   /** Guest → host: send me the latest state (joining, rejoining, after a desync). */
   sync: z.object({}),

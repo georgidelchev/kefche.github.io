@@ -104,6 +104,14 @@ export const engine: TurnEngine<State, Action> = {
 
   currentSeats: (state) => (state.over ? [] : [state.turn]),
 
+  // Online, an away player passes, if the other player has a move to make.
+  skipTurn(state, seat) {
+    const other = 1 - seat;
+    if (state.over || seat !== state.turn || movesFor(state.board, other).length === 0)
+      return state;
+    return { ...state, turn: other, passed: seat, last: null, flipped: [] };
+  },
+
   result(state): GameResult | null {
     if (!state.over) return null;
     const a = countDiscs(state.board, 0);
