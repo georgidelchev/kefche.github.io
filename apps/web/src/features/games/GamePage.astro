@@ -1,18 +1,21 @@
 ---
 import { getRelativeLocaleUrl } from "astro:i18n";
-import { Clock, Users } from "lucide-react";
+import { Clock, Globe, Users } from "lucide-react";
+
+import { buttonVariants } from "@kefche/ui/components/button";
+import { Input } from "@kefche/ui/components/input";
 
 import JsonLd from "@/components/JsonLd.astro";
+import { roomStrings } from "@/features/lobby/strings";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALE_INFO, type Locale } from "@/i18n/locales";
 
-import { BOT_NAME_KEYS, CATEGORY_KEYS, playablePlayers } from "./catalog";
+import { CATEGORY_KEYS, playablePlayers } from "./catalog";
 import { GamePlayer } from "./GamePlayer";
+import { playerStrings, playsOnline, turnConfig, turnStrings } from "./page-props";
 
 import type { RegisteredGame } from "./registry";
-import type { TurnStrings } from "./turn/labels";
-import type { TurnConfig, TurnMode } from "./turn/match-setup";
 
 // A game's page (SPEC §15): play first, then the about / how to play /
 // controls / tips / FAQ sections with JSON-LD.
@@ -84,73 +87,11 @@ const jsonLd = [
   },
 ];
 
-const playerStrings = {
-  play: t("games:play"),
-  loading: t("games:loading"),
-  loadFailed: t("games:loadFailed"),
-  retry: t("games:retry"),
-  pause: t("games:pause"),
-  paused: t("games:paused"),
-  resume: t("games:resume"),
-  restart: t("games:restart"),
-  exit: t("games:exit"),
-  mute: t("games:mute"),
-  unmute: t("games:unmute"),
-  won: t("games:won"),
-  gameOver: t("games:gameOver"),
-  // Placeholders survive here and are filled by the player.
-  score: t("games:score", { score: "{score}" }),
-  time: t("games:time", { time: "{time}" }),
-  playAgain: t("games:playAgain"),
-};
 // Turn-based games open a setup screen (seats, bots, timer) instead of starting at once.
-const turnModes = manifest.modes.filter((m): m is TurnMode => m === "solo-bots" || m === "hotseat");
-const turnConfig: TurnConfig | null =
-  manifest.kind === "turn" && turnModes.length > 0
-    ? {
-        modes: turnModes,
-        players: manifest.players,
-        difficulties: manifest.bots.supported ? manifest.bots.difficulties : [],
-        timers: manifest.timers,
-      }
-    : null;
-const turnStrings: TurnStrings = {
-  start: { "solo-bots": t("games:turn.start.soloBots"), hotseat: t("games:turn.start.hotseat") },
-  setupTitle: {
-    "solo-bots": t("games:turn.setupTitle.soloBots"),
-    hotseat: t("games:turn.setupTitle.hotseat"),
-  },
-  players: t("games:turn.players"),
-  player: t("games:turn.player", { n: "{n}" }),
-  you: t("games:turn.you"),
-  person: t("games:turn.person"),
-  bot: t("games:turn.bot"),
-  difficulty: t("games:turn.difficulty"),
-  difficulties: {
-    easy: t("games:turn.difficulties.easy"),
-    medium: t("games:turn.difficulties.medium"),
-    hard: t("games:turn.difficulties.hard"),
-  },
-  timer: t("games:turn.timer"),
-  timerNone: t("games:turn.timerNone"),
-  timerPerMove: t("games:turn.timerPerMove", { seconds: "{seconds}" }),
-  timerClock: t("games:turn.timerClock", { minutes: "{minutes}", increment: "{increment}" }),
-  begin: t("games:turn.begin"),
-  changeSetup: t("games:turn.changeSetup"),
-  botBadge: t("games:turn.botBadge", { difficulty: "{difficulty}" }),
-  toMove: t("games:turn.toMove", { name: "{name}" }),
-  thinking: t("games:turn.thinking", { name: "{name}" }),
-  clockLabel: t("games:turn.clockLabel", { name: "{name}", time: "{time}" }),
-  wins: t("games:turn.wins", { name: "{name}" }),
-  winners: t("games:turn.winners", { names: "{names}" }),
-  youWin: t("games:turn.youWin"),
-  youLose: t("games:turn.youLose"),
-  draw: t("games:turn.draw"),
-  outOfTime: t("games:turn.outOfTime", { name: "{name}" }),
-  botNames: Object.fromEntries(
-    Object.entries(BOT_NAME_KEYS).map(([id, key]) => [id, t(key)]),
-  ) as TurnStrings["botNames"],
-};
+const config = turnConfig(manifest);
+const turn = config && config.modes.length > 0 ? { config, strings: turnStrings(t) } : null;
+const online = playsOnline(manifest) ? getRelativeLocaleUrl(locale, `/play/${manifest.id}/`) : null;
+const room = roomStrings(t);
 const section = "grid gap-3";
 const crumb = "rounded-sm hover:underline";
 ---
@@ -203,11 +144,49 @@ const crumb = "rounded-sm hover:underline";
           name={text.name}
           locale={bcp47}
           dir={dir}
-          strings={playerStrings}
+          strings={playerStrings(t)}
           ui={text.ui}
-          {...(turnConfig ? { turn: { config: turnConfig, strings: turnStrings } } : {})}
+          {...(turn ? { turn } : {})}
         />
       </div>
+      {online && (
+        <section
+          class="grid gap-3 rounded-2xl border border-border bg-surface p-4"
+          aria-labelledby="play-online"
+        >
+          <h2 id="play-online" class="flex items-center gap-2 text-xl">
+            <Globe aria-hidden="true" className="size-5" />
+            {room.playOnline}
+          </h2>
+          <div class="flex flex-wrap items-end gap-x-6 gap-y-4">
+            <a href={`${online}?new`} class={buttonVariants({ variant: "outline" })} rel="nofollow">
+              {room.create}
+            </a>
+            <!-- A plain GET form: the room page reads ?room= and joins. -->
+            <form action={online} method="get" class="flex flex-wrap items-end gap-2">
+              <div class="grid gap-1.5">
+                <label for="join-code" class="text-sm font-semibold">
+                  {room.codeLabel}
+                </label>
+                <Input
+                  id="join-code"
+                  name="room"
+                  required
+                  minLength={6}
+                  maxLength={8}
+                  autoComplete="off"
+                  autoCapitalize="characters"
+                  spellCheck={false}
+                  className="w-40 font-mono tracking-[0.2em] uppercase"
+                />
+              </div>
+              <button type="submit" class={buttonVariants({ variant: "outline" })}>
+                {room.joinSubmit}
+              </button>
+            </form>
+          </div>
+        </section>
+      )}
     </header>
 
     <section class={section} aria-labelledby="about">

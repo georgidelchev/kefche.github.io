@@ -27,3 +27,152 @@ export function guestStrings(t: AppT, errors: Record<AuthErrorKey, string>): Gue
     errors,
   };
 }
+
+export interface RoomStrings {
+  title: string;
+  description: string;
+  create: string;
+  join: string;
+  joinTitle: string;
+  codeLabel: string;
+  codeHint: string;
+  joinSubmit: string;
+  creating: string;
+  joining: string;
+  code: string;
+  copyLink: string;
+  copied: string;
+  share: string;
+  showQr: string;
+  hideQr: string;
+  qrLabel: string;
+  shareText: string;
+  seats: string;
+  seatEmpty: string;
+  seatBot: string;
+  host: string;
+  you: string;
+  ready: string;
+  notReady: string;
+  away: string;
+  watching: string;
+  setReady: string;
+  unsetReady: string;
+  start: string;
+  startHint: string;
+  countdown: string;
+  settings: string;
+  visibility: string;
+  private: string;
+  public: string;
+  allowSpectators: string;
+  lock: string;
+  unlock: string;
+  locked: string;
+  makeBot: string;
+  openSeat: string;
+  kick: string;
+  makeHost: string;
+  leave: string;
+  backToLobby: string;
+  rematch: string;
+  waitingHost: string;
+  spectating: string;
+  signedOut: string;
+  playOnline: string;
+  onboarding: string;
+  onboardingLink: string;
+  backToGame: string;
+  errors: Record<RoomErrorCode, string>;
+}
+
+export const ROOM_ERROR_CODES = [
+  "room_not_found",
+  "room_closed",
+  "room_locked",
+  "room_full",
+  "room_kicked",
+  "room_started",
+  "not_host",
+  "not_ready",
+  "seats_empty",
+  "seat_taken",
+  "rate_limited",
+  "connection",
+  "unknown",
+] as const;
+export type RoomErrorCode = (typeof ROOM_ERROR_CODES)[number];
+
+export function roomStrings(t: AppT): RoomStrings {
+  return {
+    title: t("lobby:room.title"),
+    description: t("lobby:room.description"),
+    create: t("lobby:room.create"),
+    join: t("lobby:room.join"),
+    joinTitle: t("lobby:room.joinTitle"),
+    codeLabel: t("lobby:room.codeLabel"),
+    codeHint: t("lobby:room.codeHint"),
+    joinSubmit: t("lobby:room.joinSubmit"),
+    creating: t("lobby:room.creating"),
+    joining: t("lobby:room.joining"),
+    code: t("lobby:room.code"),
+    copyLink: t("lobby:room.copyLink"),
+    copied: t("lobby:room.copied"),
+    share: t("lobby:room.share"),
+    showQr: t("lobby:room.showQr"),
+    hideQr: t("lobby:room.hideQr"),
+    qrLabel: t("lobby:room.qrLabel"),
+    shareText: t("lobby:room.shareText", { game: "{game}" }),
+    seats: t("lobby:room.seats"),
+    seatEmpty: t("lobby:room.seatEmpty"),
+    seatBot: t("lobby:room.seatBot"),
+    host: t("lobby:room.host"),
+    you: t("lobby:room.you"),
+    ready: t("lobby:room.ready"),
+    notReady: t("lobby:room.notReady"),
+    away: t("lobby:room.away"),
+    watching: t("lobby:room.watching", { count: "{count}" }),
+    setReady: t("lobby:room.setReady"),
+    unsetReady: t("lobby:room.unsetReady"),
+    start: t("lobby:room.start"),
+    startHint: t("lobby:room.startHint"),
+    countdown: t("lobby:room.countdown", { seconds: "{seconds}" }),
+    settings: t("lobby:room.settings"),
+    visibility: t("lobby:room.visibility"),
+    private: t("lobby:room.private"),
+    public: t("lobby:room.public"),
+    allowSpectators: t("lobby:room.allowSpectators"),
+    lock: t("lobby:room.lock"),
+    unlock: t("lobby:room.unlock"),
+    locked: t("lobby:room.locked"),
+    makeBot: t("lobby:room.makeBot"),
+    openSeat: t("lobby:room.openSeat"),
+    kick: t("lobby:room.kick", { name: "{name}" }),
+    makeHost: t("lobby:room.makeHost", { name: "{name}" }),
+    leave: t("lobby:room.leave"),
+    backToLobby: t("lobby:room.backToLobby"),
+    rematch: t("lobby:room.rematch"),
+    waitingHost: t("lobby:room.waitingHost"),
+    spectating: t("lobby:room.spectating"),
+    signedOut: t("lobby:room.signedOut"),
+    playOnline: t("lobby:room.playOnline"),
+    onboarding: t("lobby:room.onboarding"),
+    onboardingLink: t("lobby:room.onboardingLink"),
+    backToGame: t("lobby:room.backToGame"),
+    errors: {
+      room_not_found: t("lobby:errors.room_not_found"),
+      room_closed: t("lobby:errors.room_closed"),
+      room_locked: t("lobby:errors.room_locked"),
+      room_full: t("lobby:errors.room_full"),
+      room_kicked: t("lobby:errors.room_kicked"),
+      room_started: t("lobby:errors.room_started"),
+      not_host: t("lobby:errors.not_host"),
+      not_ready: t("lobby:errors.not_ready"),
+      seats_empty: t("lobby:errors.seats_empty"),
+      seat_taken: t("lobby:errors.seat_taken"),
+      rate_limited: t("lobby:errors.rate_limited"),
+      connection: t("lobby:errors.connection"),
+      unknown: t("lobby:errors.unknown"),
+    },
+  };
+}

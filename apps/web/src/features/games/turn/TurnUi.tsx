@@ -1,6 +1,6 @@
 // The setup screen and the HUD for turn-based games (Phase 4). Loaded by the
 // player only for games of kind "turn", so other game pages don't carry it.
-import { Bot, LoaderCircle } from "lucide-react";
+import { Bot, LoaderCircle, WifiOff } from "lucide-react";
 import { useEffect, useId, type RefObject } from "react";
 
 import type { Seat, TimerPreset } from "@kefche/game-sdk";
@@ -17,14 +17,14 @@ import {
   type TurnMode,
 } from "./match-setup";
 
-const slot = (seat: number) => ((seat % 8) + 1) as PlayerSlot;
+export const slot = (seat: number) => ((seat % 8) + 1) as PlayerSlot;
 
 interface Option<T> {
   value: T;
   label: string;
 }
 
-function Segmented<T extends string | number>({
+export function Segmented<T extends string | number>({
   legend,
   hideLegend = false,
   value,
@@ -198,6 +198,8 @@ interface HudProps {
   timer: TimerPreset;
   report: TurnReport | null;
   strings: TurnStrings;
+  /** Online: seats whose player is disconnected, and the word for it. */
+  away?: { seats: readonly boolean[]; label: string };
 }
 
 /**
@@ -208,7 +210,7 @@ export function TurnUi(props: ({ part: "setup" } & SetupProps) | ({ part: "hud" 
   return props.part === "setup" ? <TurnSetup {...props} /> : <TurnHud {...props} />;
 }
 
-function TurnHud({ seats, timer, report, strings: s }: HudProps) {
+function TurnHud({ seats, timer, report, strings: s, away }: HudProps) {
   const moving = report?.toMove[0];
   const mover = moving === undefined ? undefined : seats[moving];
   const announcement =
@@ -248,6 +250,12 @@ function TurnHud({ seats, timer, report, strings: s }: HudProps) {
                     {fill(s.botBadge, { difficulty: s.difficulties[seat.difficulty] })}
                   </span>
                   <span aria-hidden="true">{s.difficulties[seat.difficulty]}</span>
+                </span>
+              )}
+              {away?.seats[i] && (
+                <span className="flex items-center gap-1 text-xs font-semibold text-warning">
+                  <WifiOff aria-hidden="true" className="size-4" />
+                  {away.label}
                 </span>
               )}
               {active && report?.thinking && (

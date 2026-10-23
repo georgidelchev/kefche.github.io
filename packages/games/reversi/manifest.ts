@@ -7,8 +7,8 @@ export const manifest = defineManifest({
   category: "board",
   kind: "turn",
   players: { min: 2, max: 2, default: 2 },
-  // Online modes arrive with multiplayer in Phase 5.
-  modes: ["solo-bots", "hotseat"],
+  // Public lobbies and quick match arrive in Phase 5 step 9.
+  modes: ["solo-bots", "hotseat", "online-private"],
   bots: { supported: true, difficulties: ["easy", "medium", "hard"], canFillSeats: true },
   timers: [
     { kind: "none" },

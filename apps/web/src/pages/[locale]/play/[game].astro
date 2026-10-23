@@ -1,0 +1,72 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import { authStrings } from "@/features/auth/strings";
+import { playsOnline, turnConfig, turnStrings } from "@/features/games/page-props";
+import { listGames, type RegisteredGame } from "@/features/games/registry";
+import { OnlineRoom } from "@/features/lobby/OnlineRoom";
+import { guestStrings, roomStrings } from "@/features/lobby/strings";
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import { LOCALE_INFO, LOCALES, type Locale } from "@/i18n/locales";
+
+import type { GetStaticPaths } from "astro";
+
+// An online room for one game (SPEC §10.2): /play/<game>/?room=CODE joins,
+// ?new creates. Private and noindex; only for games that play online, in
+// builds with Supabase.
+export const getStaticPaths = (() =>
+  LOCALES.flatMap((locale) =>
+    listGames()
+      .filter((game) => playsOnline(game.manifest))
+      .map((game) => ({ params: { locale, game: game.manifest.id }, props: { game } })),
+  )) satisfies GetStaticPaths;
+
+const { game } = Astro.props as { game: RegisteredGame };
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+const { bcp47 } = LOCALE_INFO[locale];
+const { manifest } = game;
+const text = game.text[locale];
+const config = turnConfig(manifest);
+const path = `/play/${manifest.id}/`;
+const strings = roomStrings(t);
+---
+
+<AppShell
+  locale={locale}
+  path={path}
+  section="play"
+  title={t("common:meta.sectionTitle", { section: `${strings.title} · ${text.name}` })}
+  description={strings.description}
+  noindex
+>
+  <div class="mx-auto grid w-full max-w-2xl gap-6 pb-6">
+    <nav aria-label={t("games:breadcrumb")} class="text-sm text-muted">
+      <a
+        href={getRelativeLocaleUrl(locale, `/games/${manifest.id}/`)}
+        class="rounded-sm hover:underline"
+      >
+        {text.name}
+      </a>
+      <span aria-hidden="true"> / </span>
+      <span aria-current="page">{strings.title}</span>
+    </nav>
+    <h1 class="text-3xl md:text-4xl">{strings.title}</h1>
+    {config && (
+      <OnlineRoom
+        client:only="react"
+        game={{ id: manifest.id, version: manifest.version, name: text.name, config }}
+        locale={bcp47}
+        strings={strings}
+        guest={guestStrings(t, authStrings(t).errors)}
+        turn={turnStrings(t)}
+        paths={{
+          game: getRelativeLocaleUrl(locale, `/games/${manifest.id}/`),
+          privacy: getRelativeLocaleUrl(locale, "/privacy/"),
+          onboarding: getRelativeLocaleUrl(locale, "/auth/onboarding/"),
+        }}
+      />
+    )}
+  </div>
+</AppShell>
