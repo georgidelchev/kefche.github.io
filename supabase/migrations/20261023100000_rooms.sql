@@ -4,8 +4,10 @@
 -- seats can be reclaimed and the host can change. All writes go through the
 -- functions below; clients only read, through RLS.
 --
--- Retention (privacy notice): rooms close after 15 idle minutes and are
--- deleted, with their members, 30 days after closing.
+-- Retention (privacy notice): a room is deleted, with its members, as soon as
+-- no player is left in it. Players who leave are gone at once; a closed tab
+-- says goodbye (gone 15 s later, so a reload keeps the room), and a player
+-- who goes silent counts as gone after 5 minutes without a heartbeat.
 
 -- Six characters without look-alikes (no I, L, O, 0 or 1).
 create function private.new_room_code()
@@ -39,7 +41,7 @@ create table public.rooms (
   -- Null only if the host's account was deleted; another member then claims it.
   host_id uuid references auth.users (id) on delete set null,
   visibility text not null default 'private' check (visibility in ('private', 'public')),
-  status text not null default 'lobby' check (status in ('lobby', 'playing', 'finished', 'closed')),
+  status text not null default 'lobby' check (status in ('lobby', 'playing', 'finished')),
   locked boolean not null default false,
   allow_spectators boolean not null default true,
   -- Seats in the match, and which of them bots fill (the host runs the bots).
@@ -52,13 +54,11 @@ create table public.rooms (
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   last_active_at timestamptz not null default now(),
-  closed_at timestamptz,
   check (cardinality(bot_seats) < players)
 );
 
 create index rooms_public_open on public.rooms (game_id, created_at desc)
   where visibility = 'public' and status in ('lobby', 'playing');
-create index rooms_idle on public.rooms (last_active_at) where status <> 'closed';
 
 create trigger rooms_updated_at before update on public.rooms
   for each row execute function private.set_updated_at();
@@ -74,6 +74,8 @@ create table public.room_members (
   ready boolean not null default false,
   joined_at timestamptz not null default now(),
   last_seen_at timestamptz not null default now(),
+  -- When the member's page closed (room_goodbye); cleared when they're back.
+  gone_at timestamptz,
   primary key (room_id, user_id)
 );
 
@@ -172,9 +174,6 @@ begin
   if v_room.host_id is distinct from p_user then
     raise exception 'not_host' using errcode = 'insufficient_privilege';
   end if;
-  if v_room.status = 'closed' then
-    raise exception 'room_closed' using errcode = 'invalid_parameter_value';
-  end if;
   return v_room;
 end;
 $$;
@@ -224,6 +223,26 @@ security definer
 set search_path = ''
 as $$
   update public.rooms set last_active_at = now() where id = p_room;
+$$;
+
+-- Deletes the room, with its members, when no player is in it any more.
+-- Spectators alone don't keep a room. True when it was deleted.
+create function private.delete_if_empty(p_room uuid)
+returns boolean
+language sql
+security definer
+set search_path = ''
+as $$
+  with deleted as (
+    delete from public.rooms r
+    where r.id = p_room
+      and not exists (
+        select 1 from public.room_members m
+        where m.room_id = r.id and m.role = 'player' and m.status = 'joined'
+      )
+    returning 1
+  )
+  select exists (select 1 from deleted);
 $$;
 
 -- ---------------------------------------------------------------------------
@@ -287,9 +306,6 @@ begin
   if not found then
     raise exception 'room_not_found' using errcode = 'invalid_parameter_value';
   end if;
-  if v_room.status = 'closed' then
-    raise exception 'room_closed' using errcode = 'invalid_parameter_value';
-  end if;
 
   select * into v_member from public.room_members where room_id = v_room.id and user_id = v_user;
   if found then
@@ -297,7 +313,7 @@ begin
       raise exception 'room_kicked' using errcode = 'insufficient_privilege';
     end if;
     -- Back in the same seat (SPEC §10.5).
-    update public.room_members set status = 'joined', last_seen_at = now()
+    update public.room_members set status = 'joined', last_seen_at = now(), gone_at = null
     where room_id = v_room.id and user_id = v_user;
     perform private.touch_room(v_room.id);
     return v_room;
@@ -323,8 +339,9 @@ end;
 $$;
 
 -- Leaves the room. In the lobby the seat is freed (and a leaving host hands
--- over to the member who joined first); during a match the seat is kept for
+-- over to the player who joined first); during a match the seat is kept for
 -- the member to reclaim, and the others elect a new host if it was the host.
+-- The last player out deletes the room.
 create function public.leave_room(p_room uuid)
 returns void
 language plpgsql
@@ -342,19 +359,18 @@ begin
   end if;
   if v_room.status = 'lobby' then
     delete from public.room_members where room_id = p_room and user_id = v_user;
-    if v_room.host_id = v_user then
-      select user_id into v_next from public.room_members
-      where room_id = p_room and status = 'joined' and role = 'player'
-      order by joined_at limit 1;
-      if v_next is null then
-        update public.rooms set status = 'closed', closed_at = now() where id = p_room;
-      else
-        update public.rooms set host_id = v_next where id = p_room;
-      end if;
-    end if;
   else
     update public.room_members set status = 'left', ready = false
     where room_id = p_room and user_id = v_user and status = 'joined';
+  end if;
+  if private.delete_if_empty(p_room) then
+    return;
+  end if;
+  if v_room.status = 'lobby' and v_room.host_id = v_user then
+    select user_id into v_next from public.room_members
+    where room_id = p_room and status = 'joined' and role = 'player'
+    order by joined_at limit 1;
+    update public.rooms set host_id = v_next where id = p_room;
   end if;
   perform private.touch_room(p_room);
 end;
@@ -504,7 +520,7 @@ begin
     raise exception 'not_member' using errcode = 'insufficient_privilege';
   end if;
   update public.rooms set host_id = v_user, last_active_at = now()
-  where id = p_room and host_id is not distinct from p_from and status in ('lobby', 'playing', 'finished')
+  where id = p_room and host_id is not distinct from p_from
   returning * into v_room;
   if not found then
     raise exception 'host_changed' using errcode = 'invalid_parameter_value';
@@ -579,7 +595,7 @@ begin
 end;
 $$;
 
--- Host: close the room for good.
+-- Host: close the room for good, which deletes it.
 create function public.close_room(p_room uuid)
 returns void
 language plpgsql
@@ -590,11 +606,12 @@ declare
   v_user uuid := private.room_user();
 begin
   perform private.hosted_room(p_room, v_user);
-  update public.rooms set status = 'closed', closed_at = now() where id = p_room;
+  delete from public.rooms where id = p_room;
 end;
 $$;
 
--- Members say they're still here, about once a minute; keeps the room open.
+-- Members say they're still here, about once a minute and whenever their
+-- page shows again; a player who stops counts as gone after 5 minutes.
 create function public.room_heartbeat(p_room uuid)
 returns void
 language plpgsql
@@ -605,11 +622,28 @@ declare
   v_user uuid := private.room_user();
 begin
   perform private.room_rate_limit(v_user, 'heartbeat', 3, 1.0 / 20);
-  update public.room_members set last_seen_at = now()
+  update public.room_members set last_seen_at = now(), gone_at = null
   where room_id = p_room and user_id = v_user and status = 'joined';
   if found then
     perform private.touch_room(p_room);
   end if;
+end;
+$$;
+
+-- The member's page is closing (or reloading). They count as gone 15 s
+-- later unless they're back by then.
+create function public.room_goodbye(p_room uuid)
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare
+  v_user uuid := private.room_user();
+begin
+  perform private.room_rate_limit(v_user, 'goodbye', 10, 0.1);
+  update public.room_members set gone_at = now()
+  where room_id = p_room and user_id = v_user and status = 'joined';
 end;
 $$;
 
@@ -660,7 +694,8 @@ begin
     'finish_room(uuid)',
     'reopen_room(uuid)',
     'close_room(uuid)',
-    'room_heartbeat(uuid)'
+    'room_heartbeat(uuid)',
+    'room_goodbye(uuid)'
   ] loop
     execute format('revoke execute on function public.%s from public, anon', f);
     execute format('grant execute on function public.%s to authenticated', f);
@@ -674,18 +709,24 @@ grant execute on function public.public_rooms(text) to anon, authenticated;
 -- ---------------------------------------------------------------------------
 -- Retention
 -- ---------------------------------------------------------------------------
-create function private.close_idle_rooms()
+-- Rooms whose players have all gone without pressing Leave: their pages
+-- closed, or they went silent.
+create function private.delete_abandoned_rooms()
 returns void
 language sql
 security definer
 set search_path = ''
 as $$
-  update public.rooms set status = 'closed', closed_at = now()
-  where status <> 'closed' and last_active_at < now() - interval '15 minutes';
-  delete from public.rooms where status = 'closed' and closed_at < now() - interval '30 days';
+  delete from public.rooms r
+  where not exists (
+    select 1 from public.room_members m
+    where m.room_id = r.id and m.role = 'player' and m.status = 'joined'
+      and m.last_seen_at > now() - interval '5 minutes'
+      and (m.gone_at is null or m.gone_at > now() - interval '15 seconds')
+  );
 $$;
 
-select cron.schedule('close-idle-rooms', '*/5 * * * *', 'select private.close_idle_rooms()');
+select cron.schedule('delete-abandoned-rooms', '30 seconds', 'select private.delete_abandoned_rooms()');
 
 revoke execute on function public.is_room_member(uuid) from public;
 grant execute on function public.is_room_member(uuid) to anon, authenticated;

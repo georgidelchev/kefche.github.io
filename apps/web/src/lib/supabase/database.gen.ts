@@ -49,14 +49,14 @@ export type Database = {
                   ]
                 },"room_members": {
                   Row: {
-                    "joined_at": string,"last_seen_at": string,"ready": boolean,"role": string,"room_id": string,"seat": number | null,"status": string,"user_id": string
+                    "gone_at": string | null,"joined_at": string,"last_seen_at": string,"ready": boolean,"role": string,"room_id": string,"seat": number | null,"status": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "joined_at"?: string,"last_seen_at"?: string,"ready"?: boolean,"role": string,"room_id": string,"seat"?: number | null,"status"?: string,"user_id": string
+                    "gone_at"?: string | null,"joined_at"?: string,"last_seen_at"?: string,"ready"?: boolean,"role": string,"room_id": string,"seat"?: number | null,"status"?: string,"user_id": string
                   }
                   Update: {
-                    "joined_at"?: string,"last_seen_at"?: string,"ready"?: boolean,"role"?: string,"room_id"?: string,"seat"?: number | null,"status"?: string,"user_id"?: string
+                    "gone_at"?: string | null,"joined_at"?: string,"last_seen_at"?: string,"ready"?: boolean,"role"?: string,"room_id"?: string,"seat"?: number | null,"status"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -69,14 +69,14 @@ isOneToOne: false
                   ]
                 },"rooms": {
                   Row: {
-                    "allow_spectators": boolean,"bot_seats": (number)[],"closed_at": string | null,"code": string,"created_at": string,"game_id": string,"game_version": number,"host_id": string | null,"id": string,"last_active_at": string,"locked": boolean,"players": number,"settings": NonNullable<Json>,"status": string,"updated_at": string,"visibility": string
+                    "allow_spectators": boolean,"bot_seats": (number)[],"code": string,"created_at": string,"game_id": string,"game_version": number,"host_id": string | null,"id": string,"last_active_at": string,"locked": boolean,"players": number,"settings": NonNullable<Json>,"status": string,"updated_at": string,"visibility": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "allow_spectators"?: boolean,"bot_seats"?: (number)[],"closed_at"?: string | null,"code": string,"created_at"?: string,"game_id": string,"game_version": number,"host_id"?: string | null,"id"?: string,"last_active_at"?: string,"locked"?: boolean,"players": number,"settings"?: NonNullable<Json>,"status"?: string,"updated_at"?: string,"visibility"?: string
+                    "allow_spectators"?: boolean,"bot_seats"?: (number)[],"code": string,"created_at"?: string,"game_id": string,"game_version": number,"host_id"?: string | null,"id"?: string,"last_active_at"?: string,"locked"?: boolean,"players": number,"settings"?: NonNullable<Json>,"status"?: string,"updated_at"?: string,"visibility"?: string
                   }
                   Update: {
-                    "allow_spectators"?: boolean,"bot_seats"?: (number)[],"closed_at"?: string | null,"code"?: string,"created_at"?: string,"game_id"?: string,"game_version"?: number,"host_id"?: string | null,"id"?: string,"last_active_at"?: string,"locked"?: boolean,"players"?: number,"settings"?: NonNullable<Json>,"status"?: string,"updated_at"?: string,"visibility"?: string
+                    "allow_spectators"?: boolean,"bot_seats"?: (number)[],"code"?: string,"created_at"?: string,"game_id"?: string,"game_version"?: number,"host_id"?: string | null,"id"?: string,"last_active_at"?: string,"locked"?: boolean,"players"?: number,"settings"?: NonNullable<Json>,"status"?: string,"updated_at"?: string,"visibility"?: string
                   }
                   Relationships: [
                     
@@ -134,7 +134,6 @@ isOneToOne: false
 { Args: { "p_from"?: string,"p_room": string }; Returns: {
               "allow_spectators": boolean,
 "bot_seats": (number)[],
-"closed_at": string | null,
 "code": string,
 "created_at": string,
 "game_id": string,
@@ -165,7 +164,6 @@ isOneToOne: false
 { Args: { "p_allow_spectators"?: boolean,"p_bot_seats"?: (number)[],"p_game_id": string,"p_game_version": number,"p_players": number,"p_settings"?: Json,"p_visibility"?: string }; Returns: {
               "allow_spectators": boolean,
 "bot_seats": (number)[],
-"closed_at": string | null,
 "code": string,
 "created_at": string,
 "game_id": string,
@@ -202,7 +200,6 @@ isOneToOne: false
 { Args: { "p_code": string,"p_spectate"?: boolean }; Returns: {
               "allow_spectators": boolean,
 "bot_seats": (number)[],
-"closed_at": string | null,
 "code": string,
 "created_at": string,
 "game_id": string,
@@ -249,6 +246,9 @@ isOneToOne: false
 "request_account_deletion":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
+"room_goodbye":
+{ Args: { "p_room": string }; Returns: undefined
+                           },
 "room_heartbeat":
 { Args: { "p_room": string }; Returns: undefined
                            },
@@ -268,7 +268,6 @@ isOneToOne: false
 { Args: { "p_room": string }; Returns: {
               "allow_spectators": boolean,
 "bot_seats": (number)[],
-"closed_at": string | null,
 "code": string,
 "created_at": string,
 "game_id": string,
@@ -299,7 +298,6 @@ isOneToOne: false
 { Args: { "p_allow_spectators": boolean,"p_bot_seats": (number)[],"p_players": number,"p_room": string,"p_settings": Json,"p_visibility": string }; Returns: {
               "allow_spectators": boolean,
 "bot_seats": (number)[],
-"closed_at": string | null,
 "code": string,
 "created_at": string,
 "game_id": string,

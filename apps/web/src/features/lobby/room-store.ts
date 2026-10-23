@@ -25,7 +25,10 @@ export interface RoomSnapshot {
   members: RoomMember[];
 }
 
-async function read(supabase: Supabase, roomId: string): Promise<RoomSnapshot | null> {
+/** The room, or why it can't be read: deleted, or this member was removed. */
+export type RoomRead = RoomSnapshot | "deleted" | "removed";
+
+async function read(supabase: Supabase, roomId: string): Promise<RoomRead> {
   const [room, members] = await Promise.all([
     supabase.from("rooms").select("*").eq("id", roomId).maybeSingle(),
     supabase
@@ -36,7 +39,8 @@ async function read(supabase: Supabase, roomId: string): Promise<RoomSnapshot | 
   ]);
   if (room.error) throw room.error;
   if (members.error) throw members.error;
-  if (!room.data) return null;
+  // A removed member still sees their own row; a deleted room has none.
+  if (!room.data) return members.data.length > 0 ? "removed" : "deleted";
   const ids = members.data.map((m) => m.user_id);
   const profiles =
     ids.length === 0
@@ -64,14 +68,11 @@ export interface RoomWatch {
   refresh: () => Promise<void>;
 }
 
-/**
- * Calls `onChange` with the room now and after every change; null when it
- * can't be read any more (closed for good, or the member was removed).
- */
+/** Calls `onChange` with the room now and after every change. */
 export function watchRoom(
   supabase: Supabase,
   roomId: string,
-  onChange: (snapshot: RoomSnapshot | null) => void,
+  onChange: (snapshot: RoomRead) => void,
   onError: (error: unknown) => void,
 ): RoomWatch {
   let stopped = false;

@@ -10,7 +10,7 @@
       "account": "Wenn du ein Konto anlegst: deine E-Mail-Adresse, dein Passwort (nur als sicherer Hash bei unserem Datenbankanbieter), dein Spitzname und Avatar sowie Land und Profiltext, wenn du sie angibst. Außerdem dein Geburtsjahr, nur um zu prüfen, dass du mindestens 13 Jahre alt bist.",
       "guest": "Wenn du ohne Konto online spielst: eine zufällige Gast-ID und der Spitzname, den du wählst.",
       "settings": "Deine Einstellungen, etwa Sprache, Design, Ton und Datenschutzoptionen.",
-      "rooms": "Die Online-Räume, denen du beitrittst: dein Platz, die Züge jeder Partie und wann du zuletzt verbunden warst. Die Daten eines Raums werden 30 Tage nach seiner Schließung gelöscht.",
+      "rooms": "Die Online-Räume, denen du beitrittst: dein Platz, die Züge jeder Partie und wann du zuletzt verbunden warst. Die Daten eines Raums werden gelöscht, sobald ihn der letzte Spieler verlässt.",
       "chat": "Nachrichten im Raum-Chat, 7 Tage gespeichert, damit Meldungen geprüft werden können, danach gelöscht.",
       "security": "Sicherheitsdaten: Grenzen, wie oft eine Aktion wiederholt werden darf, und ein Protokoll wichtiger Kontoänderungen. Wo dafür deine IP-Adresse nötig ist, speichern wir nur einen gesalzenen Hash davon, nie die Adresse selbst."
     },

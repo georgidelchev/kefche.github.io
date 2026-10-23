@@ -15,6 +15,7 @@ import type { PlayerStrings } from "@/features/games/GamePlayer";
 import type { TurnStrings } from "@/features/games/turn/labels";
 import type { TurnConfig } from "@/features/games/turn/match-setup";
 import { getSupabase, type Supabase } from "@/lib/supabase/client";
+import { supabaseConfig } from "@/lib/supabase/config";
 
 import { GuestProfileForm } from "./GuestProfileForm";
 import { LobbyView, type LobbyActions } from "./LobbyView";
@@ -266,7 +267,8 @@ interface RoomProps {
   onLeft: () => void;
 }
 
-// last_seen_at and the room's idle clock (rooms close after 15 idle minutes).
+// last_seen_at: a player silent for 5 minutes counts as gone, and a room
+// without players is deleted.
 const HEARTBEAT_MS = 60_000;
 
 function Room({
@@ -298,7 +300,8 @@ function Room({
   const refreshRef = useRef<(() => Promise<void>) | null>(null);
   const gone = useEffectEvent(onGone);
 
-  // The live room. Reading nothing back means this member was removed.
+  // The live room. A deleted room lost its last player; a member missing
+  // from it, or marked kicked, was removed.
   useEffect(() => {
     // The match is built once per seed, when the room starts playing.
     let last: { status: string; seed: string | null } | null = null;
@@ -306,13 +309,17 @@ function Room({
       supabase,
       roomId,
       (next) => {
-        const me = next?.members.find((m) => m.userId === self);
-        if (!next || !me || me.status === "kicked") {
-          gone(seenRef.current || me?.status === "kicked" ? "room_kicked" : "room_not_found");
+        if (next === "deleted") {
+          gone(seenRef.current ? "room_closed" : "room_not_found");
           return;
         }
-        if (next.room.status === "closed") {
-          gone("room_closed");
+        if (next === "removed") {
+          gone("room_kicked");
+          return;
+        }
+        const me = next.members.find((m) => m.userId === self);
+        if (!me || me.status === "kicked") {
+          gone(seenRef.current || me ? "room_kicked" : "room_not_found");
           return;
         }
         seenRef.current = true;
@@ -370,11 +377,51 @@ function Room({
     };
   }, [supabase, roomId, code, self, joinedAt, s]);
 
+  // Heartbeats keep this member counted as here, also as soon as the page
+  // shows again. A closing page says goodbye (a reload is back well within
+  // the 15 s grace); it has to go out while the page unloads, so it is a
+  // keepalive fetch with the session's token, kept at hand for that.
   useEffect(() => {
+    let token: string | null = null;
+    void supabase.auth.getSession().then(({ data }) => {
+      token = data.session?.access_token ?? null;
+    });
+    const { data: auth } = supabase.auth.onAuthStateChange((_event, session) => {
+      token = session?.access_token ?? null;
+    });
     const beat = () => void supabase.rpc("room_heartbeat", { p_room: roomId });
+    const goodbye = () => {
+      if (!token || !supabaseConfig) return;
+      fetch(`${supabaseConfig.url}/rest/v1/rpc/room_goodbye`, {
+        method: "POST",
+        keepalive: true,
+        headers: {
+          apikey: supabaseConfig.key,
+          authorization: `Bearer ${token}`,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ p_room: roomId }),
+      }).catch(() => undefined);
+    };
+    const visible = () => {
+      if (document.visibilityState === "visible") beat();
+    };
+    const shown = (event: PageTransitionEvent) => {
+      if (event.persisted) beat();
+    };
     const timer = setInterval(beat, HEARTBEAT_MS);
+    // In case the previous page's goodbye arrived after this page rejoined.
+    const settle = setTimeout(beat, 5000);
+    document.addEventListener("visibilitychange", visible);
+    window.addEventListener("pageshow", shown);
+    window.addEventListener("pagehide", goodbye);
     return () => {
       clearInterval(timer);
+      clearTimeout(settle);
+      document.removeEventListener("visibilitychange", visible);
+      window.removeEventListener("pageshow", shown);
+      window.removeEventListener("pagehide", goodbye);
+      auth.subscription.unsubscribe();
     };
   }, [supabase, roomId]);
 

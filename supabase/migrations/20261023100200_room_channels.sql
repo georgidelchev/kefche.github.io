@@ -1,7 +1,7 @@
 -- Realtime Authorization for room channels (SPEC §10.1; Phase 5). Each room
 -- talks on the private channel `room:<code>` (Broadcast for messages,
--- Presence for who is connected). Only members who are in the room, and only
--- while it is open, may listen or send. Clients must join with
+-- Presence for who is connected). Only members who are in the room may
+-- listen or send. Clients must join with
 -- `{ private: true }`; the hosted project also turns off public channels
 -- (docs/RUNBOOK.md).
 
@@ -20,7 +20,6 @@ as $$
       from public.rooms r
       join public.room_members m on m.room_id = r.id
       where r.code = substr(p_topic, 6)
-        and r.status <> 'closed'
         and m.user_id = auth.uid()
         and m.status = 'joined'
     );

@@ -316,13 +316,13 @@ All single-player puzzle and arcade games also expose **race mode** for multipla
 Define a `Transport` interface in `game-sdk` (connect, send, broadcast, onMessage, presence, latency, close). The first implementation is **SupabaseRealtimeTransport** (Broadcast + Presence on channel `room:<code>`). Keep the interface clean so a dedicated game server (e.g. Colyseus) or WebRTC data channels can be added later for heavy real-time games without touching game code.
 
 ### 10.2 Rooms & lobbies
-- Postgres tables `rooms` and `room_members` (Section 13) hold lobby metadata: game id, game version, code (6 chars, unambiguous alphabet), host id, settings, visibility (public/private), status (`lobby`, `playing`, `finished`, `closed`), created/updated timestamps. Public lobbies are listed in the lobby browser with realtime updates.
+- Postgres tables `rooms` and `room_members` (Section 13) hold lobby metadata: game id, game version, code (6 chars, unambiguous alphabet), host id, settings, visibility (public/private), status (`lobby`, `playing`, `finished`), created/updated timestamps. Public lobbies are listed in the lobby browser with realtime updates.
 - **Create lobby → share link** `https://<domain>/<locale>/play/<game-id>?room=<CODE>` (also short form `/r/<CODE>`), copy button, native share sheet, QR code. Opening the link joins directly (guest flow creates an anonymous identity transparently; asks for a nickname if none).
 - **Join with code** field on the game page and in a global "Join" dialog.
 - Lobby settings validated by the game manifest (player count within limits, allowed timers, difficulty, etc.). Changes broadcast to all members instantly.
 - **Spectators:** allowed per room setting (default on for chess and 1v1 games). Spectators see the public state only (never secret state), can use spectator chat, cannot act.
 - **Ready check** and **start countdown**. Host can kick, transfer host, lock the room.
-- Rooms auto-close after 15 min idle (pg_cron cleanup); finished rooms offer rematch with the same players.
+- A room is deleted, with its members, as soon as no player is left in it: when the last player leaves, when every player's page has closed (15 s grace, so a reload keeps the room), or when every player has been silent for 5 min (pg_cron sweep every 30 s). Spectators alone don't keep a room. A lobby host who leaves hands over to the next player. Finished rooms offer rematch with the same players.
 
 ### 10.3 Lobby settings (per game, within manifest limits)
 Player count (1…max), fill empty seats with bots (yes/no + difficulty per seat), timers (presets per Section 11), game-specific options (board size, rounds, variants, target score), public/private, allow spectators, allow late join (real-time arenas), chat on/off, content language (word games).

@@ -8,7 +8,7 @@ import type { APIRoute } from "astro";
 
 // Short invite links (SPEC §10.2): /r/<CODE> sends the visitor to the room's
 // page in their language. Link previews follow the redirect and show that
-// page's title. An unknown or closed room goes to the games catalog.
+// page's title. An unknown (or deleted) room goes to the games catalog.
 export const prerender = false;
 
 const CODE = z

@@ -10,7 +10,7 @@
       "account": "Si vous créez un compte : votre adresse e-mail, votre mot de passe (conservé uniquement sous forme de hachage sécurisé par notre hébergeur de base de données), votre pseudo et votre avatar, ainsi que le pays et la bio que vous choisissez d'ajouter. Nous conservons aussi votre année de naissance, uniquement pour vérifier que vous avez au moins 13 ans.",
       "guest": "Si vous jouez en ligne sans compte : un identifiant d'invité aléatoire et le pseudo que vous choisissez.",
       "settings": "Vos réglages, comme la langue, le thème, le son et les choix de confidentialité.",
-      "rooms": "Les salons en ligne que vous rejoignez : votre place, les coups de chaque partie et votre dernière connexion. Les données d'un salon sont supprimées 30 jours après sa fermeture.",
+      "rooms": "Les salons en ligne que vous rejoignez : votre place, les coups de chaque partie et votre dernière connexion. Les données d'un salon sont supprimées dès que son dernier joueur le quitte.",
       "chat": "Les messages du chat des salons, conservés 7 jours pour pouvoir examiner les signalements, puis supprimés.",
       "security": "Données de sécurité : des limites sur la fréquence d'une action et un journal des changements importants du compte. Quand votre adresse IP est nécessaire, nous n'en gardons qu'un hachage salé, jamais l'adresse elle-même."
     },

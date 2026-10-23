@@ -620,7 +620,7 @@ Online modes are enabled for the Phase 4 games.
    - `rooms`: game, version, a six-character code in an unambiguous alphabet, host, settings, public or private, status;
    - `room_members`: seat, player or spectator, status, joined and last-seen times.
 
-   RLS lets members read their own rooms, and anyone read public lobbies. Security-definer RPCs handle create, join, leave, ready, settings, kick, transfer host, lock, start, finish and claim host, all rate-limited. `pg_cron` closes rooms after 15 idle minutes.
+   RLS lets members read their own rooms, and anyone read public lobbies. Security-definer RPCs handle create, join, leave, ready, settings, kick, transfer host, lock, start, finish and claim host, all rate-limited. A room is deleted as soon as no player is left in it; a `pg_cron` sweep every 30 s catches closed pages (15 s after their goodbye) and players silent for 5 minutes.
 
 3. **Guest identities:**
    - `ensureIdentity()` creates an anonymous Supabase user the first time a guest joins a room;
@@ -645,7 +645,7 @@ Online modes are enabled for the Phase 4 games.
    - results offer a rematch or a return to the lobby.
 7. **Lobby chat** (text only):
    - messages go through an RPC that masks blocked terms and rate-limits to 5 messages per 10 s, and Realtime delivers them;
-   - they're kept for 7 days for moderation, then purged (SPEC §8);
+   - they're kept for 7 days for moderation, then purged (SPEC §8). Rooms are deleted as soon as they empty, so messages keep the room's id and code without a cascading foreign key;
    - guests confirm 13+ first;
    - reports and the moderation tools come in Phase 8.
 8. **Public lobby browser and quick match:**

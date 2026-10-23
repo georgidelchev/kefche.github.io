@@ -10,7 +10,7 @@
       "account": "If you create an account: your email address, your password (kept only as a secure hash by our database provider), your nickname and avatar, and the country and bio you choose to add. We also keep your birth year, only to check that you are 13 or older.",
       "guest": "If you play online without an account: a random guest ID and the nickname you pick.",
       "settings": "Your settings, such as language, theme, sound and privacy choices.",
-      "rooms": "The online rooms you join: your seat, the moves of each match and when you were last connected. A room's records are deleted 30 days after it closes.",
+      "rooms": "The online rooms you join: your seat, the moves of each match and when you were last connected. A room's records are deleted as soon as its last player leaves.",
       "chat": "Lobby chat messages, kept for 7 days so that reports can be checked, then deleted.",
       "security": "Security records: limits on how often an action can be repeated, and a log of important account changes. Where these need your IP address, we keep only a salted hash of it, never the address itself."
     },
