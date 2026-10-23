@@ -10,8 +10,8 @@
 | 1     | Design system, layout, theming, i18n skeleton              | ✅ Done (owner signed off 2026-10-22) |
 | 2     | Supabase core, auth & profiles                             | ✅ Done (owner signed off 2026-10-22) |
 | 3     | Game SDK & first games (2048, Sudoku, Snake)               | ✅ Done (owner signed off 2026-10-23) |
-| 4     | Bots, hotseat & timers                                     | 📝 Plan awaiting approval             |
-| 5     | Multiplayer core                                           | ⏳ Not started                        |
+| 4     | Bots, hotseat & timers                                     | ✅ Done (owner signed off 2026-10-23) |
+| 5     | Multiplayer core                                           | 📝 Plan awaiting approval             |
 | 6     | Chess                                                      | ⏳ Not started                        |
 | 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                        |
 | 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                        |
@@ -583,7 +583,98 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
 
 - [x] Plan approved by owner (2026-10-23)
 - [x] Steps 1–8 done
-- [ ] Owner sign-off
+- [x] Owner sign-off (2026-10-23, "ok")
+
+---
+
+## Phase 5 — Multiplayer core
+
+**Goal (SPEC §22, §10):**
+
+- a transport abstraction with a Supabase Realtime transport;
+- rooms and members, and the lobby UI: settings, seats, bots, ready, and invites by link, QR code or room code;
+- host authority with action validation, sequence numbers and snapshots;
+- host migration, and reconnection with seat reclaim;
+- spectators, lobby chat (text only), a public lobby browser, and quick match (unrated).
+
+Online modes are enabled for the Phase 4 games.
+
+**DoD:** two to five browser contexts can play a full match; a host leaving mid-game migrates correctly; rejoining works. Plus the standing DoD.
+
+### Steps (one Conventional Commit each)
+
+1. **Protocol and transport contracts** (`@kefche/game-sdk`, isomorphic):
+   - the `Transport` interface: connect, send, broadcast, onMessage, presence, latency, close;
+   - the versioned message envelope `{ v, type, seq, roomId, from, payload }`, with Zod schemas for every message type and a size limit;
+   - an in-memory transport for tests and a BroadcastChannel transport for trying several tabs on one machine.
+2. **Database: rooms and members.** A new migration adds:
+   - `rooms`: game, version, a six-character code in an unambiguous alphabet, host, settings, public or private, status;
+   - `room_members`: seat, player or spectator, status, joined and last-seen times.
+
+   RLS lets members read their own rooms, and anyone read public lobbies. Security-definer RPCs handle create, join, leave, ready, settings, kick, transfer host, lock, start, finish and claim host, all rate-limited. `pg_cron` closes rooms after 15 idle minutes.
+
+3. **Guest identities:**
+   - `ensureIdentity()` creates an anonymous Supabase user the first time a guest joins a room;
+   - a nickname prompt, then the existing nickname rules;
+   - the reusable "I am 13 or older" confirmation before chat;
+   - the Phase 2 upgrade and merge flows keep a guest's seat history when they sign up.
+4. **Supabase Realtime transport:**
+   - Broadcast and Presence on private `room:<code>` channels, with Realtime Authorization (RLS on `realtime.messages`), so only members can listen or send;
+   - ping-based latency, and reconnection with backoff.
+5. **Online turn sessions** (`@kefche/game-sdk/browser`):
+   - **Host:** the host's browser runs the existing `createTurnSession`, bots included. It validates each move with the engine, applies it and broadcasts the new state with a sequence number every turn. Turn-game states are small, so full snapshots replace diffs.
+   - **Guests:** they send moves and render what the host sends. A state hash detects desyncs, and the guest then resyncs from the host.
+   - **Host migration:** after 5 s without the host, the member who joined earliest takes over from the last snapshot and updates `rooms.host_id` through the RPC.
+   - **Absent players** (SPEC §10.5): their turns are skipped, through a new optional `skipTurn` in `TurnEngine`. With clocks, their clock keeps running.
+   - **Reconnection:** returning players reclaim their seats.
+6. **Lobby UI:**
+   - the game page adds Create lobby and Join with code;
+   - `/[locale]/play/<game>/?room=CODE` (noindex), plus `/r/<CODE>`, a Worker-rendered short link with a link preview;
+   - in the lobby: settings within the manifest limits, seats with avatars, ready checks, a bot with a difficulty per seat, host controls (kick, transfer host, lock, start), a start countdown and a spectator count;
+   - invites by copying the link, the share sheet, a QR code or the room code;
+   - in the match, the HUD shows each seat's connection (connected, reconnecting, away);
+   - results offer a rematch or a return to the lobby.
+7. **Lobby chat** (text only):
+   - messages go through an RPC that masks blocked terms and rate-limits to 5 messages per 10 s, and Realtime delivers them;
+   - they're kept for 7 days for moderation, then purged (SPEC §8);
+   - guests confirm 13+ first;
+   - reports and the moderation tools come in Phase 8.
+8. **Public lobby browser and quick match:**
+   - **Lobby browser:** `/[locale]/play/` lists open public lobbies by game, live.
+   - **Quick match:** a `match_queue` and an RPC pair players of the same game and settings. Bots fill the empty seats after 20 s, if the player allowed it.
+   - Quick matches are unrated.
+9. **Online modes for the Phase 4 games:** their manifests add `online-private`, `online-public` and `quick-match`. Spectators see the public state and can't act.
+10. **Verification and docs:**
+    - full matches of each game with two to five browser contexts;
+    - the host leaving mid-game, rejoining and reclaiming a seat, and spectators;
+    - chat masking and rate limits, and negative RLS checks (a non-member can't read a private room or join its channel);
+    - Realtime messages per minute per game (SPEC §10.9);
+    - ADRs (transport, authority, rooms schema, chat) and the RUNBOOK.
+
+### Decisions (proposed)
+
+- **Local only, as in Phase 2:**
+  - Multiplayer runs against local Supabase, and you test it with several browsers or tabs.
+  - The live site has no hosted Supabase project yet (ADR-0011, Phase 21), so online buttons stay hidden there. That also keeps real guest accounts from being created before the privacy policy (Phase 17). See Q1.
+- **Full-state snapshots every turn** for turn-based games: a few hundred bytes each, simpler and safer than diffs. Diffs and quantization arrive with the real-time arenas (Phase 9).
+- **The host simulates bots** (SPEC §9.5) in its own worker, so they keep playing through host migration.
+- **QR codes:** a small QR encoder, loaded only when the invite panel opens (library choice checked against current releases and recorded as an ADR).
+
+### Risks
+
+- **Realtime free tier** (about 200 concurrent connections and 2 million messages a month): turn games send a handful of messages per move, so measure messages per minute and document them (SPEC §10.9).
+- **Host migration edge cases:** two members claiming at once (the RPC decides, first claim wins), and a host returning after a migration (it rejoins as a player).
+- **Trust:** every message is validated with Zod and the engine. A host could still cheat in an unrated match; rated games get server-side validation in Phases 6 and 7.
+
+### Open questions for the owner
+
+- **Q1 — Hosted Supabase:** keep Phase 5 local only (recommended, as in Phase 2), or create the free hosted Supabase project now so you can play online with friends on the live site? Now would mean real guest accounts before the privacy policy and consent banner (Phase 17).
+- **Q2 — Lobby chat:** keep lobby messages for 7 days with blocked-word masking and rate limits as the SPEC says (recommended), or make lobby chat not stored at all until the moderation tools exist (Phase 8)?
+- **Q3 — Race mode** for 2048, Sudoku and Snake (same seed, live progress bars): include it in this phase as an extra step, or leave it for a later batch?
+
+### Status
+
+- [ ] Plan approved by owner
 
 ---
 
