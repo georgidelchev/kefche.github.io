@@ -351,11 +351,18 @@ function Invite({
 
   useEffect(() => {
     if (!showQr || qr) return;
-    // The QR encoder loads only when someone asks for the code.
-    void import("uqr").then(({ renderSVG }) => {
-      setQr(renderSVG(url, { border: 2 }));
-    });
-  }, [showQr, qr, url]);
+    // The QR encoder loads only when someone asks for the code. The short
+    // link (/r/CODE) makes a smaller code that scans more easily.
+    import("uqr").then(
+      ({ renderSVG }) => {
+        setQr(renderSVG(new URL(`/r/${code}`, url).href, { border: 2 }));
+      },
+      // Offline or a stale chunk: the code and the link still work.
+      () => {
+        setShowQr(false);
+      },
+    );
+  }, [showQr, qr, url, code]);
 
   return (
     <section

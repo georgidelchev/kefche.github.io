@@ -252,6 +252,9 @@ isOneToOne: false
 "room_heartbeat":
 { Args: { "p_room": string }; Returns: undefined
                            },
+"room_invite":
+{ Args: { "p_code": string }; Returns: string
+                           },
 "set_guest_profile":
 { Args: { "p_age_confirmed"?: boolean,"p_nickname"?: string }; Returns: string
                            },

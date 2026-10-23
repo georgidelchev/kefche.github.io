@@ -308,3 +308,20 @@ The Web Push service worker (Phase 8) is still allowed and handles push events o
 - On a 4× slowed CPU, hard bots answered within their 900 ms budget and the main thread stayed free.
 - Online play (Phase 5) can reuse seats, timers and the engine contract, with the host running the session and bots.
 - Unfinished matches aren't saved yet.
+
+## ADR-0019: QR codes for room invites with uqr
+
+**Date:** 2026-10-24 · **Status:** Accepted
+
+**Context.** The lobby's invite panel shows a QR code of the room link (SPEC §10.2), so a friend in the same room can join from their phone. Pages stay small (SPEC §2), the QR code is needed only when someone asks for it, and the site's CSP and "no HTML injection" rule rule out libraries that write markup into the page.
+
+**Decision.**
+
+- **uqr 0.1.3** (MIT, no dependencies, 11 KB minified and 4 KB gzipped) encodes the link and renders an SVG string. The lobby loads it with a dynamic import when Show QR code is pressed, and shows the SVG as a `data:` URL in an `<img>` with a translated `alt`, never as inline markup.
+- The code holds the short link `/r/<CODE>`: fewer characters make a smaller code that scans more easily. A Worker route looks up the room's game (`room_invite`, which reveals only the game id of an open room) and redirects to `/<locale>/play/<game>/?room=<CODE>` in the visitor's language.
+- Vite pre-bundles uqr in dev, since a dynamic import is found too late otherwise.
+
+**Consequences.**
+
+- The QR code costs nothing until it's used. If the chunk fails to load, the panel hides the code; the room code and the link still work.
+- Changing the short-link format means keeping `/r/` working for codes already shared.
