@@ -67,6 +67,26 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"room_messages": {
+                  Row: {
+                    "body": string,"created_at": string,"id": number,"nickname": string,"room_id": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "body": string,"created_at"?: string,"id"?: never,"nickname": string,"room_id": string,"user_id": string
+                  }
+                  Update: {
+                    "body"?: string,"created_at"?: string,"id"?: never,"nickname"?: string,"room_id"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "room_messages_room_id_fkey"
+      columns: ["room_id"]
+isOneToOne: false
+      referencedRelation: "rooms"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"rooms": {
                   Row: {
                     "allow_spectators": boolean,"bot_seats": (number)[],"code": string,"created_at": string,"game_id": string,"game_version": number,"host_id": string | null,"id": string,"last_active_at": string,"locked": boolean,"players": number,"settings": NonNullable<Json>,"status": string,"updated_at": string,"visibility": string
@@ -255,6 +275,21 @@ isOneToOne: false
 "room_invite":
 { Args: { "p_code": string }; Returns: string
                            },
+"send_room_message":
+{ Args: { "p_body": string,"p_room": string }; Returns: {
+              "body": string,
+"created_at": string,
+"id": number,
+"nickname": string,
+"room_id": string,
+"user_id": string
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "room_messages"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "set_guest_profile":
 { Args: { "p_age_confirmed"?: boolean,"p_nickname"?: string }; Returns: string
                            },

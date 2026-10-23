@@ -1,6 +1,6 @@
 # Blocked terms
 
-Word lists for the server-side checks on nicknames and bios (SPEC §7.2, §8.3). Phase 8 reuses them for chat.
+Word lists for the server-side checks on nicknames and bios (SPEC §7.2, §8.3), and for masking lobby chat (`private.mask_blocked_terms`: every word that contains a blocked term becomes asterisks).
 
 | File          | Contents                                                                                    |
 | ------------- | ------------------------------------------------------------------------------------------- |
