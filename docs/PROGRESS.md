@@ -548,9 +548,14 @@ All 14 steps are on `main`; CI (lint, typecheck, build, database, Edge Functions
 - **Q1 — Sounds:** another sound picker for the three new games, or should I choose from the existing palette (which you can change later)?
 - **Q2 — Anything to change in the proposed decisions above** (board sizes, timer presets, bot names)?
 
+### Owner answers (2026-10-23)
+
+- **Q1 — Sounds:** build a new sound picker for the three games (step 7).
+- **Q2 — Decisions:** no changes; the proposed decisions stand.
+
 ### Status
 
-- [ ] Plan approved by owner
+- [x] Plan approved by owner (2026-10-23)
 
 ---
 

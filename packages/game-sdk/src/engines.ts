@@ -32,14 +32,25 @@ export interface RaceEngine<State, Action, Config = undefined> {
   result(state: State): GameResult | null;
 }
 
-/** Turn-based games (SPEC §9.4.1). Implemented for the bots phase (Phase 4). */
+/**
+ * Turn-based games (SPEC §9.4.1). Extra turns, passes and skipped seats are
+ * the game's rules: `currentSeats` always says who moves next.
+ */
 export interface TurnEngine<State, Action, Config = undefined> {
   initialState(config: Config, seats: number, seed: string): State;
+  /** Empty when `seat` can't act now. */
   legalActions(state: State, seat: number): Action[];
+  /** Applies a seat's action. Illegal actions return the same state object. */
   applyAction(state: State, seat: number, action: Action): State;
-  /** Seats that may act now (more than one for simultaneous turns). */
+  /** Seats that may act now (more than one for simultaneous turns); empty once finished. */
   currentSeats(state: State): number[];
   result(state: State): GameResult | null;
+}
+
+/** One move in a turn-based match, as stored for replays. */
+export interface TurnMove<Action> {
+  seat: number;
+  action: Action;
 }
 
 /** Real-time games (SPEC §9.4.2). Fixed timestep; implemented in Phase 9. */
@@ -74,5 +85,18 @@ export function replay<State, Action, Config>(
 ): State {
   let state = engine.initialState(config, seed);
   for (const action of actions) state = engine.apply(state, action);
+  return state;
+}
+
+/** The turn-based `replay()`: applies seated moves in order. */
+export function replayTurns<State, Action, Config>(
+  engine: TurnEngine<State, Action, Config>,
+  config: Config,
+  seats: number,
+  seed: string,
+  moves: Iterable<TurnMove<Action>>,
+): State {
+  let state = engine.initialState(config, seats, seed);
+  for (const { seat, action } of moves) state = engine.applyAction(state, seat, action);
   return state;
 }
