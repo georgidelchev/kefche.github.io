@@ -13,6 +13,7 @@ export const NAMESPACES = [
   "profile",
   "settings",
   "games",
+  "legal",
 ] as const;
 export type Namespace = (typeof NAMESPACES)[number];
 

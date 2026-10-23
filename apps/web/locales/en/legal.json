@@ -1,0 +1,41 @@
+{
+  "privacy": {
+    "link": "Privacy",
+    "title": "Privacy notice",
+    "description": "What kefche keeps about you, where it is stored and how to download or delete it.",
+    "updated": "Last updated: {date}",
+    "intro": "kefche is a free games site with no ads. This short notice explains what we keep about you and why. A full privacy policy will replace it as the site grows.",
+    "stored": {
+      "title": "What we keep",
+      "account": "If you create an account: your email address, your password (kept only as a secure hash by our database provider), your nickname and avatar, and the country and bio you choose to add. We also keep your birth year, only to check that you are 13 or older.",
+      "guest": "If you play online without an account: a random guest ID and the nickname you pick.",
+      "settings": "Your settings, such as language, theme, sound and privacy choices.",
+      "rooms": "The online rooms you join: your seat, the moves of each match and when you were last connected. A room's records are deleted 30 days after it closes.",
+      "chat": "Lobby chat messages, kept for 7 days so that reports can be checked, then deleted.",
+      "security": "Security records: limits on how often an action can be repeated, and a log of important account changes. Where these need your IP address, we keep only a salted hash of it, never the address itself."
+    },
+    "device": {
+      "title": "On your device",
+      "storage": "Your browser keeps your sign-in session, settings, best scores and unfinished games in its own storage, and a cookie remembers the language you chose. They stay on your device until you clear them.",
+      "tracking": "We use no advertising, no analytics and no tracking cookies."
+    },
+    "processors": {
+      "title": "Who handles it",
+      "supabase": "Our database, sign-in, file storage and account emails run on Supabase, in the European Union (Frankfurt, Germany).",
+      "cloudflare": "Cloudflare delivers the site and sees the technical details every web request carries, such as your IP address.",
+      "selling": "We never sell your data."
+    },
+    "choices": {
+      "title": "Your choices",
+      "export": "Download a copy of your data, or delete your account, in Settings. Deletion happens after 7 days, so you can change your mind; then your account and your files are erased.",
+      "guests": "Guest IDs that go unused for 30 days are deleted automatically.",
+      "age": "You must be 13 or older to create an account or to chat."
+    },
+    "contact": {
+      "title": "Questions",
+      "issues": "For now, questions about privacy go to the project's issue tracker on GitHub. It is public, so please don't post personal details there. To see or remove your own data, use Settings.",
+      "issuesLink": "Open the issue tracker"
+    },
+    "signUpNote": "How we handle your data:"
+  }
+}

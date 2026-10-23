@@ -202,6 +202,16 @@ export function SignUpForm({ strings, paths, locale, monthNames }: Props) {
 
       <OAuthButtons strings={strings} paths={paths} mode="signUp" />
 
+      <p className="text-center text-sm text-muted">
+        {strings.signUp.privacyNote}{" "}
+        <a
+          href={paths.privacy}
+          className="font-semibold text-link underline-offset-4 hover:underline"
+        >
+          {strings.signUp.privacyLink}
+        </a>
+      </p>
+
       <p className="text-center">
         {strings.signUp.haveAccount}{" "}
         <a

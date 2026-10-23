@@ -686,7 +686,7 @@ Online modes are enabled for the Phase 4 games.
 
 ### Owner answers (2026-10-23)
 
-- **Q1 — Hosted Supabase:** set it up now. The live site allows guests and accounts; the region is EU (Frankfurt); a short privacy notice goes up now (step 0).
+- **Q1 — Hosted Supabase:** set it up now. The live site allows guests and accounts; the region is EU (Frankfurt); a short privacy notice goes up now (step 0). The owner has no privacy address yet, so the notice points to the public GitHub issue tracker for now (TODO #4); a made-up address would bounce or reach someone else.
 - **Q2 — Lobby chat:** keep it 7 days, with masking and rate limits.
 - **Q3 — Race mode:** include it. Everyone gets the same game and sees a live leaderboard that changes as they play (step 10).
 
@@ -710,8 +710,9 @@ Online modes are enabled for the Phase 4 games.
 
 Each code `TODO` must reference an entry here (`TODO #n`). Resolved entries stay listed so the numbers aren't reused.
 
-| #   | Where                                                        | What                                                                  | Status                             |
-| --- | ------------------------------------------------------------ | --------------------------------------------------------------------- | ---------------------------------- |
-| 1   | `apps/web/src/pages/[locale]/index.astro`, `astro.config.ts` | Only `en` generated, hard-coded English copy, fixed `/` → `/en/` 302. | ✅ Resolved (Phase 1 steps 4–5)    |
-| 2   | `apps/web/src/features/auth/SignUpForm.tsx`                  | Link the Community Guidelines page from sign-up (SPEC §8.3).          | Open: the page arrives in Phase 17 |
-| 3   | `supabase/templates/*.html`                                  | Auth emails are English only; localize and brand them (SPEC §3).      | Open: Phase 21, with Resend        |
+| #   | Where                                                        | What                                                                                                                    | Status                             |
+| --- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| 1   | `apps/web/src/pages/[locale]/index.astro`, `astro.config.ts` | Only `en` generated, hard-coded English copy, fixed `/` → `/en/` 302.                                                   | ✅ Resolved (Phase 1 steps 4–5)    |
+| 2   | `apps/web/src/features/auth/SignUpForm.tsx`                  | Link the Community Guidelines page from sign-up (SPEC §8.3).                                                            | Open: the page arrives in Phase 17 |
+| 3   | `supabase/templates/*.html`                                  | Auth emails are English only; localize and brand them (SPEC §3).                                                        | Open: Phase 21, with Resend        |
+| 4   | `apps/web/src/pages/[locale]/privacy.astro`                  | Privacy contact is the public GitHub issue tracker; replace it with a dedicated privacy address once the owner has one. | Open: owner to create the address  |

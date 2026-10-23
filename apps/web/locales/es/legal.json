@@ -1,0 +1,41 @@
+{
+  "privacy": {
+    "link": "Privacidad",
+    "title": "Aviso de privacidad",
+    "description": "Qué guarda kefche sobre ti, dónde se almacena y cómo descargarlo o borrarlo.",
+    "updated": "Última actualización: {date}",
+    "intro": "kefche es un sitio de juegos gratuito y sin anuncios. Este breve aviso explica qué guardamos sobre ti y por qué. Lo sustituirá una política de privacidad completa a medida que el sitio crezca.",
+    "stored": {
+      "title": "Qué guardamos",
+      "account": "Si creas una cuenta: tu correo electrónico, tu contraseña (guardada solo como un hash seguro por nuestro proveedor de base de datos), tu apodo y avatar, y el país y la biografía que decidas añadir. También guardamos tu año de nacimiento, solo para comprobar que tienes 13 años o más.",
+      "guest": "Si juegas en línea sin cuenta: un identificador de invitado aleatorio y el apodo que elijas.",
+      "settings": "Tus ajustes, como el idioma, el tema, el sonido y las opciones de privacidad.",
+      "rooms": "Las salas en línea en las que entras: tu puesto, las jugadas de cada partida y cuándo te conectaste por última vez. Los registros de una sala se borran 30 días después de que se cierre.",
+      "chat": "Los mensajes del chat de la sala, guardados 7 días para poder revisar las denuncias y después borrados.",
+      "security": "Registros de seguridad: límites de cuántas veces se puede repetir una acción y un registro de los cambios importantes de la cuenta. Cuando necesitan tu dirección IP, guardamos solo un hash con sal, nunca la dirección."
+    },
+    "device": {
+      "title": "En tu dispositivo",
+      "storage": "Tu navegador guarda la sesión, los ajustes, las mejores puntuaciones y las partidas sin terminar en su propio almacenamiento, y una cookie recuerda el idioma que elegiste. Se quedan en tu dispositivo hasta que los borres.",
+      "tracking": "No usamos publicidad, analítica ni cookies de seguimiento."
+    },
+    "processors": {
+      "title": "Quién lo gestiona",
+      "supabase": "Nuestra base de datos, el inicio de sesión, el almacenamiento de archivos y los correos de la cuenta funcionan en Supabase, en la Unión Europea (Fráncfort, Alemania).",
+      "cloudflare": "Cloudflare sirve el sitio y ve los datos técnicos que lleva cualquier petición web, como tu dirección IP.",
+      "selling": "Nunca vendemos tus datos."
+    },
+    "choices": {
+      "title": "Tus opciones",
+      "export": "Descarga una copia de tus datos o borra tu cuenta en Ajustes. El borrado se hace a los 7 días, por si cambias de idea; después se eliminan tu cuenta y tus archivos.",
+      "guests": "Los identificadores de invitado sin usar durante 30 días se borran automáticamente.",
+      "age": "Debes tener 13 años o más para crear una cuenta o usar el chat."
+    },
+    "contact": {
+      "title": "Preguntas",
+      "issues": "Por ahora, las preguntas sobre privacidad se hacen en el gestor de incidencias del proyecto en GitHub. Es público, así que no publiques datos personales allí. Para ver o eliminar tus propios datos, usa Ajustes.",
+      "issuesLink": "Abrir el gestor de incidencias"
+    },
+    "signUpNote": "Cómo tratamos tus datos:"
+  }
+}

@@ -1,0 +1,106 @@
+---
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import { LOCALES, LOCALE_INFO, type Locale } from "@/i18n/locales";
+
+import type { GetStaticPaths } from "astro";
+
+// Interim privacy notice (Phase 5, owner decision): what is kept, where, and
+// how to export or delete it. Phase 17 replaces it with the full privacy
+// policy and consent banner. Every statement here must match what the system
+// does; change the text in the same commit as the behaviour.
+export const getStaticPaths = (() =>
+  LOCALES.map((locale) => ({ params: { locale } }))) satisfies GetStaticPaths;
+
+/** When the notice last changed. */
+const UPDATED = new Date("2026-10-23T00:00:00Z");
+// TODO #4: a dedicated privacy address replaces the public issue tracker.
+const ISSUES = "https://github.com/georgidelchev/kefche.github.io/issues";
+
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+const { bcp47 } = LOCALE_INFO[locale];
+const updated = new Intl.DateTimeFormat(bcp47, { dateStyle: "long", timeZone: "UTC" }).format(
+  UPDATED,
+);
+
+const sections = [
+  {
+    id: "stored",
+    title: t("legal:privacy.stored.title"),
+    items: [
+      t("legal:privacy.stored.account"),
+      t("legal:privacy.stored.guest"),
+      t("legal:privacy.stored.settings"),
+      t("legal:privacy.stored.rooms"),
+      t("legal:privacy.stored.chat"),
+      t("legal:privacy.stored.security"),
+    ],
+  },
+  {
+    id: "device",
+    title: t("legal:privacy.device.title"),
+    items: [t("legal:privacy.device.storage"), t("legal:privacy.device.tracking")],
+  },
+  {
+    id: "processors",
+    title: t("legal:privacy.processors.title"),
+    items: [
+      t("legal:privacy.processors.supabase"),
+      t("legal:privacy.processors.cloudflare"),
+      t("legal:privacy.processors.selling"),
+    ],
+  },
+  {
+    id: "choices",
+    title: t("legal:privacy.choices.title"),
+    items: [
+      t("legal:privacy.choices.export"),
+      t("legal:privacy.choices.guests"),
+      t("legal:privacy.choices.age"),
+    ],
+  },
+];
+---
+
+<AppShell
+  locale={locale}
+  path="/privacy/"
+  title={t("common:meta.sectionTitle", { section: t("legal:privacy.title") })}
+  description={t("legal:privacy.description")}
+>
+  <article class="mx-auto grid w-full max-w-prose gap-8 pb-6">
+    <header class="grid gap-3">
+      <h1 class="text-4xl md:text-5xl">{t("legal:privacy.title")}</h1>
+      <p class="text-sm text-muted">{t("legal:privacy.updated", { date: updated })}</p>
+      <p class="text-lg">{t("legal:privacy.intro")}</p>
+    </header>
+    {sections.map(({ id, title, items }) => (
+      <section class="grid gap-3" aria-labelledby={id}>
+        <h2 id={id} class="text-2xl">
+          {title}
+        </h2>
+        <ul class="grid list-disc gap-2 ps-6">
+          {items.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </section>
+    ))}
+    <section class="grid gap-3" aria-labelledby="contact">
+      <h2 id="contact" class="text-2xl">
+        {t("legal:privacy.contact.title")}
+      </h2>
+      <p>{t("legal:privacy.contact.issues")}</p>
+      <p>
+        <a
+          href={ISSUES}
+          class="font-semibold text-link underline underline-offset-4"
+          rel="noopener"
+        >
+          {t("legal:privacy.contact.issuesLink")}
+        </a>
+      </p>
+    </section>
+  </article>
+</AppShell>

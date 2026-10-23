@@ -1,0 +1,41 @@
+{
+  "privacy": {
+    "link": "Datenschutz",
+    "title": "Datenschutzhinweis",
+    "description": "Was kefche über dich speichert, wo es liegt und wie du es herunterlädst oder löschst.",
+    "updated": "Zuletzt geändert: {date}",
+    "intro": "kefche ist eine kostenlose Spieleseite ohne Werbung. Dieser kurze Hinweis erklärt, was wir über dich speichern und warum. Mit dem Wachsen der Seite ersetzt ihn eine vollständige Datenschutzerklärung.",
+    "stored": {
+      "title": "Was wir speichern",
+      "account": "Wenn du ein Konto anlegst: deine E-Mail-Adresse, dein Passwort (nur als sicherer Hash bei unserem Datenbankanbieter), dein Spitzname und Avatar sowie Land und Profiltext, wenn du sie angibst. Außerdem dein Geburtsjahr, nur um zu prüfen, dass du mindestens 13 Jahre alt bist.",
+      "guest": "Wenn du ohne Konto online spielst: eine zufällige Gast-ID und der Spitzname, den du wählst.",
+      "settings": "Deine Einstellungen, etwa Sprache, Design, Ton und Datenschutzoptionen.",
+      "rooms": "Die Online-Räume, denen du beitrittst: dein Platz, die Züge jeder Partie und wann du zuletzt verbunden warst. Die Daten eines Raums werden 30 Tage nach seiner Schließung gelöscht.",
+      "chat": "Nachrichten im Raum-Chat, 7 Tage gespeichert, damit Meldungen geprüft werden können, danach gelöscht.",
+      "security": "Sicherheitsdaten: Grenzen, wie oft eine Aktion wiederholt werden darf, und ein Protokoll wichtiger Kontoänderungen. Wo dafür deine IP-Adresse nötig ist, speichern wir nur einen gesalzenen Hash davon, nie die Adresse selbst."
+    },
+    "device": {
+      "title": "Auf deinem Gerät",
+      "storage": "Dein Browser speichert deine Anmeldung, Einstellungen, Bestwerte und unfertige Spiele in seinem eigenen Speicher, und ein Cookie merkt sich die gewählte Sprache. Sie bleiben auf deinem Gerät, bis du sie löschst.",
+      "tracking": "Wir verwenden keine Werbung, keine Analyse und keine Tracking-Cookies."
+    },
+    "processors": {
+      "title": "Wer die Daten verarbeitet",
+      "supabase": "Datenbank, Anmeldung, Dateispeicher und Konto-E-Mails laufen bei Supabase in der Europäischen Union (Frankfurt, Deutschland).",
+      "cloudflare": "Cloudflare liefert die Seite aus und sieht die technischen Angaben, die jede Webanfrage enthält, etwa deine IP-Adresse.",
+      "selling": "Wir verkaufen deine Daten nie."
+    },
+    "choices": {
+      "title": "Deine Möglichkeiten",
+      "export": "Lade eine Kopie deiner Daten herunter oder lösche dein Konto in den Einstellungen. Gelöscht wird nach 7 Tagen, damit du es dir anders überlegen kannst; danach werden Konto und Dateien entfernt.",
+      "guests": "Gast-IDs, die 30 Tage nicht genutzt werden, werden automatisch gelöscht.",
+      "age": "Du musst mindestens 13 Jahre alt sein, um ein Konto anzulegen oder zu chatten."
+    },
+    "contact": {
+      "title": "Fragen",
+      "issues": "Vorerst gehen Fragen zum Datenschutz an den Issue-Tracker des Projekts auf GitHub. Er ist öffentlich, also poste dort keine persönlichen Daten. Um deine eigenen Daten zu sehen oder zu entfernen, nutze die Einstellungen.",
+      "issuesLink": "Issue-Tracker öffnen"
+    },
+    "signUpNote": "So gehen wir mit deinen Daten um:"
+  }
+}

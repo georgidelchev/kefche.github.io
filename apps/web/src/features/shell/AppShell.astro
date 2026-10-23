@@ -54,6 +54,7 @@ const items = NAV_ITEMS.map((item) => ({
 const homeHref = getRelativeLocaleUrl(locale, "/");
 // The header search is the catalog's search (?q=).
 const searchHref = getRelativeLocaleUrl(locale, "/games/");
+const privacyHref = getRelativeLocaleUrl(locale, "/privacy/");
 const themeLabels = {
   legend: t("common:theme.legend"),
   light: t("common:theme.light"),
@@ -241,6 +242,15 @@ const focusRing =
       class="min-w-0 flex-1 pt-6 pb-[calc(5.5rem+env(safe-area-inset-bottom))] outline-none md:pb-10 xl:ps-8"
     >
       <slot />
+      <footer class="mx-auto mt-12 flex max-w-7xl flex-wrap gap-x-6 gap-y-2 border-t border-border pt-4 text-sm text-muted">
+        <a
+          href={privacyHref}
+          aria-current={path === "/privacy/" ? "page" : undefined}
+          class:list={["rounded-sm hover:text-text hover:underline", focusRing]}
+        >
+          {t("legal:privacy.link")}
+        </a>
+      </footer>
     </main>
   </div>
 
