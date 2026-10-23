@@ -11,7 +11,7 @@
 | 2     | Supabase core, auth & profiles                             | ✅ Done (owner signed off 2026-10-22) |
 | 3     | Game SDK & first games (2048, Sudoku, Snake)               | ✅ Done (owner signed off 2026-10-23) |
 | 4     | Bots, hotseat & timers                                     | ✅ Done (owner signed off 2026-10-23) |
-| 5     | Multiplayer core                                           | 📝 Plan awaiting approval             |
+| 5     | Multiplayer core                                           | 🚧 In progress                        |
 | 6     | Chess                                                      | ⏳ Not started                        |
 | 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                        |
 | 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                        |
@@ -603,6 +603,15 @@ Online modes are enabled for the Phase 4 games.
 
 ### Steps (one Conventional Commit each)
 
+0. **Hosted Supabase and a privacy notice** (owner decision 2026-10-23, below):
+   - **Owner:** creates the free project `kefche` in EU (Frankfurt) and links the CLI. The database password and secret keys stay out of chat and git.
+   - **Me:**
+     - apply the migrations;
+     - push the auth settings from `config.toml` (a `[remotes]` block for the live URLs, anonymous sign-ins, hooks, email templates);
+     - deploy the Edge Functions with their secrets, and set up the Vault entries for the deletion job;
+     - add `PUBLIC_SUPABASE_*` to the production build;
+     - show only email sign-in on the live site until the production OAuth apps exist (Phase 21).
+   - **Privacy notice:** a short plain-language page in all 11 languages saying what is stored (account or anonymous ID, nickname, settings, rooms, lobby chat for 7 days), where (EU), and how to export or delete it. It's linked from sign-up, the footer and the guest nickname prompt. Phase 17 replaces it with the full policy and consent banner.
 1. **Protocol and transport contracts** (`@kefche/game-sdk`, isomorphic):
    - the `Transport` interface: connect, send, broadcast, onMessage, presence, latency, close;
    - the versioned message envelope `{ v, type, seq, roomId, from, payload }`, with Zod schemas for every message type and a size limit;
@@ -644,7 +653,12 @@ Online modes are enabled for the Phase 4 games.
    - **Quick match:** a `match_queue` and an RPC pair players of the same game and settings. Bots fill the empty seats after 20 s, if the player allowed it.
    - Quick matches are unrated.
 9. **Online modes for the Phase 4 games:** their manifests add `online-private`, `online-public` and `quick-match`. Spectators see the public state and can't act.
-10. **Verification and docs:**
+10. **Race mode for 2048, Sudoku and Snake** (owner decision): everyone in the room plays the same game from the same seed.
+    - **Live leaderboard:** a leaderboard in the room re-sorts as scores, progress and finishing times change.
+    - **Checking results:** each player's browser reports progress; the host checks finishes by replaying the player's moves on the shared seed (`replay()`), which works because the games are deterministic.
+    - **End and results:** the race ends when everyone finishes or a time limit runs out, then results and a rematch.
+    - The permanent global leaderboards come in Phase 7.
+11. **Verification and docs:**
     - full matches of each game with two to five browser contexts;
     - the host leaving mid-game, rejoining and reclaiming a seat, and spectators;
     - chat masking and rate limits, and negative RLS checks (a non-member can't read a private room or join its channel);
@@ -653,9 +667,7 @@ Online modes are enabled for the Phase 4 games.
 
 ### Decisions (proposed)
 
-- **Local only, as in Phase 2:**
-  - Multiplayer runs against local Supabase, and you test it with several browsers or tabs.
-  - The live site has no hosted Supabase project yet (ADR-0011, Phase 21), so online buttons stay hidden there. That also keeps real guest accounts from being created before the privacy policy (Phase 17). See Q1.
+- **Hosted Supabase now** (owner decision, replacing the earlier plan for Phase 21): the live site gets online play, guests and the Phase 2 accounts. The data lives in the EU. Sign-up emails use Supabase's built-in sender, which sends only a few per hour, until Resend arrives in Phase 21.
 - **Full-state snapshots every turn** for turn-based games: a few hundred bytes each, simpler and safer than diffs. Diffs and quantization arrive with the real-time arenas (Phase 9).
 - **The host simulates bots** (SPEC §9.5) in its own worker, so they keep playing through host migration.
 - **QR codes:** a small QR encoder, loaded only when the invite panel opens (library choice checked against current releases and recorded as an ADR).
@@ -672,9 +684,15 @@ Online modes are enabled for the Phase 4 games.
 - **Q2 — Lobby chat:** keep lobby messages for 7 days with blocked-word masking and rate limits as the SPEC says (recommended), or make lobby chat not stored at all until the moderation tools exist (Phase 8)?
 - **Q3 — Race mode** for 2048, Sudoku and Snake (same seed, live progress bars): include it in this phase as an extra step, or leave it for a later batch?
 
+### Owner answers (2026-10-23)
+
+- **Q1 — Hosted Supabase:** set it up now. The live site allows guests and accounts; the region is EU (Frankfurt); a short privacy notice goes up now (step 0).
+- **Q2 — Lobby chat:** keep it 7 days, with masking and rate limits.
+- **Q3 — Race mode:** include it. Everyone gets the same game and sees a live leaderboard that changes as they play (step 10).
+
 ### Status
 
-- [ ] Plan approved by owner
+- [x] Plan approved by owner (2026-10-23, with the answers above)
 
 ---
 
