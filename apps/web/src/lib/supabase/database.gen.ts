@@ -131,7 +131,7 @@ isOneToOne: false
 { Args: { "p_nickname": string }; Returns: string
                            },
 "claim_host":
-{ Args: { "p_from": string,"p_room": string }; Returns: {
+{ Args: { "p_from"?: string,"p_room": string }; Returns: {
               "allow_spectators": boolean,
 "bot_seats": (number)[],
 "closed_at": string | null,

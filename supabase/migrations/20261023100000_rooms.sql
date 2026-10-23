@@ -486,7 +486,7 @@ $$;
 -- A player takes over as host from `p_from` (SPEC §10.4). Compare-and-set:
 -- when two members claim at once, the first wins and the second gets
 -- host_changed.
-create function public.claim_host(p_room uuid, p_from uuid)
+create function public.claim_host(p_room uuid, p_from uuid default null)
 returns public.rooms
 language plpgsql
 security definer
