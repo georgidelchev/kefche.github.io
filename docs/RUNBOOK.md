@@ -97,6 +97,19 @@ These sit on the production environment only, so PR previews build without accou
 
 **Email:** the built-in sender is meant for testing. It sends only a few emails an hour to any address, and its messages are Supabase's generic English text. Resend, as a custom sender, comes in Phase 21.
 
+## Rooms and Realtime
+
+How online play works is in ARCHITECTURE.md ("Online play") and ADR-0020 to ADR-0024. Run the SQL below with `pnpm exec supabase db query --linked "<sql>"` (hosted) or in Studio (local).
+
+- **Open rooms:** `select code, game_id, status, visibility, (select count(*) from public.room_members m where m.room_id = r.id and m.status = 'joined') as here from public.rooms r order by created_at desc limit 20;`
+- **A stuck room:** `delete from public.rooms where code = 'ABC123';`. Its seats, chat and relayed messages go with it, and its members see that the room is gone.
+- **The sweep** (every 30 s) removes members who closed the page 15 s ago or have been silent for 5 minutes, and rooms with no player left. If rooms pile up, check it: `select status, start_time from cron.job_run_details where jobid = (select jobid from cron.job where jobname = 'delete-abandoned-rooms') order by start_time desc limit 5;`
+- **Channels fail to join** (`CHANNEL_ERROR` in the browser console): the channel policies on `realtime.messages` decide, so check that the user is a joined member (`room_members.status = 'joined'`). "Allow public access" must stay off (Hosted Supabase, above).
+- **Quotas:** the dashboard's _Usage_ page shows Realtime messages and peak connections against the free plan (2 million messages a month, about 200 connections). The measured cost per game kind is in ARCHITECTURE.md ("Realtime message budget").
+- **Error codes** reach players translated: `rate_limited` (too many requests), `room_full`, `room_locked`, `not_host` and the others in `ROOM_ERROR_CODES` (`features/lobby/strings.ts`).
+- **Blocked chat terms:** edit the word lists in `supabase/blocked-terms/`, run `pnpm db:terms` to write a new migration, then push it like any migration.
+- **Trying it locally:** each browser profile or private window is a separate guest. Run `pnpm db:start` and `pnpm dev`, create a room in one window and open its link in another.
+
 ## OAuth providers (local development)
 
 Sign-in with Google, Discord, Twitch and Facebook needs one development app per provider. Each app gets this redirect (callback) URL, exactly:

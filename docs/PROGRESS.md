@@ -11,7 +11,7 @@
 | 2     | Supabase core, auth & profiles                             | ✅ Done (owner signed off 2026-10-22) |
 | 3     | Game SDK & first games (2048, Sudoku, Snake)               | ✅ Done (owner signed off 2026-10-23) |
 | 4     | Bots, hotseat & timers                                     | ✅ Done (owner signed off 2026-10-23) |
-| 5     | Multiplayer core                                           | 🚧 In progress                        |
+| 5     | Multiplayer core                                           | 🚧 Steps done, awaiting sign-off      |
 | 6     | Chess                                                      | ⏳ Not started                        |
 | 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                        |
 | 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                        |
@@ -683,12 +683,12 @@ Online modes are enabled for the Phase 4 games.
     - **Checking results:** each player's browser reports progress; the host checks finishes by replaying the player's moves on the shared seed (`replay()`), which works because the games are deterministic.
     - **End and results:** the race ends when everyone finishes or a time limit runs out, then results and a rematch.
     - The permanent global leaderboards come in Phase 7.
-11. **Verification and docs:**
-    - full matches of each game with two to five browser contexts;
-    - the host leaving mid-game, rejoining and reclaiming a seat, and spectators;
-    - chat masking and rate limits, and negative RLS checks (a non-member can't read a private room or join its channel);
-    - Realtime messages per minute per game (SPEC §10.9);
-    - ADRs (transport, authority, rooms schema, chat) and the RUNBOOK.
+11. **Verification and docs** (done 2026-10-24):
+    - **Full matches** with two to five browser contexts: Dots and Boxes with five players to the end, Four in a Row with four, a five-player Snake race (places 1 to 5, all checked), plus the earlier two-player matches of every game and a spectator joining late.
+    - **The host leaving mid-game:** in the five-player match the host closed its tab, another player took over, and the old host came back to the match and played its seat to the end. Every screen ended with the same board and scores.
+    - **Negative checks:** a non-member, or someone signed out, can't read a private room or its seats, isn't shown it in the list, can't write the tables, start, kick, claim host or relay into it, and can't join `room:<code>` or `room-relay:<code>`; their broadcasts never reach the room. Nobody sends on the relay topic directly or on `lobbies`, and a kicked member loses the room and its channels at once. Chat masking, length and rate limits were checked in step 7.
+    - **Realtime messages per minute** (SPEC §10.9), in ARCHITECTURE.md. Measuring showed races sending unchanged progress twice a second to everyone; progress now goes out only when it changes (Snake from about 500 to 24 a minute).
+    - **Docs:** ADR-0020 to ADR-0024 (transport, authority, rooms, chat, races), ARCHITECTURE.md "Online play", and a RUNBOOK section on rooms and Realtime.
 
 ### Decisions (proposed)
 
@@ -723,6 +723,9 @@ Online modes are enabled for the Phase 4 games.
 - [x] Step 8 done: the public lobby browser and quick match (no bot fill, owner decision 2026-10-24). With All games selected, "Create a public lobby" opens a game picker (owner request).
 - [x] Step 9 done: online modes from the manifests, and server-stamped match messages
 - [x] Step 10 done: race mode for 2048, Sudoku and Snake. Found on the way: heartbeats and `finish_room` were never sent, because a bare `void supabase.rpc(…)` never runs. Rooms could therefore be swept 5 minutes into a match. `send()` fixes it.
+- [x] Step 11 done: verification with up to five browsers, negative RLS and Realtime checks, the message budget, and the docs
+- [ ] Push (on the owner's word): the Phase 5 migrations to the hosted project, then `main`, then a check of the live site
+- [ ] Owner sign-off
 
 ---
 

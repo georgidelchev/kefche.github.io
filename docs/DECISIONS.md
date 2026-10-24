@@ -325,3 +325,91 @@ The Web Push service worker (Phase 8) is still allowed and handles push events o
 
 - The QR code costs nothing until it's used. If the chunk fails to load, the panel hides the code; the room code and the link still work.
 - Changing the short-link format means keeping `/r/` working for codes already shared.
+
+## ADR-0020: Online play over Supabase Realtime, on private channels
+
+**Date:** 2026-10-24 · **Status:** Accepted
+
+**Context.** Phase 5 puts turn games and races online (SPEC §10) on the free Supabase plan, about 200 concurrent connections and 2 million Realtime messages a month (SPEC §10.9). There is no game server: the backend is Supabase, and the site runs on Cloudflare Workers, which can't hold a match's connections.
+
+**Decision.**
+
+- **One transport contract** in the isomorphic SDK (`Transport`: connect, send, broadcast, onMessage, presence, latency, close) with a versioned envelope `{ v, type, seq, roomId, from, payload }`. Every message type has a Zod schema and the envelope is capped at 32 KB. An in-memory transport serves tests, and a BroadcastChannel one serves several tabs on one machine.
+- **The site's transport** uses Supabase Realtime: Broadcast and Presence on the private channel `room:<code>`. Realtime Authorization (RLS on `realtime.messages`) lets only joined members listen or send, and the project's "Allow public access" is off, so no public channel can be opened at all.
+- **Presence** says who is here, and a player missing from it shows as away. Latency comes from a probe every 10 s, and the channel reconnects with backoff, after which the session asks for the state again.
+- **Room data** (the rooms row and its members) arrives as Realtime database changes, which respect RLS, and every change reads the room again, so a view is always one consistent read.
+- **The lobby list** can't use database changes: a room that turns private would never tell those who no longer may read it. Triggers announce every change that can alter the list on the private topic `lobbies`, with no data in it; anyone may listen there and nobody may send. Heartbeats don't announce anything.
+
+**Consequences.**
+
+- Measured (step 11, two players, per minute): an idle lobby about 40 messages, a turn game about 3.5 per move, and a race only when a standing changes (Snake about 24, a fast 2048 race about 84). Relayed messages reach every member, the sender included (ADR-0021), so a room's traffic grows with the square of its size.
+- Real-time arenas (Phase 9) need far more messages; they get their own budget and may need their own transport.
+
+## ADR-0021: Host authority, with server-stamped match messages
+
+**Date:** 2026-10-24 · **Status:** Accepted
+
+**Context.** Without a game server, someone's browser has to run each match. Broadcast doesn't verify who sent a message: during step 9, a spectator moved for a player by writing that player's id into `from`. Matches are unrated until Phases 6 and 7.
+
+**Decision.**
+
+- **The host's browser runs the match.** Turn games run the existing `createTurnSession` there, bots included (ADR-0018). The host checks each move with the engine, applies it and sends the whole new state with a sequence number every turn. Turn-game states are a few hundred bytes, so snapshots are simpler and safer than diffs. Guests send moves and draw what the host sends; a hash of the state with sorted keys (the database reorders JSON keys) finds a desync, and the guest then asks again.
+- **Messages that change a match go through `room_relay`,** a security-definer function: a move, progress or finish needs a seated, joined player, and a state or race standings need the host. It stamps `from` with the caller's real id and sends on `room-relay:<code>`, which members may hear and nobody may write to. Those types are dropped when they arrive on `room:<code>`. It's rate-limited (a burst of 120, then 20 a second) and deleted with its room.
+- **Host migration:** after 5 s without the host, the seated member who joined first claims the room (`claim_host`, the first claim wins) and carries on from the last state. An absent player's turns are skipped (`skipTurn`), and their clock keeps running. A returning player gets their seat back; an old host comes back as a player.
+
+**Consequences.**
+
+- Step 11 checked it with five browsers: the host of a five-player Dots and Boxes match left mid-match, another player took over, and the old host came back and played its seat to the end. A non-member can't relay at all, and a player who isn't host can't send a state.
+- The host could still cheat in its own match. Rated games get server-side checks in Phases 6 and 7.
+
+## ADR-0022: Rooms in Postgres, written only through RPCs, deleted when empty
+
+**Date:** 2026-10-24 · **Status:** Accepted
+
+**Context.** Rooms need codes to share, seats, readiness, host controls and a lobby list (SPEC §10.2), and the privacy notice promises that nothing about a room is kept once it empties.
+
+**Decision.**
+
+- **Tables:** `rooms` (game and version, a six-character code from an unambiguous alphabet, host, players, bot seats, settings, public or private, spectators allowed, status, locked) and `room_members` (seat, player or spectator, joined/left/kicked, ready, joined and last-seen times).
+- **Reads by RLS:** members read their own rooms and each other; anyone reads public rooms in a lobby or a match. Nobody writes the tables directly: security-definer RPCs create, join (`join_room`), leave, ready, change settings, kick, transfer host, lock, start, finish, reopen and claim host, each checking `auth.uid()` and rate-limited per user. `quick_match` seats a player in the oldest public lobby with a free seat, under a per-game advisory lock so two players who press at once share a room, and otherwise opens one. No bots fill seats (owner decision).
+- **Lifetime:** a room is deleted as soon as no player is left, and its chat and relayed messages go with it. A page that closes says goodbye and counts as gone 15 s later; a `pg_cron` sweep every 30 s removes members gone that long or silent for 5 minutes, with a heartbeat each minute. Guests are anonymous Supabase users, deleted after 30 days without activity.
+
+**Consequences.**
+
+- Nothing about a room outlives it, which keeps the privacy notice true and the tables small.
+- Match history and results come with stats in Phase 6, in tables of their own.
+
+## ADR-0023: Lobby chat through one RPC, deleted with its room
+
+**Date:** 2026-10-24 · **Status:** Accepted
+
+**Context.** Rooms get a text chat (SPEC §8.2, §10.2) before the moderation tools exist (Phase 8). Guests chat too, and the owner decided against an age question (2026-10-24).
+
+**Decision.**
+
+- **`send_room_message`** is the only way in: it checks membership, trims the text and turns line breaks into spaces, allows 1–300 characters, rate-limits to 5 messages per 10 s, and masks blocked terms from `supabase/blocked-terms/` (whole words, digit look-alikes included, with an allow list so words like "Scunthorpe" stay). Members read the room's messages under RLS, and Realtime delivers new ones.
+- A room keeps its latest 200 messages, and they're deleted with the room (ADR-0022). Members who were removed lose access at once.
+- **The layout:** the chat is a fixed pane, on the right from 768 px and along the bottom on phones. It folds into a strip that counts new messages and stays mounted during a match.
+
+**Consequences.**
+
+- With no reports or blocking yet, the masking and the room's short life are the safeguards; reports and moderation arrive in Phase 8.
+
+## ADR-0024: Race mode: one seed, live standings, finishes checked by replay
+
+**Date:** 2026-10-24 · **Status:** Accepted
+
+**Context.** 2048, Sudoku and Snake are single-player games. The owner wanted them online as races, with a live leaderboard (2026-10-23), without a server to run them and without letting a player simply claim a score.
+
+**Decision.**
+
+- **Same game for everyone:** the room's seed and the host's race options (Sudoku's difficulty, Snake's speed and edges) make the engine config, and the manifest's countdowns are the time limits.
+- **A simultaneous start:** `start_room` records `startedAt`, and every browser counts down to `startedAt` + 3 s on the database's clock (`server_time`, the fastest of three round trips), loading the game meanwhile, so a device whose clock is off still starts with the rest.
+- **Live standings:** each game records every action (`context.race.record`). The browser mirrors its own game with the engine and relays its score and progress, at most every 0.5 s and only when they change. The leaderboard lists every player with their avatar and points. Live mini boards of the other players were tried and dropped (owner decision).
+- **Checked results:** at a finish or when the time runs out, the packed moves go to the host, which replays them on the seed (`checkRace`). Only checked results count. The host relays them, ends the race when everyone has finished or the time is up, and offers a rematch. A new host asks everyone to send again.
+- **A hidden tab doesn't pause a race:** Snake keeps moving, because the race's clock doesn't stop.
+
+**Consequences.**
+
+- A five-player Snake race gave places 1 to 5, all checked.
+- Unrated, so these limits are accepted for now: a reload mid-race starts that player's game again; Sudoku's time is when the host received the moves; Snake's tick speed comes from the player's browser. Global leaderboards come in Phase 7.

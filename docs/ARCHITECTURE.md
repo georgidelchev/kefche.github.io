@@ -91,6 +91,38 @@ flowchart LR
 - **Player:** game pages of kind `turn` offer Play vs bots and Play on this device. The setup screen (`features/games/turn/`) covers players, a person or bot per seat, and the timer, saved per game and mode. The HUD shows seats with colour and shape, whose turn it is, bots thinking and clocks with a low-time warning (red, tick-tock, buzz). Results sit below the board. Setup and HUD are one lazy chunk (2.3 KB gzip) that only turn games load.
 - **Games:** Four in a Row (2–4 players, the board grows), Reversi (move hints, clocks) and Dots and Boxes (2–5 players, extra turns). All render with React. Each piece carries its seat's colour and shape, keyboard play uses roving focus, and moves are announced to screen readers.
 
+## Online play (Phase 5)
+
+```mermaid
+flowchart LR
+  P["Player's browser"] -->|"RPCs: join, ready, chat, relay…"| DB[(Postgres + RLS)]
+  DB -->|"database changes (room, seats)"| P
+  DB -->|"room_relay: moves, states, progress"| RR["room-relay:CODE<br/>listen-only"]
+  RR --> P
+  P <-->|"presence, pings, sync"| RC["room:CODE<br/>members only"]
+  H["Host's browser<br/>createTurnSession / checkRace"] -->|"state, standings"| DB
+```
+
+- **Transport** (ADR-0020): Supabase Realtime Broadcast and Presence on private `room:<code>` channels, with Realtime Authorization. The SDK's `Transport` contract and Zod-checked envelope keep games unaware of Supabase.
+- **Authority** (ADR-0021): the host's browser runs the match and sends full states; messages that change a match go through `room_relay`, which checks the sender and stamps `from`. After 5 s without the host, the seated member who joined first takes over.
+- **Rooms** (ADR-0022): `rooms` and `room_members`, read through RLS and written only through rate-limited RPCs. A room is deleted as soon as no player is left, with its chat (ADR-0023) and relayed messages; a `pg_cron` sweep every 30 s catches closed pages.
+- **Races** (ADR-0024): one seed and the host's options for everyone, a start on the database's clock, live standings, and finishes checked by replaying the moves on the host.
+- **Pages:** `/[locale]/play/<game>/?room=CODE` (also `?new`, `?new=public`, `?quick`), the short link `/r/<CODE>`, and the lobby browser at `/[locale]/play/`.
+
+### Realtime message budget (SPEC §10.9)
+
+Measured in step 11 on local Supabase with two browsers, counting every websocket frame except heartbeats and replies, per minute for the whole room:
+
+| Room                                 | Messages a minute | What they are                                      |
+| ------------------------------------ | ----------------: | -------------------------------------------------- |
+| Idle lobby                           |                40 | Latency probes (every 10 s), heartbeat changes     |
+| Four in a Row, about 36 moves a min  |               128 | A move and the new state per move, to every member |
+| 2048 race, both pressing 3× a second |                84 | Progress only when a score or progress changes     |
+| Snake race                           |                24 | Mostly when a snake eats                           |
+
+- Relayed messages reach every member, the sender included, so a room of N players costs about N times as much per message.
+- The free plan's 2 million messages a month allow about 260 hours of two-player turn games, or about 830 hours of idle lobbies.
+
 ## Internationalization
 
 - **Registry:** `src/i18n/locales.ts` lists every locale with its native name, BCP 47 tag, `dir`, script and OG locale. Routing, fonts, `<html lang dir>`, hreflang and the language switcher all derive from it.
@@ -152,8 +184,7 @@ GitHub Actions `CI` runs format check → lint → contrast → translations →
 
 ## Sections to come
 
-- Multiplayer: transport, rooms, host authority, migration, reconnection _(Phase 5)_
-- Realtime message budget per game kind (SPEC §10.9) _(Phase 5, 9)_
+- Realtime message budget for real-time arenas (SPEC §10.9) _(Phase 9)_
 - Stats, ratings and result integrity _(Phase 6–7)_
 - Social, chat and moderation _(Phase 8)_
 - PWA install, audio and haptics _(Phase 16; no offline mode, ADR-0014)_
