@@ -801,6 +801,7 @@ Online modes are enabled for the Phase 4 games.
   - **Privacy and data:** the privacy notice says what rated games keep, and the data export includes ratings, rating history and the player's games.
   - **Checks:** Deno 9/9, including Glickman's worked example to the second decimal (CI now runs these tests). End to end with two browsers, a spectator and local Supabase, 19/19: checkmate (+162 and −162 for two new players), resignations including three by the host, an outsider refused at `rated_action`, `submit-match`, `rated_game_record` and the ratings table, a forged illegal move set aside for review with no rating change, and a player who left losing on time (settled 62 s later). Both players leaving: the room went, and the job decided the game 62 s later (the side to move lost on time).
   - Rated rooms come from matchmaking (step 7); here they were made with SQL.
+  - **Fixed after review:** (1) rated games offered takebacks, which the server's replay doesn't know, so one request set the game aside; the online context now says a match is rated (`online.rated`) and chess turns takebacks off. (2) The two players' records can cross on the way (a premove answering a move that hasn't been recorded yet), so a move recorded out of turn now waits for its turn and takes no time; one still waiting at the end counts as refused. (3) A record lost to the network is tried again (up to 4 times); errors the database raises are final. Deno 10/10.
 
 ---
 

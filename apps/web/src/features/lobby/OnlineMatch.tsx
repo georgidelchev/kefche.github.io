@@ -24,7 +24,7 @@ import { fill, resultText, type TurnStrings } from "@/features/games/turn/labels
 import { send, type Supabase } from "@/lib/supabase/client";
 import type { Json } from "@/lib/supabase/database.gen";
 
-import { fetchRatedOutcome, type RatedOutcome } from "./rated-result";
+import { fetchRatedOutcome, recordRatedAction, type RatedOutcome } from "./rated-result";
 import { roomErrorCode } from "./room-store";
 
 import type { RoomMatch } from "./room-match";
@@ -160,11 +160,10 @@ export function OnlineMatch({
       },
       ...(isRated
         ? {
+            rated: true,
             recordAction: (_seat: number, action: unknown) => {
               recordingRef.current = recordingRef.current
-                .then(async () => {
-                  await supabase.rpc("rated_action", { p_room: roomId, p_action: action as Json });
-                })
+                .then(() => recordRatedAction(supabase, roomId, action as Json))
                 .catch(() => undefined);
             },
           }

@@ -5,6 +5,11 @@
 // (packages/games/chess/engine): seat 0 is white; resign, draw offers and
 // answers are side actions; rated games have no takebacks; losing on time
 // against a side that can't mate is a draw.
+//
+// Each player's actions arrive in the order they took them, but the two
+// players' records can cross on the way: a premove sent the instant the
+// opponent's move arrived may reach the server first. A move recorded out of
+// turn therefore waits for its turn and is played then, taking no time.
 import { Chess } from "chess.js";
 import * as z from "zod";
 
@@ -87,6 +92,8 @@ export function decide(game: RatedGame, recorded: readonly Recorded[], now: Date
   let turnStarted = game.startedAt.getTime();
   let drawOffer: number | null = null;
   let refused = 0;
+  /** Moves recorded before their turn, in order. */
+  const waiting: { seat: number; uci: string }[] = [];
 
   const finish = (winner: number | null, reason: string, at: number): Verdict => {
     const outcome: [number, number] = winner === null ? [0.5, 0.5] : winner === 0 ? [1, 0] : [0, 1];
@@ -98,12 +105,38 @@ export function decide(game: RatedGame, recorded: readonly Recorded[], now: Date
     chess.setHeader("TimeControl", `${String(game.clock.base)}+${String(game.clock.increment)}`);
     chess.setHeader("Termination", reason);
     chess.setHeader("Result", winner === null ? "1/2-1/2" : winner === 0 ? "1-0" : "0-1");
-    return { over: true, outcome, reason, endedAt: new Date(at), pgn: chess.pgn(), refused };
+    // A move still waiting never got its turn: the record is incomplete.
+    return {
+      over: true,
+      outcome,
+      reason,
+      endedAt: new Date(at),
+      pgn: chess.pgn(),
+      refused: refused + waiting.length,
+    };
   };
   /** The side to move ran out of time at `at`: a loss, or a draw if the other side can't mate. */
   const flagged = (at: number): Verdict => {
     const mover = chess.turn() === "w" ? 0 : 1;
     return finish(canMate(chess, other(mover)) ? other(mover) : null, "timeout", at);
+  };
+  /** Plays `seat`'s move at `time` (ms); false if it isn't legal. */
+  const play = (seat: number, uci: string, time: number): boolean => {
+    try {
+      chess.move({
+        from: uci.slice(0, 2),
+        to: uci.slice(2, 4),
+        ...(uci.length > 4 ? { promotion: uci.slice(4) } : {}),
+      });
+    } catch {
+      return false;
+    }
+    // The mover's clock, from the server's times, plus the increment.
+    clocks[seat] = Math.max(0, (clocks[seat] ?? 0) - (time - turnStarted)) + incrementMs;
+    turnStarted = time;
+    // Moving answers the other side's draw offer with a no.
+    if (drawOffer === other(seat)) drawOffer = null;
+    return true;
   };
   /** When the side to move's flag falls, grace included. */
   const flagFallsAt = () =>
@@ -132,28 +165,20 @@ export function decide(game: RatedGame, recorded: readonly Recorded[], now: Date
         if (drawOffer === other(seat)) drawOffer = null;
         break;
       case "move": {
-        const mover = chess.turn() === "w" ? 0 : 1;
-        if (seat !== mover) {
-          refused++;
+        if (seat !== (chess.turn() === "w" ? 0 : 1)) {
+          waiting.push({ seat, uci: a.uci });
           break;
         }
-        try {
-          chess.move({
-            from: a.uci.slice(0, 2),
-            to: a.uci.slice(2, 4),
-            ...(a.uci.length > 4 ? { promotion: a.uci.slice(4) } : {}),
-          });
-        } catch {
-          refused++;
-          break;
+        // The move, then any waiting move whose turn it now is.
+        let next: { seat: number; uci: string } | undefined = { seat, uci: a.uci };
+        while (next) {
+          if (!play(next.seat, next.uci, time)) refused++;
+          const end = ending(chess);
+          if (end) return finish(end.winner, end.reason, time);
+          const mover = chess.turn() === "w" ? 0 : 1;
+          const i = waiting.findIndex((w) => w.seat === mover);
+          next = i < 0 ? undefined : waiting.splice(i, 1)[0];
         }
-        // The mover's clock, from the server's times, plus the increment.
-        clocks[seat] = Math.max(0, (clocks[seat] ?? 0) - (time - turnStarted)) + incrementMs;
-        turnStarted = time;
-        // Moving answers the other side's draw offer with a no.
-        if (drawOffer === other(seat)) drawOffer = null;
-        const end = ending(chess);
-        if (end) return finish(end.winner, end.reason, time);
         break;
       }
     }

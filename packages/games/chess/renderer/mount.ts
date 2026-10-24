@@ -14,7 +14,8 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
   const sounds = createSounds(context);
   sounds.preload();
   // Takebacks are asked of the other player; against bots, Undo does that job.
-  const config = { takebacks: context.match?.mode !== "solo-bots" };
+  // Rated games have none: the server's replay knows no takebacks.
+  const config = { takebacks: context.match?.mode !== "solo-bots" && !context.online?.rated };
   return runTurnGame(context, {
     engine,
     config,

@@ -6,6 +6,30 @@
 import * as z from "zod/mini";
 
 import type { Supabase } from "@/lib/supabase/client";
+import type { Json } from "@/lib/supabase/database.gen";
+
+const wait = (ms: number) =>
+  new Promise<void>((resolve) => {
+    setTimeout(resolve, ms);
+  });
+
+/**
+ * Records one of the player's actions in the server's record of a rated
+ * match. A lost move would leave the record incomplete (and the game set
+ * aside for review), so a failed request is tried again; an error the
+ * database raised (no longer a member, the match is over) is final.
+ */
+export async function recordRatedAction(
+  supabase: Supabase,
+  roomId: string,
+  action: Json,
+): Promise<void> {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const { error } = await supabase.rpc("rated_action", { p_room: roomId, p_action: action });
+    if (!error || error.code) return;
+    await wait(500 * 2 ** attempt);
+  }
+}
 
 export type RatedOutcome =
   { kind: "rated"; before: number; after: number } | { kind: "review" } | { kind: "failed" };
@@ -20,10 +44,6 @@ const response = z.union([
 
 const ATTEMPTS = 8;
 const RETRY_CAP_MS = 10_000;
-const wait = (ms: number) =>
-  new Promise<void>((resolve) => {
-    setTimeout(resolve, ms);
-  });
 
 /** Asks for the match's result until the server has one (or gives up), for `seat`'s rating. */
 export async function fetchRatedOutcome(

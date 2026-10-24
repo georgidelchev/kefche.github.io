@@ -85,12 +85,31 @@ Deno.test("each move costs its mover the time taken and adds the increment", () 
   equal(v.flagAt.getTime(), start.getTime() + 2000 + 61_000 + FLAG_GRACE_MS, "white's flag");
 });
 
-Deno.test("refused: a move out of turn, an illegal move, junk", () => {
+Deno.test("crossed records: a reply recorded before the move it answers waits its turn", () => {
   const actions: Recorded[] = [
-    { seat: 1, action: { type: "move", uci: "e7e5" }, at: later(500) },
+    { seat: 1, action: { type: "move", uci: "e7e5" }, at: later(900) },
+    { seat: 0, action: { type: "move", uci: "e2e4" }, at: later(1000) },
+  ];
+  const v = decide(game, actions, later(2000));
+  if (v.over) throw new Error("not over");
+  // Black's reply came at 1 s and took no time: white to move with 61 s.
+  equal(v.flagAt.getTime(), start.getTime() + 1000 + 61_000 + FLAG_GRACE_MS, "white's flag");
+  const resigned = decide(
+    game,
+    [...actions, { seat: 0, action: { type: "resign" }, at: later(1500) }],
+    later(2000),
+  );
+  if (!resigned.over) throw new Error("over");
+  equal(resigned.refused, 0, "refused");
+  if (!resigned.pgn.includes("1. e4 e5")) throw new Error(resigned.pgn);
+});
+
+Deno.test("refused: an illegal move, junk, a move that never got its turn", () => {
+  const actions: Recorded[] = [
     { seat: 0, action: { type: "move", uci: "e2e5" }, at: later(600) },
     { seat: 0, action: { type: "teleport" }, at: later(700) },
     { seat: 0, action: { type: "move", uci: "e2e4" }, at: later(1000) },
+    { seat: 0, action: { type: "move", uci: "d2d4" }, at: later(1200) },
   ];
   const v = decide(game, actions, later(2000));
   if (v.over) throw new Error("not over");
