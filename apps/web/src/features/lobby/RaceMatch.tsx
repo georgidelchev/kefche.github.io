@@ -215,6 +215,7 @@ export function RaceMatch({
 
   // ---------------------------------------------------------------- sending
   const lastSentRef = useRef(0);
+  const sentRef = useRef("");
   const pendingRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   /** The moves so far, to the host now (once per host). */
@@ -227,7 +228,8 @@ export function RaceMatch({
     else transport.send(host, message("finish", { log }));
   });
 
-  const sendProgress = useEffectEvent(() => {
+  /** The standing, to everyone: only when it changed, unless `force` (a newcomer). */
+  const sendProgress = useEffectEvent((force = false) => {
     const local = localRef.current;
     if (!local || !seated) return;
     const result = local.engine.result(local.state);
@@ -236,8 +238,12 @@ export function RaceMatch({
       progress: local.engine.progress(local.state),
       finished: result !== null,
     };
-    setMine(progress);
+    // Most moves change nothing the others see (a snake that didn't eat).
+    const key = JSON.stringify(progress);
+    if (key === sentRef.current && !force) return;
+    sentRef.current = key;
     lastSentRef.current = Date.now();
+    setMine(progress);
     transport.broadcast(message("progress", progress));
     if (progress.finished) sendFinish();
   });
@@ -252,7 +258,7 @@ export function RaceMatch({
   });
   // Newcomers hear where everyone is.
   const onPresence = useEffectEvent(() => {
-    if (localRef.current) sendProgress();
+    if (localRef.current) sendProgress(true);
   });
 
   // The clock: the countdown, the time left, and the host's end check.
@@ -337,7 +343,7 @@ export function RaceMatch({
       ([engine, loaded]) => {
         if (cancelled) return;
         localRef.current = { engine, state: engine.initialState(config, seed), actions: [] };
-        sendProgress();
+        sendProgress(true);
         const stage = stageRef.current;
         if (!loaded || !stage) return;
         instance = loaded.mount(stage, {
