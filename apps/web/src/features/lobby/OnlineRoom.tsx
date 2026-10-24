@@ -36,6 +36,8 @@ export interface OnlineGame {
   config: TurnConfig;
   /** The game's own UI strings (i18n/<locale>.json "ui"). */
   ui: Record<string, string>;
+  /** Online modes beyond invite-only rooms (manifest `online-public`, `quick-match`). */
+  modes: { public: boolean; quick: boolean };
 }
 
 /** A change to the room as this browser shows it. */
@@ -67,13 +69,15 @@ type Stage =
 const CODE = /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/;
 const normalizeCode = (raw: string) => raw.trim().toUpperCase().replace(/[\s-]/g, "");
 
-function intentFromUrl(): Intent | null {
+function intentFromUrl(modes: OnlineGame["modes"]): Intent | null {
   const params = new URLSearchParams(location.search);
   const room = params.get("room");
   if (room !== null) return { kind: "join", code: normalizeCode(room) };
-  if (params.has("quick")) return { kind: "quick" };
+  if (params.has("quick") && modes.quick) return { kind: "quick" };
   // ?new=public (from the lobby browser) lists the new room there.
-  return params.has("new") ? { kind: "create", public: params.get("new") === "public" } : null;
+  return params.has("new")
+    ? { kind: "create", public: modes.public && params.get("new") === "public" }
+    : null;
 }
 
 export function OnlineRoom({
@@ -89,7 +93,7 @@ export function OnlineRoom({
 }: Props) {
   // A link with ?room=, ?quick or ?new[=public] starts at once (the page renders only in the browser).
   const [stage, setStage] = useState<Stage>(() => {
-    const intent = intentFromUrl();
+    const intent = intentFromUrl(game.modes);
     return intent ? { kind: "working", intent } : { kind: "choose" };
   });
   const [error, setError] = useState<string | null>(null);
@@ -160,7 +164,7 @@ export function OnlineRoom({
 
   switch (stage.kind) {
     case "choose":
-      return <Choose strings={s} error={error} onRun={begin} />;
+      return <Choose strings={s} quick={game.modes.quick} error={error} onRun={begin} />;
     case "working":
       return (
         <Waiting
@@ -237,10 +241,12 @@ export function OnlineRoom({
 
 function Choose({
   strings: s,
+  quick,
   error,
   onRun,
 }: {
   strings: RoomStrings;
+  quick: boolean;
   error: string | null;
   onRun: (intent: Intent) => void;
 }) {
@@ -249,17 +255,19 @@ function Choose({
   return (
     <div className="grid gap-6">
       <div className="flex flex-wrap gap-3">
+        {quick && (
+          <Button
+            size="lg"
+            onClick={() => {
+              onRun({ kind: "quick" });
+            }}
+          >
+            {s.quick}
+          </Button>
+        )}
         <Button
           size="lg"
-          onClick={() => {
-            onRun({ kind: "quick" });
-          }}
-        >
-          {s.quick}
-        </Button>
-        <Button
-          size="lg"
-          variant="outline"
+          variant={quick ? "outline" : "primary"}
           onClick={() => {
             onRun({ kind: "create" });
           }}
@@ -612,6 +620,7 @@ function Room({
         self={self}
         present={present}
         config={game.config}
+        allowPublic={game.modes.public}
         turn={turn}
         strings={s}
         locale={locale}

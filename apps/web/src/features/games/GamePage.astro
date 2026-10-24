@@ -13,7 +13,7 @@ import { LOCALE_INFO, type Locale } from "@/i18n/locales";
 
 import { CATEGORY_KEYS, playablePlayers } from "./catalog";
 import { GamePlayer } from "./GamePlayer";
-import { playerStrings, playsOnline, turnConfig, turnStrings } from "./page-props";
+import { onlineModes, playerStrings, playsOnline, turnConfig, turnStrings } from "./page-props";
 
 import type { RegisteredGame } from "./registry";
 
@@ -91,6 +91,7 @@ const jsonLd = [
 const config = turnConfig(manifest);
 const turn = config && config.modes.length > 0 ? { config, strings: turnStrings(t) } : null;
 const online = playsOnline(manifest) ? getRelativeLocaleUrl(locale, `/play/${manifest.id}/`) : null;
+const modes = onlineModes(manifest);
 const room = roomStrings(t);
 const section = "grid gap-3";
 const crumb = "rounded-sm hover:underline";
@@ -159,14 +160,20 @@ const crumb = "rounded-sm hover:underline";
             {room.playOnline}
           </h2>
           <div class="flex flex-wrap items-end gap-x-6 gap-y-4">
+            {modes.quick && (
+              <a
+                href={`${online}?quick`}
+                class={buttonVariants({ variant: "primary" })}
+                rel="nofollow"
+              >
+                {room.quick}
+              </a>
+            )}
             <a
-              href={`${online}?quick`}
-              class={buttonVariants({ variant: "primary" })}
+              href={`${online}?new`}
+              class={buttonVariants({ variant: modes.quick ? "outline" : "primary" })}
               rel="nofollow"
             >
-              {room.quick}
-            </a>
-            <a href={`${online}?new`} class={buttonVariants({ variant: "outline" })} rel="nofollow">
               {room.create}
             </a>
             <!-- A plain GET form: the room page reads ?room= and joins. -->
@@ -192,12 +199,14 @@ const crumb = "rounded-sm hover:underline";
               </button>
             </form>
           </div>
-          <a
-            href={`${getRelativeLocaleUrl(locale, "/play/")}?game=${manifest.id}`}
-            class="justify-self-start font-semibold text-link underline-offset-4 hover:underline"
-          >
-            {t("lobby:browser.browse")}
-          </a>
+          {modes.public && (
+            <a
+              href={`${getRelativeLocaleUrl(locale, "/play/")}?game=${manifest.id}`}
+              class="justify-self-start font-semibold text-link underline-offset-4 hover:underline"
+            >
+              {t("lobby:browser.browse")}
+            </a>
+          )}
         </section>
       )}
     </header>

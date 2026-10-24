@@ -2,7 +2,13 @@
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 import { authStrings } from "@/features/auth/strings";
-import { playerStrings, playsOnline, turnConfig, turnStrings } from "@/features/games/page-props";
+import {
+  onlineModes,
+  playerStrings,
+  playsOnline,
+  turnConfig,
+  turnStrings,
+} from "@/features/games/page-props";
 import { listGames, type RegisteredGame } from "@/features/games/registry";
 import { OnlineRoom } from "@/features/lobby/OnlineRoom";
 import { chatStrings, guestStrings, roomStrings } from "@/features/lobby/strings";
@@ -75,6 +81,7 @@ const strings = roomStrings(t);
               name: text.name,
               config,
               ui: text.ui,
+              modes: onlineModes(manifest),
             }}
             locale={bcp47}
             dir={dir}

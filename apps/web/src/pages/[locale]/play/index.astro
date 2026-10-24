@@ -1,7 +1,7 @@
 ---
 import { getRelativeLocaleUrl } from "astro:i18n";
 
-import { playsOnline } from "@/features/games/page-props";
+import { onlineModes, playsOnline } from "@/features/games/page-props";
 import { listGames } from "@/features/games/registry";
 import { PublicLobbies } from "@/features/lobby/PublicLobbies";
 import { lobbyBrowserStrings } from "@/features/lobby/strings";
@@ -13,7 +13,7 @@ import { getSupabaseEnv } from "@/lib/env";
 import type { GetStaticPaths } from "astro";
 
 // The public lobby browser (SPEC §10.2, Phase 5 step 8): open public rooms
-// of every game that plays online, live. Only in builds with Supabase;
+// of every game that offers public lobbies (`online-public`), live. Only in builds with Supabase;
 // without it, /play/ is the "coming soon" page.
 export const getStaticPaths = (() =>
   getSupabaseEnv() === null
@@ -23,7 +23,7 @@ export const getStaticPaths = (() =>
 const locale = Astro.params.locale as Locale;
 const t = getT(locale);
 const games = listGames()
-  .filter((game) => playsOnline(game.manifest))
+  .filter((game) => playsOnline(game.manifest) && onlineModes(game.manifest).public)
   .map((game) => ({
     id: game.manifest.id,
     name: game.text[locale].name,

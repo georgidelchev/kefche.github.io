@@ -50,6 +50,12 @@ export const playsOnline = (manifest: GameManifest): boolean =>
   manifest.modes.includes("online-private") &&
   getSupabaseEnv() !== null;
 
+/** Which online modes a game that plays online offers beyond invite-only rooms. */
+export const onlineModes = (manifest: GameManifest): { public: boolean; quick: boolean } => ({
+  public: manifest.modes.includes("online-public"),
+  quick: manifest.modes.includes("quick-match"),
+});
+
 export function turnStrings(t: AppT): TurnStrings {
   return {
     start: { "solo-bots": t("games:turn.start.soloBots"), hotseat: t("games:turn.start.hotseat") },

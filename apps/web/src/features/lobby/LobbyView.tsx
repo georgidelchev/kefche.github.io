@@ -43,6 +43,8 @@ interface Props {
   self: string;
   present: ReadonlySet<string>;
   config: TurnConfig;
+  /** The game offers public lobbies (manifest `online-public`). */
+  allowPublic: boolean;
   turn: TurnStrings;
   strings: RoomStrings;
   locale: string;
@@ -59,6 +61,7 @@ export function LobbyView({
   self,
   present,
   config,
+  allowPublic,
   turn: ts,
   strings: s,
   locale,
@@ -246,17 +249,20 @@ export function LobbyView({
                 }}
               />
             )}
-            <Segmented
-              legend={s.visibility}
-              value={room.visibility === "public" ? "public" : "private"}
-              options={[
-                { value: "private", label: s.private },
-                { value: "public", label: s.public },
-              ]}
-              onChange={(visibility) => {
-                actions.update({ visibility });
-              }}
-            />
+            {/* A public room of a game without public lobbies can still go private. */}
+            {(allowPublic || room.visibility === "public") && (
+              <Segmented
+                legend={s.visibility}
+                value={room.visibility === "public" ? "public" : "private"}
+                options={[
+                  { value: "private", label: s.private },
+                  { value: "public", label: s.public },
+                ]}
+                onChange={(visibility) => {
+                  actions.update({ visibility });
+                }}
+              />
+            )}
             <div className="flex flex-wrap gap-x-6 gap-y-2">
               <label className="flex min-h-11 items-center gap-3 font-semibold">
                 <input

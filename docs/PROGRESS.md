@@ -658,7 +658,17 @@ Online modes are enabled for the Phase 4 games.
    - **Live, at once:** Realtime database changes never reach a visitor for a room they can no longer read (one that turned private, for example). So triggers on `rooms` and `room_members` announce every change that can alter the list on the private Broadcast topic `lobbies`, and the page reads the list again. Anyone may listen there; nobody may send. The message carries no data, and heartbeats don't announce anything.
    - **Privacy:** browsing reads as `anon`, so no guest identity is created until someone joins.
    - "Create a public lobby" (`?new=public`) creates a listed room for the chosen game. The game page links to its lobbies.
-9. **Online modes for the Phase 4 games:** their manifests add `online-private`, `online-public` and `quick-match`. Spectators see the public state and can't act.
+9. **Online modes for the Phase 4 games:**
+   - **Manifests:** Reversi, Four in a Row and Dots and Boxes now declare `online-public` and `quick-match`.
+   - **What follows the modes:** each button and setting appears only for a game that declares its mode: Quick match, the public lobbies link, the lobby browser's games and the lobby's "Who can find this room" setting.
+   - **Spectators** see the public state and can't act.
+   - **Server-stamped messages:** Broadcast doesn't verify who sent a message, so before this step a spectator could move for a player by writing that player's id into `from`. That was proven with a forged move. Now moves, states and race progress go through `room_relay`:
+     - a move needs a seated player;
+     - a state needs the host;
+     - the function stamps `from` and sends on the listen-only `room-relay:<code>`;
+     - those types are dropped when they arrive on `room:<code>`.
+   - **Hashing:** the state hash uses sorted keys, because the database reorders JSON keys.
+   - **Cleanup:** relayed messages are deleted with their room.
 10. **Race mode for 2048, Sudoku and Snake** (owner decision): everyone in the room plays the same game from the same seed.
     - **Live leaderboard:** a leaderboard in the room re-sorts as scores, progress and finishing times change.
     - **Checking results:** each player's browser reports progress; the host checks finishes by replaying the player's moves on the shared seed (`replay()`), which works because the games are deterministic.
@@ -701,7 +711,8 @@ Online modes are enabled for the Phase 4 games.
 - [x] Plan approved by owner (2026-10-23, with the answers above)
 - [x] Steps 0–7 done (hosted Supabase has the Phase 2 schema; the Phase 5 migrations go up with the next deploy)
 - [x] Owner: the production build settings are set in GitHub (as environment secrets), and Realtime "Allow public access" is off (2026-10-24)
-- [x] Step 8 done: the public lobby browser and quick match (no bot fill, owner decision 2026-10-24)
+- [x] Step 8 done: the public lobby browser and quick match (no bot fill, owner decision 2026-10-24). With All games selected, "Create a public lobby" opens a game picker (owner request).
+- [x] Step 9 done: online modes from the manifests, and server-stamped match messages
 
 ---
 
