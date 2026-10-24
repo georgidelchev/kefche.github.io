@@ -118,7 +118,19 @@ export interface GameInstance {
   destroy(): void;
 }
 
+/**
+ * A small, live picture of another player's game in a race, drawn from the
+ * engine state that the room replays from their moves. It shows the shape of
+ * the game, never anything that would help copy it (no Sudoku digits).
+ */
+export interface MiniView {
+  update(state: unknown): void;
+  destroy(): void;
+}
+
 /** What a game's index.ts exports (as `game`). Loaded lazily by the player. */
 export interface GameModule {
   mount(container: HTMLElement, context: GameContext): GameInstance;
+  /** Race games: draws another player's board into `container`. */
+  mini?(container: HTMLElement): MiniView;
 }

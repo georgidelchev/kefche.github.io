@@ -14,6 +14,10 @@ export const MAX_MESSAGE_BYTES = 32 * 1024;
 
 const id = z.string().check(z.minLength(1), z.maxLength(64));
 const seq = z.int().check(z.nonnegative());
+const packedLog = z.object({
+  dict: z.array(z.unknown()).check(z.maxLength(RACE_LOG_LIMITS.dict)),
+  runs: z.string().check(z.maxLength(RACE_LOG_LIMITS.runs)),
+});
 
 /** Payload schema per message type. */
 export const PAYLOADS = {
@@ -43,20 +47,19 @@ export const PAYLOADS = {
   /** Latency probes; `at` is the sender's clock. */
   ping: z.object({ at: z.number() }),
   pong: z.object({ at: z.number() }),
-  /** Race mode: a player's live standing on the shared seed. */
+  /**
+   * Race mode: a player's live standing on the shared seed, with their moves
+   * so far (packActions) so everyone can draw that player's board live.
+   */
   progress: z.object({
     score: z.number(),
     progress: z.number().check(z.gte(0), z.lte(1)),
     finished: z.boolean(),
     timeMs: z.optional(z.number().check(z.nonnegative())),
+    log: z.optional(packedLog),
   }),
   /** Race mode: a finished player's moves (packActions), for the host to replay and check. */
-  finish: z.object({
-    log: z.object({
-      dict: z.array(z.unknown()).check(z.maxLength(RACE_LOG_LIMITS.dict)),
-      runs: z.string().check(z.maxLength(RACE_LOG_LIMITS.runs)),
-    }),
-  }),
+  finish: z.object({ log: packedLog }),
   /**
    * Race mode, host → everyone: the results the host checked by replaying
    * each finished player's moves, and whether the race is over.

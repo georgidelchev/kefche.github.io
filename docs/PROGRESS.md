@@ -672,7 +672,9 @@ Online modes are enabled for the Phase 4 games.
 10. **Race mode for 2048, Sudoku and Snake** (owner decision, done 2026-10-24): everyone in the room plays the same game from the same seed.
     - **Room setup:** the room and lobby are the turn games' own (seats, ready, invites, chat, host controls), with people only. The manifest's countdowns are the time limits (`start_room` records `startedAt`), and its `raceOptions` (Sudoku's difficulty; Snake's speed and edges) are picked by the host and become the engine config.
     - **Games:** each game records every action through `context.race.record`. In a race, Sudoku skips its menu and saved game and has no hints (`allowedInRace`); Snake skips its menu.
-    - **Live standings:** each browser mirrors its player's game with the engine and relays its progress.
+    - **Live standings:** each browser mirrors its player's game with the engine and relays its progress, at most every 0.5 s, with the packed moves so far.
+    - **Mini boards:** every browser replays each opponent's moves and draws their board live next to their name, with the game's `mini()` MiniView. Sudoku shows only which cells are filled, never the digits.
+    - **A simultaneous start** (owner request): everyone counts down on the database's clock (`server_time`, the fastest of three round trips), so a device whose clock is off still starts with the rest. The game loads during the countdown and mounts at zero, and Snake sets off by itself.
     - **Checking finishes:** at a finish, or when time runs out, the packed moves (`packActions`) go to the host, which replays them (`checkRace`). Only checked results count; the host relays them as `standings`, ends the race and offers a rematch. If the host leaves, the first seated member here takes over and everyone resends.
     - **Limits** (unrated, so accepted for now):
       - a reload mid-race starts the player's game again on the same seed, while the clock keeps running;

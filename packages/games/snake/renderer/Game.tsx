@@ -1,8 +1,9 @@
 // Snake: a settings menu (speed, walls or wrap-around), then the Canvas
 // board, steered by swipes, arrow keys / WASD or the on-screen D-pad (shown
 // on touch screens). The game waits for the first direction before moving.
-// In a race (context.race) the room's settings skip the menu, and every
-// tick and turn is recorded.
+// In a race (context.race) the room's settings skip the menu, the snake
+// sets off at once (everyone starts together), and every tick and turn is
+// recorded.
 import { useEffect, useRef, useState } from "react";
 
 import {
@@ -174,7 +175,8 @@ function Board({
   // Set by the game effect; the D-pad buttons call it.
   const turnRef = useRef<(direction: Direction) => void>(() => undefined);
   const [score, setScore] = useState(0);
-  const [waiting, setWaiting] = useState(true);
+  // A race starts everyone at the same moment: no waiting for a first turn.
+  const [waiting, setWaiting] = useState(context.race === undefined);
   const [best] = useState(() => bestScore(storage, config));
 
   useEffect(() => {
@@ -343,6 +345,10 @@ function Board({
       }
     };
     turnRef.current = turn;
+    if (context.race) {
+      started = true;
+      loop.start();
+    }
 
     // The loop pauses itself when the tab is hidden; after the player's
     // Resume it picks up again here.

@@ -317,6 +317,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"server_time":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
 "set_guest_profile":
 { Args: { "p_nickname": string }; Returns: string
                            },

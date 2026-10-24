@@ -11,12 +11,17 @@
 //   the time is up, then offers a rematch.
 // - If the host goes away, the first seated member here takes over, and
 //   everyone who finished sends their moves again.
+// - Progress carries each player's moves so far, so every browser replays
+//   them and draws the other players' boards live (the game's MiniView).
+// - Everyone counts down on the database's clock (`server_time`), and the
+//   game is loaded during the countdown, so all start at the same moment.
 import { LoaderCircle, LogOut, Trophy, Volume2, VolumeX } from "lucide-react";
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 
 import {
   createMessenger,
   packActions,
+  unpackActions,
   type Message,
   type Payload,
   type RaceEngine,
@@ -27,6 +32,8 @@ import {
   isMuted,
   setMuted as saveMuted,
   type GameInstance,
+  type GameModule,
+  type MiniView,
 } from "@kefche/game-sdk/browser";
 import { Button } from "@kefche/ui/components/button";
 
@@ -45,8 +52,8 @@ import type { RaceOptionValues } from "./room-settings";
 import type { RaceStrings, RoomStrings } from "./strings";
 
 const COUNTDOWN_MS = 3000;
-/** Progress goes out at most this often while it changes. */
-const PROGRESS_MS = 1000;
+/** Progress (with the moves, for the live mini boards) goes out at most this often. */
+const PROGRESS_MS = 500;
 /** After the time limit, how long the host waits for the last moves to arrive. */
 const GRACE_MS = 5000;
 /** How long the host may be gone before someone takes over. */
@@ -83,6 +90,26 @@ interface Local {
   engine: RaceEngine<unknown, unknown, unknown>;
   state: unknown;
   actions: unknown[];
+}
+
+/** Another player's board, drawn by the game's MiniView. */
+function MiniBoard({ module, state }: { module: GameModule; state: unknown }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const viewRef = useRef<MiniView | null>(null);
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container || !module.mini) return;
+    const view = module.mini(container);
+    viewRef.current = view;
+    return () => {
+      view.destroy();
+      viewRef.current = null;
+    };
+  }, [module]);
+  useEffect(() => {
+    viewRef.current?.update(state);
+  }, [state]);
+  return <div ref={containerRef} className="mx-auto w-20 md:w-full md:max-w-44" />;
 }
 
 export function RaceMatch({
@@ -124,15 +151,55 @@ export function RaceMatch({
   const sentToRef = useRef<string | null>(null);
   const [message] = useState(() => createMessenger(roomId, self));
   const [config] = useState(() => raceConfig(game.race.options, options));
+  // Other players' boards: the game's MiniView, the state everyone starts
+  // from, and each player's state replayed from the moves they relay.
+  const [module, setModule] = useState<GameModule | null>(null);
+  const [initial, setInitial] = useState<unknown>(null);
+  const [boards, setBoards] = useState<ReadonlyMap<string, unknown>>(() => new Map());
+  const replicasRef = useRef(new Map<string, { applied: number; state: unknown }>());
+  // The database's clock minus this device's (ms): every browser counts down
+  // to the same moment, whatever its own clock says.
+  const offsetRef = useRef(0);
+  // Nothing starts before the clocks agree (or the measurement gave up).
+  const [synced, setSynced] = useState(false);
   const isHost = host === self;
   const seated = match.setup.localSeat !== undefined;
   const timeUp = now >= end;
   useGameScreen(true);
 
+  useEffect(() => {
+    const closed = new AbortController();
+    void (async () => {
+      // The quickest of three round trips is the most accurate.
+      let best: { offset: number; rtt: number } | null = null;
+      for (let i = 0; i < 3; i++) {
+        const t0 = Date.now();
+        const { data, error: rpcError } = await supabase.rpc("server_time");
+        const t1 = Date.now();
+        if (rpcError) continue;
+        const sample = { offset: data - (t0 + t1) / 2, rtt: t1 - t0 };
+        if (!best || sample.rtt < best.rtt) best = sample;
+      }
+      if (closed.signal.aborted) return;
+      if (best) offsetRef.current = best.offset;
+      setNow(Date.now() + offsetRef.current);
+      setSynced(true);
+    })();
+    return () => {
+      closed.abort();
+    };
+  }, [supabase]);
+
+  // Loaded during the countdown, so the game starts the moment it ends.
+  useEffect(() => {
+    loadRaceEngine(game.id).catch(() => undefined);
+    loadGame(game.id).catch(() => undefined);
+  }, [game.id]);
+
   const counting = now < raceStart;
   // A reload mid-race skips the countdown it already saw.
-  const showCount = counting && countdown;
-  const started = !showCount;
+  const showCount = (counting || !synced) && countdown;
+  const started = synced && !showCount;
 
   // ---------------------------------------------------------- the host side
   const resultsRef = useRef(new Map<string, Result>());
@@ -151,7 +218,7 @@ export function RaceMatch({
       member,
       score: result.score,
       // As the host saw it, and never past the time limit.
-      timeMs: Math.max(0, Math.min(Date.now(), end) - raceStart),
+      timeMs: Math.max(0, Math.min(Date.now() + offsetRef.current, end) - raceStart),
       completed: result.completed,
       valid: result.valid,
     };
@@ -166,7 +233,7 @@ export function RaceMatch({
     if (!isHost || ended) return;
     const players = match.seatMembers.filter((m): m is string => m !== null && present.has(m));
     const allIn = players.length > 0 && players.every((m) => resultsRef.current.has(m));
-    if (allIn || Date.now() >= end + GRACE_MS) {
+    if (allIn || Date.now() + offsetRef.current >= end + GRACE_MS) {
       setEnded(true);
       broadcastStandings({ over: true });
       send(supabase.rpc("finish_room", { p_room: roomId }));
@@ -198,7 +265,8 @@ export function RaceMatch({
     };
     setMine(progress);
     lastSentRef.current = Date.now();
-    transport.broadcast(message("progress", progress));
+    // With the moves so far, so the others can draw this board live.
+    transport.broadcast(message("progress", { ...progress, log: packActions(local.actions) }));
     if (progress.finished) sendFinish();
   });
 
@@ -218,7 +286,7 @@ export function RaceMatch({
   // The clock: the countdown, the time left, and the host's end check.
   useEffect(() => {
     const timer = setInterval(() => {
-      setNow(Date.now());
+      setNow(Date.now() + offsetRef.current);
       checkEnd();
     }, 250);
     return () => {
@@ -255,10 +323,32 @@ export function RaceMatch({
   }, [host, present, match, self, supabase, roomId]);
 
   // ---------------------------------------------------------------- receiving
+  /** Replays a player's relayed moves onto their mirrored board (only the new ones). */
+  const followBoard = useEffectEvent((member: string, log: Payload<"finish">["log"]) => {
+    const local = localRef.current;
+    const actions = unpackActions(log);
+    if (!local || initial === null || !actions) return;
+    let replica = replicasRef.current.get(member);
+    // A shorter log: that player started again (a reload).
+    if (!replica || actions.length < replica.applied) replica = { applied: 0, state: initial };
+    try {
+      let state = replica.state;
+      for (let i = replica.applied; i < actions.length; i++)
+        state = local.engine.apply(state, actions[i]);
+      replica = { applied: actions.length, state };
+    } catch {
+      return;
+    }
+    replicasRef.current.set(member, replica);
+    const { state } = replica;
+    setBoards((map) => new Map(map).set(member, state));
+  });
+
   const onMessage = useEffectEvent((m: Message) => {
     if (m.type === "progress") {
       if (!match.seatMembers.includes(m.from)) return;
       setOthers((map) => new Map(map).set(m.from, m.payload));
+      if (m.payload.log) followBoard(m.from, m.payload.log);
     } else if (m.type === "finish") {
       if (isHost) hostCheck(m.from, m.payload.log);
     } else if (m.type === "standings") {
@@ -293,14 +383,18 @@ export function RaceMatch({
         sendProgress();
       }, wait);
     };
-    Promise.all([loadRaceEngine(game.id), seated ? loadGame(game.id) : null]).then(
-      ([engine, module]) => {
+    // Spectators load the game too: it draws everyone's mini board.
+    Promise.all([loadRaceEngine(game.id), loadGame(game.id)]).then(
+      ([engine, loaded]) => {
         if (cancelled) return;
-        localRef.current = { engine, state: engine.initialState(config, seed), actions: [] };
+        const start = engine.initialState(config, seed);
+        localRef.current = { engine, state: start, actions: [] };
+        setModule(loaded);
+        setInitial(start);
         sendProgress();
         const stage = stageRef.current;
-        if (!module || !stage) return;
-        instance = module.mount(stage, {
+        if (!seated || !stage) return;
+        instance = loaded.mount(stage, {
           locale,
           dir,
           seed,
@@ -316,7 +410,7 @@ export function RaceMatch({
             record: (action) => {
               const local = localRef.current;
               // After the time limit the moves no longer count.
-              if (!local || Date.now() >= end) return;
+              if (!local || Date.now() + offsetRef.current >= end) return;
               local.actions.push(action);
               local.state = local.engine.apply(local.state, action);
               queueProgress();
@@ -332,6 +426,8 @@ export function RaceMatch({
     return () => {
       cancelled = true;
       if (pendingRef.current !== null) clearTimeout(pendingRef.current);
+      // Or the next mount's progress would wait on a timer that never fires.
+      pendingRef.current = null;
       const closing = instance;
       queueMicrotask(() => closing?.destroy());
     };
@@ -421,31 +517,39 @@ export function RaceMatch({
       <div className="flex min-h-0 flex-1 flex-col md:flex-row">
         <section
           aria-label={rs.standings}
-          className="shrink-0 border-b border-border bg-surface md:order-last md:w-72 md:border-s md:border-b-0"
+          className="shrink-0 border-b border-border bg-surface md:order-last md:w-72 md:overflow-y-auto md:border-s md:border-b-0"
         >
           <h3 className="sr-only">{rs.standings}</h3>
-          <ol className="flex gap-2 overflow-x-auto p-2 md:grid md:gap-1 md:overflow-visible md:p-3">
-            {rows.map((row, i) => (
-              <li
-                key={row.member}
-                className="flex min-w-max items-center gap-2 rounded-lg bg-surface-2 px-3 py-1.5 text-sm md:min-w-0"
-                data-self={row.member === self ? "" : undefined}
-              >
-                <span className="w-5 font-semibold tabular-nums">{i + 1}</span>
-                <span className="min-w-0 flex-1 truncate font-semibold">
-                  {row.name}
-                  {row.member === self && (
-                    <span className="font-normal text-muted"> ({s.you})</span>
+          <ol className="flex gap-2 overflow-x-auto p-2 md:grid md:gap-2 md:overflow-visible md:p-3">
+            {rows.map((row, i) => {
+              // Everyone else's board, live (yours is the big one).
+              const board =
+                row.member !== self && module?.mini ? (boards.get(row.member) ?? initial) : null;
+              return (
+                <li
+                  key={row.member}
+                  className="grid min-w-36 content-start gap-1.5 rounded-lg bg-surface-2 p-2 text-sm md:min-w-0"
+                  data-self={row.member === self ? "" : undefined}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="w-5 font-semibold tabular-nums">{i + 1}</span>
+                    <span className="min-w-0 flex-1 truncate font-semibold">
+                      {row.name}
+                      {row.member === self && (
+                        <span className="font-normal text-muted"> ({s.you})</span>
+                      )}
+                    </span>
+                    <span className="text-muted tabular-nums">{detail(row)}</span>
+                  </div>
+                  {row.finished && row.valid !== false && (
+                    <span className="text-xs font-semibold text-muted">
+                      {row.completed ? rs.solved : rs.gameOver}
+                    </span>
                   )}
-                </span>
-                <span className="text-muted tabular-nums">{detail(row)}</span>
-                {row.finished && row.valid !== false && (
-                  <span className="text-xs font-semibold text-muted">
-                    {row.completed ? rs.solved : rs.gameOver}
-                  </span>
-                )}
-              </li>
-            ))}
+                  {board !== null && module && <MiniBoard module={module} state={board} />}
+                </li>
+              );
+            })}
           </ol>
         </section>
 
@@ -456,7 +560,11 @@ export function RaceMatch({
             <Overlay>
               <p role="status" className="text-3xl font-semibold tabular-nums">
                 {fill(s.countdown, {
-                  seconds: Math.ceil((raceStart - now) / 1000).toLocaleString(locale),
+                  // Within 3…1 while the clocks are still being lined up.
+                  seconds: Math.min(
+                    COUNTDOWN_MS / 1000,
+                    Math.max(1, Math.ceil((raceStart - now) / 1000)),
+                  ).toLocaleString(locale),
                 })}
               </p>
             </Overlay>
