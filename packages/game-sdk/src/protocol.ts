@@ -119,12 +119,29 @@ export function createMessenger(roomId: string, from: string) {
   });
 }
 
+/** JSON with object keys sorted, so the same value always gives the same text. */
+function canonicalJson(value: unknown): string {
+  const sorted = (v: unknown): unknown =>
+    Array.isArray(v)
+      ? v.map(sorted)
+      : v !== null && typeof v === "object"
+        ? Object.fromEntries(
+            Object.entries(v)
+              .sort(([a], [b]) => (a < b ? -1 : 1))
+              .map(([k, x]) => [k, sorted(x)]),
+          )
+        : v;
+  // null for undefined, which JSON.stringify would turn into no text at all.
+  return JSON.stringify(sorted(value) ?? null);
+}
+
 /**
- * A short, stable hash of a JSON value (FNV-1a over its JSON), to compare
- * states between host and guests. Not for security.
+ * A short, stable hash of a JSON value (FNV-1a over its JSON, keys sorted:
+ * a relay through the database reorders them), to compare states between
+ * host and guests. Not for security.
  */
 export function stateHash(value: unknown): string {
-  const text = (JSON.stringify(value) as string | undefined) ?? "";
+  const text = canonicalJson(value);
   let h = 0x811c9dc5;
   for (let i = 0; i < text.length; i++) {
     h ^= text.charCodeAt(i);

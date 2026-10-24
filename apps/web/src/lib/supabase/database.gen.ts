@@ -299,6 +299,9 @@ isOneToOne: false
 "room_invite":
 { Args: { "p_code": string }; Returns: string
                            },
+"room_relay":
+{ Args: { "p_message": Json,"p_room": string }; Returns: undefined
+                           },
 "send_room_message":
 { Args: { "p_body": string,"p_room": string }; Returns: {
               "body": string,
