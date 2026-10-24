@@ -1,8 +1,8 @@
 // The public lobby browser's data (Phase 5 step 8): open public rooms from
-// `public_rooms`, read again whenever a room changes (Realtime, which only
-// sends this visitor the rooms RLS lets them see) and every 15 s while the
-// page is visible, which also catches rooms that went private or finished.
-// Browsing needs no identity: visitors read as `anon`.
+// `public_rooms`, read again as soon as the database announces a change to
+// the list on the private Broadcast topic `lobbies` (a room listed, changed,
+// turned private or gone; migration 20261024100200), and when the page shows
+// again. Browsing needs no identity: visitors read and listen as `anon`.
 
 import { nullable, type Supabase } from "@/lib/supabase/client";
 import type { Database } from "@/lib/supabase/database.gen";
@@ -33,9 +33,8 @@ export function publicRoom(row: PublicRoomRow): PublicRoom {
   };
 }
 
-const POLL_MS = 15_000;
-// Heartbeats touch every room about once a minute per member: read at most this often.
-const MIN_GAP_MS = 1_500;
+// Changes come in bursts (a member and the room at once): read once per burst.
+const MIN_GAP_MS = 300;
 
 /** Calls `onList` with the open public rooms now and whenever they may have changed. */
 export function watchPublicRooms(
@@ -70,14 +69,13 @@ export function watchPublicRooms(
   };
 
   const channel = supabase
-    .channel("public-rooms")
-    .on("postgres_changes", { event: "*", schema: "public", table: "rooms" }, soon)
+    .channel("lobbies", { config: { private: true } })
+    .on("broadcast", { event: "changed" }, soon)
     .subscribe((status) => {
       // Read again on every (re)subscription: changes may have been missed.
       const state: string = status;
       if (state === "SUBSCRIBED") soon();
     });
-  const poll = setInterval(soon, POLL_MS);
   const onVisible = () => {
     if (!document.hidden) soon();
   };
@@ -87,7 +85,6 @@ export function watchPublicRooms(
   return () => {
     stopped = true;
     if (timer !== null) clearTimeout(timer);
-    clearInterval(poll);
     document.removeEventListener("visibilitychange", onVisible);
     void supabase.removeChannel(channel);
   };

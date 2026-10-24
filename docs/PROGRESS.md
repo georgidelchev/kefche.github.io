@@ -650,7 +650,7 @@ Online modes are enabled for the Phase 4 games.
    - reports and the moderation tools come in Phase 8.
 8. **Public lobby browser** (quick match changed, owner decision 2026-10-24: no bots fill seats; the public lobbies are listed instead):
    - `/[locale]/play/` (the Play section) lists the public rooms someone can still enter: lobbies with a free seat (Join), and lobbies or matches that allow spectators (Watch). Lobbies come first, and a filter by game is kept in the address (`?game=`).
-   - **Live:** Realtime changes on `rooms` trigger a new read, at most every 1.5 s, plus a read every 15 s while the page is visible. The periodic read catches rooms that went private or finished, which Realtime doesn't send.
+   - **Live, at once:** Realtime database changes never reach a visitor for a room they can no longer read (one that turned private, for example). So triggers on `rooms` and `room_members` announce every change that can alter the list on the private Broadcast topic `lobbies`, and the page reads the list again. Anyone may listen there; nobody may send. The message carries no data, and heartbeats don't announce anything.
    - **Privacy:** browsing reads as `anon`, so no guest identity is created until someone joins.
    - "Create a public lobby" (`?new=public`) creates a listed room for the chosen game. The game page links to its lobbies.
 9. **Online modes for the Phase 4 games:** their manifests add `online-private`, `online-public` and `quick-match`. Spectators see the public state and can't act.
