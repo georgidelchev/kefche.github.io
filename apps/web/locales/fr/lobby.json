@@ -68,7 +68,6 @@
     "empty": "Pas encore de messages. Dites bonjour !",
     "tooFast": "Vous envoyez des messages trop vite. Attendez quelques secondes.",
     "tooLong": "Un message peut faire jusqu'à 300 caractères.",
-    "hint": "Restez courtois. Les messages sont supprimés à la fermeture du salon.",
     "show": "Afficher le chat",
     "hide": "Masquer le chat",
     "unread": "Nouveaux messages : {count}"

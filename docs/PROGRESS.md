@@ -646,7 +646,7 @@ Online modes are enabled for the Phase 4 games.
    - messages go through an RPC that masks blocked terms and rate-limits to 5 messages per 10 s, and Realtime delivers them;
    - they're deleted with their room, which happens as soon as it empties (SPEC §8.2, §10.2);
    - everyone in the room can chat, guests included, with no age question (owner decision, 2026-10-24);
-   - the room page is one screen (AppShell `layout="app"`, full width): the room scrolls on the left and the chat is a fixed pane on the right at every size. It folds into a strip that counts new messages (open from 768px, folded on phones, where it opens over the room; the choice is remembered);
+   - the room page is one screen (AppShell `layout="app"`, full width): the room scrolls and the chat is a fixed pane, on the right from 768px and along the bottom on phones. It folds into a strip (a bar on phones) that counts new messages; it starts open and the choice is remembered;
    - reports and the moderation tools come in Phase 8.
 8. **Public lobby browser and quick match:**
    - **Lobby browser:** `/[locale]/play/` lists open public lobbies by game, live.

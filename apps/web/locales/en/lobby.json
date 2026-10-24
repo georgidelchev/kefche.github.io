@@ -68,7 +68,6 @@
     "empty": "No messages yet. Say hello!",
     "tooFast": "You're sending messages too fast. Wait a few seconds.",
     "tooLong": "Messages can be up to 300 characters.",
-    "hint": "Be kind. Messages are deleted when the room closes.",
     "show": "Show chat",
     "hide": "Hide chat",
     "unread": "New messages: {count}"

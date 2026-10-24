@@ -44,12 +44,13 @@ const strings = roomStrings(t);
   layout="app"
 >
   <!--
-    One screen: the room scrolls on the left, and the lobby chat (rendered
-    by the room into #room-chat) stays on the right.
+    One screen: the room scrolls, and the lobby chat (rendered by the room
+    into #room-chat) stays put, on the right from 768px and along the bottom
+    on phones.
   -->
-  <div class="relative flex min-h-0 flex-1">
+  <div class="flex min-h-0 flex-1 flex-col md:flex-row">
     <!-- relative: absolutely placed descendants (sr-only text) scroll and clip with it. -->
-    <div class="relative min-w-0 flex-1 overflow-y-auto overscroll-contain pe-4 xl:ps-8">
+    <div class="relative min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain ps-[max(1rem,env(safe-area-inset-left))] pe-4 xl:ps-8">
       <div class="grid w-full max-w-6xl gap-6 pt-6 pb-6">
         <nav aria-label={t("games:breadcrumb")} class="text-sm text-muted">
           <a

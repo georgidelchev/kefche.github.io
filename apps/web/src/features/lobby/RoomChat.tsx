@@ -2,11 +2,11 @@
 // a line to write one, for everyone in the room. The database masks blocked
 // words and limits how fast anyone can send.
 //
-// It is the room page's fixed right-hand pane (the room scrolls beside it)
-// and folds into a narrow strip that counts new messages. Open, it is a
-// column from 768px; on phones it lies over the room, so it starts folded
-// there. The choice is remembered in this browser.
-import { MessageSquare, PanelRightClose } from "lucide-react";
+// It is a fixed pane of the room page, and the room scrolls beside it: a
+// column on the right from 768px, a band along the bottom on phones. It
+// folds into a strip (a bar on phones) that counts new messages. It starts
+// open; the choice is remembered in this browser.
+import { ChevronDown, ChevronUp, MessageSquare, PanelRightClose } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
 
 import { Button } from "@kefche/ui/components/button";
@@ -27,9 +27,9 @@ function initiallyOpen(): boolean {
     const saved = localStorage.getItem(OPEN_KEY);
     if (saved !== null) return saved === "1";
   } catch {
-    // Storage blocked: fall back to the screen size.
+    // Storage blocked: open.
   }
-  return window.matchMedia("(min-width: 768px)").matches;
+  return true;
 }
 
 interface Props {
@@ -126,31 +126,32 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
     return (
       <aside
         aria-label={s.title}
-        className="flex w-12 shrink-0 flex-col items-center border-s border-border bg-surface pe-[env(safe-area-inset-right)] pt-3"
+        className="flex shrink-0 border-t border-border bg-surface py-1 ps-[max(0.5rem,env(safe-area-inset-left))] pe-[max(0.5rem,env(safe-area-inset-right))] md:w-12 md:flex-col md:items-center md:border-s md:border-t-0 md:ps-0 md:pt-3"
       >
         <Button
           variant="ghost"
-          size="icon"
           aria-label={
             unread > 0
               ? `${s.show} (${fill(s.unread, { count: unread.toLocaleString(locale) })})`
               : s.show
           }
           aria-expanded={false}
-          className="relative"
+          className="relative w-full justify-start md:size-11 md:justify-center md:px-0"
           onClick={() => {
             toggle(true);
           }}
         >
           <MessageSquare aria-hidden="true" />
+          <span className="md:sr-only">{s.title}</span>
           {unread > 0 && (
             <span
               aria-hidden="true"
-              className="absolute -end-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-brand px-1 text-xs font-bold text-on-brand tabular-nums"
+              className="flex min-w-5 items-center justify-center rounded-full bg-brand px-1 text-xs font-bold text-on-brand tabular-nums md:absolute md:-end-1 md:-top-1"
             >
               {unread > 99 ? "99+" : unread.toLocaleString(locale)}
             </span>
           )}
+          <ChevronUp aria-hidden="true" className="ms-auto md:hidden" />
         </Button>
       </aside>
     );
@@ -160,10 +161,10 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
     <aside
       id={`${id}-panel`}
       aria-labelledby={`${id}-title`}
-      className="absolute inset-y-0 end-0 z-20 flex w-[min(22rem,calc(100%-3rem))] flex-col gap-3 border-s border-border bg-surface p-3 pe-[max(0.75rem,env(safe-area-inset-right))] shadow-xl md:static md:w-80 md:shrink-0 md:shadow-none xl:w-96"
+      className="flex h-64 shrink-0 flex-col gap-2 border-t border-border bg-surface py-2 ps-[max(0.75rem,env(safe-area-inset-left))] pe-[max(0.75rem,env(safe-area-inset-right))] md:h-auto md:w-80 md:gap-3 md:border-s md:border-t-0 md:py-3 md:ps-3 xl:w-96"
     >
       <div className="flex items-center justify-between gap-2">
-        <h2 id={`${id}-title`} className="text-xl">
+        <h2 id={`${id}-title`} className="text-base md:text-xl">
           {s.title}
         </h2>
         <Button
@@ -176,7 +177,8 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
             toggle(false);
           }}
         >
-          <PanelRightClose aria-hidden="true" className="rtl:-scale-x-100" />
+          <ChevronDown aria-hidden="true" className="md:hidden" />
+          <PanelRightClose aria-hidden="true" className="hidden md:block rtl:-scale-x-100" />
         </Button>
       </div>
 
@@ -217,7 +219,6 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
           autoComplete="off"
           enterKeyHint="send"
           placeholder={s.label}
-          aria-describedby={`${id}-hint`}
           onChange={(e) => {
             setText(e.target.value);
           }}
@@ -231,9 +232,6 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
           {error}
         </p>
       )}
-      <p id={`${id}-hint`} className="text-sm text-muted">
-        {s.hint}
-      </p>
     </aside>
   );
 }

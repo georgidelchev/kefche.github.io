@@ -206,10 +206,11 @@ const focusRing =
   <div
     class:list={[
       "flex",
-      // In app layout the page's last pane meets the window's end edge.
+      // In app layout the page's panes reach the window's edges and keep
+      // their own gutters; only the side menu (from 1280px) gets one here.
       app
         ? // The window less the header (4rem and its 1px border).
-          "h-[calc(100dvh-4rem-1px-env(safe-area-inset-top))] ps-[max(1rem,env(safe-area-inset-left))]"
+          "h-[calc(100dvh-4rem-1px-env(safe-area-inset-top))] xl:ps-[max(1rem,env(safe-area-inset-left))]"
         : ["mx-auto max-w-7xl", gutter],
     ]}
   >

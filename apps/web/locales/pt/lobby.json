@@ -68,7 +68,6 @@
     "empty": "Ainda não há mensagens. Diga oi!",
     "tooFast": "Você está enviando mensagens rápido demais. Espere alguns segundos.",
     "tooLong": "As mensagens podem ter até 300 caracteres.",
-    "hint": "Seja gentil. As mensagens são apagadas quando a sala fecha.",
     "show": "Mostrar o chat",
     "hide": "Ocultar o chat",
     "unread": "Novas mensagens: {count}"

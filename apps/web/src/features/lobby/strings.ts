@@ -87,7 +87,6 @@ export interface ChatStrings {
   label: string;
   send: string;
   empty: string;
-  hint: string;
   you: string;
   show: string;
   hide: string;
@@ -104,7 +103,6 @@ export function chatStrings(t: AppT): ChatStrings {
     label: t("lobby:chat.label"),
     send: t("lobby:chat.send"),
     empty: t("lobby:chat.empty"),
-    hint: t("lobby:chat.hint"),
     you: t("lobby:room.you"),
     show: t("lobby:chat.show"),
     hide: t("lobby:chat.hide"),

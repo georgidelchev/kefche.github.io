@@ -68,7 +68,6 @@
     "empty": "Noch keine Nachrichten. Sag hallo!",
     "tooFast": "Du schreibst zu schnell. Warte ein paar Sekunden.",
     "tooLong": "Nachrichten dürfen höchstens 300 Zeichen lang sein.",
-    "hint": "Sei freundlich. Nachrichten werden gelöscht, wenn der Raum schließt.",
     "show": "Chat anzeigen",
     "hide": "Chat ausblenden",
     "unread": "Neue Nachrichten: {count}"
