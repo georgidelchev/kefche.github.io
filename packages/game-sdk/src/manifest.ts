@@ -81,7 +81,13 @@ export interface GameManifest {
   kind: EngineKind;
   players: { min: number; max: number; default: number };
   modes: GameMode[];
-  bots: { supported: boolean; difficulties: BotDifficulty[]; canFillSeats: boolean };
+  bots: {
+    supported: boolean;
+    difficulties: BotDifficulty[];
+    canFillSeats: boolean;
+    /** A strength players can pick besides the difficulties (chess: Stockfish's 0–20). */
+    levels?: { min: number; max: number };
+  };
   timers: TimerPreset[];
   /** Race mode: the settings a room picks (none when the engine takes no config). */
   raceOptions?: RaceOptionDef[];

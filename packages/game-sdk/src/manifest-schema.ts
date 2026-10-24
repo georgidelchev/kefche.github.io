@@ -36,6 +36,10 @@ export const gameManifestSchema = z
       supported: z.boolean(),
       difficulties: z.array(difficulty),
       canFillSeats: z.boolean(),
+      levels: z
+        .object({ min: z.int().nonnegative(), max: z.int().positive() })
+        .refine((l) => l.min < l.max, { message: "levels: expected min < max" })
+        .optional(),
     }),
     timers: z.array(timerPreset),
     raceOptions: z

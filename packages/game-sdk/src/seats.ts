@@ -46,7 +46,14 @@ export const BOT_NAME_IDS = [
 export type BotNameId = (typeof BOT_NAME_IDS)[number];
 
 export type Seat =
-  { kind: "human"; name: string } | { kind: "bot"; difficulty: BotDifficulty; nameId: BotNameId };
+  | { kind: "human"; name: string }
+  | {
+      kind: "bot";
+      difficulty: BotDifficulty;
+      nameId: BotNameId;
+      /** A level from the manifest's `bots.levels`, chosen instead of a difficulty. */
+      level?: number;
+    };
 
 /** Different names for `count` bots, from the match's seed. */
 export function pickBotNames(rng: Rng, count: number): BotNameId[] {

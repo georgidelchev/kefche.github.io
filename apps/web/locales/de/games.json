@@ -100,6 +100,8 @@
       "medium": "Mittel",
       "hard": "Schwer"
     },
+    "custom": "Eigene Stufe",
+    "level": "Stufe {level}",
     "timer": "Zeitlimit",
     "timerNone": "Ohne Zeitlimit",
     "timerPerMove": "{seconds} s pro Zug",

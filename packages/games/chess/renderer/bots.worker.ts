@@ -14,16 +14,17 @@ import type { State } from "../engine";
 const ENGINE = new URL("../vendor/stockfish/stockfish-19-lite-single.js", import.meta.url).href;
 const WASM = new URL("../vendor/stockfish/stockfish-19-lite-single.wasm", import.meta.url).href;
 
+/** Each difficulty is a Stockfish Skill Level; players can also pick one (0–20). */
+const LEVELS: Readonly<Record<BotDifficulty, number>> = { easy: 0, medium: 6, hard: 15 };
+
 /**
- * Skill Level (0–20) makes Stockfish choose weaker moves on purpose; the
- * search limit keeps the weaker levels from finding deep tactics anyway.
+ * Skill Level makes Stockfish choose weaker moves on purpose; below 15 a
+ * depth limit keeps it from finding deep tactics anyway.
  */
-const LEVELS: Readonly<Record<BotDifficulty, { skill: number; go: (budgetMs: number) => string }>> =
-  {
-    easy: { skill: 0, go: () => "go depth 2" },
-    medium: { skill: 6, go: (budgetMs) => `go depth 8 movetime ${String(budgetMs)}` },
-    hard: { skill: 15, go: (budgetMs) => `go movetime ${String(budgetMs)}` },
-  };
+const search = (level: number, budgetMs: number) =>
+  level < 15
+    ? `go depth ${String(level + 2)} movetime ${String(budgetMs)}`
+    : `go movetime ${String(budgetMs)}`;
 /** Kept back from the bot's budget for messages and the runtime's own work. */
 const MARGIN_MS = 100;
 
@@ -64,16 +65,16 @@ function start(): Promise<void> {
 void start();
 
 self.onmessage = async (event: MessageEvent<BotRequest>) => {
-  const { id, state, difficulty, budgetMs } = event.data;
+  const { id, state, difficulty, level: picked, budgetMs } = event.data;
   let reply: BotReply;
   try {
     await start();
-    const level = LEVELS[difficulty];
+    const level = Math.min(20, Math.max(0, Math.round(picked ?? LEVELS[difficulty])));
     // The state comes from this game's own session, so it has the game's shape.
     const { moves } = state as State;
-    send(`setoption name Skill Level value ${String(level.skill)}`);
+    send(`setoption name Skill Level value ${String(level)}`);
     send(`position startpos${moves.length > 0 ? ` moves ${moves.join(" ")}` : ""}`);
-    const line = await ask(level.go(Math.max(50, budgetMs - MARGIN_MS)), (l) =>
+    const line = await ask(search(level, Math.max(50, budgetMs - MARGIN_MS)), (l) =>
       l.startsWith("bestmove"),
     );
     const uci = line.split(" ")[1];

@@ -100,6 +100,8 @@
       "medium": "Moyen",
       "hard": "Difficile"
     },
+    "custom": "Personnalisé",
+    "level": "Niveau {level}",
     "timer": "Minuteur",
     "timerNone": "Sans minuteur",
     "timerPerMove": "{seconds} s par coup",

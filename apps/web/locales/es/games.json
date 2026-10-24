@@ -100,6 +100,8 @@
       "medium": "Media",
       "hard": "Difícil"
     },
+    "custom": "Personalizado",
+    "level": "Nivel {level}",
     "timer": "Temporizador",
     "timerNone": "Sin temporizador",
     "timerPerMove": "{seconds} s por jugada",

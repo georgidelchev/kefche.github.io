@@ -16,6 +16,10 @@ export interface TurnStrings {
   bot: string;
   difficulty: string;
   difficulties: Record<BotDifficulty, string>;
+  /** A level picked instead of a difficulty. */
+  custom: string;
+  /** "Level {level}" */
+  level: string;
   timer: string;
   timerNone: string;
   /** "{seconds} s per move" */
@@ -65,6 +69,10 @@ export function timerLabel(preset: TimerPreset, s: TurnStrings, locale: string):
       return fill(s.timerPerMove, { seconds: number(preset.seconds) });
   }
 }
+
+/** How strong a bot plays: its difficulty, or "Level 12". */
+export const botStrength = (seat: Extract<Seat, { kind: "bot" }>, s: TurnStrings): string =>
+  seat.level === undefined ? s.difficulties[seat.difficulty] : fill(s.level, { level: seat.level });
 
 export const seatName = (seat: Seat, s: TurnStrings): string =>
   seat.kind === "bot" ? s.botNames[seat.nameId] : seat.name;

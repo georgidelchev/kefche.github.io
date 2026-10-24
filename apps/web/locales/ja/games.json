@@ -100,6 +100,8 @@
       "medium": "ふつう",
       "hard": "むずかしい"
     },
+    "custom": "カスタム",
+    "level": "レベル {level}",
     "timer": "タイマー",
     "timerNone": "タイマーなし",
     "timerPerMove": "1手 {seconds} 秒",

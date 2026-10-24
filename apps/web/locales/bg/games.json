@@ -100,6 +100,8 @@
       "medium": "Средно",
       "hard": "Трудно"
     },
+    "custom": "Свое ниво",
+    "level": "Ниво {level}",
     "timer": "Таймер",
     "timerNone": "Без таймер",
     "timerPerMove": "{seconds} с на ход",

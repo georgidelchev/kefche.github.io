@@ -100,6 +100,8 @@
       "medium": "Medium",
       "hard": "Hard"
     },
+    "custom": "Custom",
+    "level": "Level {level}",
     "timer": "Timer",
     "timerNone": "No timer",
     "timerPerMove": "{seconds} s per move",

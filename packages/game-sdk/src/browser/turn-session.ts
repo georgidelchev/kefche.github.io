@@ -94,6 +94,8 @@ export interface BotRequest {
   state: unknown;
   seat: number;
   difficulty: BotDifficulty;
+  /** The seat's level (manifest `bots.levels`), when one was picked instead of the difficulty. */
+  level?: number;
   seed: string;
   budgetMs: number;
 }
@@ -341,6 +343,7 @@ export function createTurnSession<State, Action, Config>(
         state,
         seat,
         difficulty: player.difficulty,
+        ...(player.level === undefined ? {} : { level: player.level }),
         seed: `${seed}:bot:${String(count)}`,
         budgetMs,
       })

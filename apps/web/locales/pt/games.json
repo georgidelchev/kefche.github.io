@@ -100,6 +100,8 @@
       "medium": "Médio",
       "hard": "Difícil"
     },
+    "custom": "Personalizado",
+    "level": "Nível {level}",
     "timer": "Cronômetro",
     "timerNone": "Sem cronômetro",
     "timerPerMove": "{seconds} s por jogada",

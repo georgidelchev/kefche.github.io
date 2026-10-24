@@ -40,6 +40,7 @@ export function turnConfig(manifest: GameManifest): TurnConfig | null {
     modes: manifest.modes.filter((m): m is TurnMode => m === "solo-bots" || m === "hotseat"),
     players: manifest.players,
     difficulties: manifest.bots.supported ? manifest.bots.difficulties : [],
+    ...(manifest.bots.supported && manifest.bots.levels ? { levels: manifest.bots.levels } : {}),
     timers: manifest.timers,
   };
 }
@@ -115,6 +116,8 @@ export function turnStrings(t: AppT): TurnStrings {
     person: t("games:turn.person"),
     bot: t("games:turn.bot"),
     difficulty: t("games:turn.difficulty"),
+    custom: t("games:turn.custom"),
+    level: t("games:turn.level", { level: "{level}" }),
     difficulties: {
       easy: t("games:turn.difficulties.easy"),
       medium: t("games:turn.difficulties.medium"),

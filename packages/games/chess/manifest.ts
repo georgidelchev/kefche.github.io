@@ -10,7 +10,13 @@ export const manifest = defineManifest({
   kind: "turn",
   players: { min: 2, max: 2, default: 2 },
   modes: ["solo-bots", "hotseat"],
-  bots: { supported: true, difficulties: ["easy", "medium", "hard"], canFillSeats: true },
+  bots: {
+    supported: true,
+    difficulties: ["easy", "medium", "hard"],
+    canFillSeats: true,
+    // Stockfish's Skill Level, for players who want to pick it themselves.
+    levels: { min: 0, max: 20 },
+  },
   timers: [
     { kind: "none" },
     { kind: "clock", base: 60, increment: 0 },

@@ -100,6 +100,8 @@
       "medium": "中等",
       "hard": "困难"
     },
+    "custom": "自定义",
+    "level": "等级 {level}",
     "timer": "计时",
     "timerNone": "不计时",
     "timerPerMove": "每步 {seconds} 秒",

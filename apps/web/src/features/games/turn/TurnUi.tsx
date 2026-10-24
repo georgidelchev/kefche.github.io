@@ -3,13 +3,14 @@
 import { Bot, LoaderCircle, WifiOff } from "lucide-react";
 import { useEffect, useId, type RefObject } from "react";
 
-import type { Seat, TimerPreset } from "@kefche/game-sdk";
+import type { BotDifficulty, Seat, TimerPreset } from "@kefche/game-sdk";
 import type { TurnReport } from "@kefche/game-sdk/browser";
 import { Button } from "@kefche/ui/components/button";
 import { PlayerMarker, type PlayerSlot } from "@kefche/ui/components/player-marker";
 
-import { fill, formatClock, seatName, timerLabel, type TurnStrings } from "./labels";
+import { botStrength, fill, formatClock, seatName, timerLabel, type TurnStrings } from "./labels";
 import {
+  levelSeat,
   seatsFor,
   type SeatChoice,
   type SetupChoice,
@@ -90,6 +91,7 @@ function TurnSetup({
   onStart,
 }: SetupProps) {
   const humans = choice.seats.filter((seat) => seat.kind === "human").length;
+  const { levels } = config;
   const setSeat = (index: number, seat: SeatChoice) => {
     const seats = choice.seats.map((old, i) => (i === index ? seat : old));
     // Someone has to play: turning the only person into a bot moves the
@@ -162,15 +164,37 @@ function TurnSetup({
                 />
               )}
               {seat.kind === "bot" && (
-                <Segmented
+                <Segmented<BotDifficulty | "custom">
                   legend={s.difficulty}
                   hideLegend
-                  value={seat.difficulty}
-                  options={config.difficulties.map((d) => ({ value: d, label: s.difficulties[d] }))}
+                  value={seat.level === undefined ? seat.difficulty : "custom"}
+                  options={[
+                    ...config.difficulties.map((d) => ({ value: d, label: s.difficulties[d] })),
+                    ...(levels ? [{ value: "custom" as const, label: s.custom }] : []),
+                  ]}
                   onChange={(d) => {
-                    setSeat(i, { kind: "bot", difficulty: d });
+                    if (d !== "custom") setSeat(i, { kind: "bot", difficulty: d });
+                    else if (levels) {
+                      setSeat(i, levelSeat(Math.round((levels.min + levels.max) / 2), levels));
+                    }
                   }}
                 />
+              )}
+              {seat.kind === "bot" && seat.level !== undefined && levels && (
+                <label className="grid gap-1 text-sm font-semibold">
+                  {fill(s.level, { level: seat.level.toLocaleString(locale) })}
+                  <input
+                    type="range"
+                    min={levels.min}
+                    max={levels.max}
+                    step={1}
+                    value={seat.level}
+                    className="min-h-11 w-full accent-brand"
+                    onChange={(e) => {
+                      setSeat(i, levelSeat(Number(e.target.value), levels));
+                    }}
+                  />
+                </label>
               )}
             </li>
           );
@@ -252,13 +276,13 @@ function TurnHud({ seats, timer, report, strings: s, away }: HudProps) {
               {seat.kind === "bot" && (
                 <span
                   className="flex items-center gap-1 text-xs text-muted"
-                  title={fill(s.botBadge, { difficulty: s.difficulties[seat.difficulty] })}
+                  title={fill(s.botBadge, { difficulty: botStrength(seat, s) })}
                 >
                   <Bot aria-hidden="true" className="size-4" />
                   <span className="sr-only">
-                    {fill(s.botBadge, { difficulty: s.difficulties[seat.difficulty] })}
+                    {fill(s.botBadge, { difficulty: botStrength(seat, s) })}
                   </span>
-                  <span aria-hidden="true">{s.difficulties[seat.difficulty]}</span>
+                  <span aria-hidden="true">{botStrength(seat, s)}</span>
                 </span>
               )}
               {away?.seats[i] && (

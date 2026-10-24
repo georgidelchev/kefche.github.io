@@ -21,11 +21,15 @@ export interface TurnConfig {
   modes: TurnMode[];
   players: { min: number; max: number; default: number };
   difficulties: BotDifficulty[];
+  /** A level range players can pick from instead of a difficulty (manifest `bots.levels`). */
+  levels?: { min: number; max: number };
   /** The first preset is the default. */
   timers: TimerPreset[];
 }
 
-export type SeatChoice = { kind: "human" } | { kind: "bot"; difficulty: BotDifficulty };
+/** A bot with a `level` plays at that level; its difficulty then only sets its thinking time. */
+export type SeatChoice =
+  { kind: "human" } | { kind: "bot"; difficulty: BotDifficulty; level?: number };
 
 export interface SetupChoice {
   players: number;
@@ -41,7 +45,7 @@ const SAVED = z.object({
   seats: z.array(
     z.union([
       z.object({ kind: z.literal("human") }),
-      z.object({ kind: z.literal("bot"), difficulty: DIFFICULTY }),
+      z.object({ kind: z.literal("bot"), difficulty: DIFFICULTY, level: z.optional(z.int()) }),
     ]),
   ),
   timer: z.number(),
@@ -49,6 +53,13 @@ const SAVED = z.object({
 
 const middle = (difficulties: BotDifficulty[]): BotDifficulty =>
   difficulties.includes("medium") ? "medium" : (difficulties[0] ?? "easy");
+
+/** A bot at `level`: its thinking time follows the third of the range the level is in. */
+export function levelSeat(level: number, levels: { min: number; max: number }): SeatChoice {
+  const share = (level - levels.min) / (levels.max - levels.min);
+  const difficulty: BotDifficulty = share < 1 / 3 ? "easy" : share < 2 / 3 ? "medium" : "hard";
+  return { kind: "bot", difficulty, level };
+}
 
 /**
  * A seat list `players` long: by default seat 0 a person and the rest people
@@ -80,13 +91,26 @@ export function loadChoice(storage: GameStorage, config: TurnConfig, mode: TurnM
   try {
     const parsed = SAVED.safeParse(JSON.parse(storage.get(`setup:${mode}`) ?? "null"));
     if (parsed.success) {
-      const { players, seats, timer } = parsed.data;
+      const { players, timer } = parsed.data;
+      const seats = parsed.data.seats.map((seat): SeatChoice => {
+        if (seat.kind === "human" || seat.level === undefined) {
+          return seat.kind === "human" ? seat : { kind: "bot", difficulty: seat.difficulty };
+        }
+        return { kind: "bot", difficulty: seat.difficulty, level: seat.level };
+      });
+      const { levels } = config;
+      const levelFits = (level: number | undefined) =>
+        level === undefined || (levels !== undefined && level >= levels.min && level <= levels.max);
       const fits =
         players >= Math.max(config.players.min, 2) &&
         players <= config.players.max &&
         seats.length === players &&
         seats.some((s) => s.kind === "human") &&
-        seats.every((s) => s.kind === "human" || config.difficulties.includes(s.difficulty)) &&
+        seats.every(
+          (s) =>
+            s.kind === "human" ||
+            (config.difficulties.includes(s.difficulty) && levelFits(s.level)),
+        ) &&
         timer >= 0 &&
         timer < config.timers.length;
       if (fits) return { players, seats, timer };
@@ -122,7 +146,12 @@ export function toMatch(
   let nextBot = 0;
   const seats = choice.seats.map((s, i): Seat => {
     if (s.kind === "bot") {
-      return { kind: "bot", difficulty: s.difficulty, nameId: botNames[nextBot++] ?? "mila" };
+      return {
+        kind: "bot",
+        difficulty: s.difficulty,
+        nameId: botNames[nextBot++] ?? "mila",
+        ...(s.level === undefined ? {} : { level: s.level }),
+      };
     }
     return {
       kind: "human",
