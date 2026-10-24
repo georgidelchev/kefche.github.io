@@ -6,6 +6,7 @@
 // legal actions, and guests only render what the host sent.
 import * as z from "zod/mini";
 
+import { canonicalJson } from "./engines";
 import { RACE_LOG_LIMITS } from "./race-log";
 
 export const PROTOCOL_VERSION = 1;
@@ -144,22 +145,6 @@ export function createMessenger(roomId: string, from: string) {
     ...(to === undefined ? {} : { to }),
     payload,
   });
-}
-
-/** JSON with object keys sorted, so the same value always gives the same text. */
-function canonicalJson(value: unknown): string {
-  const sorted = (v: unknown): unknown =>
-    Array.isArray(v)
-      ? v.map(sorted)
-      : v !== null && typeof v === "object"
-        ? Object.fromEntries(
-            Object.entries(v)
-              .sort(([a], [b]) => (a < b ? -1 : 1))
-              .map(([k, x]) => [k, sorted(x)]),
-          )
-        : v;
-  // null for undefined, which JSON.stringify would turn into no text at all.
-  return JSON.stringify(sorted(value) ?? null);
 }
 
 /**

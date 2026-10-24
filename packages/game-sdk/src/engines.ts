@@ -64,6 +64,29 @@ export interface TurnEngine<State, Action, Config = undefined> {
   timeoutResult?(state: State, seat: number): GameResult;
 }
 
+/**
+ * JSON with object keys sorted, so the same value always gives the same text
+ * (a relay through the database reorders keys).
+ */
+export function canonicalJson(value: unknown): string {
+  const sorted = (v: unknown): unknown =>
+    Array.isArray(v)
+      ? v.map(sorted)
+      : v !== null && typeof v === "object"
+        ? Object.fromEntries(
+            Object.entries(v)
+              .sort(([a], [b]) => (a < b ? -1 : 1))
+              .map(([k, x]) => [k, sorted(x)]),
+          )
+        : v;
+  // null for undefined, which JSON.stringify would turn into no text at all.
+  return JSON.stringify(sorted(value) ?? null);
+}
+
+/** Whether two actions are the same, compared as data (key order doesn't matter). */
+export const sameAction = (a: unknown, b: unknown): boolean =>
+  canonicalJson(a) === canonicalJson(b);
+
 /** True when `action` is one of `seat`'s side actions now (compared as data). */
 export function isSideAction<State, Action, Config>(
   engine: TurnEngine<State, Action, Config>,
@@ -71,8 +94,7 @@ export function isSideAction<State, Action, Config>(
   seat: number,
   action: unknown,
 ): boolean {
-  const wanted = JSON.stringify(action);
-  return (engine.sideActions?.(state, seat) ?? []).some((a) => JSON.stringify(a) === wanted);
+  return (engine.sideActions?.(state, seat) ?? []).some((a) => sameAction(a, action));
 }
 
 /** One move in a turn-based match, as stored for replays. */

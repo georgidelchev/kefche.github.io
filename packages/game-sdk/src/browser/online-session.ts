@@ -13,7 +13,7 @@
 // - Away players: their turns are skipped; with clocks, their clock runs.
 // - Rejoining: a member asks the host for the latest state on connecting.
 
-import { isSideAction, type GameResult } from "../engines";
+import { isSideAction, sameAction, type GameResult } from "../engines";
 import { stateHash, createMessenger, type Message, type Payload } from "../protocol";
 import { elapse, isLowTime, timeLeft } from "../timers";
 import {
@@ -138,9 +138,8 @@ export function createOnlineTurnSession<State, Action, Config>(
 
   /** The legal action (or side action) equal to one that arrived as plain data. */
   const legal = (state: State, seat: number, action: unknown): Action | undefined => {
-    const wanted = JSON.stringify(action);
     return [...engine.legalActions(state, seat), ...(engine.sideActions?.(state, seat) ?? [])].find(
-      (a) => JSON.stringify(a) === wanted,
+      (a) => sameAction(a, action),
     );
   };
 
@@ -173,11 +172,14 @@ export function createOnlineTurnSession<State, Action, Config>(
       const { seat, action, base } = m.payload;
       // Only the member in that seat, and only on the latest state.
       if (seatMembers[seat] !== m.from) return;
-      if (base !== snapshot.moves) {
+      const move = legal(snapshot.state, seat, action);
+      // A move must be for the latest state; a side action (resign, a draw
+      // offer) stands on its own, so it counts if it's still allowed now.
+      const side = move !== undefined && isSideAction(engine, snapshot.state, seat, move);
+      if (base !== snapshot.moves && !side) {
         transport.send(m.from, message("state", payloadOf(snapshot)));
         return;
       }
-      const move = legal(snapshot.state, seat, action);
       if (move !== undefined) hosted.act(seat, move);
     } else if (m.type === "sync") {
       if (hosted && snapshot) transport.send(m.from, message("state", payloadOf(snapshot)));
