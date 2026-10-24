@@ -74,19 +74,29 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     // Dev only: pre-bundle these up front. Otherwise Vite discovers them late
-    // (on a cold start or after new packages are installed), re-optimizes
-    // mid-request, and the page fails ("Invalid hook call", or a missing
-    // .vite/deps_ssr file) until the dev server restarts.
+    // (on a cold start, after new packages are installed, or when a page with
+    // a form is first opened), re-optimizes mid-request, and the page fails
+    // ("Invalid hook call", or a missing .vite/deps_ssr file) until the dev
+    // server restarts. List every package that server-rendered islands import;
+    // `@kefche/ui > x` reaches the UI package's own dependencies.
     ssr: {
       optimizeDeps: {
         include: [
           "astro/virtual-modules/i18n.js",
           "react",
+          "react/jsx-runtime",
           "react-dom/server.edge",
           "lucide-react",
           "i18next",
           "i18next-icu",
           "zod",
+          "zod/mini",
+          "react-hook-form",
+          "@hookform/resolvers/zod",
+          "@kefche/ui > radix-ui",
+          "@kefche/ui > class-variance-authority",
+          "@kefche/ui > clsx",
+          "@kefche/ui > tailwind-merge",
         ],
       },
     },
