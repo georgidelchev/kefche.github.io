@@ -12,7 +12,7 @@
 | 3     | Game SDK & first games (2048, Sudoku, Snake)               | ✅ Done (owner signed off 2026-10-23) |
 | 4     | Bots, hotseat & timers                                     | ✅ Done (owner signed off 2026-10-23) |
 | 5     | Multiplayer core                                           | ✅ Done (owner signed off 2026-10-24) |
-| 6     | Chess                                                      | 📝 Plan awaiting approval             |
+| 6     | Chess                                                      | 🚧 In progress                        |
 | 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                        |
 | 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                        |
 | 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                        |
@@ -777,9 +777,16 @@ Online modes are enabled for the Phase 4 games.
 - **Q3 — Pieces:** the "cburnett" set used by Wikipedia (free licence, credited), or a new set drawn for kefche? The second matches the site's style but takes longer, and pieces must stay instantly readable.
 - **Q4 — Game history:** show each player's recent games and ratings publicly on their profile, as SPEC §7 describes (recommended), or only to the player? A "hide my games" switch in Settings can come either way.
 
+### Owner answers (2026-10-24)
+
+- **Q1 — Rated games:** signed-in accounts only; guests play every casual mode.
+- **Q2 — Stockfish:** ship it under GPL-3.0, with its licence and a link to its source in a credits note and `CREDITS.md`.
+- **Q3 — Pieces:** the cburnett set, credited.
+- **Q4 — Game history:** every player's recent games and ratings are public on their profile.
+
 ### Status
 
-- [ ] Plan approved by owner
+- [x] Plan approved by owner (2026-10-24, with the answers above)
 
 ---
 
