@@ -12,7 +12,7 @@
 | 3     | Game SDK & first games (2048, Sudoku, Snake)               | ✅ Done (owner signed off 2026-10-23) |
 | 4     | Bots, hotseat & timers                                     | ✅ Done (owner signed off 2026-10-23) |
 | 5     | Multiplayer core                                           | ✅ Done (owner signed off 2026-10-24) |
-| 6     | Chess                                                      | ⏳ Not started                        |
+| 6     | Chess                                                      | 📝 Plan awaiting approval             |
 | 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                        |
 | 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                        |
 | 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                        |
@@ -726,6 +726,60 @@ Online modes are enabled for the Phase 4 games.
 - [x] Step 11 done: verification with up to five browsers, negative RLS and Realtime checks, the message budget, and the docs
 - [ ] Push (on the owner's word): the Phase 5 migrations to the hosted project, then `main`, then a check of the live site
 - [x] Owner sign-off (2026-10-24, "complete this step and continue"; push later, on the owner's word)
+
+---
+
+## Phase 6 — Chess (flagship 1v1)
+
+**Goal (SPEC §22, catalog #1, §11, §12.3, §12.5):**
+
+- full chess with Stockfish bots, clocks with increment, hotseat and online play (private, public and quick match), and spectators;
+- rated games with Glicko-2 per time-control pool, rated matchmaking, and results the server works out itself;
+- premoves, draw offers, resign, takeback in casual games only, PGN export, a move list and board themes;
+- game history, and an analysis view of finished games with a Stockfish evaluation bar.
+
+**DoD:** rated games update ratings correctly; server-side validation of results passes; the game plays smoothly on a 360 px phone. Plus the standing DoD.
+
+### Steps (one Conventional Commit each)
+
+1. **Chess engine** (`packages/games/chess`, isomorphic): a `TurnEngine` over chess.js. The state is the FEN plus the move list; the actions are a move (UCI), resign, draw offer, accept or decline, and takeback request or answer. The engine detects every ending: checkmate, stalemate, insufficient material, threefold repetition, the 50-move rule, resignation, agreed draw and flag fall (a flag fall against a lone king is a draw). The manifest declares the clocks from SPEC §11 (Bullet 1+0 and 2+1; Blitz 3+0, 3+2, 5+0 and 5+3; Rapid 10+0, 10+5 and 15+10; Classical 30+0), the pools (bullet, blitz, rapid, classical) and the modes.
+2. **Board** (React DOM): tap or drag to move, legal-move dots, the last move and check highlighted, a promotion picker, flipping the board, premoves, a move list, captured pieces and the material balance. A move list and clocks sit beside the board on wide screens and below it on phones. It's built for 360 px first. Keyboard play uses roving focus, moves are announced to screen readers, and the board stays a→h in Arabic. Three board themes are drawn in the site's palette.
+3. **Stockfish bots:** the lite single-threaded build of `stockfish` 19.0.1 (about 1.7 MB, no special headers) runs in a worker. It's served from the site and loaded only when a bot plays or analysis opens. Easy, medium and hard map to skill levels and move times, plus a custom level from 0 to 20. It runs under the existing turn runtime, so bots keep playing through host migration (ADR-0018). The licence goes in a credits note (Q2).
+4. **Clocks, hotseat and casual online play:** the existing Fischer timers, with a low-time warning. Hotseat, and online games in private or public rooms with quick match (unrated). In casual games: draw offers, resign, and takeback by request. A player who leaves keeps losing time and loses on time if they don't return (SPEC §10.5). Spectators are on by default.
+5. **Database:** `matches` and `match_participants` (game, mode, settings, players, result, PGN), `ratings` (per user, game and pool: rating, RD, volatility, games played) and `rating_history`. A private `match_moves` table holds each rated move with the server's own time. RLS: everyone reads finished matches and ratings; nobody writes them directly. Stats in general stay in Phase 7.
+6. **Rated games, decided by the server:**
+   - in a rated room, `room_relay` also records each move with the server's time;
+   - resignation and draws go through the player's own RPC;
+   - when a game ends, the Edge Function `submit-match` (its first game is chess; Phase 7 extends it) replays the recorded moves with chess.js. It checks the order of the players, rebuilds both clocks from the server's times plus the increment, and works the result out itself. No client says who won.
+   - It then writes the match and updates both ratings with Glicko-2 (in `_shared/`, unit-checked against Glickman's worked example). The first 10 games are provisional. A game that doesn't replay is set aside for review instead of rated.
+7. **Rated matchmaking:** `match_queue` and RPCs pair players of the same pool, starting within ±100 rating and widening to ±400 over 30 s (SPEC §10.7). The search shows how many are searching and an estimated wait. A pair gets a rated room and starts at once.
+8. **PGN and history:** copy or download the PGN of any finished game. A "Recent games" list goes on the profile, with each player's rating per pool and its change, and a page per finished game.
+9. **Analysis view:** step through a finished game, with an evaluation bar and the best line from Stockfish running in the browser (no server cost).
+10. **Verification and docs:** full rated games in two browsers, including resignation, a draw by agreement, a flag fall and checkmate; forged results and moves refused by `submit-match`; Glicko-2 checked against the reference; the 360 px, 768 px and 1280 px checks in both themes; ADRs (chess engine and Stockfish, rated results, Glicko-2) and the RUNBOOK.
+
+### Decisions (proposed)
+
+- **chess.js 1.4.0** (BSD-2-Clause) for the rules, both in the browser and in the Edge Function, with the same version pinned in `deno.json`.
+- **Stockfish 19 lite, single-threaded:** full strength isn't needed for bots or for an evaluation bar. It needs no cross-origin isolation headers, which would break other embeds, and it loads only when used. The full build (about 94 MB) is too large for phones.
+- **The server decides rated results** from moves it timestamped itself, so a host can't fake a result or a clock. Casual games stay host-authoritative as in Phase 5.
+- **Phase 6 builds only the chess part of `submit-match`,** plus the match and rating tables. XP, stats and leaderboards come in Phase 7.
+
+### Risks
+
+- **Clock fairness:** server times include each player's network delay. Flag falls get a small grace (about 1 s), and the clocks shown come from the host as now.
+- **Edge Function quotas:** one call per rated game, far within the free plan's 500,000 a month.
+- **Phone performance:** the board is DOM-based, and Stockfish runs in a worker with a move-time budget, so the main thread stays free. This is checked on a 4× slowed CPU.
+
+### Open questions for the owner
+
+- **Q1 — Who plays rated games:** only signed-in accounts (recommended; guests can play every casual mode), or guests too? A guest's rating is lost if they never sign up, and SPEC §12.1 keeps guests off leaderboards anyway.
+- **Q2 — Stockfish's licence (GPL-3.0):** serving it means publishing its licence and a link to its source, which a credits note and `CREDITS.md` would do; kefche's own code is unaffected, since the engine runs as a separate program in a worker. Ship it like that (recommended), or use a weaker engine of our own?
+- **Q3 — Pieces:** the "cburnett" set used by Wikipedia (free licence, credited), or a new set drawn for kefche? The second matches the site's style but takes longer, and pieces must stay instantly readable.
+- **Q4 — Game history:** show each player's recent games and ratings publicly on their profile, as SPEC §7 describes (recommended), or only to the player? A "hide my games" switch in Settings can come either way.
+
+### Status
+
+- [ ] Plan approved by owner
 
 ---
 
