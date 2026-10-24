@@ -27,7 +27,13 @@ const EVENT = "m";
 const PROBE = "probe";
 const PROBE_MS = 10_000;
 /** Message types that only count when the server stamped their sender. */
-const RELAYED: ReadonlySet<MessageType> = new Set(["action", "state", "progress", "finish"]);
+const RELAYED: ReadonlySet<MessageType> = new Set([
+  "action",
+  "state",
+  "progress",
+  "finish",
+  "standings",
+]);
 const isRelayed = (payload: unknown) =>
   RELAYED.has((payload as { type?: unknown } | null)?.type as MessageType);
 

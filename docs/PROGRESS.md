@@ -669,7 +669,15 @@ Online modes are enabled for the Phase 4 games.
      - those types are dropped when they arrive on `room:<code>`.
    - **Hashing:** the state hash uses sorted keys, because the database reorders JSON keys.
    - **Cleanup:** relayed messages are deleted with their room.
-10. **Race mode for 2048, Sudoku and Snake** (owner decision): everyone in the room plays the same game from the same seed.
+10. **Race mode for 2048, Sudoku and Snake** (owner decision, done 2026-10-24): everyone in the room plays the same game from the same seed.
+    - **Room setup:** the room and lobby are the turn games' own (seats, ready, invites, chat, host controls), with people only. The manifest's countdowns are the time limits (`start_room` records `startedAt`), and its `raceOptions` (Sudoku's difficulty; Snake's speed and edges) are picked by the host and become the engine config.
+    - **Games:** each game records every action through `context.race.record`. In a race, Sudoku skips its menu and saved game and has no hints (`allowedInRace`); Snake skips its menu.
+    - **Live standings:** each browser mirrors its player's game with the engine and relays its progress.
+    - **Checking finishes:** at a finish, or when time runs out, the packed moves (`packActions`) go to the host, which replays them (`checkRace`). Only checked results count; the host relays them as `standings`, ends the race and offers a rematch. If the host leaves, the first seated member here takes over and everyone resends.
+    - **Limits** (unrated, so accepted for now):
+      - a reload mid-race starts the player's game again on the same seed, while the clock keeps running;
+      - the time on Sudoku is when the host received the moves;
+      - Snake's tick speed comes from the player's browser.
     - **Live leaderboard:** a leaderboard in the room re-sorts as scores, progress and finishing times change.
     - **Checking results:** each player's browser reports progress; the host checks finishes by replaying the player's moves on the shared seed (`replay()`), which works because the games are deterministic.
     - **End and results:** the race ends when everyone finishes or a time limit runs out, then results and a rematch.
@@ -713,6 +721,7 @@ Online modes are enabled for the Phase 4 games.
 - [x] Owner: the production build settings are set in GitHub (as environment secrets), and Realtime "Allow public access" is off (2026-10-24)
 - [x] Step 8 done: the public lobby browser and quick match (no bot fill, owner decision 2026-10-24). With All games selected, "Create a public lobby" opens a game picker (owner request).
 - [x] Step 9 done: online modes from the manifests, and server-stamped match messages
+- [x] Step 10 done: race mode for 2048, Sudoku and Snake. Found on the way: heartbeats and `finish_room` were never sent, because a bare `void supabase.rpc(…)` never runs. Rooms could therefore be swept 5 minutes into a match. `send()` fixes it.
 
 ---
 

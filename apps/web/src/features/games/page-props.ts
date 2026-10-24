@@ -44,11 +44,57 @@ export function turnConfig(manifest: GameManifest): TurnConfig | null {
   };
 }
 
-/** Online rooms need a turn-based game that offers them, in a build with Supabase. */
+/** A race game played in a room (manifest mode "race"). */
+const races = (manifest: GameManifest) =>
+  manifest.kind === "race" && manifest.modes.includes("race");
+
+/**
+ * What a room offers for a game: a turn game's setup, or a race's (people
+ * only, from two seats; the manifest's countdowns are the time limits).
+ */
+export function roomConfig(manifest: GameManifest): TurnConfig | null {
+  if (manifest.kind === "turn") return turnConfig(manifest);
+  if (!races(manifest)) return null;
+  const min = Math.max(2, manifest.players.min);
+  return {
+    modes: [],
+    players: { min, max: manifest.players.max, default: Math.max(min, manifest.players.default) },
+    difficulties: [],
+    timers: manifest.timers,
+  };
+}
+
+/** Online rooms need a turn-based or race game that offers them, in a build with Supabase. */
 export const playsOnline = (manifest: GameManifest): boolean =>
-  manifest.kind === "turn" &&
+  (manifest.kind === "turn" || races(manifest)) &&
   manifest.modes.includes("online-private") &&
   getSupabaseEnv() !== null;
+
+/** A race option with its labels in the page's language (from the game's "ui" strings). */
+export interface RaceOptionView {
+  key: string;
+  legend: string;
+  values: { value: string | number | boolean; label: string }[];
+}
+
+/** A race game's room setup: its options, and how players rank. */
+export interface RaceSetup {
+  options: RaceOptionView[];
+  /** "time": solving first wins (Sudoku); "score": the highest score wins. */
+  ranking: "score" | "time";
+}
+
+export function raceSetup(manifest: GameManifest, ui: Record<string, string>): RaceSetup | null {
+  if (!races(manifest)) return null;
+  return {
+    options: (manifest.raceOptions ?? []).map((option) => ({
+      key: option.key,
+      legend: ui[option.label] ?? option.label,
+      values: option.values.map((v) => ({ value: v.value, label: ui[v.label] ?? v.label })),
+    })),
+    ranking: manifest.leaderboards[0]?.metric === "time" ? "time" : "score",
+  };
+}
 
 /** Which online modes a game that plays online offers beyond invite-only rooms. */
 export const onlineModes = (manifest: GameManifest): { public: boolean; quick: boolean } => ({

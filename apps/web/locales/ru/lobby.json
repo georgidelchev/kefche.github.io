@@ -83,6 +83,23 @@
     "watch": "Смотреть",
     "browse": "Публичные комнаты"
   },
+  "race": {
+    "timeLimit": "Лимит времени",
+    "minutes": "{minutes} мин",
+    "standings": "Турнирная таблица",
+    "timeLeft": "Осталось времени",
+    "progress": "{percent}%",
+    "points": "Очки: {score}",
+    "solved": "Решено",
+    "gameOver": "Игра окончена",
+    "waitingOthers": "Вы закончили. Ждём остальных…",
+    "timeUp": "Время вышло!",
+    "allFinished": "Все закончили!",
+    "checking": "Проверяем результаты…",
+    "notChecked": "Не удалось проверить",
+    "yourPlace": "Ваше место: {place} из {count}",
+    "youWon": "Вы победили!"
+  },
   "chat": {
     "title": "Чат",
     "label": "Сообщение",

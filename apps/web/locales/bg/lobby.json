@@ -83,6 +83,23 @@
     "watch": "Гледай",
     "browse": "Виж публичните стаи"
   },
+  "race": {
+    "timeLimit": "Лимит на времето",
+    "minutes": "{minutes} мин",
+    "standings": "Класиране",
+    "timeLeft": "Оставащо време",
+    "progress": "{percent}%",
+    "points": "{score} точки",
+    "solved": "Решено",
+    "gameOver": "Край на играта",
+    "waitingOthers": "Готов си. Чакаме останалите…",
+    "timeUp": "Времето изтече!",
+    "allFinished": "Всички приключиха!",
+    "checking": "Проверяваме резултатите…",
+    "notChecked": "Не можа да се провери",
+    "yourPlace": "Завърши {place}-и от {count}",
+    "youWon": "Ти спечели!"
+  },
   "chat": {
     "title": "Чат",
     "label": "Съобщение",

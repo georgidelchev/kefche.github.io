@@ -5,10 +5,11 @@
 import { Copy, Crown, Lock, QrCode, Share2, WifiOff } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import type { BotDifficulty } from "@kefche/game-sdk";
+import type { BotDifficulty, TimerPreset } from "@kefche/game-sdk";
 import { Button } from "@kefche/ui/components/button";
 import { PlayerMarker } from "@kefche/ui/components/player-marker";
 
+import type { RaceOptionView } from "@/features/games/page-props";
 import { fill, timerLabel, type TurnStrings } from "@/features/games/turn/labels";
 import type { TurnConfig } from "@/features/games/turn/match-setup";
 import { Segmented, slot } from "@/features/games/turn/TurnUi";
@@ -17,7 +18,7 @@ import { defaultDifficulty } from "./room-match";
 
 import type { RoomSettings } from "./room-settings";
 import type { RoomSnapshot } from "./room-store";
-import type { RoomStrings } from "./strings";
+import type { RaceStrings, RoomStrings } from "./strings";
 
 export interface LobbyActions {
   setReady: (ready: boolean) => void;
@@ -45,6 +46,8 @@ interface Props {
   config: TurnConfig;
   /** The game offers public lobbies (manifest `online-public`). */
   allowPublic: boolean;
+  /** Race games: the game's options, and a time limit instead of a timer. */
+  race: { options: RaceOptionView[]; strings: RaceStrings } | null;
   turn: TurnStrings;
   strings: RoomStrings;
   locale: string;
@@ -62,6 +65,7 @@ export function LobbyView({
   present,
   config,
   allowPublic,
+  race,
   turn: ts,
   strings: s,
   locale,
@@ -73,6 +77,17 @@ export function LobbyView({
 }: Props) {
   const { room, members } = snapshot;
   const isHost = room.host_id === self;
+  // A race's countdown is its time limit ("5 min"), not a turn timer.
+  const timerLegend = race ? race.strings.timeLimit : ts.timer;
+  const limitLabel = (preset: TimerPreset) =>
+    race && preset.kind === "countdown"
+      ? fill(race.strings.minutes, { minutes: (preset.seconds / 60).toLocaleString(locale) })
+      : timerLabel(preset, ts, locale);
+  const optionIndex = (option: RaceOptionView) =>
+    Math.max(
+      0,
+      option.values.findIndex((v) => v.value === settings.options[option.key]),
+    );
   const me = members.find((m) => m.userId === self && m.status === "joined");
   const seated = (seat: number) =>
     members.find((m) => m.seat === seat && (m.status === "joined" || m.status === "left"));
@@ -238,16 +253,34 @@ export function LobbyView({
             )}
             {config.timers.length > 1 && (
               <Segmented
-                legend={ts.timer}
+                legend={timerLegend}
                 value={settings.timer}
                 options={config.timers.map((preset, i) => ({
                   value: i,
-                  label: timerLabel(preset, ts, locale),
+                  label: limitLabel(preset),
                 }))}
                 onChange={(timer) => {
                   actions.update({ timer });
                 }}
               />
+            )}
+            {race?.options.map(
+              (option) =>
+                option.values.length > 1 && (
+                  <Segmented
+                    key={option.key}
+                    legend={option.legend}
+                    value={optionIndex(option)}
+                    options={option.values.map((v, i) => ({ value: i, label: v.label }))}
+                    onChange={(i) => {
+                      const chosen = option.values[i] ?? option.values[0];
+                      if (!chosen) return;
+                      actions.update({
+                        options: { ...settings.options, [option.key]: chosen.value },
+                      });
+                    }}
+                  />
+                ),
             )}
             {/* A public room of a game without public lobbies can still go private. */}
             {(allowPublic || room.visibility === "public") && (
@@ -294,9 +327,13 @@ export function LobbyView({
               {ts.players}: {room.players.toLocaleString(locale)}
             </li>
             <li>
-              {ts.timer}:{" "}
-              {timerLabel(config.timers[settings.timer] ?? { kind: "none" }, ts, locale)}
+              {timerLegend}: {limitLabel(config.timers[settings.timer] ?? { kind: "none" })}
             </li>
+            {race?.options.map((option) => (
+              <li key={option.key}>
+                {option.legend}: {option.values[optionIndex(option)]?.label}
+              </li>
+            ))}
             <li>{room.visibility === "public" ? s.public : s.private}</li>
           </ul>
         )}

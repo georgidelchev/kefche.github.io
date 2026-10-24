@@ -83,6 +83,23 @@
     "watch": "Watch",
     "browse": "Browse public lobbies"
   },
+  "race": {
+    "timeLimit": "Time limit",
+    "minutes": "{minutes} min",
+    "standings": "Standings",
+    "timeLeft": "Time left",
+    "progress": "{percent}%",
+    "points": "{score} points",
+    "solved": "Solved",
+    "gameOver": "Game over",
+    "waitingOthers": "You're done. Waiting for the others…",
+    "timeUp": "Time's up!",
+    "allFinished": "Everyone has finished!",
+    "checking": "Checking the results…",
+    "notChecked": "Couldn't be checked",
+    "yourPlace": "You finished #{place} of {count}",
+    "youWon": "You won!"
+  },
   "chat": {
     "title": "Chat",
     "label": "Message",

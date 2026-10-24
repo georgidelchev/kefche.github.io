@@ -83,6 +83,23 @@
     "watch": "देखें",
     "browse": "सार्वजनिक रूम देखें"
   },
+  "race": {
+    "timeLimit": "समय सीमा",
+    "minutes": "{minutes} मिनट",
+    "standings": "स्टैंडिंग",
+    "timeLeft": "बचा समय",
+    "progress": "{percent}%",
+    "points": "{score} अंक",
+    "solved": "हल हो गया",
+    "gameOver": "खेल खत्म",
+    "waitingOthers": "आपका हो गया। बाकी खिलाड़ियों का इंतज़ार…",
+    "timeUp": "समय खत्म!",
+    "allFinished": "सबने पूरा कर लिया!",
+    "checking": "नतीजे जाँचे जा रहे हैं…",
+    "notChecked": "जाँच नहीं हो सकी",
+    "yourPlace": "आप {count} में से {place}वें स्थान पर रहे",
+    "youWon": "आप जीत गए!"
+  },
   "chat": {
     "title": "चैट",
     "label": "संदेश",

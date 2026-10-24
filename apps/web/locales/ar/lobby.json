@@ -83,6 +83,23 @@
     "watch": "شاهد",
     "browse": "تصفّح الغرف العامة"
   },
+  "race": {
+    "timeLimit": "المهلة",
+    "minutes": "{minutes} د",
+    "standings": "الترتيب",
+    "timeLeft": "الوقت المتبقي",
+    "progress": "{percent}%",
+    "points": "{score} نقطة",
+    "solved": "تم الحل",
+    "gameOver": "انتهت اللعبة",
+    "waitingOthers": "انتهيت. في انتظار الآخرين…",
+    "timeUp": "انتهى الوقت!",
+    "allFinished": "انتهى الجميع!",
+    "checking": "جارٍ التحقق من النتائج…",
+    "notChecked": "تعذّر التحقق",
+    "yourPlace": "حللت في المركز {place} من {count}",
+    "youWon": "لقد فزت!"
+  },
   "chat": {
     "title": "الدردشة",
     "label": "رسالة",

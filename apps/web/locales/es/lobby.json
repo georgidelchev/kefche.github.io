@@ -83,6 +83,23 @@
     "watch": "Mirar",
     "browse": "Ver las salas públicas"
   },
+  "race": {
+    "timeLimit": "Tiempo límite",
+    "minutes": "{minutes} min",
+    "standings": "Clasificación",
+    "timeLeft": "Tiempo restante",
+    "progress": "{percent}%",
+    "points": "{score} puntos",
+    "solved": "Resuelto",
+    "gameOver": "Fin de la partida",
+    "waitingOthers": "Has terminado. Esperando a los demás…",
+    "timeUp": "¡Se acabó el tiempo!",
+    "allFinished": "¡Todos han terminado!",
+    "checking": "Comprobando los resultados…",
+    "notChecked": "No se pudo comprobar",
+    "yourPlace": "Terminaste en el puesto {place} de {count}",
+    "youWon": "¡Has ganado!"
+  },
   "chat": {
     "title": "Chat",
     "label": "Mensaje",

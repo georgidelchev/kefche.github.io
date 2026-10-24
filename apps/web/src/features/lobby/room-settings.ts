@@ -5,26 +5,47 @@ import * as z from "zod/mini";
 
 import type { BotDifficulty } from "@kefche/game-sdk";
 
+/** A race option's chosen value, by option key (manifest `raceOptions`). */
+export type RaceOptionValues = Record<string, string | number | boolean>;
+
 export interface RoomSettings {
-  /** Index into the manifest's timer presets. */
+  /** Index into the manifest's timer presets (a race's time limit). */
   timer: number;
   /** Bot difficulty per bot seat ("2": "hard"). */
   bots: Record<string, BotDifficulty>;
+  /** Race mode: the game's options. */
+  options: RaceOptionValues;
   /** Set by start_room for each match; every member builds the match from it. */
   seed: string | null;
+  /** When start_room started the match, ms since epoch (the database's clock). */
+  startedAt: number | null;
 }
 
 const schema = z.object({
   timer: z.optional(z.int().check(z.nonnegative())),
   bots: z.optional(z.record(z.string(), z.enum(["easy", "medium", "hard"]))),
+  options: z.optional(z.record(z.string(), z.union([z.string(), z.number(), z.boolean()]))),
   seed: z.optional(z.string()),
+  startedAt: z.optional(z.number()),
 });
 
 export function parseRoomSettings(raw: unknown): RoomSettings {
   const parsed = schema.safeParse(raw);
   const data = parsed.success ? parsed.data : {};
-  return { timer: data.timer ?? 0, bots: data.bots ?? {}, seed: data.seed ?? null };
+  return {
+    timer: data.timer ?? 0,
+    bots: data.bots ?? {},
+    options: data.options ?? {},
+    seed: data.seed ?? null,
+    startedAt: data.startedAt ?? null,
+  };
 }
 
-/** What the lobby writes back: the seed is the database's to set. */
-export const settingsJson = ({ timer, bots }: RoomSettings) => ({ timer, bots });
+/** What the lobby writes back: the seed and start time are the database's to set. */
+export const settingsJson = ({
+  timer,
+  bots,
+  options,
+}: Pick<RoomSettings, "timer" | "bots"> & {
+  options?: RaceOptionValues;
+}) => ({ timer, bots, options: options ?? {} });

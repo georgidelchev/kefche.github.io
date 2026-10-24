@@ -83,6 +83,23 @@
     "watch": "観戦",
     "browse": "公開ルームを見る"
   },
+  "race": {
+    "timeLimit": "制限時間",
+    "minutes": "{minutes}分",
+    "standings": "順位",
+    "timeLeft": "残り時間",
+    "progress": "{percent}%",
+    "points": "{score}点",
+    "solved": "完成",
+    "gameOver": "ゲームオーバー",
+    "waitingOthers": "完了しました。ほかのプレイヤーを待っています…",
+    "timeUp": "時間切れ！",
+    "allFinished": "全員が終わりました！",
+    "checking": "結果を確認しています…",
+    "notChecked": "確認できませんでした",
+    "yourPlace": "{count}人中{place}位でした",
+    "youWon": "勝ちました！"
+  },
   "chat": {
     "title": "チャット",
     "label": "メッセージ",

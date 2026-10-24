@@ -13,6 +13,7 @@ import { Button } from "@kefche/ui/components/button";
 import { ensureIdentity, type Identity } from "@/features/account/identity";
 import { FormMessage, TextField } from "@/features/auth/components/fields";
 import type { PlayerStrings } from "@/features/games/GamePlayer";
+import type { RaceSetup } from "@/features/games/page-props";
 import type { TurnStrings } from "@/features/games/turn/labels";
 import type { TurnConfig } from "@/features/games/turn/match-setup";
 import { getSupabase, send, type Supabase } from "@/lib/supabase/client";
@@ -21,13 +22,14 @@ import { supabaseConfig } from "@/lib/supabase/config";
 import { GuestProfileForm } from "./GuestProfileForm";
 import { LobbyView, type LobbyActions } from "./LobbyView";
 import { OnlineMatch } from "./OnlineMatch";
+import { RaceMatch } from "./RaceMatch";
 import { roomMatch, type RoomMatch } from "./room-match";
 import { parseRoomSettings, settingsJson } from "./room-settings";
 import { roomErrorCode, watchRoom, type RoomMember, type RoomSnapshot } from "./room-store";
 import { RoomChat } from "./RoomChat";
 import { createSupabaseTransport } from "./supabase-transport";
 
-import type { ChatStrings, GuestStrings, RoomErrorCode, RoomStrings } from "./strings";
+import type { ChatStrings, GuestStrings, RaceStrings, RoomErrorCode, RoomStrings } from "./strings";
 
 export interface OnlineGame {
   id: string;
@@ -38,6 +40,8 @@ export interface OnlineGame {
   ui: Record<string, string>;
   /** Online modes beyond invite-only rooms (manifest `online-public`, `quick-match`). */
   modes: { public: boolean; quick: boolean };
+  /** Set for race games: the room plays a race instead of a turn-based match. */
+  race: RaceSetup | null;
 }
 
 /** A change to the room as this browser shows it. */
@@ -52,6 +56,7 @@ interface Props {
   guest: GuestStrings;
   chat: ChatStrings;
   turn: TurnStrings;
+  race: RaceStrings;
   paths: { game: string; privacy: string; onboarding: string };
 }
 
@@ -89,6 +94,7 @@ export function OnlineRoom({
   guest,
   chat,
   turn,
+  race,
   paths,
 }: Props) {
   // A link with ?room=, ?quick or ?new[=public] starts at once (the page renders only in the browser).
@@ -123,7 +129,7 @@ export function OnlineRoom({
           p_game_id: game.id,
           p_game_version: game.version,
           p_players: players,
-          p_settings: settingsJson({ timer: 0, bots: {}, seed: null }),
+          p_settings: settingsJson({ timer: 0, bots: {} }),
         });
         if (rpcError) throw rpcError;
         code = data.code;
@@ -134,7 +140,7 @@ export function OnlineRoom({
           p_game_version: game.version,
           p_players: players,
           p_visibility: intent.public ? "public" : "private",
-          p_settings: settingsJson({ timer: 0, bots: {}, seed: null }),
+          p_settings: settingsJson({ timer: 0, bots: {} }),
         });
         if (rpcError) throw rpcError;
         code = data.code;
@@ -227,6 +233,7 @@ export function OnlineRoom({
           player={player}
           chat={chat}
           turn={turn}
+          race={race}
           onGone={(code) => {
             history.replaceState(history.state, "", location.pathname);
             setStage({ kind: "gone", code });
@@ -319,6 +326,7 @@ interface RoomProps {
   player: PlayerStrings;
   chat: ChatStrings;
   turn: TurnStrings;
+  race: RaceStrings;
   onGone: (code: RoomErrorCode) => void;
   onLeft: () => void;
 }
@@ -339,6 +347,7 @@ function Room({
   player,
   chat,
   turn,
+  race,
   onGone,
   onLeft,
 }: RoomProps) {
@@ -543,6 +552,7 @@ function Room({
           ...settings,
           ...(change.timer === undefined ? {} : { timer: change.timer }),
           ...(change.bots === undefined ? {} : { bots: change.bots }),
+          ...(change.options === undefined ? {} : { options: change.options }),
         }),
       };
       void call(
@@ -584,6 +594,36 @@ function Room({
 
   if (match) {
     if (!transport) return <Waiting label={s.joining} />;
+    if (game.race) {
+      const limit = game.config.timers[settings.timer] ?? game.config.timers[0];
+      return (
+        <>
+          {docked}
+          <RaceMatch
+            key={match.seed}
+            supabase={supabase}
+            transport={transport}
+            roomId={roomId}
+            self={self}
+            host={room.host_id}
+            match={match}
+            seed={match.seed}
+            startedAt={settings.startedAt}
+            limitMs={(limit?.kind === "countdown" ? limit.seconds : 600) * 1000}
+            countdown={match.countdown}
+            present={present}
+            game={{ id: game.id, name: game.name, ui: game.ui, race: game.race }}
+            options={settings.options}
+            locale={locale}
+            dir={dir}
+            strings={s}
+            race={race}
+            player={player}
+            onLeave={actions.leave}
+          />
+        </>
+      );
+    }
     const status = (userId: string) => view.members.find((m) => m.userId === userId)?.status;
     return (
       <>
@@ -623,6 +663,7 @@ function Room({
         present={present}
         config={game.config}
         allowPublic={game.modes.public}
+        race={game.race ? { options: game.race.options, strings: race } : null}
         turn={turn}
         strings={s}
         locale={locale}

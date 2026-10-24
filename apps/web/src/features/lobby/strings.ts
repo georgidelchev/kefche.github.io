@@ -166,6 +166,49 @@ export function lobbyBrowserStrings(t: AppT): LobbyBrowserStrings {
   };
 }
 
+/** Race mode (Phase 5 step 10): the lobby's time limit and the race screen. */
+export interface RaceStrings {
+  timeLimit: string;
+  /** "{minutes} min" */
+  minutes: string;
+  standings: string;
+  timeLeft: string;
+  /** "{percent}%" */
+  progress: string;
+  /** "{score} points" */
+  points: string;
+  solved: string;
+  gameOver: string;
+  waitingOthers: string;
+  timeUp: string;
+  allFinished: string;
+  checking: string;
+  notChecked: string;
+  /** "You finished #{place} of {count}" */
+  yourPlace: string;
+  youWon: string;
+}
+
+export function raceStrings(t: AppT): RaceStrings {
+  return {
+    timeLimit: t("lobby:race.timeLimit"),
+    minutes: t("lobby:race.minutes", { minutes: "{minutes}" }),
+    standings: t("lobby:race.standings"),
+    timeLeft: t("lobby:race.timeLeft"),
+    progress: t("lobby:race.progress", { percent: "{percent}" }),
+    points: t("lobby:race.points", { score: "{score}" }),
+    solved: t("lobby:race.solved"),
+    gameOver: t("lobby:race.gameOver"),
+    waitingOthers: t("lobby:race.waitingOthers"),
+    timeUp: t("lobby:race.timeUp"),
+    allFinished: t("lobby:race.allFinished"),
+    checking: t("lobby:race.checking"),
+    notChecked: t("lobby:race.notChecked"),
+    yourPlace: t("lobby:race.yourPlace", { place: "{place}", count: "{count}" }),
+    youWon: t("lobby:race.youWon"),
+  };
+}
+
 export const ROOM_ERROR_CODES = [
   "room_not_found",
   "room_closed",

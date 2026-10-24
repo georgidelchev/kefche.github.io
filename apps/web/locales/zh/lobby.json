@@ -83,6 +83,23 @@
     "watch": "观战",
     "browse": "浏览公开房间"
   },
+  "race": {
+    "timeLimit": "时间限制",
+    "minutes": "{minutes} 分钟",
+    "standings": "排名",
+    "timeLeft": "剩余时间",
+    "progress": "{percent}%",
+    "points": "{score} 分",
+    "solved": "已完成",
+    "gameOver": "游戏结束",
+    "waitingOthers": "你已完成，正在等待其他人…",
+    "timeUp": "时间到！",
+    "allFinished": "所有人都完成了！",
+    "checking": "正在核对结果…",
+    "notChecked": "无法核对",
+    "yourPlace": "你在 {count} 人中排第 {place}",
+    "youWon": "你赢了！"
+  },
   "chat": {
     "title": "聊天",
     "label": "消息",
