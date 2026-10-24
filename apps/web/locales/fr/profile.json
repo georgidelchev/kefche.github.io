@@ -4,5 +4,31 @@
   "joined": "Inscrit depuis",
   "country": "Pays",
   "opening": "Ouverture de votre profil…",
-  "unavailable": "Impossible de charger ce profil pour le moment. Réessayez dans un instant."
+  "unavailable": "Impossible de charger ce profil pour le moment. Réessayez dans un instant.",
+  "ratings": "Classements",
+  "ratingGames": "Parties : {count}",
+  "provisional": "Provisoire : moins de 10 parties classées",
+  "recentGames": "Parties récentes",
+  "noGames": "Pas encore de partie classée.",
+  "historyUnavailable": "Impossible de charger l'historique des parties pour le moment.",
+  "versus": "contre {name}",
+  "deletedPlayer": "Joueur supprimé",
+  "outcome": {
+    "win": "Victoire",
+    "loss": "Défaite",
+    "draw": "Nul"
+  },
+  "game": {
+    "title": "{a} contre {b}",
+    "description": "Une partie terminée de {game} sur kefche : les joueurs, le résultat et les coups.",
+    "played": "Jouée le {date}",
+    "player": "Joueur {n}",
+    "rating": "Classement : {before} → {after} ({change})",
+    "moves": "Coups (PGN)",
+    "copy": "Copier le PGN",
+    "copied": "Copié",
+    "copyFailed": "Impossible de copier. Sélectionnez le texte et copiez-le.",
+    "download": "Télécharger le PGN",
+    "unavailable": "Impossible de charger cette partie pour le moment. Réessayez dans un instant."
+  }
 }

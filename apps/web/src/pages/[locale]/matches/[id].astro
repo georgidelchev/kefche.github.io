@@ -1,0 +1,238 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { CloudOff, Copy, Download } from "lucide-react";
+
+import { buttonVariants } from "@kefche/ui/components/button";
+
+import NotFoundPage from "@/features/errors/NotFoundPage.astro";
+import { gameName, gameUi } from "@/features/games/game-names";
+import { fetchMatch } from "@/features/profile/history";
+import {
+  clockText,
+  endingText,
+  outcomeOf,
+  outcomeText,
+  playerName,
+  ratingChange,
+} from "@/features/profile/history-text";
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import { DEFAULT_LOCALE, isLocale, LOCALE_INFO } from "@/i18n/locales";
+import { getSupabaseEnv } from "@/lib/env";
+
+// A finished game's own page (SPEC §7.2, §12.2): who played, how it ended,
+// the rating changes and the moves as PGN to copy or download. Rendered in
+// the Worker on request; counted games are public (owner decision
+// 2026-10-24), noindex like profiles. Phase 6 step 9 adds the analysis board.
+export const prerender = false;
+
+const env = getSupabaseEnv();
+const locale = isLocale(Astro.params.locale) ? Astro.params.locale : DEFAULT_LOCALE;
+const id = Astro.params.id ?? "";
+const lookup =
+  env && isLocale(Astro.params.locale)
+    ? await fetchMatch(env, id)
+    : ({ status: "missing" } as const);
+
+if (lookup.status === "found") {
+  // A counted game doesn't change; nicknames rarely do.
+  Astro.response.headers.set("Cache-Control", "public, max-age=300");
+} else if (lookup.status === "missing") {
+  Astro.response.status = 404;
+  Astro.response.headers.set("Cache-Control", "public, max-age=30");
+} else {
+  Astro.response.status = 503;
+  Astro.response.headers.set("Cache-Control", "no-store");
+}
+
+const t = getT(locale);
+const { bcp47 } = LOCALE_INFO[locale];
+const path = `/matches/${id}/`;
+const match = lookup.status === "found" ? lookup.match : null;
+const ui = match ? gameUi(match.gameId, locale) : {};
+const name = match ? gameName(match.gameId, locale) : "";
+// The game's names for its seats (chess: White, Black), else "Player n".
+const SEAT_KEYS = ["seat0", "seat1"] as const;
+const seatLabel = (seat: number) =>
+  ui[SEAT_KEYS[seat] ?? ""] ?? t("profile:game.player", { n: (seat + 1).toLocaleString(bcp47) });
+const players = (match?.players ?? []).map((player) => {
+  const outcome = outcomeOf(player.outcome);
+  const before = player.ratingBefore;
+  const after = player.ratingAfter;
+  const change = ratingChange(player, bcp47);
+  return {
+    seat: seatLabel(player.seat),
+    name: playerName(t, player),
+    href: player.nickname
+      ? getRelativeLocaleUrl(locale, `/u/${encodeURIComponent(player.nickname)}/`)
+      : null,
+    outcome,
+    outcomeLabel: outcomeText(t, outcome),
+    rating:
+      before !== null && after !== null && change !== null
+        ? t("profile:game.rating", {
+            before: Math.round(before).toLocaleString(bcp47),
+            after: Math.round(after).toLocaleString(bcp47),
+            change,
+          })
+        : null,
+  };
+});
+const title = match
+  ? t("profile:game.title", { a: players[0]?.name ?? "", b: players[1]?.name ?? "" })
+  : "";
+const ended = match
+  ? new Intl.DateTimeFormat(bcp47, { dateStyle: "long", timeStyle: "short" }).format(
+      new Date(match.endedAt),
+    )
+  : "";
+const badge =
+  match?.rated && match.pool
+    ? t("lobby:rated.badge", { pool: clockText(t, match.timer, match.pool, bcp47) })
+    : match
+      ? clockText(t, match.timer, null, bcp47)
+      : "";
+const ending = match ? endingText(t, ui, match.reason, match.players) : "";
+// kefche-chess-2026-10-25-1a2b3c4d.pgn
+const fileName = match
+  ? `kefche-${match.gameId}-${match.endedAt.slice(0, 10)}-${match.id.slice(0, 8)}.pgn`
+  : "";
+const OUTCOME_CLASS = {
+  win: "bg-success text-on-brand",
+  loss: "bg-danger text-on-danger",
+  draw: "bg-surface-2",
+} as const;
+---
+
+{lookup.status === "missing" && <NotFoundPage locale={locale} />}
+
+{lookup.status === "error" && (
+  <AppShell
+    locale={locale}
+    path={path}
+    title={t("common:meta.sectionTitle", { section: t("profile:recentGames") })}
+    description={t("profile:game.unavailable")}
+    noindex
+  >
+    <section class="mx-auto grid max-w-xl justify-items-center gap-4 py-12 text-center">
+      <CloudOff aria-hidden="true" className="size-12 text-muted" />
+      <p role="alert" class="text-lg">
+        {t("profile:game.unavailable")}
+      </p>
+    </section>
+  </AppShell>
+)}
+
+{match && (
+  <AppShell
+    locale={locale}
+    path={path}
+    title={t("common:meta.sectionTitle", { section: title })}
+    description={t("profile:game.description", { game: name })}
+    noindex
+  >
+    <article class="mx-auto grid w-full max-w-2xl gap-6 py-6 md:py-12">
+      <header class="grid gap-2">
+        <p class="text-sm text-muted">
+          <a href={getRelativeLocaleUrl(locale, `/games/${match.gameId}/`)} class="hover:underline">
+            {name}
+          </a>
+          {badge && <span> · {badge}</span>}
+        </p>
+        <h1 class="text-3xl break-words md:text-4xl">{title}</h1>
+        <p class="text-muted">{t("profile:game.played", { date: ended })}</p>
+        {ending && <p class="text-lg font-semibold">{ending}</p>}
+      </header>
+
+      <ul class="grid gap-2 sm:grid-cols-2">
+        {players.map((player) => (
+          <li class="grid gap-2 rounded-2xl border border-border bg-surface p-4">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-sm text-muted">{player.seat}</span>
+              <span
+                class={`rounded-full px-2.5 py-0.5 text-sm font-semibold ${OUTCOME_CLASS[player.outcome]}`}
+              >
+                {player.outcomeLabel}
+              </span>
+            </div>
+            {player.href ? (
+              <a
+                href={player.href}
+                class="truncate text-lg font-semibold text-link underline-offset-4 hover:underline"
+              >
+                {player.name}
+              </a>
+            ) : (
+              <span class="truncate text-lg font-semibold">{player.name}</span>
+            )}
+            {player.rating && <span class="text-sm tabular-nums">{player.rating}</span>}
+          </li>
+        ))}
+      </ul>
+
+      {match.pgn && (
+        <section
+          class="grid gap-3"
+          aria-labelledby="pgn-heading"
+          data-pgn-tools
+          data-file-name={fileName}
+          data-copied={t("profile:game.copied")}
+          data-copy-failed={t("profile:game.copyFailed")}
+        >
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 id="pgn-heading" class="text-2xl">
+              {t("profile:game.moves")}
+            </h2>
+            <div class="flex flex-wrap gap-2">
+              <button type="button" data-copy class={buttonVariants({ variant: "outline" })}>
+                <Copy aria-hidden="true" className="size-4" />
+                {t("profile:game.copy")}
+              </button>
+              <button type="button" data-download class={buttonVariants({ variant: "outline" })}>
+                <Download aria-hidden="true" className="size-4" />
+                {t("profile:game.download")}
+              </button>
+            </div>
+          </div>
+          <p role="status" data-status class="min-h-6 text-sm text-muted"></p>
+          <pre
+            dir="ltr"
+            data-pgn
+            class="overflow-x-auto rounded-2xl border border-border bg-surface p-4 text-sm whitespace-pre-wrap"
+          >{match.pgn}</pre>
+        </section>
+      )}
+    </article>
+  </AppShell>
+)}
+
+<script>
+  // Copy and download the PGN (no framework).
+  for (const tools of document.querySelectorAll<HTMLElement>("[data-pgn-tools]")) {
+    const pgn = tools.querySelector("[data-pgn]")?.textContent ?? "";
+    const status = tools.querySelector<HTMLElement>("[data-status]");
+    const say = (text: string) => {
+      if (status) status.textContent = text;
+    };
+    tools.querySelector("[data-copy]")?.addEventListener("click", () => {
+      navigator.clipboard.writeText(pgn).then(
+        () => {
+          say(tools.dataset.copied ?? "");
+        },
+        () => {
+          say(tools.dataset.copyFailed ?? "");
+        },
+      );
+    });
+    tools.querySelector("[data-download]")?.addEventListener("click", () => {
+      const url = URL.createObjectURL(new Blob([pgn], { type: "application/x-chess-pgn" }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = tools.dataset.fileName ?? "game.pgn";
+      link.click();
+      setTimeout(() => {
+        URL.revokeObjectURL(url);
+      }, 1000);
+    });
+  }
+</script>

@@ -326,8 +326,14 @@ isOneToOne: false
 "lock_room":
 { Args: { "p_locked": boolean,"p_room": string }; Returns: undefined
                            },
+"match_record":
+{ Args: { "p_match": string }; Returns: Json
+                           },
 "merge_guest":
 { Args: { "p_guest": string,"p_target": string }; Returns: undefined
+                           },
+"player_history":
+{ Args: { "p_limit"?: number,"p_user": string }; Returns: Json
                            },
 "public_rooms":
 { Args: { "p_game_id"?: string }; Returns: {

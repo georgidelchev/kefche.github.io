@@ -93,6 +93,13 @@
     "themeSea": "Mar",
     "themeMeadow": "Prado",
     "creditStockfish": "Os bots são o Stockfish 19, software livre sob a GPL-3.0.",
-    "creditSource": "Código-fonte"
+    "creditSource": "Código-fonte",
+    "seat0": "Brancas",
+    "seat1": "Pretas",
+    "endTimeout": "O tempo de {name} acabou.",
+    "endTimeoutDraw": "Empate: o tempo acabou, mas o outro lado não consegue dar xeque-mate.",
+    "copyPgn": "Copiar PGN",
+    "copied": "Copiado",
+    "downloadPgn": "Baixar PGN"
   }
 }

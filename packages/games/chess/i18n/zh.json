@@ -93,6 +93,13 @@
     "themeSea": "海",
     "themeMeadow": "草地",
     "creditStockfish": "机器人使用 Stockfish 19，这是遵循 GPL-3.0 许可的自由软件。",
-    "creditSource": "源代码"
+    "creditSource": "源代码",
+    "seat0": "白方",
+    "seat1": "黑方",
+    "endTimeout": "{name} 超时。",
+    "endTimeoutDraw": "和棋：时间用完，但对方无法将死。",
+    "copyPgn": "复制 PGN",
+    "copied": "已复制",
+    "downloadPgn": "下载 PGN"
   }
 }

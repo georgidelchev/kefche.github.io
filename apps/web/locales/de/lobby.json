@@ -123,7 +123,8 @@
     "range": "Gegner mit Wertung {low}–{high}",
     "cancel": "Abbrechen",
     "newOpponent": "Neuer Gegner",
-    "clock": "{clock} · {pool}"
+    "clock": "{clock} · {pool}",
+    "viewGame": "Partie und Züge ansehen"
   },
   "chat": {
     "title": "Chat",

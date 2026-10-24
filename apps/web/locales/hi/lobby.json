@@ -123,7 +123,8 @@
     "range": "{low}–{high} रेटिंग वाले विरोधी",
     "cancel": "रद्द करें",
     "newOpponent": "नया विरोधी",
-    "clock": "{clock} · {pool}"
+    "clock": "{clock} · {pool}",
+    "viewGame": "गेम और उसकी चालें देखें"
   },
   "chat": {
     "title": "चैट",

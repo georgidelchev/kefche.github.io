@@ -32,11 +32,14 @@ export async function recordRatedAction(
 }
 
 export type RatedOutcome =
-  { kind: "rated"; before: number; after: number } | { kind: "review" } | { kind: "failed" };
+  | { kind: "rated"; before: number; after: number; matchId: string }
+  | { kind: "review" }
+  | { kind: "failed" };
 
 const response = z.union([
   z.object({ pending: z.literal(true), retryInMs: z.number() }),
   z.object({
+    matchId: z.string(),
     status: z.enum(["counted", "review"]),
     ratings: z.array(z.object({ before: z.number(), after: z.nullable(z.number()) })),
   }),
@@ -68,7 +71,13 @@ export async function fetchRatedOutcome(
     }
     if (answer.status === "review") return { kind: "review" };
     const mine = answer.ratings[match.seat];
-    if (mine?.after != null) return { kind: "rated", before: mine.before, after: mine.after };
+    if (mine?.after != null)
+      return {
+        kind: "rated",
+        before: mine.before,
+        after: mine.after,
+        matchId: answer.matchId,
+      };
     return { kind: "failed" };
   }
   return { kind: "failed" };

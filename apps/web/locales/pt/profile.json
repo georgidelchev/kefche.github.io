@@ -4,5 +4,31 @@
   "joined": "Entrou em",
   "country": "País",
   "opening": "Abrindo seu perfil…",
-  "unavailable": "Não conseguimos carregar este perfil agora. Tente de novo daqui a pouco."
+  "unavailable": "Não conseguimos carregar este perfil agora. Tente de novo daqui a pouco.",
+  "ratings": "Ratings",
+  "ratingGames": "Partidas: {count}",
+  "provisional": "Provisório: menos de 10 partidas ranqueadas",
+  "recentGames": "Partidas recentes",
+  "noGames": "Ainda não há partidas ranqueadas.",
+  "historyUnavailable": "Não foi possível carregar o histórico de partidas agora.",
+  "versus": "contra {name}",
+  "deletedPlayer": "Jogador excluído",
+  "outcome": {
+    "win": "Vitória",
+    "loss": "Derrota",
+    "draw": "Empate"
+  },
+  "game": {
+    "title": "{a} contra {b}",
+    "description": "Uma partida encerrada de {game} no kefche: os jogadores, o resultado e os lances.",
+    "played": "Jogada em {date}",
+    "player": "Jogador {n}",
+    "rating": "Rating: {before} → {after} ({change})",
+    "moves": "Lances (PGN)",
+    "copy": "Copiar PGN",
+    "copied": "Copiado",
+    "copyFailed": "Não foi possível copiar. Selecione o texto e copie.",
+    "download": "Baixar PGN",
+    "unavailable": "Não foi possível carregar esta partida agora. Tente de novo em instantes."
+  }
 }

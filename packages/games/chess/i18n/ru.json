@@ -93,6 +93,13 @@
     "themeSea": "Море",
     "themeMeadow": "Луг",
     "creditStockfish": "Боты — это Stockfish 19, свободная программа под лицензией GPL-3.0.",
-    "creditSource": "Исходный код"
+    "creditSource": "Исходный код",
+    "seat0": "Белые",
+    "seat1": "Чёрные",
+    "endTimeout": "У {name} закончилось время.",
+    "endTimeoutDraw": "Ничья: время вышло, но у другой стороны нет материала для мата.",
+    "copyPgn": "Копировать PGN",
+    "copied": "Скопировано",
+    "downloadPgn": "Скачать PGN"
   }
 }

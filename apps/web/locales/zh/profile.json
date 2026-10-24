@@ -4,5 +4,31 @@
   "joined": "加入时间",
   "country": "国家/地区",
   "opening": "正在打开你的个人资料…",
-  "unavailable": "暂时无法加载此个人资料，请稍后再试。"
+  "unavailable": "暂时无法加载此个人资料，请稍后再试。",
+  "ratings": "积分",
+  "ratingGames": "对局数：{count}",
+  "provisional": "暂定：积分赛少于 10 局",
+  "recentGames": "最近对局",
+  "noGames": "还没有积分赛。",
+  "historyUnavailable": "暂时无法加载对局记录。",
+  "versus": "对阵 {name}",
+  "deletedPlayer": "已删除的玩家",
+  "outcome": {
+    "win": "胜",
+    "loss": "负",
+    "draw": "和"
+  },
+  "game": {
+    "title": "{a} 对阵 {b}",
+    "description": "kefche 上一局已结束的{game}：玩家、结果和着法。",
+    "played": "对局于 {date}",
+    "player": "玩家 {n}",
+    "rating": "积分：{before} → {after}（{change}）",
+    "moves": "着法（PGN）",
+    "copy": "复制 PGN",
+    "copied": "已复制",
+    "copyFailed": "无法复制。请选中文字后自行复制。",
+    "download": "下载 PGN",
+    "unavailable": "暂时无法加载这局对局，请稍后再试。"
+  }
 }

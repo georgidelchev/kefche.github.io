@@ -123,7 +123,8 @@
     "range": "对手积分 {low}–{high}",
     "cancel": "取消",
     "newOpponent": "新对手",
-    "clock": "{clock} · {pool}"
+    "clock": "{clock} · {pool}",
+    "viewGame": "查看对局和着法"
   },
   "chat": {
     "title": "聊天",

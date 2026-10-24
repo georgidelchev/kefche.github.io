@@ -123,7 +123,8 @@
     "range": "Rivales con puntuación {low}–{high}",
     "cancel": "Cancelar",
     "newOpponent": "Nuevo rival",
-    "clock": "{clock} · {pool}"
+    "clock": "{clock} · {pool}",
+    "viewGame": "Ver la partida y sus jugadas"
   },
   "chat": {
     "title": "Chat",

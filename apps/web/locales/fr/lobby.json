@@ -123,7 +123,8 @@
     "range": "Adversaires classés {low}–{high}",
     "cancel": "Annuler",
     "newOpponent": "Nouvel adversaire",
-    "clock": "{clock} · {pool}"
+    "clock": "{clock} · {pool}",
+    "viewGame": "Voir la partie et ses coups"
   },
   "chat": {
     "title": "Chat",

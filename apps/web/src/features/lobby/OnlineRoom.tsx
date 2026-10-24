@@ -69,7 +69,8 @@ interface Props {
   chat: ChatStrings;
   turn: TurnStrings;
   race: RaceStrings;
-  paths: { game: string; privacy: string; onboarding: string; signIn: string };
+  /** `matches`: where finished games live, `/matches/` in the page's locale. */
+  paths: { game: string; privacy: string; onboarding: string; signIn: string; matches: string };
 }
 
 type Intent =
@@ -341,6 +342,7 @@ export function OnlineRoom({
           onLeft={() => {
             location.assign(paths.game);
           }}
+          matchesPath={paths.matches}
         />
       );
   }
@@ -493,6 +495,8 @@ interface RoomProps {
   race: RaceStrings;
   onGone: (code: RoomErrorCode) => void;
   onLeft: () => void;
+  /** `/matches/` in the page's locale. */
+  matchesPath: string;
 }
 
 // last_seen_at: a player silent for 5 minutes counts as gone, and a room
@@ -514,6 +518,7 @@ function Room({
   race,
   onGone,
   onLeft,
+  matchesPath,
 }: RoomProps) {
   const self = identity.userId;
   const [snapshot, setSnapshot] = useState<RoomSnapshot | null>(null);
@@ -808,6 +813,7 @@ function Room({
             rated && settings.startedAt !== null ? settings.startedAt + RATED_COUNTDOWN_MS : null
           }
           // A rated room plays one game: the players search again instead of a rematch.
+          matchHref={(id) => `${matchesPath}${id}/`}
           onNewOpponent={() => {
             void call(() => supabase.rpc("leave_room", { p_room: roomId })).then(() => {
               location.assign(`${location.pathname}?rated=${String(settings.timer)}`);

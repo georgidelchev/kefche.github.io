@@ -93,6 +93,13 @@
     "themeSea": "Mer",
     "themeMeadow": "Prairie",
     "creditStockfish": "Les bots sont Stockfish 19, un logiciel libre sous GPL-3.0.",
-    "creditSource": "Code source"
+    "creditSource": "Code source",
+    "seat0": "Blancs",
+    "seat1": "Noirs",
+    "endTimeout": "{name} a dépassé le temps.",
+    "endTimeoutDraw": "Nulle : le temps est écoulé, mais l'autre camp ne peut pas mater.",
+    "copyPgn": "Copier le PGN",
+    "copied": "Copié",
+    "downloadPgn": "Télécharger le PGN"
   }
 }

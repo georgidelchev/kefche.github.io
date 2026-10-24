@@ -93,6 +93,13 @@
     "themeSea": "Sea",
     "themeMeadow": "Meadow",
     "creditStockfish": "The bots are Stockfish 19, free software under the GPL-3.0.",
-    "creditSource": "Source code"
+    "creditSource": "Source code",
+    "seat0": "White",
+    "seat1": "Black",
+    "endTimeout": "{name} ran out of time.",
+    "endTimeoutDraw": "Draw: time ran out, but the other side couldn't checkmate.",
+    "copyPgn": "Copy PGN",
+    "copied": "Copied",
+    "downloadPgn": "Download PGN"
   }
 }

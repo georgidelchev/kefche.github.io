@@ -58,6 +58,8 @@ interface Props {
   startsAt: number | null;
   /** Rated rooms: search for another rated game (there's no rematch). */
   onNewOpponent: () => void;
+  /** A finished game's own page (the PGN and the players' ratings). */
+  matchHref: (id: string) => string;
   /** Seats whose person is disconnected or has left. */
   away: readonly boolean[];
   /** The match just started (not a reload mid-match): count down first. */
@@ -82,6 +84,7 @@ export function OnlineMatch({
   rated,
   startsAt,
   onNewOpponent,
+  matchHref,
   away,
   countdown,
   game,
@@ -356,7 +359,9 @@ export function OnlineMatch({
             <p role="status" className="text-3xl font-semibold">
               {resultText(result, match.setup, turn, locale)}
             </p>
-            {rating && <RatingLine rating={rating} strings={s.rated} locale={locale} />}
+            {rating && (
+              <RatingLine rating={rating} strings={s.rated} locale={locale} matchHref={matchHref} />
+            )}
             {isRated ? (
               !spectating && <Button onClick={onNewOpponent}>{s.rated.newOpponent}</Button>
             ) : isHost ? (
@@ -385,10 +390,12 @@ function RatingLine({
   rating,
   strings: r,
   locale,
+  matchHref,
 }: {
   rating: RatedOutcome | "checking";
   strings: RoomStrings["rated"];
   locale: string;
+  matchHref: (id: string) => string;
 }) {
   if (rating === "checking") return <p className="text-muted">{r.checking}</p>;
   if (rating.kind === "review") return <p className="text-muted">{r.review}</p>;
@@ -398,8 +405,16 @@ function RatingLine({
     Math.round(rating.after) - Math.round(rating.before),
   );
   return (
-    <p role="status" className="text-lg font-semibold tabular-nums">
-      {fill(r.change, { before: whole(rating.before), after: whole(rating.after), change })}
-    </p>
+    <>
+      <p role="status" className="text-lg font-semibold tabular-nums">
+        {fill(r.change, { before: whole(rating.before), after: whole(rating.after), change })}
+      </p>
+      <a
+        href={matchHref(rating.matchId)}
+        className="font-semibold text-link underline-offset-4 hover:underline"
+      >
+        {r.viewGame}
+      </a>
+    </>
   );
 }

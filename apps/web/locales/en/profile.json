@@ -4,5 +4,31 @@
   "joined": "Joined",
   "country": "Country",
   "opening": "Opening your profile…",
-  "unavailable": "We couldn't load this profile right now. Please try again in a moment."
+  "unavailable": "We couldn't load this profile right now. Please try again in a moment.",
+  "ratings": "Ratings",
+  "ratingGames": "Games: {count}",
+  "provisional": "Provisional: fewer than 10 rated games",
+  "recentGames": "Recent games",
+  "noGames": "No rated games yet.",
+  "historyUnavailable": "Game history couldn't be loaded right now.",
+  "versus": "vs {name}",
+  "deletedPlayer": "Deleted player",
+  "outcome": {
+    "win": "Win",
+    "loss": "Loss",
+    "draw": "Draw"
+  },
+  "game": {
+    "title": "{a} vs {b}",
+    "description": "A finished game of {game} on kefche: the players, the result and the moves.",
+    "played": "Played {date}",
+    "player": "Player {n}",
+    "rating": "Rating: {before} → {after} ({change})",
+    "moves": "Moves (PGN)",
+    "copy": "Copy PGN",
+    "copied": "Copied",
+    "copyFailed": "Couldn't copy. Select the text and copy it instead.",
+    "download": "Download PGN",
+    "unavailable": "We couldn't load this game right now. Please try again in a moment."
+  }
 }

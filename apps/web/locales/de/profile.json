@@ -4,5 +4,31 @@
   "joined": "Dabei seit",
   "country": "Land",
   "opening": "Dein Profil wird geöffnet…",
-  "unavailable": "Wir konnten dieses Profil gerade nicht laden. Versuche es gleich noch einmal."
+  "unavailable": "Wir konnten dieses Profil gerade nicht laden. Versuche es gleich noch einmal.",
+  "ratings": "Wertungen",
+  "ratingGames": "Partien: {count}",
+  "provisional": "Vorläufig: weniger als 10 gewertete Partien",
+  "recentGames": "Letzte Partien",
+  "noGames": "Noch keine gewerteten Partien.",
+  "historyUnavailable": "Die Partien konnten gerade nicht geladen werden.",
+  "versus": "gegen {name}",
+  "deletedPlayer": "Gelöschter Spieler",
+  "outcome": {
+    "win": "Sieg",
+    "loss": "Niederlage",
+    "draw": "Unentschieden"
+  },
+  "game": {
+    "title": "{a} gegen {b}",
+    "description": "Eine beendete Partie {game} auf kefche: die Spieler, das Ergebnis und die Züge.",
+    "played": "Gespielt am {date}",
+    "player": "Spieler {n}",
+    "rating": "Wertung: {before} → {after} ({change})",
+    "moves": "Züge (PGN)",
+    "copy": "PGN kopieren",
+    "copied": "Kopiert",
+    "copyFailed": "Kopieren ging nicht. Markiere den Text und kopiere ihn selbst.",
+    "download": "PGN herunterladen",
+    "unavailable": "Diese Partie konnte gerade nicht geladen werden. Versuche es gleich noch einmal."
+  }
 }

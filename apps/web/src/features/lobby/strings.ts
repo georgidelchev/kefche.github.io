@@ -112,6 +112,7 @@ export interface RatedStrings {
   range: string;
   cancel: string;
   newOpponent: string;
+  viewGame: string;
 }
 
 export interface ChatStrings {
@@ -355,6 +356,7 @@ export function roomStrings(t: AppT): RoomStrings {
       range: t("lobby:rated.range", { low: "{low}", high: "{high}" }),
       cancel: t("lobby:rated.cancel"),
       newOpponent: t("lobby:rated.newOpponent"),
+      viewGame: t("lobby:rated.viewGame"),
     },
   };
 }

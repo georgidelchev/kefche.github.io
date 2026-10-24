@@ -123,7 +123,8 @@
     "range": "Противници с рейтинг {low}–{high}",
     "cancel": "Отказ",
     "newOpponent": "Нов противник",
-    "clock": "{clock} · {pool}"
+    "clock": "{clock} · {pool}",
+    "viewGame": "Виж играта и ходовете"
   },
   "chat": {
     "title": "Чат",

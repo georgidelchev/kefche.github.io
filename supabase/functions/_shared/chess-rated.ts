@@ -109,7 +109,8 @@ export function decide(game: RatedGame, recorded: readonly Recorded[], now: Date
     chess.setHeader("White", game.names[0]);
     chess.setHeader("Black", game.names[1]);
     chess.setHeader("TimeControl", `${String(game.clock.base)}+${String(game.clock.increment)}`);
-    chess.setHeader("Termination", reason);
+    // The PGN standard's terms; the reason itself is stored with the match.
+    chess.setHeader("Termination", reason === "timeout" ? "time forfeit" : "normal");
     chess.setHeader("Result", winner === null ? "1/2-1/2" : winner === 0 ? "1-0" : "0-1");
     // A move still waiting never got its turn: the record is incomplete.
     return {

@@ -6,6 +6,16 @@ import { UserAvatar } from "@kefche/ui/components/avatar";
 
 import { avatarUrl } from "@/features/account/avatar-url";
 import NotFoundPage from "@/features/errors/NotFoundPage.astro";
+import { gameName } from "@/features/games/game-names";
+import { fetchPlayerHistory, PROVISIONAL_GAMES } from "@/features/profile/history";
+import {
+  clockText,
+  outcomeOf,
+  outcomeText,
+  playerName,
+  poolName,
+  ratingChange,
+} from "@/features/profile/history-text";
 import { fetchPublicProfile } from "@/features/profile/public-profile";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
@@ -15,7 +25,8 @@ import { getSupabaseEnv } from "@/lib/env";
 // Public profile (SPEC §7.2), rendered in the Worker on request so shared
 // links get a real title and preview. Public fields only. noindex: players
 // are 13+, so profiles stay out of search engines; links still preview.
-// Stats, ratings, friends and actions arrive with their phases.
+// Ratings and recent rated games are public (owner decision 2026-10-24);
+// stats, friends and actions arrive with their phases.
 export const prerender = false;
 
 const env = getSupabaseEnv();
@@ -47,6 +58,35 @@ const t = getT(locale);
 const { bcp47 } = LOCALE_INFO[locale];
 const profile = lookup.status === "found" ? lookup.profile : null;
 const image = profile && env ? avatarUrl(profile, env.PUBLIC_SUPABASE_URL) : null;
+// The profile shows without its history if that can't be read.
+const history = profile && env ? await fetchPlayerHistory(env, profile.id) : null;
+const number = (n: number) => Math.round(n).toLocaleString(bcp47);
+const date = new Intl.DateTimeFormat(bcp47, { dateStyle: "medium" });
+const games = (history?.matches ?? []).map((match) => {
+  const me = match.players.find((p) => p.seat === match.seat);
+  const opponent = match.players.find((p) => p.seat !== match.seat);
+  const outcome = outcomeOf(me?.outcome ?? 0.5);
+  return {
+    id: match.id,
+    outcome,
+    outcomeLabel: outcomeText(t, outcome),
+    versus: t("profile:versus", { name: playerName(t, opponent) }),
+    detail: [
+      gameName(match.gameId, locale),
+      clockText(t, match.timer, match.pool, bcp47),
+      date.format(new Date(match.endedAt)),
+    ]
+      .filter(Boolean)
+      .join(" · "),
+    change: me ? ratingChange(me, bcp47) : null,
+    href: getRelativeLocaleUrl(locale, `/matches/${match.id}/`),
+  };
+});
+const OUTCOME_CLASS = {
+  win: "bg-success text-on-brand",
+  loss: "bg-danger text-on-danger",
+  draw: "bg-surface-2",
+} as const;
 const facts = profile
   ? [
       { label: t("profile:level"), value: new Intl.NumberFormat(bcp47).format(profile.level) },
@@ -119,6 +159,71 @@ const facts = profile
         <p class="rounded-2xl border border-border bg-surface p-4 break-words whitespace-pre-line">
           {profile.bio}
         </p>
+      )}
+      {history === null && <p class="text-muted">{t("profile:historyUnavailable")}</p>}
+      {history && history.ratings.length > 0 && (
+        <section class="grid gap-3" aria-labelledby="ratings-heading">
+          <h2 id="ratings-heading" class="text-2xl">
+            {t("profile:ratings")}
+          </h2>
+          <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            {history.ratings.map((rating) => (
+              <li class="grid gap-1 rounded-2xl border border-border bg-surface p-4">
+                <span class="text-sm text-muted">
+                  {gameName(rating.gameId, locale)} · {poolName(t, rating.pool)}
+                </span>
+                <span class="text-2xl font-semibold tabular-nums">
+                  {number(rating.rating)}
+                  {rating.games < PROVISIONAL_GAMES && (
+                    <>
+                      <span aria-hidden="true" title={t("profile:provisional")}>
+                        ?
+                      </span>
+                      <span class="sr-only">{t("profile:provisional")}</span>
+                    </>
+                  )}
+                </span>
+                <span class="text-sm text-muted">
+                  {t("profile:ratingGames", { count: number(rating.games) })}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {history && (
+        <section class="grid gap-3" aria-labelledby="games-heading">
+          <h2 id="games-heading" class="text-2xl">
+            {t("profile:recentGames")}
+          </h2>
+          {games.length === 0 ? (
+            <p class="text-muted">{t("profile:noGames")}</p>
+          ) : (
+            <ol class="grid gap-2">
+              {games.map((game) => (
+                <li>
+                  <a
+                    href={game.href}
+                    class="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:bg-surface-2"
+                  >
+                    <span
+                      class={`shrink-0 rounded-full px-2.5 py-0.5 text-sm font-semibold ${OUTCOME_CLASS[game.outcome]}`}
+                    >
+                      {game.outcomeLabel}
+                    </span>
+                    <span class="grid min-w-0 flex-1">
+                      <span class="truncate font-semibold">{game.versus}</span>
+                      <span class="truncate text-sm text-muted">{game.detail}</span>
+                    </span>
+                    {game.change && (
+                      <span class="shrink-0 font-semibold tabular-nums">{game.change}</span>
+                    )}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          )}
+        </section>
       )}
     </article>
   </AppShell>

@@ -17,7 +17,16 @@ import {
 import { HAPTICS, vibrate, yourSeat } from "@kefche/game-sdk/browser";
 import type { GameContext, TurnSession, TurnViewStore } from "@kefche/game-sdk/browser";
 
-import { boardOf, engine, turnOf, type Action, type Config, type End, type State } from "../engine";
+import {
+  boardOf,
+  engine,
+  pgnOf,
+  turnOf,
+  type Action,
+  type Config,
+  type End,
+  type State,
+} from "../engine";
 import {
   checkedKing,
   codeOf,
@@ -107,6 +116,8 @@ export function Game({ context, config, store, session, sounds }: Props) {
   const [ghost, setGhost] = useState<{ from: Square; x: number; y: number } | null>(null);
   const [focus, setFocus] = useState<Square>(me === 1 ? "e7" : "e2");
   const [confirmResign, setConfirmResign] = useState(false);
+  // The game (by its length) whose PGN was copied: a new ending copies afresh.
+  const [copiedAt, setCopiedAt] = useState<number | null>(null);
   const [theme, setTheme] = useState<Theme>(() => {
     const saved = context.storage.get(THEME_KEY);
     return THEMES.find((name) => name === saved) ?? "sand";
@@ -343,6 +354,42 @@ export function Game({ context, config, store, session, sounds }: Props) {
   // Running out of time is the session's to call, not the engine's.
   const timedOut = over && !state.end && mover === undefined;
   const status = state.end ? endText(state.end) : timedOut ? "" : check ? t("check") : "";
+
+  /** The finished game in PGN, named after the players at the board. */
+  const pgn = () => {
+    const day = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return pgnOf(
+      state,
+      {
+        Event: "kefche",
+        Site: "kefche",
+        Date: `${String(day.getFullYear())}.${pad(day.getMonth() + 1)}.${pad(day.getDate())}`,
+        White: name(0) || "?",
+        Black: name(1) || "?",
+        Termination: timedOut ? "time forfeit" : "normal",
+      },
+      result,
+    );
+  };
+  const copyPgn = () => {
+    navigator.clipboard.writeText(pgn()).then(
+      () => {
+        setCopiedAt(state.moves.length);
+      },
+      () => undefined,
+    );
+  };
+  const downloadPgn = () => {
+    const url = URL.createObjectURL(new Blob([pgn()], { type: "application/x-chess-pgn" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "kefche-chess.pgn";
+    link.click();
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+    }, 1000);
+  };
   const lastSan = history.at(-1);
   const announcement = [
     lastSan === undefined ? "" : t("played", { name: name(other(turnOf(state))), move: lastSan }),
@@ -627,6 +674,16 @@ export function Game({ context, config, store, session, sounds }: Props) {
               </>
             ) : (
               <>
+                {over && (
+                  <>
+                    <button type="button" className="gch-button" onClick={copyPgn}>
+                      {copiedAt === state.moves.length ? t("copied") : t("copyPgn")}
+                    </button>
+                    <button type="button" className="gch-button" onClick={downloadPgn}>
+                      {t("downloadPgn")}
+                    </button>
+                  </>
+                )}
                 {can("resign") && (
                   <button
                     type="button"

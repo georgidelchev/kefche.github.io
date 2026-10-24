@@ -93,6 +93,13 @@
     "themeSea": "بحر",
     "themeMeadow": "مرج",
     "creditStockfish": "البوتات هي Stockfish 19، وهو برنامج حر بموجب رخصة GPL-3.0.",
-    "creditSource": "الشيفرة المصدرية"
+    "creditSource": "الشيفرة المصدرية",
+    "seat0": "الأبيض",
+    "seat1": "الأسود",
+    "endTimeout": "نفد وقت {name}.",
+    "endTimeoutDraw": "تعادل: نفد الوقت، لكن الطرف الآخر لا يستطيع الإماتة.",
+    "copyPgn": "نسخ PGN",
+    "copied": "تم النسخ",
+    "downloadPgn": "تنزيل PGN"
   }
 }

@@ -93,6 +93,13 @@
     "themeSea": "海",
     "themeMeadow": "草原",
     "creditStockfish": "ボットは Stockfish 19 です（GPL-3.0 のフリーソフトウェア）。",
-    "creditSource": "ソースコード"
+    "creditSource": "ソースコード",
+    "seat0": "白",
+    "seat1": "黒",
+    "endTimeout": "{name}の時間切れです。",
+    "endTimeoutDraw": "引き分け：時間切れですが、相手側にチェックメイトする駒がありません。",
+    "copyPgn": "PGNをコピー",
+    "copied": "コピーしました",
+    "downloadPgn": "PGNをダウンロード"
   }
 }

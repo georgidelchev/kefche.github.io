@@ -4,5 +4,31 @@
   "joined": "登録",
   "country": "国・地域",
   "opening": "プロフィールを開いています…",
-  "unavailable": "現在このプロフィールを読み込めません。しばらくしてからもう一度お試しください。"
+  "unavailable": "現在このプロフィールを読み込めません。しばらくしてからもう一度お試しください。",
+  "ratings": "レーティング",
+  "ratingGames": "対局数：{count}",
+  "provisional": "暫定：レーティング戦が10局未満",
+  "recentGames": "最近の対局",
+  "noGames": "まだレーティング戦はありません。",
+  "historyUnavailable": "対局履歴を今は読み込めませんでした。",
+  "versus": "対 {name}",
+  "deletedPlayer": "削除されたプレイヤー",
+  "outcome": {
+    "win": "勝ち",
+    "loss": "負け",
+    "draw": "引き分け"
+  },
+  "game": {
+    "title": "{a} 対 {b}",
+    "description": "kefche で終了した{game}の対局：プレイヤー、結果、指し手。",
+    "played": "{date}に対局",
+    "player": "プレイヤー{n}",
+    "rating": "レーティング：{before} → {after}（{change}）",
+    "moves": "指し手（PGN）",
+    "copy": "PGNをコピー",
+    "copied": "コピーしました",
+    "copyFailed": "コピーできませんでした。テキストを選択してコピーしてください。",
+    "download": "PGNをダウンロード",
+    "unavailable": "この対局を今は読み込めませんでした。少ししてからもう一度お試しください。"
+  }
 }

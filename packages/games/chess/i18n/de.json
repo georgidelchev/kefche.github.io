@@ -93,6 +93,13 @@
     "themeSea": "Meer",
     "themeMeadow": "Wiese",
     "creditStockfish": "Die Bots sind Stockfish 19, freie Software unter der GPL-3.0.",
-    "creditSource": "Quellcode"
+    "creditSource": "Quellcode",
+    "seat0": "Weiß",
+    "seat1": "Schwarz",
+    "endTimeout": "{name} hat die Zeit überschritten.",
+    "endTimeoutDraw": "Remis: Die Zeit ist abgelaufen, aber die andere Seite kann nicht mattsetzen.",
+    "copyPgn": "PGN kopieren",
+    "copied": "Kopiert",
+    "downloadPgn": "PGN herunterladen"
   }
 }

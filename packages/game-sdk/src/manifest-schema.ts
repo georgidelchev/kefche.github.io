@@ -9,7 +9,8 @@ import type { GameText } from "./game-text";
 const kebab = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const difficulty = z.enum(["easy", "medium", "hard"]);
 
-const timerPreset = z.discriminatedUnion("kind", [
+/** A timer preset (also a stored match's timer). */
+export const timerPresetSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("none") }),
   z.object({
     kind: z.literal("per-move"),
@@ -41,7 +42,7 @@ export const gameManifestSchema = z
         .refine((l) => l.min < l.max, { message: "levels: expected min < max" })
         .optional(),
     }),
-    timers: z.array(timerPreset),
+    timers: z.array(timerPresetSchema),
     awayPlayers: z.enum(["skip", "clock"]).optional(),
     onlineTimer: z.int().nonnegative().optional(),
     raceOptions: z

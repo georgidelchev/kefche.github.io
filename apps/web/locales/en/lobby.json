@@ -123,7 +123,8 @@
     "range": "Opponents rated {low}–{high}",
     "cancel": "Cancel",
     "newOpponent": "New opponent",
-    "clock": "{clock} · {pool}"
+    "clock": "{clock} · {pool}",
+    "viewGame": "See the game and its moves"
   },
   "chat": {
     "title": "Chat",

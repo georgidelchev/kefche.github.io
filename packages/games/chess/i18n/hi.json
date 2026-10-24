@@ -93,6 +93,13 @@
     "themeSea": "समुद्र",
     "themeMeadow": "घास का मैदान",
     "creditStockfish": "बॉट Stockfish 19 हैं, जो GPL-3.0 के तहत मुक्त सॉफ़्टवेयर है।",
-    "creditSource": "सोर्स कोड"
+    "creditSource": "सोर्स कोड",
+    "seat0": "सफ़ेद",
+    "seat1": "काला",
+    "endTimeout": "{name} का समय ख़त्म हो गया।",
+    "endTimeoutDraw": "ड्रॉ: समय ख़त्म हुआ, लेकिन दूसरी ओर मात नहीं दे सकती।",
+    "copyPgn": "PGN कॉपी करें",
+    "copied": "कॉपी हो गया",
+    "downloadPgn": "PGN डाउनलोड करें"
   }
 }

@@ -93,6 +93,13 @@
     "themeSea": "Море",
     "themeMeadow": "Ливада",
     "creditStockfish": "Ботовете са Stockfish 19, свободен софтуер под лиценза GPL-3.0.",
-    "creditSource": "Изходен код"
+    "creditSource": "Изходен код",
+    "seat0": "Белите",
+    "seat1": "Черните",
+    "endTimeout": "{name} изчерпа времето си.",
+    "endTimeoutDraw": "Реми: времето изтече, но другата страна не може да дава мат.",
+    "copyPgn": "Копирай PGN",
+    "copied": "Копирано",
+    "downloadPgn": "Изтегли PGN"
   }
 }
