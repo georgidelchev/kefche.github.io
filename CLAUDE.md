@@ -39,6 +39,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
     - `auth/`: sign-in, sign-up, onboarding and guest-merge pages.
     - `profile/`: the public profile page.
     - `settings/`: the settings page.
+    - `lobby/`: online rooms: the lobby, the Supabase transport (`room:<code>` plus the server-stamped `room-relay:<code>`), matches, races, chat and the public lobby browser (ADR-0020 to ADR-0024).
     - `errors/`
   - `lib/supabase/`: lazy client, config, generated DB types.
   - `components/`: BootScript, Fonts, SeoHead, Logo.
@@ -90,6 +91,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 - Type-aware ESLint finds each file's nearest file named `tsconfig.json`. A folder with different compiler options needs its own `tsconfig.json`, like `packages/game-sdk/src/browser/`, which adds DOM types. After adding or moving one, delete `.eslintcache`.
 - Restart `pnpm dev` after `pnpm install` adds packages. A dev server that keeps running re-bundles dependencies mid-session and can end up with two copies of React. Pages then render blank, and the log shows "Cannot read properties of null (reading 'useState')" or a missing `.vite/deps_ssr` file. To fix it, stop the server, delete `apps/web/node_modules/.vite` and start `pnpm dev` again. To keep it from coming back, every package that a server-rendered island imports belongs in `vite.ssr.optimizeDeps.include` in `apps/web/astro.config.ts` (for `@kefche/ui`'s own dependencies, use `"@kefche/ui > pkg"`).
 - Stopping a background `pnpm dev` can leave Astro's dev server running ("Another astro dev server is already running"), and a stopped `preview` can leave `workerd` holding `dist/` (build fails with EPERM). Run `pnpm --filter web exec astro dev stop`, and stop the leftover `node`/`workerd` processes.
+- Supabase query builders are lazy: `void supabase.rpc(...)` never sends anything. Await it, or use `send(query)` from `@/lib/supabase/client` for fire-and-forget calls.
 - Never run `pnpm deploy`, which is a built-in pnpm command. Use `pnpm --filter web run cf:deploy`.
 - `public/_headers` applies only to static assets. `src/middleware.ts` copies its `/*` headers onto Worker-rendered responses, so edit only `_headers`.
 - Never add an Astro `redirects` entry for a dynamic path: Cloudflare applies `_redirects` before the Worker runs.

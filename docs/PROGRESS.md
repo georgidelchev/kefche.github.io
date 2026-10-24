@@ -11,7 +11,7 @@
 | 2     | Supabase core, auth & profiles                             | ✅ Done (owner signed off 2026-10-22) |
 | 3     | Game SDK & first games (2048, Sudoku, Snake)               | ✅ Done (owner signed off 2026-10-23) |
 | 4     | Bots, hotseat & timers                                     | ✅ Done (owner signed off 2026-10-23) |
-| 5     | Multiplayer core                                           | 🚧 Steps done, awaiting sign-off      |
+| 5     | Multiplayer core                                           | ✅ Done (owner signed off 2026-10-24) |
 | 6     | Chess                                                      | ⏳ Not started                        |
 | 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                        |
 | 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                        |
@@ -725,7 +725,7 @@ Online modes are enabled for the Phase 4 games.
 - [x] Step 10 done: race mode for 2048, Sudoku and Snake. Found on the way: heartbeats and `finish_room` were never sent, because a bare `void supabase.rpc(…)` never runs. Rooms could therefore be swept 5 minutes into a match. `send()` fixes it.
 - [x] Step 11 done: verification with up to five browsers, negative RLS and Realtime checks, the message budget, and the docs
 - [ ] Push (on the owner's word): the Phase 5 migrations to the hosted project, then `main`, then a check of the live site
-- [ ] Owner sign-off
+- [x] Owner sign-off (2026-10-24, "complete this step and continue"; push later, on the owner's word)
 
 ---
 
