@@ -42,6 +42,7 @@ import { send, type Supabase } from "@/lib/supabase/client";
 
 import { checkRace, raceConfig, rank, type Standing } from "./race-standings";
 import { roomErrorCode } from "./room-store";
+import { measureServerOffset } from "./server-clock";
 
 import type { RoomMatch } from "./room-match";
 import type { RaceOptionValues } from "./room-settings";
@@ -142,22 +143,12 @@ export function RaceMatch({
 
   useEffect(() => {
     const closed = new AbortController();
-    void (async () => {
-      // The quickest of three round trips is the most accurate.
-      let best: { offset: number; rtt: number } | null = null;
-      for (let i = 0; i < 3; i++) {
-        const t0 = Date.now();
-        const { data, error: rpcError } = await supabase.rpc("server_time");
-        const t1 = Date.now();
-        if (rpcError) continue;
-        const sample = { offset: data - (t0 + t1) / 2, rtt: t1 - t0 };
-        if (!best || sample.rtt < best.rtt) best = sample;
-      }
+    void measureServerOffset(supabase).then((offset) => {
       if (closed.signal.aborted) return;
-      if (best) offsetRef.current = best.offset;
+      if (offset !== null) offsetRef.current = offset;
       setNow(Date.now() + offsetRef.current);
       setSynced(true);
-    })();
+    });
     return () => {
       closed.abort();
     };

@@ -62,7 +62,17 @@ export const gameManifestSchema = z
       .optional(),
     rated: z.union([
       z.literal(false),
-      z.object({ system: z.literal("glicko2"), pools: z.array(z.string().regex(kebab)).min(1) }),
+      z.object({
+        system: z.literal("glicko2"),
+        pools: z
+          .array(
+            z.object({
+              id: z.string().regex(kebab),
+              timers: z.array(z.int().nonnegative()).min(1),
+            }),
+          )
+          .min(1),
+      }),
     ]),
     hiddenInformation: z.boolean(),
     orientation: z.enum(["any", "portrait", "landscape"]),
@@ -113,7 +123,22 @@ export const gameManifestSchema = z
   .refine((m) => !m.bots.supported || m.bots.difficulties.length > 0, {
     message: "bots: list at least one difficulty when bots are supported",
     path: ["bots"],
-  });
+  })
+  .refine(
+    (m) => {
+      if (!m.rated) return true;
+      const timers = m.rated.pools.flatMap((p) => p.timers);
+      return (
+        new Set(timers).size === timers.length &&
+        timers.every((i) => m.timers[i]?.kind === "clock") &&
+        new Set(m.rated.pools.map((p) => p.id)).size === m.rated.pools.length
+      );
+    },
+    {
+      message: "rated: each pool needs its own id and clocks, and a clock is in one pool only",
+      path: ["rated"],
+    },
+  );
 
 const line = z.string().min(1).max(600);
 

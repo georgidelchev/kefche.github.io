@@ -111,7 +111,19 @@
     "checking": "Calculando el resultado…",
     "change": "Tu puntuación: {before} → {after} ({change})",
     "review": "Esta partida se está revisando, así que de momento no cuenta.",
-    "failed": "Aún no se pudo guardar el resultado. Se guardará en breve."
+    "failed": "Aún no se pudo guardar el resultado. Se guardará en breve.",
+    "title": "Partidas puntuadas",
+    "intro": "Juega contra alguien con una puntuación cercana a la tuya. Cada partida cambia tu puntuación en su categoría.",
+    "accountsOnly": "Las partidas puntuadas son solo para cuentas, para que tu puntuación sea tuya. Inicia sesión o crea una cuenta para jugar.",
+    "signIn": "Iniciar sesión",
+    "searching": "Buscando rival…",
+    "searchingNow": "Buscando ahora: {count}",
+    "wait": "Espera estimada: unos {time}",
+    "waitUnknown": "Espera estimada: aún no se sabe",
+    "range": "Rivales con puntuación {low}–{high}",
+    "cancel": "Cancelar",
+    "newOpponent": "Nuevo rival",
+    "clock": "{clock} · {pool}"
   },
   "chat": {
     "title": "Chat",
@@ -138,6 +150,7 @@
     "seat_taken": "Alguien ya está en ese puesto.",
     "rate_limited": "Demasiados intentos. Espera un momento y vuelve a intentarlo.",
     "connection": "Se perdió la conexión con la sala. Reintentando…",
+    "accounts_only": "Las partidas puntuadas son solo para cuentas. Inicia sesión para jugar.",
     "unknown": "Algo salió mal. Inténtalo de nuevo."
   }
 }

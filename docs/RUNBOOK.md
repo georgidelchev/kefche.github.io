@@ -77,6 +77,8 @@ A new Edge Function, or a change to `config.toml`, needs that restart locally to
 
 **Rated games set aside:** a game whose record holds an illegal move or junk is stored with `matches.status = 'review'` and changes no rating. The admin panel lists them in Phase 14; until then, `select id, reason, ended_at from public.matches where status = 'review';`.
 
+**Rated matchmaking:** `private.match_queue` holds who is searching which clock. `pg_cron` (`forget-match-queue`, every 10 minutes) drops searches nobody has asked about for a minute, and pairings after an hour, which feed the estimated wait. To see the queue: `select game_id, timer, pool, round(rating), now() - created_at as waiting, room_id is not null as paired from private.match_queue order by created_at;`. A new rated clock goes into a game's manifest (`rated.pools`) and into `private.rated_clocks` through a new migration: the server only pairs clocks listed there.
+
 ## Hosted Supabase
 
 The live project is `kefche` (ref `qbwljmjabloprffjlean`), on the Free plan in Central EU (Frankfurt). It was set up in Phase 5 (owner decision). The database password and the secret key live only in the owner's password manager; never put them in chat, issues or git.

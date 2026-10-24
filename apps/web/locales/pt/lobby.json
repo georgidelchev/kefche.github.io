@@ -111,7 +111,19 @@
     "checking": "Calculando o resultado…",
     "change": "Seu rating: {before} → {after} ({change})",
     "review": "Esta partida está sendo verificada e, por enquanto, não conta.",
-    "failed": "Ainda não foi possível registrar o resultado. Será em instantes."
+    "failed": "Ainda não foi possível registrar o resultado. Será em instantes.",
+    "title": "Partidas ranqueadas",
+    "intro": "Jogue contra alguém com rating próximo do seu. Cada partida muda seu rating na categoria dela.",
+    "accountsOnly": "Partidas ranqueadas são só para contas, para que seu rating seja seu. Entre ou crie uma conta para jogar.",
+    "signIn": "Entrar",
+    "searching": "Procurando um adversário…",
+    "searchingNow": "Procurando agora: {count}",
+    "wait": "Espera estimada: cerca de {time}",
+    "waitUnknown": "Espera estimada: ainda desconhecida",
+    "range": "Adversários com rating {low}–{high}",
+    "cancel": "Cancelar",
+    "newOpponent": "Novo adversário",
+    "clock": "{clock} · {pool}"
   },
   "chat": {
     "title": "Chat",
@@ -138,6 +150,7 @@
     "seat_taken": "Alguém já está nesse lugar.",
     "rate_limited": "Tentativas demais. Espere um pouco e tente de novo.",
     "connection": "A conexão com a sala caiu. Tentando de novo…",
+    "accounts_only": "Partidas ranqueadas são só para contas. Entre para jogar.",
     "unknown": "Algo deu errado. Tente novamente."
   }
 }

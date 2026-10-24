@@ -119,6 +119,18 @@ export const onlineModes = (manifest: GameManifest): { public: boolean; quick: b
   quick: manifest.modes.includes("quick-match"),
 });
 
+/** A rated clock (an index into the manifest's timers) and its pool. */
+export interface RatedClock {
+  timer: number;
+  pool: string;
+}
+
+/** The clocks rated matchmaking offers, pool by pool (none for an unrated game). */
+export const ratedClocks = (manifest: GameManifest): RatedClock[] =>
+  manifest.rated
+    ? manifest.rated.pools.flatMap((pool) => pool.timers.map((timer) => ({ timer, pool: pool.id })))
+    : [];
+
 export function turnStrings(t: AppT): TurnStrings {
   return {
     start: { "solo-bots": t("games:turn.start.soloBots"), hotseat: t("games:turn.start.hotseat") },

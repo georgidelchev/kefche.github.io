@@ -111,7 +111,19 @@
     "checking": "正在计算结果…",
     "change": "你的积分：{before} → {after}（{change}）",
     "review": "这局棋正在核查，暂不计入积分。",
-    "failed": "结果暂时未能记录，稍后会自动记录。"
+    "failed": "结果暂时未能记录，稍后会自动记录。",
+    "title": "积分赛",
+    "intro": "与积分相近的对手对局。每局都会改变你在该类别的积分。",
+    "accountsOnly": "积分赛仅限账号玩家，这样积分才属于你。请登录或创建账号后再玩。",
+    "signIn": "登录",
+    "searching": "正在寻找对手…",
+    "searchingNow": "正在匹配：{count}",
+    "wait": "预计等待：约 {time}",
+    "waitUnknown": "预计等待：暂未知",
+    "range": "对手积分 {low}–{high}",
+    "cancel": "取消",
+    "newOpponent": "新对手",
+    "clock": "{clock} · {pool}"
   },
   "chat": {
     "title": "聊天",
@@ -138,6 +150,7 @@
     "seat_taken": "这个座位已经有人了。",
     "rate_limited": "尝试次数太多，请稍后再试。",
     "connection": "与房间的连接已断开，正在重试…",
+    "accounts_only": "积分赛仅限账号玩家。请登录后再玩。",
     "unknown": "出了点问题，请重试。"
   }
 }

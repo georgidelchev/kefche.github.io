@@ -41,6 +41,13 @@ export type TimerPreset =
   | { kind: "clock"; base: number; increment: number }
   | { kind: "countdown"; seconds: number };
 
+/** A rating pool (chess: bullet, blitz, rapid, classical) and its clock presets. */
+export interface RatedPool {
+  id: string;
+  /** Indexes into the manifest's `timers`, each a clock. */
+  timers: number[];
+}
+
 /** SPEC §12.4; stored per game in Phase 7. */
 export interface LeaderboardDef {
   id: string;
@@ -100,7 +107,13 @@ export interface GameManifest {
   onlineTimer?: number;
   /** Race mode: the settings a room picks (none when the engine takes no config). */
   raceOptions?: RaceOptionDef[];
-  rated: false | { system: "glicko2"; pools: string[] };
+  /**
+   * Rated play (SPEC §12.3): a rating per pool, each pool a set of clock
+   * presets (indexes into `timers`). Rated matchmaking offers exactly these;
+   * the database lists the same clocks (private.rated_clocks), so a client
+   * can't make up its own.
+   */
+  rated: false | { system: "glicko2"; pools: RatedPool[] };
   hiddenInformation: boolean;
   orientation: "any" | "portrait" | "landscape";
   controls: Control[];

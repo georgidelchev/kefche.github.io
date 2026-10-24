@@ -85,7 +85,7 @@ export interface RoomStrings {
   rated: RatedStrings;
 }
 
-/** Rated rooms (Phase 6): the badge and the result's rating change. */
+/** Rated games (Phase 6): matchmaking, the badge and the result's rating change. */
 export interface RatedStrings {
   /** "Rated · {pool}" */
   badge: string;
@@ -96,6 +96,22 @@ export interface RatedStrings {
   change: string;
   review: string;
   failed: string;
+  title: string;
+  intro: string;
+  accountsOnly: string;
+  signIn: string;
+  searching: string;
+  /** "{clock} · {pool}" */
+  clock: string;
+  /** "Searching now: {count}" */
+  searchingNow: string;
+  /** "Estimated wait: about {time}" */
+  wait: string;
+  waitUnknown: string;
+  /** "Opponents rated {low}–{high}" */
+  range: string;
+  cancel: string;
+  newOpponent: string;
 }
 
 export interface ChatStrings {
@@ -235,6 +251,7 @@ export const ROOM_ERROR_CODES = [
   "seats_empty",
   "seat_taken",
   "rate_limited",
+  "accounts_only",
   "connection",
   "unknown",
 ] as const;
@@ -310,6 +327,7 @@ export function roomStrings(t: AppT): RoomStrings {
       seats_empty: t("lobby:errors.seats_empty"),
       seat_taken: t("lobby:errors.seat_taken"),
       rate_limited: t("lobby:errors.rate_limited"),
+      accounts_only: t("lobby:errors.accounts_only"),
       connection: t("lobby:errors.connection"),
       unknown: t("lobby:errors.unknown"),
     },
@@ -325,6 +343,18 @@ export function roomStrings(t: AppT): RoomStrings {
       change: t("lobby:rated.change", { before: "{before}", after: "{after}", change: "{change}" }),
       review: t("lobby:rated.review"),
       failed: t("lobby:rated.failed"),
+      title: t("lobby:rated.title"),
+      intro: t("lobby:rated.intro"),
+      accountsOnly: t("lobby:rated.accountsOnly"),
+      signIn: t("lobby:rated.signIn"),
+      searching: t("lobby:rated.searching"),
+      clock: t("lobby:rated.clock", { clock: "{clock}", pool: "{pool}" }),
+      searchingNow: t("lobby:rated.searchingNow", { count: "{count}" }),
+      wait: t("lobby:rated.wait", { time: "{time}" }),
+      waitUnknown: t("lobby:rated.waitUnknown"),
+      range: t("lobby:rated.range", { low: "{low}", high: "{high}" }),
+      cancel: t("lobby:rated.cancel"),
+      newOpponent: t("lobby:rated.newOpponent"),
     },
   };
 }

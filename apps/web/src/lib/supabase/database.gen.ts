@@ -215,6 +215,9 @@ isOneToOne: false
 "cancel_account_deletion":
 { Args: Record<PropertyKey, never>; Returns: undefined
                            },
+"cancel_rated_search":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
 "check_nickname":
 { Args: { "p_nickname": string }; Returns: string
                            },
@@ -367,6 +370,9 @@ isOneToOne: false
                            },
 "rated_game_record":
 { Args: { "p_game": string,"p_result": Json }; Returns: string
+                           },
+"rated_search":
+{ Args: { "p_game_id": string,"p_game_version": number,"p_timer": number }; Returns: Json
                            },
 "reopen_room":
 { Args: { "p_room": string }; Returns: undefined

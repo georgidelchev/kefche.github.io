@@ -50,6 +50,12 @@ export type Verdict =
  */
 export const FLAG_GRACE_MS = 2000;
 
+/**
+ * The browsers count down this long from the match's start before white's
+ * clock runs (apps/web/src/features/lobby/OnlineMatch.tsx, RATED_COUNTDOWN_MS).
+ */
+export const COUNTDOWN_MS = 3000;
+
 const actionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("move"), uci: z.string().regex(/^[a-h][1-8][a-h][1-8][qrbn]?$/) }),
   z.object({ type: z.literal("resign") }),
@@ -89,7 +95,7 @@ export function decide(game: RatedGame, recorded: readonly Recorded[], now: Date
   const baseMs = game.clock.base * 1000;
   const incrementMs = game.clock.increment * 1000;
   const clocks = [baseMs, baseMs];
-  let turnStarted = game.startedAt.getTime();
+  let turnStarted = game.startedAt.getTime() + COUNTDOWN_MS;
   let drawOffer: number | null = null;
   let refused = 0;
   /** Moves recorded before their turn, in order. */
@@ -132,8 +138,10 @@ export function decide(game: RatedGame, recorded: readonly Recorded[], now: Date
       return false;
     }
     // The mover's clock, from the server's times, plus the increment.
-    clocks[seat] = Math.max(0, (clocks[seat] ?? 0) - (time - turnStarted)) + incrementMs;
-    turnStarted = time;
+    // (A move recorded before the countdown ended takes no time.)
+    const spent = Math.max(0, time - turnStarted);
+    clocks[seat] = Math.max(0, (clocks[seat] ?? 0) - spent) + incrementMs;
+    turnStarted = Math.max(time, turnStarted);
     // Moving answers the other side's draw offer with a no.
     if (drawOffer === other(seat)) drawOffer = null;
     return true;

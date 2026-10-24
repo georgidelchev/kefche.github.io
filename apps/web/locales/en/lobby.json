@@ -111,7 +111,19 @@
     "checking": "Working out the result…",
     "change": "Your rating: {before} → {after} ({change})",
     "review": "This game is being checked, so it doesn't count for now.",
-    "failed": "The result couldn't be recorded yet. It will be, shortly."
+    "failed": "The result couldn't be recorded yet. It will be, shortly.",
+    "title": "Rated games",
+    "intro": "Play someone near your rating. Each game moves your rating in its pool.",
+    "accountsOnly": "Rated games are for accounts, so your rating stays yours. Sign in or create an account to play.",
+    "signIn": "Sign in",
+    "searching": "Looking for an opponent…",
+    "searchingNow": "Searching now: {count}",
+    "wait": "Estimated wait: about {time}",
+    "waitUnknown": "Estimated wait: not known yet",
+    "range": "Opponents rated {low}–{high}",
+    "cancel": "Cancel",
+    "newOpponent": "New opponent",
+    "clock": "{clock} · {pool}"
   },
   "chat": {
     "title": "Chat",
@@ -138,6 +150,7 @@
     "seat_taken": "Someone is sitting there.",
     "rate_limited": "Too many tries. Wait a moment and try again.",
     "connection": "We lost the connection to the room. Trying again…",
+    "accounts_only": "Rated games are for accounts. Sign in to play.",
     "unknown": "Something went wrong. Please try again."
   }
 }

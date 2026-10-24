@@ -111,7 +111,19 @@
     "checking": "Calcul du résultat…",
     "change": "Votre classement : {before} → {after} ({change})",
     "review": "Cette partie est en cours de vérification ; elle ne compte pas pour l’instant.",
-    "failed": "Le résultat n’a pas encore pu être enregistré. Il le sera sous peu."
+    "failed": "Le résultat n’a pas encore pu être enregistré. Il le sera sous peu.",
+    "title": "Parties classées",
+    "intro": "Affrontez quelqu'un proche de votre classement. Chaque partie fait évoluer votre classement dans sa catégorie.",
+    "accountsOnly": "Les parties classées sont réservées aux comptes, pour que votre classement vous appartienne. Connectez-vous ou créez un compte pour jouer.",
+    "signIn": "Se connecter",
+    "searching": "Recherche d'un adversaire…",
+    "searchingNow": "En recherche : {count}",
+    "wait": "Attente estimée : environ {time}",
+    "waitUnknown": "Attente estimée : pas encore connue",
+    "range": "Adversaires classés {low}–{high}",
+    "cancel": "Annuler",
+    "newOpponent": "Nouvel adversaire",
+    "clock": "{clock} · {pool}"
   },
   "chat": {
     "title": "Chat",
@@ -138,6 +150,7 @@
     "seat_taken": "Quelqu'un occupe déjà cette place.",
     "rate_limited": "Trop de tentatives. Patientez un instant et réessayez.",
     "connection": "Connexion au salon perdue. Nouvelle tentative…",
+    "accounts_only": "Les parties classées sont réservées aux comptes. Connectez-vous pour jouer.",
     "unknown": "Un problème est survenu. Veuillez réessayer."
   }
 }

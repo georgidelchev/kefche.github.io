@@ -26,6 +26,7 @@ import type { Json } from "@/lib/supabase/database.gen";
 
 import { fetchRatedOutcome, recordRatedAction, type RatedOutcome } from "./rated-result";
 import { roomErrorCode } from "./room-store";
+import { measureServerOffset } from "./server-clock";
 
 import type { RoomMatch } from "./room-match";
 import type { RatedRoom } from "./room-settings";
@@ -36,6 +37,12 @@ const TurnUi = lazy(() =>
 );
 
 const COUNTDOWN_S = 3;
+/**
+ * A rated game's clocks start this long after the match's start, on the
+ * database's clock, for both browsers and for submit-match, which counts
+ * white's time from then (supabase/functions/_shared/chess-rated.ts).
+ */
+export const RATED_COUNTDOWN_MS = COUNTDOWN_S * 1000;
 
 interface Props {
   supabase: Supabase;
@@ -47,6 +54,10 @@ interface Props {
   seed: string;
   /** A rated room's pool and clock, or null. */
   rated: RatedRoom | null;
+  /** Rated rooms: when the clocks start, on the database's clock (ms); the countdown ends then. */
+  startsAt: number | null;
+  /** Rated rooms: search for another rated game (there's no rematch). */
+  onNewOpponent: () => void;
   /** Seats whose person is disconnected or has left. */
   away: readonly boolean[];
   /** The match just started (not a reload mid-match): count down first. */
@@ -69,6 +80,8 @@ export function OnlineMatch({
   match,
   seed,
   rated,
+  startsAt,
+  onNewOpponent,
   away,
   countdown,
   game,
@@ -79,7 +92,16 @@ export function OnlineMatch({
   turn,
   onLeave,
 }: Props) {
-  const [count, setCount] = useState(countdown ? COUNTDOWN_S : 0);
+  // A rated game counts down to `startsAt`, unless that is long past (a reload).
+  const [count, setCount] = useState(() =>
+    startsAt === null
+      ? countdown
+        ? COUNTDOWN_S
+        : 0
+      : Date.now() > startsAt + 10_000
+        ? 0
+        : COUNTDOWN_S,
+  );
   const [failed, setFailed] = useState(false);
   const [attempt, setAttempt] = useState(0);
   const [report, setReport] = useState<TurnReport | null>(null);
@@ -105,14 +127,42 @@ export function OnlineMatch({
   }, [host]);
 
   useEffect(() => {
-    if (count <= 0) return;
+    if (startsAt !== null || count <= 0) return;
     const timer = setTimeout(() => {
       setCount(count - 1);
     }, 1000);
     return () => {
       clearTimeout(timer);
     };
-  }, [count]);
+  }, [count, startsAt]);
+
+  // Rated: the countdown ends at `startsAt` on the database's clock, the
+  // moment the server starts white's clock, however late this browser heard
+  // of the pairing.
+  useEffect(() => {
+    if (startsAt === null) return;
+    let stopped = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    void measureServerOffset(supabase).then((offset) => {
+      const tick = () => {
+        if (stopped) return;
+        const left = Math.ceil((startsAt - (Date.now() + (offset ?? 0))) / 1000);
+        // A game already under way (a device clock far off guessed so) stays on.
+        setCount((now) => (now === 0 ? 0 : Math.min(COUNTDOWN_S, Math.max(0, left))));
+        if (left > 0) timer = setTimeout(tick, 200);
+      };
+      tick();
+    });
+    return () => {
+      stopped = true;
+      clearTimeout(timer);
+    };
+  }, [startsAt, supabase]);
+
+  // Loaded during the countdown, so the board is up the moment it ends.
+  useEffect(() => {
+    loadGame(game.id).catch(() => undefined);
+  }, [game.id]);
 
   const finished = useEffectEvent((over: GameResult) => {
     setResult(over);
@@ -307,7 +357,9 @@ export function OnlineMatch({
               {resultText(result, match.setup, turn, locale)}
             </p>
             {rating && <RatingLine rating={rating} strings={s.rated} locale={locale} />}
-            {isHost ? (
+            {isRated ? (
+              !spectating && <Button onClick={onNewOpponent}>{s.rated.newOpponent}</Button>
+            ) : isHost ? (
               <Button disabled={busy} onClick={() => void rematch()}>
                 {s.rematch}
               </Button>

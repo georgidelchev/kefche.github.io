@@ -43,6 +43,13 @@ async function liveSession(supabase: Supabase) {
   return null;
 }
 
+/** The signed-in account, or null for guests and nobody (rated games are for accounts). */
+export async function accountIdentity(supabase: Supabase): Promise<Identity | null> {
+  const session = await liveSession(supabase);
+  if (!session || session.user.is_anonymous === true) return null;
+  return identityOf(supabase, session.user.id, false);
+}
+
 /** The current account, or a new guest identity when nobody is signed in. */
 export async function ensureIdentity(supabase: Supabase): Promise<Identity> {
   let session = await liveSession(supabase);

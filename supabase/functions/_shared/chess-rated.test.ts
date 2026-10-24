@@ -1,10 +1,17 @@
 // The server's verdict on rated chess games. Run: deno test _shared/chess-rated.test.ts
-import { decide, FLAG_GRACE_MS, type RatedGame, type Recorded } from "./chess-rated.ts";
+import {
+  COUNTDOWN_MS,
+  decide,
+  FLAG_GRACE_MS,
+  type RatedGame,
+  type Recorded,
+} from "./chess-rated.ts";
 
+/** When white's clock starts: the countdown after the match's start. */
 const start = new Date("2026-10-25T12:00:00Z");
 const game: RatedGame = {
   clock: { base: 60, increment: 2 },
-  startedAt: start,
+  startedAt: new Date(start.getTime() - COUNTDOWN_MS),
   names: ["Alice", "Bob"],
   pool: "bullet",
 };
@@ -83,6 +90,18 @@ Deno.test("each move costs its mover the time taken and adds the increment", () 
   const v = decide(game, play(["e2e4", "e7e5"]), later(3000));
   if (v.over) throw new Error("not over");
   equal(v.flagAt.getTime(), start.getTime() + 2000 + 61_000 + FLAG_GRACE_MS, "white's flag");
+});
+
+Deno.test("white's clock starts when the countdown ends", () => {
+  const pending = decide(game, [], later(0));
+  if (pending.over) throw new Error("not over");
+  equal(pending.flagAt.getTime(), start.getTime() + 60_000 + FLAG_GRACE_MS, "white's flag");
+  // A move recorded during the countdown takes no time.
+  const early: Recorded = { seat: 0, action: { type: "move", uci: "e2e4" }, at: later(-1000) };
+  const v = decide(game, [early], later(0));
+  if (v.over) throw new Error("not over");
+  // Black's clock starts at the end of the countdown too.
+  equal(v.flagAt.getTime(), start.getTime() + 60_000 + FLAG_GRACE_MS, "black's flag");
 });
 
 Deno.test("crossed records: a reply recorded before the move it answers waits its turn", () => {

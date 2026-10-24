@@ -7,6 +7,7 @@ import {
   playerStrings,
   playsOnline,
   raceSetup,
+  ratedClocks,
   roomConfig,
   turnStrings,
 } from "@/features/games/page-props";
@@ -85,6 +86,7 @@ const strings = roomStrings(t);
               ui: text.ui,
               modes: onlineModes(manifest),
               race: raceSetup(manifest, text.ui),
+              rated: ratedClocks(manifest),
             }}
             locale={bcp47}
             dir={dir}
@@ -98,6 +100,7 @@ const strings = roomStrings(t);
               game: getRelativeLocaleUrl(locale, `/games/${manifest.id}/`),
               privacy: getRelativeLocaleUrl(locale, "/privacy/"),
               onboarding: getRelativeLocaleUrl(locale, "/auth/onboarding/"),
+              signIn: getRelativeLocaleUrl(locale, "/auth/sign-in/"),
             }}
           />
         )}

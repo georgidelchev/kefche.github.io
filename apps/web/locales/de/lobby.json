@@ -111,7 +111,19 @@
     "checking": "Das Ergebnis wird ermittelt…",
     "change": "Deine Wertung: {before} → {after} ({change})",
     "review": "Diese Partie wird geprüft und zählt vorerst nicht.",
-    "failed": "Das Ergebnis konnte noch nicht gespeichert werden. Das passiert gleich."
+    "failed": "Das Ergebnis konnte noch nicht gespeichert werden. Das passiert gleich.",
+    "title": "Gewertete Partien",
+    "intro": "Spiele gegen jemanden mit ähnlicher Wertung. Jede Partie verändert deine Wertung in ihrer Kategorie.",
+    "accountsOnly": "Gewertete Partien gibt es nur mit Konto, damit deine Wertung dir gehört. Melde dich an oder erstelle ein Konto, um zu spielen.",
+    "signIn": "Anmelden",
+    "searching": "Suche nach einem Gegner…",
+    "searchingNow": "Suchen gerade: {count}",
+    "wait": "Geschätzte Wartezeit: etwa {time}",
+    "waitUnknown": "Geschätzte Wartezeit: noch unbekannt",
+    "range": "Gegner mit Wertung {low}–{high}",
+    "cancel": "Abbrechen",
+    "newOpponent": "Neuer Gegner",
+    "clock": "{clock} · {pool}"
   },
   "chat": {
     "title": "Chat",
@@ -138,6 +150,7 @@
     "seat_taken": "Dort sitzt schon jemand.",
     "rate_limited": "Zu viele Versuche. Warte kurz und versuche es noch einmal.",
     "connection": "Die Verbindung zum Raum ist weg. Neuer Versuch…",
+    "accounts_only": "Gewertete Partien gibt es nur mit Konto. Melde dich an, um zu spielen.",
     "unknown": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal."
   }
 }

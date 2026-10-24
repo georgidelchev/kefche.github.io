@@ -2,8 +2,9 @@ import { defineManifest } from "@kefche/game-sdk";
 
 // SPEC §20.1 #1. The clocks are SPEC §11's (base and increment in seconds).
 // Bots are Stockfish (renderer/bots.worker.ts). Online, a player who leaves
-// keeps losing time (SPEC §10.5), so rooms always play with a clock. Rated
-// pools arrive with rated games.
+// keeps losing time (SPEC §10.5), so rooms always play with a clock. Every
+// clock is rated in its pool (SPEC §11), and the database lists the same
+// clocks (private.rated_clocks, migration 20261025100200).
 export const manifest = defineManifest({
   id: "chess",
   version: 1,
@@ -34,7 +35,15 @@ export const manifest = defineManifest({
   awayPlayers: "clock",
   // Rooms start with 10 + 0.
   onlineTimer: 7,
-  rated: false,
+  rated: {
+    system: "glicko2",
+    pools: [
+      { id: "bullet", timers: [1, 2] },
+      { id: "blitz", timers: [3, 4, 5, 6] },
+      { id: "rapid", timers: [7, 8, 9] },
+      { id: "classical", timers: [10] },
+    ],
+  },
   hiddenInformation: false,
   orientation: "any",
   controls: ["tap", "drag", "keyboard"],
