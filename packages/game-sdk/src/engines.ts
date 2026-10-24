@@ -30,6 +30,10 @@ export interface RaceEngine<State, Action, Config = undefined> {
   progress(state: State): number;
   /** Null while the game is running. */
   result(state: State): GameResult | null;
+  /** The score so far, for games that have one (a race can end before the game does). */
+  score?(state: State): number;
+  /** Race mode: false for actions a race doesn't allow, such as hints. */
+  allowedInRace?(action: Action): boolean;
 }
 
 /**

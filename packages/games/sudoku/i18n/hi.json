@@ -45,6 +45,7 @@
   ],
   "ui": {
     "chooseDifficulty": "कठिनाई चुनें",
+    "difficulty": "कठिनाई",
     "easy": "आसान",
     "medium": "मध्यम",
     "hard": "कठिन",

@@ -7,6 +7,7 @@ export * from "./game-text";
 export * from "./manifest";
 export * from "./prng";
 export * from "./protocol";
+export * from "./race-log";
 export * from "./search";
 export * from "./seats";
 export * from "./timers";

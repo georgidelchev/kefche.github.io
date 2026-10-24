@@ -6,6 +6,8 @@
 // legal actions, and guests only render what the host sent.
 import * as z from "zod/mini";
 
+import { RACE_LOG_LIMITS } from "./race-log";
+
 export const PROTOCOL_VERSION = 1;
 /** Larger messages are dropped unread (Realtime allows more; turn states are small). */
 export const MAX_MESSAGE_BYTES = 32 * 1024;
@@ -48,8 +50,33 @@ export const PAYLOADS = {
     finished: z.boolean(),
     timeMs: z.optional(z.number().check(z.nonnegative())),
   }),
-  /** Race mode: a finished player's moves, for the host to replay and check. */
-  finish: z.object({ actions: z.array(z.unknown()).check(z.maxLength(20_000)) }),
+  /** Race mode: a finished player's moves (packActions), for the host to replay and check. */
+  finish: z.object({
+    log: z.object({
+      dict: z.array(z.unknown()).check(z.maxLength(RACE_LOG_LIMITS.dict)),
+      runs: z.string().check(z.maxLength(RACE_LOG_LIMITS.runs)),
+    }),
+  }),
+  /**
+   * Race mode, host → everyone: the results the host checked by replaying
+   * each finished player's moves, and whether the race is over.
+   */
+  standings: z.object({
+    results: z
+      .array(
+        z.object({
+          member: id,
+          score: z.number(),
+          /** From the start of the race to the finish, as the host saw it. */
+          timeMs: z.number().check(z.nonnegative()),
+          completed: z.boolean(),
+          /** The replay matched what the player reported. */
+          valid: z.boolean(),
+        }),
+      )
+      .check(z.maxLength(30)),
+    ended: z.boolean(),
+  }),
 } as const;
 
 export type MessageType = keyof typeof PAYLOADS;

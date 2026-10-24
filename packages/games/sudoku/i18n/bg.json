@@ -45,6 +45,7 @@
   ],
   "ui": {
     "chooseDifficulty": "Избери трудност",
+    "difficulty": "Трудност",
     "easy": "Лесно",
     "medium": "Средно",
     "hard": "Трудно",

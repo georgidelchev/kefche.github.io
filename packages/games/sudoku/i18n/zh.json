@@ -45,6 +45,7 @@
   ],
   "ui": {
     "chooseDifficulty": "选择难度",
+    "difficulty": "难度",
     "easy": "简单",
     "medium": "中等",
     "hard": "困难",

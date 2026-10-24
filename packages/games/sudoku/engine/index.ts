@@ -166,6 +166,9 @@ export const engine: RaceEngine<State, Action, Config> = {
   result(state): GameResult | null {
     return isSolved(state) ? { completed: true } : null;
   },
+
+  // Everyone solves on their own in a race.
+  allowedInRace: (action) => action.type !== "hint",
 };
 
 /** A saved game read back from storage, or null when it doesn't look right. */

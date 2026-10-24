@@ -151,6 +151,8 @@ export const engine: RaceEngine<State, Action> = {
   result(state): GameResult | null {
     return state.over ? { score: state.score, completed: state.won } : null;
   },
+
+  score: (state) => state.score,
 };
 
 export const bestTile = (state: State) => Math.max(...state.tiles.map((t) => t.value));

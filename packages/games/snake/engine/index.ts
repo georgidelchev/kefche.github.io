@@ -152,6 +152,8 @@ export const engine: RaceEngine<State, Action, Config> = {
   result(state): GameResult | null {
     return state.over ? { score: state.score, completed: state.won } : null;
   },
+
+  score: (state) => state.score,
 };
 
 /** Step length for the current state: 2% faster per food, down to 60%. */

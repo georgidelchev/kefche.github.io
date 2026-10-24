@@ -1,6 +1,8 @@
 // Snake: a settings menu (speed, walls or wrap-around), then the Canvas
 // board, steered by swipes, arrow keys / WASD or the on-screen D-pad (shown
 // on touch screens). The game waits for the first direction before moving.
+// In a race (context.race) the room's settings skip the menu, and every
+// tick and turn is recorded.
 import { useEffect, useRef, useState } from "react";
 
 import {
@@ -67,10 +69,18 @@ function loadSettings(storage: GameStorage): Config {
 const bestScore = (storage: GameStorage, config: Config) =>
   Math.max(0, Number(storage.get(bestKey(config))) || 0);
 
+/** A race's settings, from the room (anything unexpected plays the defaults). */
+function raceConfig(context: GameContext): Config | null {
+  if (!context.race) return null;
+  const { speed, walls } = (context.race.config ?? {}) as Record<string, unknown>;
+  return { speed: SPEEDS.find((s) => s === speed) ?? "normal", walls: walls !== false };
+}
+
 export function Game({ context, seed, handle, sounds, quickStart }: Props) {
   const { t, storage } = context;
-  const [config, setConfig] = useState(() => loadSettings(storage));
-  const [playing, setPlaying] = useState(quickStart);
+  // A race skips the menu: the room chose the settings.
+  const [config, setConfig] = useState(() => raceConfig(context) ?? loadSettings(storage));
+  const [playing, setPlaying] = useState(quickStart || context.race !== undefined);
 
   if (playing) {
     return <Board context={context} seed={seed} handle={handle} sounds={sounds} config={config} />;
@@ -301,6 +311,7 @@ function Board({
         }
         const eaten = state.eaten;
         previous = state;
+        context.race?.record({ type: "tick" });
         state = engine.apply(state, { type: "tick" });
         loop.setStep(stepMs(state));
         if (state.eaten !== eaten) {
@@ -321,6 +332,7 @@ function Board({
     const turn = (direction: Direction) => {
       if (handle.paused || state.over) return;
       const before = state;
+      context.race?.record({ type: "turn", direction });
       state = engine.apply(state, { type: "turn", direction });
       // Only a turn the snake will take makes a sound.
       if (state !== before) sounds.play("turn");

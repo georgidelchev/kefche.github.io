@@ -38,6 +38,22 @@ export const gameManifestSchema = z
       canFillSeats: z.boolean(),
     }),
     timers: z.array(timerPreset),
+    raceOptions: z
+      .array(
+        z.object({
+          key: z.string().regex(/^[a-z][a-zA-Z0-9]*$/),
+          label: z.string().min(1),
+          values: z
+            .array(
+              z.object({
+                value: z.union([z.string(), z.number(), z.boolean()]),
+                label: z.string(),
+              }),
+            )
+            .min(1),
+        }),
+      )
+      .optional(),
     rated: z.union([
       z.literal(false),
       z.object({ system: z.literal("glicko2"), pools: z.array(z.string().regex(kebab)).min(1) }),

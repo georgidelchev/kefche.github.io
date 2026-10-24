@@ -45,6 +45,7 @@
   ],
   "ui": {
     "chooseDifficulty": "難易度を選ぶ",
+    "difficulty": "難易度",
     "easy": "やさしい",
     "medium": "ふつう",
     "hard": "むずかしい",

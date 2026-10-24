@@ -1,11 +1,12 @@
 // 2048 board: tiles are positioned by row and column with CSS transforms and
-// keyed by id, so slides animate; merges pop and new tiles grow in.
+// keyed by id, so slides animate; merges pop and new tiles grow in. In a
+// race (context.race) every action is recorded.
 import { useEffect, useRef, useState } from "react";
 
 import { HAPTICS, onDirectionKeys, onSwipe, vibrate } from "@kefche/game-sdk/browser";
 import type { GameContext } from "@kefche/game-sdk/browser";
 
-import { engine, bestTile, SIZE, type Direction, type State } from "../engine";
+import { engine, bestTile, SIZE, type Action, type Direction, type State } from "../engine";
 
 import type { Sounds } from "./sounds";
 
@@ -32,12 +33,17 @@ export function Game({ context, seed, handle, sounds }: Props) {
   const finishedRef = useRef(false);
   // What the last state already sounded, so undo and re-renders stay quiet.
   const heardRef = useRef({ moves: 0, won: false });
+  // Every action goes through here, so a race records them in order.
+  const [act] = useState(() => (action: Action) => {
+    context.race?.record(action);
+    setState((s) => engine.apply(s, action));
+  });
 
   // Input: arrows, WASD and swipes.
   useEffect(() => {
     const move = (direction: Direction) => {
       if (handle.paused) return;
-      setState((s) => engine.apply(s, { type: "move", direction }));
+      act({ type: "move", direction });
     };
     const offKeys = onDirectionKeys(move);
     const offSwipe = boardRef.current ? onSwipe(boardRef.current, move) : undefined;
@@ -45,7 +51,7 @@ export function Game({ context, seed, handle, sounds }: Props) {
       offKeys();
       offSwipe?.();
     };
-  }, [handle]);
+  }, [handle, act]);
 
   // Side effects of a new state: best score, sound, haptics, reporting.
   useEffect(() => {
@@ -89,7 +95,7 @@ export function Game({ context, seed, handle, sounds }: Props) {
           disabled={!state.undo || state.undoUsed}
           onClick={() => {
             sounds.play("undo");
-            setState((s) => engine.apply(s, { type: "undo" }));
+            act({ type: "undo" });
           }}
         >
           {t("undo")}
@@ -132,7 +138,7 @@ export function Game({ context, seed, handle, sounds }: Props) {
             <button
               type="button"
               onClick={() => {
-                setState((s) => engine.apply(s, { type: "continue" }));
+                act({ type: "continue" });
               }}
             >
               {t("keepGoing")}

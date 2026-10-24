@@ -60,6 +60,18 @@ export type ScoreValidationRule =
   | { kind: "plausibility"; maxScorePerSecond?: number; minSeconds?: number }
   | { kind: "replay" };
 
+/**
+ * A setting the host of a race picks for everyone (Phase 5). The chosen
+ * values form the engine config: `{ [key]: value }` for every option.
+ */
+export interface RaceOptionDef {
+  key: string;
+  /** Key of the option's name in the game's i18n "ui" strings. */
+  label: string;
+  /** The first is the default; `label` is a "ui" key as well. */
+  values: { value: string | number | boolean; label: string }[];
+}
+
 export interface GameManifest {
   /** Stable, kebab-case, never changes: also the DB key and the URL. */
   id: string;
@@ -71,6 +83,8 @@ export interface GameManifest {
   modes: GameMode[];
   bots: { supported: boolean; difficulties: BotDifficulty[]; canFillSeats: boolean };
   timers: TimerPreset[];
+  /** Race mode: the settings a room picks (none when the engine takes no config). */
+  raceOptions?: RaceOptionDef[];
   rated: false | { system: "glicko2"; pools: string[] };
   hiddenInformation: boolean;
   orientation: "any" | "portrait" | "landscape";

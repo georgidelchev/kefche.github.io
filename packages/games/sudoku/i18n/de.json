@@ -45,6 +45,7 @@
   ],
   "ui": {
     "chooseDifficulty": "Wähle eine Schwierigkeit",
+    "difficulty": "Schwierigkeit",
     "easy": "Leicht",
     "medium": "Mittel",
     "hard": "Schwer",

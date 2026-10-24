@@ -1,5 +1,7 @@
 // Sudoku board: a difficulty menu (with "continue" for a saved game), then
-// the grid with notes, hints, undo, a mistakes toggle and keyboard entry.
+// the grid with notes, hints, undo, a mistakes toggle and keyboard entry. In
+// a race (context.race) the room's difficulty starts at once, nothing is
+// saved, hints are off and every action is recorded.
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 
 import {
@@ -53,14 +55,25 @@ const DIFFICULTY_KEYS = {
   expert: "expert",
 } as const satisfies Record<Difficulty, string>;
 
+/** A race's difficulty, from the room (anything unexpected plays medium). */
+function raceDifficulty(context: GameContext): Difficulty | null {
+  if (!context.race) return null;
+  const wanted = (context.race.config as { difficulty?: unknown } | null)?.difficulty;
+  return DIFFICULTIES.find((d) => d === wanted) ?? "medium";
+}
+
 export function Game({ context, seed, handle, sounds }: Props) {
-  const { t, storage } = context;
-  const [screen, setScreen] = useState<Screen>({ kind: "menu" });
+  const { t, storage, race } = context;
+  // In a race the room chose the difficulty: no menu, no saved game, no hints.
+  const [racing] = useState(() => raceDifficulty(context));
+  const [screen, setScreen] = useState<Screen>(() =>
+    racing ? { kind: "loading", difficulty: racing } : { kind: "menu" },
+  );
   const [state, setState] = useState<State | null>(null);
   const [selected, setSelected] = useState(40);
   const [notesMode, setNotesMode] = useState(false);
   const [showErrors, setShowErrors] = useState(() => storage.get(ERRORS_KEY) !== "off");
-  const [saved] = useState(() => loadSaved(storage));
+  const [saved] = useState(() => (racing ? null : loadSaved(storage)));
   // Play time: earlier sessions of a saved game plus this stopwatch.
   const [watch] = useState(() => createStopwatch());
   const [baseMs, setBaseMs] = useState(0);
@@ -91,10 +104,28 @@ export function Game({ context, seed, handle, sounds }: Props) {
     );
   }
 
+  // The race starts on its own, with the room's difficulty (already "loading").
+  const startRace = useEffectEvent(() => {
+    if (!racing) return;
+    newGame(seed, racing).then(
+      (next) => {
+        begin(next, 0);
+      },
+      () => {
+        setScreen({ kind: "failed", difficulty: racing });
+      },
+    );
+  });
+  useEffect(() => {
+    startRace();
+  }, []);
+
   function dispatch(action: Action) {
     if (handle.paused || !state || screen.kind !== "playing") return;
+    if (racing && action.type === "hint") return;
     const next = engine.apply(state, action);
     if (next === state) return;
+    race?.record(action);
     setState(next);
     const ms = baseMs + watch.elapsed();
     if (isSolved(next)) {
@@ -102,15 +133,17 @@ export function Game({ context, seed, handle, sounds }: Props) {
       watch.pause();
       setElapsedMs(ms);
       setScreen({ kind: "solved" });
-      save(storage, null);
-      recordTime(storage, next.difficulty, ms);
+      if (!racing) {
+        save(storage, null);
+        recordTime(storage, next.difficulty, ms);
+      }
       sounds.play("win");
       vibrate(HAPTICS.win, context.settings.haptics);
       context.report({ type: "finish", result: { completed: true, timeMs: ms } });
       return;
     }
     liveRef.current = next;
-    save(storage, { state: next, elapsedMs: ms });
+    if (!racing) save(storage, { state: next, elapsedMs: ms });
     const placed = action.type === "enter" && next.values[action.cell] === action.digit;
     const wrong = placed && next.solution[action.cell] !== action.digit;
     // A wrong digit only sounds wrong when mistakes are shown.
@@ -130,7 +163,7 @@ export function Game({ context, seed, handle, sounds }: Props) {
   useEffect(() => {
     if (screen.kind !== "playing") return;
     const persist = () => {
-      if (liveRef.current) {
+      if (liveRef.current && !racing) {
         save(storage, { state: liveRef.current, elapsedMs: baseMs + watch.elapsed() });
       }
     };
@@ -148,7 +181,7 @@ export function Game({ context, seed, handle, sounds }: Props) {
       clearInterval(timer);
       persist();
     };
-  }, [screen.kind, baseMs, watch, handle, storage]);
+  }, [screen.kind, baseMs, watch, handle, storage, racing]);
 
   const onKey = useEffectEvent((e: KeyboardEvent) => {
     if (screen.kind !== "playing" || handle.paused || e.altKey) return;
@@ -205,7 +238,7 @@ export function Game({ context, seed, handle, sounds }: Props) {
             </span>
           </button>
         )}
-        {DIFFICULTIES.map((difficulty) => {
+        {(racing ? [racing] : DIFFICULTIES).map((difficulty) => {
           const best = bestTime(storage, difficulty);
           return (
             <button
@@ -357,14 +390,16 @@ export function Game({ context, seed, handle, sounds }: Props) {
             >
               {t("notes")}
             </button>
-            <button
-              type="button"
-              onClick={() => {
-                dispatch({ type: "hint", cell: selected });
-              }}
-            >
-              {t("hint")}
-            </button>
+            {!racing && (
+              <button
+                type="button"
+                onClick={() => {
+                  dispatch({ type: "hint", cell: selected });
+                }}
+              >
+                {t("hint")}
+              </button>
+            )}
           </div>
           <div className="gsdk-pad" data-notes={notesMode ? "" : undefined}>
             {DIGITS.map((d, i) => {

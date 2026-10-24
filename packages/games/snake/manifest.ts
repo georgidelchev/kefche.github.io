@@ -7,10 +7,34 @@ export const manifest = defineManifest({
   category: "arcade",
   kind: "race",
   players: { min: 1, max: 8, default: 1 },
-  // Race mode (same seed for everyone) arrives with multiplayer in Phase 5.
-  modes: ["solo"],
+  // Race: everyone in a room plays the same seed (Phase 5 step 10).
+  modes: ["solo", "race", "online-private", "online-public", "quick-match"],
   bots: { supported: false, difficulties: [], canFillSeats: false },
-  timers: [{ kind: "none" }],
+  // A race's time limit (the first is the default); solo play has none.
+  timers: [
+    { kind: "countdown", seconds: 300 },
+    { kind: "countdown", seconds: 180 },
+    { kind: "countdown", seconds: 600 },
+  ],
+  raceOptions: [
+    {
+      key: "speed",
+      label: "speed",
+      values: [
+        { value: "normal", label: "normal" },
+        { value: "slow", label: "slow" },
+        { value: "fast", label: "fast" },
+      ],
+    },
+    {
+      key: "walls",
+      label: "edges",
+      values: [
+        { value: true, label: "walls" },
+        { value: false, label: "wrap" },
+      ],
+    },
+  ],
   rated: false,
   hiddenInformation: false,
   orientation: "any",

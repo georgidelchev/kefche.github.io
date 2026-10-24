@@ -45,6 +45,7 @@
   ],
   "ui": {
     "chooseDifficulty": "اختر مستوى الصعوبة",
+    "difficulty": "الصعوبة",
     "easy": "سهل",
     "medium": "متوسط",
     "hard": "صعب",

@@ -62,6 +62,18 @@ export interface OnlineMatch {
   onHostChange: (handler: (host: string | null) => void) => () => void;
 }
 
+/**
+ * A race (SPEC §10, Phase 5): everyone in the room plays the same seed with
+ * the same options, and the room keeps the live standings. The game plays
+ * as usual, without its own menus, new-game buttons or solo-only help.
+ */
+export interface RaceContext {
+  /** The game's engine config for this race (e.g. Sudoku's difficulty), from the room. */
+  config: unknown;
+  /** Every action the game applies, in order: the standings and the host's replay use them. */
+  record(action: unknown): void;
+}
+
 /** What the player's HUD shows for a turn-based match. */
 export interface TurnReport {
   type: "turn";
@@ -92,6 +104,8 @@ export interface GameContext {
   match?: MatchSetup;
   /** Set when the match is played online, in a room (Phase 5). */
   online?: OnlineMatch;
+  /** Set for a race in a room (games of kind "race"). */
+  race?: RaceContext;
   /** Tells the player about progress; "finish" opens the results screen. */
   report: (event: GameEvent) => void;
 }
