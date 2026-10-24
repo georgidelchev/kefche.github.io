@@ -66,6 +66,7 @@
     "label": "Mensagem",
     "send": "Enviar",
     "empty": "Ainda não há mensagens. Diga oi!",
+    "hint": "Seja gentil. As mensagens são apagadas quando a sala fecha.",
     "tooFast": "Você está enviando mensagens rápido demais. Espere alguns segundos.",
     "tooLong": "As mensagens podem ter até 300 caracteres.",
     "show": "Mostrar o chat",

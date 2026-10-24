@@ -66,6 +66,7 @@
     "label": "Nachricht",
     "send": "Senden",
     "empty": "Noch keine Nachrichten. Sag hallo!",
+    "hint": "Sei freundlich. Nachrichten werden gelöscht, wenn der Raum schließt.",
     "tooFast": "Du schreibst zu schnell. Warte ein paar Sekunden.",
     "tooLong": "Nachrichten dürfen höchstens 300 Zeichen lang sein.",
     "show": "Chat anzeigen",

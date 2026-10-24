@@ -66,6 +66,7 @@
     "label": "Message",
     "send": "Envoyer",
     "empty": "Pas encore de messages. Dites bonjour !",
+    "hint": "Restez courtois. Les messages sont supprimés à la fermeture du salon.",
     "tooFast": "Vous envoyez des messages trop vite. Attendez quelques secondes.",
     "tooLong": "Un message peut faire jusqu'à 300 caractères.",
     "show": "Afficher le chat",

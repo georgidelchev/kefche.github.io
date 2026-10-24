@@ -219,6 +219,7 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
           autoComplete="off"
           enterKeyHint="send"
           placeholder={s.label}
+          aria-describedby={`${id}-hint`}
           onChange={(e) => {
             setText(e.target.value);
           }}
@@ -232,6 +233,10 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
           {error}
         </p>
       )}
+      {/* Shown from 768px; the phone band is too short for it (screen readers still get it). */}
+      <p id={`${id}-hint`} className="hidden text-sm text-muted md:block">
+        {s.hint}
+      </p>
     </aside>
   );
 }

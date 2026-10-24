@@ -49,8 +49,11 @@ const strings = roomStrings(t);
     on phones.
   -->
   <div class="flex min-h-0 flex-1 flex-col md:flex-row">
-    <!-- relative: absolutely placed descendants (sr-only text) scroll and clip with it. -->
-    <div class="relative min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain ps-[max(1rem,env(safe-area-inset-left))] pe-4 xl:ps-8">
+    <!--
+      relative: absolutely placed descendants (sr-only text) scroll and clip
+      with it. The scrollbar is hidden; wheel, touch and keys still scroll.
+    -->
+    <div class="relative min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain ps-[max(1rem,env(safe-area-inset-left))] pe-4 [scrollbar-width:none] xl:ps-8 [&::-webkit-scrollbar]:hidden">
       <div class="grid w-full max-w-6xl gap-6 pt-6 pb-6">
         <nav aria-label={t("games:breadcrumb")} class="text-sm text-muted">
           <a

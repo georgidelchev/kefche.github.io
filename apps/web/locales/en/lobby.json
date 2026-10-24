@@ -66,6 +66,7 @@
     "label": "Message",
     "send": "Send",
     "empty": "No messages yet. Say hello!",
+    "hint": "Be kind. Messages are deleted when the room closes.",
     "tooFast": "You're sending messages too fast. Wait a few seconds.",
     "tooLong": "Messages can be up to 300 characters.",
     "show": "Show chat",
