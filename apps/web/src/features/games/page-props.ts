@@ -42,7 +42,22 @@ export function turnConfig(manifest: GameManifest): TurnConfig | null {
     difficulties: manifest.bots.supported ? manifest.bots.difficulties : [],
     ...(manifest.bots.supported && manifest.bots.levels ? { levels: manifest.bots.levels } : {}),
     timers: manifest.timers,
+    onlineTimers: onlineTimers(manifest),
   };
+}
+
+/**
+ * The timers an online room may use (only clocks when an away player's clock
+ * runs on), the one a new room starts with first.
+ */
+function onlineTimers(manifest: GameManifest): number[] {
+  const allowed = manifest.timers.flatMap((preset, i) =>
+    manifest.awayPlayers === "clock" && preset.kind !== "clock" ? [] : [i],
+  );
+  const first = manifest.onlineTimer;
+  return first !== undefined && allowed.includes(first)
+    ? [first, ...allowed.filter((i) => i !== first)]
+    : allowed;
 }
 
 /** A race game played in a room (manifest mode "race"). */
@@ -62,6 +77,7 @@ export function roomConfig(manifest: GameManifest): TurnConfig | null {
     players: { min, max: manifest.players.max, default: Math.max(min, manifest.players.default) },
     difficulties: [],
     timers: manifest.timers,
+    onlineTimers: onlineTimers(manifest),
   };
 }
 

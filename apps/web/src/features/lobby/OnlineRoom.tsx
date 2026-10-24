@@ -23,7 +23,7 @@ import { GuestProfileForm } from "./GuestProfileForm";
 import { LobbyView, type LobbyActions } from "./LobbyView";
 import { OnlineMatch } from "./OnlineMatch";
 import { RaceMatch } from "./RaceMatch";
-import { roomMatch, type RoomMatch } from "./room-match";
+import { onlineTimer, roomMatch, type RoomMatch } from "./room-match";
 import { parseRoomSettings, settingsJson } from "./room-settings";
 import { roomErrorCode, watchRoom, type RoomMember, type RoomSnapshot } from "./room-store";
 import { RoomChat } from "./RoomChat";
@@ -129,7 +129,7 @@ export function OnlineRoom({
           p_game_id: game.id,
           p_game_version: game.version,
           p_players: players,
-          p_settings: settingsJson({ timer: 0, bots: {} }),
+          p_settings: settingsJson({ timer: game.config.onlineTimers[0] ?? 0, bots: {} }),
         });
         if (rpcError) throw rpcError;
         code = data.code;
@@ -140,7 +140,7 @@ export function OnlineRoom({
           p_game_version: game.version,
           p_players: players,
           p_visibility: intent.public ? "public" : "private",
-          p_settings: settingsJson({ timer: 0, bots: {} }),
+          p_settings: settingsJson({ timer: game.config.onlineTimers[0] ?? 0, bots: {} }),
         });
         if (rpcError) throw rpcError;
         code = data.code;
@@ -595,7 +595,7 @@ function Room({
   if (match) {
     if (!transport) return <Waiting label={s.joining} />;
     if (game.race) {
-      const limit = game.config.timers[settings.timer] ?? game.config.timers[0];
+      const limit = game.config.timers[onlineTimer(game.config, settings.timer)];
       return (
         <>
           {docked}

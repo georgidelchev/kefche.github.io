@@ -25,6 +25,11 @@ export interface TurnConfig {
   levels?: { min: number; max: number };
   /** The first preset is the default. */
   timers: TimerPreset[];
+  /**
+   * Indexes into `timers` that an online room may use, the first being its
+   * default: all of them, or only the clocks (manifest `awayPlayers`).
+   */
+  onlineTimers: number[];
 }
 
 /** A bot with a `level` plays at that level; its difficulty then only sets its thinking time. */

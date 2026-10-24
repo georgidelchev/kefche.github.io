@@ -19,6 +19,10 @@ export interface RoomMatch {
 export const defaultDifficulty = (config: TurnConfig): BotDifficulty =>
   config.difficulties.includes("medium") ? "medium" : (config.difficulties[0] ?? "easy");
 
+/** The room's timer index, or the first allowed one if it names a timer rooms can't use. */
+export const onlineTimer = (config: TurnConfig, index: number): number =>
+  config.onlineTimers.includes(index) ? index : (config.onlineTimers[0] ?? 0);
+
 export function roomMatch(
   { room, members }: RoomSnapshot,
   settings: RoomSettings & { seed: string },
@@ -49,7 +53,7 @@ export function roomMatch(
       mode: "online",
       seats,
       names: seats.map((seat) => (seat.kind === "bot" ? strings.botNames[seat.nameId] : seat.name)),
-      timer: config.timers[settings.timer] ?? { kind: "none" },
+      timer: config.timers[onlineTimer(config, settings.timer)] ?? { kind: "none" },
       ...(localSeat >= 0 ? { localSeat } : {}),
     },
     seatMembers,

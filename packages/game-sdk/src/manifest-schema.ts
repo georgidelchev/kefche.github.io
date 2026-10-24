@@ -42,6 +42,8 @@ export const gameManifestSchema = z
         .optional(),
     }),
     timers: z.array(timerPreset),
+    awayPlayers: z.enum(["skip", "clock"]).optional(),
+    onlineTimer: z.int().nonnegative().optional(),
     raceOptions: z
       .array(
         z.object({
@@ -96,6 +98,17 @@ export const gameManifestSchema = z
   .refine((m) => m.estimatedMinutes[0] <= m.estimatedMinutes[1], {
     message: "estimatedMinutes: expected [shortest, longest]",
     path: ["estimatedMinutes"],
+  })
+  .refine(
+    (m) =>
+      m.onlineTimer === undefined ||
+      (m.timers[m.onlineTimer] !== undefined &&
+        (m.awayPlayers !== "clock" || m.timers[m.onlineTimer]?.kind === "clock")),
+    { message: "onlineTimer: expected a timer that online rooms may use", path: ["onlineTimer"] },
+  )
+  .refine((m) => m.awayPlayers !== "clock" || m.timers.some((t) => t.kind === "clock"), {
+    message: 'awayPlayers: "clock" needs at least one clock timer',
+    path: ["awayPlayers"],
   })
   .refine((m) => !m.bots.supported || m.bots.difficulties.length > 0, {
     message: "bots: list at least one difficulty when bots are supported",

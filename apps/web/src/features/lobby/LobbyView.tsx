@@ -14,7 +14,7 @@ import { fill, timerLabel, type TurnStrings } from "@/features/games/turn/labels
 import type { TurnConfig } from "@/features/games/turn/match-setup";
 import { Segmented, slot } from "@/features/games/turn/TurnUi";
 
-import { defaultDifficulty } from "./room-match";
+import { defaultDifficulty, onlineTimer } from "./room-match";
 
 import type { RoomSettings } from "./room-settings";
 import type { RoomSnapshot } from "./room-store";
@@ -251,14 +251,17 @@ export function LobbyView({
                 }}
               />
             )}
-            {config.timers.length > 1 && (
+            {config.onlineTimers.length > 1 && (
               <Segmented
                 legend={timerLegend}
-                value={settings.timer}
-                options={config.timers.map((preset, i) => ({
-                  value: i,
-                  label: limitLabel(preset),
-                }))}
+                value={onlineTimer(config, settings.timer)}
+                // In the manifest's order (the list starts with a new room's default).
+                options={config.onlineTimers
+                  .toSorted((a, b) => a - b)
+                  .map((i) => ({
+                    value: i,
+                    label: limitLabel(config.timers[i] ?? { kind: "none" }),
+                  }))}
                 onChange={(timer) => {
                   actions.update({ timer });
                 }}
@@ -327,7 +330,8 @@ export function LobbyView({
               {ts.players}: {room.players.toLocaleString(locale)}
             </li>
             <li>
-              {timerLegend}: {limitLabel(config.timers[settings.timer] ?? { kind: "none" })}
+              {timerLegend}:{" "}
+              {limitLabel(config.timers[onlineTimer(config, settings.timer)] ?? { kind: "none" })}
             </li>
             {race?.options.map((option) => (
               <li key={option.key}>

@@ -89,6 +89,15 @@ export interface GameManifest {
     levels?: { min: number; max: number };
   };
   timers: TimerPreset[];
+  /**
+   * Online, what becomes of a player who is away (SPEC §10.5): their turns
+   * are skipped ("skip", the default; the engine's `skipTurn`), or their
+   * clock keeps running until they lose on time ("clock", chess), so online
+   * rooms offer only the clock presets.
+   */
+  awayPlayers?: "skip" | "clock";
+  /** Index into `timers` that a new online room starts with (default: the first it may use). */
+  onlineTimer?: number;
   /** Race mode: the settings a room picks (none when the engine takes no config). */
   raceOptions?: RaceOptionDef[];
   rated: false | { system: "glicko2"; pools: string[] };
