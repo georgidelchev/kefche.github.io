@@ -54,6 +54,25 @@ export interface TurnEngine<State, Action, Config = undefined> {
    * Returns the same state when it can't be skipped.
    */
   skipTurn?(state: State, seat: number): State;
+  /**
+   * Actions `seat` may take at any moment without taking its turn, such as
+   * resigning or offering a draw. They leave the clocks alone, and bots and
+   * random moves never choose them. They go through `applyAction` like moves.
+   */
+  sideActions?(state: State, seat: number): Action[];
+  /** What running out of time means for `seat`; by default it loses and everyone else wins. */
+  timeoutResult?(state: State, seat: number): GameResult;
+}
+
+/** True when `action` is one of `seat`'s side actions now (compared as data). */
+export function isSideAction<State, Action, Config>(
+  engine: TurnEngine<State, Action, Config>,
+  state: State,
+  seat: number,
+  action: unknown,
+): boolean {
+  const wanted = JSON.stringify(action);
+  return (engine.sideActions?.(state, seat) ?? []).some((a) => JSON.stringify(a) === wanted);
 }
 
 /** One move in a turn-based match, as stored for replays. */

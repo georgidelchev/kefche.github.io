@@ -4,7 +4,13 @@
 // HUD. Games render the state and pass human moves to `act()`.
 
 import { BOT_BUDGET_MS, BOT_MIN_THINK_MS } from "../bots";
-import { replayTurns, type GameResult, type TurnEngine, type TurnMove } from "../engines";
+import {
+  isSideAction,
+  replayTurns,
+  type GameResult,
+  type TurnEngine,
+  type TurnMove,
+} from "../engines";
 import { Rng } from "../prng";
 import {
   createTimers,
@@ -269,6 +275,32 @@ export function createTurnSession<State, Action, Config>(
     return true;
   };
 
+  /**
+   * A side action (resign, a draw offer): any seat, any time, and the clocks
+   * carry on. If it changes who moves (a takeback), that seat's turn starts;
+   * otherwise a bot that is thinking carries on with its move.
+   */
+  const applySide = (seat: number, action: Action): boolean => {
+    const before = mover();
+    const next = engine.applyAction(state, seat, action);
+    if (next === state) return false;
+    state = next;
+    count++;
+    moves = [...moves, { seat, action }];
+    const following = mover();
+    if (following === before) {
+      emit();
+      return true;
+    }
+    stopBot();
+    // A takeback undid moves, so the last one isn't on the board any more.
+    lastMove = null;
+    if (following !== undefined) timers = startTurn(timer, timers, following);
+    emit();
+    schedule();
+    return true;
+  };
+
   /** The legal action equal to a bot's answer, which comes back as plain data. */
   const legal = (seat: number, answer: unknown): Action | undefined => {
     const wanted = JSON.stringify(answer);
@@ -344,8 +376,12 @@ export function createTurnSession<State, Action, Config>(
     } else if (rule === "pass" && options.passAction) {
       if (apply(seat, options.passAction(state, seat))) return;
     }
-    // "loss", or nothing to play: the seat loses and everyone else wins.
-    timeout = { completed: true, outcome: seats.map((_, i) => (i === seat ? 0 : 1)) };
+    // "loss", or nothing to play: the seat loses and everyone else wins,
+    // unless the game says otherwise (chess: a draw if nobody can mate).
+    timeout = engine.timeoutResult?.(state, seat) ?? {
+      completed: true,
+      outcome: seats.map((_, i) => (i === seat ? 0 : 1)),
+    };
     emit();
   };
 
@@ -377,7 +413,9 @@ export function createTurnSession<State, Action, Config>(
   return {
     act(seat, action) {
       if (paused || destroyed || result()) return false;
-      if (seats[seat]?.kind !== "human" || !toMove().includes(seat)) return false;
+      if (seats[seat]?.kind !== "human") return false;
+      if (isSideAction(engine, state, seat, action)) return applySide(seat, action);
+      if (!toMove().includes(seat)) return false;
       return apply(seat, action);
     },
     undo() {

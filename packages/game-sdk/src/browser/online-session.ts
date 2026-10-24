@@ -13,6 +13,7 @@
 // - Away players: their turns are skipped; with clocks, their clock runs.
 // - Rejoining: a member asks the host for the latest state on connecting.
 
+import { isSideAction, type GameResult } from "../engines";
 import { stateHash, createMessenger, type Message, type Payload } from "../protocol";
 import { elapse, isLowTime, timeLeft } from "../timers";
 import {
@@ -22,8 +23,6 @@ import {
   type TurnSnapshot,
   type TurnView,
 } from "./turn-session";
-
-import type { GameResult } from "../engines";
 
 /** How long the host may be missing before another player takes over. */
 export const HOST_TIMEOUT_MS = 5000;
@@ -137,10 +136,12 @@ export function createOnlineTurnSession<State, Action, Config>(
     if (host && host !== self) transport.send(host, message("sync", {}));
   };
 
-  /** The legal action equal to one that arrived as plain data. */
+  /** The legal action (or side action) equal to one that arrived as plain data. */
   const legal = (state: State, seat: number, action: unknown): Action | undefined => {
     const wanted = JSON.stringify(action);
-    return engine.legalActions(state, seat).find((a) => JSON.stringify(a) === wanted);
+    return [...engine.legalActions(state, seat), ...(engine.sideActions?.(state, seat) ?? [])].find(
+      (a) => JSON.stringify(a) === wanted,
+    );
   };
 
   const onMessage = (m: Message) => {
@@ -244,7 +245,10 @@ export function createOnlineTurnSession<State, Action, Config>(
   const act = (seat: number, action: Action): boolean => {
     if (destroyed || !localSeats.includes(seat)) return false;
     if (hosted) return hosted.act(seat, action);
-    if (!snapshot || result() || !toMove().includes(seat) || !host) return false;
+    if (!snapshot || result() || !host) return false;
+    // Side actions (resign, a draw offer) don't wait for the seat's turn.
+    const side = isSideAction(engine, snapshot.state, seat, action);
+    if (!side && !toMove().includes(seat)) return false;
     if (legal(snapshot.state, seat, action) === undefined) return false;
     transport.send(host, message("action", { seat, action, base: snapshot.moves }));
     return true;
