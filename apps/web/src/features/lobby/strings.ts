@@ -115,6 +115,48 @@ export function chatStrings(t: AppT): ChatStrings {
   };
 }
 
+export interface LobbyBrowserStrings {
+  filter: string;
+  allGames: string;
+  create: string;
+  listLabel: string;
+  loading: string;
+  failed: string;
+  empty: string;
+  emptyPick: string;
+  emptyCreate: string;
+  waiting: string;
+  playing: string;
+  /** "Host: {name}" */
+  host: string;
+  /** "Seats: {taken}/{total}" */
+  seats: string;
+  join: string;
+  watch: string;
+  unavailable: string;
+}
+
+export function lobbyBrowserStrings(t: AppT): LobbyBrowserStrings {
+  return {
+    filter: t("lobby:browser.filter"),
+    allGames: t("lobby:browser.allGames"),
+    create: t("lobby:browser.create"),
+    listLabel: t("lobby:browser.listLabel"),
+    loading: t("lobby:browser.loading"),
+    failed: t("lobby:browser.failed"),
+    empty: t("lobby:browser.empty"),
+    emptyPick: t("lobby:browser.emptyPick"),
+    emptyCreate: t("lobby:browser.emptyCreate"),
+    waiting: t("lobby:browser.waiting"),
+    playing: t("lobby:browser.playing"),
+    host: t("lobby:browser.host", { name: "{name}" }),
+    seats: t("lobby:browser.seats", { taken: "{taken}", total: "{total}" }),
+    join: t("lobby:room.joinSubmit"),
+    watch: t("lobby:browser.watch"),
+    unavailable: t("lobby:room.signedOut"),
+  };
+}
+
 export const ROOM_ERROR_CODES = [
   "room_not_found",
   "room_closed",

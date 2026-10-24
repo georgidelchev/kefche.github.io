@@ -61,6 +61,25 @@
     "onboardingLink": "Einrichtung abschließen",
     "backToGame": "Zurück zum Spiel"
   },
+  "browser": {
+    "title": "Öffentliche Räume",
+    "description": "Tritt einem offenen Spielraum bei oder schau einem laufenden Spiel zu.",
+    "filter": "Räume zeigen für",
+    "allGames": "Alle Spiele",
+    "create": "Öffentlichen Raum erstellen",
+    "listLabel": "Offene Räume",
+    "loading": "Räume werden geladen…",
+    "failed": "Die Räume konnten nicht geladen werden. Neuer Versuch…",
+    "empty": "Gerade gibt es keine öffentlichen Räume.",
+    "emptyPick": "Wähle oben ein Spiel, um einen zu erstellen; andere finden ihn dann hier.",
+    "emptyCreate": "Erstelle einen; andere finden ihn dann hier.",
+    "waiting": "Wartet auf Spieler",
+    "playing": "Läuft",
+    "host": "Gastgeber: {name}",
+    "seats": "Plätze: {taken}/{total}",
+    "watch": "Zuschauen",
+    "browse": "Öffentliche Räume ansehen"
+  },
   "chat": {
     "title": "Chat",
     "label": "Nachricht",

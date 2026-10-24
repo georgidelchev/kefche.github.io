@@ -648,10 +648,11 @@ Online modes are enabled for the Phase 4 games.
    - everyone in the room can chat, guests included, with no age question (owner decision, 2026-10-24);
    - the room page is one screen (AppShell `layout="app"`, full width): the room scrolls and the chat is a fixed pane, on the right from 768px and along the bottom on phones. It folds into a strip (a bar on phones) that counts new messages; it starts open and the choice is remembered;
    - reports and the moderation tools come in Phase 8.
-8. **Public lobby browser and quick match:**
-   - **Lobby browser:** `/[locale]/play/` lists open public lobbies by game, live.
-   - **Quick match:** a `match_queue` and an RPC pair players of the same game and settings. Bots fill the empty seats after 20 s, if the player allowed it.
-   - Quick matches are unrated.
+8. **Public lobby browser** (quick match changed, owner decision 2026-10-24: no bots fill seats; the public lobbies are listed instead):
+   - `/[locale]/play/` (the Play section) lists the public rooms someone can still enter: lobbies with a free seat (Join), and lobbies or matches that allow spectators (Watch). Lobbies come first, and a filter by game is kept in the address (`?game=`).
+   - **Live:** Realtime changes on `rooms` trigger a new read, at most every 1.5 s, plus a read every 15 s while the page is visible. The periodic read catches rooms that went private or finished, which Realtime doesn't send.
+   - **Privacy:** browsing reads as `anon`, so no guest identity is created until someone joins.
+   - "Create a public lobby" (`?new=public`) creates a listed room for the chosen game. The game page links to its lobbies.
 9. **Online modes for the Phase 4 games:** their manifests add `online-private`, `online-public` and `quick-match`. Spectators see the public state and can't act.
 10. **Race mode for 2048, Sudoku and Snake** (owner decision): everyone in the room plays the same game from the same seed.
     - **Live leaderboard:** a leaderboard in the room re-sorts as scores, progress and finishing times change.
@@ -694,7 +695,8 @@ Online modes are enabled for the Phase 4 games.
 
 - [x] Plan approved by owner (2026-10-23, with the answers above)
 - [x] Steps 0–7 done (hosted Supabase has the Phase 2 schema; the Phase 5 migrations go up with the next deploy)
-- [ ] Owner: set the production environment variables in GitHub (`PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `PUBLIC_AUTH_PROVIDERS=none`) and turn off Realtime "Allow public access" (RUNBOOK)
+- [x] Owner: the production build settings are set in GitHub (as environment secrets), and Realtime "Allow public access" is off (2026-10-24)
+- [x] Step 8 done: the public lobby browser (no bot fill, owner decision 2026-10-24)
 
 ---
 

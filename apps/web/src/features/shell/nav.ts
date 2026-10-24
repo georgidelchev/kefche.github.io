@@ -6,9 +6,9 @@
 export const NAV_ITEMS = [
   { id: "home", path: "/", status: "available" },
   { id: "games", path: "/games/", status: "available" },
-  { id: "play", path: "/play/", status: "soon" }, // Phase 5
+  // Needs Supabase: "soon" in builds without it (ADR-0011).
+  { id: "play", path: "/play/", status: "accounts" },
   { id: "friends", path: "/friends/", status: "soon" }, // Phase 8
-  // Needs accounts: "soon" in builds without Supabase (ADR-0011).
   { id: "profile", path: "/profile/", status: "accounts" },
 ] as const satisfies readonly {
   id: string;

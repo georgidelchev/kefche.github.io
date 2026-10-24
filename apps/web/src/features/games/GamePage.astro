@@ -185,6 +185,12 @@ const crumb = "rounded-sm hover:underline";
               </button>
             </form>
           </div>
+          <a
+            href={`${getRelativeLocaleUrl(locale, "/play/")}?game=${manifest.id}`}
+            class="justify-self-start font-semibold text-link underline-offset-4 hover:underline"
+          >
+            {t("lobby:browser.browse")}
+          </a>
         </section>
       )}
     </header>

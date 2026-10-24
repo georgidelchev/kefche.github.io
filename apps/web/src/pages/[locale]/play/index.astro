@@ -1,0 +1,58 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import { playsOnline } from "@/features/games/page-props";
+import { listGames } from "@/features/games/registry";
+import { PublicLobbies } from "@/features/lobby/PublicLobbies";
+import { lobbyBrowserStrings } from "@/features/lobby/strings";
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import { LOCALE_INFO, LOCALES, type Locale } from "@/i18n/locales";
+import { getSupabaseEnv } from "@/lib/env";
+
+import type { GetStaticPaths } from "astro";
+
+// The public lobby browser (SPEC §10.2, Phase 5 step 8): open public rooms
+// of every game that plays online, live. Only in builds with Supabase;
+// without it, /play/ is the "coming soon" page.
+export const getStaticPaths = (() =>
+  getSupabaseEnv() === null
+    ? []
+    : LOCALES.map((locale) => ({ params: { locale } }))) satisfies GetStaticPaths;
+
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+const games = listGames()
+  .filter((game) => playsOnline(game.manifest))
+  .map((game) => ({
+    id: game.manifest.id,
+    name: game.text[locale].name,
+    thumbnail: game.art.thumbnail,
+    href: getRelativeLocaleUrl(locale, `/play/${game.manifest.id}/`),
+  }));
+---
+
+<AppShell
+  locale={locale}
+  path="/play/"
+  section="play"
+  title={t("common:meta.sectionTitle", { section: t("lobby:browser.title") })}
+  description={t("lobby:browser.description")}
+>
+  <section class="mx-auto grid w-full max-w-4xl gap-6 pb-6">
+    <header class="grid gap-2">
+      <h1 class="text-3xl md:text-4xl">{t("lobby:browser.title")}</h1>
+      <p class="max-w-prose text-lg text-muted">{t("lobby:browser.description")}</p>
+    </header>
+    <PublicLobbies
+      client:only="react"
+      games={games}
+      locale={LOCALE_INFO[locale].bcp47}
+      strings={lobbyBrowserStrings(t)}
+    >
+      <p slot="fallback" class="text-muted">
+        {t("lobby:browser.loading")}
+      </p>
+    </PublicLobbies>
+  </section>
+</AppShell>

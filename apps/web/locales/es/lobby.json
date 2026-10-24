@@ -61,6 +61,25 @@
     "onboardingLink": "Terminar la configuración",
     "backToGame": "Volver al juego"
   },
+  "browser": {
+    "title": "Salas públicas",
+    "description": "Únete a una sala abierta o mira una partida que ya está en marcha.",
+    "filter": "Mostrar salas de",
+    "allGames": "Todos los juegos",
+    "create": "Crear una sala pública",
+    "listLabel": "Salas abiertas",
+    "loading": "Cargando salas…",
+    "failed": "No pudimos cargar las salas. Lo intentamos de nuevo…",
+    "empty": "Ahora mismo no hay salas públicas.",
+    "emptyPick": "Elige un juego arriba para crear una, y otros jugadores la encontrarán aquí.",
+    "emptyCreate": "Crea una, y otros jugadores la encontrarán aquí.",
+    "waiting": "Esperando jugadores",
+    "playing": "En juego",
+    "host": "Anfitrión: {name}",
+    "seats": "Puestos: {taken}/{total}",
+    "watch": "Mirar",
+    "browse": "Ver las salas públicas"
+  },
   "chat": {
     "title": "Chat",
     "label": "Mensaje",

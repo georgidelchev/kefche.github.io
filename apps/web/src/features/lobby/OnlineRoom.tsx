@@ -53,7 +53,7 @@ interface Props {
   paths: { game: string; privacy: string; onboarding: string };
 }
 
-type Intent = { kind: "create" } | { kind: "join"; code: string };
+type Intent = { kind: "create"; public?: boolean } | { kind: "join"; code: string };
 
 type Stage =
   | { kind: "choose" }
@@ -70,7 +70,8 @@ function intentFromUrl(): Intent | null {
   const params = new URLSearchParams(location.search);
   const room = params.get("room");
   if (room !== null) return { kind: "join", code: normalizeCode(room) };
-  return params.has("new") ? { kind: "create" } : null;
+  // ?new=public (from the lobby browser) lists the new room there.
+  return params.has("new") ? { kind: "create", public: params.get("new") === "public" } : null;
 }
 
 export function OnlineRoom({
@@ -84,7 +85,7 @@ export function OnlineRoom({
   turn,
   paths,
 }: Props) {
-  // A link with ?room= or ?new starts at once (the page renders only in the browser).
+  // A link with ?room= or ?new[=public] starts at once (the page renders only in the browser).
   const [stage, setStage] = useState<Stage>(() => {
     const intent = intentFromUrl();
     return intent ? { kind: "working", intent } : { kind: "choose" };
@@ -115,6 +116,7 @@ export function OnlineRoom({
           p_game_id: game.id,
           p_game_version: game.version,
           p_players: players,
+          p_visibility: intent.public ? "public" : "private",
           p_settings: settingsJson({ timer: 0, bots: {}, seed: null }),
         });
         if (rpcError) throw rpcError;

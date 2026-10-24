@@ -61,6 +61,25 @@
     "onboardingLink": "完成设置",
     "backToGame": "返回游戏"
   },
+  "browser": {
+    "title": "公开房间",
+    "description": "加入一个开放的游戏房间，或观看正在进行的对局。",
+    "filter": "显示以下游戏的房间",
+    "allGames": "全部游戏",
+    "create": "创建公开房间",
+    "listLabel": "开放的房间",
+    "loading": "正在加载房间…",
+    "failed": "无法加载房间，正在重试…",
+    "empty": "现在没有公开房间。",
+    "emptyPick": "在上方选一个游戏来创建房间，其他玩家会在这里找到它。",
+    "emptyCreate": "创建一个房间，其他玩家会在这里找到它。",
+    "waiting": "等待玩家",
+    "playing": "对局中",
+    "host": "房主：{name}",
+    "seats": "座位：{taken}/{total}",
+    "watch": "观战",
+    "browse": "浏览公开房间"
+  },
   "chat": {
     "title": "聊天",
     "label": "消息",
