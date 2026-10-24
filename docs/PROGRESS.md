@@ -787,6 +787,7 @@ Online modes are enabled for the Phase 4 games.
 ### Status
 
 - [x] Plan approved by owner (2026-10-24, with the answers above)
+- [x] Step 1 done: the rules on chess.js, checked in Node (66/66: every ending, promotion, draw offers, takebacks, flag falls, and the runtime's side actions). The SDK gained side actions (any seat, any time, clocks untouched; bots never pick them) and a game-defined flag-fall result. The manifest comes with the board in step 2, because a manifest puts the game in the catalog.
 
 ---
 

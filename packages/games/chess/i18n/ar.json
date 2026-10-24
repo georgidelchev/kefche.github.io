@@ -1,0 +1,49 @@
+{
+  "name": "الشطرنج",
+  "tagline": "لعبة الاستراتيجية الكلاسيكية: أمِت الملك قبل أن يسقط ملكك.",
+  "description": "العب الشطرنج مجانًا في متصفحك: ضد بوتات Stockfish أو مع صديق على جهاز واحد أو عبر الإنترنت، مع ساعات ومباريات مصنّفة وتحليل.",
+  "about": [
+    "Chess is a strategy game for two players on an 8 × 8 board. Each side starts with sixteen pieces: a king, a queen, two rooks, two bishops, two knights and eight pawns. White moves first, and the players take turns moving one piece at a time. The goal is to checkmate the other king: to attack it so that it has no way to escape.",
+    "Every piece moves in its own way, and the game grows out of how they work together. Pawns march forward and can become a queen on the far side of the board. Kings can castle with a rook to reach safety, and a pawn that has just moved two squares can be captured in passing. A game can also end in a draw: by stalemate, by agreement, by repeating the same position three times, by fifty moves without a capture or a pawn move, or when neither side has enough pieces left to checkmate.",
+    "Here you can play against Stockfish, one of the strongest chess engines, on easy, medium or hard, or choose its level yourself. You can also play with a friend on one device, or online in a private room, a public lobby or a quick match, with the usual bullet, blitz, rapid and classical clocks. Signed-in players can play rated games, and every finished game can be stepped through move by move, with Stockfish's evaluation beside it."
+  ],
+  "howToPlay": [
+    "Choose how to play: against a bot, on this device with a friend, or online. White moves first.",
+    "Tap or drag a piece to see where it can go, then tap or drop it on a highlighted square.",
+    "Kings move one square in any direction, queens any distance in a straight line or diagonal, rooks along lines, bishops along diagonals, and knights in an L shape, jumping over other pieces.",
+    "Pawns move one square forward, or two from their starting square, and capture one square diagonally forward. A pawn that reaches the last row becomes a queen, rook, bishop or knight of your choice.",
+    "Put the other king in check so that no move can save it, and you win. You can also win when your opponent resigns or runs out of time."
+  ],
+  "controls": [
+    "Phones and tablets: tap a piece and then a square, or drag the piece there.",
+    "Mouse: click or drag. Dots mark every square the chosen piece can move to.",
+    "Keyboard: move around the board with the arrow keys, press Enter or Space to pick up a piece, and again to put it down.",
+    "Resign, offer a draw and, in casual games, ask to take back a move with the buttons beside the board."
+  ],
+  "tips": [
+    "Control the centre early: pawns and pieces on the middle squares reach the most of the board.",
+    "Bring out your knights and bishops before moving the same piece twice, and castle to keep your king safe.",
+    "Before every move, check what your opponent is threatening: captures, checks and attacks on undefended pieces.",
+    "Count the material when you trade: a pawn is worth about 1, a knight or bishop 3, a rook 5 and a queen 9.",
+    "In the endgame, the king becomes a strong piece. Bring it towards the centre and help your pawns forward."
+  ],
+  "faq": [
+    {
+      "question": "Is chess free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play. Rated games need a free account."
+    },
+    {
+      "question": "What is a rated game?",
+      "answer": "A rated game changes your rating, a number that shows how strong you play. Ratings use the Glicko-2 system and are kept separately for bullet, blitz, rapid and classical."
+    },
+    {
+      "question": "What happens if I run out of time?",
+      "answer": "You lose the game, unless your opponent has only their king left, or a king and a single knight or bishop. They can't checkmate with that, so the game is a draw."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "The bots are Stockfish, set to play weaker on easy and medium. Hard is a tough opponent for most club players, and you can also pick any of its 21 levels yourself."
+    }
+  ],
+  "ui": {}
+}

@@ -1,0 +1,21 @@
+{
+  "name": "@kefche/game-chess",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    "./engine": "./engine/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p engine"
+  },
+  "dependencies": {
+    "@kefche/game-sdk": "workspace:*",
+    "chess.js": "1.4.0"
+  },
+  "devDependencies": {
+    "@kefche/config": "workspace:*",
+    "typescript": "6.0.3"
+  }
+}
