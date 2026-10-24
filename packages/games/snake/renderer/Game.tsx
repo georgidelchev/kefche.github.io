@@ -2,7 +2,8 @@
 // board, steered by swipes, arrow keys / WASD or the on-screen D-pad (shown
 // on touch screens). The game waits for the first direction before moving.
 // In a race (context.race) the room's settings skip the menu, the snake
-// sets off at once (everyone starts together), and every tick and turn is
+// sets off at once (everyone starts together) and keeps going while the tab
+// is hidden (the race's clock doesn't stop), and every tick and turn is
 // recorded.
 import { useEffect, useRef, useState } from "react";
 
@@ -329,6 +330,7 @@ function Board({
         if (handle.paused) loop.pause();
         else draw(alpha);
       },
+      background: context.race !== undefined,
     });
 
     const turn = (direction: Direction) => {
@@ -350,8 +352,8 @@ function Board({
       loop.start();
     }
 
-    // The loop pauses itself when the tab is hidden; after the player's
-    // Resume it picks up again here.
+    // Outside a race the loop pauses itself when the tab is hidden; after the
+    // player's Resume it picks up again here.
     const resumer = setInterval(() => {
       if (started && !state.over && !handle.paused && !loop.running) loop.resume();
     }, 100);
