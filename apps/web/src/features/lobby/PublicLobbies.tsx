@@ -7,6 +7,14 @@ import { useEffect, useState } from "react";
 
 import { Badge } from "@kefche/ui/components/badge";
 import { buttonVariants } from "@kefche/ui/components/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@kefche/ui/components/dialog";
 
 import { getSupabase } from "@/lib/supabase/client";
 
@@ -138,6 +146,40 @@ export function PublicLobbies({ games, locale, strings: s }: Props) {
             </a>
           </div>
         )}
+        {!selected && (
+          // All games: pick the game for the new lobby in a dialog.
+          <Dialog>
+            <DialogTrigger className={buttonVariants({ variant: "primary" })}>
+              <Plus aria-hidden="true" className="size-4" />
+              {s.create}
+            </DialogTrigger>
+            <DialogContent closeLabel={s.close}>
+              <DialogHeader>
+                <DialogTitle>{s.pickTitle}</DialogTitle>
+                <DialogDescription>{s.pickHint}</DialogDescription>
+              </DialogHeader>
+              <ul className="grid gap-2">
+                {games.map((game) => (
+                  <li key={game.id}>
+                    <a
+                      href={`${game.href}?new=public`}
+                      className="flex items-center gap-3 rounded-xl border border-border p-2 font-semibold hover:border-border-strong hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-focus"
+                    >
+                      <img
+                        src={game.thumbnail}
+                        alt=""
+                        width="64"
+                        height="48"
+                        className="h-12 w-16 shrink-0 rounded-lg"
+                      />
+                      {game.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </DialogContent>
+          </Dialog>
+        )}
       </div>
 
       {failed && (
@@ -159,7 +201,7 @@ export function PublicLobbies({ games, locale, strings: s }: Props) {
       ) : shown.length === 0 ? (
         <div className="grid justify-items-start gap-2 rounded-2xl border border-dashed border-border p-6">
           <p className="text-lg font-semibold">{s.empty}</p>
-          <p className="text-muted">{selected ? s.emptyCreate : s.emptyPick}</p>
+          <p className="text-muted">{s.emptyCreate}</p>
         </div>
       ) : (
         <ul className="grid gap-3" aria-label={s.listLabel}>

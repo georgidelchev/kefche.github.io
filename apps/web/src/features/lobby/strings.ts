@@ -126,8 +126,11 @@ export interface LobbyBrowserStrings {
   loading: string;
   failed: string;
   empty: string;
-  emptyPick: string;
   emptyCreate: string;
+  /** The "pick a game" dialog for a new lobby, from All games. */
+  pickTitle: string;
+  pickHint: string;
+  close: string;
   waiting: string;
   playing: string;
   /** "Host: {name}" */
@@ -149,8 +152,10 @@ export function lobbyBrowserStrings(t: AppT): LobbyBrowserStrings {
     loading: t("lobby:browser.loading"),
     failed: t("lobby:browser.failed"),
     empty: t("lobby:browser.empty"),
-    emptyPick: t("lobby:browser.emptyPick"),
     emptyCreate: t("lobby:browser.emptyCreate"),
+    pickTitle: t("lobby:browser.pickTitle"),
+    pickHint: t("lobby:browser.pickHint"),
+    close: t("common:actions.close"),
     waiting: t("lobby:browser.waiting"),
     playing: t("lobby:browser.playing"),
     host: t("lobby:browser.host", { name: "{name}" }),
