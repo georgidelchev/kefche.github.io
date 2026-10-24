@@ -100,6 +100,19 @@
     "yourPlace": "Vous terminez {place}ᵉ sur {count}",
     "youWon": "Vous avez gagné !"
   },
+  "rated": {
+    "badge": "Classée · {pool}",
+    "pools": {
+      "bullet": "Bullet",
+      "blitz": "Blitz",
+      "rapid": "Rapide",
+      "classical": "Classique"
+    },
+    "checking": "Calcul du résultat…",
+    "change": "Votre classement : {before} → {after} ({change})",
+    "review": "Cette partie est en cours de vérification ; elle ne compte pas pour l’instant.",
+    "failed": "Le résultat n’a pas encore pu être enregistré. Il le sera sous peu."
+  },
   "chat": {
     "title": "Chat",
     "label": "Message",

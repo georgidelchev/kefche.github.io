@@ -100,6 +100,19 @@
     "yourPlace": "You finished #{place} of {count}",
     "youWon": "You won!"
   },
+  "rated": {
+    "badge": "Rated · {pool}",
+    "pools": {
+      "bullet": "Bullet",
+      "blitz": "Blitz",
+      "rapid": "Rapid",
+      "classical": "Classical"
+    },
+    "checking": "Working out the result…",
+    "change": "Your rating: {before} → {after} ({change})",
+    "review": "This game is being checked, so it doesn't count for now.",
+    "failed": "The result couldn't be recorded yet. It will be, shortly."
+  },
   "chat": {
     "title": "Chat",
     "label": "Message",

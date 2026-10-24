@@ -60,6 +60,11 @@ export interface OnlineMatch {
   claimHost: (from: string | null) => Promise<boolean>;
   /** Called when the rooms row names a new host. */
   onHostChange: (handler: (host: string | null) => void) => () => void;
+  /**
+   * Rated rooms: every action this browser's player takes, for the server's
+   * own record, from which it works out the result (SPEC §12.5).
+   */
+  recordAction?: (seat: number, action: unknown) => void;
 }
 
 /**

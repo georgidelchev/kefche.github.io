@@ -82,6 +82,20 @@ export interface RoomStrings {
   onboardingLink: string;
   backToGame: string;
   errors: Record<RoomErrorCode, string>;
+  rated: RatedStrings;
+}
+
+/** Rated rooms (Phase 6): the badge and the result's rating change. */
+export interface RatedStrings {
+  /** "Rated · {pool}" */
+  badge: string;
+  /** Pool names by manifest pool id; an unknown pool shows its id. */
+  pools: Record<string, string>;
+  checking: string;
+  /** "Your rating: {before} → {after} ({change})" */
+  change: string;
+  review: string;
+  failed: string;
 }
 
 export interface ChatStrings {
@@ -298,6 +312,19 @@ export function roomStrings(t: AppT): RoomStrings {
       rate_limited: t("lobby:errors.rate_limited"),
       connection: t("lobby:errors.connection"),
       unknown: t("lobby:errors.unknown"),
+    },
+    rated: {
+      badge: t("lobby:rated.badge", { pool: "{pool}" }),
+      pools: {
+        bullet: t("lobby:rated.pools.bullet"),
+        blitz: t("lobby:rated.pools.blitz"),
+        rapid: t("lobby:rated.pools.rapid"),
+        classical: t("lobby:rated.pools.classical"),
+      },
+      checking: t("lobby:rated.checking"),
+      change: t("lobby:rated.change", { before: "{before}", after: "{after}", change: "{change}" }),
+      review: t("lobby:rated.review"),
+      failed: t("lobby:rated.failed"),
     },
   };
 }

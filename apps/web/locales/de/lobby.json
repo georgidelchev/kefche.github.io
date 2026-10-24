@@ -100,6 +100,19 @@
     "yourPlace": "Du bist Platz {place} von {count}",
     "youWon": "Du hast gewonnen!"
   },
+  "rated": {
+    "badge": "Gewertet · {pool}",
+    "pools": {
+      "bullet": "Bullet",
+      "blitz": "Blitz",
+      "rapid": "Schnellschach",
+      "classical": "Klassisch"
+    },
+    "checking": "Das Ergebnis wird ermittelt…",
+    "change": "Deine Wertung: {before} → {after} ({change})",
+    "review": "Diese Partie wird geprüft und zählt vorerst nicht.",
+    "failed": "Das Ergebnis konnte noch nicht gespeichert werden. Das passiert gleich."
+  },
   "chat": {
     "title": "Chat",
     "label": "Nachricht",

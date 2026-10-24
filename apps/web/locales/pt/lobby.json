@@ -100,6 +100,19 @@
     "yourPlace": "Você ficou em {place}º de {count}",
     "youWon": "Você venceu!"
   },
+  "rated": {
+    "badge": "Ranqueada · {pool}",
+    "pools": {
+      "bullet": "Bullet",
+      "blitz": "Blitz",
+      "rapid": "Rápida",
+      "classical": "Clássica"
+    },
+    "checking": "Calculando o resultado…",
+    "change": "Seu rating: {before} → {after} ({change})",
+    "review": "Esta partida está sendo verificada e, por enquanto, não conta.",
+    "failed": "Ainda não foi possível registrar o resultado. Será em instantes."
+  },
   "chat": {
     "title": "Chat",
     "label": "Mensagem",

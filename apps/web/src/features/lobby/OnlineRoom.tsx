@@ -24,7 +24,7 @@ import { LobbyView, type LobbyActions } from "./LobbyView";
 import { OnlineMatch } from "./OnlineMatch";
 import { RaceMatch } from "./RaceMatch";
 import { onlineTimer, roomMatch, type RoomMatch } from "./room-match";
-import { parseRoomSettings, settingsJson } from "./room-settings";
+import { parseRated, parseRoomSettings, settingsJson } from "./room-settings";
 import { roomErrorCode, watchRoom, type RoomMember, type RoomSnapshot } from "./room-store";
 import { RoomChat } from "./RoomChat";
 import { createSupabaseTransport } from "./supabase-transport";
@@ -638,6 +638,7 @@ function Room({
           host={room.host_id}
           match={match}
           seed={match.seed}
+          rated={parseRated(room.rated)}
           away={match.seatMembers.map(
             (member) => member !== null && (!present.has(member) || status(member) === "left"),
           )}

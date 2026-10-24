@@ -100,6 +100,19 @@
     "yourPlace": "{count}人中{place}位でした",
     "youWon": "勝ちました！"
   },
+  "rated": {
+    "badge": "レーティング戦 · {pool}",
+    "pools": {
+      "bullet": "バレット",
+      "blitz": "ブリッツ",
+      "rapid": "ラピッド",
+      "classical": "クラシカル"
+    },
+    "checking": "結果を計算しています…",
+    "change": "あなたのレーティング：{before} → {after}（{change}）",
+    "review": "この対局は確認中のため、今はレーティングに反映されません。",
+    "failed": "結果をまだ記録できていません。まもなく記録されます。"
+  },
   "chat": {
     "title": "チャット",
     "label": "メッセージ",

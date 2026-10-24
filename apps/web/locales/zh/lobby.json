@@ -100,6 +100,19 @@
     "yourPlace": "你在 {count} 人中排第 {place}",
     "youWon": "你赢了！"
   },
+  "rated": {
+    "badge": "积分赛 · {pool}",
+    "pools": {
+      "bullet": "子弹棋",
+      "blitz": "超快棋",
+      "rapid": "快棋",
+      "classical": "慢棋"
+    },
+    "checking": "正在计算结果…",
+    "change": "你的积分：{before} → {after}（{change}）",
+    "review": "这局棋正在核查，暂不计入积分。",
+    "failed": "结果暂时未能记录，稍后会自动记录。"
+  },
   "chat": {
     "title": "聊天",
     "label": "消息",

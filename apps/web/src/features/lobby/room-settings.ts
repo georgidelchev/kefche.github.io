@@ -49,3 +49,19 @@ export const settingsJson = ({
 }: Pick<RoomSettings, "timer" | "bots"> & {
   options?: RaceOptionValues;
 }) => ({ timer, bots, options: options ?? {} });
+
+/** A rated room's pool and clock (rooms.rated, set by rated matchmaking), or null. */
+export interface RatedRoom {
+  pool: string;
+  clock: { base: number; increment: number };
+}
+
+const ratedSchema = z.object({
+  pool: z.string(),
+  clock: z.object({ base: z.number(), increment: z.number() }),
+});
+
+export function parseRated(raw: unknown): RatedRoom | null {
+  const parsed = ratedSchema.safeParse(raw);
+  return parsed.success ? parsed.data : null;
+}

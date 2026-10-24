@@ -2,6 +2,8 @@
 // short countdown, then the game with `context.online`. The room's host runs
 // the match and everyone else mirrors it. The HUD shows who is away, and the
 // results offer the host a rematch, which takes the room back to the lobby.
+// In a rated room each player's actions also go to the server's record, and
+// the results show the rating change the server works out from it.
 import { LoaderCircle, LogOut, Volume2, VolumeX } from "lucide-react";
 import { lazy, Suspense, useEffect, useEffectEvent, useRef, useState } from "react";
 
@@ -20,10 +22,13 @@ import { loadGame } from "@/features/games/loaders";
 import { gameStorage, Overlay, useGameScreen, VOLUME } from "@/features/games/player-parts";
 import { fill, resultText, type TurnStrings } from "@/features/games/turn/labels";
 import { send, type Supabase } from "@/lib/supabase/client";
+import type { Json } from "@/lib/supabase/database.gen";
 
+import { fetchRatedOutcome, type RatedOutcome } from "./rated-result";
 import { roomErrorCode } from "./room-store";
 
 import type { RoomMatch } from "./room-match";
+import type { RatedRoom } from "./room-settings";
 import type { RoomStrings } from "./strings";
 
 const TurnUi = lazy(() =>
@@ -40,6 +45,8 @@ interface Props {
   host: string | null;
   match: RoomMatch;
   seed: string;
+  /** A rated room's pool and clock, or null. */
+  rated: RatedRoom | null;
   /** Seats whose person is disconnected or has left. */
   away: readonly boolean[];
   /** The match just started (not a reload mid-match): count down first. */
@@ -61,6 +68,7 @@ export function OnlineMatch({
   host,
   match,
   seed,
+  rated,
   away,
   countdown,
   game,
@@ -83,6 +91,11 @@ export function OnlineMatch({
   const hostRef = useRef(host);
   const hostHandlersRef = useRef(new Set<(host: string | null) => void>());
   const isHost = host === self;
+  const [rating, setRating] = useState<RatedOutcome | "checking" | null>(null);
+  // Each player's actions reach the server's record in the order taken.
+  const recordingRef = useRef<Promise<void>>(Promise.resolve());
+  const isRated = rated !== null;
+  const seat = match.setup.localSeat;
   useGameScreen(true);
 
   // The session reads the host through a getter and hears of changes.
@@ -105,7 +118,23 @@ export function OnlineMatch({
     setResult(over);
     // The host records the end; the room then offers a rematch.
     if (hostRef.current === self) send(supabase.rpc("finish_room", { p_room: roomId }));
+    // The players ask the server for the rated result (each its own rating).
+    if (isRated && seat !== undefined) {
+      setRating("checking");
+      void fetchRatedOutcome(supabase, { roomId, seed, seat }, () => closedRef.current).then(
+        (outcome) => {
+          if (outcome) setRating(outcome);
+        },
+      );
+    }
   });
+  const closedRef = useRef(false);
+  useEffect(
+    () => () => {
+      closedRef.current = true;
+    },
+    [],
+  );
 
   useEffect(() => {
     if (count > 0) return;
@@ -129,6 +158,17 @@ export function OnlineMatch({
         hostHandlersRef.current.add(handler);
         return () => hostHandlersRef.current.delete(handler);
       },
+      ...(isRated
+        ? {
+            recordAction: (_seat: number, action: unknown) => {
+              recordingRef.current = recordingRef.current
+                .then(async () => {
+                  await supabase.rpc("rated_action", { p_room: roomId, p_action: action as Json });
+                })
+                .catch(() => undefined);
+            },
+          }
+        : {}),
     };
     loadGame(game.id).then(
       (module) => {
@@ -164,7 +204,7 @@ export function OnlineMatch({
       const closing = instance;
       queueMicrotask(() => closing?.destroy());
     };
-  }, [count, attempt, transport, roomId, self, match, seed, game, locale, dir, supabase]);
+  }, [count, attempt, transport, roomId, self, match, seed, game, locale, dir, supabase, isRated]);
 
   async function rematch() {
     setBusy(true);
@@ -186,7 +226,14 @@ export function OnlineMatch({
       className="fixed inset-0 z-[70] flex flex-col bg-bg pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]"
     >
       <div className="flex min-h-14 items-center gap-2 border-b border-border bg-surface ps-[max(0.75rem,env(safe-area-inset-left))] pe-[max(0.75rem,env(safe-area-inset-right))]">
-        <h2 className="min-w-0 flex-1 truncate text-lg">{game.name}</h2>
+        <h2 className="min-w-0 flex-1 truncate text-lg">
+          {game.name}
+          {rated && (
+            <span className="ms-2 rounded-full bg-surface-2 px-2 py-0.5 align-middle text-sm font-semibold">
+              {fill(s.rated.badge, { pool: s.rated.pools[rated.pool] ?? rated.pool })}
+            </span>
+          )}
+        </h2>
         <Button
           variant="ghost"
           size="icon"
@@ -260,6 +307,7 @@ export function OnlineMatch({
             <p role="status" className="text-3xl font-semibold">
               {resultText(result, match.setup, turn, locale)}
             </p>
+            {rating && <RatingLine rating={rating} strings={s.rated} locale={locale} />}
             {isHost ? (
               <Button disabled={busy} onClick={() => void rematch()}>
                 {s.rematch}
@@ -279,5 +327,28 @@ export function OnlineMatch({
         )}
       </div>
     </div>
+  );
+}
+
+function RatingLine({
+  rating,
+  strings: r,
+  locale,
+}: {
+  rating: RatedOutcome | "checking";
+  strings: RoomStrings["rated"];
+  locale: string;
+}) {
+  if (rating === "checking") return <p className="text-muted">{r.checking}</p>;
+  if (rating.kind === "review") return <p className="text-muted">{r.review}</p>;
+  if (rating.kind === "failed") return <p className="text-muted">{r.failed}</p>;
+  const whole = (n: number) => Math.round(n).toLocaleString(locale);
+  const change = new Intl.NumberFormat(locale, { signDisplay: "exceptZero" }).format(
+    Math.round(rating.after) - Math.round(rating.before),
+  );
+  return (
+    <p role="status" className="text-lg font-semibold tabular-nums">
+      {fill(r.change, { before: whole(rating.before), after: whole(rating.after), change })}
+    </p>
   );
 }

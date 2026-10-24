@@ -246,13 +246,18 @@ export function createOnlineTurnSession<State, Action, Config>(
 
   const act = (seat: number, action: Action): boolean => {
     if (destroyed || !localSeats.includes(seat)) return false;
-    if (hosted) return hosted.act(seat, action);
+    if (hosted) {
+      const applied = hosted.act(seat, action);
+      if (applied) online.recordAction?.(seat, action);
+      return applied;
+    }
     if (!snapshot || result() || !host) return false;
     // Side actions (resign, a draw offer) don't wait for the seat's turn.
     const side = isSideAction(engine, snapshot.state, seat, action);
     if (!side && !toMove().includes(seat)) return false;
     if (legal(snapshot.state, seat, action) === undefined) return false;
     transport.send(host, message("action", { seat, action, base: snapshot.moves }));
+    online.recordAction?.(seat, action);
     return true;
   };
 
