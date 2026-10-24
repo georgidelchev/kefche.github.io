@@ -28,6 +28,8 @@ export interface RoomStrings {
   title: string;
   description: string;
   create: string;
+  quick: string;
+  finding: string;
   join: string;
   joinTitle: string;
   codeLabel: string;
@@ -119,6 +121,7 @@ export interface LobbyBrowserStrings {
   filter: string;
   allGames: string;
   create: string;
+  quick: string;
   listLabel: string;
   loading: string;
   failed: string;
@@ -141,6 +144,7 @@ export function lobbyBrowserStrings(t: AppT): LobbyBrowserStrings {
     filter: t("lobby:browser.filter"),
     allGames: t("lobby:browser.allGames"),
     create: t("lobby:browser.create"),
+    quick: t("lobby:room.quick"),
     listLabel: t("lobby:browser.listLabel"),
     loading: t("lobby:browser.loading"),
     failed: t("lobby:browser.failed"),
@@ -179,6 +183,8 @@ export function roomStrings(t: AppT): RoomStrings {
     title: t("lobby:room.title"),
     description: t("lobby:room.description"),
     create: t("lobby:room.create"),
+    quick: t("lobby:room.quick"),
+    finding: t("lobby:room.finding"),
     join: t("lobby:room.join"),
     joinTitle: t("lobby:room.joinTitle"),
     codeLabel: t("lobby:room.codeLabel"),

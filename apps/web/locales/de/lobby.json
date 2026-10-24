@@ -9,6 +9,8 @@
     "title": "Spielraum",
     "description": "Spiele ein kefche-Spiel online mit Freunden.",
     "create": "Raum erstellen",
+    "quick": "Schnelles Spiel",
+    "finding": "Spiel wird gesucht…",
     "join": "Mit Code beitreten",
     "joinTitle": "Einem Raum beitreten",
     "codeLabel": "Raumcode",

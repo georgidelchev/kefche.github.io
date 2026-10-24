@@ -9,6 +9,8 @@
     "title": "游戏房间",
     "description": "和朋友在线玩 kefche 游戏。",
     "create": "创建房间",
+    "quick": "快速匹配",
+    "finding": "正在寻找对局…",
     "join": "用房间码加入",
     "joinTitle": "加入房间",
     "codeLabel": "房间码",

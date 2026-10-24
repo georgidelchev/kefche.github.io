@@ -53,7 +53,8 @@ interface Props {
   paths: { game: string; privacy: string; onboarding: string };
 }
 
-type Intent = { kind: "create"; public?: boolean } | { kind: "join"; code: string };
+type Intent =
+  { kind: "create"; public?: boolean } | { kind: "join"; code: string } | { kind: "quick" };
 
 type Stage =
   | { kind: "choose" }
@@ -70,6 +71,7 @@ function intentFromUrl(): Intent | null {
   const params = new URLSearchParams(location.search);
   const room = params.get("room");
   if (room !== null) return { kind: "join", code: normalizeCode(room) };
+  if (params.has("quick")) return { kind: "quick" };
   // ?new=public (from the lobby browser) lists the new room there.
   return params.has("new") ? { kind: "create", public: params.get("new") === "public" } : null;
 }
@@ -85,7 +87,7 @@ export function OnlineRoom({
   turn,
   paths,
 }: Props) {
-  // A link with ?room= or ?new[=public] starts at once (the page renders only in the browser).
+  // A link with ?room=, ?quick or ?new[=public] starts at once (the page renders only in the browser).
   const [stage, setStage] = useState<Stage>(() => {
     const intent = intentFromUrl();
     return intent ? { kind: "working", intent } : { kind: "choose" };
@@ -110,8 +112,19 @@ export function OnlineRoom({
         return;
       }
       let code = intent.kind === "join" ? intent.code : null;
+      const players = Math.max(game.config.players.default, 2, game.config.players.min);
+      if (intent.kind === "quick") {
+        // A seat in an open public lobby, or a new one (no bots fill seats).
+        const { data, error: rpcError } = await supabase.rpc("quick_match", {
+          p_game_id: game.id,
+          p_game_version: game.version,
+          p_players: players,
+          p_settings: settingsJson({ timer: 0, bots: {}, seed: null }),
+        });
+        if (rpcError) throw rpcError;
+        code = data.code;
+      }
       if (intent.kind === "create") {
-        const players = Math.max(game.config.players.default, 2, game.config.players.min);
         const { data, error: rpcError } = await supabase.rpc("create_room", {
           p_game_id: game.id,
           p_game_version: game.version,
@@ -149,7 +162,17 @@ export function OnlineRoom({
     case "choose":
       return <Choose strings={s} error={error} onRun={begin} />;
     case "working":
-      return <Waiting label={stage.intent.kind === "create" ? s.creating : s.joining} />;
+      return (
+        <Waiting
+          label={
+            stage.intent.kind === "quick"
+              ? s.finding
+              : stage.intent.kind === "create"
+                ? s.creating
+                : s.joining
+          }
+        />
+      );
     case "profile":
       return (
         <div className="mx-auto w-full max-w-md rounded-2xl border border-border bg-surface p-5">
@@ -225,15 +248,25 @@ function Choose({
   const [code, setCode] = useState("");
   return (
     <div className="grid gap-6">
-      <Button
-        size="lg"
-        className="justify-self-start"
-        onClick={() => {
-          onRun({ kind: "create" });
-        }}
-      >
-        {s.create}
-      </Button>
+      <div className="flex flex-wrap gap-3">
+        <Button
+          size="lg"
+          onClick={() => {
+            onRun({ kind: "quick" });
+          }}
+        >
+          {s.quick}
+        </Button>
+        <Button
+          size="lg"
+          variant="outline"
+          onClick={() => {
+            onRun({ kind: "create" });
+          }}
+        >
+          {s.create}
+        </Button>
+      </div>
       <form
         className="grid max-w-sm gap-3"
         onSubmit={(e) => {

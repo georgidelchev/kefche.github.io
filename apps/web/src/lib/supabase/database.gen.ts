@@ -260,6 +260,30 @@ isOneToOne: false
 "purge_account":
 { Args: { "p_user": string }; Returns: undefined
                            },
+"quick_match":
+{ Args: { "p_game_id": string,"p_game_version": number,"p_players": number,"p_settings"?: Json }; Returns: {
+              "allow_spectators": boolean,
+"bot_seats": (number)[],
+"code": string,
+"created_at": string,
+"game_id": string,
+"game_version": number,
+"host_id": string | null,
+"id": string,
+"last_active_at": string,
+"locked": boolean,
+"players": number,
+"settings": NonNullable<Json>,
+"status": string,
+"updated_at": string,
+"visibility": string
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "rooms"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "reopen_room":
 { Args: { "p_room": string }; Returns: undefined
                            },

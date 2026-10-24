@@ -9,6 +9,8 @@
     "title": "Sala de juego",
     "description": "Juega a un juego de kefche en línea con tus amigos.",
     "create": "Crear sala",
+    "quick": "Partida rápida",
+    "finding": "Buscando una partida…",
     "join": "Unirse con código",
     "joinTitle": "Unirse a una sala",
     "codeLabel": "Código de la sala",

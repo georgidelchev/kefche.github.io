@@ -648,7 +648,12 @@ Online modes are enabled for the Phase 4 games.
    - everyone in the room can chat, guests included, with no age question (owner decision, 2026-10-24);
    - the room page is one screen (AppShell `layout="app"`, full width): the room scrolls and the chat is a fixed pane, on the right from 768px and along the bottom on phones. It folds into a strip (a bar on phones) that counts new messages; it starts open and the choice is remembered;
    - reports and the moderation tools come in Phase 8.
-8. **Public lobby browser** (quick match changed, owner decision 2026-10-24: no bots fill seats; the public lobbies are listed instead):
+8. **Public lobby browser and quick match** (owner decision 2026-10-24: no bots fill seats):
+   - **Quick match** (`?quick`, on the game page, the lobby browser and the room page): `quick_match` seats the player in the oldest public lobby of the game and version with a free seat, or opens a new public lobby. There's no queue: the next player joins it.
+     - Pressing it again while waiting returns the same lobby.
+     - A room the player was removed from is never offered.
+     - A per-game advisory lock puts two players who press at once in the same room.
+     - Quick matches are unrated.
    - `/[locale]/play/` (the Play section) lists the public rooms someone can still enter: lobbies with a free seat (Join), and lobbies or matches that allow spectators (Watch). Lobbies come first, and a filter by game is kept in the address (`?game=`).
    - **Live, at once:** Realtime database changes never reach a visitor for a room they can no longer read (one that turned private, for example). So triggers on `rooms` and `room_members` announce every change that can alter the list on the private Broadcast topic `lobbies`, and the page reads the list again. Anyone may listen there; nobody may send. The message carries no data, and heartbeats don't announce anything.
    - **Privacy:** browsing reads as `anon`, so no guest identity is created until someone joins.
@@ -696,7 +701,7 @@ Online modes are enabled for the Phase 4 games.
 - [x] Plan approved by owner (2026-10-23, with the answers above)
 - [x] Steps 0–7 done (hosted Supabase has the Phase 2 schema; the Phase 5 migrations go up with the next deploy)
 - [x] Owner: the production build settings are set in GitHub (as environment secrets), and Realtime "Allow public access" is off (2026-10-24)
-- [x] Step 8 done: the public lobby browser (no bot fill, owner decision 2026-10-24)
+- [x] Step 8 done: the public lobby browser and quick match (no bot fill, owner decision 2026-10-24)
 
 ---
 

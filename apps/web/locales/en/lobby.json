@@ -9,6 +9,8 @@
     "title": "Game room",
     "description": "Play a kefche game online with friends.",
     "create": "Create lobby",
+    "quick": "Quick match",
+    "finding": "Finding a game…",
     "join": "Join with code",
     "joinTitle": "Join a room",
     "codeLabel": "Room code",

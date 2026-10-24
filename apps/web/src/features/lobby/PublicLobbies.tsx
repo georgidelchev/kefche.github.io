@@ -2,7 +2,7 @@
 // rooms, live, filterable by game (?game=<id>, kept in the address so a
 // language switch keeps it). Joining goes through the room page, which
 // creates a guest identity only then.
-import { LoaderCircle, Plus } from "lucide-react";
+import { LoaderCircle, Plus, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { Badge } from "@kefche/ui/components/badge";
@@ -124,13 +124,19 @@ export function PublicLobbies({ games, locale, strings: s }: Props) {
           ))}
         </div>
         {selected && (
-          <a
-            href={`${selected.href}?new=public`}
-            className={buttonVariants({ variant: "primary" })}
-          >
-            <Plus aria-hidden="true" className="size-4" />
-            {s.create}
-          </a>
+          <div className="flex flex-wrap gap-2">
+            <a href={`${selected.href}?quick`} className={buttonVariants({ variant: "primary" })}>
+              <Zap aria-hidden="true" className="size-4" />
+              {s.quick}
+            </a>
+            <a
+              href={`${selected.href}?new=public`}
+              className={buttonVariants({ variant: "outline" })}
+            >
+              <Plus aria-hidden="true" className="size-4" />
+              {s.create}
+            </a>
+          </div>
         )}
       </div>
 

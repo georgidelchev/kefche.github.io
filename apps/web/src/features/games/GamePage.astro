@@ -159,6 +159,13 @@ const crumb = "rounded-sm hover:underline";
             {room.playOnline}
           </h2>
           <div class="flex flex-wrap items-end gap-x-6 gap-y-4">
+            <a
+              href={`${online}?quick`}
+              class={buttonVariants({ variant: "primary" })}
+              rel="nofollow"
+            >
+              {room.quick}
+            </a>
             <a href={`${online}?new`} class={buttonVariants({ variant: "outline" })} rel="nofollow">
               {room.create}
             </a>

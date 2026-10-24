@@ -9,6 +9,8 @@
     "title": "ゲームルーム",
     "description": "友だちと kefche のゲームをオンラインで遊ぼう。",
     "create": "ルームを作る",
+    "quick": "クイックマッチ",
+    "finding": "対局を探しています…",
     "join": "コードで参加",
     "joinTitle": "ルームに参加",
     "codeLabel": "ルームコード",

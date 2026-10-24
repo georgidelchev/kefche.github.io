@@ -9,6 +9,8 @@
     "title": "Salon de jeu",
     "description": "Jouez à un jeu kefche en ligne avec vos amis.",
     "create": "Créer un salon",
+    "quick": "Partie rapide",
+    "finding": "Recherche d'une partie…",
     "join": "Rejoindre avec un code",
     "joinTitle": "Rejoindre un salon",
     "codeLabel": "Code du salon",
