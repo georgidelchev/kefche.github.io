@@ -15,7 +15,7 @@ import { FormMessage, TextField } from "@/features/auth/components/fields";
 import type { PlayerStrings } from "@/features/games/GamePlayer";
 import type { TurnStrings } from "@/features/games/turn/labels";
 import type { TurnConfig } from "@/features/games/turn/match-setup";
-import { getSupabase, type Supabase } from "@/lib/supabase/client";
+import { getSupabase, send, type Supabase } from "@/lib/supabase/client";
 import { supabaseConfig } from "@/lib/supabase/config";
 
 import { GuestProfileForm } from "./GuestProfileForm";
@@ -448,7 +448,9 @@ function Room({
     const { data: auth } = supabase.auth.onAuthStateChange((_event, session) => {
       token = session?.access_token ?? null;
     });
-    const beat = () => void supabase.rpc("room_heartbeat", { p_room: roomId });
+    const beat = () => {
+      send(supabase.rpc("room_heartbeat", { p_room: roomId }));
+    };
     const goodbye = () => {
       if (!token || !supabaseConfig) return;
       fetch(`${supabaseConfig.url}/rest/v1/rpc/room_goodbye`, {

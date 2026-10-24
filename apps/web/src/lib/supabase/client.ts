@@ -36,6 +36,15 @@ export function getSupabase(): Promise<Supabase> | null {
  */
 export const nullable = <T>(value: T): T | null => value;
 
+/**
+ * Sends a query whose answer nobody waits for (heartbeats, "the match
+ * ended"). A query builder only runs once something awaits it, so a bare
+ * `void supabase.rpc(…)` never reaches the server.
+ */
+export function send(query: PromiseLike<unknown>): void {
+  query.then(undefined, () => undefined);
+}
+
 /** True when this browser holds a stored session (no network, no supabase-js). */
 export function hasStoredSession(): boolean {
   try {

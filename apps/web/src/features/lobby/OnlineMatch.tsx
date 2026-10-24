@@ -19,7 +19,7 @@ import type { PlayerStrings } from "@/features/games/GamePlayer";
 import { loadGame } from "@/features/games/loaders";
 import { gameStorage, Overlay, useGameScreen, VOLUME } from "@/features/games/player-parts";
 import { fill, resultText, type TurnStrings } from "@/features/games/turn/labels";
-import type { Supabase } from "@/lib/supabase/client";
+import { send, type Supabase } from "@/lib/supabase/client";
 
 import { roomErrorCode } from "./room-store";
 
@@ -104,7 +104,7 @@ export function OnlineMatch({
   const finished = useEffectEvent((over: GameResult) => {
     setResult(over);
     // The host records the end; the room then offers a rematch.
-    if (hostRef.current === self) void supabase.rpc("finish_room", { p_room: roomId });
+    if (hostRef.current === self) send(supabase.rpc("finish_room", { p_room: roomId }));
   });
 
   useEffect(() => {
