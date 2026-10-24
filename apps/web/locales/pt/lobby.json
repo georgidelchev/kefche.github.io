@@ -3,8 +3,6 @@
     "title": "Escolha um apelido",
     "intro": "Os outros na sala vão vê-lo. Você está jogando como convidado; crie uma conta quando quiser para guardar seu progresso.",
     "nickname": "Apelido",
-    "ageConfirm": "Tenho 13 anos ou mais",
-    "ageNeeded": "Confirme que você tem 13 anos ou mais para usar o chat.",
     "submit": "Continuar"
   },
   "room": {
@@ -68,10 +66,12 @@
     "label": "Mensagem",
     "send": "Enviar",
     "empty": "Ainda não há mensagens. Diga oi!",
-    "ageSubmit": "Começar a conversar",
     "tooFast": "Você está enviando mensagens rápido demais. Espere alguns segundos.",
     "tooLong": "As mensagens podem ter até 300 caracteres.",
-    "hint": "Seja gentil. As mensagens são apagadas quando a sala fecha."
+    "hint": "Seja gentil. As mensagens são apagadas quando a sala fecha.",
+    "show": "Mostrar o chat",
+    "hide": "Ocultar o chat",
+    "unread": "Novas mensagens: {count}"
   },
   "errors": {
     "room_not_found": "Não existe sala com este código.",

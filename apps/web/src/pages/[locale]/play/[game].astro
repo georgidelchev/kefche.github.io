@@ -7,6 +7,7 @@ import { listGames, type RegisteredGame } from "@/features/games/registry";
 import { OnlineRoom } from "@/features/lobby/OnlineRoom";
 import { chatStrings, guestStrings, roomStrings } from "@/features/lobby/strings";
 import AppShell from "@/features/shell/AppShell.astro";
+import SiteFooter from "@/features/shell/SiteFooter.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALE_INFO, LOCALES, type Locale } from "@/i18n/locales";
 
@@ -40,36 +41,54 @@ const strings = roomStrings(t);
   title={t("common:meta.sectionTitle", { section: `${strings.title} · ${text.name}` })}
   description={strings.description}
   noindex
+  layout="app"
 >
-  <div class="mx-auto grid w-full max-w-2xl gap-6 pb-6">
-    <nav aria-label={t("games:breadcrumb")} class="text-sm text-muted">
-      <a
-        href={getRelativeLocaleUrl(locale, `/games/${manifest.id}/`)}
-        class="rounded-sm hover:underline"
-      >
-        {text.name}
-      </a>
-      <span aria-hidden="true"> / </span>
-      <span aria-current="page">{strings.title}</span>
-    </nav>
-    <h1 class="text-3xl md:text-4xl">{strings.title}</h1>
-    {config && (
-      <OnlineRoom
-        client:only="react"
-        game={{ id: manifest.id, version: manifest.version, name: text.name, config, ui: text.ui }}
-        locale={bcp47}
-        dir={dir}
-        player={playerStrings(t)}
-        strings={strings}
-        guest={guestStrings(t, authStrings(t).errors)}
-        chat={chatStrings(t)}
-        turn={turnStrings(t)}
-        paths={{
-          game: getRelativeLocaleUrl(locale, `/games/${manifest.id}/`),
-          privacy: getRelativeLocaleUrl(locale, "/privacy/"),
-          onboarding: getRelativeLocaleUrl(locale, "/auth/onboarding/"),
-        }}
-      />
-    )}
+  <!--
+    One screen: the room scrolls on the left, and the lobby chat (rendered
+    by the room into #room-chat) stays on the right.
+  -->
+  <div class="relative flex min-h-0 flex-1">
+    <!-- relative: absolutely placed descendants (sr-only text) scroll and clip with it. -->
+    <div class="relative min-w-0 flex-1 overflow-y-auto overscroll-contain pe-4 xl:ps-8">
+      <div class="grid w-full max-w-6xl gap-6 pt-6 pb-6">
+        <nav aria-label={t("games:breadcrumb")} class="text-sm text-muted">
+          <a
+            href={getRelativeLocaleUrl(locale, `/games/${manifest.id}/`)}
+            class="rounded-sm hover:underline"
+          >
+            {text.name}
+          </a>
+          <span aria-hidden="true"> / </span>
+          <span aria-current="page">{strings.title}</span>
+        </nav>
+        <h1 class="text-3xl md:text-4xl">{strings.title}</h1>
+        {config && (
+          <OnlineRoom
+            client:only="react"
+            game={{
+              id: manifest.id,
+              version: manifest.version,
+              name: text.name,
+              config,
+              ui: text.ui,
+            }}
+            locale={bcp47}
+            dir={dir}
+            player={playerStrings(t)}
+            strings={strings}
+            guest={guestStrings(t, authStrings(t).errors)}
+            chat={chatStrings(t)}
+            turn={turnStrings(t)}
+            paths={{
+              game: getRelativeLocaleUrl(locale, `/games/${manifest.id}/`),
+              privacy: getRelativeLocaleUrl(locale, "/privacy/"),
+              onboarding: getRelativeLocaleUrl(locale, "/auth/onboarding/"),
+            }}
+          />
+        )}
+      </div>
+      <SiteFooter locale={locale} path={path} class="mb-6 max-w-6xl" />
+    </div>
+    <div id="room-chat" class="contents"></div>
   </div>
 </AppShell>

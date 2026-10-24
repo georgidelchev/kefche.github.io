@@ -3,8 +3,6 @@
     "title": "Wähle einen Spitznamen",
     "intro": "Die anderen im Raum sehen ihn. Du spielst als Gast; lege jederzeit ein Konto an, um deinen Fortschritt zu behalten.",
     "nickname": "Spitzname",
-    "ageConfirm": "Ich bin 13 Jahre oder älter",
-    "ageNeeded": "Bestätige, dass du mindestens 13 Jahre alt bist, um den Chat zu nutzen.",
     "submit": "Weiter"
   },
   "room": {
@@ -68,10 +66,12 @@
     "label": "Nachricht",
     "send": "Senden",
     "empty": "Noch keine Nachrichten. Sag hallo!",
-    "ageSubmit": "Zum Chat",
     "tooFast": "Du schreibst zu schnell. Warte ein paar Sekunden.",
     "tooLong": "Nachrichten dürfen höchstens 300 Zeichen lang sein.",
-    "hint": "Sei freundlich. Nachrichten werden gelöscht, wenn der Raum schließt."
+    "hint": "Sei freundlich. Nachrichten werden gelöscht, wenn der Raum schließt.",
+    "show": "Chat anzeigen",
+    "hide": "Chat ausblenden",
+    "unread": "Neue Nachrichten: {count}"
   },
   "errors": {
     "room_not_found": "Es gibt keinen Raum mit diesem Code.",

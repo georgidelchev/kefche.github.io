@@ -3,8 +3,6 @@
     "title": "Choisissez un pseudo",
     "intro": "Les autres joueurs du salon le verront. Vous jouez en tant qu'invité ; créez un compte quand vous voulez pour garder votre progression.",
     "nickname": "Pseudo",
-    "ageConfirm": "J'ai 13 ans ou plus",
-    "ageNeeded": "Confirmez que vous avez 13 ans ou plus pour utiliser le chat.",
     "submit": "Continuer"
   },
   "room": {
@@ -68,10 +66,12 @@
     "label": "Message",
     "send": "Envoyer",
     "empty": "Pas encore de messages. Dites bonjour !",
-    "ageSubmit": "Commencer à discuter",
     "tooFast": "Vous envoyez des messages trop vite. Attendez quelques secondes.",
     "tooLong": "Un message peut faire jusqu'à 300 caractères.",
-    "hint": "Restez courtois. Les messages sont supprimés à la fermeture du salon."
+    "hint": "Restez courtois. Les messages sont supprimés à la fermeture du salon.",
+    "show": "Afficher le chat",
+    "hide": "Masquer le chat",
+    "unread": "Nouveaux messages : {count}"
   },
   "errors": {
     "room_not_found": "Aucun salon n'a ce code.",

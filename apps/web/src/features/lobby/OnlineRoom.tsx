@@ -5,6 +5,7 @@
 // the lobby and presence on the room's channel shows who is connected.
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useEffectEvent, useId, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 import type { PresenceState, Transport } from "@kefche/game-sdk";
 import { Button } from "@kefche/ui/components/button";
@@ -153,8 +154,6 @@ export function OnlineRoom({
           <GuestProfileForm
             strings={guest}
             privacyHref={paths.privacy}
-            needsNickname
-            needsAge={false}
             onDone={() => {
               begin(stage.intent);
             }}
@@ -311,6 +310,8 @@ function Room({
   );
   // Changes this member made that the room hasn't confirmed yet, shown at once.
   const [pending, setPending] = useState<readonly Patch[]>([]);
+  // The room page's right-hand pane (play/[game].astro), for the chat.
+  const [chatSlot] = useState(() => document.getElementById("room-chat"));
   const seenRef = useRef(false);
   const refreshRef = useRef<(() => Promise<void>) | null>(null);
   const gone = useEffectEvent(onGone);
@@ -529,60 +530,63 @@ function Room({
       ),
   };
 
+  // The chat lives in the page's right-hand pane; it stays mounted during a
+  // match (under the full-screen board), so nothing is missed.
+  const chatPane = (
+    <RoomChat supabase={supabase} roomId={roomId} self={self} locale={locale} strings={chat} />
+  );
+  const docked = chatSlot ? createPortal(chatPane, chatSlot) : chatPane;
+
   if (match) {
     if (!transport) return <Waiting label={s.joining} />;
     const status = (userId: string) => view.members.find((m) => m.userId === userId)?.status;
     return (
-      <OnlineMatch
-        key={match.seed}
-        supabase={supabase}
-        transport={transport}
-        roomId={roomId}
-        self={self}
-        host={room.host_id}
-        match={match}
-        seed={match.seed}
-        away={match.seatMembers.map(
-          (member) => member !== null && (!present.has(member) || status(member) === "left"),
-        )}
-        countdown={match.countdown}
-        game={game}
-        locale={locale}
-        dir={dir}
-        strings={s}
-        player={player}
-        turn={turn}
-        onLeave={actions.leave}
-      />
+      <>
+        {docked}
+        <OnlineMatch
+          key={match.seed}
+          supabase={supabase}
+          transport={transport}
+          roomId={roomId}
+          self={self}
+          host={room.host_id}
+          match={match}
+          seed={match.seed}
+          away={match.seatMembers.map(
+            (member) => member !== null && (!present.has(member) || status(member) === "left"),
+          )}
+          countdown={match.countdown}
+          game={game}
+          locale={locale}
+          dir={dir}
+          strings={s}
+          player={player}
+          turn={turn}
+          onLeave={actions.leave}
+        />
+      </>
     );
   }
 
   return (
-    <LobbyView
-      snapshot={view}
-      settings={settings}
-      self={self}
-      present={present}
-      config={game.config}
-      turn={turn}
-      strings={s}
-      locale={locale}
-      gameName={game.name}
-      inviteUrl={`${location.origin}${location.pathname}?room=${room.code}`}
-      busy={busy}
-      error={error}
-      actions={actions}
-      chat={
-        <RoomChat
-          supabase={supabase}
-          roomId={roomId}
-          self={self}
-          guest={identity.guest}
-          canChat={identity.canChat}
-          strings={chat}
-        />
-      }
-    />
+    <>
+      {docked}
+      <LobbyView
+        snapshot={view}
+        settings={settings}
+        self={self}
+        present={present}
+        config={game.config}
+        turn={turn}
+        strings={s}
+        locale={locale}
+        gameName={game.name}
+        inviteUrl={`${location.origin}${location.pathname}?room=${room.code}`}
+        busy={busy}
+        error={error}
+        actions={actions}
+      />
+    </>
   );
 }
 

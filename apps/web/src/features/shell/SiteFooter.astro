@@ -1,0 +1,33 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+interface Props {
+  locale: Locale;
+  /** Locale-independent path of this page, to mark the current link. */
+  path: string;
+  class?: string;
+}
+
+const { locale, path, class: className } = Astro.props;
+const t = getT(locale);
+const focusRing =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
+---
+
+<footer
+  class:list={[
+    "flex flex-wrap gap-x-6 gap-y-2 border-t border-border pt-4 text-sm text-muted",
+    className,
+  ]}
+>
+  <a
+    href={getRelativeLocaleUrl(locale, "/privacy/")}
+    aria-current={path === "/privacy/" ? "page" : undefined}
+    class:list={["rounded-sm hover:text-text hover:underline", focusRing]}
+  >
+    {t("legal:privacy.link")}
+  </a>
+</footer>

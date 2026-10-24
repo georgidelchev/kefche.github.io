@@ -8,8 +8,6 @@ export interface Identity {
   guest: boolean;
   /** Null until a guest picks one (or an account finishes onboarding). */
   nickname: string | null;
-  /** Passed the age gate: a birth year for accounts, "13 or older" for guests. */
-  canChat: boolean;
 }
 
 export async function identityOf(
@@ -17,22 +15,13 @@ export async function identityOf(
   userId: string,
   guest: boolean,
 ): Promise<Identity> {
-  const [profile, settings] = await Promise.all([
-    supabase.from("profiles").select("nickname").eq("id", userId).maybeSingle(),
-    supabase
-      .from("user_settings")
-      .select("birth_year, age_confirmed_at")
-      .eq("user_id", userId)
-      .maybeSingle(),
-  ]);
-  if (profile.error) throw profile.error;
-  if (settings.error) throw settings.error;
-  return {
-    userId,
-    guest,
-    nickname: profile.data?.nickname ?? null,
-    canChat: settings.data?.birth_year != null || settings.data?.age_confirmed_at != null,
-  };
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("nickname")
+    .eq("id", userId)
+    .maybeSingle();
+  if (error) throw error;
+  return { userId, guest, nickname: data?.nickname ?? null };
 }
 
 /** The current account, or a new guest identity when nobody is signed in. */

@@ -117,14 +117,14 @@ isOneToOne: false
                   ]
                 },"user_settings": {
                   Row: {
-                    "age_confirmed_at": string | null,"birth_year": number | null,"created_at": string,"haptics": boolean,"locale": string | null,"privacy_invites": string,"privacy_messages": string,"reduced_motion": string,"show_in_leaderboards": boolean,"show_online": boolean,"sound_effects": number,"sound_master": number,"sound_music": number,"theme": string,"updated_at": string,"user_id": string
+                    "birth_year": number | null,"created_at": string,"haptics": boolean,"locale": string | null,"privacy_invites": string,"privacy_messages": string,"reduced_motion": string,"show_in_leaderboards": boolean,"show_online": boolean,"sound_effects": number,"sound_master": number,"sound_music": number,"theme": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "age_confirmed_at"?: string | null,"birth_year"?: number | null,"created_at"?: string,"haptics"?: boolean,"locale"?: string | null,"privacy_invites"?: string,"privacy_messages"?: string,"reduced_motion"?: string,"show_in_leaderboards"?: boolean,"show_online"?: boolean,"sound_effects"?: number,"sound_master"?: number,"sound_music"?: number,"theme"?: string,"updated_at"?: string,"user_id": string
+                    "birth_year"?: number | null,"created_at"?: string,"haptics"?: boolean,"locale"?: string | null,"privacy_invites"?: string,"privacy_messages"?: string,"reduced_motion"?: string,"show_in_leaderboards"?: boolean,"show_online"?: boolean,"sound_effects"?: number,"sound_master"?: number,"sound_music"?: number,"theme"?: string,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "age_confirmed_at"?: string | null,"birth_year"?: number | null,"created_at"?: string,"haptics"?: boolean,"locale"?: string | null,"privacy_invites"?: string,"privacy_messages"?: string,"reduced_motion"?: string,"show_in_leaderboards"?: boolean,"show_online"?: boolean,"sound_effects"?: number,"sound_master"?: number,"sound_music"?: number,"theme"?: string,"updated_at"?: string,"user_id"?: string
+                    "birth_year"?: number | null,"created_at"?: string,"haptics"?: boolean,"locale"?: string | null,"privacy_invites"?: string,"privacy_messages"?: string,"reduced_motion"?: string,"show_in_leaderboards"?: boolean,"show_online"?: boolean,"sound_effects"?: number,"sound_master"?: number,"sound_music"?: number,"theme"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -291,7 +291,7 @@ isOneToOne: false
         isSetofReturn: false
       } },
 "set_guest_profile":
-{ Args: { "p_age_confirmed"?: boolean,"p_nickname"?: string }; Returns: string
+{ Args: { "p_nickname": string }; Returns: string
                            },
 "set_ready":
 { Args: { "p_ready": boolean,"p_room": string }; Returns: undefined

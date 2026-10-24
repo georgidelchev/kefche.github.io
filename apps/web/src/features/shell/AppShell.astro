@@ -22,6 +22,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getSupabaseEnv } from "@/lib/env";
 
 import { NAV_ITEMS, NAV_LABEL_KEYS, type NavId } from "./nav";
+import SiteFooter from "./SiteFooter.astro";
 
 interface Props {
   locale: Locale;
@@ -32,9 +33,16 @@ interface Props {
   title: string;
   description: string;
   noindex?: boolean;
+  /**
+   * `page` (default): a centered column that scrolls with the window.
+   * `app`: full width and exactly one screen tall, so the window never
+   * scrolls; the page scrolls its own panes and places `SiteFooter` itself.
+   */
+  layout?: "page" | "app";
 }
 
-const { locale, path, section, title, description, noindex = false } = Astro.props;
+const { locale, path, section, title, description, noindex = false, layout = "page" } = Astro.props;
+const app = layout === "app";
 const t = getT(locale);
 
 const ICONS: Record<NavId, LucideIcon> = {
@@ -54,7 +62,6 @@ const items = NAV_ITEMS.map((item) => ({
 const homeHref = getRelativeLocaleUrl(locale, "/");
 // The header search is the catalog's search (?q=).
 const searchHref = getRelativeLocaleUrl(locale, "/games/");
-const privacyHref = getRelativeLocaleUrl(locale, "/privacy/");
 const themeLabels = {
   legend: t("common:theme.legend"),
   light: t("common:theme.light"),
@@ -85,7 +92,7 @@ const focusRing =
       gutter,
     ]}
   >
-    <div class="mx-auto flex h-16 max-w-7xl items-center gap-4">
+    <div class:list={["flex h-16 items-center gap-4", !app && "mx-auto max-w-7xl"]}>
       <a
         href={homeHref}
         class:list={["flex min-h-11 shrink-0 items-center rounded-lg text-text", focusRing]}
@@ -196,7 +203,16 @@ const focusRing =
     </div>
   </header>
 
-  <div class:list={["mx-auto flex max-w-7xl", gutter]}>
+  <div
+    class:list={[
+      "flex",
+      // In app layout the page's last pane meets the window's end edge.
+      app
+        ? // The window less the header (4rem and its 1px border).
+          "h-[calc(100dvh-4rem-1px-env(safe-area-inset-top))] ps-[max(1rem,env(safe-area-inset-left))]"
+        : ["mx-auto max-w-7xl", gutter],
+    ]}
+  >
     <aside class="sticky top-[calc(4rem+env(safe-area-inset-top))] hidden h-[calc(100dvh-4rem-env(safe-area-inset-top))] w-56 shrink-0 flex-col gap-2 border-e border-border py-4 pe-3 group-data-[rail=compact]/root:w-16 xl:flex">
       <nav aria-label={t("nav:primary")}>
         <ul class="grid gap-1">
@@ -236,22 +252,25 @@ const focusRing =
       </button>
     </aside>
 
-    <main
-      id="main"
-      tabindex="-1"
-      class="min-w-0 flex-1 pt-6 pb-[calc(5.5rem+env(safe-area-inset-bottom))] outline-none md:pb-10 xl:ps-8"
-    >
-      <slot />
-      <footer class="mx-auto mt-12 flex max-w-7xl flex-wrap gap-x-6 gap-y-2 border-t border-border pt-4 text-sm text-muted">
-        <a
-          href={privacyHref}
-          aria-current={path === "/privacy/" ? "page" : undefined}
-          class:list={["rounded-sm hover:text-text hover:underline", focusRing]}
-        >
-          {t("legal:privacy.link")}
-        </a>
-      </footer>
-    </main>
+    {app ? (
+      // The phone tab bar (fixed, 3.5rem + border) sits over the bottom.
+      <main
+        id="main"
+        tabindex="-1"
+        class="flex min-h-0 min-w-0 flex-1 flex-col pb-[calc(3.625rem+env(safe-area-inset-bottom))] outline-none md:pb-0"
+      >
+        <slot />
+      </main>
+    ) : (
+      <main
+        id="main"
+        tabindex="-1"
+        class="min-w-0 flex-1 pt-6 pb-[calc(5.5rem+env(safe-area-inset-bottom))] outline-none md:pb-10 xl:ps-8"
+      >
+        <slot />
+        <SiteFooter locale={locale} path={path} class="mx-auto mt-12 max-w-7xl" />
+      </main>
+    )}
   </div>
 
   <nav

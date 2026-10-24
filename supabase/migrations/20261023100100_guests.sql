@@ -1,33 +1,14 @@
 -- Guests (SPEC §7.1; Phase 5): an anonymous identity is created the first
 -- time a guest joins an online room. A guest picks a nickname (the same rules
--- as accounts) and confirms they are 13 or older before chatting; no birth
--- date is asked. Signing up later keeps the same user id (Phase 2 upgrade).
+-- as accounts); no birth date is asked. Signing up later keeps the same user
+-- id (Phase 2 upgrade).
 --
 -- Retention (privacy notice): guests unused for 30 days are deleted.
 
--- When a guest confirmed "I am 13 or older". Accounts have a birth year instead.
-alter table public.user_settings add column age_confirmed_at timestamptz;
-
--- Can this user use chat? Accounts passed the age gate at sign-up; guests
--- confirm it themselves (SPEC §7.1).
-create function private.can_chat(p_user uuid)
-returns boolean
-language sql
-stable
-security definer
-set search_path = ''
-as $$
-  select exists (
-    select 1 from public.user_settings s
-    where s.user_id = p_user and (s.birth_year is not null or s.age_confirmed_at is not null)
-  );
-$$;
-
--- For guests: pick a nickname (once; later changes follow the usual rules)
--- and/or confirm being 13 or older. Returns null on success, otherwise a
--- code: not_signed_in, not_a_guest, rate_limited, nickname_<problem>,
--- nickname_taken, nickname_set.
-create function public.set_guest_profile(p_nickname text default null, p_age_confirmed boolean default false)
+-- For guests: pick a nickname (once; later changes follow the usual rules).
+-- Returns null on success, otherwise a code: not_signed_in, not_a_guest,
+-- rate_limited, nickname_<problem>, nickname_taken, nickname_set.
+create function public.set_guest_profile(p_nickname text)
 returns text
 language plpgsql
 security definer
@@ -48,35 +29,28 @@ begin
     return 'rate_limited';
   end if;
 
-  if p_nickname is not null then
-    select nickname into v_current from public.profiles where id = v_user;
-    if v_current is not null then
-      return 'nickname_set';
-    end if;
-    problem := private.nickname_problem(p_nickname);
-    if problem is not null then
-      return 'nickname_' || problem;
-    end if;
-    if private.nickname_taken(p_nickname, v_user) then
-      return 'nickname_taken';
-    end if;
-    begin
-      update public.profiles set nickname = normalize(p_nickname, NFC) where id = v_user;
-    exception when unique_violation then
-      return 'nickname_taken';
-    end;
+  select nickname into v_current from public.profiles where id = v_user;
+  if v_current is not null then
+    return 'nickname_set';
   end if;
-
-  if coalesce(p_age_confirmed, false) then
-    update public.user_settings set age_confirmed_at = coalesce(age_confirmed_at, now())
-    where user_id = v_user;
+  problem := private.nickname_problem(p_nickname);
+  if problem is not null then
+    return 'nickname_' || problem;
   end if;
+  if private.nickname_taken(p_nickname, v_user) then
+    return 'nickname_taken';
+  end if;
+  begin
+    update public.profiles set nickname = normalize(p_nickname, NFC) where id = v_user;
+  exception when unique_violation then
+    return 'nickname_taken';
+  end;
   return null;
 end;
 $$;
 
-revoke execute on function public.set_guest_profile(text, boolean) from public, anon;
-grant execute on function public.set_guest_profile(text, boolean) to authenticated;
+revoke execute on function public.set_guest_profile(text) from public, anon;
+grant execute on function public.set_guest_profile(text) to authenticated;
 
 -- Deletes guests with no sign-in, session refresh or room activity for 30
 -- days. Their profile, settings and room seats cascade; guests can't upload

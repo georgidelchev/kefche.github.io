@@ -200,7 +200,7 @@ Define as CSS variables, with full light and dark sets. Colors must pass contras
 - **Email + password** registration with email confirmation, password reset, and change email/password in settings. Enforce strong passwords (min 10 chars, breached-password check if available in Supabase settings).
 - **OAuth:** Google, Discord, Twitch, Facebook. Users can link and unlink multiple providers in settings (keep at least one sign-in method).
 - **Guests:** Supabase **anonymous sign-in** is created lazily the first time a guest needs an identity (joining online rooms, chat in a lobby). Guests can play everything except: global chat, DMs, friends, ranked matchmaking, leaderboards. When a guest registers or logs in, **link the anonymous identity** so their progress is kept (or merge if they log into an existing account, with a clear confirmation UI).
-- **Age gate (13+):** registration requires birth year/month. Under 13: registration refused with a friendly message, no data stored. Store `birth_year` only. Guests confirm "I am 13 or older" before using chat.
+- **Age gate (13+):** registration requires birth year/month. Under 13: registration refused with a friendly message, no data stored. Store `birth_year` only. Guests aren't asked their age; lobby chat is open to everyone in the room (owner decision, 2026-10-24).
 - Sessions: refresh tokens handled by the Supabase client, sign out everywhere option.
 
 ### 7.2 Profiles

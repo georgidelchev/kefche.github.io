@@ -624,8 +624,7 @@ Online modes are enabled for the Phase 4 games.
 
 3. **Guest identities:**
    - `ensureIdentity()` creates an anonymous Supabase user the first time a guest joins a room;
-   - a nickname prompt, then the existing nickname rules;
-   - the reusable "I am 13 or older" confirmation before chat;
+   - a nickname prompt, then the existing nickname rules (no age question: chat is open to everyone in the room, owner decision 2026-10-24);
    - the Phase 2 upgrade and merge flows keep a guest's seat history when they sign up.
 4. **Supabase Realtime transport:**
    - Broadcast and Presence on private `room:<code>` channels, with Realtime Authorization (RLS on `realtime.messages`), so only members can listen or send;
@@ -646,7 +645,8 @@ Online modes are enabled for the Phase 4 games.
 7. **Lobby chat** (text only):
    - messages go through an RPC that masks blocked terms and rate-limits to 5 messages per 10 s, and Realtime delivers them;
    - they're deleted with their room, which happens as soon as it empties (SPEC §8.2, §10.2);
-   - guests confirm 13+ first;
+   - everyone in the room can chat, guests included, with no age question (owner decision, 2026-10-24);
+   - the room page is one screen (AppShell `layout="app"`, full width): the room scrolls on the left and the chat is a fixed pane on the right at every size. It folds into a strip that counts new messages (open from 768px, folded on phones, where it opens over the room; the choice is remembered);
    - reports and the moderation tools come in Phase 8.
 8. **Public lobby browser and quick match:**
    - **Lobby browser:** `/[locale]/play/` lists open public lobbies by game, live.
@@ -702,7 +702,7 @@ Online modes are enabled for the Phase 4 games.
 
 - **Performance is not tuned yet (Phase 18):** Lighthouse mobile performance was 82–92 (LCP 3.3–4.1 s) against the local preview, which serves files uncompressed. Production on Cloudflare compresses, so re-measure there. Candidate fixes when tuning: a smaller preloaded font subset, and inlining critical CSS. The account pages (React forms) scored 80–95 locally. Game pages in production score 85–99 with LCP 2.0–3.3 s. Arabic pages reach about 4 s, because they preload the whole 277 KB variable Noto Sans Arabic font (weights 100–900): subset it, or load only the weights in use.
 - **Auth pages are near the JS budget:** sign-up 110 KB and settings 116 KB gzip before supabase-js. New React on these pages needs a size check (Phase 18 may split islands further).
-- **Guest identity creation moves to Phase 5:** step 9 built the upgrade (sign-up or OAuth link keeps the guest's user id) and the merge (Edge Function `merge-guest` plus a confirmation page). `ensureIdentity()` and the guests' "I am 13 or older" confirmation are built with their first users, rooms and lobby chat, in Phase 5. Until then no page creates guest sessions.
+- **Guest identity creation moves to Phase 5:** step 9 built the upgrade (sign-up or OAuth link keeps the guest's user id) and the merge (Edge Function `merge-guest` plus a confirmation page). `ensureIdentity()` is built with its first users, the rooms, in Phase 5; guests aren't asked their age (owner decision, 2026-10-24). No other page creates guest sessions.
 - **Credits attribution (Phase 17):** the blocked-terms lists are adapted from LDNOOBW (CC BY 4.0), and the Credits page must say so (`supabase/blocked-terms/README.md`).
 - **Blocked terms need review:** the owner reviews the drafted Bulgarian list (`supabase/blocked-terms/bg.txt`). Native speakers review the other non-English lists in Phase 15. Russian lacks some common Cyrillic slurs, and Phase 8 improves free-text matching for chat.
 - **Game page prose is English in 9 locales (Phase 15):** each game's name, tagline, meta description and in-game UI strings are translated in all 11 locales. The long page sections (about, how to play, controls, tips, FAQ) are written in English and Bulgarian; the other 9 locales carry the English text until the Phase 15 translation pass (SPEC §15, §22 DoD rule).

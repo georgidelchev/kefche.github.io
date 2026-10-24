@@ -6,8 +6,6 @@ export interface GuestStrings {
   title: string;
   intro: string;
   nickname: string;
-  ageConfirm: string;
-  ageNeeded: string;
   submit: string;
   privacyNote: string;
   privacyLink: string;
@@ -19,8 +17,6 @@ export function guestStrings(t: AppT, errors: Record<AuthErrorKey, string>): Gue
     title: t("lobby:guest.title"),
     intro: t("lobby:guest.intro"),
     nickname: t("lobby:guest.nickname"),
-    ageConfirm: t("lobby:guest.ageConfirm"),
-    ageNeeded: t("lobby:guest.ageNeeded"),
     submit: t("lobby:guest.submit"),
     privacyNote: t("legal:privacy.signUpNote"),
     privacyLink: t("legal:privacy.title"),
@@ -93,9 +89,10 @@ export interface ChatStrings {
   empty: string;
   hint: string;
   you: string;
-  ageNeeded: string;
-  ageConfirm: string;
-  ageSubmit: string;
+  show: string;
+  hide: string;
+  /** "New messages: {count}", on the folded chat's button. */
+  unread: string;
   tooFast: string;
   tooLong: string;
   failed: string;
@@ -109,9 +106,9 @@ export function chatStrings(t: AppT): ChatStrings {
     empty: t("lobby:chat.empty"),
     hint: t("lobby:chat.hint"),
     you: t("lobby:room.you"),
-    ageNeeded: t("lobby:guest.ageNeeded"),
-    ageConfirm: t("lobby:guest.ageConfirm"),
-    ageSubmit: t("lobby:chat.ageSubmit"),
+    show: t("lobby:chat.show"),
+    hide: t("lobby:chat.hide"),
+    unread: t("lobby:chat.unread", { count: "{count}" }),
     tooFast: t("lobby:chat.tooFast"),
     tooLong: t("lobby:chat.tooLong"),
     failed: t("lobby:errors.unknown"),

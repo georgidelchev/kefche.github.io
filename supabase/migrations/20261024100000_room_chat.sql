@@ -1,7 +1,7 @@
--- Lobby chat (SPEC §8.2, §10.2; Phase 5), text only. Messages are written
--- only through send_room_message, which checks the age gate, masks blocked
--- terms and rate-limits; members read them through RLS and receive new ones
--- through Realtime. Reports and moderation tools come in Phase 8.
+-- Lobby chat (SPEC §8.2, §10.2; Phase 5), text only, for everyone in the
+-- room. Messages are written only through send_room_message, which masks
+-- blocked terms and rate-limits; members read them through RLS and receive
+-- new ones through Realtime. Reports and moderation tools come in Phase 8.
 --
 -- Retention (privacy notice): messages are deleted with their room, and a
 -- room keeps only its latest 200.
@@ -59,7 +59,7 @@ end;
 $$;
 
 -- Sends a chat message to a room the signed-in user is in. Errors:
--- not_member, age_unconfirmed, invalid_message, rate_limited.
+-- not_member, invalid_message, rate_limited.
 create function public.send_room_message(p_room uuid, p_body text)
 returns public.room_messages
 language plpgsql
@@ -76,9 +76,6 @@ begin
     where room_id = p_room and user_id = v_user and status = 'joined'
   ) then
     raise exception 'not_member' using errcode = 'insufficient_privilege';
-  end if;
-  if not private.can_chat(v_user) then
-    raise exception 'age_unconfirmed' using errcode = 'insufficient_privilege';
   end if;
   -- Control characters (line breaks included) become spaces.
   v_body := btrim(regexp_replace(normalize(coalesce(p_body, ''), NFC), '[[:cntrl:]]', ' ', 'g'));

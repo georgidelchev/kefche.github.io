@@ -1,9 +1,9 @@
 // The lobby before a match (SPEC §6.4, §10.2, §10.3): seats with people,
 // bots and empty places, ready checks, the host's settings and controls, and
-// the invite panel, then the lobby chat. All changes go through the room
-// functions; the view re-renders from the live room.
+// the invite panel. All changes go through the room functions; the view
+// re-renders from the live room. The lobby chat is beside it (RoomChat).
 import { Copy, Crown, Lock, QrCode, Share2, WifiOff } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 
 import type { BotDifficulty } from "@kefche/game-sdk";
 import { Button } from "@kefche/ui/components/button";
@@ -51,8 +51,6 @@ interface Props {
   busy: boolean;
   error: string | null;
   actions: LobbyActions;
-  /** The lobby chat, shown last. */
-  chat: ReactNode;
 }
 
 export function LobbyView({
@@ -69,7 +67,6 @@ export function LobbyView({
   busy,
   error,
   actions,
-  chat,
 }: Props) {
   const { room, members } = snapshot;
   const isHost = room.host_id === self;
@@ -90,8 +87,11 @@ export function LobbyView({
   );
 
   return (
-    <div className="mx-auto grid w-full max-w-2xl gap-6">
-      <Invite code={room.code} url={inviteUrl} gameName={gameName} strings={s} />
+    // One column; on very wide panes the seats and settings sit side by side.
+    <div className="grid w-full gap-6 2xl:grid-cols-2 2xl:items-start">
+      <div className="min-w-0 2xl:col-span-2">
+        <Invite code={room.code} url={inviteUrl} gameName={gameName} strings={s} />
+      </div>
 
       <section className="grid gap-3" aria-labelledby="seats-heading">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -226,7 +226,10 @@ export function LobbyView({
                 value={room.players}
                 options={counts.map((n) => ({ value: n, label: n.toLocaleString(locale) }))}
                 onChange={(players) => {
-                  actions.update({ players, botSeats: room.bot_seats.filter((b) => b < players) });
+                  actions.update({
+                    players,
+                    botSeats: room.bot_seats.filter((b) => b < players),
+                  });
                 }}
               />
             )}
@@ -299,41 +302,45 @@ export function LobbyView({
         )}
       </section>
 
-      {error && (
-        <p role="alert" className="font-semibold text-danger">
-          {error}
-        </p>
-      )}
+      <div className="grid gap-3 2xl:col-span-2">
+        {error && (
+          <p role="alert" className="font-semibold text-danger">
+            {error}
+          </p>
+        )}
 
-      <div className="flex flex-wrap gap-3">
-        {isHost ? (
-          <Button size="lg" disabled={busy || !everyoneReady || emptySeat} onClick={actions.start}>
-            {s.start}
-          </Button>
-        ) : (
-          me?.role === "player" && (
+        <div className="flex flex-wrap gap-3">
+          {isHost ? (
             <Button
               size="lg"
-              variant={me.ready ? "outline" : "primary"}
-              disabled={busy}
-              onClick={() => {
-                actions.setReady(!me.ready);
-              }}
+              disabled={busy || !everyoneReady || emptySeat}
+              onClick={actions.start}
             >
-              {me.ready ? s.unsetReady : s.setReady}
+              {s.start}
             </Button>
-          )
+          ) : (
+            me?.role === "player" && (
+              <Button
+                size="lg"
+                variant={me.ready ? "outline" : "primary"}
+                disabled={busy}
+                onClick={() => {
+                  actions.setReady(!me.ready);
+                }}
+              >
+                {me.ready ? s.unsetReady : s.setReady}
+              </Button>
+            )
+          )}
+          <Button size="lg" variant="ghost" disabled={busy} onClick={actions.leave}>
+            {s.leave}
+          </Button>
+        </div>
+        {isHost && (!everyoneReady || emptySeat) && (
+          <p className="text-sm text-muted">{emptySeat ? s.errors.seats_empty : s.startHint}</p>
         )}
-        <Button size="lg" variant="ghost" disabled={busy} onClick={actions.leave}>
-          {s.leave}
-        </Button>
+        {me?.role === "spectator" && <p className="text-sm text-muted">{s.spectating}</p>}
       </div>
-      {isHost && (!everyoneReady || emptySeat) && (
-        <p className="text-sm text-muted">{emptySeat ? s.errors.seats_empty : s.startHint}</p>
-      )}
-      {me?.role === "spectator" && <p className="text-sm text-muted">{s.spectating}</p>}
-
-      {chat}
     </div>
   );
 }

@@ -3,8 +3,6 @@
     "title": "Pick a nickname",
     "intro": "Others in the room will see it. You're playing as a guest; create an account any time to keep your progress.",
     "nickname": "Nickname",
-    "ageConfirm": "I am 13 or older",
-    "ageNeeded": "Confirm that you are 13 or older to use chat.",
     "submit": "Continue"
   },
   "room": {
@@ -68,10 +66,12 @@
     "label": "Message",
     "send": "Send",
     "empty": "No messages yet. Say hello!",
-    "ageSubmit": "Start chatting",
     "tooFast": "You're sending messages too fast. Wait a few seconds.",
     "tooLong": "Messages can be up to 300 characters.",
-    "hint": "Be kind. Messages are deleted when the room closes."
+    "hint": "Be kind. Messages are deleted when the room closes.",
+    "show": "Show chat",
+    "hide": "Hide chat",
+    "unread": "New messages: {count}"
   },
   "errors": {
     "room_not_found": "There's no room with this code.",
