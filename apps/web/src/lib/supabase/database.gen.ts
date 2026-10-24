@@ -33,6 +33,40 @@ export type Database = {
                   Relationships: [
                     
                   ]
+                },"match_participants": {
+                  Row: {
+                    "match_id": string,"outcome": number,"rating_after": number | null,"rating_before": number | null,"seat": number,"user_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "match_id": string,"outcome": number,"rating_after"?: number | null,"rating_before"?: number | null,"seat": number,"user_id"?: string | null
+                  }
+                  Update: {
+                    "match_id"?: string,"outcome"?: number,"rating_after"?: number | null,"rating_before"?: number | null,"seat"?: number,"user_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "match_participants_match_id_fkey"
+      columns: ["match_id"]
+isOneToOne: false
+      referencedRelation: "matches"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"matches": {
+                  Row: {
+                    "created_at": string,"ended_at": string,"game_id": string,"game_version": number,"id": string,"pgn": string | null,"pool": string | null,"rated": boolean,"reason": string,"started_at": string,"status": string,"timer": NonNullable<Json>
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"ended_at": string,"game_id": string,"game_version": number,"id"?: string,"pgn"?: string | null,"pool"?: string | null,"rated": boolean,"reason": string,"started_at": string,"status": string,"timer"?: NonNullable<Json>
+                  }
+                  Update: {
+                    "created_at"?: string,"ended_at"?: string,"game_id"?: string,"game_version"?: number,"id"?: string,"pgn"?: string | null,"pool"?: string | null,"rated"?: boolean,"reason"?: string,"started_at"?: string,"status"?: string,"timer"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"profiles": {
                   Row: {
                     "avatar_kind": string,"avatar_path": string | null,"avatar_preset": string | null,"bio": string | null,"country": string | null,"created_at": string,"id": string,"is_guest": boolean,"level": number,"nickname": string | null,"nickname_changed_at": string | null,"updated_at": string,"xp": number
@@ -43,6 +77,40 @@ export type Database = {
                   }
                   Update: {
                     "avatar_kind"?: string,"avatar_path"?: string | null,"avatar_preset"?: string | null,"bio"?: string | null,"country"?: string | null,"created_at"?: string,"id"?: string,"is_guest"?: boolean,"level"?: number,"nickname"?: string | null,"nickname_changed_at"?: string | null,"updated_at"?: string,"xp"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"rating_history": {
+                  Row: {
+                    "created_at": string,"game_id": string,"id": number,"match_id": string,"pool": string,"rating": number,"rd": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"game_id": string,"id"?: never,"match_id": string,"pool": string,"rating": number,"rd": number,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"game_id"?: string,"id"?: never,"match_id"?: string,"pool"?: string,"rating"?: number,"rd"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "rating_history_match_id_fkey"
+      columns: ["match_id"]
+isOneToOne: false
+      referencedRelation: "matches"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"ratings": {
+                  Row: {
+                    "created_at": string,"game_id": string,"games": number,"pool": string,"rating": number,"rd": number,"updated_at": string,"user_id": string,"volatility": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"game_id": string,"games"?: number,"pool": string,"rating"?: number,"rd"?: number,"updated_at"?: string,"user_id": string,"volatility"?: number
+                  }
+                  Update: {
+                    "created_at"?: string,"game_id"?: string,"games"?: number,"pool"?: string,"rating"?: number,"rd"?: number,"updated_at"?: string,"user_id"?: string,"volatility"?: number
                   }
                   Relationships: [
                     
