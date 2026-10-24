@@ -1,5 +1,6 @@
 // Client behavior for the static shell (no framework): popovers built on
-// <details data-popover>, remembering language choices, and the rail toggle.
+// <details data-popover>, language links (remembered, and keeping the page's
+// query), and the rail toggle.
 import { rememberLocale } from "@/features/i18n/locale-preference";
 import { isLocale } from "@/i18n/locales";
 
@@ -22,6 +23,21 @@ document.addEventListener("keydown", (event) => {
   open.querySelector("summary")?.focus();
 });
 
+// A language link keeps the current address's query and hash, which can
+// change after load (a game room adds ?room=CODE), so the reader stays on the
+// same view: set them as the link is used, by click, keyboard or new tab.
+function keepAddress(target: EventTarget | null) {
+  const link = (target as Element | null)?.closest<HTMLAnchorElement>("a[data-locale]");
+  if (!link) return;
+  const url = new URL(link.href);
+  url.search = location.search;
+  url.hash = location.hash;
+  link.href = url.href;
+}
+document.addEventListener("pointerdown", (event) => {
+  keepAddress(event.target);
+});
+
 document.addEventListener("click", (event) => {
   const target = event.target as Element;
 
@@ -30,6 +46,7 @@ document.addEventListener("click", (event) => {
   closeOthers(inside ?? undefined);
 
   // An explicit language choice is remembered for `/` and future visits (SPEC §5).
+  keepAddress(target);
   const link = target.closest<HTMLAnchorElement>("a[data-locale]");
   const locale = link?.dataset.locale;
   if (isLocale(locale)) rememberLocale(locale, { announce: true });
