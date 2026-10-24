@@ -91,6 +91,8 @@
     "theme": "棋盘",
     "themeSand": "沙",
     "themeSea": "海",
-    "themeMeadow": "草地"
+    "themeMeadow": "草地",
+    "creditStockfish": "机器人使用 Stockfish 19，这是遵循 GPL-3.0 许可的自由软件。",
+    "creditSource": "源代码"
   }
 }

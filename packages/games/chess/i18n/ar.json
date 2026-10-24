@@ -91,6 +91,8 @@
     "theme": "الرقعة",
     "themeSand": "رمل",
     "themeSea": "بحر",
-    "themeMeadow": "مرج"
+    "themeMeadow": "مرج",
+    "creditStockfish": "البوتات هي Stockfish 19، وهو برنامج حر بموجب رخصة GPL-3.0.",
+    "creditSource": "الشيفرة المصدرية"
   }
 }

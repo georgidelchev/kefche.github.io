@@ -1,5 +1,5 @@
-// Chess entry for the player: a turn session (seats, timers) drives the
-// match, and React renders its views.
+// Chess entry for the player: a turn session (seats, bots, timers) drives
+// the match, and React renders its views.
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -18,9 +18,9 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
   return runTurnGame(context, {
     engine,
     config,
-    createBotWorker: () => {
-      throw new Error("Chess bots arrive with Stockfish (Phase 6 step 3)");
-    },
+    // Stockfish loads only now, when a bot plays (it's 1.8 MB).
+    createBotWorker: () =>
+      new Worker(new URL("./bots.worker.ts", import.meta.url), { type: "module" }),
     allowUndo: true,
     render({ seed, session, store }) {
       // A new key (seed) remounts the board for a fresh match.

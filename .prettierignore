@@ -6,3 +6,5 @@ pnpm-lock.yaml
 **/*.gen.ts
 # Owner-authored source of truth; keep its formatting as written.
 docs/SPEC.md
+# Third-party builds kept exactly as published (packages/games/*/vendor/README.md).
+**/vendor/

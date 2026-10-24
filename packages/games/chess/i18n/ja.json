@@ -91,6 +91,8 @@
     "theme": "盤",
     "themeSand": "砂",
     "themeSea": "海",
-    "themeMeadow": "草原"
+    "themeMeadow": "草原",
+    "creditStockfish": "ボットは Stockfish 19 です（GPL-3.0 のフリーソフトウェア）。",
+    "creditSource": "ソースコード"
   }
 }

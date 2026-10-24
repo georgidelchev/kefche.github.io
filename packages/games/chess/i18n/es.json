@@ -91,6 +91,8 @@
     "theme": "Tablero",
     "themeSand": "Arena",
     "themeSea": "Mar",
-    "themeMeadow": "Prado"
+    "themeMeadow": "Prado",
+    "creditStockfish": "Los bots son Stockfish 19, software libre bajo la GPL-3.0.",
+    "creditSource": "Código fuente"
   }
 }

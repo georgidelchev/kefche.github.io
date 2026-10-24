@@ -29,7 +29,7 @@ export type SeatChoice = { kind: "human" } | { kind: "bot"; difficulty: BotDiffi
 
 export interface SetupChoice {
   players: number;
-  /** One per seat, `players` long. Seat 0 is always a person. */
+  /** One per seat, `players` long, with at least one person. */
   seats: SeatChoice[];
   /** Index into `TurnConfig.timers`. */
   timer: number;
@@ -50,22 +50,24 @@ const SAVED = z.object({
 const middle = (difficulties: BotDifficulty[]): BotDifficulty =>
   difficulties.includes("medium") ? "medium" : (difficulties[0] ?? "easy");
 
-/** A seat list `players` long: seat 0 a person, the rest people (hotseat) or bots. */
+/**
+ * A seat list `players` long: by default seat 0 a person and the rest people
+ * (hotseat) or bots. Seats already chosen are kept, as long as someone plays.
+ */
 export function seatsFor(
   players: number,
   mode: TurnMode,
   config: TurnConfig,
   current: SeatChoice[] = [],
 ): SeatChoice[] {
-  return Array.from({ length: players }, (_, i): SeatChoice => {
-    if (i === 0) return { kind: "human" };
-    return (
-      current[i] ??
-      (mode === "hotseat"
-        ? { kind: "human" }
-        : { kind: "bot", difficulty: middle(config.difficulties) })
-    );
+  const seats = Array.from({ length: players }, (_, i): SeatChoice => {
+    const kept = current[i];
+    if (kept) return kept;
+    if (i === 0 || mode === "hotseat") return { kind: "human" };
+    return { kind: "bot", difficulty: middle(config.difficulties) };
   });
+  if (!seats.some((s) => s.kind === "human")) seats[0] = { kind: "human" };
+  return seats;
 }
 
 export function defaultChoice(config: TurnConfig, mode: TurnMode): SetupChoice {
@@ -83,7 +85,7 @@ export function loadChoice(storage: GameStorage, config: TurnConfig, mode: TurnM
         players >= Math.max(config.players.min, 2) &&
         players <= config.players.max &&
         seats.length === players &&
-        seats[0]?.kind === "human" &&
+        seats.some((s) => s.kind === "human") &&
         seats.every((s) => s.kind === "human" || config.difficulties.includes(s.difficulty)) &&
         timer >= 0 &&
         timer < config.timers.length;

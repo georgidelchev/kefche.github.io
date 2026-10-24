@@ -65,6 +65,8 @@ const PIECE_KEYS: Record<PieceCode, string> = {
   bP: "pieceBP",
 };
 const PROMOTIONS = ["q", "r", "b", "n"] as const;
+const STOCKFISH_SOURCE = "https://github.com/nmrugg/stockfish.js/tree/v19.0.1";
+const GPL_LICENCE = "https://www.gnu.org/licenses/gpl-3.0.html";
 const other = (seat: number) => 1 - seat;
 /** Pointer travel that turns a press into a drag. */
 const DRAG_PX = 6;
@@ -702,6 +704,20 @@ export function Game({ context, config, store, session, sounds }: Props) {
               </label>
             ))}
           </fieldset>
+
+          {/* Stockfish is GPL-3.0: its licence and source go wherever it plays. */}
+          {match?.seats.some((seat) => seat.kind === "bot") && (
+            <p className="gch-credit">
+              {t("creditStockfish")}{" "}
+              <a href={STOCKFISH_SOURCE} target="_blank" rel="noopener noreferrer">
+                {t("creditSource")}
+              </a>
+              {" · "}
+              <a href={GPL_LICENCE} target="_blank" rel="noopener noreferrer">
+                GPL-3.0
+              </a>
+            </p>
+          )}
         </div>
       </div>
       <p className="gch-sr" aria-live="polite">
@@ -783,5 +799,7 @@ const CSS = `
 .gch-themes input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .gch-swatch { width: 1.6rem; height: 1.6rem; border-radius: 0.35rem; background: linear-gradient(135deg, var(--gch-light) 50%, var(--gch-dark) 50%); box-shadow: 0 0 0 1px var(--border-strong); }
 .gch-themes input:checked + .gch-swatch { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--text); }
+.gch-credit { margin: 0; font-size: 0.8rem; color: var(--text-muted); }
+.gch-credit a { color: var(--link); }
 .gch-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 `;

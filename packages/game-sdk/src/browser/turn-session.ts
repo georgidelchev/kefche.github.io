@@ -102,6 +102,10 @@ export type BotReply =
   { id: number; ok: true; action: unknown } | { id: number; ok: false; error: string };
 
 const TICK_MS = 100;
+/** A bot may answer this late before it counts as stuck. */
+const BOT_GRACE_MS = 1000;
+/** A new worker's first answer may also wait for it to load (chess loads Stockfish). */
+const BOT_LOAD_GRACE_MS = 15_000;
 /** An away player's turn is skipped after this grace, in case they're back at once. */
 const AWAY_SKIP_MS = 3000;
 const sleep = (ms: number) =>
@@ -112,6 +116,8 @@ const sleep = (ms: number) =>
 /** One long-lived worker; a new request or a cancel drops the one in flight. */
 function createBotClient(create: () => Worker) {
   let worker: Worker | null = null;
+  /** The worker hasn't answered yet, so it may still be loading. */
+  let fresh = true;
   let nextId = 0;
   let pending: {
     id: number;
@@ -132,7 +138,9 @@ function createBotClient(create: () => Worker) {
   const ensure = (): Worker => {
     if (worker) return worker;
     const created = create();
+    fresh = true;
     created.onmessage = (event: MessageEvent<BotReply>) => {
+      fresh = false;
       if (event.data.id !== pending?.id) return;
       clearTimeout(pending.timer);
       const { resolve, reject } = pending;
@@ -153,12 +161,18 @@ function createBotClient(create: () => Worker) {
       drop(new Error("superseded"));
       return new Promise((resolve, reject) => {
         const id = ++nextId;
+        const target = ensure();
+        const limit = request.budgetMs + (fresh ? BOT_LOAD_GRACE_MS : BOT_GRACE_MS);
         const timer = setTimeout(() => {
-          drop(new Error(`Bot exceeded ${String(request.budgetMs + 1000)} ms`));
-        }, request.budgetMs + 1000);
+          drop(new Error(`Bot exceeded ${String(limit)} ms`));
+        }, limit);
         pending = { id, resolve, reject, timer };
-        ensure().postMessage({ ...request, id } satisfies BotRequest);
+        target.postMessage({ ...request, id } satisfies BotRequest);
       });
+    },
+    /** Starts the worker now, so it loads while the match begins. */
+    warm() {
+      ensure();
     },
     cancel() {
       drop(new Error("cancelled"));
@@ -402,6 +416,7 @@ export function createTurnSession<State, Action, Config>(
 
   const first = mover();
   if (first !== undefined && !resumed) timers = startTurn(timer, timers, first);
+  if (seats.some((seat) => seat.kind === "bot")) bots.warm();
   // After the caller has its session object, so onChange may use it.
   queueMicrotask(() => {
     if (destroyed) return;

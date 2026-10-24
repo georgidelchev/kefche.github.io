@@ -91,7 +91,14 @@ function TurnSetup({
 }: SetupProps) {
   const humans = choice.seats.filter((seat) => seat.kind === "human").length;
   const setSeat = (index: number, seat: SeatChoice) => {
-    onChange({ ...choice, seats: choice.seats.map((old, i) => (i === index ? seat : old)) });
+    const seats = choice.seats.map((old, i) => (i === index ? seat : old));
+    // Someone has to play: turning the only person into a bot moves the
+    // person to the next seat (with two players, a swap: you play second).
+    if (!seats.some((s) => s.kind === "human")) {
+      const next = (index + 1) % seats.length;
+      seats[next] = { kind: "human" };
+    }
+    onChange({ ...choice, seats });
   };
   const counts = Array.from(
     { length: config.players.max - Math.max(config.players.min, 2) + 1 },
@@ -130,7 +137,9 @@ function TurnSetup({
       <ol className="grid gap-3">
         {choice.seats.map((seat, i) => {
           const label =
-            i === 0 && humans === 1 ? s.you : fill(s.player, { n: (i + 1).toLocaleString(locale) });
+            seat.kind === "human" && humans === 1
+              ? s.you
+              : fill(s.player, { n: (i + 1).toLocaleString(locale) });
           return (
             // eslint-disable-next-line @eslint-react/no-array-index-key -- seats are positional: the index is the seat
             <li key={i} className="grid gap-2 rounded-xl border border-border p-3">
@@ -138,7 +147,7 @@ function TurnSetup({
                 <PlayerMarker player={slot(i)} className="size-7" />
                 {seat.kind === "bot" ? s.bot : label}
               </div>
-              {i > 0 && config.difficulties.length > 0 && (
+              {config.difficulties.length > 0 && (
                 <Segmented
                   legend={label}
                   hideLegend

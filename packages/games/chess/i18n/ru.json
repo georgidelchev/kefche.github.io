@@ -91,6 +91,8 @@
     "theme": "Доска",
     "themeSand": "Песок",
     "themeSea": "Море",
-    "themeMeadow": "Луг"
+    "themeMeadow": "Луг",
+    "creditStockfish": "Боты — это Stockfish 19, свободная программа под лицензией GPL-3.0.",
+    "creditSource": "Исходный код"
   }
 }

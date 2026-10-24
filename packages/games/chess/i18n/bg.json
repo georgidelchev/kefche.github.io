@@ -91,6 +91,8 @@
     "theme": "Дъска",
     "themeSand": "Пясък",
     "themeSea": "Море",
-    "themeMeadow": "Ливада"
+    "themeMeadow": "Ливада",
+    "creditStockfish": "Ботовете са Stockfish 19, свободен софтуер под лиценза GPL-3.0.",
+    "creditSource": "Изходен код"
   }
 }

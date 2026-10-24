@@ -29,6 +29,8 @@ export function kefcheEslintConfig({ tsconfigRootDir }) {
       "**/*.gen.ts",
       // Deno code: checked with `deno lint` and `deno check` (supabase/functions/deno.json).
       "supabase/functions/",
+      // Third-party builds kept exactly as published (packages/games/*/vendor/README.md).
+      "**/vendor/",
     ]),
 
     {

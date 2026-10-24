@@ -91,6 +91,8 @@
     "theme": "बिसात",
     "themeSand": "रेत",
     "themeSea": "समुद्र",
-    "themeMeadow": "घास का मैदान"
+    "themeMeadow": "घास का मैदान",
+    "creditStockfish": "बॉट Stockfish 19 हैं, जो GPL-3.0 के तहत मुक्त सॉफ़्टवेयर है।",
+    "creditSource": "सोर्स कोड"
   }
 }

@@ -1,15 +1,16 @@
 import { defineManifest } from "@kefche/game-sdk";
 
 // SPEC §20.1 #1. The clocks are SPEC §11's (base and increment in seconds).
-// Bots arrive with Stockfish, online play and rated pools in later steps.
+// Bots are Stockfish (renderer/bots.worker.ts). Online play and rated pools
+// arrive in later steps.
 export const manifest = defineManifest({
   id: "chess",
   version: 1,
   category: "board",
   kind: "turn",
   players: { min: 2, max: 2, default: 2 },
-  modes: ["hotseat"],
-  bots: { supported: false, difficulties: [], canFillSeats: false },
+  modes: ["solo-bots", "hotseat"],
+  bots: { supported: true, difficulties: ["easy", "medium", "hard"], canFillSeats: true },
   timers: [
     { kind: "none" },
     { kind: "clock", base: 60, increment: 0 },
