@@ -1,6 +1,7 @@
 // 2048 board: tiles are positioned by row and column with CSS transforms and
 // keyed by id, so slides animate; merges pop and new tiles grow in. In a
-// race (context.race) every action is recorded.
+// race (context.race) every action is recorded, and MiniBoard draws the
+// other players' boards.
 import { useEffect, useRef, useState } from "react";
 
 import { HAPTICS, onDirectionKeys, onSwipe, vibrate } from "@kefche/game-sdk/browser";
@@ -107,26 +108,7 @@ export function Game({ context, seed, handle, sounds }: Props) {
         role="img"
         aria-label={t("boardLabel", { score: state.score, best: bestTile(state) })}
       >
-        {Array.from({ length: SIZE * SIZE }, (_, i) => (
-          <div
-            key={`cell-${String(i)}`}
-            className="g2048-cell"
-            style={cellPosition(Math.floor(i / SIZE), i % SIZE)}
-          />
-        ))}
-        {state.tiles.map((tile) => (
-          <div key={tile.id} className="g2048-slot" style={cellPosition(tile.row, tile.col)}>
-            <div
-              className="g2048-tile"
-              data-value={tile.value > 2048 ? "big" : tile.value}
-              data-merged={tile.merged ? "" : undefined}
-              data-spawned={tile.spawned ? "" : undefined}
-              data-digits={String(tile.value).length}
-            >
-              {tile.value}
-            </div>
-          </div>
-        ))}
+        <Tiles state={state} />
         {showWin && (
           <div
             className="g2048-overlay"
@@ -153,12 +135,53 @@ export function Game({ context, seed, handle, sounds }: Props) {
   );
 }
 
+/** The empty cells and the tiles, keyed by id so they slide. */
+function Tiles({ state }: { state: State }) {
+  return (
+    <>
+      {Array.from({ length: SIZE * SIZE }, (_, i) => (
+        <div
+          key={`cell-${String(i)}`}
+          className="g2048-cell"
+          style={cellPosition(Math.floor(i / SIZE), i % SIZE)}
+        />
+      ))}
+      {state.tiles.map((tile) => (
+        <div key={tile.id} className="g2048-slot" style={cellPosition(tile.row, tile.col)}>
+          <div
+            className="g2048-tile"
+            data-value={tile.value > 2048 ? "big" : tile.value}
+            data-merged={tile.merged ? "" : undefined}
+            data-spawned={tile.spawned ? "" : undefined}
+            data-digits={String(tile.value).length}
+          >
+            {tile.value}
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
+
+/** Another player's board in a race (the mini view): the same board, smaller. */
+export function MiniBoard({ state, motion }: { state: State; motion: boolean }) {
+  return (
+    <div className="g2048 g2048-mini" data-motion={motion ? "on" : "off"} aria-hidden="true">
+      <style>{CSS}</style>
+      <div className="g2048-board">
+        <Tiles state={state} />
+      </div>
+    </div>
+  );
+}
+
 const cellPosition = (row: number, col: number) => ({
   transform: `translate(${String(col * 100)}%, ${String(row * 100)}%)`,
 });
 
 // Scoped by the g2048- prefix. Surfaces use the site's tokens so the board
-// follows the light and dark themes; tile colors are the game's own.
+// follows the light and dark themes; tile colors are the game's own. The
+// race's mini boards (g2048-mini) use the same board, with smaller corners.
 const CSS = `
 .g2048 { display: grid; gap: 0.75rem; width: min(100%, 30rem); margin-inline: auto; user-select: none; }
 .g2048-hud { display: flex; gap: 0.5rem; align-items: stretch; }
@@ -195,4 +218,6 @@ const CSS = `
 .g2048-overlay { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 1rem; border-radius: 1rem; background: color-mix(in srgb, var(--surface) 85%, transparent); text-align: center; }
 .g2048-overlay p { margin: 0; font-size: 1.6rem; font-weight: 800; }
 .g2048-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.g2048-mini .g2048-board { border-radius: 0.4rem; touch-action: auto; }
+.g2048-mini .g2048-cell::before, .g2048-mini .g2048-tile { border-radius: 3cqi; }
 `;

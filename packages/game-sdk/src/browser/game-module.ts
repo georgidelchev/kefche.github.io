@@ -119,12 +119,18 @@ export interface GameInstance {
 }
 
 /**
- * A small, live picture of another player's game in a race, drawn from the
- * engine state that the room replays from their moves. It shows the shape of
- * the game, never anything that would help copy it (no Sudoku digits).
+ * A small, live copy of another player's board in a race, in the game's own
+ * graphics, drawn from the engine state that the room replays from their
+ * moves. It never shows anything that would help copy them (no Sudoku digits
+ * of theirs).
  */
 export interface MiniView {
-  update(state: unknown): void;
+  /**
+   * Their board now. `steps` are the states on the way there since the last
+   * update (oldest first, ending with `state`), so the view can play the
+   * moves back (`createPlayback`) instead of jumping.
+   */
+  update(state: unknown, steps?: readonly unknown[]): void;
   destroy(): void;
 }
 

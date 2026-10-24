@@ -1,44 +1,66 @@
-// Another player's Snake board in a race: the snake and the food, in the
-// board's colors (red once the snake is out).
-import { createMiniCanvas, type MiniView } from "@kefche/game-sdk/browser";
+// Another player's Snake board in a race: the game's own board, smaller,
+// played back step by step at their snake's speed.
+import {
+  createCanvasStage,
+  createPlayback,
+  onThemeChange,
+  type MiniView,
+} from "@kefche/game-sdk/browser";
 
-import { COLS, colOf, ROWS, rowOf, type State } from "../engine";
+import { COLS, ROWS, stepMs, type State } from "../engine";
+import { drawBoard, readColors } from "./draw";
+import { CSS } from "./Game";
 
 export function mini(container: HTMLElement): MiniView {
-  let state: State | null = null;
-  const view = createMiniCanvas(container, (ctx, size, color) => {
-    ctx.fillStyle = color("surface");
-    ctx.fillRect(0, 0, size, size);
-    const cell = size / COLS;
-    const at = (c: number, fill: string, scale = 1) => {
-      const inset = (cell * (1 - scale)) / 2;
-      ctx.fillStyle = fill;
-      ctx.fillRect(
-        colOf(c) * cell + inset,
-        rowOf(c) * cell + inset,
-        cell - inset * 2,
-        cell - inset * 2,
-      );
-    };
-    if (state?.config.walls) {
-      ctx.strokeStyle = color("text");
-      ctx.lineWidth = Math.max(1, cell * 0.25);
-      ctx.strokeRect(0, 0, size, size * (ROWS / COLS));
-    }
-    if (!state) return;
-    if (state.food >= 0) at(state.food, color("brand"), 0.8);
-    const body = state.over ? color("danger") : color("accent");
-    state.snake.forEach((c, i) => {
-      at(c, i === 0 && !state?.over ? color("accent-strong") : body, 0.9);
-    });
+  // Decorative: the standings next to it say how the player is doing.
+  const root = document.createElement("div");
+  root.className = "gsnk-mini";
+  root.setAttribute("aria-hidden", "true");
+  const style = document.createElement("style");
+  style.textContent = CSS;
+  const board = document.createElement("div");
+  board.className = "gsnk-board";
+  const holder = document.createElement("div");
+  holder.className = "gsnk-canvas";
+  const canvas = document.createElement("canvas");
+  holder.append(canvas);
+  board.append(holder);
+  root.append(style, board);
+  container.append(root);
+
+  const ctx = canvas.getContext("2d");
+  let colors = readColors(board);
+  let shown: { state: State; previous: State; alpha: number } | null = null;
+  const paint = () => {
+    if (ctx && shown) drawBoard(ctx, shown.state, shown.previous, shown.alpha, colors);
+  };
+  const stage = createCanvasStage(canvas, COLS, ROWS, paint);
+  const playback = createPlayback<State>({
+    // A step takes as long as it did for them; a turn, or the step that ends
+    // the game (the snake stays put), shows at once.
+    duration: (state, previous) =>
+      state.ticks === previous.ticks || state.over ? 0 : stepMs(previous),
+    draw: (state, previous, alpha) => {
+      shown = { state, previous, alpha };
+      paint();
+    },
   });
+  const offTheme = onThemeChange(() => {
+    colors = readColors(board);
+    paint();
+  });
+
   return {
-    update(next) {
-      state = next as State;
-      view.redraw();
+    update(state, steps) {
+      const next = state as State;
+      board.toggleAttribute("data-walls", next.config.walls);
+      playback.push(next, steps as readonly State[] | undefined);
     },
     destroy() {
-      view.destroy();
+      playback.stop();
+      stage.dispose();
+      offTheme();
+      root.remove();
     },
   };
 }

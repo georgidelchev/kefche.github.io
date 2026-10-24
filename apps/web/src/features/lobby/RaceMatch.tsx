@@ -88,27 +88,35 @@ interface Props {
 
 interface Local {
   engine: RaceEngine<unknown, unknown, unknown>;
+  /** Where everyone starts. */
+  initial: unknown;
   state: unknown;
   actions: unknown[];
 }
 
-/** Another player's board, drawn by the game's MiniView. */
-function MiniBoard({ module, state }: { module: GameModule; state: unknown }) {
+type AttachView = (member: string, view: MiniView | null) => void;
+
+/** Another player's board, drawn by the game's MiniView (fed by the race, not by React). */
+function MiniBoard({
+  module,
+  member,
+  attach,
+}: {
+  module: GameModule;
+  member: string;
+  attach: AttachView;
+}) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const viewRef = useRef<MiniView | null>(null);
   useEffect(() => {
     const container = containerRef.current;
     if (!container || !module.mini) return;
     const view = module.mini(container);
-    viewRef.current = view;
+    attach(member, view);
     return () => {
+      attach(member, null);
       view.destroy();
-      viewRef.current = null;
     };
-  }, [module]);
-  useEffect(() => {
-    viewRef.current?.update(state);
-  }, [state]);
+  }, [module, member, attach]);
   return <div ref={containerRef} className="mx-auto w-20 md:w-full md:max-w-44" />;
 }
 
@@ -151,12 +159,20 @@ export function RaceMatch({
   const sentToRef = useRef<string | null>(null);
   const [message] = useState(() => createMessenger(roomId, self));
   const [config] = useState(() => raceConfig(game.race.options, options));
-  // Other players' boards: the game's MiniView, the state everyone starts
-  // from, and each player's state replayed from the moves they relay.
+  // Other players' boards: the game's MiniView for each, and each player's
+  // state replayed from the moves they relay, which goes straight to it.
   const [module, setModule] = useState<GameModule | null>(null);
-  const [initial, setInitial] = useState<unknown>(null);
-  const [boards, setBoards] = useState<ReadonlyMap<string, unknown>>(() => new Map());
   const replicasRef = useRef(new Map<string, { applied: number; state: unknown }>());
+  const viewsRef = useRef(new Map<string, MiniView>());
+  const [attachView] = useState((): AttachView => (member, view) => {
+    if (!view) {
+      viewsRef.current.delete(member);
+      return;
+    }
+    viewsRef.current.set(member, view);
+    const state = replicasRef.current.get(member)?.state ?? localRef.current?.initial;
+    if (state !== undefined) view.update(state);
+  });
   // The database's clock minus this device's (ms): every browser counts down
   // to the same moment, whatever its own clock says.
   const offsetRef = useRef(0);
@@ -327,21 +343,26 @@ export function RaceMatch({
   const followBoard = useEffectEvent((member: string, log: Payload<"finish">["log"]) => {
     const local = localRef.current;
     const actions = unpackActions(log);
-    if (!local || initial === null || !actions) return;
+    if (!local || !actions) return;
     let replica = replicasRef.current.get(member);
     // A shorter log: that player started again (a reload).
-    if (!replica || actions.length < replica.applied) replica = { applied: 0, state: initial };
+    if (!replica || actions.length < replica.applied) {
+      replica = { applied: 0, state: local.initial };
+    }
+    // Every state on the way, so their board can play the moves back.
+    const steps: unknown[] = [];
     try {
       let state = replica.state;
-      for (let i = replica.applied; i < actions.length; i++)
+      for (let i = replica.applied; i < actions.length; i++) {
         state = local.engine.apply(state, actions[i]);
+        steps.push(state);
+      }
       replica = { applied: actions.length, state };
     } catch {
       return;
     }
     replicasRef.current.set(member, replica);
-    const { state } = replica;
-    setBoards((map) => new Map(map).set(member, state));
+    if (steps.length > 0) viewsRef.current.get(member)?.update(replica.state, steps);
   });
 
   const onMessage = useEffectEvent((m: Message) => {
@@ -388,9 +409,8 @@ export function RaceMatch({
       ([engine, loaded]) => {
         if (cancelled) return;
         const start = engine.initialState(config, seed);
-        localRef.current = { engine, state: start, actions: [] };
+        localRef.current = { engine, initial: start, state: start, actions: [] };
         setModule(loaded);
-        setInitial(start);
         sendProgress();
         const stage = stageRef.current;
         if (!seated || !stage) return;
@@ -523,8 +543,7 @@ export function RaceMatch({
           <ol className="flex gap-2 overflow-x-auto p-2 md:grid md:gap-2 md:overflow-visible md:p-3">
             {rows.map((row, i) => {
               // Everyone else's board, live (yours is the big one).
-              const board =
-                row.member !== self && module?.mini ? (boards.get(row.member) ?? initial) : null;
+              const board = row.member !== self && module?.mini ? module : null;
               return (
                 <li
                   key={row.member}
@@ -546,7 +565,7 @@ export function RaceMatch({
                       {row.completed ? rs.solved : rs.gameOver}
                     </span>
                   )}
-                  {board !== null && module && <MiniBoard module={module} state={board} />}
+                  {board && <MiniBoard module={board} member={row.member} attach={attachView} />}
                 </li>
               );
             })}
