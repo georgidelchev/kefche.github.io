@@ -64,6 +64,19 @@ Roles travel in the access token (`app_roles` claim), so a change applies at the
 
 Check it with `select * from cron.job_run_details order by start_time desc limit 5;` and the Edge Function logs.
 
+## Rated games job
+
+Players ask the Edge Function `submit-match` for a rated game's result when it ends. If everyone left first, nobody asks, so every minute `pg_cron` runs `private.invoke_submit_match()`. It calls `submit-match` through `pg_net` whenever a rated game without a result has lost its room, and the function decides it from the recorded moves (usually the side to move loses on time). Like the deletion job, it does nothing until its secret exists:
+
+1. **Shared secret:** another long random string.
+   - **Locally:** put it in `supabase/.env` as `SUBMIT_MATCH_SECRET` and restart Supabase (`pnpm exec supabase stop`, then `start`: the data is kept).
+   - **Hosted:** `pnpm exec supabase secrets set SUBMIT_MATCH_SECRET=…`.
+2. **Vault entries:** `project_url` as for the deletion job, plus `select vault.create_secret('<the same secret>', 'submit_match_secret');`.
+
+A new Edge Function, or a change to `config.toml`, needs that restart locally too: the running edge runtime only serves the functions it found at start ("Function not found" otherwise).
+
+**Rated games set aside:** a game whose record holds an illegal move or junk is stored with `matches.status = 'review'` and changes no rating. The admin panel lists them in Phase 14; until then, `select id, reason, ended_at from public.matches where status = 'review';`.
+
 ## Hosted Supabase
 
 The live project is `kefche` (ref `qbwljmjabloprffjlean`), on the Free plan in Central EU (Frankfurt). It was set up in Phase 5 (owner decision). The database password and the secret key live only in the owner's password manager; never put them in chat, issues or git.
@@ -84,6 +97,7 @@ The live project is `kefche` (ref `qbwljmjabloprffjlean`), on the Free plan in C
 **Set up once (done):**
 
 - **`PURGE_ACCOUNTS_SECRET`:** set with `supabase secrets set`, and the same value stored in Vault as `purge_accounts_secret`. `project_url` is `https://qbwljmjabloprffjlean.supabase.co` ("Account deletion job" above).
+- **`SUBMIT_MATCH_SECRET`:** the same, stored in Vault as `submit_match_secret` ("Rated games job" above).
 - **Checks:** run SQL with `pnpm exec supabase db query --linked "<sql>"`, for example `select jobname, schedule from cron.job`.
 - **Realtime, private channels only** (owner, in the dashboard): _Realtime → Settings → "Allow public access"_ off. Room channels (`room:<code>`) are private, and only joined members may use them, through RLS on `realtime.messages`. With public access off, nobody can open a public channel at all.
 

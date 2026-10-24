@@ -157,14 +157,14 @@ isOneToOne: false
                   ]
                 },"rooms": {
                   Row: {
-                    "allow_spectators": boolean,"bot_seats": (number)[],"code": string,"created_at": string,"game_id": string,"game_version": number,"host_id": string | null,"id": string,"last_active_at": string,"locked": boolean,"players": number,"settings": NonNullable<Json>,"status": string,"updated_at": string,"visibility": string
+                    "allow_spectators": boolean,"bot_seats": (number)[],"code": string,"created_at": string,"game_id": string,"game_version": number,"host_id": string | null,"id": string,"last_active_at": string,"locked": boolean,"players": number,"rated": Json | null,"settings": NonNullable<Json>,"status": string,"updated_at": string,"visibility": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "allow_spectators"?: boolean,"bot_seats"?: (number)[],"code": string,"created_at"?: string,"game_id": string,"game_version": number,"host_id"?: string | null,"id"?: string,"last_active_at"?: string,"locked"?: boolean,"players": number,"settings"?: NonNullable<Json>,"status"?: string,"updated_at"?: string,"visibility"?: string
+                    "allow_spectators"?: boolean,"bot_seats"?: (number)[],"code": string,"created_at"?: string,"game_id": string,"game_version": number,"host_id"?: string | null,"id"?: string,"last_active_at"?: string,"locked"?: boolean,"players": number,"rated"?: Json | null,"settings"?: NonNullable<Json>,"status"?: string,"updated_at"?: string,"visibility"?: string
                   }
                   Update: {
-                    "allow_spectators"?: boolean,"bot_seats"?: (number)[],"code"?: string,"created_at"?: string,"game_id"?: string,"game_version"?: number,"host_id"?: string | null,"id"?: string,"last_active_at"?: string,"locked"?: boolean,"players"?: number,"settings"?: NonNullable<Json>,"status"?: string,"updated_at"?: string,"visibility"?: string
+                    "allow_spectators"?: boolean,"bot_seats"?: (number)[],"code"?: string,"created_at"?: string,"game_id"?: string,"game_version"?: number,"host_id"?: string | null,"id"?: string,"last_active_at"?: string,"locked"?: boolean,"players"?: number,"rated"?: Json | null,"settings"?: NonNullable<Json>,"status"?: string,"updated_at"?: string,"visibility"?: string
                   }
                   Relationships: [
                     
@@ -231,6 +231,7 @@ isOneToOne: false
 "last_active_at": string,
 "locked": boolean,
 "players": number,
+"rated": Json | null,
 "settings": NonNullable<Json>,
 "status": string,
 "updated_at": string,
@@ -261,6 +262,7 @@ isOneToOne: false
 "last_active_at": string,
 "locked": boolean,
 "players": number,
+"rated": Json | null,
 "settings": NonNullable<Json>,
 "status": string,
 "updated_at": string,
@@ -274,6 +276,9 @@ isOneToOne: false
       } },
 "due_account_deletions":
 { Args: { "p_limit"?: number }; Returns: string[]
+                           },
+"due_rated_games":
+{ Args: { "p_limit": number }; Returns: string[]
                            },
 "finish_room":
 { Args: { "p_room": string }; Returns: undefined
@@ -297,6 +302,7 @@ isOneToOne: false
 "last_active_at": string,
 "locked": boolean,
 "players": number,
+"rated": Json | null,
 "settings": NonNullable<Json>,
 "status": string,
 "updated_at": string,
@@ -341,6 +347,7 @@ isOneToOne: false
 "last_active_at": string,
 "locked": boolean,
 "players": number,
+"rated": Json | null,
 "settings": NonNullable<Json>,
 "status": string,
 "updated_at": string,
@@ -352,6 +359,15 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"rated_action":
+{ Args: { "p_action": Json,"p_room": string }; Returns: undefined
+                           },
+"rated_game_load":
+{ Args: { "p_game": string,"p_room": string,"p_seed": string }; Returns: Json
+                           },
+"rated_game_record":
+{ Args: { "p_game": string,"p_result": Json }; Returns: string
+                           },
 "reopen_room":
 { Args: { "p_room": string }; Returns: undefined
                            },
@@ -410,6 +426,7 @@ isOneToOne: false
 "last_active_at": string,
 "locked": boolean,
 "players": number,
+"rated": Json | null,
 "settings": NonNullable<Json>,
 "status": string,
 "updated_at": string,
@@ -440,6 +457,7 @@ isOneToOne: false
 "last_active_at": string,
 "locked": boolean,
 "players": number,
+"rated": Json | null,
 "settings": NonNullable<Json>,
 "status": string,
 "updated_at": string,

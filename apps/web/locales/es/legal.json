@@ -11,6 +11,7 @@
       "guest": "Si juegas en línea sin cuenta: un identificador de invitado aleatorio y el apodo que elijas.",
       "settings": "Tus ajustes, como el idioma, el tema, el sonido y las opciones de privacidad.",
       "rooms": "Las salas en línea en las que entras: tu puesto, las jugadas de cada partida y cuándo te conectaste por última vez. Los registros de una sala se borran en cuanto sale su último jugador.",
+      "rated": "Partidas puntuadas (solo con cuenta): mientras dura la partida, cada jugada con la hora a la que la recibió nuestro servidor, para que el servidor calcule el resultado por sí mismo. Después, la partida terminada (los jugadores, el resultado y las jugadas) y tu puntuación, que cualquiera puede ver. Si eliminas tu cuenta, se eliminan tus puntuaciones y tu nombre desaparece de las partidas que jugaste.",
       "chat": "Los mensajes del chat de la sala, que se borran junto con la sala.",
       "security": "Registros de seguridad: límites de cuántas veces se puede repetir una acción y un registro de los cambios importantes de la cuenta. Cuando necesitan tu dirección IP, guardamos solo un hash con sal, nunca la dirección."
     },

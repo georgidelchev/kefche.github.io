@@ -1,6 +1,7 @@
 {
   "imports": {
     "@supabase/supabase-js": "npm:@supabase/supabase-js@2.118.0",
+    "chess.js": "npm:chess.js@1.4.0",
     "zod": "npm:zod@4.6.7"
   },
   "compilerOptions": {
@@ -9,6 +10,8 @@
     "exactOptionalPropertyTypes": true
   },
   "lint": {
-    "rules": { "tags": ["recommended"] }
+    "rules": {
+      "tags": ["recommended"]
+    }
   }
 }

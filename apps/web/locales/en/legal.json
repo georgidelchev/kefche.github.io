@@ -11,6 +11,7 @@
       "guest": "If you play online without an account: a random guest ID and the nickname you pick.",
       "settings": "Your settings, such as language, theme, sound and privacy choices.",
       "rooms": "The online rooms you join: your seat, the moves of each match and when you were last connected. A room's records are deleted as soon as its last player leaves.",
+      "rated": "Rated games (accounts only): while a game is on, each move with the time our server received it, so the server can work out the result itself. Then the finished game (the players, the result and the moves) and your rating, which anyone can see. Deleting your account deletes your ratings, and your name disappears from the games you played.",
       "chat": "Lobby chat messages, deleted together with their room.",
       "security": "Security records: limits on how often an action can be repeated, and a log of important account changes. Where these need your IP address, we keep only a salted hash of it, never the address itself."
     },

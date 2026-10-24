@@ -432,6 +432,8 @@ deno_version = 2
 # kefche: shared secret between the pg_cron job and purge-accounts (supabase/.env).
 [edge_runtime.secrets]
 PURGE_ACCOUNTS_SECRET = "env(PURGE_ACCOUNTS_SECRET)"
+# kefche: shared secret between the pg_cron job and submit-match (supabase/.env).
+SUBMIT_MATCH_SECRET = "env(SUBMIT_MATCH_SECRET)"
 
 # Called by pg_cron with PURGE_ACCOUNTS_SECRET, not with a user's token.
 # Every function uses the shared, pinned imports in functions/deno.json; named
@@ -443,6 +445,12 @@ import_map = "./functions/deno.json"
 import_map = "./functions/deno.json"
 
 [functions.purge-accounts]
+verify_jwt = false
+import_map = "./functions/deno.json"
+
+# Players call it with their token; pg_cron with SUBMIT_MATCH_SECRET, which
+# isn't a JWT, so the function checks every token itself.
+[functions.submit-match]
 verify_jwt = false
 import_map = "./functions/deno.json"
 

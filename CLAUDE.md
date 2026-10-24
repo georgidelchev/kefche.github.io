@@ -74,7 +74,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 - **Edge Functions** (`supabase/functions/<name>/index.ts`, Deno 2):
   - **Dependencies:** shared imports live in `supabase/functions/deno.json`, pinned exactly, with `deno.lock` committed. Helpers go in `_shared/`.
   - **Request handling:** verify every token with Supabase Auth, validate input with Zod, return a stable error code, and log details with `log()`.
-  - **Checks:** ESLint skips this folder; CI runs `deno lint` and `deno check --frozen`. Locally, without Deno: `docker run --rm -v "$PWD/supabase/functions:/fn" -w /fn denoland/deno:2.1.4 sh -c "deno lint && deno check */index.ts"`.
+  - **Checks:** ESLint skips this folder; CI runs `deno lint`, `deno check --frozen` and `deno test --frozen _shared/`. Locally, without Deno: `docker run --rm -v "$PWD/supabase/functions:/fn" -w /fn denoland/deno:2.1.4 sh -c "deno lint && deno check */index.ts && deno test _shared/"`.
 - **Commits:** Conventional Commits, one small focused commit per step.
 
 ## Dependencies

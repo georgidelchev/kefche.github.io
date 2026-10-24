@@ -28,21 +28,46 @@ Deno.serve(async (req) => {
   if (allowed.error) return fail("export_failed", 500);
   if (allowed.data !== true) return fail("rate_limited", 429);
 
-  const [profile, settings, consent, roles, activity, avatars] = await Promise.all([
-    admin.from("profiles").select("*").eq("id", user.id).maybeSingle(),
-    admin.from("user_settings").select("*").eq("user_id", user.id).maybeSingle(),
-    admin
-      .from("consent_records")
-      .select("categories, policy_version, created_at")
-      .eq("user_id", user.id),
-    admin.from("user_roles").select("role, created_at").eq("user_id", user.id),
-    admin
-      .from("audit_log")
-      .select("action, target_type, target_id, details, created_at")
-      .eq("actor_id", user.id),
-    admin.storage.from("avatars").list(user.id, { limit: 1000 }),
-  ]);
-  const failedPart = [profile, settings, consent, roles, activity, avatars].find((r) => r.error);
+  const [profile, settings, consent, roles, activity, avatars, ratings, history, matches] =
+    await Promise.all([
+      admin.from("profiles").select("*").eq("id", user.id).maybeSingle(),
+      admin.from("user_settings").select("*").eq("user_id", user.id).maybeSingle(),
+      admin
+        .from("consent_records")
+        .select("categories, policy_version, created_at")
+        .eq("user_id", user.id),
+      admin.from("user_roles").select("role, created_at").eq("user_id", user.id),
+      admin
+        .from("audit_log")
+        .select("action, target_type, target_id, details, created_at")
+        .eq("actor_id", user.id),
+      admin.storage.from("avatars").list(user.id, { limit: 1000 }),
+      admin
+        .from("ratings")
+        .select("game_id, pool, rating, rd, volatility, games, updated_at")
+        .eq("user_id", user.id),
+      admin
+        .from("rating_history")
+        .select("game_id, pool, match_id, rating, rd, created_at")
+        .eq("user_id", user.id),
+      admin
+        .from("match_participants")
+        .select(
+          "seat, outcome, rating_before, rating_after, matches(id, game_id, rated, pool, timer, status, reason, pgn, started_at, ended_at)",
+        )
+        .eq("user_id", user.id),
+    ]);
+  const failedPart = [
+    profile,
+    settings,
+    consent,
+    roles,
+    activity,
+    avatars,
+    ratings,
+    history,
+    matches,
+  ].find((r) => r.error);
   if (failedPart?.error) {
     log("error", "export_failed", { user: user.id, error: failedPart.error.message });
     return fail("export_failed", 500);
@@ -66,6 +91,9 @@ Deno.serve(async (req) => {
     consent_records: consent.data,
     activity_log: activity.data,
     avatar_files: (avatars.data ?? []).map((f) => `avatars/${user.id}/${f.name}`),
+    ratings: ratings.data,
+    rating_history: history.data,
+    matches: matches.data,
   };
   log("info", "export_data", { user: user.id });
   return new Response(JSON.stringify(document, null, 2), {
