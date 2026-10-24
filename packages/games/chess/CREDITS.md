@@ -1,0 +1,12 @@
+# chess: credits
+
+Every asset and content source with its license (SPEC §19).
+
+- **Rules:** the laws of chess, which nobody owns.
+- **Rules library:** [chess.js](https://github.com/jhlywa/chess.js) 1.4.0 by Jeff Hlywa, BSD 2-Clause licence. It checks moves and endings in the browser and, for rated games, on the server.
+- **Pieces:** the "cburnett" set by Colin M.L. Burnett ([Wikimedia Commons](https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces), 2006). It is offered under GFDL 1.2+, CC BY-SA 3.0, GPL 2.0+ or BSD 3-Clause, at the user's choice; kefche uses it under **BSD 3-Clause**. Changes: a `viewBox` added so the pieces scale, and the XML header, doctype and ids removed (`renderer/pieces.ts`). The card art's knight is the same piece, scaled up.
+
+  > Copyright © 2006 Colin M.L. Burnett. Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met: (1) Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer. (2) Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution. (3) Neither the name of the author nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+- **Board themes and art:** drawn in code for kefche (`renderer/Game.tsx`, `assets/art.mjs` with `scripts/game-art/kit.mjs`).
+- **Sounds:** synthesized in code by the shared game SDK (`packages/game-sdk/src/browser/synth.ts`); no recordings or third-party audio.

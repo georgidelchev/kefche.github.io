@@ -788,6 +788,7 @@ Online modes are enabled for the Phase 4 games.
 
 - [x] Plan approved by owner (2026-10-24, with the answers above)
 - [x] Step 1 done: the rules on chess.js, checked in Node (66/66: every ending, promotion, draw offers, takebacks, flag falls, and the runtime's side actions). The SDK gained side actions (any seat, any time, clocks untouched; bots never pick them) and a game-defined flag-fall result. The manifest comes with the board in step 2, because a manifest puts the game in the catalog.
+- [x] Step 2 done: the board, with the manifest (hotseat only for now: bots join in step 3, online play in step 4), the card art and the cburnett pieces (BSD 3-Clause, credited). Tap or drag, legal-move dots, last move and check highlights, a promotion picker, flipping, premoves (they come alive with bots and online play), the move list, material won and the lead, draw offers, takebacks by request, resign with a confirmation, and three board themes (Sand, Sea, Meadow), remembered. Browser check 45/45 (production build): Scholar's mate by tap, drag and an illegal drop, keyboard play, offers and a takeback, underpromotion, flipping, themes, axe clean, no horizontal scroll and the board a→h at 360, 768 and 1280 px in both themes and in Arabic. Play adds 22 KB gzip (board 9.3 KB, rules 12.6 KB). Decision: the clocks stay in the shared HUD above the board, with its low-time warning and away and bot badges, rather than a second set beside the board.
 
 ---
 

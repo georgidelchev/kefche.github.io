@@ -5,17 +5,23 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
+    ".": "./index.ts",
+    "./manifest": "./manifest.ts",
     "./engine": "./engine/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc -p engine"
+    "typecheck": "tsc -p . && tsc -p engine"
   },
   "dependencies": {
     "@kefche/game-sdk": "workspace:*",
-    "chess.js": "1.4.0"
+    "chess.js": "1.4.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@kefche/config": "workspace:*",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "typescript": "6.0.3"
   }
 }
