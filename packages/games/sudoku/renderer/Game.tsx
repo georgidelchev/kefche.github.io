@@ -429,46 +429,9 @@ export function Game({ context, seed, handle, sounds }: Props) {
   );
 }
 
-/**
- * Another player's board in a race (the mini view): the same grid with the
- * givens, which everyone has, and only which cells they've filled in. Their
- * digits and notes stay hidden, or they would give the answers away.
- */
-export function MiniBoard({ state }: { state: State }) {
-  return (
-    <div className="gsdk gsdk-mini" aria-hidden="true">
-      <style>{CSS}</style>
-      <div className="gsdk-board">
-        {DIGITS.map((_, r) => (
-          <div key={`row-${String(r)}`} className="gsdk-row">
-            {DIGITS.map((__, k) => {
-              const cell = r * 9 + k;
-              const v = state.values[cell] ?? 0;
-              const given = Boolean(state.givens[cell]);
-              return (
-                <div
-                  key={cell}
-                  className="gsdk-cell"
-                  data-given={given ? "" : undefined}
-                  data-filled={v !== 0 && !given ? "" : undefined}
-                  data-box-end-col={k % 3 === 2 && k < 8 ? "" : undefined}
-                  data-box-end-row={r % 3 === 2 && r < 8 ? "" : undefined}
-                >
-                  {given && <span className="gsdk-value">{v}</span>}
-                </div>
-              );
-            })}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 // Scoped by the gsdk- prefix; surfaces use the site's tokens so the board
 // follows the light and dark themes. The board stays left-to-right in every
-// language, and sizes itself to the space the player leaves it. The race's
-// mini boards (gsdk-mini) use the same grid, with thinner lines.
+// language, and sizes itself to the space the player leaves it.
 const CSS = `
 .gsdk { --gsdk-size: min(100%, 34rem, calc(100dvh - 19rem)); display: grid; gap: 0.75rem; width: 100%; max-width: 34rem; margin-inline: auto; user-select: none; -webkit-user-select: none; }
 .gsdk-menu { max-width: 22rem; justify-items: stretch; text-align: center; }
@@ -522,11 +485,5 @@ const CSS = `
   .gsdk-controls { width: 100%; }
   .gsdk-pad { grid-template-columns: repeat(3, 1fr); }
 }
-@media (hover: hover) { .gsdk-cell[role="gridcell"]:not([aria-selected="true"]):hover { background: color-mix(in srgb, var(--brand-2) 12%, var(--surface)); } }
-.gsdk-mini { --gsdk-size: 100%; }
-.gsdk-mini .gsdk-board { border-width: 1.5px; border-radius: 0.35rem; }
-.gsdk-mini .gsdk-cell { cursor: default; }
-.gsdk-mini .gsdk-cell[data-box-end-col] { border-inline-end-width: 1.5px; }
-.gsdk-mini .gsdk-cell[data-box-end-row] { border-block-end-width: 1.5px; }
-.gsdk-mini .gsdk-cell[data-filled] { background: color-mix(in srgb, var(--brand-2) 30%, var(--surface)); }
+@media (hover: hover) { .gsdk-cell:not([aria-selected="true"]):hover { background: color-mix(in srgb, var(--brand-2) 12%, var(--surface)); } }
 `;

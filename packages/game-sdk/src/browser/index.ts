@@ -5,7 +5,6 @@ export * from "./game-module";
 export * from "./haptics";
 export * from "./input";
 export * from "./loop";
-export * from "./mini";
 export * from "./online-session";
 export * from "./shapes";
 export * from "./sound";

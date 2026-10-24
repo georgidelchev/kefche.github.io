@@ -1,9 +1,11 @@
 // A room as one member sees it: the rooms row and its members with their
-// nicknames, kept live through Realtime database changes (RLS decides what
-// arrives). Every change refetches both, so the view is always one
-// consistent read.
+// nicknames and avatars, kept live through Realtime database changes (RLS
+// decides what arrives). Every change refetches both, so the view is always
+// one consistent read.
 
+import { avatarUrl } from "@/features/account/avatar-url";
 import type { Supabase } from "@/lib/supabase/client";
+import { supabaseConfig } from "@/lib/supabase/config";
 import type { Tables } from "@/lib/supabase/database.gen";
 
 import { ROOM_ERROR_CODES, type RoomErrorCode } from "./strings";
@@ -18,6 +20,8 @@ export interface RoomMember {
   ready: boolean;
   joinedAt: number;
   nickname: string | null;
+  /** The avatar picture, or null for the initials avatar. */
+  avatar: string | null;
 }
 
 export interface RoomSnapshot {
@@ -27,6 +31,9 @@ export interface RoomSnapshot {
 
 /** The room, or why it can't be read: deleted, or this member was removed. */
 export type RoomRead = RoomSnapshot | "deleted" | "removed";
+
+const avatarOf = (profile: Parameters<typeof avatarUrl>[0] | undefined) =>
+  profile && supabaseConfig ? avatarUrl(profile, supabaseConfig.url) : null;
 
 async function read(supabase: Supabase, roomId: string): Promise<RoomRead> {
   const [room, members] = await Promise.all([
@@ -45,9 +52,12 @@ async function read(supabase: Supabase, roomId: string): Promise<RoomRead> {
   const profiles =
     ids.length === 0
       ? { data: [], error: null }
-      : await supabase.from("profiles").select("id, nickname").in("id", ids);
+      : await supabase
+          .from("profiles")
+          .select("id, nickname, avatar_kind, avatar_preset, avatar_path")
+          .in("id", ids);
   if (profiles.error) throw profiles.error;
-  const nickname = new Map(profiles.data.map((p) => [p.id, p.nickname]));
+  const profile = new Map(profiles.data.map((p) => [p.id, p]));
   return {
     room: room.data,
     members: members.data.map((m) => ({
@@ -57,7 +67,8 @@ async function read(supabase: Supabase, roomId: string): Promise<RoomRead> {
       status: m.status === "left" || m.status === "kicked" ? m.status : "joined",
       ready: m.ready,
       joinedAt: Date.parse(m.joined_at),
-      nickname: nickname.get(m.user_id) ?? null,
+      nickname: profile.get(m.user_id)?.nickname ?? null,
+      avatar: avatarOf(profile.get(m.user_id)),
     })),
   };
 }

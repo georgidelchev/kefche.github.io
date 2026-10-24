@@ -11,8 +11,6 @@
 //   the time is up, then offers a rematch.
 // - If the host goes away, the first seated member here takes over, and
 //   everyone who finished sends their moves again.
-// - Progress carries each player's moves so far, so every browser replays
-//   them and draws the other players' boards live (the game's MiniView).
 // - Everyone counts down on the database's clock (`server_time`), and the
 //   game is loaded during the countdown, so all start at the same moment.
 import { LoaderCircle, LogOut, Trophy, Volume2, VolumeX } from "lucide-react";
@@ -21,7 +19,6 @@ import { useEffect, useEffectEvent, useRef, useState } from "react";
 import {
   createMessenger,
   packActions,
-  unpackActions,
   type Message,
   type Payload,
   type RaceEngine,
@@ -32,9 +29,8 @@ import {
   isMuted,
   setMuted as saveMuted,
   type GameInstance,
-  type GameModule,
-  type MiniView,
 } from "@kefche/game-sdk/browser";
+import { UserAvatar } from "@kefche/ui/components/avatar";
 import { Button } from "@kefche/ui/components/button";
 
 import type { PlayerStrings } from "@/features/games/GamePlayer";
@@ -76,6 +72,8 @@ interface Props {
   /** The match just started (not a reload): show the countdown. */
   countdown: boolean;
   present: ReadonlySet<string>;
+  /** Each member's avatar picture (null: initials). */
+  avatars: ReadonlyMap<string, string | null>;
   game: { id: string; name: string; ui: Record<string, string>; race: RaceSetup };
   options: RaceOptionValues;
   locale: string;
@@ -88,36 +86,8 @@ interface Props {
 
 interface Local {
   engine: RaceEngine<unknown, unknown, unknown>;
-  /** Where everyone starts. */
-  initial: unknown;
   state: unknown;
   actions: unknown[];
-}
-
-type AttachView = (member: string, view: MiniView | null) => void;
-
-/** Another player's board, drawn by the game's MiniView (fed by the race, not by React). */
-function MiniBoard({
-  module,
-  member,
-  attach,
-}: {
-  module: GameModule;
-  member: string;
-  attach: AttachView;
-}) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!container || !module.mini) return;
-    const view = module.mini(container);
-    attach(member, view);
-    return () => {
-      attach(member, null);
-      view.destroy();
-    };
-  }, [module, member, attach]);
-  return <div ref={containerRef} className="mx-auto w-20 md:w-full md:max-w-44" />;
 }
 
 export function RaceMatch({
@@ -132,6 +102,7 @@ export function RaceMatch({
   limitMs,
   countdown,
   present,
+  avatars,
   game,
   options,
   locale,
@@ -159,20 +130,6 @@ export function RaceMatch({
   const sentToRef = useRef<string | null>(null);
   const [message] = useState(() => createMessenger(roomId, self));
   const [config] = useState(() => raceConfig(game.race.options, options));
-  // Other players' boards: the game's MiniView for each, and each player's
-  // state replayed from the moves they relay, which goes straight to it.
-  const [module, setModule] = useState<GameModule | null>(null);
-  const replicasRef = useRef(new Map<string, { applied: number; state: unknown }>());
-  const viewsRef = useRef(new Map<string, MiniView>());
-  const [attachView] = useState((): AttachView => (member, view) => {
-    if (!view) {
-      viewsRef.current.delete(member);
-      return;
-    }
-    viewsRef.current.set(member, view);
-    const state = replicasRef.current.get(member)?.state ?? localRef.current?.initial;
-    if (state !== undefined) view.update(state);
-  });
   // The database's clock minus this device's (ms): every browser counts down
   // to the same moment, whatever its own clock says.
   const offsetRef = useRef(0);
@@ -281,8 +238,7 @@ export function RaceMatch({
     };
     setMine(progress);
     lastSentRef.current = Date.now();
-    // With the moves so far, so the others can draw this board live.
-    transport.broadcast(message("progress", { ...progress, log: packActions(local.actions) }));
+    transport.broadcast(message("progress", progress));
     if (progress.finished) sendFinish();
   });
 
@@ -339,37 +295,10 @@ export function RaceMatch({
   }, [host, present, match, self, supabase, roomId]);
 
   // ---------------------------------------------------------------- receiving
-  /** Replays a player's relayed moves onto their mirrored board (only the new ones). */
-  const followBoard = useEffectEvent((member: string, log: Payload<"finish">["log"]) => {
-    const local = localRef.current;
-    const actions = unpackActions(log);
-    if (!local || !actions) return;
-    let replica = replicasRef.current.get(member);
-    // A shorter log: that player started again (a reload).
-    if (!replica || actions.length < replica.applied) {
-      replica = { applied: 0, state: local.initial };
-    }
-    // Every state on the way, so their board can play the moves back.
-    const steps: unknown[] = [];
-    try {
-      let state = replica.state;
-      for (let i = replica.applied; i < actions.length; i++) {
-        state = local.engine.apply(state, actions[i]);
-        steps.push(state);
-      }
-      replica = { applied: actions.length, state };
-    } catch {
-      return;
-    }
-    replicasRef.current.set(member, replica);
-    if (steps.length > 0) viewsRef.current.get(member)?.update(replica.state, steps);
-  });
-
   const onMessage = useEffectEvent((m: Message) => {
     if (m.type === "progress") {
       if (!match.seatMembers.includes(m.from)) return;
       setOthers((map) => new Map(map).set(m.from, m.payload));
-      if (m.payload.log) followBoard(m.from, m.payload.log);
     } else if (m.type === "finish") {
       if (isHost) hostCheck(m.from, m.payload.log);
     } else if (m.type === "standings") {
@@ -404,16 +333,13 @@ export function RaceMatch({
         sendProgress();
       }, wait);
     };
-    // Spectators load the game too: it draws everyone's mini board.
-    Promise.all([loadRaceEngine(game.id), loadGame(game.id)]).then(
+    Promise.all([loadRaceEngine(game.id), seated ? loadGame(game.id) : null]).then(
       ([engine, loaded]) => {
         if (cancelled) return;
-        const start = engine.initialState(config, seed);
-        localRef.current = { engine, initial: start, state: start, actions: [] };
-        setModule(loaded);
+        localRef.current = { engine, state: engine.initialState(config, seed), actions: [] };
         sendProgress();
         const stage = stageRef.current;
-        if (!seated || !stage) return;
+        if (!loaded || !stage) return;
         instance = loaded.mount(stage, {
           locale,
           dir,
@@ -542,30 +468,39 @@ export function RaceMatch({
           <h3 className="sr-only">{rs.standings}</h3>
           <ol className="flex gap-2 overflow-x-auto p-2 md:grid md:gap-2 md:overflow-visible md:p-3">
             {rows.map((row, i) => {
-              // Everyone else's board, live (yours is the big one).
-              const board = row.member !== self && module?.mini ? module : null;
+              const avatar = avatars.get(row.member) ?? null;
               return (
                 <li
                   key={row.member}
-                  className="grid min-w-36 content-start gap-1.5 rounded-lg bg-surface-2 p-2 text-sm md:min-w-0"
+                  className="flex min-w-48 items-center gap-2 rounded-lg bg-surface-2 p-2 text-sm md:min-w-0"
                   data-self={row.member === self ? "" : undefined}
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="w-5 font-semibold tabular-nums">{i + 1}</span>
-                    <span className="min-w-0 flex-1 truncate font-semibold">
+                  <span className="w-5 shrink-0 text-center font-semibold tabular-nums">
+                    {i + 1}
+                  </span>
+                  {/* The name is right next to it. */}
+                  <span aria-hidden="true">
+                    <UserAvatar
+                      id={row.member}
+                      name={row.name}
+                      size="sm"
+                      {...(avatar === null ? {} : { src: avatar })}
+                    />
+                  </span>
+                  <span className="grid min-w-0 flex-1">
+                    <span className="truncate font-semibold">
                       {row.name}
                       {row.member === self && (
                         <span className="font-normal text-muted"> ({s.you})</span>
                       )}
                     </span>
-                    <span className="text-muted tabular-nums">{detail(row)}</span>
-                  </div>
-                  {row.finished && row.valid !== false && (
-                    <span className="text-xs font-semibold text-muted">
-                      {row.completed ? rs.solved : rs.gameOver}
-                    </span>
-                  )}
-                  {board && <MiniBoard module={board} member={row.member} attach={attachView} />}
+                    {row.finished && row.valid !== false && (
+                      <span className="text-xs font-semibold text-muted">
+                        {row.completed ? rs.solved : rs.gameOver}
+                      </span>
+                    )}
+                  </span>
+                  <span className="shrink-0 text-muted tabular-nums">{detail(row)}</span>
                 </li>
               );
             })}

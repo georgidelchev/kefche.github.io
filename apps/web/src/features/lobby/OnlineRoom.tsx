@@ -612,6 +612,7 @@ function Room({
             limitMs={(limit?.kind === "countdown" ? limit.seconds : 600) * 1000}
             countdown={match.countdown}
             present={present}
+            avatars={new Map(view.members.map((m) => [m.userId, m.avatar]))}
             game={{ id: game.id, name: game.name, ui: game.ui, race: game.race }}
             options={settings.options}
             locale={locale}
