@@ -140,15 +140,17 @@ jobs:
       - name: Install
         run: pnpm install --frozen-lockfile
 
-      # The hosted Supabase project (docs/RUNBOOK.md). The variables live on the
+      # The hosted Supabase project (docs/RUNBOOK.md). The values live on the
       # "production" environment only, so PR previews build without accounts.
+      # Each may be an environment variable or secret (both are public values:
+      # the publishable key ships in the site's code).
       - name: Build
         run: pnpm --filter web build
         env:
-          PUBLIC_SUPABASE_URL: ${{ vars.PUBLIC_SUPABASE_URL }}
-          PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+          PUBLIC_SUPABASE_URL: ${{ vars.PUBLIC_SUPABASE_URL || secrets.PUBLIC_SUPABASE_URL }}
+          PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.PUBLIC_SUPABASE_PUBLISHABLE_KEY || secrets.PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
           # OAuth apps for production come in Phase 21; until then, email only.
-          PUBLIC_AUTH_PROVIDERS: ${{ vars.PUBLIC_AUTH_PROVIDERS || 'none' }}
+          PUBLIC_AUTH_PROVIDERS: ${{ vars.PUBLIC_AUTH_PROVIDERS || secrets.PUBLIC_AUTH_PROVIDERS || 'none' }}
 
       - name: Deploy to production
         if: github.event_name == 'push'

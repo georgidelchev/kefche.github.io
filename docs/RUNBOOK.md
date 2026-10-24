@@ -87,7 +87,7 @@ The live project is `kefche` (ref `qbwljmjabloprffjlean`), on the Free plan in C
 - **Checks:** run SQL with `pnpm exec supabase db query --linked "<sql>"`, for example `select jobname, schedule from cron.job`.
 - **Realtime, private channels only** (owner, in the dashboard): _Realtime → Settings → "Allow public access"_ off. Room channels (`room:<code>`) are private, and only joined members may use them, through RLS on `realtime.messages`. With public access off, nobody can open a public channel at all.
 
-**The site's build:** GitHub → repo → _Settings → Environments → production → Environment variables_:
+**The site's build:** GitHub → repo → _Settings → Environments → production_, as environment variables or environment secrets (the build reads either; variables come first):
 
 - `PUBLIC_SUPABASE_URL` = `https://qbwljmjabloprffjlean.supabase.co`
 - `PUBLIC_SUPABASE_PUBLISHABLE_KEY` = the project's `sb_publishable_…` key (public by design)
