@@ -949,6 +949,29 @@ Online modes are enabled for the Phase 4 games.
   - **Checks:** Deno 2.1.4 (the edge runtime's version) replays all 7 to the same end, 22/22 with the earlier tests. A forged move is refused, and a game without a fixture fails the tests.
   - **Cost:** replaying 300 moves of chess takes 0.29 s, and generating a Sudoku from its seed at most 29 ms (hard). Both fit within an Edge Function's CPU limit.
   - **Still to check:** that the hosted deploy carries the bundle. `functions deploy` has no dry run, so this is checked when `submit-match` first imports the engines (step 4).
+- [x] Step 2: the tables (`20261025100400_player_progress.sql`). The RPCs that write them come with the steps that use them.
+  - **Matches for every game:** the mode it was played in, the seed, the engine config and the duration. A player's row gains a score, a time and a placement, and the outcome becomes optional, since a solo 2048 game has none. The action logs live in `private.match_logs` for 90 days.
+  - **`mode` defaults to `online`,** because Phase 6's `rated_game_record` (already on `main`) doesn't name it.
+  - **Public tables:**
+    - `player_game_stats`: played, wins, losses, draws, abandons, best score and time, the average, time played, and streaks;
+    - the `player_stats` view: matches, time, games tried and favourite game;
+    - `achievement_unlocks`: one row per tier, with up to 3 pinned;
+    - `daily_challenges` and `words_of_the_day`, each visible from its day on.
+  - **Private tables:**
+    - `plays`: server-issued seeds, one result per play;
+    - the XP ledger `xp_events`, kept 35 days for the daily caps and the weekly XP board;
+    - `leaderboards` and `leaderboard_entries`: each player's best per board and period (all time, the week named by its Monday, or a challenge's day), so a new week needs no reset job;
+    - `play_streaks`: only the owner reads theirs.
+  - **Retention:** a nightly job (`forget-old-progress`) drops unfinished plays after 2 days, match logs after 90 days, XP events after 35 days, weekly boards after 12 weeks and daily boards after 60 days. Deleting an account deletes all of it.
+  - **Data export:** now includes a player's stats, achievements and streak, and the new match columns.
+  - **Checks:** schema lint clean, and SQL 15/15:
+    - anyone reads stats, unlocks and the stats view, but not tomorrow's challenge or word;
+    - streaks are their owner's only;
+    - 26 direct writes or private reads are refused for guests and players;
+    - the nightly job removes the right rows, and deleting an account removes everything;
+    - rated chess still stores as before.
+  - The export was called locally, and Deno 22/22.
+  - **Privacy notice:** updated in step 4, when results start being recorded.
 
 ---
 

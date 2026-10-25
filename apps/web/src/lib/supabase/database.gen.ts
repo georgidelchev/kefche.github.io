@@ -5,7 +5,21 @@ export type Database = {
   
   "public": {
           Tables: {
-            "audit_log": {
+            "achievement_unlocks": {
+                  Row: {
+                    "achievement": string,"pinned": number | null,"tier": string,"unlocked_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "achievement": string,"pinned"?: number | null,"tier": string,"unlocked_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "achievement"?: string,"pinned"?: number | null,"tier"?: string,"unlocked_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"audit_log": {
                   Row: {
                     "action": string,"actor_id": string | null,"created_at": string,"details": NonNullable<Json>,"id": number,"ip_hash": string | null,"target_id": string | null,"target_type": string | null
                   }
@@ -33,16 +47,30 @@ export type Database = {
                   Relationships: [
                     
                   ]
-                },"match_participants": {
+                },"daily_challenges": {
                   Row: {
-                    "match_id": string,"outcome": number,"rating_after": number | null,"rating_before": number | null,"seat": number,"user_id": string | null
+                    "config": NonNullable<Json>,"created_at": string,"day": string,"game_id": string,"game_version": number,"seed": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "match_id": string,"outcome": number,"rating_after"?: number | null,"rating_before"?: number | null,"seat": number,"user_id"?: string | null
+                    "config"?: NonNullable<Json>,"created_at"?: string,"day": string,"game_id": string,"game_version": number,"seed": string
                   }
                   Update: {
-                    "match_id"?: string,"outcome"?: number,"rating_after"?: number | null,"rating_before"?: number | null,"seat"?: number,"user_id"?: string | null
+                    "config"?: NonNullable<Json>,"created_at"?: string,"day"?: string,"game_id"?: string,"game_version"?: number,"seed"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"match_participants": {
+                  Row: {
+                    "match_id": string,"outcome": number | null,"placement": number | null,"rating_after": number | null,"rating_before": number | null,"score": number | null,"seat": number,"time_ms": number | null,"user_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "match_id": string,"outcome"?: number | null,"placement"?: number | null,"rating_after"?: number | null,"rating_before"?: number | null,"score"?: number | null,"seat": number,"time_ms"?: number | null,"user_id"?: string | null
+                  }
+                  Update: {
+                    "match_id"?: string,"outcome"?: number | null,"placement"?: number | null,"rating_after"?: number | null,"rating_before"?: number | null,"score"?: number | null,"seat"?: number,"time_ms"?: number | null,"user_id"?: string | null
                   }
                   Relationships: [
                     {
@@ -55,14 +83,42 @@ isOneToOne: false
                   ]
                 },"matches": {
                   Row: {
-                    "created_at": string,"ended_at": string,"game_id": string,"game_version": number,"id": string,"pgn": string | null,"pool": string | null,"rated": boolean,"reason": string,"started_at": string,"status": string,"timer": NonNullable<Json>
+                    "config": Json | null,"created_at": string,"duration_ms": number | null,"ended_at": string,"game_id": string,"game_version": number,"id": string,"mode": string,"pgn": string | null,"pool": string | null,"rated": boolean,"reason": string,"seed": string | null,"started_at": string,"status": string,"timer": NonNullable<Json>
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"ended_at": string,"game_id": string,"game_version": number,"id"?: string,"pgn"?: string | null,"pool"?: string | null,"rated": boolean,"reason": string,"started_at": string,"status": string,"timer"?: NonNullable<Json>
+                    "config"?: Json | null,"created_at"?: string,"duration_ms"?: number | null,"ended_at": string,"game_id": string,"game_version": number,"id"?: string,"mode"?: string,"pgn"?: string | null,"pool"?: string | null,"rated": boolean,"reason": string,"seed"?: string | null,"started_at": string,"status": string,"timer"?: NonNullable<Json>
                   }
                   Update: {
-                    "created_at"?: string,"ended_at"?: string,"game_id"?: string,"game_version"?: number,"id"?: string,"pgn"?: string | null,"pool"?: string | null,"rated"?: boolean,"reason"?: string,"started_at"?: string,"status"?: string,"timer"?: NonNullable<Json>
+                    "config"?: Json | null,"created_at"?: string,"duration_ms"?: number | null,"ended_at"?: string,"game_id"?: string,"game_version"?: number,"id"?: string,"mode"?: string,"pgn"?: string | null,"pool"?: string | null,"rated"?: boolean,"reason"?: string,"seed"?: string | null,"started_at"?: string,"status"?: string,"timer"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"play_streaks": {
+                  Row: {
+                    "best": number,"current": number,"last_day": string | null,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "best"?: number,"current"?: number,"last_day"?: string | null,"user_id": string
+                  }
+                  Update: {
+                    "best"?: number,"current"?: number,"last_day"?: string | null,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"player_game_stats": {
+                  Row: {
+                    "abandons": number,"best_score": number | null,"best_streak": number,"best_time_ms": number | null,"draws": number,"game_id": string,"last_played_at": string | null,"losses": number,"played": number,"score_total": number,"scored": number,"streak": number,"time_played_ms": number,"user_id": string,"wins": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "abandons"?: number,"best_score"?: number | null,"best_streak"?: number,"best_time_ms"?: number | null,"draws"?: number,"game_id": string,"last_played_at"?: string | null,"losses"?: number,"played"?: number,"score_total"?: number,"scored"?: number,"streak"?: number,"time_played_ms"?: number,"user_id": string,"wins"?: number
+                  }
+                  Update: {
+                    "abandons"?: number,"best_score"?: number | null,"best_streak"?: number,"best_time_ms"?: number | null,"draws"?: number,"game_id"?: string,"last_played_at"?: string | null,"losses"?: number,"played"?: number,"score_total"?: number,"scored"?: number,"streak"?: number,"time_played_ms"?: number,"user_id"?: string,"wins"?: number
                   }
                   Relationships: [
                     
@@ -197,10 +253,32 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"words_of_the_day": {
+                  Row: {
+                    "day": string,"locale": string,"meaning": string | null,"word": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "day": string,"locale": string,"meaning"?: string | null,"word": string
+                  }
+                  Update: {
+                    "day"?: string,"locale"?: string,"meaning"?: string | null,"word"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 }
           }
           Views: {
-            [_ in never]: never
+            "player_stats": {
+                  Row: {
+                    "favorite_game": string | null,"games_tried": number | null,"matches": number | null,"time_played_ms": number | null,"user_id": string | null
+                  }
+                  ComputedFields: never
+                  Relationships: [
+                    
+                  ]
+                }
           }
           Functions: {
             "account_deletion_date":
