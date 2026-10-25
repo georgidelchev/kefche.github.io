@@ -65,7 +65,11 @@ export interface AchievementDef {
 export type ScoreValidationRule =
   | { kind: "none" }
   | { kind: "plausibility"; maxScorePerSecond?: number; minSeconds?: number }
-  | { kind: "replay" };
+  | {
+      kind: "replay";
+      /** The most actions a person makes in a second (ones the game's own clock times don't count). */
+      maxActionsPerSecond?: number;
+    };
 
 /**
  * A setting the host of a race picks for everyone (Phase 5). The chosen

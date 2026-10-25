@@ -1,28 +1,48 @@
-// submit-match: the server's result for a rated game (SPEC §12.5). Phase 6
-// covers rated chess; Phase 7 extends it to every game's stats.
+// submit-match: the server's result for every game that counts (SPEC §12.5).
+// No client says who won or what it scored.
 //
-// No client says who won. The function replays the actions the players
-// recorded (rated_action: their own seat, the server's time) with chess.js,
-// runs both clocks from those times, and works the result out itself
-// (_shared/chess-rated.ts). It then stores the match and both players' new
-// Glicko-2 ratings, once (_shared/glicko2.ts). A game with an illegal move or
-// junk in its record is stored for review instead of rated.
+// - Rated games (Phase 6, chess): the function replays the actions the
+//   players recorded (rated_action: their own seat, the server's time) with
+//   chess.js, runs both clocks from those times and works the result out
+//   itself (_shared/chess-rated.ts). It stores the match and both players'
+//   new Glicko-2 ratings once (_shared/glicko2.ts).
+// - An account's own games (Phase 7): the player sends the record of a game
+//   played on a seed the server issued (start_play). The function replays it
+//   with the game's own engine (_shared/engines.ts), checks the result and
+//   the times (_shared/solo-play.ts), and stores the match and the stats once.
+// A game that doesn't replay is stored for review and counts for nothing.
 //
 // POST, Authorization: Bearer <a player's access token>
-//   Body: { "roomId": "<uuid>", "seed": "<the match's seed>" }
+//   Body: { "roomId": "<uuid>", "seed": "<the match's seed>" }: a rated game.
 //   → { "pending": true, "retryInMs": n } while the game is still on, or
 //     { "matchId", "status", "reason", "outcome", "ratings": [{ "before", "after" }] }
+//   Body: { "play": <record> }: an account's own game (apps/web/src/features/games/plays.ts).
+//   → { "matchId", "status", "reason", "score", "timeMs", "assisted" }
 // POST, Authorization: Bearer <SUBMIT_MATCH_SECRET>, from pg_cron
 //   Body: { "sweep": true }: decides rated games whose room is gone.
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient, type User } from "@supabase/supabase-js";
 import * as z from "zod";
 
 import { decide } from "../_shared/chess-rated.ts";
+import { GAMES } from "../_shared/engines.ts";
 import { rate } from "../_shared/glicko2.ts";
 import { bearer, env, fail, json, log } from "../_shared/http.ts";
+import { judgeSolo, soloRecordSchema } from "../_shared/solo-play.ts";
 
 const playerBody = z.object({ roomId: z.uuid(), seed: z.string().min(1).max(64) });
 const sweepBody = z.object({ sweep: z.literal(true) });
+const playBody = z.object({ play: soloRecordSchema });
+
+const playSchema = z.object({
+  id: z.uuid(),
+  userId: z.uuid(),
+  gameId: z.string(),
+  gameVersion: z.number().int(),
+  seed: z.string(),
+  startedAt: z.string(),
+  matchId: z.uuid().nullable(),
+  now: z.string(),
+});
 
 const ratingSchema = z.object({
   rating: z.number(),
@@ -156,6 +176,66 @@ async function settle(admin: SupabaseClient, game: Loaded, attempt = 0): Promise
   };
 }
 
+/** An account's own game: replayed, judged and stored once. */
+async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Promise<Response> {
+  const parsed = playBody.safeParse(body);
+  if (!parsed.success) return fail("bad_request", 400);
+  const record = parsed.data.play;
+  if (user.is_anonymous) return fail("account_required", 403);
+  const loaded = await admin.rpc("play_load", { p_play: record.playId });
+  if (loaded.error) throw new Error(`play_load: ${loaded.error.message}`);
+  if (loaded.data === null) return fail("play_not_found", 404);
+  const play = playSchema.parse(loaded.data);
+  if (play.userId !== user.id) return fail("play_not_found", 404);
+  if (play.matchId) {
+    const { data, error } = await admin
+      .from("matches")
+      .select("status, reason, match_participants(score, time_ms, assisted)")
+      .eq("id", play.matchId)
+      .single();
+    if (error) throw new Error(`stored play: ${error.message}`);
+    const [player] = data.match_participants;
+    return json({
+      matchId: play.matchId,
+      status: data.status,
+      reason: data.reason,
+      score: player?.score ?? null,
+      timeMs: player?.time_ms ?? null,
+      assisted: player?.assisted ?? false,
+    });
+  }
+  const game = GAMES.get(play.gameId);
+  if (game?.kind !== "race" || record.gameId !== play.gameId) return fail("bad_request", 400);
+  // A game updated since the play began is played to its old rules: it can't be judged.
+  if (record.version !== play.gameVersion || game.version !== play.gameVersion) {
+    return fail("game_updated", 409);
+  }
+  const verdict = judgeSolo(
+    game,
+    { seed: play.seed, startedAt: new Date(play.startedAt), now: new Date(play.now) },
+    record,
+  );
+  const stored = await admin.rpc("play_record", {
+    p_play: play.id,
+    p_result: { ...verdict, log: record.log },
+  });
+  if (stored.error) throw new Error(`play_record: ${stored.error.message}`);
+  log("info", "play", {
+    play: play.id,
+    game: play.gameId,
+    status: verdict.status,
+    reason: verdict.reason,
+  });
+  return json({
+    matchId: z.uuid().parse(stored.data),
+    status: verdict.status,
+    reason: verdict.reason,
+    score: verdict.score,
+    timeMs: verdict.timeMs,
+    assisted: verdict.assisted,
+  });
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return json(null);
   if (req.method !== "POST") return fail("method_not_allowed", 405);
@@ -181,11 +261,16 @@ Deno.serve(async (req) => {
       return json({ settled });
     }
 
-    // A player asking for their game's result.
-    const parsed = playerBody.safeParse(body);
-    if (!parsed.success) return fail("bad_request", 400);
     const { data: auth, error: authError } = await admin.auth.getUser(token);
     if (authError) return fail("unauthorized", 401);
+    // An account's own game.
+    if (typeof body === "object" && body !== null && "play" in body) {
+      return await submitPlay(admin, auth.user, body);
+    }
+
+    // A player asking for their rated game's result.
+    const parsed = playerBody.safeParse(body);
+    if (!parsed.success) return fail("bad_request", 400);
     const game = await load(admin, { room: parsed.data.roomId, seed: parsed.data.seed });
     if (!game) return fail("game_not_found", 404);
     if (!game.players.includes(auth.user.id)) return fail("not_a_player", 403);

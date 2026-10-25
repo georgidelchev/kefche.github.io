@@ -63,14 +63,14 @@ export type Database = {
                   ]
                 },"match_participants": {
                   Row: {
-                    "match_id": string,"outcome": number | null,"placement": number | null,"rating_after": number | null,"rating_before": number | null,"score": number | null,"seat": number,"time_ms": number | null,"user_id": string | null
+                    "assisted": boolean,"match_id": string,"outcome": number | null,"placement": number | null,"rating_after": number | null,"rating_before": number | null,"score": number | null,"seat": number,"time_ms": number | null,"user_id": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "match_id": string,"outcome"?: number | null,"placement"?: number | null,"rating_after"?: number | null,"rating_before"?: number | null,"score"?: number | null,"seat": number,"time_ms"?: number | null,"user_id"?: string | null
+                    "assisted"?: boolean,"match_id": string,"outcome"?: number | null,"placement"?: number | null,"rating_after"?: number | null,"rating_before"?: number | null,"score"?: number | null,"seat": number,"time_ms"?: number | null,"user_id"?: string | null
                   }
                   Update: {
-                    "match_id"?: string,"outcome"?: number | null,"placement"?: number | null,"rating_after"?: number | null,"rating_before"?: number | null,"score"?: number | null,"seat"?: number,"time_ms"?: number | null,"user_id"?: string | null
+                    "assisted"?: boolean,"match_id"?: string,"outcome"?: number | null,"placement"?: number | null,"rating_after"?: number | null,"rating_before"?: number | null,"score"?: number | null,"seat"?: number,"time_ms"?: number | null,"user_id"?: string | null
                   }
                   Relationships: [
                     {
@@ -409,6 +409,12 @@ isOneToOne: false
                            },
 "merge_guest":
 { Args: { "p_guest": string,"p_target": string }; Returns: undefined
+                           },
+"play_load":
+{ Args: { "p_play": string }; Returns: Json
+                           },
+"play_record":
+{ Args: { "p_play": string,"p_result": Json }; Returns: string
                            },
 "player_history":
 { Args: { "p_limit"?: number,"p_user": string }; Returns: Json

@@ -25,6 +25,6 @@ export const manifest = defineManifest({
   leaderboards: [{ id: "best-score", metric: "score", order: "desc" }],
   achievements: [],
   // Every move is replayable from the seed (Phase 7 validates submissions).
-  scoreValidation: { kind: "replay" },
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 20 },
   tags: ["puzzle", "numbers", "single-player"],
 });

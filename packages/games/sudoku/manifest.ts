@@ -44,6 +44,6 @@ export const manifest = defineManifest({
   ],
   achievements: [],
   // The puzzle and every entry replay from the seed (Phase 7 validates submissions).
-  scoreValidation: { kind: "replay" },
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 15 },
   tags: ["puzzle", "numbers", "single-player"],
 });

@@ -45,6 +45,6 @@ export const manifest = defineManifest({
   achievements: [],
   // Food comes from the seed and time is a stream of ticks, so a game replays
   // exactly from its inputs (Phase 7 validates submissions).
-  scoreValidation: { kind: "replay" },
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 30 },
   tags: ["classic", "reflexes", "single-player"],
 });

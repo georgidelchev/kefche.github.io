@@ -97,7 +97,10 @@ export const gameManifestSchema = z
         maxScorePerSecond: z.number().positive().optional(),
         minSeconds: z.number().positive().optional(),
       }),
-      z.object({ kind: z.literal("replay") }),
+      z.object({
+        kind: z.literal("replay"),
+        maxActionsPerSecond: z.number().positive().optional(),
+      }),
     ]),
     tags: z.array(z.string().regex(kebab)),
   })

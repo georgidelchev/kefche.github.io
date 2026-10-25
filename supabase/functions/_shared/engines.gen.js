@@ -225,7 +225,7 @@ var manifest = defineManifest({
   leaderboards: [{ id: "best-score", metric: "score", order: "desc" }],
   achievements: [],
   // Every move is replayable from the seed (Phase 7 validates submissions).
-  scoreValidation: { kind: "replay" },
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 20 },
   tags: ["puzzle", "numbers", "single-player"]
 });
 
@@ -4259,6 +4259,7 @@ var COLS = 20;
 var ROWS = 20;
 var CELLS = COLS * ROWS;
 var POINTS = { slow: 1, normal: 2, fast: 3 };
+var STEP_MS = { slow: 160, normal: 115, fast: 80 };
 var OPPOSITE = {
   up: "down",
   down: "up",
@@ -4309,6 +4310,9 @@ var engine6 = {
       won: false
     };
   },
+  // A tick takes the step time of the state it moves on (the game loop's
+  // timing); the server checks a game's time against the sum (Phase 7).
+  actionMs: (state, action) => action.type === "tick" ? stepMs(state) : 0,
   apply(state, action) {
     if (state.over) return state;
     if (action.type === "turn") {
@@ -4353,6 +4357,7 @@ var engine6 = {
   },
   score: (state) => state.score
 };
+var stepMs = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
 
 // packages/games/snake/manifest.ts
 var manifest6 = defineManifest({
@@ -4399,7 +4404,7 @@ var manifest6 = defineManifest({
   achievements: [],
   // Food comes from the seed and time is a stream of ticks, so a game replays
   // exactly from its inputs (Phase 7 validates submissions).
-  scoreValidation: { kind: "replay" },
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 30 },
   tags: ["classic", "reflexes", "single-player"]
 });
 
@@ -4860,7 +4865,7 @@ var manifest7 = defineManifest({
   ],
   achievements: [],
   // The puzzle and every entry replay from the seed (Phase 7 validates submissions).
-  scoreValidation: { kind: "replay" },
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 15 },
   tags: ["puzzle", "numbers", "single-player"]
 });
 

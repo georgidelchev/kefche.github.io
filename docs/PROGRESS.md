@@ -982,6 +982,29 @@ Online modes are enabled for the Phase 4 games.
     - All four records replay in Deno, with the server's engines and seeds, to exactly the result the browser claimed.
     - A two-guest 2048 race still relays its scores from the log.
     - SQL 6/6 on `start_play`, and the recorder 7/7 in Node: pauses and menus left out of the play time, one record per play, nothing without a play or for a continued game.
+- [x] Step 4: `submit-match` judges single-player games (2048, Sudoku, Snake).
+  - **The verdict** (`_shared/solo-play.ts`, pure). The server replays the record on the seed it issued, with the game's own engine. No claimed score or result is taken on trust. A game is set aside for review, and counts for nothing, when:
+    - its config isn't one the game offers (`raceOptions`; 2048 takes none): `bad-config`;
+    - its log doesn't unpack or replay: `bad-log`;
+    - the replay doesn't give the claimed result: `replay-mismatch`;
+    - a time is longer than since the play was issued, or shorter than the game's own clock took: `time-mismatch`;
+    - the game's clock needed more time than has passed, or the player made more choices a second than the manifest allows: `too-fast`.
+  - **New in the SDK and manifests:**
+    - `RaceEngine.actionMs`, the least time an action takes. Snake: a tick takes its step time. The server sums it over the game.
+    - `scoreValidation.maxActionsPerSecond`: 2048 20, Sudoku 15, Snake 30. These only catch machine speed, averaged over the game.
+    - Actions a race doesn't allow (hints) mark a game as assisted. It counts as played and won, but sets no best score or time.
+  - **Storing:** `play_record` stores the match (mode `solo`, seed, config, play time), the player's score, time and the assisted mark, the log and, when it counts, the stats (`private.count_result`, built for every game). It does all of this once per play: a resent record returns the stored match. `play_load` and `play_record` are for the service role only. Accounts only: a guest is refused with `account_required`, and someone else's play is "not found".
+  - **Privacy notice:** a new entry in all 11 languages says what's kept about an account's own games, that the stats are public, that moves are deleted after 90 days, and that guests' games stay on their device. The RUNBOOK lists the review reasons.
+  - **Checks:**
+    - Deno 28/28: the six new tests are honest games counted with the replay's score; a forged score; a hint marking a game assisted; Snake's ticks claimed in a second; 2048's 158 moves in 2 s; and a play time longer than the play.
+    - End to end on the dev server with the local edge runtime, 19/19:
+      - both Snake games and the Sudoku counted, with stats per game, the hinted Sudoku marked assisted and setting no best time, and the logs kept;
+      - a resent record giving the same match without counting twice;
+      - a forged score and a forged play time set aside, counting nothing;
+      - someone else's play and a guest refused.
+    - Clicking hints at machine speed got that Sudoku set aside as `too-fast`, as intended; the test now clicks at a person's pace.
+    - Rated matchmaking 20/20 again.
+  - **Still to check:** that the hosted deploy carries the engine bundle. The local edge runtime ran it in every check above. Deploying `submit-match` waits for the owner's word.
 
 ---
 

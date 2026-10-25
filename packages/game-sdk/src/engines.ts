@@ -32,8 +32,14 @@ export interface RaceEngine<State, Action, Config = undefined> {
   result(state: State): GameResult | null;
   /** The score so far, for games that have one (a race can end before the game does). */
   score?(state: State): number;
-  /** Race mode: false for actions a race doesn't allow, such as hints. */
+  /** Race mode: false for actions a race doesn't allow, such as hints (they also mark a game as assisted). */
   allowedInRace?(action: Action): boolean;
+  /**
+   * The least real time an action takes, for games that run their own clock
+   * (Snake's ticks): the server checks a result's time against the sum
+   * (SPEC §12.5). Actions without one take none.
+   */
+  actionMs?(state: State, action: Action): number;
 }
 
 /**

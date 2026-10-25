@@ -3,9 +3,9 @@
 // is replayed with the code the browser ran. The types mirror
 // @kefche/game-sdk's, which Deno can't import (its sources import without file
 // extensions).
-import { canonicalJson, GAMES as BUNDLED } from "./engines.gen.js";
+import { canonicalJson, GAMES as BUNDLED, RACE_LOG_LIMITS, unpackActions } from "./engines.gen.js";
 
-export { canonicalJson };
+export { canonicalJson, RACE_LOG_LIMITS, unpackActions };
 
 /** How a game ended (the SDK's GameResult). */
 export interface GameResult {
@@ -23,6 +23,10 @@ export interface RaceEngine {
   progress(state: unknown): number;
   result(state: unknown): GameResult | null;
   score?(state: unknown): number;
+  /** False for actions a race doesn't allow (hints): they mark a game as assisted. */
+  allowedInRace?(action: unknown): boolean;
+  /** The least real time an action takes (Snake's ticks). */
+  actionMs?(state: unknown, action: unknown): number;
 }
 
 /** Turn-based games (the SDK's TurnEngine). */
@@ -35,18 +39,43 @@ export interface TurnEngine {
   sideActions?(state: unknown, seat: number): unknown[];
 }
 
+/** A setting a single-player game is played with (the manifest's raceOptions). */
+export interface GameOption {
+  key: string;
+  values: { value: string | number | boolean }[];
+}
+
+/** What the server checks a game's results with, from its manifest. */
+interface Rules {
+  version: number;
+  options: readonly GameOption[];
+  /** The most actions a person makes in a second, when the manifest says. */
+  maxActionsPerSecond: number | null;
+}
+
 export type ServerGame =
-  | { kind: "race"; version: number; engine: RaceEngine }
-  | { kind: "turn"; version: number; engine: TurnEngine };
+  (Rules & { kind: "race"; engine: RaceEngine }) | (Rules & { kind: "turn"; engine: TurnEngine });
+
+interface BundledManifest {
+  kind: "race" | "turn";
+  version: number;
+  raceOptions?: GameOption[];
+  scoreValidation: { kind: string; maxActionsPerSecond?: number };
+}
 
 /** Every game by id. */
 export const GAMES: ReadonlyMap<string, ServerGame> = new Map(
   Object.entries(BUNDLED).map(([id, { manifest, engine }]) => {
-    const { kind, version } = manifest as { kind: "race" | "turn"; version: number };
-    const game =
-      kind === "race"
-        ? { kind, version, engine: engine as RaceEngine }
-        : { kind, version, engine: engine as TurnEngine };
+    const m = manifest as BundledManifest;
+    const rules: Rules = {
+      version: m.version,
+      options: m.raceOptions ?? [],
+      maxActionsPerSecond: m.scoreValidation.maxActionsPerSecond ?? null,
+    };
+    const game: ServerGame =
+      m.kind === "race"
+        ? { ...rules, kind: "race", engine: engine as RaceEngine }
+        : { ...rules, kind: "turn", engine: engine as TurnEngine };
     return [id, game];
   }),
 );
@@ -56,6 +85,12 @@ export interface RaceReplay {
   result: GameResult | null;
   score: number | null;
   progress: number;
+  /** The least real time the actions took (the sum of `actionMs`). */
+  minMs: number;
+  /** Actions the player chose (the game's own timed ones, like Snake's ticks, left out). */
+  choices: number;
+  /** Some action wasn't allowed in a race (a hint). */
+  assisted: boolean;
 }
 
 /** A single-player game replayed from its seed, every action in order. */
@@ -66,12 +101,24 @@ export function replayRace(
   actions: readonly unknown[],
 ): RaceReplay {
   let state = engine.initialState(config, seed);
-  for (const action of actions) state = engine.apply(state, action);
+  let minMs = 0;
+  let choices = 0;
+  let assisted = false;
+  for (const action of actions) {
+    const ms = engine.actionMs?.(state, action) ?? 0;
+    minMs += ms;
+    if (ms === 0) choices++;
+    if (engine.allowedInRace?.(action) === false) assisted = true;
+    state = engine.apply(state, action);
+  }
   return {
     state,
     result: engine.result(state),
     score: engine.score?.(state) ?? null,
     progress: engine.progress(state),
+    minMs,
+    choices,
+    assisted,
   };
 }
 

@@ -101,6 +101,10 @@ export const engine: RaceEngine<State, Action, Config> = {
     };
   },
 
+  // A tick takes the step time of the state it moves on (the game loop's
+  // timing); the server checks a game's time against the sum (Phase 7).
+  actionMs: (state, action) => (action.type === "tick" ? stepMs(state) : 0),
+
   apply(state, action) {
     if (state.over) return state;
 
