@@ -3,7 +3,8 @@
 // the match and everyone else mirrors it. The HUD shows who is away, and the
 // results offer the host a rematch, which takes the room back to the lobby.
 // In a rated room each player's actions also go to the server's record, and
-// the results show the rating change the server works out from it.
+// the results show the rating change the server works out from it. In a
+// casual room each account reports the result it saw (Phase 7).
 import { LoaderCircle, LogOut, Volume2, VolumeX } from "lucide-react";
 import { lazy, Suspense, useEffect, useEffectEvent, useRef, useState } from "react";
 
@@ -20,6 +21,7 @@ import { Button } from "@kefche/ui/components/button";
 import type { PlayerStrings } from "@/features/games/GamePlayer";
 import { loadGame } from "@/features/games/loaders";
 import { gameStorage, Overlay, useGameScreen, VOLUME } from "@/features/games/player-parts";
+import { submitRoomResult } from "@/features/games/plays";
 import { fill, resultText, type TurnStrings } from "@/features/games/turn/labels";
 import { send, type Supabase } from "@/lib/supabase/client";
 import type { Json } from "@/lib/supabase/database.gen";
@@ -171,6 +173,8 @@ export function OnlineMatch({
     setResult(over);
     // The host records the end; the room then offers a rematch.
     if (hostRef.current === self) send(supabase.rpc("finish_room", { p_room: roomId }));
+    // Casual: each account reports what it saw; the match counts when the reports agree.
+    if (!isRated && seat !== undefined) submitRoomResult(roomId, seed, over);
     // The players ask the server for the rated result (each its own rating).
     if (isRated && seat !== undefined) {
       setRating("checking");

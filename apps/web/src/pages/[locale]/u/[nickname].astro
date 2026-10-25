@@ -15,6 +15,7 @@ import {
   playerName,
   poolName,
   ratingChange,
+  scoreText,
 } from "@/features/profile/history-text";
 import { fetchPublicProfile } from "@/features/profile/public-profile";
 import AppShell from "@/features/shell/AppShell.astro";
@@ -65,14 +66,20 @@ const date = new Intl.DateTimeFormat(bcp47, { dateStyle: "medium" });
 const games = (history?.matches ?? []).map((match) => {
   const me = match.players.find((p) => p.seat === match.seat);
   const opponent = match.players.find((p) => p.seat !== match.seat);
-  const outcome = outcomeOf(me?.outcome ?? 0.5);
+  const outcome = me?.outcome === null || me === undefined ? null : outcomeOf(me.outcome);
+  const game = gameName(match.gameId, locale);
   return {
     id: match.id,
     outcome,
-    outcomeLabel: outcomeText(t, outcome),
-    versus: t("profile:versus", { name: playerName(t, opponent) }),
+    // A game alone, or a race (each racer's own match), has a score or a time instead.
+    badge: outcome ? outcomeText(t, outcome) : me ? scoreText(t, me, bcp47) : null,
+    title: opponent
+      ? t("profile:versus", {
+          name: playerName(t, opponent, match.rated ? undefined : { bcp47 }),
+        })
+      : game,
     detail: [
-      gameName(match.gameId, locale),
+      opponent ? game : "",
       clockText(t, match.timer, match.pool, bcp47),
       date.format(new Date(match.endedAt)),
     ]
@@ -206,13 +213,15 @@ const facts = profile
                     href={game.href}
                     class="flex items-center gap-3 rounded-2xl border border-border bg-surface p-3 hover:bg-surface-2"
                   >
-                    <span
-                      class={`shrink-0 rounded-full px-2.5 py-0.5 text-sm font-semibold ${OUTCOME_CLASS[game.outcome]}`}
-                    >
-                      {game.outcomeLabel}
-                    </span>
+                    {game.badge && (
+                      <span
+                        class={`shrink-0 rounded-full px-2.5 py-0.5 text-sm font-semibold ${OUTCOME_CLASS[game.outcome ?? "draw"]}`}
+                      >
+                        {game.badge}
+                      </span>
+                    )}
                     <span class="grid min-w-0 flex-1">
-                      <span class="truncate font-semibold">{game.versus}</span>
+                      <span class="truncate font-semibold">{game.title}</span>
                       <span class="truncate text-sm text-muted">{game.detail}</span>
                     </span>
                     {game.change && (

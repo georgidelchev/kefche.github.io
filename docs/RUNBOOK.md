@@ -75,7 +75,19 @@ Players ask the Edge Function `submit-match` for a rated game's result when it e
 
 A new Edge Function, or a change to `config.toml`, needs that restart locally too: the running edge runtime only serves the functions it found at start ("Function not found" otherwise).
 
-**Games set aside:** a game that doesn't hold up is stored with `matches.status = 'review'` and counts for nothing (no rating, stats or leaderboard). That covers a rated game whose record holds an illegal move or junk, and an account's own game whose replay doesn't give the claimed result (`replay-mismatch`), whose config or log is invalid (`bad-config`, `bad-log`), or whose times can't be right (`time-mismatch`, `too-fast`; `_shared/solo-play.ts`). The admin panel lists them in Phase 14; until then, `select id, game_id, reason, ended_at from public.matches where status = 'review' order by ended_at desc;`, and the moves are in `private.match_logs` for 90 days.
+**Games set aside:** a game that doesn't hold up is stored with `matches.status = 'review'` and counts for nothing (no rating, stats or leaderboard). That covers:
+
+- a rated game whose record holds an illegal move or junk;
+- an account's own game, alone, against bots or on one device, or a racer's moves, when:
+  - the replay doesn't give the claimed result (`replay-mismatch`);
+  - the setup or the moves are invalid (`bad-config`, `bad-log`), or the game isn't over (`not-finished`);
+  - the times can't be right (`time-mismatch`, `too-fast`).
+
+  The checks are in `_shared/solo-play.ts`, `turn-play.ts` and `room-play.ts`.
+
+- an online casual game whose players reported different results (`reports-differ`). Each account in a seat reports what it saw (`private.room_reports`, kept 2 days). The match is decided once every account has reported, or by `pg_cron` (`decide-room-matches`, every minute) two minutes after the first report. To see reports still waiting: `select seed, game_id, count(*), min(created_at) from private.room_reports where match_id is null group by seed, game_id;`.
+
+The admin panel lists them in Phase 14; until then, `select id, game_id, reason, ended_at from public.matches where status = 'review' order by ended_at desc;`, and the moves are in `private.match_logs` for 90 days.
 
 **Rated matchmaking:** `private.match_queue` holds who is searching which clock. `pg_cron` (`forget-match-queue`, every 10 minutes) drops searches nobody has asked about for a minute, and pairings after an hour, which feed the estimated wait. To see the queue: `select game_id, timer, pool, round(rating), now() - created_at as waiting, room_id is not null as paired from private.match_queue order by created_at;`. A new rated clock goes into a game's manifest (`rated.pools`) and into `private.rated_clocks` through a new migration: the server only pairs clocks listed there.
 

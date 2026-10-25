@@ -76,7 +76,17 @@ export function createPlayRecorder(now: () => number = () => performance.now()):
         return {
           ...base,
           mode: match.mode,
-          seats: match.seats.map((seat) => seat.kind),
+          config: turns.config ?? null,
+          timer: match.timer,
+          seats: match.seats.map((seat) =>
+            seat.kind === "human"
+              ? { kind: "human" }
+              : {
+                  kind: "bot",
+                  difficulty: seat.difficulty,
+                  ...(seat.level === undefined ? {} : { level: seat.level }),
+                },
+          ),
           moves: turns.moves,
           ...(turns.timedOut === undefined ? {} : { timedOut: turns.timedOut }),
         };

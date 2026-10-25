@@ -37,6 +37,8 @@ export interface TurnEngine {
   currentSeats(state: unknown): number[];
   result(state: unknown): GameResult | null;
   sideActions?(state: unknown, seat: number): unknown[];
+  /** The result when `seat` runs out of time (chess: a draw if nobody can mate). */
+  timeoutResult?(state: unknown, seat: number): GameResult;
 }
 
 /** A setting a single-player game is played with (the manifest's raceOptions). */
@@ -45,9 +47,23 @@ export interface GameOption {
   values: { value: string | number | boolean }[];
 }
 
+/** A timer preset (the manifest's TimerPreset). Values in seconds. */
+export type TimerPreset =
+  | { kind: "none" }
+  | { kind: "per-move"; seconds: number; onExpiry: "pass" | "random-move" | "loss" }
+  | { kind: "clock"; base: number; increment: number }
+  | { kind: "countdown"; seconds: number };
+
 /** What the server checks a game's results with, from its manifest. */
 interface Rules {
   version: number;
+  modes: readonly string[];
+  players: { min: number; max: number };
+  timers: readonly TimerPreset[];
+  /** Online, an away player's clock runs on ("clock"), so rooms use only clocks. */
+  awayPlayers: "skip" | "clock";
+  /** The timer a new room starts with (an index into `timers`). */
+  onlineTimer: number | null;
   options: readonly GameOption[];
   /** The most actions a person makes in a second, when the manifest says. */
   maxActionsPerSecond: number | null;
@@ -59,6 +75,11 @@ export type ServerGame =
 interface BundledManifest {
   kind: "race" | "turn";
   version: number;
+  modes: string[];
+  players: { min: number; max: number };
+  timers: TimerPreset[];
+  awayPlayers?: "skip" | "clock";
+  onlineTimer?: number;
   raceOptions?: GameOption[];
   scoreValidation: { kind: string; maxActionsPerSecond?: number };
 }
@@ -69,6 +90,11 @@ export const GAMES: ReadonlyMap<string, ServerGame> = new Map(
     const m = manifest as BundledManifest;
     const rules: Rules = {
       version: m.version,
+      modes: m.modes,
+      players: { min: m.players.min, max: m.players.max },
+      timers: m.timers,
+      awayPlayers: m.awayPlayers ?? "skip",
+      onlineTimer: m.onlineTimer ?? null,
       options: m.raceOptions ?? [],
       maxActionsPerSecond: m.scoreValidation.maxActionsPerSecond ?? null,
     };

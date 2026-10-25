@@ -14,6 +14,7 @@ import {
   outcomeText,
   playerName,
   ratingChange,
+  scoreText,
 } from "@/features/profile/history-text";
 import { MatchAnalysis } from "@/features/profile/MatchAnalysis";
 import AppShell from "@/features/shell/AppShell.astro";
@@ -58,19 +59,21 @@ const name = match ? gameName(match.gameId, locale) : "";
 const SEAT_KEYS = ["seat0", "seat1"] as const;
 const seatLabel = (seat: number) =>
   ui[SEAT_KEYS[seat] ?? ""] ?? t("profile:game.player", { n: (seat + 1).toLocaleString(bcp47) });
+const unrated = match?.rated ? undefined : { bcp47 };
 const players = (match?.players ?? []).map((player) => {
-  const outcome = outcomeOf(player.outcome);
+  const outcome = player.outcome === null ? null : outcomeOf(player.outcome);
   const before = player.ratingBefore;
   const after = player.ratingAfter;
   const change = ratingChange(player, bcp47);
   return {
     seat: seatLabel(player.seat),
-    name: playerName(t, player),
+    name: playerName(t, player, unrated),
     href: player.nickname
       ? getRelativeLocaleUrl(locale, `/u/${encodeURIComponent(player.nickname)}/`)
       : null,
     outcome,
-    outcomeLabel: outcomeText(t, outcome),
+    // A game alone, or a racer's own match, has a score or a time instead.
+    badge: outcome ? outcomeText(t, outcome) : scoreText(t, player, bcp47),
     rating:
       before !== null && after !== null && change !== null
         ? t("profile:game.rating", {
@@ -81,9 +84,9 @@ const players = (match?.players ?? []).map((player) => {
         : null,
   };
 });
-const title = match
-  ? t("profile:game.title", { a: players[0]?.name ?? "", b: players[1]?.name ?? "" })
-  : "";
+// "A vs B", "A vs B vs C"; one player alone is just their name.
+const names = players.map((player) => player.name);
+const title = names.slice(1).reduce((a, b) => t("profile:game.title", { a, b }), names[0] ?? "");
 const ended = match
   ? new Intl.DateTimeFormat(bcp47, { dateStyle: "long", timeStyle: "short" }).format(
       new Date(match.endedAt),
@@ -152,11 +155,13 @@ const OUTCOME_CLASS = {
           <li class="grid gap-2 rounded-2xl border border-border bg-surface p-4">
             <div class="flex flex-wrap items-center gap-2">
               <span class="text-sm text-muted">{player.seat}</span>
-              <span
-                class={`rounded-full px-2.5 py-0.5 text-sm font-semibold ${OUTCOME_CLASS[player.outcome]}`}
-              >
-                {player.outcomeLabel}
-              </span>
+              {player.badge && (
+                <span
+                  class={`rounded-full px-2.5 py-0.5 text-sm font-semibold ${OUTCOME_CLASS[player.outcome ?? "draw"]}`}
+                >
+                  {player.badge}
+                </span>
+              )}
             </div>
             {player.href ? (
               <a

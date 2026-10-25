@@ -1,7 +1,8 @@
 // Server-side reads of game history for Worker-rendered pages (SPEC §7.2,
 // §12.2): a player's ratings and recent games for their public profile, and
 // one finished game for its own page. Public data only, read with the
-// publishable key (only counted matches are readable).
+// publishable key (only counted matches are readable). Every mode is here
+// since Phase 7: alone, against bots, online and races.
 import { z } from "zod";
 
 import { timerPresetSchema } from "@kefche/game-sdk/manifest-schema";
@@ -10,9 +11,17 @@ import type { PublicEnv } from "@/lib/env";
 
 const playerSchema = z.object({
   seat: z.number().int(),
-  /** Null once the player's account is deleted. */
+  /**
+   * Null for a seat without an account: a bot, a guest, a second player on
+   * one device, or an account since deleted.
+   */
   nickname: z.string().nullable(),
-  outcome: z.number(),
+  /** 1 win, 0.5 draw, 0 loss; null for a game played alone or in a race. */
+  outcome: z.number().nullable(),
+  score: z.number().nullable().default(null),
+  timeMs: z.number().nullable().default(null),
+  /** The bot's difficulty, for a bot's seat. */
+  bot: z.enum(["easy", "medium", "hard"]).nullable().default(null),
   ratingBefore: z.number().nullable(),
   ratingAfter: z.number().nullable(),
 });
@@ -21,6 +30,7 @@ export type MatchPlayer = z.infer<typeof playerSchema>;
 const matchSummarySchema = z.object({
   id: z.uuid(),
   gameId: z.string(),
+  rated: z.boolean(),
   pool: z.string().nullable(),
   timer: timerPresetSchema,
   reason: z.string(),

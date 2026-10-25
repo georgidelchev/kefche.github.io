@@ -62,8 +62,8 @@ export interface SoloVerdict {
 /** Grace for network delay and the two clocks. */
 export const TIME_GRACE_MS = 5000;
 /** A game's own clock (Snake's ticks) may run this much fast. */
-const CLOCK_SLACK = 0.95;
-const MAX_ACTIONS = 200_000;
+export const CLOCK_SLACK = 0.95;
+export const MAX_ACTIONS = 200_000;
 
 /** The config if it's one the game offers: every option set to one of its values, nothing else. */
 function checkConfig(

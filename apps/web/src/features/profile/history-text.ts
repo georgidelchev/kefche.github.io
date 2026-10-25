@@ -47,13 +47,52 @@ export function outcomeText(t: AppT, outcome: Outcome): string {
   }
 }
 
-export const playerName = (t: AppT, player: MatchPlayer | undefined): string =>
-  player?.nickname ?? t("profile:deletedPlayer");
+/**
+ * A seat's name: the nickname, or the bot ("Bot, Medium"). A rated game's
+ * players all had accounts, so a seat without one is a deleted account; in
+ * an `unrated` game it's "Player n" (a guest, or a second player on one
+ * device).
+ */
+export function playerName(
+  t: AppT,
+  player: MatchPlayer | undefined,
+  unrated?: { bcp47: string },
+): string {
+  if (player?.nickname) return player.nickname;
+  if (player?.bot) {
+    const difficulty = {
+      easy: t("games:turn.difficulties.easy"),
+      medium: t("games:turn.difficulties.medium"),
+      hard: t("games:turn.difficulties.hard"),
+    }[player.bot];
+    return t("games:turn.botBadge", { difficulty });
+  }
+  if (player && unrated) {
+    return t("profile:game.player", { n: (player.seat + 1).toLocaleString(unrated.bcp47) });
+  }
+  return t("profile:deletedPlayer");
+}
+
+/** "m:ss" or "h:mm:ss" (the SDK's formatDuration lives in its browser-only entry). */
+function durationText(ms: number): string {
+  const seconds = Math.floor(ms / 1000);
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = String(seconds % 60).padStart(2, "0");
+  return h > 0 ? `${String(h)}:${String(m).padStart(2, "0")}:${s}` : `${String(m)}:${s}`;
+}
+
+/** A result with no win or loss (alone, or in a race): "Score 1,240", else "Time 4:05". */
+export function scoreText(t: AppT, player: MatchPlayer, bcp47: string): string | null {
+  if (player.score !== null) return t("games:score", { score: player.score.toLocaleString(bcp47) });
+  if (player.timeMs !== null) return t("games:time", { time: durationText(player.timeMs) });
+  return null;
+}
 
 /**
  * How a game ended, in the game's own words (its "ui" strings, as at the
  * board): "Checkmate. AliceR wins." Empty for a reason the game doesn't
- * describe. Phase 6 stores chess; other games' endings come with Phase 7.
+ * describe (every game but rated chess, so far).
  */
 export function endingText(
   t: AppT,
@@ -61,8 +100,8 @@ export function endingText(
   reason: string,
   players: readonly MatchPlayer[],
 ): string {
-  const winner = players.find((p) => p.outcome >= 1);
-  const loser = players.find((p) => p.outcome <= 0);
+  const winner = players.find((p) => p.outcome !== null && p.outcome >= 1);
+  const loser = players.find((p) => p.outcome !== null && p.outcome <= 0);
   const say = (key: string, player?: MatchPlayer) =>
     (ui[key] ?? "").replaceAll("{name}", playerName(t, player));
   switch (reason) {

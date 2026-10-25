@@ -1,39 +1,11 @@
 // The server's verdict on single-player games, on the recorded fixtures.
 // Run: deno test _shared/solo-play.test.ts
-import { canonicalJson, GAMES, type ServerGame } from "./engines.ts";
-import fixtures from "./engines.fixtures.json" with { type: "json" };
 import { judgeSolo, type IssuedPlay, type SoloRecord } from "./solo-play.ts";
-
-interface Fixture {
-  id: string;
-  version: number;
-  config: unknown;
-  seed: string;
-  actions?: unknown[];
-  expected: { result: { score?: number; completed: boolean } };
-}
-
-/** The race log format without runs: each action's dictionary index, in base 36. */
-function pack(actions: readonly unknown[]) {
-  const dict: unknown[] = [];
-  const index = new Map<string, number>();
-  const runs = actions.map((action) => {
-    const key = canonicalJson(action);
-    let i = index.get(key);
-    if (i === undefined) {
-      i = dict.length;
-      index.set(key, i);
-      dict.push(action);
-    }
-    return i.toString(36);
-  });
-  return { dict, runs: runs.join(".") };
-}
+import { equal, fixture, pack } from "./test-utils.ts";
 
 function setup(id: string, playedForMs = 600_000) {
-  const f = (fixtures as Fixture[]).find((x) => x.id === id);
-  const game = GAMES.get(id);
-  if (!f?.actions || game?.kind !== "race") throw new Error(`${id} fixture`);
+  const { f, game } = fixture(id, "race");
+  if (!f.actions) throw new Error(`${id} actions`);
   const now = new Date("2026-10-25T12:00:00Z");
   const play: IssuedPlay = { seed: f.seed, startedAt: new Date(now.getTime() - playedForMs), now };
   const record: SoloRecord = {
@@ -46,13 +18,7 @@ function setup(id: string, playedForMs = 600_000) {
     result: f.expected.result,
     durationMs: playedForMs - 10_000,
   };
-  return { game: game as Extract<ServerGame, { kind: "race" }>, play, record, fixture: f };
-}
-
-function equal(actual: unknown, wanted: unknown, what: string) {
-  if (canonicalJson(actual) !== canonicalJson(wanted)) {
-    throw new Error(`${what}: ${canonicalJson(actual)}, expected ${canonicalJson(wanted)}`);
-  }
+  return { game, play, record, fixture: f };
 }
 
 Deno.test("honest games count, with the replay's score", () => {

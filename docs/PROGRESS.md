@@ -1005,12 +1005,52 @@ Online modes are enabled for the Phase 4 games.
     - Clicking hints at machine speed got that Sudoku set aside as `too-fast`, as intended; the test now clicks at a person's pace.
     - Rated matchmaking 20/20 again.
   - **Still to check:** that the hosted deploy carries the engine bundle. The local edge runtime ran it in every check above. Deploying `submit-match` waits for the owner's word.
+- [x] Step 5: `submit-match` for turn games and rooms (`20261025100700_turn_and_room_results.sql`).
+  - **Against bots and on one device** (`_shared/turn-play.ts`): the record now carries the engine config, the timer and each seat (a person, or a bot and its difficulty). The server replays every move on the play's seed: each must be one the engine offered that seat then. The end must be the result claimed.
+    - A loss on time counts only if the game wasn't over, it was that seat's turn, there was a timer, and the play lasted at least the seat's starting time.
+    - Against bots, the human's result goes into their stats.
+    - On one device, the game counts as played only: no win, loss or draw, and the win streak stays as it was, since nobody knows which seat the account holder sat in.
+    - The bot's seat is stored with its difficulty (`match_participants.bot`).
+  - **Online, casual:** only the host's browser holds the moves, so each account in a seat sends the result it saw, and the server checks the reporter sits in that room's current match (its seed). The match counts once every account in a seat has reported and the reports agree, for the players who reported. Reports that differ send it to review (`reports-differ`). With one account and a guest, the account's report decides it at once. Otherwise `pg_cron` (`decide-room-matches`) decides it two minutes after the first report, with the reports it has. Reports are kept 2 days.
+  - **Races** (`_shared/room-play.ts`): each racer's moves go to the server as they go to the host, and are replayed on the room's seed with the room's options, which the server works out as the browser does (unknown values fall back to the defaults). The time is the server's, from the race's start to the report, within the time limit. An unfinished game counts only once the time is up, and a hint in a race log sends it to review. Each racer's result is a match of its own (mode `race`). The standings stay the host's.
+  - **Once only:** a resent record or report gives back the stored match, as stored.
+  - **History and game pages for every mode:** since step 4, a game played alone (no outcome) made a player's whole history unreadable. Their profile lost its ratings and recent games, and a solo game's own page answered 503. Both read every mode now:
+    - a bot is named "Bot, Medium";
+    - a seat without an account in an unrated game is "Player n";
+    - a game with no win or loss shows its score or time;
+    - a game alone is titled with the player's name.
+  - **Privacy notice:** the games entry, in all 11 languages, now covers rooms and races: the moves of games on the device and of races kept 90 days, and an online room's reported result kept 2 days.
+  - **Dev server:** `astro check` was also clearing the dev server's dependency cache, so pages failed to load supabase-js mid-session. Every command but `dev` now uses its own cache (a separate commit).
+  - **Checks:**
+    - Deno 37/37. The 9 new tests are:
+      - against a bot, the human's result counts;
+      - on one device, the game counts with no seat of the account's;
+      - a move out of turn, a result the moves don't give, and an unfinished game;
+      - a loss on time: the right seat, enough time, and a clock to run out;
+      - setups the game doesn't offer;
+      - the room's timer and options, as the browser works them out;
+      - a race timed by the server and capped at the limit;
+      - an unfinished race game before and after the time is up;
+      - a hint, junk and Snake's ticks too fast.
+    - End to end, 33/33:
+      - Four in a Row against a bot and on one device;
+      - two accounts online, agreeing;
+      - an account with a guest, who sends nothing;
+      - the two-minute decision, and reports that differ;
+      - a 2048 race between two accounts;
+      - resent reports, and refusals of a stranger, a stale seed, a guest, a wrong-sized outcome and a race report for a turn game.
+    - Step 4's 19/19, rated endings 21/21, rated matchmaking 20/20 and the history pages 16/16 again.
+    - The profile and the race, bot and online game pages at 360, 768 and 1280 px in both themes: no sideways scroll, axe clean, 48/48.
+  - **Still to check:** the hosted deploy, as in step 4.
 
 ---
 
 ## Known issues
 
 - **A continued Sudoku isn't recorded (Phase 7):** a saved puzzle finished on a later visit has no log from its start, so the server can't replay it, and it counts for nothing beyond the device's own best times. Saving the log with the game would fix it.
+- **Online casual results are taken on the players' word (Phase 7):** the server compares what the players report, but holds no moves to replay: only the host's browser has them. A result one account reports alone (against a guest, or after the other left) counts unchecked, like a game against bots (Q1), and casual results reach no leaderboard. Sending the host's moves along with its report would let the server replay them.
+- **Leaving a match early records nothing (Phase 7):** a player who leaves an online match before its end never reports, so the match doesn't count for them, and `player_game_stats.abandons` stays at 0. Recording abandons needs the server to know when a match ends without the leaver's word.
+- **Race placings aren't stored (Phase 7):** each racer's result is its own match, and the room's standings (who came first) stay the host's. A placing could be worked out from the matches that share a race's seed.
 
 - **Rated no-shows aren't aborted yet (Phase 6):** a rated player who never makes a first move (paired just as their tab closed) loses on time, and the opponent waits until that clock runs out. The usual fix is to abort, unrated, a game in which a side hasn't moved within about 30 s: `submit-match`, the host's runtime and the result screen would all need to know an "aborted" ending. Searchers are passed over after 6 s of silence, which keeps this rare.
 

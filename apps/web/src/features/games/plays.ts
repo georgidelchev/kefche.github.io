@@ -6,10 +6,12 @@
 // Guests' games stay on their device (owner decision 2026-10-25), so nothing
 // is asked for them and supabase-js isn't loaded. The player keeps the next
 // play ready, asked for in the background, so a game never waits for the
-// network. A game started without one isn't recorded.
+// network. A game started without one isn't recorded. In a room, the room's
+// seed stands in for a play: each account reports its online match's result
+// (`submitRoomResult`) or its race's moves (`submitRaceLog`).
 import * as z from "zod/mini";
 
-import type { GameResult, PackedLog, TurnMove } from "@kefche/game-sdk";
+import type { BotDifficulty, GameResult, PackedLog, TimerPreset, TurnMove } from "@kefche/game-sdk";
 
 import { localStorageOrUndefined } from "@/features/account/account-state";
 import { readAccountSummary } from "@/features/account/account-summary";
@@ -90,21 +92,40 @@ export type PlayRecord = {
       log: PackedLog;
     }
   | {
-      /** Turn games on this device: who sat where, the moves and any loss on time. */
+      /** Turn games on this device: the setup, the moves and any loss on time. */
       mode: "solo-bots" | "hotseat";
-      seats: ("human" | "bot")[];
+      config: unknown;
+      timer: TimerPreset;
+      seats: ({ kind: "human" } | { kind: "bot"; difficulty: BotDifficulty; level?: number })[];
       moves: TurnMove<unknown>[];
       timedOut?: number;
     }
 );
 
 /**
- * Sends a finished game for the server to replay and count. Failures are
- * dropped: the game was played either way, and the results screen doesn't
- * wait for this.
+ * Sends a finished game, or a room's result, for the server to check and
+ * count. Failures are dropped: the game was played either way, and the
+ * results screen doesn't wait for this.
  */
-export async function submitPlay(record: PlayRecord): Promise<void> {
+async function submit(body: Record<string, unknown>): Promise<void> {
   const supabase = await getSupabase();
   if (!supabase) return;
-  await supabase.functions.invoke("submit-match", { body: { play: record } }).catch(() => null);
+  await supabase.functions.invoke("submit-match", { body }).catch(() => null);
+}
+
+export const submitPlay = (record: PlayRecord) => submit({ play: record });
+
+/**
+ * An online casual game's result as this account saw it. The match counts
+ * when every account in it reports the same (rated games have their own way).
+ */
+export function submitRoomResult(roomId: string, seed: string, result: GameResult): void {
+  if (!isAccount()) return;
+  const { completed, outcome } = result;
+  void submit({ room: { roomId, seed, result: { completed, ...(outcome ? { outcome } : {}) } } });
+}
+
+/** This account's moves in a race, for the server to replay on the room's seed. */
+export function submitRaceLog(roomId: string, seed: string, log: PackedLog): void {
+  if (isAccount()) void submit({ race: { roomId, seed, log } });
 }

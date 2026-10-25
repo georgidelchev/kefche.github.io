@@ -11,6 +11,8 @@
 //   the time is up, then offers a rematch.
 // - If the host goes away, the first seated member here takes over, and
 //   everyone who finished sends their moves again.
+// - Accounts also send their moves to submit-match, which replays them for
+//   their stats (Phase 7); the standings stay the host's.
 // - Everyone counts down on the database's clock (`server_time`), and the
 //   game is loaded during the countdown, so all start at the same moment.
 import { LoaderCircle, LogOut, Trophy, Volume2, VolumeX } from "lucide-react";
@@ -37,6 +39,7 @@ import type { PlayerStrings } from "@/features/games/GamePlayer";
 import { loadGame, loadRaceEngine } from "@/features/games/loaders";
 import type { RaceSetup } from "@/features/games/page-props";
 import { gameStorage, Overlay, useGameScreen, VOLUME } from "@/features/games/player-parts";
+import { submitRaceLog } from "@/features/games/plays";
 import { fill } from "@/features/games/turn/labels";
 import { send, type Supabase } from "@/lib/supabase/client";
 
@@ -209,12 +212,17 @@ export function RaceMatch({
   const sentRef = useRef("");
   const pendingRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  /** The moves so far, to the host now (once per host). */
+  /** The moves so far, to the host now (once per host), and once to the server. */
+  const reportedRef = useRef(false);
   const sendFinish = useEffectEvent(() => {
     const local = localRef.current;
     if (!local || !seated || host === null || sentToRef.current === host) return;
     sentToRef.current = host;
     const log = packActions(local.actions);
+    if (!reportedRef.current) {
+      reportedRef.current = true;
+      submitRaceLog(roomId, seed, log);
+    }
     if (host === self) hostCheck(self, log);
     else transport.send(host, message("finish", { log }));
   });

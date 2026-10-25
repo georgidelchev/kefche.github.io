@@ -92,10 +92,11 @@ export interface PlayLog {
 }
 
 /**
- * A finished turn game's moves as played (after any undo), and the seat that
- * ran out of time, if one did: enough to replay it (Phase 7).
+ * A finished turn game's engine config and moves as played (after any undo),
+ * and the seat that ran out of time, if one did: enough to replay it (Phase 7).
  */
 export interface TurnRecord {
+  config: unknown;
   moves: TurnMove<unknown>[];
   timedOut?: number;
   /** False when this browser took the match over midway (online): earlier moves are missing. */

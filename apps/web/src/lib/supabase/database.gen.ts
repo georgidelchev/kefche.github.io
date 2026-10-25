@@ -63,14 +63,14 @@ export type Database = {
                   ]
                 },"match_participants": {
                   Row: {
-                    "assisted": boolean,"match_id": string,"outcome": number | null,"placement": number | null,"rating_after": number | null,"rating_before": number | null,"score": number | null,"seat": number,"time_ms": number | null,"user_id": string | null
+                    "assisted": boolean,"bot": string | null,"match_id": string,"outcome": number | null,"placement": number | null,"rating_after": number | null,"rating_before": number | null,"score": number | null,"seat": number,"time_ms": number | null,"user_id": string | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "assisted"?: boolean,"match_id": string,"outcome"?: number | null,"placement"?: number | null,"rating_after"?: number | null,"rating_before"?: number | null,"score"?: number | null,"seat": number,"time_ms"?: number | null,"user_id"?: string | null
+                    "assisted"?: boolean,"bot"?: string | null,"match_id": string,"outcome"?: number | null,"placement"?: number | null,"rating_after"?: number | null,"rating_before"?: number | null,"score"?: number | null,"seat": number,"time_ms"?: number | null,"user_id"?: string | null
                   }
                   Update: {
-                    "assisted"?: boolean,"match_id"?: string,"outcome"?: number | null,"placement"?: number | null,"rating_after"?: number | null,"rating_before"?: number | null,"score"?: number | null,"seat"?: number,"time_ms"?: number | null,"user_id"?: string | null
+                    "assisted"?: boolean,"bot"?: string | null,"match_id"?: string,"outcome"?: number | null,"placement"?: number | null,"rating_after"?: number | null,"rating_before"?: number | null,"score"?: number | null,"seat"?: number,"time_ms"?: number | null,"user_id"?: string | null
                   }
                   Relationships: [
                     {
@@ -481,6 +481,12 @@ isOneToOne: false
                            },
 "room_relay":
 { Args: { "p_message": Json,"p_room": string }; Returns: undefined
+                           },
+"room_report_load":
+{ Args: { "p_room": string,"p_seed": string,"p_user": string }; Returns: Json
+                           },
+"room_report_record":
+{ Args: { "p_report": Json,"p_seed": string,"p_user": string }; Returns: Json
                            },
 "send_room_message":
 { Args: { "p_body": string,"p_room": string }; Returns: {

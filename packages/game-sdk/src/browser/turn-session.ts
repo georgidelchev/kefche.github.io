@@ -267,6 +267,7 @@ export function createTurnSession<State, Action, Config>(
         type: "finish",
         result: over,
         turns: {
+          config,
           moves,
           ...(timedOut === undefined ? {} : { timedOut }),
           complete: resumed === undefined,
