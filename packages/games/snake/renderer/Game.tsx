@@ -3,8 +3,8 @@
 // on touch screens). The game waits for the first direction before moving.
 // In a race (context.race) the room's settings skip the menu, the snake
 // sets off at once (everyone starts together) and keeps going while the tab
-// is hidden (the race's clock doesn't stop), and every tick and turn is
-// recorded.
+// is hidden (the race's clock doesn't stop). In every mode each tick and
+// turn is recorded (context.log), for races and the server's replay.
 import { useEffect, useRef, useState } from "react";
 
 import {
@@ -187,6 +187,7 @@ function Board({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     let state: State = engine.initialState(config, seed);
+    context.log?.begin(config);
     // The state before the last step: frames between steps glide from it.
     let previous = state;
     let started = false;
@@ -314,7 +315,7 @@ function Board({
         }
         const eaten = state.eaten;
         previous = state;
-        context.race?.record({ type: "tick" });
+        context.log?.record({ type: "tick" });
         state = engine.apply(state, { type: "tick" });
         loop.setStep(stepMs(state));
         if (state.eaten !== eaten) {
@@ -336,7 +337,7 @@ function Board({
     const turn = (direction: Direction) => {
       if (handle.paused || state.over) return;
       const before = state;
-      context.race?.record({ type: "turn", direction });
+      context.log?.record({ type: "turn", direction });
       state = engine.apply(state, { type: "turn", direction });
       // Only a turn the snake will take makes a sound.
       if (state !== before) sounds.play("turn");

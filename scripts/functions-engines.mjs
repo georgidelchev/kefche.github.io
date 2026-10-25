@@ -29,6 +29,7 @@ const entry = [
     `import { manifest as m${String(i)} } from "./packages/games/${id}/manifest.ts";`,
   ]),
   'export { canonicalJson } from "./packages/game-sdk/src/engines.ts";',
+  'export { RACE_LOG_LIMITS, unpackActions } from "./packages/game-sdk/src/race-log.ts";',
   "export const GAMES = {",
   ...ids.map(
     (id, i) => `  ${JSON.stringify(id)}: { manifest: m${String(i)}, engine: e${String(i)} },`,
@@ -63,6 +64,11 @@ writeFileSync(
     "// Generated with engines.gen.js: do not edit. Typed in engines.ts.",
     "export declare const GAMES: Readonly<Record<string, { manifest: unknown; engine: unknown }>>;",
     "export declare function canonicalJson(value: unknown): string;",
+    "export declare const RACE_LOG_LIMITS: { readonly dict: number; readonly runs: number };",
+    "export declare function unpackActions(",
+    "  log: { dict: unknown[]; runs: string },",
+    "  maxActions?: number,",
+    "): unknown[] | null;",
     "",
   ].join("\n"),
 );

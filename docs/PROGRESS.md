@@ -873,7 +873,7 @@ Online modes are enabled for the Phase 4 games.
    - Leaderboard entries (all-time and weekly).
    - The daily challenge, Word of the Day and login streaks.
    - RLS throughout. Every write goes through `submit-match` or an RPC.
-3. **Seeds and logs:** a game page asks for a server seed (`start_play`) in the background as it loads, so the start is never held up. Every mode records its action log; races already do. At the end, the log goes to `submit-match`. A game played offline, or started before the seed arrived, counts for the player's own stats but not for leaderboards.
+3. **Seeds and logs:** a game page asks for a server seed (`start_play`) in the background as it loads, so the start is never held up. Every mode records its action log; races already do. At the end, the log goes to `submit-match`. A game played offline, or started before the seed arrived, isn't recorded. _(Changed in step 3 from "counts for the player's own stats": without a play, a resent game can't be told from a new one.)_
 4. **`submit-match` for single-player games** (2048, Sudoku, Snake):
    - It replays the log on the seed and stores the result.
    - Plausibility rules in the manifest (`integrity`): the least time, the most points per second, and a game's duration against the server's own times.
@@ -972,10 +972,22 @@ Online modes are enabled for the Phase 4 games.
     - rated chess still stores as before.
   - The export was called locally, and Deno 22/22.
   - **Privacy notice:** updated in step 4, when results start being recorded.
+- [x] Step 3: seeds and logs.
+  - **Plays:** `start_play` issues a seed to an account, rate-limited to a burst of 30 and then one every 2 s. Guests and visitors are refused. The game page asks for a play as it loads and for the next one as each game starts, so a game never waits. A play takes one result, so a finished game can't be sent twice. A game without a play isn't recorded, a change from the plan, because a resent game couldn't be told from a new one.
+  - **One log in every mode:** single-player games now record through `context.log` in every mode, not `context.race.record` in races only. `begin(config)` marks a new game with the settings it was started with (Sudoku's difficulty, Snake's speed and walls), then `record(action)` logs each action. Races feed their live standings from the same log. The `new:game` race template shows the pattern.
+  - **Turn games:** the finish report carries the moves as played (after any undo), which seat ran out of time, and whether the match was played from its start.
+  - **The record:** the player builds each finished game's record (`play-recorder.ts`): the play, the result, the play time with pauses and menus left out, and either the packed log and config, or the seats and moves. It sends the record to `submit-match`, which accepts it from step 4. A Sudoku continued from an earlier visit isn't recorded, since it wasn't logged from its start (Known issues).
+  - **Checks:**
+    - In the browser, 9/9: Snake twice on two server seeds, an easy Sudoku solved with hints, Four in a Row against the bot, and a guest who asks for nothing and sends nothing.
+    - All four records replay in Deno, with the server's engines and seeds, to exactly the result the browser claimed.
+    - A two-guest 2048 race still relays its scores from the log.
+    - SQL 6/6 on `start_play`, and the recorder 7/7 in Node: pauses and menus left out of the play time, one record per play, nothing without a play or for a continued game.
 
 ---
 
 ## Known issues
+
+- **A continued Sudoku isn't recorded (Phase 7):** a saved puzzle finished on a later visit has no log from its start, so the server can't replay it, and it counts for nothing beyond the device's own best times. Saving the log with the game would fix it.
 
 - **Rated no-shows aren't aborted yet (Phase 6):** a rated player who never makes a first move (paired just as their tab closed) loses on time, and the opponent waits until that clock runs out. The usual fix is to abort, unrated, a game in which a side hasn't moved within about 30 s: `submit-match`, the host's runtime and the result screen would all need to know an "aborted" ending. Searchers are passed over after 6 s of silence, which keeps this rare.
 

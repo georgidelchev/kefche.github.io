@@ -503,6 +503,9 @@ isOneToOne: false
 "set_user_role":
 { Args: { "p_granted": boolean,"p_role": Database["public"]['Enums']["app_role"],"p_user_id": string }; Returns: undefined
                            },
+"start_play":
+{ Args: { "p_game_id": string,"p_game_version": number }; Returns: Json
+                           },
 "start_room":
 { Args: { "p_room": string }; Returns: {
               "allow_spectators": boolean,

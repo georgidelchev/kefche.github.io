@@ -20,7 +20,9 @@ import {
 import { Button } from "@kefche/ui/components/button";
 
 import { loadGame } from "./loaders";
+import { createPlayRecorder } from "./play-recorder";
 import { createLowTimeSound, gameStorage, Overlay, useGameScreen, VOLUME } from "./player-parts";
+import { createPlaySupply, submitPlay } from "./plays";
 import { fill, resultText, seatName, type TurnStrings } from "./turn/labels";
 import {
   loadChoice,
@@ -56,6 +58,8 @@ export interface PlayerStrings {
 
 interface Props {
   id: string;
+  /** The manifest's version: a played game's record names it. */
+  version: number;
   name: string;
   locale: string;
   dir: "ltr" | "rtl";
@@ -70,7 +74,7 @@ type Phase = "idle" | "setup" | "loading" | "playing" | "paused" | "finished" | 
 
 const MODE_ICONS = { "solo-bots": Bot, hotseat: Users } as const;
 
-export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) {
+export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }: Props) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<GameResult | null>(null);
   const [muted, setMuted] = useState(false);
@@ -86,8 +90,22 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
   const overlayActionRef = useRef<HTMLButtonElement>(null);
   const storage = useRef(gameStorage(id)).current;
   const lowTimeSoundRef = useRef<ReturnType<typeof createLowTimeSound> | null>(null);
+  // An account's games run on seeds the server issued, and their records go
+  // back to it (Phase 7): the next play is asked for as the page loads.
+  const [supply] = useState(() => createPlaySupply(id, version));
+  const [recorder] = useState(() => createPlayRecorder());
+  useEffect(() => {
+    supply.prefetch();
+  }, [supply]);
 
   const open = phase !== "idle";
+
+  /** The next game's seed: the ready play's, or a local one (not recorded). */
+  function nextSeed(): string {
+    const play = supply.take();
+    recorder.start(play);
+    return play?.seed ?? randomSeed();
+  }
 
   async function mount(seed: string, setup: MatchSetup | null) {
     instanceRef.current?.destroy();
@@ -111,7 +129,7 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
           reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
         },
         storage,
-        ...(setup ? { match: setup } : {}),
+        ...(setup ? { match: setup } : { log: recorder.log }),
         report: (event) => {
           if (event.type === "turn") {
             setReport((previous) => {
@@ -121,6 +139,8 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
           } else if (event.type === "finish") {
             setResult(event.result);
             setPhase("finished");
+            const record = recorder.finish({ id, version }, event.result, event.turns, setup);
+            if (record) void submitPlay(record);
           }
         },
       });
@@ -162,7 +182,7 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
   function beginMatch() {
     if (!turn || !choice) return;
     saveChoice(storage, mode, choice);
-    const seed = randomSeed();
+    const seed = nextSeed();
     const setup = toMatch(
       choice,
       turn.config,
@@ -176,16 +196,18 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
 
   function pause() {
     instanceRef.current?.pause();
+    recorder.pause();
     setPhase("paused");
   }
   function resume() {
     instanceRef.current?.resume();
+    recorder.resume();
     setPhase("playing");
   }
   function restart() {
     setResult(null);
     setReport(null);
-    instanceRef.current?.restart(randomSeed());
+    instanceRef.current?.restart(nextSeed());
     setPhase("playing");
   }
   function changeSetup() {
@@ -294,7 +316,7 @@ export function GamePlayer({ id, name, locale, dir, strings, ui, turn }: Props) 
         <Button
           size="lg"
           className="w-full sm:w-auto sm:min-w-48"
-          onClick={() => void mount(randomSeed(), null)}
+          onClick={() => void mount(nextSeed(), null)}
         >
           <Play aria-hidden="true" />
           {strings.play}

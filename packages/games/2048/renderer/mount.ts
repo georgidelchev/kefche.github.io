@@ -14,6 +14,8 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
   const sounds = createSounds(context);
   sounds.preload();
   const render = (seed: string) => {
+    // 2048 has no options: every game is the seed alone.
+    context.log?.begin(undefined);
     // A new key (seed) remounts the board with a fresh game.
     root.render(createElement(Game, { key: seed, context, seed, handle, sounds }));
   };

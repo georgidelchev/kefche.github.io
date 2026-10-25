@@ -405,7 +405,7 @@ The Web Push service worker (Phase 8) is still allowed and handles push events o
 
 - **Same game for everyone:** the room's seed and the host's race options (Sudoku's difficulty, Snake's speed and edges) make the engine config, and the manifest's countdowns are the time limits.
 - **A simultaneous start:** `start_room` records `startedAt`, and every browser counts down to `startedAt` + 3 s on the database's clock (`server_time`, the fastest of three round trips), loading the game meanwhile, so a device whose clock is off still starts with the rest.
-- **Live standings:** each game records every action (`context.race.record`). The browser mirrors its own game with the engine and relays its score and progress, at most every 0.5 s and only when they change. The leaderboard lists every player with their avatar and points. Live mini boards of the other players were tried and dropped (owner decision).
+- **Live standings:** each game records every action (`context.race.record`; since Phase 7, `context.log.record`, the same hook in every mode). The browser mirrors its own game with the engine and relays its score and progress, at most every 0.5 s and only when they change. The leaderboard lists every player with their avatar and points. Live mini boards of the other players were tried and dropped (owner decision).
 - **Checked results:** at a finish or when the time runs out, the packed moves go to the host, which replays them on the seed (`checkRace`). Only checked results count. The host relays them, ends the race when everyone has finished or the time is up, and offers a rematch. A new host asks everyone to send again.
 - **A hidden tab doesn't pause a race:** Snake keeps moving, because the race's clock doesn't stop.
 

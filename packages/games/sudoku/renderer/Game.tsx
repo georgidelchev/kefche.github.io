@@ -1,7 +1,8 @@
 // Sudoku board: a difficulty menu (with "continue" for a saved game), then
 // the grid with notes, hints, undo, a mistakes toggle and keyboard entry. In
 // a race (context.race) the room's difficulty starts at once, nothing is
-// saved, hints are off and every action is recorded.
+// saved and hints are off. A new puzzle's every action is recorded
+// (context.log), for races and the server's replay.
 import { useEffect, useEffectEvent, useRef, useState } from "react";
 
 import {
@@ -63,7 +64,7 @@ function raceDifficulty(context: GameContext): Difficulty | null {
 }
 
 export function Game({ context, seed, handle, sounds }: Props) {
-  const { t, storage, race } = context;
+  const { t, storage } = context;
   // In a race the room chose the difficulty: no menu, no saved game, no hints.
   const [racing] = useState(() => raceDifficulty(context));
   const [screen, setScreen] = useState<Screen>(() =>
@@ -96,6 +97,8 @@ export function Game({ context, seed, handle, sounds }: Props) {
     setScreen({ kind: "loading", difficulty });
     newGame(seed, difficulty).then(
       (next) => {
+        // A new puzzle is logged from its start; a continued one can't be.
+        context.log?.begin({ difficulty });
         begin(next, 0);
       },
       () => {
@@ -109,6 +112,7 @@ export function Game({ context, seed, handle, sounds }: Props) {
     if (!racing) return;
     newGame(seed, racing).then(
       (next) => {
+        context.log?.begin({ difficulty: racing });
         begin(next, 0);
       },
       () => {
@@ -125,7 +129,7 @@ export function Game({ context, seed, handle, sounds }: Props) {
     if (racing && action.type === "hint") return;
     const next = engine.apply(state, action);
     if (next === state) return;
-    race?.record(action);
+    context.log?.record(action);
     setState(next);
     const ms = baseMs + watch.elapsed();
     if (isSolved(next)) {

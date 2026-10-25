@@ -109,12 +109,20 @@ import type { GameContext, GameInstance } from "@kefche/game-sdk/browser";
 import { engine, type State } from "../engine";
 
 export function mount(container: HTMLElement, context: GameContext): GameInstance {
-  let state: State = engine.initialState(undefined, context.seed);
+  // Log every game from its start and every action, in order (races and the
+  // server's replay use it).
+  const begin = (seed: string): State => {
+    context.log?.begin(undefined);
+    return engine.initialState(undefined, seed);
+  };
+  let state: State = begin(context.seed);
   const render = () => {
     container.textContent = String(state.moves);
   };
   const onClick = () => {
-    state = engine.apply(state, { type: "move" });
+    const action = { type: "move" } as const;
+    context.log?.record(action);
+    state = engine.apply(state, action);
     render();
   };
   container.addEventListener("click", onClick);
@@ -127,7 +135,7 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
       // Nothing runs on its own yet.
     },
     restart(seed) {
-      state = engine.initialState(undefined, seed);
+      state = begin(seed);
       render();
     },
     destroy() {

@@ -81,6 +81,23 @@ var Rng = class _Rng {
   }
 };
 
+// packages/game-sdk/src/race-log.ts
+var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
+function unpackActions(log, maxActions = 2e5) {
+  if (log.dict.length > RACE_LOG_LIMITS.dict || log.runs.length > RACE_LOG_LIMITS.runs) return null;
+  if (log.runs === "") return [];
+  const out = [];
+  for (const run of log.runs.split(".")) {
+    const match = /^([0-9a-z]+)(?:\*([0-9a-z]+))?$/.exec(run);
+    if (!match?.[1]) return null;
+    const i = parseInt(match[1], 36);
+    const n = match[2] === void 0 ? 1 : parseInt(match[2], 36);
+    if (i >= log.dict.length || n < 1 || out.length + n > maxActions) return null;
+    for (let k = 0; k < n; k++) out.push(log.dict[i]);
+  }
+  return out;
+}
+
 // packages/games/2048/engine/index.ts
 var SIZE = 4;
 var GOAL = 2048;
@@ -4859,5 +4876,7 @@ var GAMES = {
 };
 export {
   GAMES,
-  canonicalJson
+  RACE_LOG_LIMITS,
+  canonicalJson,
+  unpackActions
 };

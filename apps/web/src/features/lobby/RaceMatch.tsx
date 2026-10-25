@@ -348,8 +348,10 @@ export function RaceMatch({
             reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
           },
           storage: gameStorage(game.id),
-          race: {
-            config,
+          race: { config },
+          log: {
+            // The room set the config and seed; the race is the one game.
+            begin: () => undefined,
             record: (action) => {
               const local = localRef.current;
               // After the time limit the moves no longer count.

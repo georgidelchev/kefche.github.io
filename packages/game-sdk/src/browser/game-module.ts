@@ -3,7 +3,7 @@
 // everything inside its container and renders it however it likes (React,
 // Canvas, Pixi). Games never import app code.
 
-import type { GameResult } from "../engines";
+import type { GameResult, TurnMove } from "../engines";
 import type { TimerPreset } from "../manifest";
 import type { Seat } from "../seats";
 import type { Transport } from "../transport";
@@ -77,8 +77,29 @@ export interface OnlineMatch {
 export interface RaceContext {
   /** The game's engine config for this race (e.g. Sudoku's difficulty), from the room. */
   config: unknown;
-  /** Every action the game applies, in order: the standings and the host's replay use them. */
+}
+
+/**
+ * A single-player game's record (games of kind "race", in every mode), so
+ * its result can be checked by replaying it (SPEC §12.5): solo results go to
+ * the server, and a race's standings and the host's check use it too.
+ */
+export interface PlayLog {
+  /** A new game starts on the context's seed (or the last restart's) with this engine config. */
+  begin(config: unknown): void;
+  /** Every action the game applies, in order. */
   record(action: unknown): void;
+}
+
+/**
+ * A finished turn game's moves as played (after any undo), and the seat that
+ * ran out of time, if one did: enough to replay it (Phase 7).
+ */
+export interface TurnRecord {
+  moves: TurnMove<unknown>[];
+  timedOut?: number;
+  /** False when this browser took the match over midway (online): earlier moves are missing. */
+  complete: boolean;
 }
 
 /** What the player's HUD shows for a turn-based match. */
@@ -97,7 +118,7 @@ export type GameEvent =
   | { type: "start" }
   | { type: "score"; score: number }
   | TurnReport
-  | { type: "finish"; result: GameResult };
+  | { type: "finish"; result: GameResult; turns?: TurnRecord };
 
 export interface GameContext {
   locale: string;
@@ -113,6 +134,8 @@ export interface GameContext {
   online?: OnlineMatch;
   /** Set for a race in a room (games of kind "race"). */
   race?: RaceContext;
+  /** Single-player games: where they record each game they play. */
+  log?: PlayLog;
   /** Tells the player about progress; "finish" opens the results screen. */
   report: (event: GameEvent) => void;
 }

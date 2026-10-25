@@ -1,6 +1,6 @@
 // 2048 board: tiles are positioned by row and column with CSS transforms and
-// keyed by id, so slides animate; merges pop and new tiles grow in. In a
-// race (context.race) every action is recorded.
+// keyed by id, so slides animate; merges pop and new tiles grow in. Every
+// action is recorded (context.log), for races and the server's replay.
 import { useEffect, useRef, useState } from "react";
 
 import { HAPTICS, onDirectionKeys, onSwipe, vibrate } from "@kefche/game-sdk/browser";
@@ -33,9 +33,9 @@ export function Game({ context, seed, handle, sounds }: Props) {
   const finishedRef = useRef(false);
   // What the last state already sounded, so undo and re-renders stay quiet.
   const heardRef = useRef({ moves: 0, won: false });
-  // Every action goes through here, so a race records them in order.
+  // Every action goes through here, so the log has them in order.
   const [act] = useState(() => (action: Action) => {
-    context.race?.record(action);
+    context.log?.record(action);
     setState((s) => engine.apply(s, action));
   });
 

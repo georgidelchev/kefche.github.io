@@ -206,6 +206,8 @@ export function createTurnSession<State, Action, Config>(
   let timers = resumed ? { remainingMs: [...resumed.timers] } : createTimers(timer, seats.length);
   /** Set when someone loses on time; the engine doesn't know about clocks. */
   let timeout: GameResult | null = resumed?.timeout ?? null;
+  /** The seat whose time ran out, for the finished game's record. */
+  let timedOut: number | undefined;
   let paused = false;
   let destroyed = false;
   let finished = false;
@@ -261,7 +263,15 @@ export function createTurnSession<State, Action, Config>(
     const over = result();
     if (over && !finished) {
       finished = true;
-      context.report({ type: "finish", result: over });
+      context.report({
+        type: "finish",
+        result: over,
+        turns: {
+          moves,
+          ...(timedOut === undefined ? {} : { timedOut }),
+          complete: resumed === undefined,
+        },
+      });
     }
   };
 
@@ -399,6 +409,7 @@ export function createTurnSession<State, Action, Config>(
       completed: true,
       outcome: seats.map((_, i) => (i === seat ? 0 : 1)),
     };
+    timedOut = seat;
     emit();
   };
 
