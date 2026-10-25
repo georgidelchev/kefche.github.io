@@ -5,6 +5,21 @@ import { defineConfig, fontProviders } from "astro/config";
 
 import { DEFAULT_LOCALE, LOCALES } from "./src/i18n/locales";
 
+import type { AstroIntegration } from "astro";
+
+// A build re-optimizes dependencies into Vite's cache folder. Sharing it with
+// a running dev server deletes the files that server still serves, and every
+// page fails ("The file does not exist at .vite/deps_ssr/…") until it
+// restarts. Builds get a folder of their own.
+const buildCache = {
+  name: "kefche:build-cache",
+  hooks: {
+    "astro:config:setup": ({ command, updateConfig }) => {
+      if (command === "build") updateConfig({ vite: { cacheDir: "node_modules/.vite-build" } });
+    },
+  },
+} satisfies AstroIntegration;
+
 // Self-hosted at build time (no third-party font requests). SPEC §5 / §6.4:
 // one UI face for Latin/Cyrillic/Greek, a display face for headings, and
 // script-specific Noto faces loaded only by the locales that need them.
@@ -30,7 +45,7 @@ export default defineConfig({
   }),
   // Auth sessions live in Supabase, so no Astro sessions and no KV namespace.
   session: false,
-  integrations: [react()],
+  integrations: [react(), buildCache],
   fonts: [
     {
       provider: fontsource,
