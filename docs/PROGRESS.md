@@ -938,6 +938,17 @@ Online modes are enabled for the Phase 4 games.
 ### Status
 
 - [x] Plan approved by owner (2026-10-25, with the answers above)
+- [x] Step 1: the engines on the server.
+  - **The bundle:** `pnpm functions:engines` (esbuild 0.28.2, already in the lockfile through Vite, now pinned at the root) bundles every game's engine and manifest into `supabase/functions/_shared/engines.gen.js`, 127 KB, most of it chess.js. It holds no Zod and nothing from the browser runtime, and builds byte for byte the same each time. CI rebuilds it and fails on any difference.
+  - **For Deno:** `engines.ts` types the bundle (the SDK's types, mirrored) and replays games. `replayRace` runs the actions on the seed. `replayTurn` takes only actions the engine offers that seat at that moment, so a move out of turn, an illegal one, or one after the end is refused.
+  - **Fixtures:** `--fixtures` plays one seeded game of each of the 7 games in Node and stores its result and a SHA-256 of its final state (`engines.fixtures.json`). The players are scripted:
+    - 2048: random slides;
+    - Snake: heads for the food on wrapping edges, 194 actions, score 30;
+    - Sudoku: mistakes put right, until solved;
+    - the turn games: random legal moves, with chess resigning if it runs long.
+  - **Checks:** Deno 2.1.4 (the edge runtime's version) replays all 7 to the same end, 22/22 with the earlier tests. A forged move is refused, and a game without a fixture fails the tests.
+  - **Cost:** replaying 300 moves of chess takes 0.29 s, and generating a Sudoku from its seed at most 29 ms (hard). Both fit within an Edge Function's CPU limit.
+  - **Still to check:** that the hosted deploy carries the bundle. `functions deploy` has no dry run, so this is checked when `submit-match` first imports the engines (step 4).
 
 ---
 

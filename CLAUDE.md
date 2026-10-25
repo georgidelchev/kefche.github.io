@@ -21,6 +21,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 | `pnpm db:start` / `db:stop` / `db:reset` | Local Supabase (needs Docker).                                              |
 | `pnpm db:terms`                          | New migration from the word lists in `supabase/blocked-terms/`.             |
 | `pnpm db:types`                          | Regenerate `apps/web/src/lib/supabase/database.gen.ts` (CI checks drift).   |
+| `pnpm functions:engines [--fixtures]`    | Bundle the game engines for the Edge Functions (CI checks drift).           |
 | `pnpm --filter web run cf:deploy`        | Deploy to Cloudflare Workers (CI does this on `main`).                      |
 
 **Green before every commit:** `pnpm format:check && pnpm lint && pnpm check:contrast && pnpm i18n:check && pnpm typecheck && pnpm build`. The dev-only component gallery is at `/en/dev/ui/` (and `/ar/dev/ui/` for RTL).
@@ -75,6 +76,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
   - **Dependencies:** shared imports live in `supabase/functions/deno.json`, pinned exactly, with `deno.lock` committed. Helpers go in `_shared/`.
   - **Request handling:** verify every token with Supabase Auth, validate input with Zod, return a stable error code, and log details with `log()`.
   - **Checks:** ESLint skips this folder; CI runs `deno lint`, `deno check --frozen` and `deno test --frozen _shared/`. Locally, without Deno: `docker run --rm -v "$PWD/supabase/functions:/fn" -w /fn denoland/deno:2.1.4 sh -c "deno lint && deno check */index.ts && deno test _shared/"`.
+- **Server engines:** Edge Functions replay games with every game's engine and manifest, bundled into `supabase/functions/_shared/engines.gen.js` (typed in `engines.ts`). After changing an engine or a manifest, run `pnpm functions:engines`. If the change alters how a game plays, add `--fixtures` and review the new expected results in `engines.fixtures.json` before committing them. A new game needs a fixture policy in `scripts/functions-engines.mjs`.
 - **Commits:** Conventional Commits, one small focused commit per step.
 
 ## Dependencies

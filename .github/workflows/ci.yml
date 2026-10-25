@@ -57,6 +57,13 @@ jobs:
           git diff --exit-code -- 'packages/games/*/assets/*.svg' \
             || { echo "::error::Game art is stale. Run 'pnpm art:generate' and commit the result."; exit 1; }
 
+      # The Edge Functions replay games with the engines bundled from packages/games.
+      - name: Server engines are up to date
+        run: |
+          pnpm functions:engines
+          git diff --exit-code -- 'supabase/functions/_shared/engines.gen.*' \
+            || { echo "::error::The server engines are stale. Run 'pnpm functions:engines' and commit the result."; exit 1; }
+
       - name: Build
         run: pnpm build
 

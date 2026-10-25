@@ -38,7 +38,11 @@ The games built so far are worked examples. Copy from the one closest to yours:
 7. **Text** (`i18n/<locale>.json`, all 11 locales). Fill in name, tagline, description, about, how to play, controls, tips, FAQ, and the `ui` strings the renderer uses. `pnpm i18n:check` lists every remaining `TODO(new-game)`.
 8. **Art** (`assets/art.mjs`). Draw the sticker emblem with the kit in `scripts/game-art/kit.mjs`, then run `pnpm art:generate` and commit both SVGs.
 9. **Credits** (`CREDITS.md`). List every third-party asset and content source with its licence, or write "No third-party assets."
-10. **Check it.** Run the green checks from `CLAUDE.md`, then play it in `pnpm dev` (see "Verify" below).
+10. **Server replay.** The server checks results by replaying them with the game's own engine.
+    - Add a fixture policy for the game in `scripts/functions-engines.mjs`: a config, plus a plausible next action for a race game.
+    - Run `pnpm functions:engines --fixtures` and commit the bundle and `engines.fixtures.json`.
+    - The Deno tests fail until every game has a fixture.
+11. **Check it.** Run the green checks from `CLAUDE.md`, then play it in `pnpm dev` (see "Verify" below).
 
 ## Checklist
 
@@ -49,6 +53,7 @@ Tick every item before the game ships (SPEC §20). Items marked _(later)_ apply 
 - [ ] Rules complete: legal moves, illegal moves ignored, win, loss, draw and end detection, scoring
 - [ ] Pure engine: all randomness from the SDK `Rng`, time only through actions
 - [ ] Same seed and actions give the same state (`replay()`); `scoreValidation` matches what Phase 7 can check
+- [ ] A fixture in `engines.fixtures.json` (`pnpm functions:engines --fixtures`), replayed by the server's Deno tests
 - [ ] Manifest players, modes, timers and controls match what the game supports
 
 **Play**

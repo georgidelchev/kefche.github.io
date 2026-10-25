@@ -8,3 +8,6 @@ pnpm-lock.yaml
 docs/SPEC.md
 # Third-party builds kept exactly as published (packages/games/*/vendor/README.md).
 **/vendor/
+# Generated for the Edge Functions by `pnpm functions:engines`.
+supabase/functions/_shared/engines.gen.*
+supabase/functions/_shared/engines.fixtures.json

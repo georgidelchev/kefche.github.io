@@ -31,11 +31,13 @@
     "db:reset": "supabase db reset",
     "db:status": "supabase status",
     "db:terms": "node scripts/blocked-terms.mjs",
-    "db:types": "supabase gen types --local --schema public > apps/web/src/lib/supabase/database.gen.ts"
+    "db:types": "supabase gen types --local --schema public > apps/web/src/lib/supabase/database.gen.ts",
+    "functions:engines": "node scripts/functions-engines.mjs"
   },
   "devDependencies": {
     "@formatjs/icu-messageformat-parser": "3.5.22",
     "@kefche/config": "workspace:*",
+    "esbuild": "0.28.2",
     "eslint": "10.13.0",
     "prettier": "3.9.10",
     "sharp": "0.35.5",
