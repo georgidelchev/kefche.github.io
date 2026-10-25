@@ -100,6 +100,18 @@
     "endTimeoutDraw": "Nulle : le temps est écoulé, mais l'autre camp ne peut pas mater.",
     "copyPgn": "Copier le PGN",
     "copied": "Copié",
-    "downloadPgn": "Télécharger le PGN"
+    "downloadPgn": "Télécharger le PGN",
+    "navFirst": "Aller au début",
+    "navPrev": "Coup précédent",
+    "navNext": "Coup suivant",
+    "navLast": "Aller à la fin",
+    "engine": "Analyse du moteur",
+    "engineLoading": "Chargement de Stockfish…",
+    "evaluation": "Évaluation : {score}",
+    "depth": "Profondeur {depth}",
+    "bestLine": "Meilleure ligne : {line}",
+    "mateWhite": "Les Blancs matent en {moves}",
+    "mateBlack": "Les Noirs matent en {moves}",
+    "creditAnalysis": "L'analyse vient de Stockfish 19, un logiciel libre sous GPL-3.0."
   }
 }

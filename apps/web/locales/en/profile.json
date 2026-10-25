@@ -29,6 +29,7 @@
     "copied": "Copied",
     "copyFailed": "Couldn't copy. Select the text and copy it instead.",
     "download": "Download PGN",
-    "unavailable": "We couldn't load this game right now. Please try again in a moment."
+    "unavailable": "We couldn't load this game right now. Please try again in a moment.",
+    "analysis": "Analysis"
   }
 }

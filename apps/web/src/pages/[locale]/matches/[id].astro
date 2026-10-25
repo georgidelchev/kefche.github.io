@@ -15,15 +15,18 @@ import {
   playerName,
   ratingChange,
 } from "@/features/profile/history-text";
+import { MatchAnalysis } from "@/features/profile/MatchAnalysis";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { DEFAULT_LOCALE, isLocale, LOCALE_INFO } from "@/i18n/locales";
 import { getSupabaseEnv } from "@/lib/env";
 
 // A finished game's own page (SPEC §7.2, §12.2): who played, how it ended,
-// the rating changes and the moves as PGN to copy or download. Rendered in
-// the Worker on request; counted games are public (owner decision
-// 2026-10-24), noindex like profiles. Phase 6 step 9 adds the analysis board.
+// the rating changes, the game's analysis view (chess: step through the
+// moves with Stockfish, in the browser) and the moves as PGN to copy or
+// download. Rendered in the Worker on request; counted games are public
+// (owner decision 2026-10-24), noindex like profiles. The analysis is
+// client-only, so no game code reaches the Worker.
 export const prerender = false;
 
 const env = getSupabaseEnv();
@@ -169,6 +172,22 @@ const OUTCOME_CLASS = {
           </li>
         ))}
       </ul>
+
+      {match.pgn && (
+        <section class="grid gap-3" aria-labelledby="analysis-heading">
+          <h2 id="analysis-heading" class="text-2xl">
+            {t("profile:game.analysis")}
+          </h2>
+          <MatchAnalysis
+            client:only="react"
+            gameId={match.gameId}
+            record={match.pgn}
+            ui={ui}
+            locale={bcp47}
+            dir={LOCALE_INFO[locale].dir}
+          />
+        </section>
+      )}
 
       {match.pgn && (
         <section

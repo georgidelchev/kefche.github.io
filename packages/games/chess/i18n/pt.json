@@ -100,6 +100,18 @@
     "endTimeoutDraw": "Empate: o tempo acabou, mas o outro lado não consegue dar xeque-mate.",
     "copyPgn": "Copiar PGN",
     "copied": "Copiado",
-    "downloadPgn": "Baixar PGN"
+    "downloadPgn": "Baixar PGN",
+    "navFirst": "Ir ao início",
+    "navPrev": "Lance anterior",
+    "navNext": "Próximo lance",
+    "navLast": "Ir ao fim",
+    "engine": "Análise do motor",
+    "engineLoading": "Carregando o Stockfish…",
+    "evaluation": "Avaliação: {score}",
+    "depth": "Profundidade {depth}",
+    "bestLine": "Melhor linha: {line}",
+    "mateWhite": "As brancas dão mate em {moves}",
+    "mateBlack": "As pretas dão mate em {moves}",
+    "creditAnalysis": "A análise é do Stockfish 19, software livre sob a GPL-3.0."
   }
 }

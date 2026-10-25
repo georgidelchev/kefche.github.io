@@ -100,6 +100,18 @@
     "endTimeoutDraw": "Реми: времето изтече, но другата страна не може да дава мат.",
     "copyPgn": "Копирай PGN",
     "copied": "Копирано",
-    "downloadPgn": "Изтегли PGN"
+    "downloadPgn": "Изтегли PGN",
+    "navFirst": "Към началото",
+    "navPrev": "Предишен ход",
+    "navNext": "Следващ ход",
+    "navLast": "Към края",
+    "engine": "Анализ с енджин",
+    "engineLoading": "Stockfish се зарежда…",
+    "evaluation": "Оценка: {score}",
+    "depth": "Дълбочина {depth}",
+    "bestLine": "Най-добър вариант: {line}",
+    "mateWhite": "Белите дават мат в {moves}",
+    "mateBlack": "Черните дават мат в {moves}",
+    "creditAnalysis": "Анализът е от Stockfish 19, свободен софтуер под лиценз GPL-3.0."
   }
 }

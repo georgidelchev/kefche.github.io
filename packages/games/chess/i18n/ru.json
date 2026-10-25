@@ -100,6 +100,18 @@
     "endTimeoutDraw": "Ничья: время вышло, но у другой стороны нет материала для мата.",
     "copyPgn": "Копировать PGN",
     "copied": "Скопировано",
-    "downloadPgn": "Скачать PGN"
+    "downloadPgn": "Скачать PGN",
+    "navFirst": "В начало",
+    "navPrev": "Предыдущий ход",
+    "navNext": "Следующий ход",
+    "navLast": "В конец",
+    "engine": "Анализ движком",
+    "engineLoading": "Загружаем Stockfish…",
+    "evaluation": "Оценка: {score}",
+    "depth": "Глубина {depth}",
+    "bestLine": "Лучший вариант: {line}",
+    "mateWhite": "Белые ставят мат в {moves}",
+    "mateBlack": "Чёрные ставят мат в {moves}",
+    "creditAnalysis": "Анализ — Stockfish 19, свободная программа под лицензией GPL-3.0."
   }
 }

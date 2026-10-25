@@ -129,3 +129,23 @@ export interface GameInstance {
 export interface GameModule {
   mount(container: HTMLElement, context: GameContext): GameInstance;
 }
+
+/** What a finished game's analysis view gets: the stored record and the page's language. */
+export interface AnalysisContext {
+  /** The game as stored with the match (chess: PGN). */
+  record: string;
+  locale: string;
+  dir: "ltr" | "rtl";
+  /** The game's own UI strings, as for play. */
+  t: (key: string, values?: Record<string, string | number>) => string;
+  storage: GameStorage;
+}
+
+/**
+ * A game's analysis view for its finished games (chess: step through the
+ * moves with Stockfish's evaluation), exported as `analysis` from
+ * `analysis/index.ts` and loaded lazily by a finished game's page.
+ */
+export interface AnalysisModule {
+  mount(container: HTMLElement, context: AnalysisContext): { destroy(): void };
+}

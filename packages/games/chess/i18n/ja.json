@@ -100,6 +100,18 @@
     "endTimeoutDraw": "引き分け：時間切れですが、相手側にチェックメイトする駒がありません。",
     "copyPgn": "PGNをコピー",
     "copied": "コピーしました",
-    "downloadPgn": "PGNをダウンロード"
+    "downloadPgn": "PGNをダウンロード",
+    "navFirst": "最初へ",
+    "navPrev": "前の手",
+    "navNext": "次の手",
+    "navLast": "最後へ",
+    "engine": "エンジン解析",
+    "engineLoading": "Stockfishを読み込み中…",
+    "evaluation": "評価値：{score}",
+    "depth": "深さ {depth}",
+    "bestLine": "最善手順：{line}",
+    "mateWhite": "白が{moves}手で詰み",
+    "mateBlack": "黒が{moves}手で詰み",
+    "creditAnalysis": "解析は Stockfish 19（GPL-3.0 のフリーソフトウェア）によるものです。"
   }
 }

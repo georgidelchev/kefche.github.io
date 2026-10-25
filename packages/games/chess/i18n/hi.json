@@ -100,6 +100,18 @@
     "endTimeoutDraw": "ड्रॉ: समय ख़त्म हुआ, लेकिन दूसरी ओर मात नहीं दे सकती।",
     "copyPgn": "PGN कॉपी करें",
     "copied": "कॉपी हो गया",
-    "downloadPgn": "PGN डाउनलोड करें"
+    "downloadPgn": "PGN डाउनलोड करें",
+    "navFirst": "शुरुआत पर जाएँ",
+    "navPrev": "पिछली चाल",
+    "navNext": "अगली चाल",
+    "navLast": "अंत पर जाएँ",
+    "engine": "इंजन विश्लेषण",
+    "engineLoading": "Stockfish लोड हो रहा है…",
+    "evaluation": "मूल्यांकन: {score}",
+    "depth": "गहराई {depth}",
+    "bestLine": "सबसे अच्छी लाइन: {line}",
+    "mateWhite": "सफ़ेद {moves} चाल में मात देगा",
+    "mateBlack": "काला {moves} चाल में मात देगा",
+    "creditAnalysis": "विश्लेषण Stockfish 19 से है, जो GPL-3.0 के तहत मुफ़्त सॉफ़्टवेयर है।"
   }
 }

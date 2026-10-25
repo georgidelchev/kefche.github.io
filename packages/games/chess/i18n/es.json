@@ -100,6 +100,18 @@
     "endTimeoutDraw": "Tablas: se acabó el tiempo, pero el otro bando no puede dar mate.",
     "copyPgn": "Copiar PGN",
     "copied": "Copiado",
-    "downloadPgn": "Descargar PGN"
+    "downloadPgn": "Descargar PGN",
+    "navFirst": "Ir al inicio",
+    "navPrev": "Jugada anterior",
+    "navNext": "Jugada siguiente",
+    "navLast": "Ir al final",
+    "engine": "Análisis con motor",
+    "engineLoading": "Cargando Stockfish…",
+    "evaluation": "Evaluación: {score}",
+    "depth": "Profundidad {depth}",
+    "bestLine": "Mejor línea: {line}",
+    "mateWhite": "Las blancas dan mate en {moves}",
+    "mateBlack": "Las negras dan mate en {moves}",
+    "creditAnalysis": "El análisis es de Stockfish 19, software libre bajo la GPL-3.0."
   }
 }

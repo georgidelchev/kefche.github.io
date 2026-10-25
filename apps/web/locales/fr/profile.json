@@ -29,6 +29,7 @@
     "copied": "Copié",
     "copyFailed": "Impossible de copier. Sélectionnez le texte et copiez-le.",
     "download": "Télécharger le PGN",
-    "unavailable": "Impossible de charger cette partie pour le moment. Réessayez dans un instant."
+    "unavailable": "Impossible de charger cette partie pour le moment. Réessayez dans un instant.",
+    "analysis": "Analyse"
   }
 }

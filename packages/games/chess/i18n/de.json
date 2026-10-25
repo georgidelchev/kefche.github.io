@@ -100,6 +100,18 @@
     "endTimeoutDraw": "Remis: Die Zeit ist abgelaufen, aber die andere Seite kann nicht mattsetzen.",
     "copyPgn": "PGN kopieren",
     "copied": "Kopiert",
-    "downloadPgn": "PGN herunterladen"
+    "downloadPgn": "PGN herunterladen",
+    "navFirst": "Zum Anfang",
+    "navPrev": "Vorheriger Zug",
+    "navNext": "Nächster Zug",
+    "navLast": "Zum Ende",
+    "engine": "Engine-Analyse",
+    "engineLoading": "Stockfish wird geladen…",
+    "evaluation": "Bewertung: {score}",
+    "depth": "Tiefe {depth}",
+    "bestLine": "Beste Variante: {line}",
+    "mateWhite": "Weiß setzt matt in {moves}",
+    "mateBlack": "Schwarz setzt matt in {moves}",
+    "creditAnalysis": "Die Analyse stammt von Stockfish 19, freier Software unter der GPL-3.0."
   }
 }

@@ -29,6 +29,7 @@
     "copied": "Kopiert",
     "copyFailed": "Kopieren ging nicht. Markiere den Text und kopiere ihn selbst.",
     "download": "PGN herunterladen",
-    "unavailable": "Diese Partie konnte gerade nicht geladen werden. Versuche es gleich noch einmal."
+    "unavailable": "Diese Partie konnte gerade nicht geladen werden. Versuche es gleich noch einmal.",
+    "analysis": "Analyse"
   }
 }

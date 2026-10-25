@@ -29,6 +29,7 @@
     "copied": "Copiado",
     "copyFailed": "Não foi possível copiar. Selecione o texto e copie.",
     "download": "Baixar PGN",
-    "unavailable": "Não foi possível carregar esta partida agora. Tente de novo em instantes."
+    "unavailable": "Não foi possível carregar esta partida agora. Tente de novo em instantes.",
+    "analysis": "Análise"
   }
 }

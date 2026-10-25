@@ -100,6 +100,18 @@
     "endTimeoutDraw": "تعادل: نفد الوقت، لكن الطرف الآخر لا يستطيع الإماتة.",
     "copyPgn": "نسخ PGN",
     "copied": "تم النسخ",
-    "downloadPgn": "تنزيل PGN"
+    "downloadPgn": "تنزيل PGN",
+    "navFirst": "إلى البداية",
+    "navPrev": "النقلة السابقة",
+    "navNext": "النقلة التالية",
+    "navLast": "إلى النهاية",
+    "engine": "تحليل المحرك",
+    "engineLoading": "جارٍ تحميل Stockfish…",
+    "evaluation": "التقييم: {score}",
+    "depth": "العمق {depth}",
+    "bestLine": "أفضل خط: {line}",
+    "mateWhite": "الأبيض يميت في {moves}",
+    "mateBlack": "الأسود يميت في {moves}",
+    "creditAnalysis": "التحليل من Stockfish 19، وهو برنامج حر بترخيص GPL-3.0."
   }
 }

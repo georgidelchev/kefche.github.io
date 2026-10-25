@@ -100,6 +100,18 @@
     "endTimeoutDraw": "Draw: time ran out, but the other side couldn't checkmate.",
     "copyPgn": "Copy PGN",
     "copied": "Copied",
-    "downloadPgn": "Download PGN"
+    "downloadPgn": "Download PGN",
+    "navFirst": "Go to the start",
+    "navPrev": "Previous move",
+    "navNext": "Next move",
+    "navLast": "Go to the end",
+    "engine": "Engine analysis",
+    "engineLoading": "Loading Stockfish…",
+    "evaluation": "Evaluation: {score}",
+    "depth": "Depth {depth}",
+    "bestLine": "Best line: {line}",
+    "mateWhite": "White mates in {moves}",
+    "mateBlack": "Black mates in {moves}",
+    "creditAnalysis": "The analysis is Stockfish 19, free software under the GPL-3.0."
   }
 }

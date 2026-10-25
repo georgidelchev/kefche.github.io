@@ -100,6 +100,18 @@
     "endTimeoutDraw": "和棋：时间用完，但对方无法将死。",
     "copyPgn": "复制 PGN",
     "copied": "已复制",
-    "downloadPgn": "下载 PGN"
+    "downloadPgn": "下载 PGN",
+    "navFirst": "回到开局",
+    "navPrev": "上一步",
+    "navNext": "下一步",
+    "navLast": "跳到结尾",
+    "engine": "引擎分析",
+    "engineLoading": "正在加载 Stockfish…",
+    "evaluation": "评估：{score}",
+    "depth": "深度 {depth}",
+    "bestLine": "最佳着法：{line}",
+    "mateWhite": "白方 {moves} 步杀",
+    "mateBlack": "黑方 {moves} 步杀",
+    "creditAnalysis": "分析来自 Stockfish 19，GPL-3.0 许可的自由软件。"
   }
 }
