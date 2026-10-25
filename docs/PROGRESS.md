@@ -1043,6 +1043,7 @@ Online modes are enabled for the Phase 4 games.
     - The profile and the race, bot and online game pages at 360, 768 and 1280 px in both themes: no sideways scroll, axe clean, 48/48.
   - **Still to check:** the hosted deploy, as in step 4.
 - **Fix (owner's report):** a host who reloaded an online match started it again from the first move, while the others kept the real game, since only the members' browsers hold the match. Each member's device now saves the latest snapshot of its room's match, cleared at the end. A host who reloads carries on from it, with the mover's clock charged for the wait. Checked in chess: the guest and then the host reloaded after two moves, and play went on with the same position on both sides and the clocks running. Online 33/33, rated endings 21/21 and rated matchmaking 20/20 again. A game against bots or on one device still isn't saved: a reload loses it.
+- **Fix (owner's report):** rated chess couldn't be reached from the chess page. Its "Play online" box offered only casual play (quick match, a new lobby, a code), and those links skip the room page's first screen, the only place the rated clocks were. The box now lists the rated clocks pool by pool, each straight into the rated search (`?rated=`), with the existing strings. Checked: two accounts started from the chess page, were paired in blitz, and both saw the rating change after a resignation (7/7). The chess page in English and Arabic at 360, 768 and 1280 px in both themes: no sideways scroll, axe clean (24/24).
 
 ---
 
