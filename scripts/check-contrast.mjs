@@ -60,6 +60,7 @@ const pairs = [
   ["on-brand-2", "brand-2", TEXT],
   ["on-accent", "accent", TEXT],
   ["on-danger", "danger", TEXT],
+  ["on-success", "success", TEXT],
   ...uiOn("border-strong"),
   ...uiOn("focus"),
   ...uiOn("accent-strong", ["bg", "surface"]),

@@ -38,6 +38,7 @@
   --on-danger: #ffffff;
   --warning: #a14a06;
   --success: #15803d;
+  --on-success: #ffffff;
   --info: #0369a1;
 
   /*
@@ -112,6 +113,7 @@
     --on-danger: #0e1220;
     --warning: #fbbf24;
     --success: #4ade80;
+    --on-success: #0e1220;
     --info: #38bdf8;
   }
 }
@@ -142,5 +144,6 @@
   --on-danger: #0e1220;
   --warning: #fbbf24;
   --success: #4ade80;
+  --on-success: #0e1220;
   --info: #38bdf8;
 }

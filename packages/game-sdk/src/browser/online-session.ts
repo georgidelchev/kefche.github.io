@@ -6,14 +6,15 @@
 //
 // - Trust: snapshots count only from the member the rooms row names as host,
 //   and the host accepts a move only from the member in that seat, made on
-//   the latest state.
+//   the latest state or on a recent one that offered that seat the same
+//   moves (only a draw offer or its answer came between).
 // - Host migration: when the host has been gone from presence for 5 s, the
 //   player who joined earliest claims the room through the database (first
 //   claim wins) and carries on from the last snapshot.
 // - Away players: their turns are skipped; with clocks, their clock runs.
 // - Rejoining: a member asks the host for the latest state on connecting.
 
-import { isSideAction, sameAction, type GameResult } from "../engines";
+import { canonicalJson, isSideAction, sameAction, type GameResult } from "../engines";
 import { stateHash, createMessenger, type Message, type Payload } from "../protocol";
 import { elapse, isLowTime, timeLeft } from "../timers";
 import {
@@ -27,6 +28,8 @@ import {
 /** How long the host may be missing before another player takes over. */
 export const HOST_TIMEOUT_MS = 5000;
 const TICK_MS = 250;
+/** How many recent states the host keeps, to judge a move made on one of them. */
+const RECENT_STATES = 8;
 
 export function createOnlineTurnSession<State, Action, Config>(
   options: TurnSessionOptions<State, Action, Config>,
@@ -46,6 +49,8 @@ export function createOnlineTurnSession<State, Action, Config>(
   let hosted: TurnSession<Action> | null = null;
   /** The latest match known here (own when hosting, the host's otherwise). */
   let snapshot: TurnSnapshot<State, Action> | null = null;
+  /** The host's recent states by move number, oldest first. */
+  const recent = new Map<number, State>();
   /** When `snapshot` arrived, to run the mover's clock between snapshots. */
   let snapshotAt = 0;
   let present = new Map<string, number>();
@@ -77,6 +82,10 @@ export function createOnlineTurnSession<State, Action, Config>(
       ...(snapshot ? { from: snapshot } : {}),
       onSnapshot(snap) {
         snapshot = snap;
+        recent.delete(snap.moves);
+        recent.set(snap.moves, snap.state);
+        const oldest = recent.keys().next();
+        if (recent.size > RECENT_STATES && !oldest.done) recent.delete(oldest.value);
         transport.broadcast(message("state", payloadOf(snap)));
       },
     });
@@ -143,6 +152,20 @@ export function createOnlineTurnSession<State, Action, Config>(
     );
   };
 
+  /**
+   * Whether `seat` had the same moves on the state after move `base` as now:
+   * a draw offer or its answer came between, so a move made there still fits.
+   */
+  const sameChoices = (base: number, seat: number): boolean => {
+    const then = recent.get(base);
+    return (
+      then !== undefined &&
+      snapshot !== null &&
+      canonicalJson(engine.legalActions(then, seat)) ===
+        canonicalJson(engine.legalActions(snapshot.state, seat))
+    );
+  };
+
   const onMessage = (m: Message) => {
     if (destroyed) return;
     if (m.type === "state") {
@@ -173,10 +196,11 @@ export function createOnlineTurnSession<State, Action, Config>(
       // Only the member in that seat, and only on the latest state.
       if (seatMembers[seat] !== m.from) return;
       const move = legal(snapshot.state, seat, action);
-      // A move must be for the latest state; a side action (resign, a draw
-      // offer) stands on its own, so it counts if it's still allowed now.
+      // A move must be for the latest state, or one that offered the same
+      // moves; a side action (resign, a draw offer) stands on its own, so it
+      // counts if it's still allowed now.
       const side = move !== undefined && isSideAction(engine, snapshot.state, seat, move);
-      if (base !== snapshot.moves && !side) {
+      if (base !== snapshot.moves && !side && !sameChoices(base, seat)) {
         transport.send(m.from, message("state", payloadOf(snapshot)));
         return;
       }

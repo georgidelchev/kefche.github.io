@@ -109,6 +109,24 @@ flowchart LR
 - **Races** (ADR-0024): one seed and the host's options for everyone, a start on the database's clock, live standings, and finishes checked by replaying the moves on the host.
 - **Pages:** `/[locale]/play/<game>/?room=CODE` (also `?new`, `?new=public`, `?quick`), the short link `/r/<CODE>`, and the lobby browser at `/[locale]/play/`.
 
+## Chess and rated games (Phase 6)
+
+```mermaid
+flowchart LR
+  A["Each player's browser"] -->|"rated_action: own seat,<br/>server's time"| RM[("private.rated_moves")]
+  A -->|"at the end: room + seed"| SM["submit-match<br/>(Edge Function)"]
+  C["pg_cron, every minute"] -->|"rooms gone"| SM
+  RM --> SM
+  SM -->|"replay with chess.js,<br/>clocks, Glicko-2"| T[("matches, ratings,<br/>rating_history")]
+  T -->|"profile, game page"| A
+```
+
+- **Chess** (ADR-0025): the rules are chess.js as a `TurnEngine`. The board is React DOM. Bots and the analysis view run Stockfish 19 lite in workers, loaded only when needed.
+- **Rated results** (ADR-0026): the host runs the live game as in casual play. The server keeps its own record of each player's actions and decides the result by replaying it with chess.js. A record that doesn't replay is stored for review.
+- **Ratings** (ADR-0027): Glicko-2 per player, game and pool, updated after every game.
+- **Matchmaking:** `rated_search` pairs players on the same clock within ±100, widening to ±400 over 30 s, and gives the pair a private rated room. Both browsers count down to the same moment on the database's clock.
+- **Pages:** each finished game has a page, `/[locale]/matches/<id>/`, with its PGN and the analysis, and profiles show ratings and recent games. Both are rendered in the Worker. Reads go through `player_history` and `match_record`, which run as the caller.
+
 ### Realtime message budget (SPEC §10.9)
 
 Measured in step 11 on local Supabase with two browsers, counting every websocket frame except heartbeats and replies, per minute for the whole room:
@@ -185,7 +203,7 @@ GitHub Actions `CI` runs format check → lint → contrast → translations →
 ## Sections to come
 
 - Realtime message budget for real-time arenas (SPEC §10.9) _(Phase 9)_
-- Stats, ratings and result integrity _(Phase 6–7)_
+- Stats, XP and leaderboards _(Phase 7)_
 - Social, chat and moderation _(Phase 8)_
 - PWA install, audio and haptics _(Phase 16; no offline mode, ADR-0014)_
 - Consent, analytics and monitoring _(Phase 17)_

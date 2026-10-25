@@ -123,6 +123,34 @@ Deno.test("crossed records: a reply recorded before the move it answers waits it
   if (!resigned.pgn.includes("1. e4 e5")) throw new Error(resigned.pgn);
 });
 
+Deno.test("forged claims: a result, a time or a draw nobody offered change nothing", () => {
+  const actions: Recorded[] = [
+    { seat: 0, action: { type: "win" }, at: later(100) },
+    { seat: 0, action: { type: "result", outcome: [1, 0] }, at: later(200) },
+    // Accepting a draw nobody offered, or one's own offer, is ignored.
+    { seat: 1, action: { type: "accept-draw" }, at: later(250) },
+    { seat: 0, action: { type: "offer-draw" }, at: later(300) },
+    { seat: 0, action: { type: "accept-draw" }, at: later(400) },
+    // The time is the server's, whatever the action says.
+    {
+      seat: 0,
+      action: { type: "move", uci: "e2e4", at: later(-60_000), clock: 999 },
+      at: later(1000),
+    },
+    { seat: 2, action: { type: "resign" }, at: later(1100) },
+  ];
+  const v = decide(game, actions, later(2000));
+  if (v.over) throw new Error("not over");
+  equal(v.flagAt.getTime(), start.getTime() + 1000 + 60_000 + FLAG_GRACE_MS, "black's flag");
+  const resigned = decide(
+    game,
+    [...actions, { seat: 1, action: { type: "resign" }, at: later(1500) }],
+    later(2000),
+  );
+  if (!resigned.over) throw new Error("over");
+  equal([resigned.outcome, resigned.reason, resigned.refused], [[1, 0], "resign", 3], "verdict");
+});
+
 Deno.test("refused: an illegal move, junk, a move that never got its turn", () => {
   const actions: Recorded[] = [
     { seat: 0, action: { type: "move", uci: "e2e5" }, at: later(600) },

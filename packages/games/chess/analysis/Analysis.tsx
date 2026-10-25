@@ -89,11 +89,20 @@ export function Analysis({ record, context }: Props) {
     worker.postMessage({ id, fen });
   }, [engineOn, fen, over]);
 
-  // The move list keeps the current move in view.
+  // The move list keeps the current move in view. It scrolls itself only:
+  // scrollIntoView would scroll the page down to the board too.
   useEffect(() => {
-    movesRef.current
-      ?.querySelector("[aria-current]")
-      ?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    const list = movesRef.current;
+    const move = list?.querySelector("[aria-current]");
+    if (!list || !move) return;
+    const box = list.getBoundingClientRect();
+    const at = move.getBoundingClientRect();
+    const past = (start: number, end: number, from: number, to: number) =>
+      start < from ? start - from : end > to ? end - to : 0;
+    list.scrollBy({
+      left: past(at.left, at.right, box.left, box.right),
+      top: past(at.top, at.bottom, box.top, box.bottom),
+    });
   }, [ply]);
 
   const go = (to: number) => {

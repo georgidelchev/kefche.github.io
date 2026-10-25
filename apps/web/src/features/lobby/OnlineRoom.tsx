@@ -454,7 +454,7 @@ function RatedClocks({
       <p className="text-muted">{r.intro}</p>
       <div className="grid gap-3 sm:grid-cols-2">
         {pools.map((pool) => (
-          <div key={pool} className="grid gap-2">
+          <div key={pool} className="grid content-start gap-2">
             <h3 className="text-sm font-semibold text-muted">{r.pools[pool] ?? pool}</h3>
             <div className="flex flex-wrap gap-2">
               {clocks

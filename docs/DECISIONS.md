@@ -413,3 +413,72 @@ The Web Push service worker (Phase 8) is still allowed and handles push events o
 
 - A five-player Snake race gave places 1 to 5, all checked.
 - Unrated, so these limits are accepted for now: a reload mid-race starts that player's game again; Sudoku's time is when the host received the moves; Snake's tick speed comes from the player's browser. Global leaderboards come in Phase 7.
+
+## ADR-0025: Chess rules on chess.js; bots and analysis on Stockfish 19 lite in the browser
+
+**Date:** 2026-10-25 · **Status:** Accepted
+
+**Context.** Chess is the flagship 1v1 game (Phase 6). Its rules have many edge cases: castling rights, en passant, promotion, and draws by repetition, the fifty-move rule or insufficient material. It needs bots from beginner to strong and an evaluation bar for finished games. There's no game server and the plan is free, and the game must play well on a 360 px phone.
+
+**Decision.**
+
+- **Rules: chess.js 1.4.0** (BSD-2-Clause), wrapped as a `TurnEngine` (`packages/games/chess/engine`). The state is the FEN plus the move list. Resign, draw offers and takeback requests are side actions, so they leave the clocks alone and bots never pick them. The engine detects every ending itself, except a flag fall, which is the session's to call; running out of time against a lone king, or a king and one minor piece, is a draw (`timeoutResult`). The same version is pinned in `supabase/functions/deno.json`, so the server replays rated games with the same rules (ADR-0026).
+- **Engine: Stockfish 19 "lite, single-threaded"** (GPL-3.0), vendored in `packages/games/chess/vendor/stockfish/` (1.87 MB, hashes in its README) rather than installed: the npm package is a 161 MB download that carries two unused 99 MB builds.
+  - It runs in a worker nested in the game's bot worker, and in the analysis view's own worker. It's served from the site and loaded only when a bot plays or the player turns analysis on.
+  - Bot levels: easy is Skill Level 0 at depth 2, medium 6 at depth 8, hard 15 on the full time budget, and a custom level picks any of 0–20. Analysis searches to depth 18 and stops when the position changes.
+- **Licence:** a credit line under the board (when a bot plays) and under the analysis links Stockfish's source and the GPL-3.0, as does `CREDITS.md` (owner decision Q2). The engine is a separate program that talks UCI over messages, so kefche's own code keeps its licence.
+- **Rejected:** the full build, about 94 MB, and the multi-threaded builds, which need cross-origin isolation headers (COOP/COEP) that would break other embeds; an engine of our own, which would be much weaker; and running an engine on a server, which would cost money for every bot move and every analysis.
+
+**Consequences.**
+
+- The first bot game or analysis downloads 1.87 MB, and the browser caches it after that. The site and the Worker carry no Stockfish code: play adds 22 KB gzip, and the analysis is an 8 KB chunk plus a 1 KB worker.
+- Measured: hard replies in 1.7 s on a 4× slowed CPU with no long tasks on the main thread. Self-play: medium beat easy 6–0, and hard beat medium 6–0. The first analysis score arrives in about 0.2 s.
+- A Stockfish update means vendoring the new files and updating the hashes and credits (the vendor README says how).
+
+## ADR-0026: Rated results decided by the server from its own record
+
+**Date:** 2026-10-25 · **Status:** Accepted
+
+**Context.** Online matches run in the host's browser (ADR-0021), so a host could fake a result or a clock. That's acceptable for casual games, but rated games change ratings, which show on profiles and later on leaderboards (SPEC §12.5). There's still no game server, and Edge Functions on the free plan allow 500,000 calls a month.
+
+**Decision.**
+
+- **Who and how:** only signed-in accounts play rated games (owner decision Q1). Rated rooms come only from matchmaking (`rated_search`), each room holds one game, and rated games have no takebacks.
+- **The server's own record:** each player's browser records its own actions through `rated_action`. The database takes the seat from the caller's membership and the time from its own clock, and stores them in `private.rated_moves`. A player can only ever record actions for their own seat.
+- **The server's verdict:** when a game ends, the Edge Function `submit-match` replays the record with chess.js (`_shared/chess-rated.ts`). It never reads a result from a client: the request names only the room and the match's seed.
+  - It runs both clocks from the server's times plus the increment, starting white's clock when the 3 s countdown ends.
+  - A flag falls 2 s after the clock reaches zero, a grace for network delay and loading.
+  - The two players' records can cross on the way, so a move recorded out of turn waits for its turn and takes no time.
+  - A record with an illegal move, junk, or a move that never got its turn is stored for review (`matches.status = 'review'`) and changes no rating.
+  - The match and both ratings (ADR-0027) are stored once, whichever player asks first.
+- **Who asks:** both players, at the end of the game. If everyone left first, a `pg_cron` job asks every minute about rated games whose room is gone.
+- **Data:** `matches`, `match_participants`, `ratings` and `rating_history` are readable by anyone, and no client can write them. The recorded moves are deleted a day after the result is in, or after a week if the game was never decided.
+- **The host still runs the live game,** so play feels the same as in casual games. The server decides only the result.
+
+**Consequences.**
+
+- Checked end to end with two browsers through matchmaking: checkmate, a draw by agreement, a resignation and a flag fall, each decided by the server and shown on both boards.
+- Checked the same way: forged records (a move for the other seat, a claimed win) are stored as the sender's own and send the game to review. A result claimed in the request to `submit-match` is ignored. Unit tests cover forged draw acceptances and times.
+- **The host and the record have to agree:** a move the host turns down but the player's browser has already recorded leaves an extra move in the record, and sends the game to review. So the host also takes a move made on an earlier state when that state offered the same moves (a draw offer or its answer came in between; found in step 10). Rated games have no takebacks, so nothing else can change the position under the player whose turn it is.
+- Network delay counts against the mover on the server's clock, within the 2 s grace.
+- A player who never moves (paired just as they closed the tab) loses on time instead of the game being aborted (Known issues).
+- Each rated game costs one or two function calls.
+
+## ADR-0027: Glicko-2 per game and pool, rated after every game
+
+**Date:** 2026-10-25 · **Status:** Accepted
+
+**Context.** SPEC §12.3 asks for Glicko-2 ratings per time-control pool. A rating should settle quickly for new players and show how sure it is.
+
+**Decision.**
+
+- **Glicko-2 as in Glickman's paper** ("Example of the Glicko-2 system", 2012), in `supabase/functions/_shared/glicko2.ts`, unit-tested against the paper's worked example to the second decimal.
+- **Parameters:** a new player is 1500 ± 350 with volatility 0.06, and τ is 0.5 (the paper suggests 0.3–1.2). Uncertainty never exceeds a new player's 350.
+- **Each game is a rating period of its own:** both players are rated from their ratings before the game, at once, and every change goes into `rating_history`.
+- **One rating per player, game and pool** (chess: bullet, blitz, rapid, classical). The first 10 games are provisional and show with a "?".
+- **Rejected:** Elo, which has no measure of certainty, so new players' ratings settle slowly; Glicko-1, which has no volatility; TrueSkill, which is built for teams and many players and isn't needed for 1v1.
+
+**Consequences.**
+
+- Two new players: the winner gains 162 and the loser drops 162, and a draw between equals leaves both ratings unchanged.
+- Uncertainty doesn't grow yet while a player is away: `rate()` supports an empty rating period, but nothing applies one. Phase 7's leaderboards can apply it, or filter by uncertainty.

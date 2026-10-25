@@ -331,12 +331,27 @@ export function Game({ context, config, store, session, sounds }: Props) {
       case "agreement":
         return t("endAgreement");
       case "timeout":
-        return "";
+        return end.winner === null
+          ? t("endTimeoutDraw")
+          : t("endTimeout", { name: name(other(end.winner)) });
     }
   };
   // Running out of time is the session's to call, not the engine's.
   const timedOut = over && !state.end && mover === undefined;
-  const status = state.end ? endText(state.end) : timedOut ? "" : check ? t("check") : "";
+  /** Who ran out: the seat that lost, or a draw when the other side couldn't mate. */
+  const timeoutText = (): string => {
+    const outcome = result?.outcome;
+    if (!outcome) return "";
+    const loser = outcome.indexOf(0);
+    return loser < 0 ? t("endTimeoutDraw") : t("endTimeout", { name: name(loser) });
+  };
+  const status = state.end
+    ? endText(state.end)
+    : timedOut
+      ? timeoutText()
+      : check
+        ? t("check")
+        : "";
 
   /** The finished game in PGN, named after the players at the board. */
   const pgn = () => {
@@ -396,7 +411,8 @@ export function Game({ context, config, store, session, sounds }: Props) {
     }
     return mover;
   };
-  const can = (type: Action["type"]) => sideOf(actor(type)).includes(type);
+  // The engine doesn't know of a flag fall, so a finished game is checked here.
+  const can = (type: Action["type"]) => !over && sideOf(actor(type)).includes(type);
   const side = (type: Action["type"]) => {
     const seat = actor(type);
     if (seat !== undefined) session.act(seat, { type } as Action);

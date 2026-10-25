@@ -148,7 +148,7 @@ export function LobbyView({
                   )}
                   {member && member.userId !== room.host_id && (
                     <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-semibold ${member.ready ? "bg-success text-on-brand" : "bg-surface-2 text-muted"}`}
+                      className={`rounded-full px-2 py-0.5 text-xs font-semibold ${member.ready ? "bg-success text-on-success" : "bg-surface-2 text-muted"}`}
                     >
                       {member.ready ? s.ready : s.notReady}
                     </span>

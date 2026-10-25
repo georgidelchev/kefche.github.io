@@ -37,9 +37,9 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
     - `i18n/`: language switcher and `rememberLocale`.
     - `account/`: header account state, preference sync, avatar URLs.
     - `auth/`: sign-in, sign-up, onboarding and guest-merge pages.
-    - `profile/`: the public profile page.
+    - `profile/`: the public profile page, game history and the analysis island.
     - `settings/`: the settings page.
-    - `lobby/`: online rooms: the lobby, the Supabase transport (`room:<code>` plus the server-stamped `room-relay:<code>`), matches, races, chat and the public lobby browser (ADR-0020 to ADR-0024).
+    - `lobby/`: online rooms: the lobby, the Supabase transport (`room:<code>` plus the server-stamped `room-relay:<code>`), matches, races, chat and the public lobby browser (ADR-0020 to ADR-0024), plus rated matchmaking and results (ADR-0026).
     - `errors/`
   - `lib/supabase/`: lazy client, config, generated DB types.
   - `components/`: BootScript, Fonts, SeoHead, Logo.

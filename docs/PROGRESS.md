@@ -821,6 +821,26 @@ Online modes are enabled for the Phase 4 games.
   - **Stockfish, in the browser, only when asked:** "Engine analysis" starts Stockfish 19 lite in a worker (the bots' vendored build, no server cost). It follows every step, stopping the old search when the position changes, and streams each depth to depth 18: an evaluation bar and score from White's side (pawns, or "White mates in 1"), the depth and the best line in notation. A finished position (mate, stalemate) needs no search. The credit line links Stockfish's source and licence.
   - **Structure:** the SDK gained `AnalysisModule`, a game's `analysis/index.ts`, loaded lazily by the page (`loadAnalysis`) as a client-only island, so no game code reaches the Worker. Chess's board CSS, themes and piece names moved to shared modules for play and analysis.
   - **Checks:** the model (PGN reading, lines in notation, scores from White's side, the bar) 10/10 in Node. End to end on the dev server, 19/19: final position and ending, previous, start, keys, a click on a move, flip, no engine until it's turned on, an evaluation and best line (first in 0.1–0.2 s, depth 12–14 within seconds), the mate in one found after the blunder with the bar all White, the mate itself with no search, the credit links, 360 px with no sideways scroll, Arabic with the board a→h, and no page errors. The history check (16/16) passed again after the board's refactor.
+- [x] Step 10: verification and docs.
+  - **Rated games in two browsers through matchmaking,** 21/21 (dev server, local Supabase). One player was on a 360 px phone in the light theme. The other was on a 768 px tablet, then a 1280 px desktop, in the dark theme. Results:
+    - checkmate (fool's mate): +162 and −162;
+    - a draw offer declined, then another accepted: both stay at 1,500, and each offer and answer was recorded from its own seat;
+    - a resignation;
+    - a flag fall in bullet 1 + 0: decided 62.2 s after the last move (the clock plus the 2 s grace), stored with `Termination "time forfeit"`.
+    - Each ending was stored as the server worked it out and shown in words on both boards.
+  - **Forged records:** a player recorded a move for the other seat and a "result" action through `rated_action`. Both were stored as the sender's own, and the game went to review with no rating change. A win claimed in the request to `submit-match` was ignored ("still on"). A new Deno test covers a claimed win, a time inside an action, and accepting a draw nobody offered or one's own offer: Deno 12/12.
+  - **Glicko-2:** Glickman's worked example to the second decimal (since step 6). Two new players move ±162, and a draw between equals changes nothing.
+  - **Layout:** the chess page with the rated clocks, a game's page with the analysis, and a profile with history, at 360, 768 and 1280 px in both themes, 36/36: no sideways scroll, each page opens at the top, and axe (WCAG 2.1 A and AA) is clean. axe's experimental `label-content-name-mismatch` rule is left off: it reads an avatar's initials and a square's coordinate as labels. Analysis again 19/19.
+  - **Fixed on the way:**
+    - **A move lost after a draw offer or its answer** (SDK): a move made just as the other side's offer or answer arrived was turned down by the host as made on an old state. The player had to move again, the server's record held the move twice, and a rated game would have gone to review. The host now also takes a move made on a recent state that offered the same moves (the last 8 states are kept).
+    - **After a flag fall:** the board now says who ran out of time ("BobR ran out of time.", or the draw against a lone king), and Resign and Offer a draw no longer show once a game is over.
+    - **The analysis view** scrolled the page down to the board as it opened, and on every step. Its move list now scrolls only itself.
+    - **Win badges** (profile, game page) and the lobby's "Ready" badge used dark text on green at 3.9:1 in the light theme. A new `--on-success` token (white in light, dark in dark) is in the contrast check (49 pairs).
+    - **The rated clocks** of a pool stretched to the height of the pool beside it at 768 px.
+    - The Stockfish README named a worker that no longer exists.
+  - **Docs:** ADR-0025 (chess.js and Stockfish), ADR-0026 (rated results decided by the server), ADR-0027 (Glicko-2), ARCHITECTURE.md "Chess and rated games", and RUNBOOK notes on disputed results and the vendored Stockfish.
+- [ ] Push (on the owner's word): the Phase 6 migrations and `submit-match` to the hosted project, then `main`, then a rated game on the live site
+- [ ] Owner sign-off
 
 ---
 

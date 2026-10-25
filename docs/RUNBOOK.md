@@ -79,6 +79,18 @@ A new Edge Function, or a change to `config.toml`, needs that restart locally to
 
 **Rated matchmaking:** `private.match_queue` holds who is searching which clock. `pg_cron` (`forget-match-queue`, every 10 minutes) drops searches nobody has asked about for a minute, and pairings after an hour, which feed the estimated wait. To see the queue: `select game_id, timer, pool, round(rating), now() - created_at as waiting, room_id is not null as paired from private.match_queue order by created_at;`. A new rated clock goes into a game's manifest (`rated.pools`) and into `private.rated_clocks` through a new migration: the server only pairs clocks listed there.
 
+**A disputed result** (how results are decided: ADR-0026). The game's page shows how it ended and its PGN. For one day after the result, the server's record shows each action with its seat and the server's time:
+
+```sql
+select m.n, m.seat, m.action, m.at
+from private.rated_moves m join private.rated_games g on g.id = m.game_id
+where g.match_id = '<match id>' order by m.n;
+```
+
+White's clock starts 3 s after `rated_games.started_at`, and a flag falls 2 s after a clock reaches zero. The same move recorded twice, or a move from the wrong seat, sends a game to review instead of rating it. There's no tool yet to void a rated game or correct a rating: that comes with the admin panel (Phase 14).
+
+**Stockfish** (ADR-0025) is vendored in `packages/games/chess/vendor/stockfish/`, and its README says how to update it. Under its licence (GPL-3.0), the credit lines that link its source and licence, and its entry in `packages/games/chess/CREDITS.md`, must stay whenever it's served.
+
 ## Hosted Supabase
 
 The live project is `kefche` (ref `qbwljmjabloprffjlean`), on the Free plan in Central EU (Frankfurt). It was set up in Phase 5 (owner decision). The database password and the secret key live only in the owner's password manager; never put them in chat, issues or git.
