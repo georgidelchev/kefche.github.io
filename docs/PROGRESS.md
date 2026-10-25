@@ -12,8 +12,8 @@
 | 3     | Game SDK & first games (2048, Sudoku, Snake)               | ✅ Done (owner signed off 2026-10-23) |
 | 4     | Bots, hotseat & timers                                     | ✅ Done (owner signed off 2026-10-23) |
 | 5     | Multiplayer core                                           | ✅ Done (owner signed off 2026-10-24) |
-| 6     | Chess                                                      | 🚧 In progress                        |
-| 7     | Stats, XP, achievements, leaderboards, daily               | 📝 Plan proposed                      |
+| 6     | Chess                                                      | ✅ Done (owner signed off 2026-10-25) |
+| 7     | Stats, XP, achievements, leaderboards, daily               | 🚧 In progress                        |
 | 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                        |
 | 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                        |
 | 10    | Admin panel                                                | ⏳ Not started                        |
@@ -724,7 +724,7 @@ Online modes are enabled for the Phase 4 games.
 - [x] Step 9 done: online modes from the manifests, and server-stamped match messages
 - [x] Step 10 done: race mode for 2048, Sudoku and Snake. Found on the way: heartbeats and `finish_room` were never sent, because a bare `void supabase.rpc(…)` never runs. Rooms could therefore be swept 5 minutes into a match. `send()` fixes it.
 - [x] Step 11 done: verification with up to five browsers, negative RLS and Realtime checks, the message budget, and the docs
-- [ ] Push (on the owner's word): the Phase 5 migrations to the hosted project, then `main`, then a check of the live site
+- [x] Push: the Phase 5 migrations went to the hosted project with Phase 6's (2026-10-25, see there)
 - [x] Owner sign-off (2026-10-24, "complete this step and continue"; push later, on the owner's word)
 
 ---
@@ -839,10 +839,14 @@ Online modes are enabled for the Phase 4 games.
     - **The rated clocks** of a pool stretched to the height of the pool beside it at 768 px.
     - The Stockfish README named a worker that no longer exists.
   - **Docs:** ADR-0025 (chess.js and Stockfish), ADR-0026 (rated results decided by the server), ADR-0027 (Glicko-2), ARCHITECTURE.md "Chess and rated games", and RUNBOOK notes on disputed results and the vendored Stockfish.
-- [ ] Push (on the owner's word): the Phase 6 migrations and `submit-match` to the hosted project, then `main`, then a rated game on the live site
-- [ ] Owner sign-off
+- [x] Push (owner's word, 2026-10-25):
+  - the ten Phase 5 and Phase 6 migrations to the hosted project;
+  - every Edge Function;
+  - `SUBMIT_MATCH_SECRET` and its Vault entry, which turned out never to have been set: the job that decides abandoned rated games had nothing to call with;
+  - `main`, deployed by CI.
+- [x] Owner sign-off (2026-10-25)
 
-## Phase 7 — Stats, XP, achievements, leaderboards, daily (plan proposed)
+## Phase 7 — Stats, XP, achievements, leaderboards, daily
 
 **Goal (SPEC §12, §22):**
 
@@ -923,6 +927,17 @@ Online modes are enabled for the Phase 4 games.
 - **Q2 — Guests' stats:** SPEC §12.1 records guests' stats on their anonymous accounts. That means creating a guest account on a guest's first finished game, where today one is created only for online play. Do that (stats follow the guest when they sign up), or keep guests' stats on their device until they create an account (recommended: nothing is stored about someone who never asked for an account)?
 - **Q3 — Word of the Day:** scaffolding only now, with the words for 11 languages coming with the content packs in Phase 15 (recommended), or a first word list now?
 - **Q4 — Cosmetic rewards:** a first set of avatar frames for streak milestones and gold achievements (recommended), or also profile banners and board themes now? Each reward has to be drawn for both themes.
+
+### Owner answers (2026-10-25)
+
+- **Q1 — Games against bots:** they count for stats, XP and achievements, and stay off leaderboards.
+- **Q2 — Guests' stats:** on the guest's device only. Nothing is stored on the server for a guest who never asked for an account, so `submit-match` records results for signed-in accounts only.
+- **Q3 — Word of the Day:** scaffolding only; the word lists come with the Phase 15 content packs.
+- **Q4 — Cosmetic rewards:** a first set of avatar frames for streak milestones and gold achievements.
+
+### Status
+
+- [x] Plan approved by owner (2026-10-25, with the answers above)
 
 ---
 
