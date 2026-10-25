@@ -7,15 +7,16 @@ import { DEFAULT_LOCALE, LOCALES } from "./src/i18n/locales";
 
 import type { AstroIntegration } from "astro";
 
-// A build re-optimizes dependencies into Vite's cache folder. Sharing it with
-// a running dev server deletes the files that server still serves, and every
-// page fails ("The file does not exist at .vite/deps_ssr/…") until it
-// restarts. Builds get a folder of their own.
+// A build, or `astro check`, re-optimizes dependencies into Vite's cache
+// folder. Sharing it with a running dev server deletes the files that server
+// still serves, and every page fails ("The file does not exist at
+// .vite/deps/…") until it restarts. Everything but the dev server gets a
+// folder of its own.
 const buildCache = {
   name: "kefche:build-cache",
   hooks: {
     "astro:config:setup": ({ command, updateConfig }) => {
-      if (command === "build") updateConfig({ vite: { cacheDir: "node_modules/.vite-build" } });
+      if (command !== "dev") updateConfig({ vite: { cacheDir: "node_modules/.vite-build" } });
     },
   },
 } satisfies AstroIntegration;
