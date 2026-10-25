@@ -1042,6 +1042,7 @@ Online modes are enabled for the Phase 4 games.
     - Step 4's 19/19, rated endings 21/21, rated matchmaking 20/20 and the history pages 16/16 again.
     - The profile and the race, bot and online game pages at 360, 768 and 1280 px in both themes: no sideways scroll, axe clean, 48/48.
   - **Still to check:** the hosted deploy, as in step 4.
+- **Fix (owner's report):** a host who reloaded an online match started it again from the first move, while the others kept the real game, since only the members' browsers hold the match. Each member's device now saves the latest snapshot of its room's match, cleared at the end. A host who reloads carries on from it, with the mover's clock charged for the wait. Checked in chess: the guest and then the host reloaded after two moves, and play went on with the same position on both sides and the clocks running. Online 33/33, rated endings 21/21 and rated matchmaking 20/20 again. A game against bots or on one device still isn't saved: a reload loses it.
 
 ---
 

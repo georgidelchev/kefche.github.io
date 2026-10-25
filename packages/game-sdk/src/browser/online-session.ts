@@ -12,7 +12,8 @@
 //   player who joined earliest claims the room through the database (first
 //   claim wins) and carries on from the last snapshot.
 // - Away players: their turns are skipped; with clocks, their clock runs.
-// - Rejoining: a member asks the host for the latest state on connecting.
+// - Rejoining: a member asks the host for the latest state on connecting. A
+//   host that reloads carries on from the snapshot its device saved.
 
 import { canonicalJson, isSideAction, sameAction, type GameResult } from "../engines";
 import { stateHash, createMessenger, type Message, type Payload } from "../protocol";
@@ -71,10 +72,61 @@ export function createOnlineTurnSession<State, Action, Config>(
     ...(snap.last ? { last: snap.last } : {}),
     ...(snap.timeout ? { result: snap.timeout } : {}),
   });
+  const snapshotOf = (p: Payload<"state">): TurnSnapshot<State, Action> => ({
+    moves: p.moves,
+    state: p.state as State,
+    timers: p.timers,
+    last: (p.last as TurnSnapshot<State, Action>["last"] | undefined) ?? null,
+    timeout: p.result
+      ? {
+          completed: p.result.completed,
+          ...(p.result.outcome ? { outcome: p.result.outcome } : {}),
+        }
+      : null,
+  });
+
+  // The latest snapshot is also kept on this device, so a host who reloads
+  // carries on with the match instead of starting it again (only the
+  // members' browsers hold it). Gone once the match is over.
+  const SAVE_KEY = `online:${roomId}`;
+  const remember = (snap: TurnSnapshot<State, Action>) => {
+    const over = snap.timeout ?? engine.result(snap.state);
+    context.storage.set(
+      SAVE_KEY,
+      over
+        ? null
+        : JSON.stringify({ seed: context.seed, at: Date.now(), payload: payloadOf(snap) }),
+    );
+  };
+  /** This match's saved snapshot, with the mover's clock run on for the time it waited. */
+  const restore = (): TurnSnapshot<State, Action> | null => {
+    try {
+      const saved = JSON.parse(context.storage.get(SAVE_KEY) ?? "null") as {
+        seed?: unknown;
+        at?: unknown;
+        payload?: Payload<"state">;
+      } | null;
+      const p = saved?.payload;
+      if (saved?.seed !== context.seed || typeof saved.at !== "number" || !p) return null;
+      if (stateHash(p.state) !== p.hash) return null;
+      const snap = snapshotOf(p);
+      const mover = snap.timeout ? undefined : engine.currentSeats(snap.state)[0];
+      if (mover === undefined) return snap;
+      const waited = Math.max(0, Date.now() - saved.at);
+      return {
+        ...snap,
+        timers: elapse(timer, { remainingMs: snap.timers }, mover, waited).remainingMs,
+      };
+    } catch {
+      return null;
+    }
+  };
 
   // ---------------------------------------------------------------- hosting
   const startHosting = () => {
     if (hosted || destroyed) return;
+    // Nothing heard yet (just loaded): the match as this device last saw it, if any.
+    snapshot ??= restore();
     hosted = createTurnSession({
       ...options,
       localSeats,
@@ -82,6 +134,7 @@ export function createOnlineTurnSession<State, Action, Config>(
       ...(snapshot ? { from: snapshot } : {}),
       onSnapshot(snap) {
         snapshot = snap;
+        remember(snap);
         recent.delete(snap.moves);
         recent.set(snap.moves, snap.state);
         const oldest = recent.keys().next();
@@ -176,18 +229,8 @@ export function createOnlineTurnSession<State, Action, Config>(
         return;
       }
       if (snapshot && p.moves < snapshot.moves) return;
-      snapshot = {
-        moves: p.moves,
-        state: p.state as State,
-        timers: p.timers,
-        last: (p.last as TurnSnapshot<State, Action>["last"] | undefined) ?? null,
-        timeout: p.result
-          ? {
-              completed: p.result.completed,
-              ...(p.result.outcome ? { outcome: p.result.outcome } : {}),
-            }
-          : null,
-      };
+      snapshot = snapshotOf(p);
+      remember(snapshot);
       snapshotAt = Date.now();
       mirror();
     } else if (m.type === "action") {
