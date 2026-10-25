@@ -13,7 +13,7 @@
 | 4     | Bots, hotseat & timers                                     | ✅ Done (owner signed off 2026-10-23) |
 | 5     | Multiplayer core                                           | ✅ Done (owner signed off 2026-10-24) |
 | 6     | Chess                                                      | 🚧 In progress                        |
-| 7     | Stats, XP, achievements, leaderboards, daily               | ⏳ Not started                        |
+| 7     | Stats, XP, achievements, leaderboards, daily               | 📝 Plan proposed                      |
 | 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                        |
 | 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                        |
 | 10    | Admin panel                                                | ⏳ Not started                        |
@@ -841,6 +841,88 @@ Online modes are enabled for the Phase 4 games.
   - **Docs:** ADR-0025 (chess.js and Stockfish), ADR-0026 (rated results decided by the server), ADR-0027 (Glicko-2), ARCHITECTURE.md "Chess and rated games", and RUNBOOK notes on disputed results and the vendored Stockfish.
 - [ ] Push (on the owner's word): the Phase 6 migrations and `submit-match` to the hosted project, then `main`, then a rated game on the live site
 - [ ] Owner sign-off
+
+## Phase 7 — Stats, XP, achievements, leaderboards, daily (plan proposed)
+
+**Goal (SPEC §12, §22):**
+
+- every result that counts goes through `submit-match` and is checked by replay (or by the manifest's plausibility rules where a replay can't tell);
+- stats per player and game;
+- XP and levels;
+- achievements with an unlock toast and a profile showcase;
+- leaderboards: all-time, weekly, friends, and a global XP board;
+- the daily challenge, scaffolding for Word of the Day, login streaks, and one results screen for every game.
+
+**DoD:** stats visible on the profile; leaderboards update; suspicious results quarantined. Plus the standing DoD.
+
+**Already in place:** `profiles.xp` and `profiles.level` (always 0 and 1 so far), `user_settings.show_in_leaderboards`, the `matches` and `match_participants` tables (Phase 6), the packed action logs of races (`race-log`), and `submit-match` for rated chess. Best scores live only in the browser so far.
+
+### Steps (one Conventional Commit each)
+
+1. **The engines on the server:** the engines import without file extensions, so Deno can't load them as they are. A build step (`pnpm functions:engines`, esbuild) bundles every game's engine into `supabase/functions/_shared/engines.gen.js`, committed, and CI checks it for drift like `database.gen.ts`. Deno tests replay a recorded game of each of the 7 games and get the same result as the browser. First, check that `supabase functions deploy` takes the bundle as it is.
+2. **Database:**
+   - `plays`: a game started with a seed issued by the server, and when.
+   - The match tables gain mode, seed, duration, score and placement for every game, and an action log kept 90 days (chess PGN kept for good, as now).
+   - Stats: `player_game_stats` (played, wins, losses, draws, abandons, best score, best time, total and average score, total time, current and best streak, last played) and a global summary.
+   - An XP ledger.
+   - Achievements: definitions and unlocks.
+   - Leaderboard entries (all-time and weekly).
+   - The daily challenge, Word of the Day and login streaks.
+   - RLS throughout. Every write goes through `submit-match` or an RPC.
+3. **Seeds and logs:** a game page asks for a server seed (`start_play`) in the background as it loads, so the start is never held up. Every mode records its action log; races already do. At the end, the log goes to `submit-match`. A game played offline, or started before the seed arrived, counts for the player's own stats but not for leaderboards.
+4. **`submit-match` for single-player games** (2048, Sudoku, Snake):
+   - It replays the log on the seed and stores the result.
+   - Plausibility rules in the manifest (`integrity`): the least time, the most points per second, and a game's duration against the server's own times.
+   - Anything that fails goes to `review`, off every leaderboard.
+5. **`submit-match` for turn games and races:**
+   - **Against bots:** every move is checked. The results count for stats, XP and achievements, but not for leaderboards (Q1).
+   - **On one device:** counts as played only.
+   - **Online, casual:** each player sends the result they saw. It counts when the reports agree, and is set aside for review when they don't.
+   - **Races:** the server replays each player's log as well.
+6. **Stats on the profile:** per game and overall, plus the rating history chart (SPEC §12.3, missing from Phase 6) as a small SVG drawn in-house, with no chart library.
+7. **XP and levels:**
+   - An isomorphic, unit-tested formula in the SDK.
+   - XP for playing, winning, a first play of a game, the daily challenge and streaks, with a daily cap per game so it can't be farmed.
+   - `submit-match` awards it, and the level shows on the profile and in the header.
+8. **Achievements:**
+   - **Definitions as data:** global ones, plus each game's in its package, in bronze, silver and gold, with names and descriptions in all 11 locales and icons.
+   - **Unlocking:** done by the server in `submit-match`.
+   - **Players see:** a toast on the results screen, and the profile can pin up to 3.
+9. **One results screen** for every game: the result and score, the best so far, XP gained with the level bar, achievements unlocked, any rating change, the leaderboard place, Play again and Share.
+10. **Leaderboards:**
+    - **Definitions:** from the manifest (a score, a time, or a rating per pool).
+    - **Boards:** all-time, weekly (from Monday 00:00 UTC, worked out from the date with no reset job), friends (empty until friends arrive in Phase 8), and a global XP board.
+    - **Rules:** the player's own place is shown even outside the top. Guests, players who opted out, and results set aside for review stay off.
+    - **Pages:** `/[locale]/leaderboards/` and a tab on each game's page.
+11. **The daily challenge:** one seeded game a day for everyone, rotating through the single-player games, with its own leaderboard and a countdown to 00:00 UTC shown in local time. The seed comes from the server.
+12. **Login streaks and Word of the Day:** a streak counts each UTC day a signed-in player plays. Milestones give cosmetic rewards (Q4). Word of the Day is scaffolding only (Q3): a table per language, an RPC and a home-page card that stays hidden while it's empty.
+13. **Verification and docs:**
+    - **Forged results refused:** a forged 2048 score, a Sudoku solved impossibly fast, a log that doesn't replay, and online reports that disagree.
+    - **Leaderboards:** an opted-out player stays off them, and the weekly board rolls over.
+    - **XP:** the daily cap holds.
+    - **Layout:** the 360, 768 and 1280 px checks in both themes.
+    - **Docs:** ADRs (engines on the server, result integrity, XP and achievements, leaderboards) and the RUNBOOK.
+
+### Decisions (proposed)
+
+- **One engine, two places:** the server replays with the same engine code the browser runs, bundled for Deno, rather than rules written twice. Chess keeps its chess.js replay.
+- **Seeds from the server** for anything on a leaderboard, so nobody can roll seeds until one is easy. The start is never held up: the seed is fetched in the background.
+- **Weekly boards from the date,** not from a reset job, so a missed job can't leave last week's board up.
+- **Rewards are cosmetic only** (SPEC §12.6): no currency and no randomness.
+
+### Risks
+
+- **Edge Function limits:** about 2 s of CPU per call. Replaying 10 minutes of Snake is a few thousand ticks, well within that. One call per finished game counts against 500,000 calls a month, about 16,000 games a day.
+- **The bundle drifting** from the engines: CI rebuilds it and fails on any difference.
+- **XP farming,** such as quitting games against bots on purpose: the daily caps, and a game abandoned in its first moves gives no XP.
+- **Results we can't prove:** a log can show that every move was legal, but not that a person made them. That's why games against bots stay off leaderboards (Q1).
+
+### Open questions for the owner
+
+- **Q1 — Games against bots:** count them for stats, XP and achievements but keep them off leaderboards (recommended), or put wins against hard bots on a leaderboard too?
+- **Q2 — Guests' stats:** SPEC §12.1 records guests' stats on their anonymous accounts. That means creating a guest account on a guest's first finished game, where today one is created only for online play. Do that (stats follow the guest when they sign up), or keep guests' stats on their device until they create an account (recommended: nothing is stored about someone who never asked for an account)?
+- **Q3 — Word of the Day:** scaffolding only now, with the words for 11 languages coming with the content packs in Phase 15 (recommended), or a first word list now?
+- **Q4 — Cosmetic rewards:** a first set of avatar frames for streak milestones and gold achievements (recommended), or also profile banners and board themes now? Each reward has to be drawn for both themes.
 
 ---
 
