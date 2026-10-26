@@ -1,0 +1,72 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { CalendarDays } from "lucide-react";
+
+import { buttonVariants } from "@kefche/ui/components/button";
+
+import { listGames } from "@/features/games/registry";
+import LeaderboardView from "@/features/leaderboards/LeaderboardView.astro";
+import { getT } from "@/i18n/i18n";
+import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+
+// The daily challenge on the home page (SPEC §12.7): today's game, a button
+// to play it (its page with ?daily), when the next one starts in local time,
+// and today's top 5. The day changes at 00:00 UTC, so the page is static
+// and daily-card.client.ts fills it in.
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getT(locale);
+const { bcp47 } = LOCALE_INFO[locale];
+const names = Object.fromEntries(
+  listGames().map((game) => [game.manifest.id, game.text[locale].name]),
+);
+---
+
+<section
+  class="grid gap-4 rounded-2xl border border-border bg-surface p-4 md:p-6"
+  aria-labelledby="daily-heading"
+  data-daily
+  data-locale={bcp47}
+  data-names={JSON.stringify(names)}
+  data-games-base={getRelativeLocaleUrl(locale, "/games/")}
+  data-today={t("games:daily.today", { game: "{game}" })}
+  data-next={t("games:daily.next", { countdown: "{countdown}", time: "{time}" })}
+  data-unavailable={t("games:daily.unavailable")}
+>
+  <h2 id="daily-heading" class="flex items-center gap-2 text-2xl">
+    <CalendarDays aria-hidden="true" className="size-6" />
+    {t("games:daily.title")}
+  </h2>
+  <p class="text-muted">{t("games:daily.intro")}</p>
+  <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+    <p class="text-lg font-semibold empty:hidden" data-daily-today></p>
+    <a
+      hidden
+      data-daily-play
+      href={getRelativeLocaleUrl(locale, "/games/")}
+      class:list={[buttonVariants({ variant: "primary" }), "[&[hidden]]:hidden"]}
+    >
+      {t("games:daily.play")}
+    </a>
+  </div>
+  <p class="text-sm text-muted empty:hidden" data-daily-next aria-live="polite"></p>
+  <LeaderboardView
+    locale={locale}
+    groups={[
+      {
+        label: null,
+        boards: [{ id: "daily", name: t("leaderboards:daily"), kind: "daily", weekly: false }],
+      },
+    ]}
+    initial="daily"
+    limit={5}
+    idPrefix="daily-lb"
+  />
+</section>
+
+<script>
+  import "@/features/daily/daily-card.client";
+</script>

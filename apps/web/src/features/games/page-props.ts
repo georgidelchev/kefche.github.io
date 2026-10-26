@@ -38,6 +38,7 @@ export function playerStrings(
     score: t("games:score", { score: "{score}" }),
     time: t("games:time", { time: "{time}" }),
     playAgain: t("games:playAgain"),
+    daily: t("games:daily.play"),
     results: resultsStrings(t, locale, game),
   };
 }
@@ -70,8 +71,17 @@ function resultsStrings(
     levelUp: t("games:results.levelUp", { level: "{level}" }),
     xpToNext: t("games:results.xpToNext", { into: "{into}", span: "{span}", next: "{next}" }),
     place: t("games:results.place", { board: "{board}", all: "{all}", week: "{week}" }),
-    boards: Object.fromEntries(
-      manifest.leaderboards.map((b): [string, { name: string; href: string }] => {
+    dailyPlace: t("games:results.dailyPlace", { rank: "{rank}" }),
+    boards: Object.fromEntries([
+      // The daily challenge's board (a game played as the day's challenge goes on it).
+      [
+        `daily.${manifest.id}`,
+        {
+          name: t("leaderboards:daily"),
+          href: `${getRelativeLocaleUrl(locale, "/leaderboards/")}?board=daily`,
+        },
+      ],
+      ...manifest.leaderboards.map((b): [string, { name: string; href: string }] => {
         const id = `${manifest.id}.${b.id}`;
         return [
           id,
@@ -81,7 +91,7 @@ function resultsStrings(
           },
         ];
       }),
-    ),
+    ]),
     achievements: t("games:results.achievements"),
     unlocked: t("games:results.unlocked"),
     saving: t("games:results.saving"),

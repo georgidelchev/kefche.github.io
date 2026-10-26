@@ -68,6 +68,7 @@ Tick every item before the game ships (SPEC §20). Items marked _(later)_ apply 
 - [ ] Bots always take a win and, from medium up, block an immediate loss
 - [ ] Hotseat works for every player count; mixed people and bots work; timers expire as the manifest says
 - [ ] Leaderboards and achievements defined in the manifest, with each achievement's name and description in every locale
+- [ ] A single-player game joins the daily challenge through a migration that adds it to `private.daily_rotation`, with the settings it is played with that day
 
 **Layout and accessibility**
 

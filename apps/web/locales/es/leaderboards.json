@@ -4,6 +4,7 @@
   "intro": "Lo mejor de cada jugador en las partidas del propio servidor. No cuentan las partidas contra bots ni con pistas.",
   "board": "Clasificación",
   "xp": "Experiencia (XP)",
+  "daily": "Reto de hoy",
   "periods": {
     "label": "Periodo",
     "all": "Histórico",

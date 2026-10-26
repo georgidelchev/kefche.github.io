@@ -16,8 +16,10 @@ export const rewardsSchema = z.object({
     z.array(
       z.object({
         board: z.string().check(z.maxLength(80)),
-        all: z.nullable(z.int()),
-        week: z.nullable(z.int()),
+        all: z.optional(z.nullable(z.int())),
+        week: z.optional(z.nullable(z.int())),
+        /** The daily challenge's board: the place on its day. */
+        day: z.optional(z.nullable(z.int())),
       }),
     ),
   ),

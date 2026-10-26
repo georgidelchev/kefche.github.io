@@ -54,8 +54,10 @@ export function boardEntries(
 
 export const placeSchema = z.object({
   board: z.string(),
-  all: z.number().int().nullable(),
-  week: z.number().int().nullable(),
+  all: z.number().int().nullable().optional(),
+  week: z.number().int().nullable().optional(),
+  /** A daily challenge's board: the place on its day. */
+  day: z.number().int().nullable().optional(),
 });
 /** A player's places on a board after a game (null: not shown on leaderboards). */
 export type Place = z.infer<typeof placeSchema>;
@@ -79,4 +81,44 @@ export async function submitToBoards(
     return [];
   }
   return places.data;
+}
+
+/**
+ * Whether a game was played with the daily challenge's settings: every
+ * setting the day fixes, as the day fixed it (2048 fixes none).
+ */
+export function playedAsDaily(daily: Readonly<Record<string, unknown>>, config: unknown): boolean {
+  const played = (typeof config === "object" && config !== null ? config : {}) as Record<
+    string,
+    unknown
+  >;
+  return Object.entries(daily).every(([key, value]) => played[key] === value);
+}
+
+const dailyAnswerSchema = z.object({ place: z.number().int().nullable(), xp: z.number().int() });
+
+/**
+ * Puts a counted daily game on its day's board ("daily.<game>"; none for a
+ * game with nothing to rank, like an unfinished Sudoku) and gives the day's
+ * XP once. Returns the player's place on the day's board, or null.
+ */
+export async function submitDaily(
+  admin: SupabaseClient,
+  userId: string,
+  matchId: string,
+  day: string,
+  entry: BoardEntry | null,
+): Promise<Place | null> {
+  const { data, error } = await admin.rpc("daily_submit", {
+    p_user: userId,
+    p_match: matchId,
+    p_day: day,
+    p_entry: entry ?? {},
+  });
+  const answer = error ? null : dailyAnswerSchema.safeParse(data);
+  if (!answer?.success) {
+    log("error", "daily_failed", { match: matchId, error: error?.message ?? "shape" });
+    return null;
+  }
+  return entry ? { board: entry.board, day: answer.data.place } : null;
 }

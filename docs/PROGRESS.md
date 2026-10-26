@@ -1155,6 +1155,32 @@ Online modes are enabled for the Phase 4 games.
       - the page in English and Arabic, and a game page, at 360, 768 and 1280 px in both themes: no sideways scroll, axe clean.
     - Results 27/27, online 35/35, achievements 21/21, history 16/16, rated matchmaking 20/20 and plays 19/19.
     - Two scripts can fail for test reasons only. Plays' random Four in a Row against the bot sometimes doesn't end within its 60 moves on a slow run, so it reads the Sudoku record before it. Rated matchmaking counts guest identities made in the last minute, and plays makes one on purpose (to check guests are refused).
+- [x] Step 11: the daily challenge (`20261025101400_daily.sql`).
+  - **The day's game:** one game a day for everyone, from 00:00 UTC, rotating through the games played alone (`private.daily_rotation`: 2048; Snake at normal speed with walls; Sudoku, medium). A day's game, settings and seed (the server's) are made the first time anyone asks (`private.daily_for`), so no job has to run at midnight. `daily_challenge` gives anyone today's game, settings, seed and when it ends.
+  - **Playing it:**
+    - An account plays on a play issued for it (`start_daily`, with `start_play`'s allowance), so `submit-match` replays and judges it like any game played alone.
+    - It must be played with the day's settings: anything else is set aside as `bad-config`. It's stored as mode `daily`.
+    - It goes on that day's board only (`daily.<game>`, period `day:<date>`; the nightly job keeps 60 days). Each try counts, and the best of the day stays. It stays off the game's own boards, since everyone knows the seed.
+    - The first daily game of the day earns 50 XP (`daily_submit`; the profile row is locked, so it's once).
+    - A guest plays the same seed, unrecorded.
+  - **In the player:** the game is set up as in a race (the day's settings, no menu, no hints). The game page with `?daily` offers "Play today's challenge" first when it's that game today. Each Play again is a new try on a new play, mounted afresh, since a game set up as a race plays one round.
+  - **Where it shows:**
+    - The home page (accounts builds) has a card: today's game, the button to play it, when the next one starts ("New challenge in 6 hr 43 min, at 2:00 AM."), and today's top 5. The page reloads itself when the day turns.
+    - "Today's challenge" is a board on the leaderboards page, with no periods.
+    - The results screen says "Today's challenge: #1", linking to it.
+  - **New game checklist:** a single-player game joins the rotation through a migration (`docs/ADDING_A_GAME.md`).
+  - **Strings:** 8 in all 11 languages.
+  - **Checks:**
+    - Deno 51/51 (a new test: a daily game played with the day's settings).
+    - In the browser, 29/29, on a Snake day:
+      - the home card's game, link, local next start, and empty board;
+      - ResultsR plays from it: the day's settings and seed, stored as `daily` and counted, on the day's board only, +50 XP, and the results screen's place;
+      - Play again: a new try on the same seed, with no second 50;
+      - a record with other settings set aside;
+      - the home board and the leaderboards page showing them, with no periods;
+      - a guest playing it unrecorded;
+      - the home page in English and Arabic and the game page with `?daily`, at 360 and 1280 px in both themes: no sideways scroll, axe clean.
+    - Results 27/27, leaderboards 36/36, online 35/35 and plays 19/19.
 
 ---
 

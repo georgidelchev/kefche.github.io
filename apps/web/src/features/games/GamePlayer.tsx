@@ -3,7 +3,17 @@
 // results, screen wake lock. The game draws everything inside the stage.
 // Turn-based games (Phase 4) first get a setup screen (seats, bots, timer)
 // and a HUD with every seat, whose turn it is and the clocks.
-import { LoaderCircle, Pause, Play, Users, Bot, Volume2, VolumeX, X } from "lucide-react";
+import {
+  Bot,
+  CalendarDays,
+  LoaderCircle,
+  Pause,
+  Play,
+  Users,
+  Volume2,
+  VolumeX,
+  X,
+} from "lucide-react";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
 
 import { randomSeed, type GameResult } from "@kefche/game-sdk";
@@ -19,6 +29,7 @@ import {
 } from "@kefche/game-sdk/browser";
 import { Button } from "@kefche/ui/components/button";
 
+import { fetchDaily, startDaily, type DailyChallenge } from "./daily";
 import { loadGame } from "./loaders";
 import { createPlayRecorder } from "./play-recorder";
 import { createLowTimeSound, gameStorage, Overlay, useGameScreen, VOLUME } from "./player-parts";
@@ -60,6 +71,8 @@ export interface PlayerStrings {
   score: string;
   time: string;
   playAgain: string;
+  /** "Play today's challenge" */
+  daily: string;
   results: ResultsStrings;
 }
 
@@ -111,6 +124,17 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
   useEffect(() => {
     supply.prefetch();
   }, [supply]);
+  // The daily challenge (?daily, from the home page): offered when it's this
+  // game today. Its games run with the day's settings (as in a race) on the
+  // day's seed, each on a play of its own for an account.
+  const [daily, setDaily] = useState<DailyChallenge | null>(null);
+  const dailyRef = useRef<DailyChallenge | null>(null);
+  useEffect(() => {
+    if (turn || !new URLSearchParams(location.search).has("daily")) return;
+    void fetchDaily().then((today) => {
+      if (today?.gameId === id) setDaily(today);
+    });
+  }, [id, turn]);
 
   const open = phase !== "idle";
 
@@ -147,6 +171,7 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
         },
         storage,
         ...(setup ? { match: setup } : { log: recorder.log }),
+        ...(dailyRef.current ? { race: { config: dailyRef.current.config } } : {}),
         report: (event) => {
           if (event.type === "turn") {
             setReport((previous) => {
@@ -229,12 +254,22 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
     recorder.resume();
     setPhase("playing");
   }
+  /** Today's challenge, on a play of its own (none for a guest: not recorded). */
+  async function playDaily() {
+    const today = dailyRef.current;
+    if (!today) return;
+    recorder.start(await startDaily(version));
+    // A game set up as a race plays one round: each try is mounted afresh.
+    await mount(today.seed, null);
+  }
+
   function restart() {
     setResult(null);
     setReport(null);
     setRewards({ kind: "none" });
     gameRef.current += 1;
-    instanceRef.current?.restart(nextSeed());
+    if (dailyRef.current) void playDaily();
+    else instanceRef.current?.restart(nextSeed());
     setPhase("playing");
   }
   function changeSetup() {
@@ -341,14 +376,35 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
           })}
         </div>
       ) : (
-        <Button
-          size="lg"
-          className="w-full sm:w-auto sm:min-w-48"
-          onClick={() => void mount(nextSeed(), null)}
-        >
-          <Play aria-hidden="true" />
-          {strings.play}
-        </Button>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          {daily && (
+            <Button
+              size="lg"
+              className="w-full sm:w-auto sm:min-w-48"
+              onClick={() => {
+                instanceRef.current?.destroy();
+                instanceRef.current = null;
+                dailyRef.current = daily;
+                void playDaily();
+              }}
+            >
+              <CalendarDays aria-hidden="true" />
+              {strings.daily}
+            </Button>
+          )}
+          <Button
+            size="lg"
+            variant={daily ? "outline" : "primary"}
+            className="w-full sm:w-auto sm:min-w-48"
+            onClick={() => {
+              dailyRef.current = null;
+              void mount(nextSeed(), null);
+            }}
+          >
+            <Play aria-hidden="true" />
+            {strings.play}
+          </Button>
+        </div>
       )}
 
       <div

@@ -54,7 +54,13 @@ import {
   roomSettingsSchema,
   roomTimer,
 } from "../_shared/room-play.ts";
-import { boardEntries, type BoardEntry, submitToBoards } from "../_shared/leaderboards.ts";
+import {
+  boardEntries,
+  type BoardEntry,
+  playedAsDaily,
+  submitDaily,
+  submitToBoards,
+} from "../_shared/leaderboards.ts";
 import { judgeSolo, soloRecordSchema } from "../_shared/solo-play.ts";
 import { judgeTurn, turnRecordSchema } from "../_shared/turn-play.ts";
 
@@ -87,6 +93,8 @@ const playSchema = z.object({
   seed: z.string(),
   startedAt: z.string(),
   matchId: z.uuid().nullable(),
+  /** The day of the daily challenge it was issued for, or null. */
+  daily: z.string().nullable(),
   now: z.string(),
 });
 
@@ -284,6 +292,17 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
     return fail("game_updated", 409);
   }
   const issued = { seed: play.seed, startedAt: new Date(play.startedAt), now: new Date(play.now) };
+  // The daily challenge: its day's settings (step 11).
+  let daily: { day: string; config: Record<string, unknown> } | null = null;
+  if (play.daily) {
+    const row = await admin
+      .from("daily_challenges")
+      .select("config")
+      .eq("day", play.daily)
+      .single();
+    if (row.error) throw new Error(`daily challenge: ${row.error.message}`);
+    daily = { day: play.daily, config: (row.data.config ?? {}) as Record<string, unknown> };
+  }
 
   let result: Record<string, unknown>;
   let answer: Omit<PlayAnswer, "matchId">;
@@ -291,12 +310,17 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
   let boards: BoardEntry[] = [];
   if (record.mode === "solo") {
     if (game.kind !== "race") return fail("bad_request", 400);
-    const v = judgeSolo(game, issued, record);
+    const judged = judgeSolo(game, issued, record);
+    // A daily game played with other settings than the day's is set aside.
+    const v =
+      daily && judged.status === "counted" && !playedAsDaily(daily.config, judged.config)
+        ? { ...judged, status: "review" as const, reason: "bad-config" }
+        : judged;
     const counted = { score: v.score, timeMs: v.timeMs, assisted: v.assisted };
     result = {
       status: v.status,
       reason: v.reason,
-      mode: "solo",
+      mode: daily ? "daily" : "solo",
       config: v.config,
       timer: null,
       durationMs: v.durationMs,
@@ -313,7 +337,7 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
       });
     }
   } else {
-    if (game.kind !== "turn") return fail("bad_request", 400);
+    if (game.kind !== "turn" || daily) return fail("bad_request", 400);
     const v = judgeTurn(game, issued, record);
     const own = v.player === null ? null : (v.outcome?.[v.player] ?? null);
     result = {
@@ -350,7 +374,19 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
   if (stored.error) throw new Error(`play_record: ${stored.error.message}`);
   log("info", "play", { play: play.id, game: play.gameId, mode: record.mode, ...answer });
   const matchId = z.uuid().parse(stored.data);
-  const places = await submitToBoards(admin, user.id, matchId, boards);
+  // Everyone knows the daily seed: a daily game goes on its day's board only.
+  const places = daily ? [] : await submitToBoards(admin, user.id, matchId, boards);
+  if (daily && answer.status === "counted") {
+    const [first] = boards;
+    const place = await submitDaily(
+      admin,
+      user.id,
+      matchId,
+      daily.day,
+      first ? { ...first, board: `daily.${play.gameId}` } : null,
+    );
+    if (place) places.push(place);
+  }
   if (answer.status === "counted") await unlockForMatch(admin, matchId);
   const rewards = await rewardsFor(admin, matchId, user.id);
   return json({ matchId, ...answer, rewards: rewards && { ...rewards, places } });

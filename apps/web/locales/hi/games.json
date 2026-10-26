@@ -24,6 +24,7 @@
     "levelUp": "स्तर बढ़ा! अब आप स्तर {level} पर हैं।",
     "xpToNext": "स्तर {next} तक {span} में से {into} XP",
     "place": "{board}: अब तक #{all}, इस सप्ताह #{week}",
+    "dailyPlace": "आज की चुनौती: #{rank}",
     "achievements": "अनलॉक हुई उपलब्धियाँ",
     "unlocked": "उपलब्धि अनलॉक हुई",
     "saving": "आपका नतीजा सहेजा जा रहा है…",
@@ -32,6 +33,14 @@
     "share": "शेयर करें",
     "copied": "लिंक कॉपी हुआ",
     "shareText": "{result} · kefche पर {game}"
+  },
+  "daily": {
+    "title": "आज की चुनौती",
+    "intro": "हर दिन एक गेम, सबके लिए एक जैसा। दिन का आपका सबसे अच्छा नतीजा गिना जाता है, और दिन के पहले गेम से 50 XP मिलते हैं।",
+    "today": "आज: {game}",
+    "play": "आज की चुनौती खेलें",
+    "next": "नई चुनौती {countdown} में, {time} बजे।",
+    "unavailable": "आज की चुनौती लोड नहीं हो सकी।"
   },
   "players": "{min, plural, =1 {1 खिलाड़ी} other {# खिलाड़ी}}",
   "playersRange": "{min}–{max} खिलाड़ी",

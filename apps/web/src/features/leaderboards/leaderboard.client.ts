@@ -41,6 +41,8 @@ const boardSchema = z.object({
   me: z.nullable(rowSchema),
   hidden: z.boolean(),
   total: z.int(),
+  /** Lower is better: a time board (the daily challenge's, on a Sudoku day). */
+  lowerIsBetter: z.optional(z.nullable(z.boolean())),
 });
 type Row = z.infer<typeof rowSchema>;
 type Board = z.infer<typeof boardSchema>;
@@ -89,6 +91,9 @@ function setUp(root: HTMLElement) {
   const sync = root.dataset.syncUrl === "true";
 
   let period: Period = "all";
+  // The board on show: a daily challenge's values read by its game.
+  let lowerIsBetter = false;
+  const periodGroup = root.querySelector<HTMLElement>("[data-periods]");
   if (sync) {
     const params = new URLSearchParams(location.search);
     const asked = params.get("board");
@@ -100,7 +105,7 @@ function setUp(root: HTMLElement) {
   const option = () => select.selectedOptions[0];
   const valueText = (value: number) => {
     const kind = option()?.dataset.kind;
-    if (kind === "time") return formatDuration(value);
+    if (kind === "time" || (kind === "daily" && lowerIsBetter)) return formatDuration(value);
     if (kind === "xp") return fill(s.xpValue, { xp: Math.round(value).toLocaleString(locale) });
     return Math.round(value).toLocaleString(locale);
   };
@@ -167,6 +172,7 @@ function setUp(root: HTMLElement) {
   }
 
   function draw(board: Board) {
+    lowerIsBetter = board.lowerIsBetter ?? false;
     const me = board.me;
     const rows = board.entries.map((row) => rowElement(row, row.rank === me?.rank));
     // Below the top: a gap, then the viewer's own row.
@@ -193,6 +199,10 @@ function setUp(root: HTMLElement) {
   async function load() {
     const weekly = option()?.dataset.weekly === "true";
     if (!weekly && period === "week") period = "all";
+    // Today's challenge is today's alone: no periods.
+    const isDaily = option()?.dataset.kind === "daily";
+    if (isDaily) period = "all";
+    if (periodGroup) periodGroup.hidden = isDaily;
     for (const button of periodButtons) {
       const id = button.dataset.period;
       button.setAttribute("aria-pressed", String(id === period));

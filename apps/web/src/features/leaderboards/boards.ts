@@ -1,17 +1,20 @@
 // The leaderboards there are (SPEC §12.4), with their names in the page's
 // language: each game's own boards (its manifest), a board per rated pool,
-// and the XP board. Server side only (pages and props).
+// the XP board and today's challenge. Server side only (pages and props).
 import type { RegisteredGame } from "@/features/games/registry";
 import { poolName } from "@/features/profile/history-text";
 import type { AppT } from "@/i18n/i18n";
 import type { Locale } from "@/i18n/locales";
 
 export interface BoardOption {
-  /** "<game>.<board>", "<game>.rating-<pool>" or "xp" (the leaderboard RPC's p_board). */
+  /**
+   * "<game>.<board>", "<game>.rating-<pool>", "xp", or "daily" for today's
+   * challenge (the leaderboard RPC's p_board).
+   */
   id: string;
   name: string;
-  /** How its values read: points, a time, a rating or XP. */
-  kind: "score" | "time" | "rating" | "xp";
+  /** How its values read: points, a time, a rating or XP; the daily challenge's, by its game. */
+  kind: "score" | "time" | "rating" | "xp" | "daily";
   /** Rated boards are ratings as they are now: no week of their own. */
   weekly: boolean;
 }
@@ -45,13 +48,19 @@ export function gameBoards(game: RegisteredGame, t: AppT, locale: Locale): Board
 }
 
 /**
- * Every board: the XP board, then each game's, by game. A game's boards are
- * named with the game too ("Snake · Best score"), as a closed picker shows
- * only the board.
+ * Every board: the XP board and today's challenge, then each game's, by
+ * game. A game's boards are named with the game too ("Snake · Best score"),
+ * as a closed picker shows only the board.
  */
 export function allBoards(games: readonly RegisteredGame[], t: AppT, locale: Locale): BoardGroup[] {
   return [
-    { label: null, boards: [{ id: "xp", name: t("leaderboards:xp"), kind: "xp", weekly: true }] },
+    {
+      label: null,
+      boards: [
+        { id: "xp", name: t("leaderboards:xp"), kind: "xp", weekly: true },
+        { id: "daily", name: t("leaderboards:daily"), kind: "daily", weekly: false },
+      ],
+    },
     ...games
       .map((game) => {
         const label = game.text[locale].name;

@@ -24,6 +24,7 @@
     "levelUp": "Niveau supérieur ! Vous êtes maintenant niveau {level}.",
     "xpToNext": "{into} sur {span} XP avant le niveau {next}",
     "place": "{board} : #{all} depuis toujours, #{week} cette semaine",
+    "dailyPlace": "Défi du jour : #{rank}",
     "achievements": "Succès débloqués",
     "unlocked": "Succès débloqué",
     "saving": "Enregistrement de votre résultat…",
@@ -32,6 +33,14 @@
     "share": "Partager",
     "copied": "Lien copié",
     "shareText": "{result} · {game} sur kefche"
+  },
+  "daily": {
+    "title": "Défi du jour",
+    "intro": "Un jeu par jour, le même pour tout le monde. Votre meilleur résultat du jour compte, et votre première partie du jour rapporte 50 XP.",
+    "today": "Aujourd’hui : {game}",
+    "play": "Jouer le défi du jour",
+    "next": "Nouveau défi dans {countdown}, à {time}.",
+    "unavailable": "Impossible de charger le défi du jour."
   },
   "players": "{min, plural, =1 {1 joueur} other {# joueurs}}",
   "playersRange": "{min} à {max} joueurs",

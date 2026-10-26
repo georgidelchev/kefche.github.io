@@ -4,6 +4,7 @@
   "intro": "Der Bestwert jedes Spielers in den Spielen des Servers. Spiele gegen Bots und mit Tipps zählen nicht.",
   "board": "Bestenliste",
   "xp": "Erfahrung (XP)",
+  "daily": "Tagesherausforderung",
   "periods": {
     "label": "Zeitraum",
     "all": "Allzeit",

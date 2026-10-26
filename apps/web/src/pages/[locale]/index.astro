@@ -1,8 +1,10 @@
 ---
 import Logo from "@/components/Logo.astro";
+import DailyCard from "@/features/daily/DailyCard.astro";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALES, type Locale } from "@/i18n/locales";
+import { getSupabaseEnv } from "@/lib/env";
 
 import type { GetStaticPaths } from "astro";
 
@@ -26,4 +28,10 @@ const t = getT(locale);
     </h1>
     <p class="text-lg text-muted md:text-xl">{t("common:hero.tagline")}</p>
   </section>
+  <!-- The daily challenge needs the server (builds with accounts). -->
+  {getSupabaseEnv() && (
+    <div class="max-w-2xl pb-8">
+      <DailyCard locale={locale} />
+    </div>
+  )}
 </AppShell>

@@ -94,7 +94,12 @@ const control =
         )}
       </select>
     </label>
-    <div role="group" aria-label={t("leaderboards:periods.label")} class="flex flex-wrap gap-2">
+    <div
+      role="group"
+      aria-label={t("leaderboards:periods.label")}
+      class="flex flex-wrap gap-2"
+      data-periods
+    >
       {PERIODS.map((p) => (
         <button
           type="button"

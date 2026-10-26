@@ -4,6 +4,7 @@
   "intro": "Each player's best on the server's own games. Games against bots and with hints don't count.",
   "board": "Board",
   "xp": "Experience (XP)",
+  "daily": "Today's challenge",
   "periods": {
     "label": "Period",
     "all": "All time",

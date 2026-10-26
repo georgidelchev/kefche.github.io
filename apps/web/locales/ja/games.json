@@ -24,6 +24,7 @@
     "levelUp": "レベルアップ！レベル{level}になりました。",
     "xpToNext": "レベル{next}まで {into} / {span} XP",
     "place": "{board}：全期間 #{all}、今週 #{week}",
+    "dailyPlace": "今日のチャレンジ：#{rank}",
     "achievements": "解除した実績",
     "unlocked": "実績を解除しました",
     "saving": "結果を保存しています…",
@@ -32,6 +33,14 @@
     "share": "共有",
     "copied": "リンクをコピーしました",
     "shareText": "{result}・kefche の{game}"
+  },
+  "daily": {
+    "title": "デイリーチャレンジ",
+    "intro": "1日1ゲーム、全員が同じゲームに挑みます。その日のベスト記録が数えられ、その日最初のゲームで 50 XP がもらえます。",
+    "today": "今日：{game}",
+    "play": "今日のチャレンジを遊ぶ",
+    "next": "次のチャレンジまで {countdown}（{time}）。",
+    "unavailable": "今日のチャレンジを読み込めませんでした。"
   },
   "players": "{min} 人用",
   "playersRange": "{min}～{max} 人",

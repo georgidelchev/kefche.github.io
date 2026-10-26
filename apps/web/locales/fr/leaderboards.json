@@ -4,6 +4,7 @@
   "intro": "Le meilleur résultat de chaque joueur sur les parties du serveur. Les parties contre des bots ou avec des indices ne comptent pas.",
   "board": "Classement",
   "xp": "Expérience (XP)",
+  "daily": "Défi du jour",
   "periods": {
     "label": "Période",
     "all": "Depuis toujours",

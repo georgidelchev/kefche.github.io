@@ -367,6 +367,12 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"daily_challenge":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"daily_submit":
+{ Args: { "p_day": string,"p_entry": Json,"p_match": string,"p_user": string }; Returns: Json
+                           },
 "due_account_deletions":
 { Args: { "p_limit"?: number }; Returns: string[]
                            },
@@ -568,6 +574,9 @@ isOneToOne: false
       } },
 "set_user_role":
 { Args: { "p_granted": boolean,"p_role": Database["public"]['Enums']["app_role"],"p_user_id": string }; Returns: undefined
+                           },
+"start_daily":
+{ Args: { "p_game_version": number }; Returns: Json
                            },
 "start_play":
 { Args: { "p_game_id": string,"p_game_version": number }; Returns: Json

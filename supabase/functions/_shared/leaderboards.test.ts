@@ -1,7 +1,7 @@
 // The boards a counted game goes on, with the games' own definitions as
 // bundled. Run: deno test _shared/leaderboards.test.ts
 import { GAMES } from "./engines.ts";
-import { boardEntries } from "./leaderboards.ts";
+import { boardEntries, playedAsDaily } from "./leaderboards.ts";
 
 function same(actual: unknown, wanted: unknown, what: string) {
   if (JSON.stringify(actual) !== JSON.stringify(wanted)) {
@@ -60,4 +60,19 @@ Deno.test("an assisted game and a game without boards go on none", () => {
     "hints",
   );
   same(boardEntries("reversi", boards("reversi"), { ...game, score: 40 }), [], "no boards");
+});
+
+Deno.test("a daily game is played with the day's settings", () => {
+  same(
+    playedAsDaily({ speed: "normal", walls: true }, { speed: "normal", walls: true }),
+    true,
+    "the same",
+  );
+  same(
+    playedAsDaily({ speed: "normal", walls: true }, { speed: "fast", walls: true }),
+    false,
+    "faster",
+  );
+  same(playedAsDaily({ difficulty: "medium" }, null), false, "none given");
+  same(playedAsDaily({}, null), true, "2048 fixes none");
 });

@@ -49,6 +49,8 @@ export interface ResultsStrings {
   xpToNext: string;
   /** "{board}: #{all} all time, #{week} this week" */
   place: string;
+  /** "Today's challenge: #{rank}" */
+  dailyPlace: string;
   /** This game's boards by id ("<game>.<board>"): each one's name and page. */
   boards: Record<string, { name: string; href: string }>;
   achievements: string;
@@ -155,18 +157,25 @@ export default function GameResults({
         {done && <Experience gained={done.xpGained} total={done.xp} strings={s} number={number} />}
         {done?.places?.map((place) => {
           const board = s.boards[place.board];
-          if (!board || place.all === null || place.week === null) return null;
+          // The daily challenge's board has a place for its day; others, all time and this week.
+          const text =
+            typeof place.day === "number"
+              ? fill(s.dailyPlace, { rank: number(place.day) })
+              : typeof place.all === "number" && typeof place.week === "number"
+                ? fill(s.place, {
+                    board: board?.name ?? place.board,
+                    all: number(place.all),
+                    week: number(place.week),
+                  })
+                : null;
+          if (!board || !text) return null;
           return (
             <a
               key={place.board}
               href={board.href}
               className="font-semibold text-link underline-offset-4 hover:underline"
             >
-              {fill(s.place, {
-                board: board.name,
-                all: number(place.all),
-                week: number(place.week),
-              })}
+              {text}
             </a>
           );
         })}
