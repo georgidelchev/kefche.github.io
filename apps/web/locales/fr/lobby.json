@@ -10,6 +10,8 @@
     "description": "Jouez à un jeu kefche en ligne avec vos amis.",
     "create": "Créer un salon",
     "quick": "Partie rapide",
+    "playCasual": "Jouer en amical",
+    "playRated": "Jouer en classé",
     "finding": "Recherche d'une partie…",
     "join": "Rejoindre avec un code",
     "joinTitle": "Rejoindre un salon",
@@ -114,6 +116,10 @@
     "failed": "Le résultat n’a pas encore pu être enregistré. Il le sera sous peu.",
     "title": "Parties classées",
     "intro": "Affrontez quelqu'un proche de votre classement. Chaque partie fait évoluer votre classement dans sa catégorie.",
+    "mode": "Type de partie",
+    "casual": "Amicale",
+    "rated": "Classée",
+    "lobbyHint": "Les parties classées se jouent à deux joueurs avec un compte, avec une cadence classée. Chaque partie modifie le classement des deux joueurs.",
     "accountsOnly": "Les parties classées sont réservées aux comptes, pour que votre classement vous appartienne. Connectez-vous ou créez un compte pour jouer.",
     "signIn": "Se connecter",
     "searching": "Recherche d'un adversaire…",
@@ -152,6 +158,7 @@
     "rate_limited": "Trop de tentatives. Patientez un instant et réessayez.",
     "connection": "Connexion au salon perdue. Nouvelle tentative…",
     "accounts_only": "Les parties classées sont réservées aux comptes. Connectez-vous pour jouer.",
+    "rated_guests": "Pour une partie classée, chaque personne assise doit avoir un compte.",
     "unknown": "Un problème est survenu. Veuillez réessayer."
   }
 }

@@ -1,6 +1,7 @@
 // The lobby before a match (SPEC §6.4, §10.2, §10.3): seats with people,
 // bots and empty places, ready checks, the host's settings and controls, and
-// the invite panel. All changes go through the room functions; the view
+// the invite panel. A game with rated play (chess) lets the host make the
+// lobby's games rated: two people with accounts, a rated clock, no bots. All changes go through the room functions; the view
 // re-renders from the live room. The lobby chat is beside it (RoomChat).
 import { Copy, Crown, Lock, QrCode, Share2, WifiOff } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -15,6 +16,7 @@ import type { TurnConfig } from "@/features/games/turn/match-setup";
 import { Segmented, slot } from "@/features/games/turn/TurnUi";
 
 import { defaultDifficulty, onlineTimer } from "./room-match";
+import { parseRated } from "./room-settings";
 
 import type { RoomSettings } from "./room-settings";
 import type { RoomSnapshot } from "./room-store";
@@ -33,6 +35,8 @@ export interface LobbyActions {
       allowSpectators?: boolean;
     },
   ) => void;
+  /** Host: make the lobby's games rated, or casual. */
+  setRated: (rated: boolean) => void;
   lock: (locked: boolean) => void;
   kick: (member: string) => void;
   makeHost: (member: string) => void;
@@ -44,6 +48,8 @@ interface Props {
   self: string;
   present: ReadonlySet<string>;
   config: TurnConfig;
+  /** The game's rated clocks (indexes into its timers); empty without rated play. */
+  ratedTimers: readonly number[];
   /** The game offers public lobbies (manifest `online-public`). */
   allowPublic: boolean;
   /** Race games: the game's options, and a time limit instead of a timer. */
@@ -64,6 +70,7 @@ export function LobbyView({
   self,
   present,
   config,
+  ratedTimers,
   allowPublic,
   race,
   turn: ts,
@@ -77,6 +84,12 @@ export function LobbyView({
 }: Props) {
   const { room, members } = snapshot;
   const isHost = room.host_id === self;
+  // A rated lobby: two people, a rated clock, no bots (the server keeps to it).
+  const rated = parseRated(room.rated);
+  const bots = config.difficulties.length > 0 && !rated;
+  const timers = rated
+    ? config.onlineTimers.filter((i) => ratedTimers.includes(i))
+    : config.onlineTimers;
   // A race's countdown is its time limit ("5 min"), not a turn timer.
   const timerLegend = race ? race.strings.timeLimit : ts.timer;
   const limitLabel = (preset: TimerPreset) =>
@@ -160,7 +173,7 @@ export function LobbyView({
                     </span>
                   )}
                 </div>
-                {isHost && bot && config.difficulties.length > 0 && (
+                {isHost && bot && bots && (
                   <div className="grid gap-2 sm:grid-cols-[1fr_auto] sm:items-center">
                     <Segmented
                       legend={`${s.seatBot} ${String(seat + 1)}`}
@@ -186,7 +199,7 @@ export function LobbyView({
                     </Button>
                   </div>
                 )}
-                {isHost && !bot && !member && config.difficulties.length > 0 && (
+                {isHost && !bot && !member && bots && (
                   <Button
                     variant="outline"
                     size="md"
@@ -238,7 +251,23 @@ export function LobbyView({
         </h2>
         {isHost ? (
           <>
-            {counts.length > 1 && (
+            {ratedTimers.length > 0 && (
+              <div className="grid gap-2">
+                <Segmented
+                  legend={s.rated.mode}
+                  value={rated ? "rated" : "casual"}
+                  options={[
+                    { value: "casual", label: s.rated.casual },
+                    { value: "rated", label: s.rated.rated },
+                  ]}
+                  onChange={(mode) => {
+                    actions.setRated(mode === "rated");
+                  }}
+                />
+                {rated && <p className="text-sm text-muted">{s.rated.lobbyHint}</p>}
+              </div>
+            )}
+            {counts.length > 1 && !rated && (
               <Segmented
                 legend={ts.players}
                 value={room.players}
@@ -251,12 +280,12 @@ export function LobbyView({
                 }}
               />
             )}
-            {config.onlineTimers.length > 1 && (
+            {timers.length > 1 && (
               <Segmented
                 legend={timerLegend}
                 value={onlineTimer(config, settings.timer)}
                 // In the manifest's order (the list starts with a new room's default).
-                options={config.onlineTimers
+                options={timers
                   .toSorted((a, b) => a - b)
                   .map((i) => ({
                     value: i,
@@ -326,6 +355,14 @@ export function LobbyView({
           </>
         ) : (
           <ul className="grid gap-1 text-sm">
+            {ratedTimers.length > 0 && (
+              <li>
+                {s.rated.mode}:{" "}
+                {rated
+                  ? fill(s.rated.badge, { pool: s.rated.pools[rated.pool] ?? rated.pool })
+                  : s.rated.casual}
+              </li>
+            )}
             <li>
               {ts.players}: {room.players.toLocaleString(locale)}
             </li>

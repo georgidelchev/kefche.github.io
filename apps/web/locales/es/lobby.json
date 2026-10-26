@@ -10,6 +10,8 @@
     "description": "Juega a un juego de kefche en línea con tus amigos.",
     "create": "Crear sala",
     "quick": "Partida rápida",
+    "playCasual": "Jugar amistosa",
+    "playRated": "Jugar puntuada",
     "finding": "Buscando una partida…",
     "join": "Unirse con código",
     "joinTitle": "Unirse a una sala",
@@ -114,6 +116,10 @@
     "failed": "Aún no se pudo guardar el resultado. Se guardará en breve.",
     "title": "Partidas puntuadas",
     "intro": "Juega contra alguien con una puntuación cercana a la tuya. Cada partida cambia tu puntuación en su categoría.",
+    "mode": "Tipo de partida",
+    "casual": "Amistosa",
+    "rated": "Puntuada",
+    "lobbyHint": "Las partidas puntuadas son para dos jugadores con cuenta, con un reloj puntuado. Cada partida cambia la puntuación de ambos.",
     "accountsOnly": "Las partidas puntuadas son solo para cuentas, para que tu puntuación sea tuya. Inicia sesión o crea una cuenta para jugar.",
     "signIn": "Iniciar sesión",
     "searching": "Buscando rival…",
@@ -152,6 +158,7 @@
     "rate_limited": "Demasiados intentos. Espera un momento y vuelve a intentarlo.",
     "connection": "Se perdió la conexión con la sala. Reintentando…",
     "accounts_only": "Las partidas puntuadas son solo para cuentas. Inicia sesión para jugar.",
+    "rated_guests": "Para una partida puntuada, todos los que ocupan un asiento necesitan una cuenta.",
     "unknown": "Algo salió mal. Inténtalo de nuevo."
   }
 }

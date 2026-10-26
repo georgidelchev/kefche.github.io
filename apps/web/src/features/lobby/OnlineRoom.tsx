@@ -4,7 +4,8 @@
 // load, and a guest picks a nickname first. In the room, the live rows drive
 // the lobby and presence on the room's channel shows who is connected.
 // `?rated=<clock>` searches for a rated opponent (accounts only), and the
-// pairing's room starts at once.
+// pairing's room starts at once; a bare `?rated` ("Play rated") offers the
+// rated clocks first. A lobby's host can also make its games rated.
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useEffectEvent, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -77,10 +78,12 @@ type Intent =
   | { kind: "create"; public?: boolean }
   | { kind: "join"; code: string }
   | { kind: "quick" }
+  | { kind: "pickRated" }
   | { kind: "rated"; timer: number };
 
 type Stage =
   | { kind: "choose" }
+  | { kind: "pickRated" }
   | { kind: "working"; intent: Intent }
   | { kind: "profile"; identity: Identity; intent: Intent }
   | { kind: "onboarding" }
@@ -97,8 +100,10 @@ function intentFromUrl({ modes, rated }: OnlineGame): Intent | null {
   const room = params.get("room");
   if (room !== null) return { kind: "join", code: normalizeCode(room) };
   if (params.has("quick") && modes.quick) return { kind: "quick" };
+  // ?rated=<clock> searches at once; a bare ?rated offers the clocks first.
   const timer = Number(params.get("rated") ?? "-");
   if (rated.some((clock) => clock.timer === timer)) return { kind: "rated", timer };
+  if (params.has("rated") && rated.length > 0) return { kind: "pickRated" };
   // ?new=public (from the lobby browser) lists the new room there.
   return params.has("new")
     ? { kind: "create", public: modes.public && params.get("new") === "public" }
@@ -120,6 +125,7 @@ export function OnlineRoom({
   // A link with ?room=, ?quick, ?rated= or ?new[=public] starts at once (the page renders only in the browser).
   const [stage, setStage] = useState<Stage>(() => {
     const intent = intentFromUrl(game);
+    if (intent?.kind === "pickRated") return intent;
     return intent ? { kind: "working", intent } : { kind: "choose" };
   });
   const [error, setError] = useState<string | null>(null);
@@ -134,13 +140,18 @@ export function OnlineRoom({
 
   function begin(intent: Intent) {
     setError(null);
+    if (intent.kind === "pickRated") {
+      history.replaceState(history.state, "", `${location.pathname}?rated`);
+      setStage(intent);
+      return;
+    }
     setStage({ kind: "working", intent });
     void perform(intent);
   }
 
   async function perform(intent: Intent) {
     const pending = getSupabase();
-    if (!pending) return;
+    if (!pending || intent.kind === "pickRated") return;
     try {
       const supabase = await pending;
       if (intent.kind === "join" && !CODE.test(intent.code)) throw new Error("room_not_found");
@@ -218,12 +229,31 @@ export function OnlineRoom({
         <Choose
           strings={s}
           quick={game.modes.quick}
-          rated={game.rated}
-          clockLabel={clockLabel}
-          ratedLabel={ratedLabel}
+          rated={game.rated.length > 0}
           error={error}
           onRun={begin}
         />
+      );
+    case "pickRated":
+      return (
+        <div className="grid justify-items-start gap-4">
+          <RatedClocks
+            clocks={game.rated}
+            clockLabel={clockLabel}
+            label={ratedLabel}
+            strings={s.rated}
+            onRun={begin}
+          />
+          <Button
+            variant="ghost"
+            onClick={() => {
+              history.replaceState(history.state, "", location.pathname);
+              setStage({ kind: "choose" });
+            }}
+          >
+            {s.rated.cancel}
+          </Button>
+        </div>
       );
     case "working":
       return (
@@ -274,8 +304,8 @@ export function OnlineRoom({
             });
           }}
           onCancel={() => {
-            history.replaceState(history.state, "", location.pathname);
-            setStage({ kind: "choose" });
+            history.replaceState(history.state, "", `${location.pathname}?rated`);
+            setStage({ kind: "pickRated" });
           }}
           onError={(code) => {
             history.replaceState(history.state, "", location.pathname);
@@ -348,20 +378,20 @@ export function OnlineRoom({
   }
 }
 
+/**
+ * Quick match (casual), rated play for a game that has it, a new lobby, or a
+ * room's code. With rated play, quick match is "Play casual" beside "Play rated".
+ */
 function Choose({
   strings: s,
   quick,
   rated,
-  clockLabel,
-  ratedLabel,
   error,
   onRun,
 }: {
   strings: RoomStrings;
   quick: boolean;
-  rated: readonly RatedClock[];
-  clockLabel: (timer: number) => string;
-  ratedLabel: (timer: number) => string;
+  rated: boolean;
   error: string | null;
   onRun: (intent: Intent) => void;
 }) {
@@ -369,15 +399,6 @@ function Choose({
   const [code, setCode] = useState("");
   return (
     <div className="grid gap-6">
-      {rated.length > 0 && (
-        <RatedClocks
-          clocks={rated}
-          clockLabel={clockLabel}
-          label={ratedLabel}
-          strings={s.rated}
-          onRun={onRun}
-        />
-      )}
       <div className="flex flex-wrap gap-3">
         {quick && (
           <Button
@@ -386,12 +407,22 @@ function Choose({
               onRun({ kind: "quick" });
             }}
           >
-            {s.quick}
+            {rated ? s.playCasual : s.quick}
+          </Button>
+        )}
+        {rated && (
+          <Button
+            size="lg"
+            onClick={() => {
+              onRun({ kind: "pickRated" });
+            }}
+          >
+            {s.playRated}
           </Button>
         )}
         <Button
           size="lg"
-          variant={quick ? "outline" : "primary"}
+          variant={quick || rated ? "outline" : "primary"}
           onClick={() => {
             onRun({ kind: "create" });
           }}
@@ -560,7 +591,8 @@ function Room({
           return;
         }
         seenRef.current = true;
-        setError(null);
+        // Back in touch. A refused change's message stays: the refresh after it lands here too.
+        setError((current) => (current === s.errors.connection ? null : current));
         setSnapshot(next);
         const settings = parseRoomSettings(next.room.settings);
         const playing = next.room.status === "playing" || next.room.status === "finished";
@@ -737,6 +769,17 @@ function Room({
         patchRoom(next),
       );
     },
+    setRated: (rated) => {
+      // The server sets the pool and clock from the lobby's timer.
+      const pool = game.rated.find((clock) => clock.timer === settings.timer)?.pool ?? "";
+      const preset = game.config.timers[settings.timer];
+      const clock =
+        preset?.kind === "clock" ? { base: preset.base, increment: preset.increment } : null;
+      void call(
+        () => supabase.rpc("set_room_rated", { p_room: roomId, p_rated: rated }),
+        patchRoom({ rated: rated && clock ? { pool, clock, lobby: true } : null }),
+      );
+    },
     lock: (locked) =>
       void call(
         () => supabase.rpc("lock_room", { p_room: roomId, p_locked: locked }),
@@ -812,7 +855,7 @@ function Room({
           startsAt={
             rated && settings.startedAt !== null ? settings.startedAt + RATED_COUNTDOWN_MS : null
           }
-          // A rated room plays one game: the players search again instead of a rematch.
+          // A rated matchmaking room plays one game: the players search again instead of a rematch.
           matchHref={(id) => `${matchesPath}${id}/`}
           onNewOpponent={() => {
             void call(() => supabase.rpc("leave_room", { p_room: roomId })).then(() => {
@@ -844,6 +887,7 @@ function Room({
         self={self}
         present={present}
         config={game.config}
+        ratedTimers={game.rated.map((clock) => clock.timer)}
         allowPublic={game.modes.public}
         race={game.race ? { options: game.race.options, strings: race } : null}
         turn={turn}

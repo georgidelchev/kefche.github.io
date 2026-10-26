@@ -512,6 +512,31 @@ isOneToOne: false
 "set_ready":
 { Args: { "p_ready": boolean,"p_room": string }; Returns: undefined
                            },
+"set_room_rated":
+{ Args: { "p_rated": boolean,"p_room": string }; Returns: {
+              "allow_spectators": boolean,
+"bot_seats": (number)[],
+"code": string,
+"created_at": string,
+"game_id": string,
+"game_version": number,
+"host_id": string | null,
+"id": string,
+"last_active_at": string,
+"locked": boolean,
+"players": number,
+"rated": Json | null,
+"settings": NonNullable<Json>,
+"status": string,
+"updated_at": string,
+"visibility": string
+            }
+                          SetofOptions: {
+        from: "*"
+        to: "rooms"
+        isOneToOne: true
+        isSetofReturn: false
+      } },
 "set_user_role":
 { Args: { "p_granted": boolean,"p_role": Database["public"]['Enums']["app_role"],"p_user_id": string }; Returns: undefined
                            },

@@ -10,6 +10,8 @@
     "description": "Jogue um jogo do kefche online com amigos.",
     "create": "Criar sala",
     "quick": "Partida rápida",
+    "playCasual": "Jogar casual",
+    "playRated": "Jogar ranqueada",
     "finding": "Procurando uma partida…",
     "join": "Entrar com código",
     "joinTitle": "Entrar em uma sala",
@@ -114,6 +116,10 @@
     "failed": "Ainda não foi possível registrar o resultado. Será em instantes.",
     "title": "Partidas ranqueadas",
     "intro": "Jogue contra alguém com rating próximo do seu. Cada partida muda seu rating na categoria dela.",
+    "mode": "Tipo de partida",
+    "casual": "Casual",
+    "rated": "Ranqueada",
+    "lobbyHint": "Partidas ranqueadas são para dois jogadores com conta, num relógio ranqueado. Cada partida muda o rating dos dois jogadores.",
     "accountsOnly": "Partidas ranqueadas são só para contas, para que seu rating seja seu. Entre ou crie uma conta para jogar.",
     "signIn": "Entrar",
     "searching": "Procurando um adversário…",
@@ -152,6 +158,7 @@
     "rate_limited": "Tentativas demais. Espere um pouco e tente de novo.",
     "connection": "A conexão com a sala caiu. Tentando de novo…",
     "accounts_only": "Partidas ranqueadas são só para contas. Entre para jogar.",
+    "rated_guests": "Para uma partida ranqueada, todos que ocupam um lugar precisam de uma conta.",
     "unknown": "Algo deu errado. Tente novamente."
   }
 }

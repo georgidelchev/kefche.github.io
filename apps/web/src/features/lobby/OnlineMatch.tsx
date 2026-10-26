@@ -58,7 +58,7 @@ interface Props {
   rated: RatedRoom | null;
   /** Rated rooms: when the clocks start, on the database's clock (ms); the countdown ends then. */
   startsAt: number | null;
-  /** Rated rooms: search for another rated game (there's no rematch). */
+  /** Rated matchmaking's rooms: search for another rated game (they have no rematch). */
   onNewOpponent: () => void;
   /** A finished game's own page (the PGN and the players' ratings). */
   matchHref: (id: string) => string;
@@ -366,7 +366,8 @@ export function OnlineMatch({
             {rating && (
               <RatingLine rating={rating} strings={s.rated} locale={locale} matchHref={matchHref} />
             )}
-            {isRated ? (
+            {/* Rated matchmaking's rooms play one game; a lobby, rated or not, offers a rematch. */}
+            {rated && !rated.lobby ? (
               !spectating && <Button onClick={onNewOpponent}>{s.rated.newOpponent}</Button>
             ) : isHost ? (
               <Button disabled={busy} onClick={() => void rematch()}>

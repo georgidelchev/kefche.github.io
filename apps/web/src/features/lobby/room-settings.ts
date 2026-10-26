@@ -50,18 +50,23 @@ export const settingsJson = ({
   options?: RaceOptionValues;
 }) => ({ timer, bots, options: options ?? {} });
 
-/** A rated room's pool and clock (rooms.rated, set by rated matchmaking), or null. */
+/**
+ * A rated room's pool and clock (rooms.rated), or null. Rated matchmaking's
+ * rooms play one game; a rated lobby (`lobby`) stays one, with rematches.
+ */
 export interface RatedRoom {
   pool: string;
   clock: { base: number; increment: number };
+  lobby: boolean;
 }
 
 const ratedSchema = z.object({
   pool: z.string(),
   clock: z.object({ base: z.number(), increment: z.number() }),
+  lobby: z.optional(z.boolean()),
 });
 
 export function parseRated(raw: unknown): RatedRoom | null {
   const parsed = ratedSchema.safeParse(raw);
-  return parsed.success ? parsed.data : null;
+  return parsed.success ? { ...parsed.data, lobby: parsed.data.lobby ?? false } : null;
 }

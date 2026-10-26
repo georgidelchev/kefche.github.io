@@ -10,6 +10,8 @@
     "description": "Spiele ein kefche-Spiel online mit Freunden.",
     "create": "Raum erstellen",
     "quick": "Schnelles Spiel",
+    "playCasual": "Ungewertet spielen",
+    "playRated": "Gewertet spielen",
     "finding": "Spiel wird gesucht…",
     "join": "Mit Code beitreten",
     "joinTitle": "Einem Raum beitreten",
@@ -114,6 +116,10 @@
     "failed": "Das Ergebnis konnte noch nicht gespeichert werden. Das passiert gleich.",
     "title": "Gewertete Partien",
     "intro": "Spiele gegen jemanden mit ähnlicher Wertung. Jede Partie verändert deine Wertung in ihrer Kategorie.",
+    "mode": "Partieart",
+    "casual": "Ungewertet",
+    "rated": "Gewertet",
+    "lobbyHint": "Gewertete Partien sind für zwei Spieler mit Konto, mit einer gewerteten Bedenkzeit. Jede Partie verändert die Wertung beider Spieler.",
     "accountsOnly": "Gewertete Partien gibt es nur mit Konto, damit deine Wertung dir gehört. Melde dich an oder erstelle ein Konto, um zu spielen.",
     "signIn": "Anmelden",
     "searching": "Suche nach einem Gegner…",
@@ -152,6 +158,7 @@
     "rate_limited": "Zu viele Versuche. Warte kurz und versuche es noch einmal.",
     "connection": "Die Verbindung zum Raum ist weg. Neuer Versuch…",
     "accounts_only": "Gewertete Partien gibt es nur mit Konto. Melde dich an, um zu spielen.",
+    "rated_guests": "Für eine gewertete Partie braucht jeder auf einem Platz ein Konto.",
     "unknown": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal."
   }
 }

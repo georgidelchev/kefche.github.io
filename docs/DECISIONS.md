@@ -443,7 +443,7 @@ The Web Push service worker (Phase 8) is still allowed and handles push events o
 
 **Decision.**
 
-- **Who and how:** only signed-in accounts play rated games (owner decision Q1). Rated rooms come only from matchmaking (`rated_search`), each room holds one game, and rated games have no takebacks.
+- **Who and how:** only signed-in accounts play rated games (owner decision Q1). Rated rooms come only from matchmaking (`rated_search`), each room holds one game, and rated games have no takebacks. _(Amended 2026-10-26, owner decision: a lobby's host can also make its games rated. See "Rated lobbies" below.)_
 - **The server's own record:** each player's browser records its own actions through `rated_action`. The database takes the seat from the caller's membership and the time from its own clock, and stores them in `private.rated_moves`. A player can only ever record actions for their own seat.
 - **The server's verdict:** when a game ends, the Edge Function `submit-match` replays the record with chess.js (`_shared/chess-rated.ts`). It never reads a result from a client: the request names only the room and the match's seed.
   - It runs both clocks from the server's times plus the increment, starting white's clock when the 3 s countdown ends.
@@ -463,6 +463,14 @@ The Web Push service worker (Phase 8) is still allowed and handles push events o
 - Network delay counts against the mover on the server's clock, within the 2 s grace.
 - A player who never moves (paired just as they closed the tab) loses on time instead of the game being aborted (Known issues).
 - Each rated game costs one or two function calls.
+
+**Rated lobbies (amendment, 2026-10-26).** The owner asked for "Play casual" and "Play rated" on the chess page, and for a custom lobby that can be casual or rated.
+
+- **Choosing:** "Play casual" is quick match, which only ever seats players in casual lobbies. "Play rated" offers the rated clocks, then searches as before.
+- **Rated lobbies:** the lobby's host switches it to rated (`set_room_rated`). `rooms.rated` then carries `"lobby": true`, and its pool and clock follow the lobby's timer, which must be one of `private.rated_clocks`. The room holds two people and no bots, and every seat needs an account: a guest who joins watches, and switching to rated with a guest seated is refused.
+- **The game is decided the same way:** `begin_match` writes the rated game, and `submit-match` decides it from the server's own record.
+- **Unlike matchmaking,** a rated lobby stays a lobby: the host can change the clock between games and offer a rematch, which is another rated game. Matchmaking's rooms keep their fixed terms.
+- **The risk accepted:** friends, or one person with two accounts, can play each other for rating on purpose. Matchmaking alone made that harder, though two accounts searching the same clock at once could already meet. Leaderboards (step 10) and the admin panel (Phase 14) may need a check for pairs that keep playing each other.
 
 ## ADR-0027: Glicko-2 per game and pool, rated after every game
 

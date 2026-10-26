@@ -1044,6 +1044,15 @@ Online modes are enabled for the Phase 4 games.
   - **Still to check:** the hosted deploy, as in step 4.
 - **Fix (owner's report):** a host who reloaded an online match started it again from the first move, while the others kept the real game, since only the members' browsers hold the match. Each member's device now saves the latest snapshot of its room's match, cleared at the end. A host who reloads carries on from it, with the mover's clock charged for the wait. Checked in chess: the guest and then the host reloaded after two moves, and play went on with the same position on both sides and the clocks running. Online 33/33, rated endings 21/21 and rated matchmaking 20/20 again. A game against bots or on one device still isn't saved: a reload loses it.
 - **Fix (owner's report):** rated chess couldn't be reached from the chess page. Its "Play online" box offered only casual play (quick match, a new lobby, a code), and those links skip the room page's first screen, the only place the rated clocks were. The box now lists the rated clocks pool by pool, each straight into the rated search (`?rated=`), with the existing strings. Checked: two accounts started from the chess page, were paired in blitz, and both saw the rating change after a resignation (7/7). The chess page in English and Arabic at 360, 768 and 1280 px in both themes: no sideways scroll, axe clean (24/24).
+- **Rated lobbies, and "Play casual" / "Play rated" (owner's request; ADR-0026 amended):** the clock list above gave way to two buttons.
+  - **The chess page and the room page** offer "Play casual" (quick match, which now only ever seats players in casual lobbies) and "Play rated", which shows the rated clocks (`?rated`) and then searches. Cancelling a search goes back to the clocks. Games without rated play keep "Quick match".
+  - **A lobby's game type:** the host chooses casual or rated (`20261025100800_rated_lobbies.sql`, `set_room_rated`). A rated lobby is for two people with accounts, on a rated clock, with no bots: the clock list shows only rated clocks, a guest who joins watches, and switching with a guest seated is refused. The others see "Game type: Rated · Blitz". Its games are rated and decided by the server like matchmaking's, and the host can offer a rematch, which is rated too.
+  - **Strings:** 7 new ones in all 11 languages.
+  - **Lobby errors were invisible:** the room's refresh after a refused change cleared its message straight away (a refused start or a taken seat said nothing). Only the lost-connection message clears itself now.
+  - **Checks:**
+    - end to end, 22/22: the two buttons, the clocks and Cancel; a rated lobby with its terms following the clock; a guest who only watches; a rated game and a rated rematch with both rating changes shown; the refusal with a guest seated; quick match skipping a public rated lobby;
+    - rated matchmaking 20/20, rated endings 21/21, online 33/33, rated from the chess page 5/5;
+    - the chess page, the room's first screen, the clocks (English and Arabic) and a lobby, at 360, 768 and 1280 px in both themes: no sideways scroll, axe clean, 60/60.
 
 ---
 

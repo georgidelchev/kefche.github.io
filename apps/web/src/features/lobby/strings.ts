@@ -29,6 +29,9 @@ export interface RoomStrings {
   description: string;
   create: string;
   quick: string;
+  /** Games with rated play: quick match is "Play casual", beside "Play rated". */
+  playCasual: string;
+  playRated: string;
   finding: string;
   join: string;
   joinTitle: string;
@@ -98,6 +101,11 @@ export interface RatedStrings {
   failed: string;
   title: string;
   intro: string;
+  /** A lobby's game type: casual or rated. */
+  mode: string;
+  casual: string;
+  rated: string;
+  lobbyHint: string;
   accountsOnly: string;
   signIn: string;
   searching: string;
@@ -253,6 +261,7 @@ export const ROOM_ERROR_CODES = [
   "seat_taken",
   "rate_limited",
   "accounts_only",
+  "rated_guests",
   "connection",
   "unknown",
 ] as const;
@@ -264,6 +273,8 @@ export function roomStrings(t: AppT): RoomStrings {
     description: t("lobby:room.description"),
     create: t("lobby:room.create"),
     quick: t("lobby:room.quick"),
+    playCasual: t("lobby:room.playCasual"),
+    playRated: t("lobby:room.playRated"),
     finding: t("lobby:room.finding"),
     join: t("lobby:room.join"),
     joinTitle: t("lobby:room.joinTitle"),
@@ -329,6 +340,7 @@ export function roomStrings(t: AppT): RoomStrings {
       seat_taken: t("lobby:errors.seat_taken"),
       rate_limited: t("lobby:errors.rate_limited"),
       accounts_only: t("lobby:errors.accounts_only"),
+      rated_guests: t("lobby:errors.rated_guests"),
       connection: t("lobby:errors.connection"),
       unknown: t("lobby:errors.unknown"),
     },
@@ -346,6 +358,10 @@ export function roomStrings(t: AppT): RoomStrings {
       failed: t("lobby:rated.failed"),
       title: t("lobby:rated.title"),
       intro: t("lobby:rated.intro"),
+      mode: t("lobby:rated.mode"),
+      casual: t("lobby:rated.casual"),
+      rated: t("lobby:rated.rated"),
+      lobbyHint: t("lobby:rated.lobbyHint"),
       accountsOnly: t("lobby:rated.accountsOnly"),
       signIn: t("lobby:rated.signIn"),
       searching: t("lobby:rated.searching"),
