@@ -63,5 +63,6 @@
       "name": "连胜",
       "description": "连续赢得 {count, number} 局"
     }
-  }
+  },
+  "leaderboards": {}
 }

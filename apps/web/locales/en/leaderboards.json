@@ -1,0 +1,25 @@
+{
+  "title": "Leaderboards",
+  "description": "The best players on kefche: top scores and times in every game, ratings, and the XP board.",
+  "intro": "Each player's best on the server's own games. Games against bots and with hints don't count.",
+  "board": "Board",
+  "xp": "Experience (XP)",
+  "periods": {
+    "label": "Period",
+    "all": "All time",
+    "week": "This week",
+    "friends": "Friends"
+  },
+  "friendsSoon": "Boards of just your friends arrive with friends.",
+  "weekEnds": "A new week starts {date}.",
+  "you": "You",
+  "yourPlace": "Your place: #{rank} of {total}",
+  "empty": "No one is on this board yet.",
+  "hidden": "You're hidden from leaderboards. You can change this in your settings.",
+  "loading": "Loading the board…",
+  "failed": "We couldn't load this board.",
+  "retry": "Try again",
+  "seeAll": "See all leaderboards",
+  "section": "Leaderboard",
+  "xpValue": "{xp} XP"
+}

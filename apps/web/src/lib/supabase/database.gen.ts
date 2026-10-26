@@ -410,6 +410,17 @@ isOneToOne: false
 "kick_member":
 { Args: { "p_member": string,"p_room": string }; Returns: undefined
                            },
+"leaderboard":
+{ Args: { "p_board": string,"p_limit"?: number,"p_period"?: string }; Returns: Json
+                           },
+"leaderboard_entries_export":
+{ Args: { "p_user": string }; Returns: {
+              "achieved_at": string,"board": string,"match_id": string,"period": string,"value": number
+            }[]
+                           },
+"leaderboard_submit":
+{ Args: { "p_entries": Json,"p_match": string,"p_user": string }; Returns: Json
+                           },
 "leave_room":
 { Args: { "p_room": string }; Returns: undefined
                            },

@@ -1,6 +1,6 @@
 // What a finished game gave the player, as submit-match answers it (Phase 7
-// step 9): the XP it earned, their total since, the achievements it unlocked
-// and their best in that game. The results screen shows it.
+// step 9): the XP it earned, their total since, the achievements it unlocked,
+// their best in that game and their places on its leaderboards. The results screen shows it.
 // zod/mini: this module ships to the browser.
 import * as z from "zod/mini";
 
@@ -11,6 +11,16 @@ export const rewardsSchema = z.object({
   xp: z.int().check(z.minimum(0)),
   achievements: z.array(z.object({ achievement: z.string().check(z.maxLength(80)), tier })),
   best: z.nullable(z.object({ score: z.nullable(z.number()), timeMs: z.nullable(z.number()) })),
+  /** A game played alone: the player's places on its boards (null: not shown on them). */
+  places: z.optional(
+    z.array(
+      z.object({
+        board: z.string().check(z.maxLength(80)),
+        all: z.nullable(z.int()),
+        week: z.nullable(z.int()),
+      }),
+    ),
+  ),
 });
 export type Rewards = z.infer<typeof rewardsSchema>;
 

@@ -127,5 +127,6 @@
       "name": "Rated player",
       "description": "Reach a rating of {count, number} after 10 rated games"
     }
-  }
+  },
+  "leaderboards": {}
 }

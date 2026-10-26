@@ -1,0 +1,120 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import { getT } from "@/i18n/i18n";
+import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+
+import type { BoardGroup } from "./boards";
+
+// A leaderboard (SPEC §12.4): a board picker, All time / This week / Friends,
+// and the board's top with the viewer's own place, filled in by
+// leaderboard.client.ts (boards change as people play, so the page itself
+// is static). With `syncUrl`, the board and period live in the address
+// (?board=…&period=week), so a results screen can link straight to one.
+interface Props {
+  locale: Locale;
+  groups: BoardGroup[];
+  /** The board shown first (the address may pick another). */
+  initial: string;
+  limit: number;
+  syncUrl?: boolean;
+  /** For the controls' ids, when a page has more than one. */
+  idPrefix?: string;
+}
+
+const { locale, groups, initial, limit, syncUrl = false, idPrefix = "lb" } = Astro.props;
+const t = getT(locale);
+const { bcp47 } = LOCALE_INFO[locale];
+const boards = groups.flatMap((g) => g.boards);
+const strings = {
+  you: t("leaderboards:you"),
+  yourPlace: t("leaderboards:yourPlace", { rank: "{rank}", total: "{total}" }),
+  empty: t("leaderboards:empty"),
+  hidden: t("leaderboards:hidden"),
+  loading: t("leaderboards:loading"),
+  failed: t("leaderboards:failed"),
+  retry: t("leaderboards:retry"),
+  friendsSoon: t("leaderboards:friendsSoon"),
+  weekEnds: t("leaderboards:weekEnds", { date: "{date}" }),
+  xpValue: t("leaderboards:xpValue", { xp: "{xp}" }),
+};
+const PERIODS = [
+  { id: "all", label: t("leaderboards:periods.all") },
+  { id: "week", label: t("leaderboards:periods.week") },
+  { id: "friends", label: t("leaderboards:periods.friends") },
+] as const;
+const control =
+  "min-h-11 rounded-full border border-border-strong px-4 text-sm font-semibold hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus aria-pressed:border-brand aria-pressed:bg-brand aria-pressed:text-on-brand aria-pressed:hover:bg-brand";
+---
+
+<div
+  class="grid gap-4"
+  data-leaderboard
+  data-initial={initial}
+  data-limit={limit}
+  data-sync-url={syncUrl ? "true" : undefined}
+  data-locale={bcp47}
+  data-user-base={getRelativeLocaleUrl(locale, "/u/")}
+  data-strings={JSON.stringify(strings)}
+>
+  <div class="flex flex-wrap items-end gap-3">
+    <label class:list={["grid gap-1 text-sm font-semibold", boards.length < 2 && "hidden"]}>
+      {t("leaderboards:board")}
+      <select
+        id={`${idPrefix}-board`}
+        data-board
+        class="min-h-11 max-w-full rounded-xl border border-border-strong bg-surface px-3 text-base font-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+      >
+        {groups.map((group) =>
+          group.label === null ? (
+            group.boards.map((b) => (
+              <option
+                value={b.id}
+                data-kind={b.kind}
+                data-weekly={String(b.weekly)}
+                selected={b.id === initial}
+              >
+                {b.name}
+              </option>
+            ))
+          ) : (
+            <optgroup label={group.label}>
+              {group.boards.map((b) => (
+                <option
+                  value={b.id}
+                  data-kind={b.kind}
+                  data-weekly={String(b.weekly)}
+                  selected={b.id === initial}
+                >
+                  {b.name}
+                </option>
+              ))}
+            </optgroup>
+          ),
+        )}
+      </select>
+    </label>
+    <div role="group" aria-label={t("leaderboards:periods.label")} class="flex flex-wrap gap-2">
+      {PERIODS.map((p) => (
+        <button
+          type="button"
+          data-period={p.id}
+          aria-pressed={p.id === "all" ? "true" : "false"}
+          class={control}
+        >
+          {p.label}
+        </button>
+      ))}
+    </div>
+  </div>
+  <p data-note class="text-sm text-muted empty:hidden"></p>
+  <div data-status role="status" class="flex flex-wrap items-center gap-3 empty:hidden"></div>
+  <ol data-rows class="grid gap-2"></ol>
+  <noscript>
+    <p class="text-muted">{t("leaderboards:failed")}</p>
+  </noscript>
+</div>
+
+<script>
+  import "@/features/leaderboards/leaderboard.client";
+</script>

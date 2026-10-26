@@ -63,5 +63,6 @@
       "name": "Embalado",
       "description": "Vença {count, plural, one {# partida} other {# partidas}} seguidas"
     }
-  }
+  },
+  "leaderboards": {}
 }

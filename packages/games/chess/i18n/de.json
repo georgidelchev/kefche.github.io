@@ -127,5 +127,6 @@
       "name": "Gewertet",
       "description": "Erreiche eine Wertung von {count, number} nach 10 gewerteten Partien"
     }
-  }
+  },
+  "leaderboards": {}
 }

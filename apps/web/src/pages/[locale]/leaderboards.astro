@@ -1,0 +1,34 @@
+---
+import { authStaticPaths } from "@/features/auth/page-helpers";
+import { listGames } from "@/features/games/registry";
+import { allBoards } from "@/features/leaderboards/boards";
+import LeaderboardView from "@/features/leaderboards/LeaderboardView.astro";
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+// Every leaderboard (SPEC §12.4): the XP board, each game's boards and its
+// rated pools, all time or this week. Only in builds with accounts.
+// noindex: the boards list players, who are 13+ (as their profiles).
+export const getStaticPaths = authStaticPaths;
+
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+const groups = allBoards(listGames(), t, locale);
+---
+
+<AppShell
+  locale={locale}
+  path="/leaderboards/"
+  title={t("common:meta.sectionTitle", { section: t("leaderboards:title") })}
+  description={t("leaderboards:description")}
+  noindex
+>
+  <div class="mx-auto grid w-full max-w-2xl gap-6 py-6 md:py-12">
+    <header class="grid gap-2">
+      <h1 class="text-4xl md:text-5xl">{t("leaderboards:title")}</h1>
+      <p class="max-w-prose text-lg text-muted">{t("leaderboards:intro")}</p>
+    </header>
+    <LeaderboardView locale={locale} groups={groups} initial="xp" limit={50} syncUrl />
+  </div>
+</AppShell>

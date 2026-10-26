@@ -72,5 +72,8 @@
       "name": "Постоянство",
       "description": "Завърши {count, plural, one {# игра} other {# игри}}"
     }
+  },
+  "leaderboards": {
+    "best-score": "Най-добър резултат"
   }
 }

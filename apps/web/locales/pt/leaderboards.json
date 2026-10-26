@@ -1,0 +1,25 @@
+{
+  "title": "Rankings",
+  "description": "Os melhores jogadores do kefche: as melhores pontuações e tempos de cada jogo, os ratings e o ranking de XP.",
+  "intro": "O melhor de cada jogador nas partidas do próprio servidor. Partidas contra bots e com dicas não contam.",
+  "board": "Ranking",
+  "xp": "Experiência (XP)",
+  "periods": {
+    "label": "Período",
+    "all": "Geral",
+    "week": "Esta semana",
+    "friends": "Amigos"
+  },
+  "friendsSoon": "Rankings só com seus amigos chegam junto com os amigos.",
+  "weekEnds": "Uma nova semana começa {date}.",
+  "you": "Você",
+  "yourPlace": "Sua posição: #{rank} de {total}",
+  "empty": "Ainda não há ninguém neste ranking.",
+  "hidden": "Você está oculto dos rankings. Dá para mudar isso nas configurações.",
+  "loading": "Carregando o ranking…",
+  "failed": "Não conseguimos carregar este ranking.",
+  "retry": "Tentar de novo",
+  "seeAll": "Todos os rankings",
+  "section": "Ranking",
+  "xpValue": "{xp} XP"
+}

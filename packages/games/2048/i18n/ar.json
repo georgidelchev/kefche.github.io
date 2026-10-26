@@ -60,5 +60,8 @@
       "name": "مثابر",
       "description": "أنهِ ألعابًا عددها {count, number}"
     }
+  },
+  "leaderboards": {
+    "best-score": "أفضل نتيجة"
   }
 }

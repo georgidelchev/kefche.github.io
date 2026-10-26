@@ -78,5 +78,11 @@
       "name": "スピード解答",
       "description": "{time}以内にパズルを解く"
     }
+  },
+  "leaderboards": {
+    "best-time-easy": "ベストタイム・やさしい",
+    "best-time-medium": "ベストタイム・ふつう",
+    "best-time-hard": "ベストタイム・むずかしい",
+    "best-time-expert": "ベストタイム・エキスパート"
   }
 }

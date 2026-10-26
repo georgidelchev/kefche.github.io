@@ -1,0 +1,25 @@
+{
+  "title": "Clasificaciones",
+  "description": "Los mejores jugadores de kefche: las mejores puntuaciones y tiempos de cada juego, las puntuaciones y la clasificación de XP.",
+  "intro": "Lo mejor de cada jugador en las partidas del propio servidor. No cuentan las partidas contra bots ni con pistas.",
+  "board": "Clasificación",
+  "xp": "Experiencia (XP)",
+  "periods": {
+    "label": "Periodo",
+    "all": "Histórico",
+    "week": "Esta semana",
+    "friends": "Amigos"
+  },
+  "friendsSoon": "Las clasificaciones solo con tus amigos llegarán con los amigos.",
+  "weekEnds": "Una nueva semana empieza el {date}.",
+  "you": "Tú",
+  "yourPlace": "Tu puesto: #{rank} de {total}",
+  "empty": "Todavía no hay nadie en esta clasificación.",
+  "hidden": "Estás oculto en las clasificaciones. Puedes cambiarlo en los ajustes.",
+  "loading": "Cargando la clasificación…",
+  "failed": "No pudimos cargar esta clasificación.",
+  "retry": "Reintentar",
+  "seeAll": "Todas las clasificaciones",
+  "section": "Clasificación",
+  "xpValue": "{xp} XP"
+}

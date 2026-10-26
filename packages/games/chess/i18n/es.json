@@ -127,5 +127,6 @@
       "name": "Jugador puntuado",
       "description": "Alcanza una puntuación de {count, number} tras 10 partidas puntuadas"
     }
-  }
+  },
+  "leaderboards": {}
 }

@@ -78,5 +78,11 @@
       "name": "Éclair",
       "description": "Résolvez une grille en {time} ou moins"
     }
+  },
+  "leaderboards": {
+    "best-time-easy": "Meilleur temps · Facile",
+    "best-time-medium": "Meilleur temps · Moyen",
+    "best-time-hard": "Meilleur temps · Difficile",
+    "best-time-expert": "Meilleur temps · Expert"
   }
 }

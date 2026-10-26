@@ -78,5 +78,11 @@
       "name": "Blitzlöser",
       "description": "Löse ein Rätsel in {time} oder weniger"
     }
+  },
+  "leaderboards": {
+    "best-time-easy": "Beste Zeit · Leicht",
+    "best-time-medium": "Beste Zeit · Mittel",
+    "best-time-hard": "Beste Zeit · Schwer",
+    "best-time-expert": "Beste Zeit · Experte"
   }
 }

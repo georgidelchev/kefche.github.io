@@ -6,10 +6,13 @@ import { buttonVariants } from "@kefche/ui/components/button";
 import { Input } from "@kefche/ui/components/input";
 
 import JsonLd from "@/components/JsonLd.astro";
+import { gameBoards } from "@/features/leaderboards/boards";
+import LeaderboardView from "@/features/leaderboards/LeaderboardView.astro";
 import { roomStrings } from "@/features/lobby/strings";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+import { getSupabaseEnv } from "@/lib/env";
 
 import { CATEGORY_KEYS, playablePlayers } from "./catalog";
 import { GamePlayer } from "./GamePlayer";
@@ -96,6 +99,8 @@ const room = roomStrings(t);
 // A game with rated play (chess): quick match is "Play casual", beside "Play
 // rated", which offers the rated clocks on the room page.
 const rated = manifest.rated !== false;
+// The game's leaderboards (and its rated pools'), in builds with accounts.
+const boards = getSupabaseEnv() ? gameBoards(game, t, locale) : [];
 const section = "grid gap-3";
 const crumb = "rounded-sm hover:underline";
 ---
@@ -227,6 +232,27 @@ const crumb = "rounded-sm hover:underline";
         </section>
       )}
     </header>
+
+    {boards[0] && (
+      <section class={section} aria-labelledby="leaderboard">
+        <h2 id="leaderboard" class="text-2xl">
+          {t("leaderboards:section")}
+        </h2>
+        <LeaderboardView
+          locale={locale}
+          groups={[{ label: null, boards }]}
+          initial={boards[0].id}
+          limit={10}
+          idPrefix="game-lb"
+        />
+        <a
+          href={`${getRelativeLocaleUrl(locale, "/leaderboards/")}?board=${encodeURIComponent(boards[0].id)}`}
+          class="justify-self-start font-semibold text-link underline-offset-4 hover:underline"
+        >
+          {t("leaderboards:seeAll")}
+        </a>
+      </section>
+    )}
 
     <section class={section} aria-labelledby="about">
       <h2 id="about" class="text-2xl">

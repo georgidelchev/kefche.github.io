@@ -60,5 +60,8 @@
       "name": "Dedicado",
       "description": "Termine {count, plural, one {# partida} other {# partidas}}"
     }
+  },
+  "leaderboards": {
+    "best-score": "Melhor pontuação"
   }
 }

@@ -63,5 +63,6 @@
       "name": "Siegesserie",
       "description": "Gewinne {count, plural, one {# Partie} other {# Partien}} in Folge"
     }
-  }
+  },
+  "leaderboards": {}
 }

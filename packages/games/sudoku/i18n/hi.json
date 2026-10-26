@@ -78,5 +78,11 @@
       "name": "फुर्तीला",
       "description": "{time} या उससे कम में एक पहेली सुलझाएँ"
     }
+  },
+  "leaderboards": {
+    "best-time-easy": "सर्वश्रेष्ठ समय · आसान",
+    "best-time-medium": "सर्वश्रेष्ठ समय · मध्यम",
+    "best-time-hard": "सर्वश्रेष्ठ समय · कठिन",
+    "best-time-expert": "सर्वश्रेष्ठ समय · विशेषज्ञ"
   }
 }

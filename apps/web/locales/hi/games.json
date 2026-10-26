@@ -23,6 +23,7 @@
     "level": "स्तर {level}",
     "levelUp": "स्तर बढ़ा! अब आप स्तर {level} पर हैं।",
     "xpToNext": "स्तर {next} तक {span} में से {into} XP",
+    "place": "{board}: अब तक #{all}, इस सप्ताह #{week}",
     "achievements": "अनलॉक हुई उपलब्धियाँ",
     "unlocked": "उपलब्धि अनलॉक हुई",
     "saving": "आपका नतीजा सहेजा जा रहा है…",

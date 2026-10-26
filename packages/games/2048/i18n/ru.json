@@ -60,5 +60,8 @@
       "name": "Упорство",
       "description": "Завершите {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
     }
+  },
+  "leaderboards": {
+    "best-score": "Лучший счёт"
   }
 }

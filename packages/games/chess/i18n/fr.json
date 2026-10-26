@@ -127,5 +127,6 @@
       "name": "Joueur classé",
       "description": "Atteignez un classement de {count, number} après 10 parties classées"
     }
-  }
+  },
+  "leaderboards": {}
 }

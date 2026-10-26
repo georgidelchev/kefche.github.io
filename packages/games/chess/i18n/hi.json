@@ -127,5 +127,6 @@
       "name": "रेटेड खिलाड़ी",
       "description": "10 रेटेड गेम के बाद {count, number} रेटिंग तक पहुँचें"
     }
-  }
+  },
+  "leaderboards": {}
 }

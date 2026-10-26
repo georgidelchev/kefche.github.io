@@ -72,5 +72,8 @@
       "name": "継続は力なり",
       "description": "ゲームを{count, number}回最後まで遊ぶ"
     }
+  },
+  "leaderboards": {
+    "best-score": "ベストスコア"
   }
 }

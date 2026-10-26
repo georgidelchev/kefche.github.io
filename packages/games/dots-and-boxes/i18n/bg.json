@@ -63,5 +63,6 @@
       "name": "Серия",
       "description": "Спечели {count, plural, one {# игра} other {# игри}} поред"
     }
-  }
+  },
+  "leaderboards": {}
 }

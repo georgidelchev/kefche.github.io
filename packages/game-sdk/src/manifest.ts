@@ -48,12 +48,19 @@ export interface RatedPool {
   timers: number[];
 }
 
-/** SPEC §12.4; stored per game in Phase 7. */
+/**
+ * A game's leaderboard (SPEC §12.4): each player's best score or time in
+ * games played alone on the server's seeds. Its name lives in the game's
+ * i18n files under `leaderboards.<id>`. Rated games have boards per pool
+ * from their ratings, with no entry here.
+ */
 export interface LeaderboardDef {
   id: string;
-  metric: "score" | "time" | "rating";
+  metric: "score" | "time";
   /** "desc": higher is better (score); "asc": lower is better (time). */
   order: "asc" | "desc";
+  /** Only games played with these settings (Sudoku's difficulty) count on it. */
+  when?: Readonly<Record<string, string | number | boolean>>;
 }
 
 /**

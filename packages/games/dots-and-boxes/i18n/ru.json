@@ -63,5 +63,6 @@
       "name": "Серия побед",
       "description": "Выиграйте {count, plural, one {# партию} few {# партии} many {# партий} other {# партии}} подряд"
     }
-  }
+  },
+  "leaderboards": {}
 }

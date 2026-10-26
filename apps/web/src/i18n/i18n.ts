@@ -15,6 +15,7 @@ export const NAMESPACES = [
   "games",
   "legal",
   "lobby",
+  "leaderboards",
 ] as const;
 export type Namespace = (typeof NAMESPACES)[number];
 

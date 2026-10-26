@@ -37,10 +37,10 @@ export const manifest = defineManifest({
   renderer: "dom",
   estimatedMinutes: [5, 40],
   leaderboards: [
-    { id: "best-time-easy", metric: "time", order: "asc" },
-    { id: "best-time-medium", metric: "time", order: "asc" },
-    { id: "best-time-hard", metric: "time", order: "asc" },
-    { id: "best-time-expert", metric: "time", order: "asc" },
+    { id: "best-time-easy", metric: "time", order: "asc", when: { difficulty: "easy" } },
+    { id: "best-time-medium", metric: "time", order: "asc", when: { difficulty: "medium" } },
+    { id: "best-time-hard", metric: "time", order: "asc", when: { difficulty: "hard" } },
+    { id: "best-time-expert", metric: "time", order: "asc", when: { difficulty: "expert" } },
   ],
   achievements: [
     { id: "solver", icon: "target", metric: "wins", tiers: [1, 25, 100] },

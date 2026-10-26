@@ -1,6 +1,6 @@
 // One results screen for every game (SPEC §12.6, Phase 7 step 9): the
 // result, then what the game gave an account (the best so far, the XP with
-// the level bar, the achievements it unlocked, with a toast each), any rating
+// the level bar, its leaderboard places, the achievements it unlocked, with a toast each), any rating
 // change, the game's own actions (play again, rematch…) and Share. Guests
 // are asked to sign in instead. Loaded lazily by the players.
 import {
@@ -47,6 +47,10 @@ export interface ResultsStrings {
   levelUp: string;
   /** "{into} of {span} XP to level {next}" */
   xpToNext: string;
+  /** "{board}: #{all} all time, #{week} this week" */
+  place: string;
+  /** This game's boards by id ("<game>.<board>"): each one's name and page. */
+  boards: Record<string, { name: string; href: string }>;
   achievements: string;
   /** The toast's title. */
   unlocked: string;
@@ -149,6 +153,23 @@ export default function GameResults({
         {details}
         {done && <Best result={result} best={done.best} strings={s} number={number} />}
         {done && <Experience gained={done.xpGained} total={done.xp} strings={s} number={number} />}
+        {done?.places?.map((place) => {
+          const board = s.boards[place.board];
+          if (!board || place.all === null || place.week === null) return null;
+          return (
+            <a
+              key={place.board}
+              href={board.href}
+              className="font-semibold text-link underline-offset-4 hover:underline"
+            >
+              {fill(s.place, {
+                board: board.name,
+                all: number(place.all),
+                week: number(place.week),
+              })}
+            </a>
+          );
+        })}
         {done && done.achievements.length > 0 && (
           <section aria-label={s.achievements} className="grid w-full max-w-md gap-2">
             <h3 className="text-base font-semibold">{s.achievements}</h3>

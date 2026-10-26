@@ -23,6 +23,7 @@
     "level": "Nível {level}",
     "levelUp": "Subiu de nível! Agora você é nível {level}.",
     "xpToNext": "{into} de {span} XP para o nível {next}",
+    "place": "{board}: #{all} no geral, #{week} nesta semana",
     "achievements": "Conquistas desbloqueadas",
     "unlocked": "Conquista desbloqueada",
     "saving": "Salvando seu resultado…",

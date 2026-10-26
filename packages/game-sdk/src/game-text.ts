@@ -22,4 +22,6 @@ export interface GameText {
    * is ICU, with {count} (the tier's goal), or {time} for a best time.
    */
   achievements: Record<string, { name: string; description: string }>;
+  /** Each manifest leaderboard's name, by id ("Best time · Easy"). */
+  leaderboards: Record<string, string>;
 }

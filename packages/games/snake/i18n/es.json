@@ -72,5 +72,8 @@
       "name": "Constante",
       "description": "Termina {count, plural, one {# partida} other {# partidas}}"
     }
+  },
+  "leaderboards": {
+    "best-score": "Mejor puntuación"
   }
 }

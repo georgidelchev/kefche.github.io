@@ -92,8 +92,9 @@ export const gameManifestSchema = z
     leaderboards: z.array(
       z.object({
         id: z.string().regex(kebab),
-        metric: z.enum(["score", "time", "rating"]),
+        metric: z.enum(["score", "time"]),
         order: z.enum(["asc", "desc"]),
+        when: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).optional(),
       }),
     ),
     achievements: z.array(
@@ -192,6 +193,8 @@ export const gameTextSchema = z
         .object({ name: z.string().min(1).max(40), description: z.string().min(1).max(120) })
         .strict(),
     ),
+    // One name per manifest leaderboard.
+    leaderboards: z.record(z.string().regex(kebab), z.string().min(1).max(60)),
   })
   .strict();
 

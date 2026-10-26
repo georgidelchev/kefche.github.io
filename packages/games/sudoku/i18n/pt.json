@@ -78,5 +78,11 @@
       "name": "Relâmpago",
       "description": "Resolva um quebra-cabeça em {time} ou menos"
     }
+  },
+  "leaderboards": {
+    "best-time-easy": "Melhor tempo · Fácil",
+    "best-time-medium": "Melhor tempo · Médio",
+    "best-time-hard": "Melhor tempo · Difícil",
+    "best-time-expert": "Melhor tempo · Especialista"
   }
 }

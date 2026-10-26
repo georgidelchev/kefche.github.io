@@ -23,6 +23,7 @@
     "level": "Ниво {level}",
     "levelUp": "Ново ниво! Вече си ниво {level}.",
     "xpToNext": "{into} от {span} XP до ниво {next}",
+    "place": "{board}: #{all} за всички времена, #{week} тази седмица",
     "achievements": "Отключени постижения",
     "unlocked": "Отключено постижение",
     "saving": "Запазваме резултата ти…",

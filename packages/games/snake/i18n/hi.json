@@ -72,5 +72,8 @@
       "name": "लगनशील",
       "description": "{count, number} गेम पूरे करें"
     }
+  },
+  "leaderboards": {
+    "best-score": "सर्वश्रेष्ठ स्कोर"
   }
 }

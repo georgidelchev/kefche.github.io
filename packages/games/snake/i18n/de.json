@@ -72,5 +72,8 @@
       "name": "Ausdauernd",
       "description": "Beende {count, plural, one {# Spiel} other {# Spiele}}"
     }
+  },
+  "leaderboards": {
+    "best-score": "Bestes Ergebnis"
   }
 }

@@ -61,5 +61,6 @@
       "name": "سلسلة انتصارات",
       "description": "اربح مباريات متتالية عددها {count, number}"
     }
-  }
+  },
+  "leaderboards": {}
 }

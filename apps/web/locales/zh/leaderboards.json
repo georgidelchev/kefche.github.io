@@ -1,0 +1,25 @@
+{
+  "title": "排行榜",
+  "description": "kefche 的顶尖玩家：每款游戏的最高分和最佳用时、积分，以及 XP 排行榜。",
+  "intro": "每位玩家在服务器提供的对局中的最佳成绩。与机器人对战和使用提示的对局不计入。",
+  "board": "榜单",
+  "xp": "经验值（XP）",
+  "periods": {
+    "label": "时间范围",
+    "all": "全部时间",
+    "week": "本周",
+    "friends": "好友"
+  },
+  "friendsSoon": "只看好友的榜单将随好友功能一起推出。",
+  "weekEnds": "新的一周于 {date} 开始。",
+  "you": "你",
+  "yourPlace": "你的名次：第 {rank} 名，共 {total} 人",
+  "empty": "这个榜单还没有人。",
+  "hidden": "你已在排行榜中隐藏。可以在设置中更改。",
+  "loading": "正在加载榜单…",
+  "failed": "无法加载这个榜单。",
+  "retry": "重试",
+  "seeAll": "查看所有排行榜",
+  "section": "排行榜",
+  "xpValue": "{xp} XP"
+}

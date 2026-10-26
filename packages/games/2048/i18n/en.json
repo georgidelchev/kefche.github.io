@@ -60,5 +60,8 @@
       "name": "Dedicated",
       "description": "Finish {count, plural, one {# game} other {# games}}"
     }
+  },
+  "leaderboards": {
+    "best-score": "Best score"
   }
 }

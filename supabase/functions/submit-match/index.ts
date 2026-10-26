@@ -19,7 +19,9 @@
 // now reach (_shared/achievements.ts), and each answer below also carries
 // "rewards" for the asking player (match_rewards): the XP that game earned
 // them, their total since, the achievements it unlocked and their best in
-// that game; null while there's no match yet.
+// that game; null while there's no match yet. A game played alone also goes
+// on its leaderboards (_shared/leaderboards.ts), and its first answer says
+// the player's places on them ("places").
 // Guests send nothing (Phase 7 Q2): they're refused with account_required.
 //
 // POST, Authorization: Bearer <a player's access token>
@@ -52,6 +54,7 @@ import {
   roomSettingsSchema,
   roomTimer,
 } from "../_shared/room-play.ts";
+import { boardEntries, type BoardEntry, submitToBoards } from "../_shared/leaderboards.ts";
 import { judgeSolo, soloRecordSchema } from "../_shared/solo-play.ts";
 import { judgeTurn, turnRecordSchema } from "../_shared/turn-play.ts";
 
@@ -284,6 +287,8 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
 
   let result: Record<string, unknown>;
   let answer: Omit<PlayAnswer, "matchId">;
+  // Only games played alone reach leaderboards (Phase 7 Q1).
+  let boards: BoardEntry[] = [];
   if (record.mode === "solo") {
     if (game.kind !== "race") return fail("bad_request", 400);
     const v = judgeSolo(game, issued, record);
@@ -300,6 +305,13 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
       count: { outcome: v.completed ? 1 : 0, ...counted },
     };
     answer = { status: v.status, reason: v.reason, ...counted, outcome: null };
+    if (v.status === "counted") {
+      boards = boardEntries(play.gameId, game.leaderboards, {
+        ...counted,
+        config: v.config,
+        completed: v.completed,
+      });
+    }
   } else {
     if (game.kind !== "turn") return fail("bad_request", 400);
     const v = judgeTurn(game, issued, record);
@@ -338,8 +350,10 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
   if (stored.error) throw new Error(`play_record: ${stored.error.message}`);
   log("info", "play", { play: play.id, game: play.gameId, mode: record.mode, ...answer });
   const matchId = z.uuid().parse(stored.data);
+  const places = await submitToBoards(admin, user.id, matchId, boards);
   if (answer.status === "counted") await unlockForMatch(admin, matchId);
-  return json({ matchId, ...answer, rewards: await rewardsFor(admin, matchId, user.id) });
+  const rewards = await rewardsFor(admin, matchId, user.id);
+  return json({ matchId, ...answer, rewards: rewards && { ...rewards, places } });
 }
 
 /** The room's current match as the reporting player sits in it, or a refusal. */

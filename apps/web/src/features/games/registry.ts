@@ -71,6 +71,13 @@ function discover(): Map<string, RegisteredGame> {
         `Achievements of "${manifest.id}" (${ids.join(", ")}) don't match the names in its i18n/en.json (${named.join(", ")})`,
       );
     }
+    const boards = manifest.leaderboards.map((b) => b.id).sort();
+    const boardNames = Object.keys(text.en.leaderboards).sort();
+    if (JSON.stringify(boards) !== JSON.stringify(boardNames)) {
+      throw new Error(
+        `Leaderboards of "${manifest.id}" (${boards.join(", ")}) don't match the names in its i18n/en.json (${boardNames.join(", ")})`,
+      );
+    }
     const art = { thumbnail: artUrl(manifest.id, "thumbnail"), hero: artUrl(manifest.id, "hero") };
     games.set(manifest.id, { manifest, text, art });
   }

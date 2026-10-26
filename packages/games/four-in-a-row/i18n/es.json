@@ -61,5 +61,6 @@
       "name": "En racha",
       "description": "Gana {count, plural, one {# partida} other {# partidas}} seguidas"
     }
-  }
+  },
+  "leaderboards": {}
 }

@@ -61,5 +61,6 @@
       "name": "En série",
       "description": "Gagnez {count, plural, one {# partie} other {# parties}} d’affilée"
     }
-  }
+  },
+  "leaderboards": {}
 }

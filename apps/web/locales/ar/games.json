@@ -23,6 +23,7 @@
     "level": "المستوى {level}",
     "levelUp": "ارتقيت! أنت الآن في المستوى {level}.",
     "xpToNext": "{into} من {span} نقطة خبرة حتى المستوى {next}",
+    "place": "{board}: #{all} في كل الأوقات، #{week} هذا الأسبوع",
     "achievements": "إنجازات مفتوحة",
     "unlocked": "فُتح إنجاز",
     "saving": "جارٍ حفظ نتيجتك…",

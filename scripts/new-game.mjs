@@ -331,6 +331,8 @@ const text = {
   ui: { score: "Score" },
   // One per manifest achievement (none yet).
   achievements: {},
+  // One name per manifest leaderboard.
+  leaderboards: { "best-score": "Best score" },
 };
 for (const locale of LOCALES) files[`i18n/${locale}.json`] = JSON.stringify(text, null, 2);
 

@@ -1,0 +1,25 @@
+{
+  "title": "Classements",
+  "description": "Les meilleurs joueurs de kefche : meilleurs scores et temps de chaque jeu, classements Elo et classement d’XP.",
+  "intro": "Le meilleur résultat de chaque joueur sur les parties du serveur. Les parties contre des bots ou avec des indices ne comptent pas.",
+  "board": "Classement",
+  "xp": "Expérience (XP)",
+  "periods": {
+    "label": "Période",
+    "all": "Depuis toujours",
+    "week": "Cette semaine",
+    "friends": "Amis"
+  },
+  "friendsSoon": "Les classements entre amis arriveront avec les amis.",
+  "weekEnds": "Une nouvelle semaine commence {date}.",
+  "you": "Vous",
+  "yourPlace": "Votre place : #{rank} sur {total}",
+  "empty": "Personne n’est encore dans ce classement.",
+  "hidden": "Vous êtes masqué des classements. Vous pouvez changer cela dans les paramètres.",
+  "loading": "Chargement du classement…",
+  "failed": "Impossible de charger ce classement.",
+  "retry": "Réessayer",
+  "seeAll": "Tous les classements",
+  "section": "Classement",
+  "xpValue": "{xp} XP"
+}

@@ -69,6 +69,19 @@ function resultsStrings(
     level: t("games:results.level", { level: "{level}" }),
     levelUp: t("games:results.levelUp", { level: "{level}" }),
     xpToNext: t("games:results.xpToNext", { into: "{into}", span: "{span}", next: "{next}" }),
+    place: t("games:results.place", { board: "{board}", all: "{all}", week: "{week}" }),
+    boards: Object.fromEntries(
+      manifest.leaderboards.map((b): [string, { name: string; href: string }] => {
+        const id = `${manifest.id}.${b.id}`;
+        return [
+          id,
+          {
+            name: text.leaderboards[b.id] ?? b.id,
+            href: `${getRelativeLocaleUrl(locale, "/leaderboards/")}?board=${encodeURIComponent(id)}`,
+          },
+        ];
+      }),
+    ),
     achievements: t("games:results.achievements"),
     unlocked: t("games:results.unlocked"),
     saving: t("games:results.saving"),

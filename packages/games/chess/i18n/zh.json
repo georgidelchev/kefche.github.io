@@ -127,5 +127,6 @@
       "name": "积分玩家",
       "description": "在 10 局积分赛后积分达到 {count, number}"
     }
-  }
+  },
+  "leaderboards": {}
 }

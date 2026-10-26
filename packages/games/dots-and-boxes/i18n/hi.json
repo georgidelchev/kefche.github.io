@@ -63,5 +63,6 @@
       "name": "जीत की लय",
       "description": "लगातार {count, number} गेम जीतें"
     }
-  }
+  },
+  "leaderboards": {}
 }

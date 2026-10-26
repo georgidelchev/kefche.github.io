@@ -127,5 +127,6 @@
       "name": "レーティングプレイヤー",
       "description": "レーティング戦10局以上でレーティング{count, number}に到達する"
     }
-  }
+  },
+  "leaderboards": {}
 }

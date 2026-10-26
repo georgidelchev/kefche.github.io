@@ -23,6 +23,7 @@
     "level": "Уровень {level}",
     "levelUp": "Новый уровень! Теперь у вас уровень {level}.",
     "xpToNext": "{into} из {span} XP до уровня {next}",
+    "place": "{board}: #{all} за всё время, #{week} на этой неделе",
     "achievements": "Открытые достижения",
     "unlocked": "Достижение открыто",
     "saving": "Сохраняем результат…",

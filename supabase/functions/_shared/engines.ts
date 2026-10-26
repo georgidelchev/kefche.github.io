@@ -71,6 +71,14 @@ export interface AchievementDef {
   tiers: readonly [number, number, number];
 }
 
+/** A game's leaderboard (the SDK's LeaderboardDef). */
+export interface LeaderboardDef {
+  id: string;
+  metric: "score" | "time";
+  order: "asc" | "desc";
+  when?: Readonly<Record<string, string | number | boolean>>;
+}
+
 /** A player's figures in one game (the SDK's GameFigures). */
 export interface GameFigures {
   played: number;
@@ -104,6 +112,8 @@ interface Rules {
   maxActionsPerSecond: number | null;
   /** The game's achievements (the SDK's AchievementDef). */
   achievements: readonly AchievementDef[];
+  /** The game's leaderboards (the SDK's LeaderboardDef). */
+  leaderboards: readonly LeaderboardDef[];
 }
 
 export type ServerGame =
@@ -120,6 +130,7 @@ interface BundledManifest {
   raceOptions?: GameOption[];
   scoreValidation: { kind: string; maxActionsPerSecond?: number };
   achievements: AchievementDef[];
+  leaderboards: LeaderboardDef[];
 }
 
 /** Every game by id. */
@@ -136,6 +147,7 @@ export const GAMES: ReadonlyMap<string, ServerGame> = new Map(
       options: m.raceOptions ?? [],
       maxActionsPerSecond: m.scoreValidation.maxActionsPerSecond ?? null,
       achievements: m.achievements,
+      leaderboards: m.leaderboards,
     };
     const game: ServerGame =
       m.kind === "race"

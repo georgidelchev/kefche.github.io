@@ -72,5 +72,8 @@
       "name": "Assidu",
       "description": "Terminez {count, plural, one {# partie} other {# parties}}"
     }
+  },
+  "leaderboards": {
+    "best-score": "Meilleur score"
   }
 }

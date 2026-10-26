@@ -64,5 +64,6 @@
       "name": "On a roll",
       "description": "Win {count, plural, one {# game} other {# games}} in a row"
     }
-  }
+  },
+  "leaderboards": {}
 }

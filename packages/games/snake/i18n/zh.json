@@ -72,5 +72,8 @@
       "name": "坚持不懈",
       "description": "完成 {count, number} 局游戏"
     }
+  },
+  "leaderboards": {
+    "best-score": "最高分"
   }
 }

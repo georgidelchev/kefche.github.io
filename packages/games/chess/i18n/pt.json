@@ -127,5 +127,6 @@
       "name": "Jogador ranqueado",
       "description": "Alcance um rating de {count, number} após 10 partidas ranqueadas"
     }
-  }
+  },
+  "leaderboards": {}
 }

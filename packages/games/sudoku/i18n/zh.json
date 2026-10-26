@@ -78,5 +78,11 @@
       "name": "快速解题",
       "description": "在 {time} 内解开一道谜题"
     }
+  },
+  "leaderboards": {
+    "best-time-easy": "最佳用时・简单",
+    "best-time-medium": "最佳用时・中等",
+    "best-time-hard": "最佳用时・困难",
+    "best-time-expert": "最佳用时・专家"
   }
 }

@@ -1124,6 +1124,37 @@ Online modes are enabled for the Phase 4 games.
     - Online 35/35, with two new checks: both players' screens show their XP and level, the first reporter's included (it asked again and got the match).
     - Rated endings 21/21, rated matchmaking 20/20 (the rated screen: the level, the rating change, New opponent and Share), rated lobbies 22/22, plays 19/19, the history pages 16/16, Deno 47/47.
     - Every XP event since carries its match.
+- [x] Step 10: leaderboards (`20261025101300_leaderboards.sql`).
+  - **The boards:**
+    - **Game boards:** each game's manifest lists its boards. 2048 and Snake: best score. Sudoku: best time per difficulty, through a new `when` (the settings a board is for). Each board has a name in the game's i18n files, which the registry checks.
+    - **Rated boards:** one per rated pool (`<game>.rating-<pool>`), read from the ratings as they are: established ratings only (10 or more games), all time only.
+    - **The XP board:** the total, or this week's from the XP ledger.
+  - **What goes on a board:** only a game played alone on the server's seed, replayed, counted and unassisted (`_shared/leaderboards.ts`, Deno-tested). Games against bots, on one device, online casual games, races and games set aside for review stay off (Q1). `leaderboard_submit` keeps each player's best of all time and of the week, and returns their places.
+  - **Weeks:** a week runs from Monday 00:00 UTC and is named by that Monday, so nothing resets. The nightly job already drops weeks older than 12.
+  - **Reading** (`leaderboard`, public): a board's top, all time or this week, with the viewer's own row even below the top, and how many players it shows. Guests, players without a nickname and players who opted out (`show_in_leaderboards`) are left out at read time, so opting back in restores their places. An opted-out viewer is told so.
+  - **Pages:**
+    - `/[locale]/leaderboards/` (accounts builds, noindex, static): a board picker (the XP board, then each game's boards, named with the game), and All time / This week / Friends. The board and period live in the address. This week says when the next one starts in local time. Friends says its boards arrive with friends (Phase 8). The games catalogue links to it.
+    - Each game page with boards gets a Leaderboard section: its top 10 with your place, and "See all leaderboards" on that board.
+    - One small script fills both (`leaderboard.client.ts`). Signed-in viewers ask with their session, so the server knows their place; anyone else uses the publishable key without loading supabase-js.
+  - **The results screen:** a game played alone now says where you stand: "Best score: #12 all time, #12 this week", linking to the board.
+  - **Privacy:** the games entry says your nickname, best results, ratings and XP appear on leaderboards unless you turn that off in settings. The data export includes your board entries (`leaderboard_entries_export`, service role only).
+  - **Strings:** a new `leaderboards` namespace (21 strings) and the results screen's place line, in all 11 languages; each game's board names are built from strings it already had.
+  - **Checks:**
+    - Deno 50/50, with three new tests: a score on its board, Sudoku's board for the difficulty played (finished games only), and assisted games and games without boards on none.
+    - Migrations: the three files changed by hand locally after they were applied (achievements, match rewards, leaderboards) replay cleanly in a rolled-back transaction; schema lint clean.
+    - In the browser, 36/36, with 12 players seeded on Snake's board (one opted out, one with an older week's 999):
+      - the order;
+      - no own place for a visitor;
+      - this week without last week's entry, and when the next week starts;
+      - a rated board with no week;
+      - Friends;
+      - the XP board in XP;
+      - on Snake's page, the top 10, a gap and the viewer's own row (#12 of 12);
+      - the results screen's place linking to the board;
+      - an opted-out viewer told they're hidden;
+      - the page in English and Arabic, and a game page, at 360, 768 and 1280 px in both themes: no sideways scroll, axe clean.
+    - Results 27/27, online 35/35, achievements 21/21, history 16/16, rated matchmaking 20/20 and plays 19/19.
+    - Two scripts can fail for test reasons only. Plays' random Four in a Row against the bot sometimes doesn't end within its 60 moves on a slow run, so it reads the Sudoku record before it. Rated matchmaking counts guest identities made in the last minute, and plays makes one on purpose (to check guests are refused).
 
 ---
 

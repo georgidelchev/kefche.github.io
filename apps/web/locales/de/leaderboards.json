@@ -1,0 +1,25 @@
+{
+  "title": "Bestenlisten",
+  "description": "Die besten Spieler auf kefche: Bestwerte und Bestzeiten in jedem Spiel, Wertungen und die XP-Bestenliste.",
+  "intro": "Der Bestwert jedes Spielers in den Spielen des Servers. Spiele gegen Bots und mit Tipps zählen nicht.",
+  "board": "Bestenliste",
+  "xp": "Erfahrung (XP)",
+  "periods": {
+    "label": "Zeitraum",
+    "all": "Allzeit",
+    "week": "Diese Woche",
+    "friends": "Freunde"
+  },
+  "friendsSoon": "Bestenlisten nur mit deinen Freunden kommen mit den Freunden.",
+  "weekEnds": "Eine neue Woche beginnt {date}.",
+  "you": "Du",
+  "yourPlace": "Dein Platz: #{rank} von {total}",
+  "empty": "Auf dieser Bestenliste steht noch niemand.",
+  "hidden": "Du bist in den Bestenlisten verborgen. Das kannst du in den Einstellungen ändern.",
+  "loading": "Bestenliste wird geladen…",
+  "failed": "Diese Bestenliste konnte nicht geladen werden.",
+  "retry": "Erneut versuchen",
+  "seeAll": "Alle Bestenlisten",
+  "section": "Bestenliste",
+  "xpValue": "{xp} XP"
+}

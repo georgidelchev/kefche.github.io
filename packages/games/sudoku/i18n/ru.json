@@ -78,5 +78,11 @@
       "name": "Молния",
       "description": "Решите головоломку за {time} или быстрее"
     }
+  },
+  "leaderboards": {
+    "best-time-easy": "Лучшее время · Лёгкий",
+    "best-time-medium": "Лучшее время · Средний",
+    "best-time-hard": "Лучшее время · Сложный",
+    "best-time-expert": "Лучшее время · Эксперт"
   }
 }

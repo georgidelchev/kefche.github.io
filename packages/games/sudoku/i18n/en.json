@@ -78,5 +78,11 @@
       "name": "Speed solver",
       "description": "Solve a puzzle in {time} or less"
     }
+  },
+  "leaderboards": {
+    "best-time-easy": "Best time · Easy",
+    "best-time-medium": "Best time · Medium",
+    "best-time-hard": "Best time · Hard",
+    "best-time-expert": "Best time · Expert"
   }
 }

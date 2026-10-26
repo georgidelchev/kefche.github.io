@@ -23,6 +23,7 @@
     "level": "Level {level}",
     "levelUp": "Level up! You're now level {level}.",
     "xpToNext": "{into} of {span} XP to level {next}",
+    "place": "{board}: #{all} all time, #{week} this week",
     "achievements": "Achievements unlocked",
     "unlocked": "Achievement unlocked",
     "saving": "Saving your result…",
