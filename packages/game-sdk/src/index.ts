@@ -12,3 +12,4 @@ export * from "./search";
 export * from "./seats";
 export * from "./timers";
 export * from "./transport";
+export * from "./xp";

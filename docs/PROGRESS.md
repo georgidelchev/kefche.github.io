@@ -1064,6 +1064,26 @@ Online modes are enabled for the Phase 4 games.
   - **Checks:**
     - In the browser, 19/19 on a seeded account with 30 blitz and 3 rapid games plus 2048: the totals, a turn game's and a scored game's figures, the two charts in order, the summary, the hover tooltip and the table. The profile in English and Arabic at 360, 768 and 1280 px in both themes: no sideways scroll, axe clean.
     - Rated matchmaking 20/20 and rated endings 21/21; both players' stats grew by their rated games. The history pages 16/16.
+- [x] Step 7: XP and levels (`20261025101000_xp.sql`).
+  - **The curve** (`packages/game-sdk/src/xp.ts`, isomorphic): level n takes 100 × n XP to leave, so reaching level L takes 50 × L × (L − 1) XP in all (level 2 at 100, 5 at 1,000, 10 at 4,500, 20 at 19,000). It's bundled for the server with the engines and unit-tested in Deno: the documented levels, every boundary up to level 1,000, nonsense totals, and the progress within a level. The database keeps `profiles.level` with the same curve (`private.level_for_xp`); both agree on 3,002 totals around every boundary up to level 1,001.
+  - **The awards, in SQL:** every result that counts goes through `private.count_result`, including online matches decided by the cron job, where no TypeScript runs, so XP is awarded there:
+    - 10 a game, plus 10 for a win or 5 for a draw, together capped at 100 XP per game per UTC day;
+    - nothing for a game under 10 seconds of play, so quitting at once earns nothing;
+    - 50 the first time a player finishes a game, outside the cap.
+    - The stats row stays locked while the cap is worked out, so two results at once can't both fit under it. The daily challenge and streaks award XP in steps 11 and 12.
+  - **Games played before XP existed** earn it once from the stats (first-play bonus, 10 a game, the win and draw XP), with no cap and nothing in the ledger, so it stays off the weekly board.
+  - **Players see:**
+    - on the profile, the level with a bar and "110 of 300 XP to level 4";
+    - in the header, a small level badge on the avatar, and the link reads "Your account, level 3". The cached account summary carries the level, so pages show it before any request. A summary cached before this shows no badge until the session check refreshes it.
+  - **Privacy:** the notice's games entry says games earn XP, the level is public, and each day's XP is kept 35 days. "Download my data" now includes the XP ledger, through `xp_events_export` (service role only).
+  - **Still to do (step 9):** `count_result` takes the match its XP is for, and returns the XP it awarded, but the callers don't pass the match yet. The results screen needs both, so step 9 passes it on.
+  - **Strings:** 2 new ones and the privacy entry, in all 11 languages.
+  - **Checks:**
+    - Deno 41/41.
+    - The rules in SQL: a first win 70, then a draw 15 and a loss 10, a 5-second win 0, wins capped at exactly 100 for the day, and the first-play bonus even for a 3-second first game.
+    - Real games through `submit-match`: plays 19/19 and online 33/33, with each player's XP and ledger matching the rules; rated endings 21/21, rated matchmaking 20/20 and the history pages 16/16, with rated games earning XP too.
+    - In the browser, 31/31: the header badge and label, a summary cached before levels and one with the level, the profile's level, bar and text; the home page and a profile in English and Arabic at 360, 768 and 1280 px in both themes, with no sideways scroll and axe clean.
+    - The data export locally, with the ledger.
 
 ---
 

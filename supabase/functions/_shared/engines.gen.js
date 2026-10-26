@@ -98,6 +98,28 @@ function unpackActions(log, maxActions = 2e5) {
   return out;
 }
 
+// packages/game-sdk/src/xp.ts
+var LEVEL_STEP_XP = 100;
+var whole = (n, min) => Number.isFinite(n) ? Math.max(min, Math.floor(n)) : min;
+function xpForLevel(level) {
+  const l = whole(level, 1);
+  return LEVEL_STEP_XP / 2 * l * (l - 1);
+}
+function levelForXp(xp) {
+  const total = whole(xp, 0);
+  let level = Math.max(1, Math.floor((1 + Math.sqrt(1 + 8 * total / LEVEL_STEP_XP)) / 2));
+  while (xpForLevel(level + 1) <= total) level += 1;
+  while (level > 1 && xpForLevel(level) > total) level -= 1;
+  return level;
+}
+function levelProgress(xp) {
+  const total = whole(xp, 0);
+  const level = levelForXp(total);
+  const into = total - xpForLevel(level);
+  const span = xpForLevel(level + 1) - xpForLevel(level);
+  return { level, into, span, fraction: into / span };
+}
+
 // packages/games/2048/engine/index.ts
 var SIZE = 4;
 var GOAL = 2048;
@@ -4883,5 +4905,8 @@ export {
   GAMES,
   RACE_LOG_LIMITS,
   canonicalJson,
-  unpackActions
+  levelForXp,
+  levelProgress,
+  unpackActions,
+  xpForLevel
 };

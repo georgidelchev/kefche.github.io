@@ -598,7 +598,12 @@ isOneToOne: false
         to: "rooms"
         isOneToOne: true
         isSetofReturn: false
-      } }
+      } },
+"xp_events_export":
+{ Args: { "p_user": string }; Returns: {
+              "amount": number,"created_at": string,"day": string,"game_id": string,"match_id": string,"reason": string
+            }[]
+                           }
           }
           Enums: {
             "app_role": "moderator"|"admin"

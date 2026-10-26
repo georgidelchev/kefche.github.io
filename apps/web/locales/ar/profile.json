@@ -1,6 +1,7 @@
 {
   "description": "{nickname} يلعب على kefche، بوابة ألعاب المتصفح المجانية.",
   "level": "المستوى",
+  "xpToNext": "{into} من {span} نقطة خبرة حتى المستوى {next}",
   "joined": "انضم في",
   "country": "البلد",
   "opening": "جارٍ فتح ملفك الشخصي…",

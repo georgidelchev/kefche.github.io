@@ -1,4 +1,5 @@
 {
   "signIn": "Войти",
-  "yourAccount": "Ваш аккаунт"
+  "yourAccount": "Ваш аккаунт",
+  "yourAccountLevel": "Ваш аккаунт, уровень {level}"
 }

@@ -1,6 +1,7 @@
 {
   "description": "{nickname} は無料のブラウザゲームポータル kefche で遊んでいます。",
   "level": "レベル",
+  "xpToNext": "レベル{next}まで {into} / {span} XP",
   "joined": "登録",
   "country": "国・地域",
   "opening": "プロフィールを開いています…",

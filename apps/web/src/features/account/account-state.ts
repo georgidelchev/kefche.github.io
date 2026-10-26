@@ -1,6 +1,7 @@
 // Account state in the browser: the cached summary and the header avatar.
 // No side effects at import, so islands rendered on the server can import it;
 // the functions themselves only run in the browser.
+import { levelForXp } from "@kefche/game-sdk";
 import { initialsFor, paletteIndexFor } from "@kefche/ui/lib/avatar";
 
 import type { Supabase } from "@/lib/supabase/client";
@@ -46,6 +47,16 @@ export function renderAccount(summary: AccountSummary | null): void {
       .querySelector("[data-account-icon]")
       ?.toggleAttribute("hidden", hasPicture || initials !== "");
   }
+  const level = summary.level?.toLocaleString(root.lang);
+  for (const badge of document.querySelectorAll<HTMLElement>("[data-account-level]")) {
+    badge.textContent = level ?? "";
+    badge.hidden = level === undefined;
+  }
+  // "Your account, level 4": the link's name says what the badge shows.
+  for (const link of document.querySelectorAll<HTMLElement>("[data-label-level]")) {
+    const label = level ? link.dataset.labelLevel?.replace("{level}", level) : link.dataset.label;
+    if (label) link.setAttribute("aria-label", label);
+  }
 }
 
 /** Caches and shows `summary`. */
@@ -70,7 +81,7 @@ export async function syncAccount(supabase: Supabase): Promise<AccountSummary | 
   }
   const profile = await supabase
     .from("profiles")
-    .select("nickname, avatar_kind, avatar_preset, avatar_path")
+    .select("nickname, avatar_kind, avatar_preset, avatar_path, xp")
     .eq("id", user.id)
     .maybeSingle();
   if (profile.error) return readAccountSummary(localStorageOrUndefined());
@@ -78,6 +89,7 @@ export async function syncAccount(supabase: Supabase): Promise<AccountSummary | 
     id: user.id,
     nickname: profile.data?.nickname ?? null,
     avatarUrl: profile.data && supabaseConfig ? avatarUrl(profile.data, supabaseConfig.url) : null,
+    level: levelForXp(profile.data?.xp ?? 0),
   };
   setAccount(summary);
   await syncPreferences(supabase, user.id);

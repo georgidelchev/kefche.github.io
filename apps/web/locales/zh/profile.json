@@ -1,6 +1,7 @@
 {
   "description": "{nickname} 正在 kefche 玩游戏——免费的网页游戏平台。",
   "level": "等级",
+  "xpToNext": "距等级 {next}：{into} / {span} XP",
   "joined": "加入时间",
   "country": "国家/地区",
   "opening": "正在打开你的个人资料…",

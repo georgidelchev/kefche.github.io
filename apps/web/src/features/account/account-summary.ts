@@ -16,6 +16,8 @@ export const accountSummarySchema = z.object({
   avatarUrl: z.nullable(
     z.string().check(z.maxLength(500), z.regex(/^(?:https?:\/\/|\/(?!\/))[^\s"'()\\]+$/)),
   ),
+  /** Missing in summaries cached before levels shipped. */
+  level: z.optional(z.int().check(z.minimum(1))),
 });
 export type AccountSummary = z.infer<typeof accountSummarySchema>;
 

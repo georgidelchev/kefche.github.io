@@ -17,7 +17,7 @@ const focusRing =
 
 <!--
   Header account control. Signed out: a "Sign in" link. Signed in (not a
-  guest): the user's avatar, linking to settings. The state comes from
+  guest): the user's avatar with their level, linking to settings. The state comes from
   <html data-account>, set before paint by BootScript from the cached summary
   and kept current by account.client.ts.
 -->
@@ -34,8 +34,10 @@ const focusRing =
   <a
     href={getRelativeLocaleUrl(locale, "/settings/")}
     aria-label={t("account:yourAccount")}
+    data-label={t("account:yourAccount")}
+    data-label-level={t("account:yourAccountLevel", { level: "{level}" })}
     class:list={[
-      "hidden size-11 items-center justify-center rounded-full group-data-[account=signed-in]/root:flex",
+      "relative hidden size-11 items-center justify-center rounded-full group-data-[account=signed-in]/root:flex",
       focusRing,
     ]}
   >
@@ -47,6 +49,12 @@ const focusRing =
       <CircleUser data-account-icon className="size-6" />
       <span data-account-initials></span>
     </span>
+    <span
+      data-account-level
+      aria-hidden="true"
+      hidden
+      class="absolute -end-0.5 bottom-0 min-w-5 rounded-full border border-border-strong bg-surface px-1 text-center text-[0.6875rem] leading-4 font-bold text-text tabular-nums"
+    ></span>
   </a>
 </div>
 

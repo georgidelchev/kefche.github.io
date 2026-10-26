@@ -1,4 +1,5 @@
 {
   "signIn": "ログイン",
-  "yourAccount": "アカウント"
+  "yourAccount": "アカウント",
+  "yourAccountLevel": "アカウント、レベル{level}"
 }

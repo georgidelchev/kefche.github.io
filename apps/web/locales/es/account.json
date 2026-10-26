@@ -1,4 +1,5 @@
 {
   "signIn": "Iniciar sesión",
-  "yourAccount": "Tu cuenta"
+  "yourAccount": "Tu cuenta",
+  "yourAccountLevel": "Tu cuenta, nivel {level}"
 }

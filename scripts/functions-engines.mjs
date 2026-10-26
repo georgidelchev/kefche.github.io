@@ -30,6 +30,7 @@ const entry = [
   ]),
   'export { canonicalJson } from "./packages/game-sdk/src/engines.ts";',
   'export { RACE_LOG_LIMITS, unpackActions } from "./packages/game-sdk/src/race-log.ts";',
+  'export { levelForXp, levelProgress, xpForLevel } from "./packages/game-sdk/src/xp.ts";',
   "export const GAMES = {",
   ...ids.map(
     (id, i) => `  ${JSON.stringify(id)}: { manifest: m${String(i)}, engine: e${String(i)} },`,
@@ -69,6 +70,11 @@ writeFileSync(
     "  log: { dict: unknown[]; runs: string },",
     "  maxActions?: number,",
     "): unknown[] | null;",
+    "export declare function xpForLevel(level: number): number;",
+    "export declare function levelForXp(xp: number): number;",
+    "export declare function levelProgress(",
+    "  xp: number,",
+    "): { level: number; into: number; span: number; fraction: number };",
     "",
   ].join("\n"),
 );

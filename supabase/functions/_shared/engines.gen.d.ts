@@ -6,3 +6,8 @@ export declare function unpackActions(
   log: { dict: unknown[]; runs: string },
   maxActions?: number,
 ): unknown[] | null;
+export declare function xpForLevel(level: number): number;
+export declare function levelForXp(xp: number): number;
+export declare function levelProgress(
+  xp: number,
+): { level: number; into: number; span: number; fraction: number };

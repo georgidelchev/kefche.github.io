@@ -1,4 +1,5 @@
 {
   "signIn": "साइन इन करें",
-  "yourAccount": "आपका खाता"
+  "yourAccount": "आपका खाता",
+  "yourAccountLevel": "आपका खाता, स्तर {level}"
 }

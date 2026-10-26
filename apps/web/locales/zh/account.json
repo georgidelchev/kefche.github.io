@@ -1,4 +1,5 @@
 {
   "signIn": "登录",
-  "yourAccount": "你的账户"
+  "yourAccount": "你的账户",
+  "yourAccountLevel": "你的账户，等级 {level}"
 }

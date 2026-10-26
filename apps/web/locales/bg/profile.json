@@ -1,6 +1,7 @@
 {
   "description": "{nickname} играе в kefche, безплатния портал за браузърни игри.",
   "level": "Ниво",
+  "xpToNext": "{into} от {span} XP до ниво {next}",
   "joined": "Регистрация",
   "country": "Държава",
   "opening": "Отваряме профила ти…",

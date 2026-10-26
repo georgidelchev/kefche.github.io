@@ -41,6 +41,7 @@ Deno.serve(async (req) => {
     stats,
     achievements,
     streak,
+    xp,
   ] = await Promise.all([
     admin.from("profiles").select("*").eq("id", user.id).maybeSingle(),
     admin.from("user_settings").select("*").eq("user_id", user.id).maybeSingle(),
@@ -78,6 +79,7 @@ Deno.serve(async (req) => {
       .select("current, best, last_day")
       .eq("user_id", user.id)
       .maybeSingle(),
+    admin.rpc("xp_events_export", { p_user: user.id }),
   ]);
   const failedPart = [
     profile,
@@ -92,6 +94,7 @@ Deno.serve(async (req) => {
     stats,
     achievements,
     streak,
+    xp,
   ].find((r) => r.error);
   if (failedPart?.error) {
     log("error", "export_failed", { user: user.id, error: failedPart.error.message });
@@ -122,6 +125,7 @@ Deno.serve(async (req) => {
     game_stats: stats.data,
     achievements: achievements.data,
     play_streak: streak.data,
+    xp_events: xp.data,
   };
   log("info", "export_data", { user: user.id });
   return new Response(JSON.stringify(document, null, 2), {

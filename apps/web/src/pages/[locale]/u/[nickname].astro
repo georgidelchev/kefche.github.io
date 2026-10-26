@@ -2,6 +2,7 @@
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { CloudOff } from "lucide-react";
 
+import { levelProgress } from "@kefche/game-sdk";
 import { UserAvatar } from "@kefche/ui/components/avatar";
 
 import { avatarUrl } from "@/features/account/avatar-url";
@@ -154,9 +155,9 @@ const OUTCOME_CLASS = {
   loss: "bg-danger text-on-danger",
   draw: "bg-surface-2",
 } as const;
+const level = profile ? levelProgress(profile.xp) : null;
 const facts = profile
   ? [
-      { label: t("profile:level"), value: new Intl.NumberFormat(bcp47).format(profile.level) },
       {
         label: t("profile:joined"),
         value: new Intl.DateTimeFormat(bcp47, { year: "numeric", month: "long" }).format(
@@ -215,6 +216,27 @@ const facts = profile
         <h1 class="min-w-0 text-3xl break-words md:text-4xl">{profile.nickname}</h1>
       </header>
       <dl class="grid grid-cols-2 gap-3 sm:grid-cols-3">
+        {level && (
+          <div class="col-span-2 grid gap-2 rounded-2xl border border-border bg-surface p-4 sm:col-span-1">
+            <dt class="text-sm text-muted">{t("profile:level")}</dt>
+            <dd class="grid gap-2">
+              <span class="text-lg font-semibold">{number(level.level)}</span>
+              <span aria-hidden="true" class="h-2 overflow-hidden rounded-full bg-surface-2">
+                <span
+                  class="block h-full rounded-full bg-brand-strong"
+                  style={{ width: `${String(Math.round(level.fraction * 100))}%` }}
+                />
+              </span>
+              <span class="text-sm text-muted">
+                {t("profile:xpToNext", {
+                  into: number(level.into),
+                  span: number(level.span),
+                  next: number(level.level + 1),
+                })}
+              </span>
+            </dd>
+          </div>
+        )}
         {facts.map(({ label, value }) => (
           <div class="grid gap-1 rounded-2xl border border-border bg-surface p-4">
             <dt class="text-sm text-muted">{label}</dt>

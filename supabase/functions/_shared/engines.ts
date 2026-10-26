@@ -3,9 +3,18 @@
 // is replayed with the code the browser ran. The types mirror
 // @kefche/game-sdk's, which Deno can't import (its sources import without file
 // extensions).
-import { canonicalJson, GAMES as BUNDLED, RACE_LOG_LIMITS, unpackActions } from "./engines.gen.js";
+import {
+  canonicalJson,
+  GAMES as BUNDLED,
+  levelForXp,
+  levelProgress,
+  RACE_LOG_LIMITS,
+  unpackActions,
+  xpForLevel,
+} from "./engines.gen.js";
 
-export { canonicalJson, RACE_LOG_LIMITS, unpackActions };
+// The SDK's level curve (SPEC §12.6); the database mirrors it in private.level_for_xp.
+export { canonicalJson, levelForXp, levelProgress, RACE_LOG_LIMITS, unpackActions, xpForLevel };
 
 /** How a game ended (the SDK's GameResult). */
 export interface GameResult {
