@@ -2,6 +2,55 @@
 // packages/games: do not edit. Typed in engines.ts.
 // @ts-self-types="./engines.gen.d.ts"
 
+// packages/game-sdk/src/achievements.ts
+var ACHIEVEMENT_TIERS = ["bronze", "silver", "gold"];
+var GLOBAL_ACHIEVEMENTS = [
+  { id: "regular", icon: "gamepad", metric: "matches", tiers: [10, 100, 500] },
+  { id: "explorer", icon: "compass", metric: "gamesTried", tiers: [3, 5, 7] },
+  { id: "rising-star", icon: "star", metric: "level", tiers: [5, 10, 20] }
+];
+function tiersFor(tiers, value, lowerIsBetter = false) {
+  if (value === null || !Number.isFinite(value)) return [];
+  return ACHIEVEMENT_TIERS.filter((_, i) => {
+    const goal = tiers[i] ?? Number.NaN;
+    return lowerIsBetter ? value <= goal : value >= goal;
+  });
+}
+function gameFigure(def, figures) {
+  switch (def.metric) {
+    case "played":
+      return figures.played;
+    case "wins":
+      return figures.wins;
+    case "bestScore":
+      return figures.bestScore;
+    case "bestTime":
+      return figures.bestTimeMs;
+    case "bestStreak":
+      return figures.bestStreak;
+    case "rating":
+      return figures.rating;
+  }
+}
+function reachedTiers(definitions, figures) {
+  const reached = [];
+  for (const def of GLOBAL_ACHIEVEMENTS) {
+    for (const tier of tiersFor(def.tiers, figures[def.metric])) {
+      reached.push({ achievement: `global.${def.id}`, tier });
+    }
+  }
+  for (const [gameId, defs] of Object.entries(definitions)) {
+    const game = figures.games[gameId];
+    if (!game) continue;
+    for (const def of defs) {
+      for (const tier of tiersFor(def.tiers, gameFigure(def, game), def.metric === "bestTime")) {
+        reached.push({ achievement: `${gameId}.${def.id}`, tier });
+      }
+    }
+  }
+  return reached;
+}
+
 // packages/game-sdk/src/engines.ts
 function canonicalJson(value) {
   const sorted = (v) => Array.isArray(v) ? v.map(sorted) : v !== null && typeof v === "object" ? Object.fromEntries(
@@ -245,7 +294,10 @@ var manifest = defineManifest({
   renderer: "dom",
   estimatedMinutes: [3, 20],
   leaderboards: [{ id: "best-score", metric: "score", order: "desc" }],
-  achievements: [],
+  achievements: [
+    { id: "high-score", icon: "trophy", metric: "bestScore", tiers: [2500, 1e4, 25e3] },
+    { id: "dedicated", icon: "repeat", metric: "played", tiers: [10, 50, 200] }
+  ],
   // Every move is replayable from the seed (Phase 7 validates submissions).
   scoreValidation: { kind: "replay", maxActionsPerSecond: 20 },
   tags: ["puzzle", "numbers", "single-player"]
@@ -3926,7 +3978,11 @@ var manifest2 = defineManifest({
   renderer: "dom",
   estimatedMinutes: [5, 60],
   leaderboards: [],
-  achievements: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] },
+    { id: "rated", icon: "medal", metric: "rating", tiers: [1600, 1800, 2e3] }
+  ],
   // Moves are UCI strings, so a game replays exactly (the server's check of rated games).
   scoreValidation: { kind: "replay" },
   tags: ["classic", "two-player", "strategy"]
@@ -4040,7 +4096,10 @@ var manifest3 = defineManifest({
   renderer: "dom",
   estimatedMinutes: [3, 15],
   leaderboards: [],
-  achievements: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] }
+  ],
   // Every move is a line, so a match replays exactly (Phase 7 validation).
   scoreValidation: { kind: "replay" },
   tags: ["classic", "pencil-and-paper", "multiplayer", "strategy"]
@@ -4155,7 +4214,10 @@ var manifest4 = defineManifest({
   renderer: "dom",
   estimatedMinutes: [3, 10],
   leaderboards: [],
-  achievements: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] }
+  ],
   // Every move is a column, so a match replays exactly (Phase 7 validation).
   scoreValidation: { kind: "replay" },
   tags: ["classic", "two-player", "multiplayer", "strategy"]
@@ -4270,7 +4332,10 @@ var manifest5 = defineManifest({
   renderer: "dom",
   estimatedMinutes: [5, 15],
   leaderboards: [],
-  achievements: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] }
+  ],
   // Every move is a square, so a match replays exactly (Phase 7 validation).
   scoreValidation: { kind: "replay" },
   tags: ["classic", "two-player", "strategy"]
@@ -4423,7 +4488,10 @@ var manifest6 = defineManifest({
   renderer: "canvas",
   estimatedMinutes: [1, 10],
   leaderboards: [{ id: "best-score", metric: "score", order: "desc" }],
-  achievements: [],
+  achievements: [
+    { id: "high-score", icon: "trophy", metric: "bestScore", tiers: [20, 60, 150] },
+    { id: "dedicated", icon: "repeat", metric: "played", tiers: [10, 50, 200] }
+  ],
   // Food comes from the seed and time is a stream of ticks, so a game replays
   // exactly from its inputs (Phase 7 validates submissions).
   scoreValidation: { kind: "replay", maxActionsPerSecond: 30 },
@@ -4885,7 +4953,11 @@ var manifest7 = defineManifest({
     { id: "best-time-hard", metric: "time", order: "asc" },
     { id: "best-time-expert", metric: "time", order: "asc" }
   ],
-  achievements: [],
+  achievements: [
+    { id: "solver", icon: "target", metric: "wins", tiers: [1, 25, 100] },
+    // Best times in milliseconds: 10, 5 and 3 minutes.
+    { id: "speed", icon: "timer", metric: "bestTime", tiers: [6e5, 3e5, 18e4] }
+  ],
   // The puzzle and every entry replay from the seed (Phase 7 validates submissions).
   scoreValidation: { kind: "replay", maxActionsPerSecond: 15 },
   tags: ["puzzle", "numbers", "single-player"]
@@ -4907,6 +4979,7 @@ export {
   canonicalJson,
   levelForXp,
   levelProgress,
+  reachedTiers,
   unpackActions,
   xpForLevel
 };

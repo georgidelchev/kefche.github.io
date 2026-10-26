@@ -113,5 +113,19 @@
     "mateWhite": "White mates in {moves}",
     "mateBlack": "Black mates in {moves}",
     "creditAnalysis": "The analysis is Stockfish 19, free software under the GPL-3.0."
+  },
+  "achievements": {
+    "winner": {
+      "name": "Winner",
+      "description": "Win {count, plural, one {# game} other {# games}}"
+    },
+    "streak": {
+      "name": "On a roll",
+      "description": "Win {count, plural, one {# game} other {# games}} in a row"
+    },
+    "rated": {
+      "name": "Rated player",
+      "description": "Reach a rating of {count, number} after 10 rated games"
+    }
   }
 }

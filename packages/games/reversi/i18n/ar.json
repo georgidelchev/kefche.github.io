@@ -54,5 +54,15 @@
     "passed": "لا توجد نقلة لدى {name}، يتخطى الدور.",
     "hints": "إظهار النقلات",
     "undo": "تراجع"
+  },
+  "achievements": {
+    "winner": {
+      "name": "الفائز",
+      "description": "اربح مباريات عددها {count, number}"
+    },
+    "streak": {
+      "name": "سلسلة انتصارات",
+      "description": "اربح مباريات متتالية عددها {count, number}"
+    }
   }
 }

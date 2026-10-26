@@ -34,6 +34,32 @@
     "date": "तारीख़",
     "rating": "रेटिंग"
   },
+  "achievements": {
+    "heading": "उपलब्धियाँ",
+    "showcase": "शोकेस",
+    "unlocked": "अनलॉक: {count, number}",
+    "pin": "शोकेस में लगाएँ",
+    "unpin": "शोकेस से हटाएँ",
+    "full": "शोकेस में 3 आ सकती हैं। पहले एक हटाएँ।",
+    "failed": "हम आपका शोकेस सहेज नहीं सके। कृपया फिर कोशिश करें।",
+    "regular": {
+      "name": "नियमित",
+      "description": "{count, number} गेम पूरे करें"
+    },
+    "explorer": {
+      "name": "खोजी",
+      "description": "{count, number} अलग-अलग गेम खेलें"
+    },
+    "risingStar": {
+      "name": "उभरता सितारा",
+      "description": "स्तर {count, number} तक पहुँचें"
+    }
+  },
+  "tier": {
+    "bronze": "कांस्य",
+    "silver": "रजत",
+    "gold": "स्वर्ण"
+  },
   "historyUnavailable": "गेम का इतिहास अभी लोड नहीं हो सका।",
   "versus": "बनाम {name}",
   "deletedPlayer": "हटाया गया खिलाड़ी",

@@ -62,5 +62,15 @@
     "down": "Para baixo",
     "left": "Para a esquerda",
     "right": "Para a direita"
+  },
+  "achievements": {
+    "high-score": {
+      "name": "Pontuador",
+      "description": "Faça {count, plural, one {# ponto} other {# pontos}} em uma partida"
+    },
+    "dedicated": {
+      "name": "Dedicado",
+      "description": "Termine {count, plural, one {# partida} other {# partidas}}"
+    }
   }
 }

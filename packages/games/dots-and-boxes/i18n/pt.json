@@ -53,5 +53,15 @@
     "closed": "{name} traçou {from}–{to} e fechou caixas: {count}. {name} joga de novo.",
     "score": "{name}: {count}",
     "undo": "Desfazer"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Vencedor",
+      "description": "Vença {count, plural, one {# partida} other {# partidas}}"
+    },
+    "streak": {
+      "name": "Embalado",
+      "description": "Vença {count, plural, one {# partida} other {# partidas}} seguidas"
+    }
   }
 }

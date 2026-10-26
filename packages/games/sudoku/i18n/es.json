@@ -68,5 +68,15 @@
     "cellNotes": "Fila {row}, columna {col}: vacía, notas {notes}",
     "cellEmpty": "Fila {row}, columna {col}: vacía",
     "digitLabel": "{digit}, quedan {count}"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Solucionador",
+      "description": "Resuelve {count, plural, one {# sudoku} other {# sudokus}}"
+    },
+    "speed": {
+      "name": "Rapidez",
+      "description": "Resuelve un sudoku en {time} o menos"
+    }
   }
 }

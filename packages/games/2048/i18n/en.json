@@ -50,5 +50,15 @@
     "won": "You made 2048!",
     "keepGoing": "Keep going",
     "boardLabel": "2048 board. Score {score}, highest tile {best}."
+  },
+  "achievements": {
+    "high-score": {
+      "name": "High scorer",
+      "description": "Score {count, plural, one {# point} other {# points}} in one game"
+    },
+    "dedicated": {
+      "name": "Dedicated",
+      "description": "Finish {count, plural, one {# game} other {# games}}"
+    }
   }
 }

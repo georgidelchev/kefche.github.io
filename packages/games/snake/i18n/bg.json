@@ -62,5 +62,15 @@
     "down": "Надолу",
     "left": "Наляво",
     "right": "Надясно"
+  },
+  "achievements": {
+    "high-score": {
+      "name": "Рекордьор",
+      "description": "Събери {count, plural, one {# точка} other {# точки}} в една игра"
+    },
+    "dedicated": {
+      "name": "Постоянство",
+      "description": "Завърши {count, plural, one {# игра} other {# игри}}"
+    }
   }
 }

@@ -68,5 +68,15 @@
     "cellNotes": "पंक्ति {row}, स्तंभ {col}: खाली, नोट्स {notes}",
     "cellEmpty": "पंक्ति {row}, स्तंभ {col}: खाली",
     "digitLabel": "{digit}, {count} बाकी"
+  },
+  "achievements": {
+    "solver": {
+      "name": "पहेली उस्ताद",
+      "description": "{count, plural, one {# पहेली} other {# पहेलियाँ}} सुलझाएँ"
+    },
+    "speed": {
+      "name": "फुर्तीला",
+      "description": "{time} या उससे कम में एक पहेली सुलझाएँ"
+    }
   }
 }

@@ -2,7 +2,14 @@
 // registry while the site builds, never by game code that ships to players.
 import { z } from "zod";
 
-import { ENGINE_KINDS, GAME_CATEGORIES, GAME_MODES, type GameManifest } from "./manifest";
+import {
+  ACHIEVEMENT_ICONS,
+  ENGINE_KINDS,
+  GAME_ACHIEVEMENT_METRICS,
+  GAME_CATEGORIES,
+  GAME_MODES,
+  type GameManifest,
+} from "./manifest";
 
 import type { GameText } from "./game-text";
 
@@ -89,7 +96,26 @@ export const gameManifestSchema = z
         order: z.enum(["asc", "desc"]),
       }),
     ),
-    achievements: z.array(z.object({ id: z.string().regex(kebab) })),
+    achievements: z.array(
+      z
+        .object({
+          id: z.string().regex(kebab).max(39),
+          icon: z.enum(ACHIEVEMENT_ICONS),
+          metric: z.enum(GAME_ACHIEVEMENT_METRICS),
+          tiers: z.tuple([z.number().positive(), z.number().positive(), z.number().positive()]),
+        })
+        .strict()
+        .refine(
+          ({ metric, tiers: [bronze, silver, gold] }) =>
+            metric === "bestTime"
+              ? bronze > silver && silver > gold
+              : bronze < silver && silver < gold,
+          {
+            message: "tiers: goals rise from bronze to gold (fall, for bestTime)",
+            path: ["tiers"],
+          },
+        ),
+    ),
     scoreValidation: z.discriminatedUnion("kind", [
       z.object({ kind: z.literal("none") }),
       z.object({
@@ -158,6 +184,14 @@ export const gameTextSchema = z
     tips: z.array(line).min(1),
     faq: z.array(z.object({ question: line, answer: line }).strict()).min(1),
     ui: z.record(z.string().regex(/^[a-z][a-zA-Z0-9.]*$/), z.string().min(1)),
+    // One per manifest achievement. The description is ICU: {count}, or
+    // {time} for a best time ("3:00").
+    achievements: z.record(
+      z.string().regex(kebab),
+      z
+        .object({ name: z.string().min(1).max(40), description: z.string().min(1).max(120) })
+        .strict(),
+    ),
   })
   .strict();
 

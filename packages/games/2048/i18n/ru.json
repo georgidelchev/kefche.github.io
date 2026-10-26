@@ -50,5 +50,15 @@
     "won": "Вы собрали 2048!",
     "keepGoing": "Играть дальше",
     "boardLabel": "Поле 2048. Очки: {score}, наибольшая плитка: {best}."
+  },
+  "achievements": {
+    "high-score": {
+      "name": "Рекордсмен",
+      "description": "Наберите {count, plural, one {# очко} few {# очка} many {# очков} other {# очка}} за одну игру"
+    },
+    "dedicated": {
+      "name": "Упорство",
+      "description": "Завершите {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    }
   }
 }

@@ -22,7 +22,10 @@ export const manifest = defineManifest({
   renderer: "dom",
   estimatedMinutes: [3, 15],
   leaderboards: [],
-  achievements: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] },
+  ],
   // Every move is a line, so a match replays exactly (Phase 7 validation).
   scoreValidation: { kind: "replay" },
   tags: ["classic", "pencil-and-paper", "multiplayer", "strategy"],

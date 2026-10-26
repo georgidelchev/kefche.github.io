@@ -68,5 +68,15 @@
     "cellNotes": "Zeile {row}, Spalte {col}: leer, Notizen {notes}",
     "cellEmpty": "Zeile {row}, Spalte {col}: leer",
     "digitLabel": "{digit}, noch {count}"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Rätsellöser",
+      "description": "Löse {count, plural, one {# Rätsel} other {# Rätsel}}"
+    },
+    "speed": {
+      "name": "Blitzlöser",
+      "description": "Löse ein Rätsel in {time} oder weniger"
+    }
   }
 }

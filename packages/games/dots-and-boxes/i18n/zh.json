@@ -53,5 +53,15 @@
     "closed": "{name} 画了 {from}–{to}，围成格子：{count}。{name} 再走一步。",
     "score": "{name}：{count}",
     "undo": "撤销"
+  },
+  "achievements": {
+    "winner": {
+      "name": "胜利者",
+      "description": "赢得 {count, number} 局"
+    },
+    "streak": {
+      "name": "连胜",
+      "description": "连续赢得 {count, number} 局"
+    }
   }
 }

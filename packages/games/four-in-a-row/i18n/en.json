@@ -51,5 +51,15 @@
     "columnFull": "Column {column}, full",
     "dropped": "{name}: column {column}",
     "undo": "Undo"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Winner",
+      "description": "Win {count, plural, one {# game} other {# games}}"
+    },
+    "streak": {
+      "name": "On a roll",
+      "description": "Win {count, plural, one {# game} other {# games}} in a row"
+    }
   }
 }

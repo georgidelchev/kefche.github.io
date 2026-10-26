@@ -50,5 +50,15 @@
     "won": "你拼出了 2048！",
     "keepGoing": "继续游戏",
     "boardLabel": "2048 棋盘。分数 {score}，最大方块 {best}。"
+  },
+  "achievements": {
+    "high-score": {
+      "name": "高分玩家",
+      "description": "在一局中获得 {count, number} 分"
+    },
+    "dedicated": {
+      "name": "坚持不懈",
+      "description": "完成 {count, number} 局游戏"
+    }
   }
 }

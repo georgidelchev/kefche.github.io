@@ -68,5 +68,15 @@
     "cellNotes": "الصف {row}، العمود {col}: فارغ، ملاحظات {notes}",
     "cellEmpty": "الصف {row}، العمود {col}: فارغ",
     "digitLabel": "{digit}، المتبقي {count}"
+  },
+  "achievements": {
+    "solver": {
+      "name": "حلّال الألغاز",
+      "description": "حُلّ ألغازًا عددها {count, number}"
+    },
+    "speed": {
+      "name": "الحل السريع",
+      "description": "حُلّ لغزًا في {time} أو أقل"
+    }
   }
 }

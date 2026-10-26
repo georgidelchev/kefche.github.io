@@ -15,6 +15,9 @@
 //   result it saw, and the match counts when the reports agree. Each racer's
 //   moves are replayed on the room's seed (_shared/room-play.ts).
 // A game that doesn't replay is stored for review and counts for nothing.
+// After a counted game, every account in it gets the achievements its stats
+// now reach (_shared/achievements.ts), and each answer below also carries
+// "achievements": the tiers that game unlocked for the asking player.
 // Guests send nothing (Phase 7 Q2): they're refused with account_required.
 //
 // POST, Authorization: Bearer <a player's access token>
@@ -33,6 +36,7 @@
 import { createClient, type SupabaseClient, type User } from "@supabase/supabase-js";
 import * as z from "zod";
 
+import { unlockedBy, unlockForMatch } from "../_shared/achievements.ts";
 import { decide } from "../_shared/chess-rated.ts";
 import { GAMES } from "../_shared/engines.ts";
 import { rate } from "../_shared/glicko2.ts";
@@ -201,8 +205,10 @@ async function settle(admin: SupabaseClient, game: Loaded, attempt = 0): Promise
   }
   if (error) throw new Error(`rated_game_record: ${error.message}`);
   log("info", "rated_game", { game: game.id, match: data, status, reason: verdict.reason });
+  const matchId = z.uuid().parse(data);
+  if (status === "counted") await unlockForMatch(admin, matchId);
   return {
-    matchId: z.uuid().parse(data),
+    matchId,
     status,
     reason: verdict.reason,
     outcome: verdict.outcome,
@@ -260,7 +266,12 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
   if (loaded.data === null) return fail("play_not_found", 404);
   const play = playSchema.parse(loaded.data);
   if (play.userId !== user.id) return fail("play_not_found", 404);
-  if (play.matchId) return json(await storedAnswer(admin, user, play.matchId));
+  if (play.matchId) {
+    return json({
+      ...(await storedAnswer(admin, user, play.matchId)),
+      achievements: await unlockedBy(admin, play.matchId, user.id),
+    });
+  }
   const game = GAMES.get(play.gameId);
   if (!game || record.gameId !== play.gameId) return fail("bad_request", 400);
   // A game updated since the play began is played to its old rules: it can't be judged.
@@ -324,7 +335,9 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
   const stored = await admin.rpc("play_record", { p_play: play.id, p_result: result });
   if (stored.error) throw new Error(`play_record: ${stored.error.message}`);
   log("info", "play", { play: play.id, game: play.gameId, mode: record.mode, ...answer });
-  return json({ matchId: z.uuid().parse(stored.data), ...answer });
+  const matchId = z.uuid().parse(stored.data);
+  if (answer.status === "counted") await unlockForMatch(admin, matchId);
+  return json({ matchId, ...answer, achievements: await unlockedBy(admin, matchId, user.id) });
 }
 
 /** The room's current match as the reporting player sits in it, or a refusal. */
@@ -387,7 +400,7 @@ async function submitRoom(admin: SupabaseClient, user: User, body: unknown): Pro
   if (outcome !== undefined && outcome.length !== loaded.room.seats.length) {
     return fail("bad_request", 400);
   }
-  const { matchId } = await recordReport(admin, user, seed, {
+  const { matchId, again } = await recordReport(admin, user, seed, {
     kind: "turn",
     ...loaded.report,
     result: { completed: result.completed, ...(outcome === undefined ? {} : { outcome }) },
@@ -397,7 +410,10 @@ async function submitRoom(admin: SupabaseClient, user: User, body: unknown): Pro
     game: loaded.room.gameId,
     match: matchId,
   });
-  return json({ matchId });
+  if (!matchId) return json({ matchId, achievements: [] });
+  // Decided by this report: every account in it may have unlocked something.
+  if (!again) await unlockForMatch(admin, matchId);
+  return json({ matchId, achievements: await unlockedBy(admin, matchId, user.id) });
 }
 
 /** A racer's moves, replayed on the room's seed with the room's options. */
@@ -429,15 +445,18 @@ async function submitRace(admin: SupabaseClient, user: User, body: unknown): Pro
   // Sent again: the race as it was stored the first time.
   if (again && matchId) {
     const { status, reason, score, timeMs } = await storedAnswer(admin, user, matchId);
-    return json({ matchId, status, reason, score, timeMs });
+    const achievements = await unlockedBy(admin, matchId, user.id);
+    return json({ matchId, status, reason, score, timeMs, achievements });
   }
   log("info", "race", { room: room.roomId, game: room.gameId, match: matchId, ...verdict });
+  if (matchId && verdict.status === "counted") await unlockForMatch(admin, matchId);
   return json({
     matchId,
     status: verdict.status,
     reason: verdict.reason,
     score: verdict.score,
     timeMs: verdict.timeMs,
+    achievements: matchId ? await unlockedBy(admin, matchId, user.id) : [],
   });
 }
 
@@ -481,7 +500,12 @@ Deno.serve(async (req) => {
     const game = await load(admin, { room: parsed.data.roomId, seed: parsed.data.seed });
     if (!game) return fail("game_not_found", 404);
     if (!game.players.includes(auth.user.id)) return fail("not_a_player", 403);
-    return json(await settle(admin, game));
+    const settled = await settle(admin, game);
+    if ("pending" in settled) return json(settled);
+    return json({
+      ...settled,
+      achievements: await unlockedBy(admin, settled.matchId, auth.user.id),
+    });
   } catch (e) {
     log("error", "submit_match_failed", { error: e instanceof Error ? e.message : String(e) });
     return fail("submit_failed", 500);

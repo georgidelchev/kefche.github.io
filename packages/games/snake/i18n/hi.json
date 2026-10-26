@@ -62,5 +62,15 @@
     "down": "नीचे",
     "left": "बाएँ",
     "right": "दाएँ"
+  },
+  "achievements": {
+    "high-score": {
+      "name": "हाई स्कोरर",
+      "description": "एक गेम में {count, number} अंक बनाएँ"
+    },
+    "dedicated": {
+      "name": "लगनशील",
+      "description": "{count, number} गेम पूरे करें"
+    }
   }
 }

@@ -113,5 +113,19 @@
     "mateWhite": "सफ़ेद {moves} चाल में मात देगा",
     "mateBlack": "काला {moves} चाल में मात देगा",
     "creditAnalysis": "विश्लेषण Stockfish 19 से है, जो GPL-3.0 के तहत मुफ़्त सॉफ़्टवेयर है।"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, number} गेम जीतें"
+    },
+    "streak": {
+      "name": "जीत की लय",
+      "description": "लगातार {count, number} गेम जीतें"
+    },
+    "rated": {
+      "name": "रेटेड खिलाड़ी",
+      "description": "10 रेटेड गेम के बाद {count, number} रेटिंग तक पहुँचें"
+    }
   }
 }

@@ -42,7 +42,10 @@ export const manifest = defineManifest({
   renderer: "canvas",
   estimatedMinutes: [1, 10],
   leaderboards: [{ id: "best-score", metric: "score", order: "desc" }],
-  achievements: [],
+  achievements: [
+    { id: "high-score", icon: "trophy", metric: "bestScore", tiers: [20, 60, 150] },
+    { id: "dedicated", icon: "repeat", metric: "played", tiers: [10, 50, 200] },
+  ],
   // Food comes from the seed and time is a stream of ticks, so a game replays
   // exactly from its inputs (Phase 7 validates submissions).
   scoreValidation: { kind: "replay", maxActionsPerSecond: 30 },

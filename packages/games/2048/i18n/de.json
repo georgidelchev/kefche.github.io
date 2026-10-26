@@ -50,5 +50,15 @@
     "won": "Du hast 2048 geschafft!",
     "keepGoing": "Weiterspielen",
     "boardLabel": "2048-Spielfeld. Punkte {score}, höchste Kachel {best}."
+  },
+  "achievements": {
+    "high-score": {
+      "name": "Punktejäger",
+      "description": "Erziele {count, plural, one {# Punkt} other {# Punkte}} in einem Spiel"
+    },
+    "dedicated": {
+      "name": "Ausdauernd",
+      "description": "Beende {count, plural, one {# Spiel} other {# Spiele}}"
+    }
   }
 }

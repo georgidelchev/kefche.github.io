@@ -329,6 +329,8 @@ const text = {
   tips: [`${TODO}: tips for better play.`],
   faq: [{ question: `${TODO}: a common question?`, answer: `${TODO}: its answer.` }],
   ui: { score: "Score" },
+  // One per manifest achievement (none yet).
+  achievements: {},
 };
 for (const locale of LOCALES) files[`i18n/${locale}.json`] = JSON.stringify(text, null, 2);
 

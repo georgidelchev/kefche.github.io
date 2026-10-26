@@ -51,5 +51,15 @@
     "columnFull": "العمود {column}، ممتلئ",
     "dropped": "{name}: العمود {column}",
     "undo": "تراجع"
+  },
+  "achievements": {
+    "winner": {
+      "name": "الفائز",
+      "description": "اربح مباريات عددها {count, number}"
+    },
+    "streak": {
+      "name": "سلسلة انتصارات",
+      "description": "اربح مباريات متتالية عددها {count, number}"
+    }
   }
 }

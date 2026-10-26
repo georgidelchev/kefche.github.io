@@ -113,5 +113,19 @@
     "mateWhite": "Белите дават мат в {moves}",
     "mateBlack": "Черните дават мат в {moves}",
     "creditAnalysis": "Анализът е от Stockfish 19, свободен софтуер под лиценз GPL-3.0."
+  },
+  "achievements": {
+    "winner": {
+      "name": "Победител",
+      "description": "Спечели {count, plural, one {# игра} other {# игри}}"
+    },
+    "streak": {
+      "name": "Серия",
+      "description": "Спечели {count, plural, one {# игра} other {# игри}} поред"
+    },
+    "rated": {
+      "name": "Рейтингов играч",
+      "description": "Достигни рейтинг {count, number} след 10 рейтингови игри"
+    }
   }
 }

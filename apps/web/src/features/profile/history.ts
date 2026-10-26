@@ -86,8 +86,19 @@ const ratingSeriesSchema = z.object({
 });
 export type RatingSeries = z.infer<typeof ratingSeriesSchema>;
 
+/** An unlocked achievement tier ("<game id>.<id>" or "global.<id>"). */
+const unlockSchema = z.object({
+  achievement: z.string(),
+  tier: z.enum(["bronze", "silver", "gold"]),
+  unlockedAt: z.string(),
+  /** Its place in the showcase (1–3), or null. */
+  pinned: z.number().int().nullable(),
+});
+export type AchievementUnlockRow = z.infer<typeof unlockSchema>;
+
 const historySchema = z.object({
   ratings: z.array(ratingSchema),
+  achievements: z.array(unlockSchema),
   stats: z.array(gameStatsSchema),
   totals: totalsSchema.nullable(),
   ratingHistory: z.array(ratingSeriesSchema),

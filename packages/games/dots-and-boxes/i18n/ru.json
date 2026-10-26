@@ -53,5 +53,15 @@
     "closed": "{name}: линия {from}–{to}, закрыто квадратов: {count}. {name} ходит снова.",
     "score": "{name}: {count}",
     "undo": "Отменить"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Победитель",
+      "description": "Выиграйте {count, plural, one {# партию} few {# партии} many {# партий} other {# партии}}"
+    },
+    "streak": {
+      "name": "Серия побед",
+      "description": "Выиграйте {count, plural, one {# партию} few {# партии} many {# партий} other {# партии}} подряд"
+    }
   }
 }

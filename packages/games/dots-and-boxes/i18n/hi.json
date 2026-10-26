@@ -53,5 +53,15 @@
     "closed": "{name} ने {from}–{to} खींची और बॉक्स बंद किए: {count}। {name} फिर से चलेगा।",
     "score": "{name}: {count}",
     "undo": "वापस लें"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, number} गेम जीतें"
+    },
+    "streak": {
+      "name": "जीत की लय",
+      "description": "लगातार {count, number} गेम जीतें"
+    }
   }
 }

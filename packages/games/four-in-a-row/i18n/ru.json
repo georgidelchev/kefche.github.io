@@ -51,5 +51,15 @@
     "columnFull": "Столбец {column}, заполнен",
     "dropped": "{name}: столбец {column}",
     "undo": "Отменить"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Победитель",
+      "description": "Выиграйте {count, plural, one {# партию} few {# партии} many {# партий} other {# партии}}"
+    },
+    "streak": {
+      "name": "Серия побед",
+      "description": "Выиграйте {count, plural, one {# партию} few {# партии} many {# партий} other {# партии}} подряд"
+    }
   }
 }

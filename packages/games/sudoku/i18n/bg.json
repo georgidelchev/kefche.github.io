@@ -68,5 +68,15 @@
     "cellNotes": "Ред {row}, колона {col}: празна, бележки {notes}",
     "cellEmpty": "Ред {row}, колона {col}: празна",
     "digitLabel": "{digit}, остават {count}"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Решател",
+      "description": "Реши {count, plural, one {# пъзел} other {# пъзела}}"
+    },
+    "speed": {
+      "name": "Светкавица",
+      "description": "Реши пъзел за {time} или по-малко"
+    }
   }
 }

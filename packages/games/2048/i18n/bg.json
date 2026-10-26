@@ -50,5 +50,15 @@
     "won": "Стигна 2048!",
     "keepGoing": "Продължи",
     "boardLabel": "Поле на 2048. Точки {score}, най-голяма плочка {best}."
+  },
+  "achievements": {
+    "high-score": {
+      "name": "Рекордьор",
+      "description": "Събери {count, plural, one {# точка} other {# точки}} в една игра"
+    },
+    "dedicated": {
+      "name": "Постоянство",
+      "description": "Завърши {count, plural, one {# игра} other {# игри}}"
+    }
   }
 }

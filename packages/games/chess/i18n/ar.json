@@ -113,5 +113,19 @@
     "mateWhite": "الأبيض يميت في {moves}",
     "mateBlack": "الأسود يميت في {moves}",
     "creditAnalysis": "التحليل من Stockfish 19، وهو برنامج حر بترخيص GPL-3.0."
+  },
+  "achievements": {
+    "winner": {
+      "name": "الفائز",
+      "description": "اربح مباريات عددها {count, number}"
+    },
+    "streak": {
+      "name": "سلسلة انتصارات",
+      "description": "اربح مباريات متتالية عددها {count, number}"
+    },
+    "rated": {
+      "name": "لاعب مصنّف",
+      "description": "بلغ تصنيفًا قدره {count, number} بعد 10 مباريات مصنّفة"
+    }
   }
 }

@@ -84,6 +84,14 @@
   --cat-strategy-ink: #141826;
   --cat-sports: #7dd3fc;
   --cat-sports-ink: #141826;
+
+  /* Achievement tiers (theme-independent medal fills with an ink icon; SPEC §12.6). */
+  --tier-bronze: #cd7f32;
+  --tier-bronze-ink: #141826;
+  --tier-silver: #c0c7d1;
+  --tier-silver-ink: #141826;
+  --tier-gold: #f2c94c;
+  --tier-gold-ink: #141826;
 }
 
 @media (prefers-color-scheme: dark) {

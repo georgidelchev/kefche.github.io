@@ -68,5 +68,15 @@
     "cellNotes": "Linha {row}, coluna {col}: vazia, notas {notes}",
     "cellEmpty": "Linha {row}, coluna {col}: vazia",
     "digitLabel": "{digit}, faltam {count}"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Solucionador",
+      "description": "Resolva {count, plural, one {# quebra-cabeça} other {# quebra-cabeças}}"
+    },
+    "speed": {
+      "name": "Relâmpago",
+      "description": "Resolva um quebra-cabeça em {time} ou menos"
+    }
   }
 }

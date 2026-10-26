@@ -11,3 +11,7 @@ export declare function levelForXp(xp: number): number;
 export declare function levelProgress(
   xp: number,
 ): { level: number; into: number; span: number; fraction: number };
+export declare function reachedTiers(
+  definitions: Readonly<Record<string, readonly unknown[]>>,
+  figures: unknown,
+): { achievement: string; tier: "bronze" | "silver" | "gold" }[];

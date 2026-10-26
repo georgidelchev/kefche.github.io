@@ -54,5 +54,15 @@
     "passed": "{name} hat keinen Zug und setzt aus.",
     "hints": "Züge zeigen",
     "undo": "Rückgängig"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Partie} other {# Partien}}"
+    },
+    "streak": {
+      "name": "Siegesserie",
+      "description": "Gewinne {count, plural, one {# Partie} other {# Partien}} in Folge"
+    }
   }
 }

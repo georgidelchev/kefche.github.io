@@ -51,5 +51,15 @@
     "columnFull": "कॉलम {column}, भरा हुआ",
     "dropped": "{name}: कॉलम {column}",
     "undo": "वापस लें"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, number} गेम जीतें"
+    },
+    "streak": {
+      "name": "जीत की लय",
+      "description": "लगातार {count, number} गेम जीतें"
+    }
   }
 }

@@ -1084,6 +1084,27 @@ Online modes are enabled for the Phase 4 games.
     - Real games through `submit-match`: plays 19/19 and online 33/33, with each player's XP and ledger matching the rules; rated endings 21/21, rated matchmaking 20/20 and the history pages 16/16, with rated games earning XP too.
     - In the browser, 31/31: the header badge and label, a summary cached before levels and one with the level, the profile's level, bar and text; the home page and a profile in English and Arabic at 360, 768 and 1280 px in both themes, with no sideways scroll and axe clean.
     - The data export locally, with the ledger.
+- [x] Step 8: achievements (`20261025101100_achievements.sql`).
+  - **Definitions as data:** each game lists its own in its manifest (`achievements`: id, icon, metric and the bronze, silver and gold goals), and the SDK holds the site-wide ones (`achievements.ts`). The manifest schema checks the goals rise (fall, for a best time), and the registry checks each game has a name and description for every achievement. A metric is a figure the stats already keep: games finished, wins, best score, best time, longest win streak, or the best established rating (10 or more rated games). Site-wide: games finished, games tried, level.
+    - **Per game:**
+      - 2048 and Snake: High scorer (2,500/10,000/25,000 and 20/60/150 points) and Dedicated (10/50/200 games).
+      - Sudoku: Solver (1/25/100) and Speed solver (10/5/3 minutes).
+      - The turn games: Winner (1/25/100 wins) and On a roll (3/5/10 in a row), and for chess, Rated player (1,600/1,800/2,000).
+    - **Site-wide:** Regular (10/100/500 games), Explorer (3/5/7 games tried) and Rising star (level 5/10/20).
+  - **Text:** names and ICU descriptions (`{count}`, or `{time}` for a best time) in each game's i18n files, in all 11 languages; the site-wide ones in `profile.json`. The `new:game` template starts with none.
+  - **Unlocking** (`_shared/achievements.ts`): after a counted game, `submit-match` reads each account's figures in it (`achievement_figures`), works out the tiers they reach with the SDK's `reachedTiers` (bundled with the engines) and stores the new ones with the match that unlocked them (`achievements_unlock`, service role only; nothing for a guest).
+    - **XP:** each new tier awards 20 (bronze), 50 (silver) or 100 (gold), outside the daily cap.
+    - **Answers:** every answer carries `achievements`, the tiers that game unlocked for the asking player, the same when a record is sent again.
+    - **Nothing is missed:** the tiers come from the stats, so a game counted without `submit-match` (an online match decided by the scheduled job) unlocks with the player's next game. A failure is logged and doesn't hold the result up.
+  - **The profile:** an Achievements section with the count, the showcase, and every achievement at its best tier: a medal in the tier's color (new theme-independent `--tier-*` tokens with an ink, in the contrast check) with its icon, the name, the game and tier, and what the tier took ("Win 25 games"). On their own profile, a signed-in player gets a button on each to pin it to the showcase (up to 3, in order) or take it off (`set_achievement_pins`: their own unlocks only).
+  - **Moved to step 9:** the unlock toast belongs to the results screen, which step 9 builds; `submit-match` already returns what it needs.
+  - **Privacy:** the games entry says achievements are earned and shown on the profile, and the data export includes each unlock's match.
+  - **Strings:** 16 in `profile.json` and each game's achievements, in all 11 languages.
+  - **Checks:**
+    - Deno 47/47: the six new tests are a new player, each tier at its goal and not before, a best time at or under its goal, only an established rating, the site-wide ones, and the figures from the database.
+    - Real games through `submit-match`: plays 19/19, online 33/33, rated matchmaking 20/20. Each player's unlocks were stored with their match and XP, and a record sent again answered with the Sudoku's unlock.
+    - In the browser, 21/21: a visitor sees the cards with no pin buttons; the owner pins three in order, is told the showcase is full, and unpins one; pinning one not unlocked is refused. The profile in English and Arabic at 360 and 1280 px in both themes: no sideways scroll, axe clean. In Arabic, a game named with digits (2048) keeps its place before the tier.
+    - Flaky checks seen: once, a late Sudoku record was taken for Four in a Row's in plays (19/19 alone), and rated matchmaking's "new opponent" check can read the address a moment before it changes (20/20 again).
 
 ---
 

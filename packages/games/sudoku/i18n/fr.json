@@ -68,5 +68,15 @@
     "cellNotes": "Ligne {row}, colonne {col} : vide, notes {notes}",
     "cellEmpty": "Ligne {row}, colonne {col} : vide",
     "digitLabel": "{digit}, encore {count}"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Résolveur",
+      "description": "Résolvez {count, plural, one {# grille} other {# grilles}}"
+    },
+    "speed": {
+      "name": "Éclair",
+      "description": "Résolvez une grille en {time} ou moins"
+    }
   }
 }

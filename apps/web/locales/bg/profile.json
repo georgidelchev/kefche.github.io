@@ -34,6 +34,32 @@
     "date": "Дата",
     "rating": "Рейтинг"
   },
+  "achievements": {
+    "heading": "Постижения",
+    "showcase": "Витрина",
+    "unlocked": "Отключени: {count, number}",
+    "pin": "Покажи във витрината",
+    "unpin": "Махни от витрината",
+    "full": "Витрината побира 3. Първо махни едно.",
+    "failed": "Не успяхме да запазим витрината ти. Опитай отново.",
+    "regular": {
+      "name": "Редовен",
+      "description": "Завърши {count, plural, one {# игра} other {# игри}}"
+    },
+    "explorer": {
+      "name": "Изследовател",
+      "description": "Играй {count, plural, one {# различна игра} other {# различни игри}}"
+    },
+    "risingStar": {
+      "name": "Изгряваща звезда",
+      "description": "Достигни ниво {count, number}"
+    }
+  },
+  "tier": {
+    "bronze": "Бронз",
+    "silver": "Сребро",
+    "gold": "Злато"
+  },
   "historyUnavailable": "Историята на игрите не можа да се зареди в момента.",
   "versus": "срещу {name}",
   "deletedPlayer": "Изтрит играч",

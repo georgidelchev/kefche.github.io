@@ -54,5 +54,15 @@
     "passed": "{name} は打てる場所がないのでパスします。",
     "hints": "打てる場所を表示",
     "undo": "取り消し"
+  },
+  "achievements": {
+    "winner": {
+      "name": "勝者",
+      "description": "{count, number}勝する"
+    },
+    "streak": {
+      "name": "連勝",
+      "description": "{count, number}連勝する"
+    }
   }
 }

@@ -34,6 +34,32 @@
     "date": "Datum",
     "rating": "Wertung"
   },
+  "achievements": {
+    "heading": "Erfolge",
+    "showcase": "Vitrine",
+    "unlocked": "Freigeschaltet: {count, number}",
+    "pin": "In die Vitrine stellen",
+    "unpin": "Aus der Vitrine nehmen",
+    "full": "In die Vitrine passen 3. Nimm zuerst einen heraus.",
+    "failed": "Deine Vitrine konnte nicht gespeichert werden. Bitte versuche es erneut.",
+    "regular": {
+      "name": "Stammgast",
+      "description": "Beende {count, plural, one {# Spiel} other {# Spiele}}"
+    },
+    "explorer": {
+      "name": "Entdecker",
+      "description": "Spiele {count, plural, one {# verschiedenes Spiel} other {# verschiedene Spiele}}"
+    },
+    "risingStar": {
+      "name": "Aufsteiger",
+      "description": "Erreiche Level {count, number}"
+    }
+  },
+  "tier": {
+    "bronze": "Bronze",
+    "silver": "Silber",
+    "gold": "Gold"
+  },
   "historyUnavailable": "Die Partien konnten gerade nicht geladen werden.",
   "versus": "gegen {name}",
   "deletedPlayer": "Gelöschter Spieler",

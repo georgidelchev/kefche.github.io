@@ -50,5 +50,15 @@
     "won": "Vous avez fait 2048 !",
     "keepGoing": "Continuer",
     "boardLabel": "Plateau de 2048. Score {score}, plus grande tuile {best}."
+  },
+  "achievements": {
+    "high-score": {
+      "name": "As du score",
+      "description": "Marquez {count, plural, one {# point} other {# points}} en une partie"
+    },
+    "dedicated": {
+      "name": "Assidu",
+      "description": "Terminez {count, plural, one {# partie} other {# parties}}"
+    }
   }
 }

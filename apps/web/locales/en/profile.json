@@ -34,6 +34,32 @@
     "date": "Date",
     "rating": "Rating"
   },
+  "achievements": {
+    "heading": "Achievements",
+    "showcase": "Showcase",
+    "unlocked": "Unlocked: {count, number}",
+    "pin": "Pin to the showcase",
+    "unpin": "Remove from the showcase",
+    "full": "The showcase holds 3. Remove one first.",
+    "failed": "We couldn't save your showcase. Please try again.",
+    "regular": {
+      "name": "Regular",
+      "description": "Finish {count, plural, one {# game} other {# games}}"
+    },
+    "explorer": {
+      "name": "Explorer",
+      "description": "Play {count, plural, one {# different game} other {# different games}}"
+    },
+    "risingStar": {
+      "name": "Rising star",
+      "description": "Reach level {count, number}"
+    }
+  },
+  "tier": {
+    "bronze": "Bronze",
+    "silver": "Silver",
+    "gold": "Gold"
+  },
   "historyUnavailable": "Game history couldn't be loaded right now.",
   "versus": "vs {name}",
   "deletedPlayer": "Deleted player",

@@ -9,6 +9,7 @@ import {
   levelForXp,
   levelProgress,
   RACE_LOG_LIMITS,
+  reachedTiers as bundledReachedTiers,
   unpackActions,
   xpForLevel,
 } from "./engines.gen.js";
@@ -63,6 +64,31 @@ export type TimerPreset =
   | { kind: "clock"; base: number; increment: number }
   | { kind: "countdown"; seconds: number };
 
+/** A game's achievement (the SDK's AchievementDef). */
+export interface AchievementDef {
+  id: string;
+  metric: "played" | "wins" | "bestScore" | "bestTime" | "bestStreak" | "rating";
+  tiers: readonly [number, number, number];
+}
+
+/** A player's figures in one game (the SDK's GameFigures). */
+export interface GameFigures {
+  played: number;
+  wins: number;
+  bestScore: number | null;
+  bestTimeMs: number | null;
+  bestStreak: number;
+  rating: number | null;
+}
+
+/** What achievements are read from (the SDK's PlayerFigures). */
+export interface PlayerFigures {
+  games: Readonly<Record<string, GameFigures>>;
+  matches: number;
+  gamesTried: number;
+  level: number;
+}
+
 /** What the server checks a game's results with, from its manifest. */
 interface Rules {
   version: number;
@@ -76,6 +102,8 @@ interface Rules {
   options: readonly GameOption[];
   /** The most actions a person makes in a second, when the manifest says. */
   maxActionsPerSecond: number | null;
+  /** The game's achievements (the SDK's AchievementDef). */
+  achievements: readonly AchievementDef[];
 }
 
 export type ServerGame =
@@ -91,6 +119,7 @@ interface BundledManifest {
   onlineTimer?: number;
   raceOptions?: GameOption[];
   scoreValidation: { kind: string; maxActionsPerSecond?: number };
+  achievements: AchievementDef[];
 }
 
 /** Every game by id. */
@@ -106,6 +135,7 @@ export const GAMES: ReadonlyMap<string, ServerGame> = new Map(
       onlineTimer: m.onlineTimer ?? null,
       options: m.raceOptions ?? [],
       maxActionsPerSecond: m.scoreValidation.maxActionsPerSecond ?? null,
+      achievements: m.achievements,
     };
     const game: ServerGame =
       m.kind === "race"
@@ -197,4 +227,15 @@ export function replayTurn(
     else state = engine.applyAction(state, seat, legal);
   }
   return { state, result: engine.result(state), refused };
+}
+
+/**
+ * Every achievement tier the player has reached, site-wide and in every game
+ * (the SDK's reachedTiers, with each game's definitions).
+ */
+export function reachedTiers(
+  figures: PlayerFigures,
+): { achievement: string; tier: "bronze" | "silver" | "gold" }[] {
+  const definitions = Object.fromEntries([...GAMES].map(([id, game]) => [id, game.achievements]));
+  return bundledReachedTiers(definitions, figures);
 }

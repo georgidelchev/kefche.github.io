@@ -50,7 +50,11 @@ export const manifest = defineManifest({
   renderer: "dom",
   estimatedMinutes: [5, 60],
   leaderboards: [],
-  achievements: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] },
+    { id: "rated", icon: "medal", metric: "rating", tiers: [1600, 1800, 2000] },
+  ],
   // Moves are UCI strings, so a game replays exactly (the server's check of rated games).
   scoreValidation: { kind: "replay" },
   tags: ["classic", "two-player", "strategy"],

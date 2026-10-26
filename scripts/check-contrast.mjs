@@ -66,13 +66,13 @@ const pairs = [
   ...uiOn("accent-strong", ["bg", "surface"]),
 ];
 
-// Player and category colors are theme-independent fills with a paired ink
+// Player, category and achievement tier colors are theme-independent fills with a paired ink
 // (shape icon, label or 1px outline drawn on top), SPEC §6.2.
 const fillPairs = (prefix) =>
   Object.keys(light)
     .filter((k) => k.startsWith(prefix) && !k.endsWith("-ink"))
     .map((k) => [`${k}-ink`, k, TEXT]);
-pairs.push(...fillPairs("player-"), ...fillPairs("cat-"));
+pairs.push(...fillPairs("player-"), ...fillPairs("cat-"), ...fillPairs("tier-"));
 
 const showAll = process.argv.includes("--all");
 for (const [theme, tokens] of Object.entries(themes)) {

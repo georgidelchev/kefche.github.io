@@ -31,6 +31,7 @@ const entry = [
   'export { canonicalJson } from "./packages/game-sdk/src/engines.ts";',
   'export { RACE_LOG_LIMITS, unpackActions } from "./packages/game-sdk/src/race-log.ts";',
   'export { levelForXp, levelProgress, xpForLevel } from "./packages/game-sdk/src/xp.ts";',
+  'export { reachedTiers } from "./packages/game-sdk/src/achievements.ts";',
   "export const GAMES = {",
   ...ids.map(
     (id, i) => `  ${JSON.stringify(id)}: { manifest: m${String(i)}, engine: e${String(i)} },`,
@@ -75,6 +76,10 @@ writeFileSync(
     "export declare function levelProgress(",
     "  xp: number,",
     "): { level: number; into: number; span: number; fraction: number };",
+    "export declare function reachedTiers(",
+    "  definitions: Readonly<Record<string, readonly unknown[]>>,",
+    "  figures: unknown,",
+    '): { achievement: string; tier: "bronze" | "silver" | "gold" }[];',
     "",
   ].join("\n"),
 );

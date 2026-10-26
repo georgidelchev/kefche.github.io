@@ -34,6 +34,32 @@
     "date": "Fecha",
     "rating": "Puntuación"
   },
+  "achievements": {
+    "heading": "Logros",
+    "showcase": "Vitrina",
+    "unlocked": "Desbloqueados: {count, number}",
+    "pin": "Fijar en la vitrina",
+    "unpin": "Quitar de la vitrina",
+    "full": "En la vitrina caben 3. Quita uno primero.",
+    "failed": "No pudimos guardar tu vitrina. Inténtalo de nuevo.",
+    "regular": {
+      "name": "Habitual",
+      "description": "Termina {count, plural, one {# partida} other {# partidas}}"
+    },
+    "explorer": {
+      "name": "Explorador",
+      "description": "Juega a {count, plural, one {# juego distinto} other {# juegos distintos}}"
+    },
+    "risingStar": {
+      "name": "Estrella en ascenso",
+      "description": "Llega al nivel {count, number}"
+    }
+  },
+  "tier": {
+    "bronze": "Bronce",
+    "silver": "Plata",
+    "gold": "Oro"
+  },
   "historyUnavailable": "No se pudo cargar el historial de partidas ahora.",
   "versus": "contra {name}",
   "deletedPlayer": "Jugador eliminado",

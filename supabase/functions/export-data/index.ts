@@ -72,7 +72,7 @@ Deno.serve(async (req) => {
     admin.from("player_game_stats").select("*").eq("user_id", user.id),
     admin
       .from("achievement_unlocks")
-      .select("achievement, tier, unlocked_at, pinned")
+      .select("achievement, tier, unlocked_at, pinned, match_id")
       .eq("user_id", user.id),
     admin
       .from("play_streaks")

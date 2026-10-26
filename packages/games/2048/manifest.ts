@@ -23,7 +23,10 @@ export const manifest = defineManifest({
   renderer: "dom",
   estimatedMinutes: [3, 20],
   leaderboards: [{ id: "best-score", metric: "score", order: "desc" }],
-  achievements: [],
+  achievements: [
+    { id: "high-score", icon: "trophy", metric: "bestScore", tiers: [2500, 10000, 25000] },
+    { id: "dedicated", icon: "repeat", metric: "played", tiers: [10, 50, 200] },
+  ],
   // Every move is replayable from the seed (Phase 7 validates submissions).
   scoreValidation: { kind: "replay", maxActionsPerSecond: 20 },
   tags: ["puzzle", "numbers", "single-player"],

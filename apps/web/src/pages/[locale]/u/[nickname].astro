@@ -8,6 +8,8 @@ import { UserAvatar } from "@kefche/ui/components/avatar";
 import { avatarUrl } from "@/features/account/avatar-url";
 import NotFoundPage from "@/features/errors/NotFoundPage.astro";
 import { gameName } from "@/features/games/game-names";
+import AchievementCard from "@/features/profile/AchievementCard.astro";
+import { shownAchievements } from "@/features/profile/achievements";
 import { fetchPlayerHistory, PROVISIONAL_GAMES } from "@/features/profile/history";
 import {
   clockText,
@@ -144,6 +146,11 @@ const gameStats = (history?.stats ?? []).map((s) => {
     ],
   };
 });
+const achievements = shownAchievements(history?.achievements ?? [], t, locale, bcp47);
+// The showcase, in its order (SPEC §12.6: up to 3).
+const showcase = achievements
+  .filter((a) => a.pinned !== null)
+  .sort((a, b) => (a.pinned ?? 0) - (b.pinned ?? 0));
 const chartStrings = {
   summary: (from: string, to: string) => t("profile:chart.summary", { from, to }),
   table: t("profile:chart.table"),
@@ -250,6 +257,44 @@ const facts = profile
         </p>
       )}
       {history === null && <p class="text-muted">{t("profile:historyUnavailable")}</p>}
+      {achievements.length > 0 && (
+        <section
+          class="grid gap-3"
+          aria-labelledby="achievements-heading"
+          data-achievements
+          data-profile-id={profile.id}
+          data-pins={JSON.stringify(showcase.map((a) => a.key))}
+          data-pin-label={t("profile:achievements.pin")}
+          data-unpin-label={t("profile:achievements.unpin")}
+          data-full={t("profile:achievements.full")}
+          data-failed={t("profile:achievements.failed")}
+        >
+          <div class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+            <h2 id="achievements-heading" class="text-2xl">
+              {t("profile:achievements.heading")}
+            </h2>
+            <span class="text-sm text-muted">
+              {t("profile:achievements.unlocked", { count: achievements.length })}
+            </span>
+          </div>
+          {showcase.length > 0 && (
+            <>
+              <h3 class="text-lg font-semibold">{t("profile:achievements.showcase")}</h3>
+              <ul class="grid gap-3 sm:grid-cols-3">
+                {showcase.map((a, i) => (
+                  <AchievementCard achievement={a} nameId={`showcase-${String(i)}`} />
+                ))}
+              </ul>
+            </>
+          )}
+          <ul class="grid gap-3 sm:grid-cols-2">
+            {achievements.map((a, i) => (
+              <AchievementCard achievement={a} nameId={`achievement-${String(i)}`} pinnable />
+            ))}
+          </ul>
+          <p data-pin-message role="status" class="text-sm text-danger empty:hidden" />
+        </section>
+      )}
       {totals.length > 0 && (
         <section class="grid gap-3" aria-labelledby="stats-heading">
           <h2 id="stats-heading" class="text-2xl">
@@ -368,3 +413,7 @@ const facts = profile
     </article>
   </AppShell>
 )}
+
+<script>
+  import "@/features/profile/achievement-pins.client";
+</script>

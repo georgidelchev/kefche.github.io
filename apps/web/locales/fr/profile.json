@@ -34,6 +34,32 @@
     "date": "Date",
     "rating": "Classement"
   },
+  "achievements": {
+    "heading": "Succès",
+    "showcase": "Vitrine",
+    "unlocked": "Débloqués : {count, number}",
+    "pin": "Mettre en vitrine",
+    "unpin": "Retirer de la vitrine",
+    "full": "La vitrine en contient 3. Retirez-en un d’abord.",
+    "failed": "Impossible d’enregistrer votre vitrine. Veuillez réessayer.",
+    "regular": {
+      "name": "Habitué",
+      "description": "Terminez {count, plural, one {# partie} other {# parties}}"
+    },
+    "explorer": {
+      "name": "Explorateur",
+      "description": "Jouez à {count, plural, one {# jeu différent} other {# jeux différents}}"
+    },
+    "risingStar": {
+      "name": "Étoile montante",
+      "description": "Atteignez le niveau {count, number}"
+    }
+  },
+  "tier": {
+    "bronze": "Bronze",
+    "silver": "Argent",
+    "gold": "Or"
+  },
   "historyUnavailable": "Impossible de charger l'historique des parties pour le moment.",
   "versus": "contre {name}",
   "deletedPlayer": "Joueur supprimé",

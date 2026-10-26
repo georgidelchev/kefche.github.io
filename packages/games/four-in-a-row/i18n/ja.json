@@ -51,5 +51,15 @@
     "columnFull": "{column} 列目、満杯",
     "dropped": "{name}：{column} 列目",
     "undo": "取り消し"
+  },
+  "achievements": {
+    "winner": {
+      "name": "勝者",
+      "description": "{count, number}勝する"
+    },
+    "streak": {
+      "name": "連勝",
+      "description": "{count, number}連勝する"
+    }
   }
 }

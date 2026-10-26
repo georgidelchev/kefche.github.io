@@ -34,6 +34,32 @@
     "date": "日付",
     "rating": "レーティング"
   },
+  "achievements": {
+    "heading": "実績",
+    "showcase": "ショーケース",
+    "unlocked": "解除済み：{count, number}",
+    "pin": "ショーケースに飾る",
+    "unpin": "ショーケースから外す",
+    "full": "ショーケースには3つまでです。先に1つ外してください。",
+    "failed": "ショーケースを保存できませんでした。もう一度お試しください。",
+    "regular": {
+      "name": "常連",
+      "description": "ゲームを{count, number}回最後まで遊ぶ"
+    },
+    "explorer": {
+      "name": "探検家",
+      "description": "{count, number}種類のゲームを遊ぶ"
+    },
+    "risingStar": {
+      "name": "期待の星",
+      "description": "レベル{count, number}に到達する"
+    }
+  },
+  "tier": {
+    "bronze": "ブロンズ",
+    "silver": "シルバー",
+    "gold": "ゴールド"
+  },
   "historyUnavailable": "対局履歴を今は読み込めませんでした。",
   "versus": "対 {name}",
   "deletedPlayer": "削除されたプレイヤー",

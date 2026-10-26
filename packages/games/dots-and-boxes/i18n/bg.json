@@ -53,5 +53,15 @@
     "closed": "{name} начерта {from}–{to} и затвори квадрати: {count}. {name} играе пак.",
     "score": "{name}: {count}",
     "undo": "Отмени"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Победител",
+      "description": "Спечели {count, plural, one {# игра} other {# игри}}"
+    },
+    "streak": {
+      "name": "Серия",
+      "description": "Спечели {count, plural, one {# игра} other {# игри}} поред"
+    }
   }
 }

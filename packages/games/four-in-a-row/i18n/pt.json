@@ -51,5 +51,15 @@
     "columnFull": "Coluna {column}, cheia",
     "dropped": "{name}: coluna {column}",
     "undo": "Desfazer"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Vencedor",
+      "description": "Vença {count, plural, one {# partida} other {# partidas}}"
+    },
+    "streak": {
+      "name": "Embalado",
+      "description": "Vença {count, plural, one {# partida} other {# partidas}} seguidas"
+    }
   }
 }

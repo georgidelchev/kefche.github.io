@@ -68,5 +68,15 @@
     "cellNotes": "Строка {row}, столбец {col}: пусто, заметки {notes}",
     "cellEmpty": "Строка {row}, столбец {col}: пусто",
     "digitLabel": "{digit}, осталось {count}"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Решатель",
+      "description": "Решите {count, plural, one {# головоломку} few {# головоломки} many {# головоломок} other {# головоломки}}"
+    },
+    "speed": {
+      "name": "Молния",
+      "description": "Решите головоломку за {time} или быстрее"
+    }
   }
 }

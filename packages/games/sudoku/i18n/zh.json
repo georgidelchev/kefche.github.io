@@ -68,5 +68,15 @@
     "cellNotes": "第 {row} 行第 {col} 列：空，笔记 {notes}",
     "cellEmpty": "第 {row} 行第 {col} 列：空",
     "digitLabel": "{digit}，还剩 {count} 个"
+  },
+  "achievements": {
+    "solver": {
+      "name": "解谜高手",
+      "description": "解开 {count, number} 道谜题"
+    },
+    "speed": {
+      "name": "快速解题",
+      "description": "在 {time} 内解开一道谜题"
+    }
   }
 }

@@ -62,5 +62,15 @@
     "down": "Runter",
     "left": "Links",
     "right": "Rechts"
+  },
+  "achievements": {
+    "high-score": {
+      "name": "Punktejäger",
+      "description": "Erziele {count, plural, one {# Punkt} other {# Punkte}} in einem Spiel"
+    },
+    "dedicated": {
+      "name": "Ausdauernd",
+      "description": "Beende {count, plural, one {# Spiel} other {# Spiele}}"
+    }
   }
 }

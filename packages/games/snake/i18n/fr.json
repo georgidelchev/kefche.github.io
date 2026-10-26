@@ -62,5 +62,15 @@
     "down": "Bas",
     "left": "Gauche",
     "right": "Droite"
+  },
+  "achievements": {
+    "high-score": {
+      "name": "As du score",
+      "description": "Marquez {count, plural, one {# point} other {# points}} en une partie"
+    },
+    "dedicated": {
+      "name": "Assidu",
+      "description": "Terminez {count, plural, one {# partie} other {# parties}}"
+    }
   }
 }

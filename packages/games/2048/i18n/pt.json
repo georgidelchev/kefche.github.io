@@ -50,5 +50,15 @@
     "won": "Você chegou a 2048!",
     "keepGoing": "Continuar",
     "boardLabel": "Tabuleiro de 2048. Pontos: {score}, maior bloco: {best}."
+  },
+  "achievements": {
+    "high-score": {
+      "name": "Pontuador",
+      "description": "Faça {count, plural, one {# ponto} other {# pontos}} em uma partida"
+    },
+    "dedicated": {
+      "name": "Dedicado",
+      "description": "Termine {count, plural, one {# partida} other {# partidas}}"
+    }
   }
 }

@@ -69,4 +69,10 @@
   --color-cat-strategy-ink: var(--cat-strategy-ink);
   --color-cat-sports: var(--cat-sports);
   --color-cat-sports-ink: var(--cat-sports-ink);
+  --color-tier-bronze: var(--tier-bronze);
+  --color-tier-bronze-ink: var(--tier-bronze-ink);
+  --color-tier-silver: var(--tier-silver);
+  --color-tier-silver-ink: var(--tier-silver-ink);
+  --color-tier-gold: var(--tier-gold);
+  --color-tier-gold-ink: var(--tier-gold-ink);
 }

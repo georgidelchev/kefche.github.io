@@ -56,10 +56,48 @@ export interface LeaderboardDef {
   order: "asc" | "desc";
 }
 
-/** SPEC §12.6. Unlock rules are evaluated by the stats pipeline (Phase 7). */
+/**
+ * A game's achievement (SPEC §12.6): a figure from the player's stats in that
+ * game, with the goal for each tier. Its name and description live in the
+ * game's i18n files under `achievements.<id>`. See achievements.ts.
+ */
 export interface AchievementDef {
   id: string;
+  icon: AchievementIcon;
+  metric: GameAchievementMetric;
+  /** Bronze, silver and gold: rising goals, or falling ones for "bestTime". */
+  tiers: readonly [number, number, number];
 }
+
+/** The icons achievements can show (the site maps each to a drawing). */
+export const ACHIEVEMENT_ICONS = [
+  "trophy",
+  "crown",
+  "flame",
+  "timer",
+  "target",
+  "compass",
+  "gamepad",
+  "star",
+  "medal",
+  "repeat",
+] as const;
+export type AchievementIcon = (typeof ACHIEVEMENT_ICONS)[number];
+
+/**
+ * What a game's achievement counts: games finished, wins, the best score, the
+ * best time in milliseconds (lower is better), the longest win streak, or the
+ * best established rating (10 or more rated games) in any of its pools.
+ */
+export const GAME_ACHIEVEMENT_METRICS = [
+  "played",
+  "wins",
+  "bestScore",
+  "bestTime",
+  "bestStreak",
+  "rating",
+] as const;
+export type GameAchievementMetric = (typeof GAME_ACHIEVEMENT_METRICS)[number];
 
 /** SPEC §12.5: how a submitted result is checked server-side (Phase 7). */
 export type ScoreValidationRule =

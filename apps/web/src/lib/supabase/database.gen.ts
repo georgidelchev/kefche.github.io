@@ -7,17 +7,23 @@ export type Database = {
           Tables: {
             "achievement_unlocks": {
                   Row: {
-                    "achievement": string,"pinned": number | null,"tier": string,"unlocked_at": string,"user_id": string
+                    "achievement": string,"match_id": string | null,"pinned": number | null,"tier": string,"unlocked_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "achievement": string,"pinned"?: number | null,"tier": string,"unlocked_at"?: string,"user_id": string
+                    "achievement": string,"match_id"?: string | null,"pinned"?: number | null,"tier": string,"unlocked_at"?: string,"user_id": string
                   }
                   Update: {
-                    "achievement"?: string,"pinned"?: number | null,"tier"?: string,"unlocked_at"?: string,"user_id"?: string
+                    "achievement"?: string,"match_id"?: string | null,"pinned"?: number | null,"tier"?: string,"unlocked_at"?: string,"user_id"?: string
                   }
                   Relationships: [
-                    
+                    {
+      foreignKeyName: "achievement_unlocks_match_id_fkey"
+      columns: ["match_id"]
+isOneToOne: false
+      referencedRelation: "matches"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"audit_log": {
                   Row: {
@@ -284,6 +290,12 @@ isOneToOne: false
             "account_deletion_date":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
+"achievement_figures":
+{ Args: { "p_user": string }; Returns: Json
+                           },
+"achievements_unlock":
+{ Args: { "p_match": string,"p_unlocks": Json,"p_user": string }; Returns: number
+                           },
 "avatar_upload_allowed":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
@@ -505,6 +517,9 @@ isOneToOne: false
       } },
 "server_time":
 { Args: Record<PropertyKey, never>; Returns: number
+                           },
+"set_achievement_pins":
+{ Args: { "p_achievements": (string)[] }; Returns: undefined
                            },
 "set_guest_profile":
 { Args: { "p_nickname": string }; Returns: string

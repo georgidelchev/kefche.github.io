@@ -62,5 +62,15 @@
     "down": "下",
     "left": "左",
     "right": "右"
+  },
+  "achievements": {
+    "high-score": {
+      "name": "高分玩家",
+      "description": "在一局中获得 {count, number} 分"
+    },
+    "dedicated": {
+      "name": "坚持不懈",
+      "description": "完成 {count, number} 局游戏"
+    }
   }
 }

@@ -50,5 +50,15 @@
     "won": "وصلت إلى 2048!",
     "keepGoing": "تابع اللعب",
     "boardLabel": "لوحة 2048. النقاط {score}، أكبر مربع {best}."
+  },
+  "achievements": {
+    "high-score": {
+      "name": "صاحب الرقم القياسي",
+      "description": "احصل على نقاط عددها {count, number} في لعبة واحدة"
+    },
+    "dedicated": {
+      "name": "مثابر",
+      "description": "أنهِ ألعابًا عددها {count, number}"
+    }
   }
 }

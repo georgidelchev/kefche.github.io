@@ -17,4 +17,9 @@ export interface GameText {
   faq: { question: string; answer: string }[];
   /** Strings the game itself shows, read with `context.t(key)`. */
   ui: Record<string, string>;
+  /**
+   * Each manifest achievement's name and description, by id. The description
+   * is ICU, with {count} (the tier's goal), or {time} for a best time.
+   */
+  achievements: Record<string, { name: string; description: string }>;
 }

@@ -1,0 +1,82 @@
+---
+import {
+  Compass,
+  Crown,
+  Flame,
+  Gamepad2,
+  Medal,
+  Repeat,
+  Star,
+  Target,
+  Timer,
+  Trophy,
+} from "lucide-react";
+
+import type { AchievementIcon } from "@kefche/game-sdk";
+
+import type { ShownAchievement } from "./achievements";
+
+// One achievement at its best tier: a medal in the tier's color with the
+// achievement's icon, its name, the tier and what it took. With `pinId`, a
+// pin button for the profile's owner (hidden until achievement-pins.client.ts
+// finds the owner signed in).
+interface Props {
+  achievement: ShownAchievement;
+  /** The id of the name, which the pin button points to. */
+  nameId: string;
+  pinnable?: boolean;
+}
+
+const { achievement: a, nameId, pinnable = false } = Astro.props;
+const ICONS: Record<AchievementIcon, typeof Trophy> = {
+  trophy: Trophy,
+  crown: Crown,
+  flame: Flame,
+  timer: Timer,
+  target: Target,
+  compass: Compass,
+  gamepad: Gamepad2,
+  star: Star,
+  medal: Medal,
+  repeat: Repeat,
+};
+const MEDAL = {
+  bronze: "bg-tier-bronze text-tier-bronze-ink",
+  silver: "bg-tier-silver text-tier-silver-ink",
+  gold: "bg-tier-gold text-tier-gold-ink",
+} as const;
+const Icon = ICONS[a.icon];
+---
+
+<li class="flex items-start gap-3 rounded-2xl border border-border bg-surface p-3">
+  <span
+    aria-hidden="true"
+    class={`flex size-10 shrink-0 items-center justify-center rounded-full ring-1 ring-border-strong ${MEDAL[a.tier]}`}
+  >
+    <Icon className="size-5" />
+  </span>
+  <span class="grid min-w-0 flex-1 gap-0.5">
+    <span id={nameId} class="font-semibold break-words">
+      {a.name}
+    </span>
+    <span class="text-sm font-semibold text-muted">
+      {a.game && (
+        <>
+          <bdi>{a.game}</bdi>
+          {" · "}
+        </>
+      )}
+      {a.tierName}
+    </span>
+    <span class="text-sm text-muted">{a.description}</span>
+    {pinnable && (
+      <button
+        type="button"
+        hidden
+        data-pin={a.key}
+        aria-describedby={nameId}
+        class="mt-1 min-h-11 justify-self-start rounded-full border border-border-strong px-3 text-sm font-semibold hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus disabled:opacity-60"
+      />
+    )}
+  </span>
+</li>

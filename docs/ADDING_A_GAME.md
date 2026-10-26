@@ -19,6 +19,7 @@ The games built so far are worked examples. Copy from the one closest to yours:
    - The id is kebab-case and permanent: it's the URL (`/<locale>/games/<id>/`) and the database key. It can't be a category name (the build fails if it is).
    - `realtime` and `simultaneous` arrive in Phases 9 and 11.
 2. **Manifest** (`manifest.ts`). Fill in players, modes, controls, renderer, minutes, leaderboards and score validation (SPEC §9.3). Use `modes: ["solo"]` for a game with no opponent. The build validates it with Zod.
+   - Achievements: each has an id, an icon, a metric from the player's stats in the game (`played`, `wins`, `bestScore`, `bestTime`, `bestStreak` or `rating`) and goals for bronze, silver and gold. Give each one a name and an ICU description (`{count}`, or `{time}` for a best time) under `achievements.<id>` in every `i18n/<locale>.json`. The server unlocks them after each counted game.
 3. **Engine** (`engine/index.ts`). Implement `RaceEngine` or `TurnEngine` from `@kefche/game-sdk` as pure functions.
    - No DOM, no `Date.now()` and no `Math.random()`. The engine's tsconfig has no DOM types, so browser globals don't compile.
    - Randomness comes from `Rng`/`seedRng`, with its state in the game state. Time comes in as actions; Snake's clock is a stream of `tick` actions.
@@ -66,7 +67,7 @@ Tick every item before the game ships (SPEC §20). Items marked _(later)_ apply 
 - [ ] Bots for each declared difficulty, in a Web Worker within the time budget (150/400/900 ms), and stronger at each level in self-play
 - [ ] Bots always take a win and, from medium up, block an immediate loss
 - [ ] Hotseat works for every player count; mixed people and bots work; timers expire as the manifest says
-- [ ] Leaderboards and achievements defined in the manifest _(stored in Phase 7)_
+- [ ] Leaderboards and achievements defined in the manifest, with each achievement's name and description in every locale
 
 **Layout and accessibility**
 

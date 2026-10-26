@@ -42,7 +42,11 @@ export const manifest = defineManifest({
     { id: "best-time-hard", metric: "time", order: "asc" },
     { id: "best-time-expert", metric: "time", order: "asc" },
   ],
-  achievements: [],
+  achievements: [
+    { id: "solver", icon: "target", metric: "wins", tiers: [1, 25, 100] },
+    // Best times in milliseconds: 10, 5 and 3 minutes.
+    { id: "speed", icon: "timer", metric: "bestTime", tiers: [600_000, 300_000, 180_000] },
+  ],
   // The puzzle and every entry replay from the seed (Phase 7 validates submissions).
   scoreValidation: { kind: "replay", maxActionsPerSecond: 15 },
   tags: ["puzzle", "numbers", "single-player"],

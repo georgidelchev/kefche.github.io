@@ -62,5 +62,15 @@
     "down": "下",
     "left": "左",
     "right": "右"
+  },
+  "achievements": {
+    "high-score": {
+      "name": "ハイスコアラー",
+      "description": "1回のゲームで{count, number}点を取る"
+    },
+    "dedicated": {
+      "name": "継続は力なり",
+      "description": "ゲームを{count, number}回最後まで遊ぶ"
+    }
   }
 }

@@ -53,5 +53,15 @@
     "closed": "{name} trace {from}–{to} et ferme des cases : {count}. {name} rejoue.",
     "score": "{name} : {count}",
     "undo": "Annuler"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Vainqueur",
+      "description": "Gagnez {count, plural, one {# partie} other {# parties}}"
+    },
+    "streak": {
+      "name": "En série",
+      "description": "Gagnez {count, plural, one {# partie} other {# parties}} d’affilée"
+    }
   }
 }

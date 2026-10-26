@@ -34,6 +34,32 @@
     "date": "Data",
     "rating": "Rating"
   },
+  "achievements": {
+    "heading": "Conquistas",
+    "showcase": "Vitrine",
+    "unlocked": "Desbloqueadas: {count, number}",
+    "pin": "Fixar na vitrine",
+    "unpin": "Tirar da vitrine",
+    "full": "A vitrine comporta 3. Tire uma primeiro.",
+    "failed": "Não conseguimos salvar sua vitrine. Tente de novo.",
+    "regular": {
+      "name": "Frequentador",
+      "description": "Termine {count, plural, one {# partida} other {# partidas}}"
+    },
+    "explorer": {
+      "name": "Explorador",
+      "description": "Jogue {count, plural, one {# jogo diferente} other {# jogos diferentes}}"
+    },
+    "risingStar": {
+      "name": "Estrela em ascensão",
+      "description": "Chegue ao nível {count, number}"
+    }
+  },
+  "tier": {
+    "bronze": "Bronze",
+    "silver": "Prata",
+    "gold": "Ouro"
+  },
   "historyUnavailable": "Não foi possível carregar o histórico de partidas agora.",
   "versus": "contra {name}",
   "deletedPlayer": "Jogador excluído",

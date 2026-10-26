@@ -51,5 +51,15 @@
     "columnFull": "Колона {column}, пълна",
     "dropped": "{name}: колона {column}",
     "undo": "Отмени"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Победител",
+      "description": "Спечели {count, plural, one {# игра} other {# игри}}"
+    },
+    "streak": {
+      "name": "Серия",
+      "description": "Спечели {count, plural, one {# игра} other {# игри}} поред"
+    }
   }
 }

@@ -34,6 +34,32 @@
     "date": "Дата",
     "rating": "Рейтинг"
   },
+  "achievements": {
+    "heading": "Достижения",
+    "showcase": "Витрина",
+    "unlocked": "Открыто: {count, number}",
+    "pin": "Добавить на витрину",
+    "unpin": "Убрать с витрины",
+    "full": "На витрине помещается 3. Сначала уберите одно.",
+    "failed": "Не удалось сохранить витрину. Попробуйте ещё раз.",
+    "regular": {
+      "name": "Завсегдатай",
+      "description": "Завершите {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    },
+    "explorer": {
+      "name": "Исследователь",
+      "description": "Сыграйте в {count, plural, one {# разную игру} few {# разные игры} many {# разных игр} other {# разных игры}}"
+    },
+    "risingStar": {
+      "name": "Восходящая звезда",
+      "description": "Достигните уровня {count, number}"
+    }
+  },
+  "tier": {
+    "bronze": "Бронза",
+    "silver": "Серебро",
+    "gold": "Золото"
+  },
   "historyUnavailable": "Не удалось загрузить историю партий.",
   "versus": "против {name}",
   "deletedPlayer": "Удалённый игрок",

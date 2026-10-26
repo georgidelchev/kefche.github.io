@@ -54,5 +54,15 @@
     "passed": "{name} no tiene jugada y pasa.",
     "hints": "Mostrar jugadas",
     "undo": "Deshacer"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Ganador",
+      "description": "Gana {count, plural, one {# partida} other {# partidas}}"
+    },
+    "streak": {
+      "name": "En racha",
+      "description": "Gana {count, plural, one {# partida} other {# partidas}} seguidas"
+    }
   }
 }

@@ -34,6 +34,32 @@
     "date": "التاريخ",
     "rating": "التصنيف"
   },
+  "achievements": {
+    "heading": "الإنجازات",
+    "showcase": "الواجهة",
+    "unlocked": "المفتوحة: {count, number}",
+    "pin": "ثبّت في الواجهة",
+    "unpin": "أزل من الواجهة",
+    "full": "تتسع الواجهة لثلاثة. أزل واحدًا أولًا.",
+    "failed": "تعذّر حفظ واجهتك. حاول مرة أخرى.",
+    "regular": {
+      "name": "لاعب دائم",
+      "description": "أنهِ ألعابًا عددها {count, number}"
+    },
+    "explorer": {
+      "name": "مستكشف",
+      "description": "العب ألعابًا مختلفة عددها {count, number}"
+    },
+    "risingStar": {
+      "name": "نجم صاعد",
+      "description": "بلغ المستوى {count, number}"
+    }
+  },
+  "tier": {
+    "bronze": "برونزي",
+    "silver": "فضي",
+    "gold": "ذهبي"
+  },
   "historyUnavailable": "تعذّر تحميل سجل المباريات الآن.",
   "versus": "ضد {name}",
   "deletedPlayer": "لاعب محذوف",

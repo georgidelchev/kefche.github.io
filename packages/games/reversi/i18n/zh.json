@@ -54,5 +54,15 @@
     "passed": "{name} 无棋可下，跳过。",
     "hints": "显示可走位置",
     "undo": "撤销"
+  },
+  "achievements": {
+    "winner": {
+      "name": "胜利者",
+      "description": "赢得 {count, number} 局"
+    },
+    "streak": {
+      "name": "连胜",
+      "description": "连续赢得 {count, number} 局"
+    }
   }
 }

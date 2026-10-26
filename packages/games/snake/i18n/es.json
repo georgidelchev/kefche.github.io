@@ -62,5 +62,15 @@
     "down": "Abajo",
     "left": "Izquierda",
     "right": "Derecha"
+  },
+  "achievements": {
+    "high-score": {
+      "name": "Gran puntuación",
+      "description": "Consigue {count, plural, one {# punto} other {# puntos}} en una partida"
+    },
+    "dedicated": {
+      "name": "Constante",
+      "description": "Termina {count, plural, one {# partida} other {# partidas}}"
+    }
   }
 }

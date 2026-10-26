@@ -68,5 +68,15 @@
     "cellNotes": "Row {row}, column {col}: empty, notes {notes}",
     "cellEmpty": "Row {row}, column {col}: empty",
     "digitLabel": "{digit}, {count} left"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Solver",
+      "description": "Solve {count, plural, one {# puzzle} other {# puzzles}}"
+    },
+    "speed": {
+      "name": "Speed solver",
+      "description": "Solve a puzzle in {time} or less"
+    }
   }
 }

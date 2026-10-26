@@ -50,5 +50,15 @@
     "won": "2048 達成！",
     "keepGoing": "続ける",
     "boardLabel": "2048 の盤面。スコア {score}、最大タイル {best}。"
+  },
+  "achievements": {
+    "high-score": {
+      "name": "ハイスコアラー",
+      "description": "1回のゲームで{count, number}点を取る"
+    },
+    "dedicated": {
+      "name": "継続は力なり",
+      "description": "ゲームを{count, number}回最後まで遊ぶ"
+    }
   }
 }

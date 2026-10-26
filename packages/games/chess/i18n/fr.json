@@ -113,5 +113,19 @@
     "mateWhite": "Les Blancs matent en {moves}",
     "mateBlack": "Les Noirs matent en {moves}",
     "creditAnalysis": "L'analyse vient de Stockfish 19, un logiciel libre sous GPL-3.0."
+  },
+  "achievements": {
+    "winner": {
+      "name": "Vainqueur",
+      "description": "Gagnez {count, plural, one {# partie} other {# parties}}"
+    },
+    "streak": {
+      "name": "En série",
+      "description": "Gagnez {count, plural, one {# partie} other {# parties}} d’affilée"
+    },
+    "rated": {
+      "name": "Joueur classé",
+      "description": "Atteignez un classement de {count, number} après 10 parties classées"
+    }
   }
 }

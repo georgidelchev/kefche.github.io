@@ -68,5 +68,15 @@
     "cellNotes": "{row} 行 {col} 列：空き、メモ {notes}",
     "cellEmpty": "{row} 行 {col} 列：空き",
     "digitLabel": "{digit}、残り {count}"
+  },
+  "achievements": {
+    "solver": {
+      "name": "パズル名人",
+      "description": "パズルを{count, number}問解く"
+    },
+    "speed": {
+      "name": "スピード解答",
+      "description": "{time}以内にパズルを解く"
+    }
   }
 }

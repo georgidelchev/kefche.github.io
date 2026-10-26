@@ -62,5 +62,15 @@
     "down": "أسفل",
     "left": "يسار",
     "right": "يمين"
+  },
+  "achievements": {
+    "high-score": {
+      "name": "صاحب الرقم القياسي",
+      "description": "احصل على نقاط عددها {count, number} في لعبة واحدة"
+    },
+    "dedicated": {
+      "name": "مثابر",
+      "description": "أنهِ ألعابًا عددها {count, number}"
+    }
   }
 }

@@ -62,6 +62,15 @@ function discover(): Map<string, RegisteredGame> {
         return [locale, parseGameText(texts[file], file)];
       }),
     ) as Record<Locale, GameText>;
+    // Every achievement has its text, and every text an achievement (English
+    // is the reference; i18n:check keeps the other locales in step).
+    const ids = manifest.achievements.map((a) => a.id).sort();
+    const named = Object.keys(text.en.achievements).sort();
+    if (JSON.stringify(ids) !== JSON.stringify(named)) {
+      throw new Error(
+        `Achievements of "${manifest.id}" (${ids.join(", ")}) don't match the names in its i18n/en.json (${named.join(", ")})`,
+      );
+    }
     const art = { thumbnail: artUrl(manifest.id, "thumbnail"), hero: artUrl(manifest.id, "hero") };
     games.set(manifest.id, { manifest, text, art });
   }

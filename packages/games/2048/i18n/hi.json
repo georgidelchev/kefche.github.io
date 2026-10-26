@@ -50,5 +50,15 @@
     "won": "आपने 2048 बना लिया!",
     "keepGoing": "खेलते रहें",
     "boardLabel": "2048 बोर्ड। स्कोर {score}, सबसे बड़ी टाइल {best}।"
+  },
+  "achievements": {
+    "high-score": {
+      "name": "हाई स्कोरर",
+      "description": "एक गेम में {count, number} अंक बनाएँ"
+    },
+    "dedicated": {
+      "name": "लगनशील",
+      "description": "{count, number} गेम पूरे करें"
+    }
   }
 }

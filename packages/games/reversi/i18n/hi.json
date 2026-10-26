@@ -54,5 +54,15 @@
     "passed": "{name} के पास कोई चाल नहीं, बारी छोड़ी।",
     "hints": "चालें दिखाएँ",
     "undo": "वापस लें"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, number} गेम जीतें"
+    },
+    "streak": {
+      "name": "जीत की लय",
+      "description": "लगातार {count, number} गेम जीतें"
+    }
   }
 }

@@ -54,5 +54,15 @@
     "passed": "{name} has no move and passes.",
     "hints": "Show moves",
     "undo": "Undo"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Winner",
+      "description": "Win {count, plural, one {# game} other {# games}}"
+    },
+    "streak": {
+      "name": "On a roll",
+      "description": "Win {count, plural, one {# game} other {# games}} in a row"
+    }
   }
 }

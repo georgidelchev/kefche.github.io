@@ -113,5 +113,19 @@
     "mateWhite": "As brancas dão mate em {moves}",
     "mateBlack": "As pretas dão mate em {moves}",
     "creditAnalysis": "A análise é do Stockfish 19, software livre sob a GPL-3.0."
+  },
+  "achievements": {
+    "winner": {
+      "name": "Vencedor",
+      "description": "Vença {count, plural, one {# partida} other {# partidas}}"
+    },
+    "streak": {
+      "name": "Embalado",
+      "description": "Vença {count, plural, one {# partida} other {# partidas}} seguidas"
+    },
+    "rated": {
+      "name": "Jogador ranqueado",
+      "description": "Alcance um rating de {count, number} após 10 partidas ranqueadas"
+    }
   }
 }

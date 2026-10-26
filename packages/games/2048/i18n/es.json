@@ -50,5 +50,15 @@
     "won": "¡Has llegado a 2048!",
     "keepGoing": "Seguir jugando",
     "boardLabel": "Tablero de 2048. Puntos: {score}, ficha más alta: {best}."
+  },
+  "achievements": {
+    "high-score": {
+      "name": "Gran puntuación",
+      "description": "Consigue {count, plural, one {# punto} other {# puntos}} en una partida"
+    },
+    "dedicated": {
+      "name": "Constante",
+      "description": "Termina {count, plural, one {# partida} other {# partidas}}"
+    }
   }
 }

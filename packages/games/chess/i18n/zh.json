@@ -113,5 +113,19 @@
     "mateWhite": "白方 {moves} 步杀",
     "mateBlack": "黑方 {moves} 步杀",
     "creditAnalysis": "分析来自 Stockfish 19，GPL-3.0 许可的自由软件。"
+  },
+  "achievements": {
+    "winner": {
+      "name": "胜利者",
+      "description": "赢得 {count, number} 局"
+    },
+    "streak": {
+      "name": "连胜",
+      "description": "连续赢得 {count, number} 局"
+    },
+    "rated": {
+      "name": "积分玩家",
+      "description": "在 10 局积分赛后积分达到 {count, number}"
+    }
   }
 }

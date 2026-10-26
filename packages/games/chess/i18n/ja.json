@@ -113,5 +113,19 @@
     "mateWhite": "白が{moves}手で詰み",
     "mateBlack": "黒が{moves}手で詰み",
     "creditAnalysis": "解析は Stockfish 19（GPL-3.0 のフリーソフトウェア）によるものです。"
+  },
+  "achievements": {
+    "winner": {
+      "name": "勝者",
+      "description": "{count, number}勝する"
+    },
+    "streak": {
+      "name": "連勝",
+      "description": "{count, number}連勝する"
+    },
+    "rated": {
+      "name": "レーティングプレイヤー",
+      "description": "レーティング戦10局以上でレーティング{count, number}に到達する"
+    }
   }
 }
