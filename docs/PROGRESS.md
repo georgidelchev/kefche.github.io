@@ -1053,6 +1053,17 @@ Online modes are enabled for the Phase 4 games.
     - end to end, 22/22: the two buttons, the clocks and Cancel; a rated lobby with its terms following the clock; a guest who only watches; a rated game and a rated rematch with both rating changes shown; the refusal with a guest seated; quick match skipping a public rated lobby;
     - rated matchmaking 20/20, rated endings 21/21, online 33/33, rated from the chess page 5/5;
     - the chess page, the room's first screen, the clocks (English and Arabic) and a lobby, at 360, 768 and 1280 px in both themes: no sideways scroll, axe clean, 60/60.
+- [x] Step 6: stats and the rating history on the profile (`20261025100900_profile_stats.sql`).
+  - **`player_history`** also returns the player's stats per game (most played first), the totals across games, and for each rated pool the rating after each of its latest 100 games, with the rating before the first of them.
+  - **Rated games count in stats now:** Phase 6's `rated_game_record` predated `count_result`, so rated chess never reached `player_game_stats`. It counts both players now and stores the play time. The migration adds the rated games already counted, oldest first, so streaks come out as played.
+  - **The profile:**
+    - **Stats:** games played, time played, games tried and the favorite game. Then a card per game with the figures it has: wins, losses, draws and the best win streak for games against someone; best and average score, or best time, for games alone; time played and the last play. Abandons stay hidden while they're always 0 (Known issues).
+    - **Rating history:** one chart per pool, the most played first. It's a line drawn as an SVG with no chart library and no script (`RatingHistoryChart.astro`, geometry in `rating-chart.ts`): a scale on round fifties, the first and last dates, and a hover column per game that shows its rating and date. Every figure is also in a table under the chart. Time runs left to right in Arabic too, with each date isolated so it keeps its own order. The line uses `--brand-strong`, since `--brand` is under 3:1 on the light surface.
+    - "No rated games yet." became "No games yet.", since the list has held every mode since step 5.
+  - **Strings:** 19 new ones and one changed, in all 11 languages.
+  - **Checks:**
+    - In the browser, 19/19 on a seeded account with 30 blitz and 3 rapid games plus 2048: the totals, a turn game's and a scored game's figures, the two charts in order, the summary, the hover tooltip and the table. The profile in English and Arabic at 360, 768 and 1280 px in both themes: no sideways scroll, axe clean.
+    - Rated matchmaking 20/20 and rated endings 21/21; both players' stats grew by their rated games. The history pages 16/16.
 
 ---
 

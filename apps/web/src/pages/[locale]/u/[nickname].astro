@@ -10,14 +10,17 @@ import { gameName } from "@/features/games/game-names";
 import { fetchPlayerHistory, PROVISIONAL_GAMES } from "@/features/profile/history";
 import {
   clockText,
+  durationText,
   outcomeOf,
   outcomeText,
   playerName,
+  playTimeText,
   poolName,
   ratingChange,
   scoreText,
 } from "@/features/profile/history-text";
 import { fetchPublicProfile } from "@/features/profile/public-profile";
+import RatingHistoryChart from "@/features/profile/RatingHistoryChart.astro";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { DEFAULT_LOCALE, isLocale, LOCALE_INFO } from "@/i18n/locales";
@@ -26,8 +29,9 @@ import { getSupabaseEnv } from "@/lib/env";
 // Public profile (SPEC §7.2), rendered in the Worker on request so shared
 // links get a real title and preview. Public fields only. noindex: players
 // are 13+, so profiles stay out of search engines; links still preview.
-// Ratings and recent rated games are public (owner decision 2026-10-24);
-// stats, friends and actions arrive with their phases.
+// Ratings, stats and recent games are public (owner decision 2026-10-24,
+// and the privacy notice since Phase 7); friends and actions arrive with
+// their phases.
 export const prerender = false;
 
 const env = getSupabaseEnv();
@@ -89,6 +93,62 @@ const games = (history?.matches ?? []).map((match) => {
     href: getRelativeLocaleUrl(locale, `/matches/${match.id}/`),
   };
 });
+const totals = history?.totals
+  ? [
+      { label: t("profile:stats.matches"), value: number(history.totals.matches) },
+      {
+        label: t("profile:stats.timePlayed"),
+        value: playTimeText(history.totals.timePlayedMs, bcp47),
+      },
+      { label: t("profile:stats.gamesTried"), value: number(history.totals.gamesTried) },
+      ...(history.totals.favoriteGame
+        ? [
+            {
+              label: t("profile:stats.favorite"),
+              value: gameName(history.totals.favoriteGame, locale),
+            },
+          ]
+        : []),
+    ]
+  : [];
+// Each game shows the figures it has: a win and a loss for games against
+// someone, a score or a time for games alone.
+const gameStats = (history?.stats ?? []).map((s) => {
+  const decided = s.wins + s.losses + s.draws > 0;
+  return {
+    name: gameName(s.gameId, locale),
+    facts: [
+      { label: t("profile:stats.played"), value: number(s.played) },
+      ...(decided
+        ? [
+            { label: t("profile:stats.wins"), value: number(s.wins) },
+            { label: t("profile:stats.losses"), value: number(s.losses) },
+            { label: t("profile:stats.draws"), value: number(s.draws) },
+            { label: t("profile:stats.bestStreak"), value: number(s.bestStreak) },
+          ]
+        : []),
+      ...(s.bestScore === null
+        ? []
+        : [{ label: t("profile:stats.bestScore"), value: number(s.bestScore) }]),
+      ...(s.averageScore === null
+        ? []
+        : [{ label: t("profile:stats.averageScore"), value: number(s.averageScore) }]),
+      ...(s.bestTimeMs === null
+        ? []
+        : [{ label: t("profile:stats.bestTime"), value: durationText(s.bestTimeMs) }]),
+      { label: t("profile:stats.timePlayed"), value: playTimeText(s.timePlayedMs, bcp47) },
+      ...(s.lastPlayedAt
+        ? [{ label: t("profile:stats.lastPlayed"), value: date.format(new Date(s.lastPlayedAt)) }]
+        : []),
+    ],
+  };
+});
+const chartStrings = {
+  summary: (from: string, to: string) => t("profile:chart.summary", { from, to }),
+  table: t("profile:chart.table"),
+  date: t("profile:chart.date"),
+  rating: t("profile:chart.rating"),
+};
 const OUTCOME_CLASS = {
   win: "bg-success text-on-success",
   loss: "bg-danger text-on-danger",
@@ -168,6 +228,36 @@ const facts = profile
         </p>
       )}
       {history === null && <p class="text-muted">{t("profile:historyUnavailable")}</p>}
+      {totals.length > 0 && (
+        <section class="grid gap-3" aria-labelledby="stats-heading">
+          <h2 id="stats-heading" class="text-2xl">
+            {t("profile:stats.heading")}
+          </h2>
+          <dl class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {totals.map(({ label, value }) => (
+              <div class="grid content-start gap-1 rounded-2xl border border-border bg-surface p-4">
+                <dt class="text-sm text-muted">{label}</dt>
+                <dd class="text-lg font-semibold break-words">{value}</dd>
+              </div>
+            ))}
+          </dl>
+          <ul class="grid gap-3 sm:grid-cols-2">
+            {gameStats.map((game) => (
+              <li class="grid content-start gap-3 rounded-2xl border border-border bg-surface p-4">
+                <h3 class="text-lg font-semibold">{game.name}</h3>
+                <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                  {game.facts.map(({ label, value }) => (
+                    <div class="grid">
+                      <dt class="text-muted">{label}</dt>
+                      <dd class="font-semibold tabular-nums">{value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       {history && history.ratings.length > 0 && (
         <section class="grid gap-3" aria-labelledby="ratings-heading">
           <h2 id="ratings-heading" class="text-2xl">
@@ -196,6 +286,25 @@ const facts = profile
               </li>
             ))}
           </ul>
+        </section>
+      )}
+      {history && history.ratingHistory.length > 0 && (
+        <section class="grid gap-3" aria-labelledby="rating-history-heading">
+          <h2 id="rating-history-heading" class="text-2xl">
+            {t("profile:chart.heading")}
+          </h2>
+          <div class="grid gap-3 md:grid-cols-2">
+            {history.ratingHistory
+              .toSorted((a, b) => b.points.length - a.points.length)
+              .map((series) => (
+                <RatingHistoryChart
+                  series={series}
+                  title={`${gameName(series.gameId, locale)} · ${poolName(t, series.pool)}`}
+                  bcp47={bcp47}
+                  strings={chartStrings}
+                />
+              ))}
+          </div>
         </section>
       )}
       {history && (

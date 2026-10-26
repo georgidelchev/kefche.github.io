@@ -1,0 +1,154 @@
+---
+import { ratingChart } from "./rating-chart";
+
+import type { RatingSeries } from "./history";
+
+// One pool's rating history as a line (SPEC §12.3), with no script: each
+// game has a hover column that shows its rating and date, and the same
+// figures are in a table under the chart. Time runs left to right in every
+// locale, so the plot is laid out left to right, with its dates isolated
+// (<bdi>) so a right-to-left date keeps its own order.
+interface Props {
+  series: RatingSeries;
+  title: string;
+  bcp47: string;
+  strings: {
+    summary: (from: string, to: string) => string;
+    table: string;
+    date: string;
+    rating: string;
+  };
+}
+
+const { series, title, bcp47, strings } = Astro.props;
+const chart = ratingChart(series);
+const number = (n: number) => Math.round(n).toLocaleString(bcp47);
+const date = new Intl.DateTimeFormat(bcp47, { dateStyle: "medium" });
+// Each game owns the width between its neighbours, clipped to the plot.
+const slot =
+  chart && chart.points.length > 1 ? (chart.points[1]?.x ?? 0) - (chart.points[0]?.x ?? 0) : 100;
+const columns = (chart?.points ?? []).map((p) => {
+  const from = Math.max(0, p.x - slot / 2);
+  const width = Math.min(100, p.x + slot / 2) - from;
+  return {
+    from,
+    width,
+    // The point, within its column.
+    at: ((p.x - from) / width) * 100,
+    // The tooltip leans inwards near the plot's edges.
+    shift: p.x < 25 ? "0" : p.x > 75 ? "-100%" : "-50%",
+    y: p.y,
+    rating: number(p.rating),
+    date: date.format(new Date(p.at)),
+  };
+});
+const latest = chart?.points.at(-1);
+const firstDate = series.points[0] ? date.format(new Date(series.points[0].at)) : "";
+const lastDate = latest ? date.format(new Date(latest.at)) : "";
+---
+
+{chart && latest && (
+  <figure class="grid gap-3 rounded-2xl border border-border bg-surface p-4">
+    <figcaption class="grid gap-0.5">
+      <span class="font-semibold">{title}</span>
+      <span class="text-sm text-muted">
+        {strings.summary(number(chart.first), number(chart.last))}
+      </span>
+    </figcaption>
+    <div dir="ltr" class="grid grid-cols-[auto_1fr] gap-x-2 gap-y-1" aria-hidden="true">
+      <div class="relative w-11 text-end text-xs text-muted tabular-nums">
+        {chart.ticks.map((tick, i) => (
+          <span class="absolute end-0 -translate-y-1/2" style={{ top: `${String(i * 50)}%` }}>
+            {number(tick)}
+          </span>
+        ))}
+      </div>
+      <div class="relative h-36">
+        <svg
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+          class="absolute inset-0 size-full overflow-visible"
+        >
+          {[0, 50, 100].map((y) => (
+            <line
+              x1="0"
+              x2="100"
+              y1={y}
+              y2={y}
+              stroke="var(--border)"
+              stroke-width="1"
+              vector-effect="non-scaling-stroke"
+            />
+          ))}
+          <path
+            d={chart.path}
+            fill="none"
+            stroke="var(--brand-strong)"
+            stroke-width="2"
+            stroke-linejoin="round"
+            stroke-linecap="round"
+            vector-effect="non-scaling-stroke"
+          />
+        </svg>
+        <span
+          class="absolute size-2.5 -translate-1/2 rounded-full bg-brand-strong ring-2 ring-surface"
+          style={{ insetInlineStart: `${String(latest.x)}%`, top: `${String(latest.y)}%` }}
+        />
+        {columns.map((c) => (
+          <span
+            class="group absolute inset-y-0"
+            style={{ insetInlineStart: `${String(c.from)}%`, width: `${String(c.width)}%` }}
+          >
+            <span
+              class="absolute inset-y-0 hidden w-px bg-border-strong group-hover:block"
+              style={{ insetInlineStart: `${String(c.at)}%` }}
+            />
+            <span
+              class="absolute z-10 hidden size-2.5 -translate-1/2 rounded-full bg-brand-strong ring-2 ring-surface group-hover:block"
+              style={{ insetInlineStart: `${String(c.at)}%`, top: `${String(c.y)}%` }}
+            />
+            <span
+              class="absolute z-20 hidden w-max rounded-lg border border-border bg-surface px-2 py-1 text-xs whitespace-nowrap shadow-md group-hover:grid"
+              style={{
+                insetInlineStart: `${String(c.at)}%`,
+                top: `${String(c.y)}%`,
+                transform: `translate(${c.shift}, calc(-100% - 0.5rem))`,
+              }}
+            >
+              <span class="font-semibold tabular-nums">{c.rating}</span>
+              <bdi class="text-muted">{c.date}</bdi>
+            </span>
+          </span>
+        ))}
+      </div>
+      <span />
+      <div class="flex justify-between gap-2 text-xs text-muted">
+        <bdi>{chart.points.length > 1 ? firstDate : ""}</bdi>
+        <bdi>{lastDate}</bdi>
+      </div>
+    </div>
+    <details class="text-sm">
+      <summary class="cursor-pointer text-muted hover:text-text">{strings.table}</summary>
+      <table class="mt-2 w-full tabular-nums">
+        <thead>
+          <tr class="text-muted">
+            <th scope="col" class="py-1 text-start font-normal">
+              {strings.date}
+            </th>
+            <th scope="col" class="py-1 text-end font-normal">
+              {strings.rating}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {series.points.map((p) => (
+            <tr class="border-t border-border">
+              <td class="py-1">{date.format(new Date(p.at))}</td>
+              <td class="py-1 text-end">{number(p.rating)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </details>
+  </figure>
+)}

@@ -50,8 +50,47 @@ const ratingSchema = z.object({
 });
 export type PlayerRating = z.infer<typeof ratingSchema>;
 
+/** A player's stats in one game (SPEC §12.1). */
+const gameStatsSchema = z.object({
+  gameId: z.string(),
+  played: z.number().int(),
+  wins: z.number().int(),
+  losses: z.number().int(),
+  draws: z.number().int(),
+  bestScore: z.number().nullable(),
+  bestTimeMs: z.number().nullable(),
+  averageScore: z.number().nullable(),
+  timePlayedMs: z.number(),
+  streak: z.number().int(),
+  bestStreak: z.number().int(),
+  lastPlayedAt: z.string().nullable(),
+});
+export type GameStats = z.infer<typeof gameStatsSchema>;
+
+/** Across games. */
+const totalsSchema = z.object({
+  matches: z.number().int(),
+  timePlayedMs: z.number(),
+  gamesTried: z.number().int(),
+  favoriteGame: z.string().nullable(),
+});
+export type PlayerTotals = z.infer<typeof totalsSchema>;
+
+/** One pool's rating after each of its latest rated games, oldest first. */
+const ratingSeriesSchema = z.object({
+  gameId: z.string(),
+  pool: z.string(),
+  /** The rating before the first of these games. */
+  start: z.number().nullable(),
+  points: z.array(z.object({ at: z.string(), rating: z.number() })),
+});
+export type RatingSeries = z.infer<typeof ratingSeriesSchema>;
+
 const historySchema = z.object({
   ratings: z.array(ratingSchema),
+  stats: z.array(gameStatsSchema),
+  totals: totalsSchema.nullable(),
+  ratingHistory: z.array(ratingSeriesSchema),
   matches: z.array(matchSummarySchema),
 });
 export type PlayerHistory = z.infer<typeof historySchema>;
@@ -93,7 +132,10 @@ async function rpc(
   return res.json();
 }
 
-/** A player's ratings and latest counted games, or null if they couldn't be read. */
+/**
+ * A player's ratings and their history, stats, and latest counted games, or
+ * null if they couldn't be read.
+ */
 export async function fetchPlayerHistory(
   env: PublicEnv,
   userId: string,

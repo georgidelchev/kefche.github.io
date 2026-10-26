@@ -74,7 +74,7 @@ export function playerName(
 }
 
 /** "m:ss" or "h:mm:ss" (the SDK's formatDuration lives in its browser-only entry). */
-function durationText(ms: number): string {
+export function durationText(ms: number): string {
   const seconds = Math.floor(ms / 1000);
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
@@ -124,6 +124,20 @@ export function endingText(
     default:
       return "";
   }
+}
+
+/** Time spent playing, in the locale's own units: "45 sec", "12 min", "3.5 hr". */
+export function playTimeText(ms: number, bcp47: string): string {
+  const unit = (value: number, name: "second" | "minute" | "hour") =>
+    new Intl.NumberFormat(bcp47, {
+      style: "unit",
+      unit: name,
+      unitDisplay: "short",
+      maximumFractionDigits: name === "hour" ? 1 : 0,
+    }).format(value);
+  if (ms < 60_000) return unit(Math.floor(ms / 1000), "second");
+  if (ms < 3_600_000) return unit(Math.floor(ms / 60_000), "minute");
+  return unit(Math.floor(ms / 360_000) / 10, "hour");
 }
 
 /** "+12", "−8" (whole points), or null without both ratings. */
