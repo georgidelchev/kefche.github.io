@@ -1,17 +1,25 @@
 // Props for the game islands, built on the server from the manifest and the
 // page's translations: the game page and the online room page share them.
-import type { GameManifest } from "@kefche/game-sdk";
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import { GLOBAL_ACHIEVEMENTS, type GameManifest, type GameText } from "@kefche/game-sdk";
 
 import type { AppT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
 import { getSupabaseEnv } from "@/lib/env";
 
 import { BOT_NAME_KEYS } from "./catalog";
 
 import type { PlayerStrings } from "./GamePlayer";
+import type { ResultsStrings } from "./GameResults";
 import type { TurnStrings } from "./turn/labels";
 import type { TurnConfig, TurnMode } from "./turn/match-setup";
 
-export function playerStrings(t: AppT): PlayerStrings {
+export function playerStrings(
+  t: AppT,
+  locale: Locale,
+  game: { manifest: GameManifest; text: GameText },
+): PlayerStrings {
   return {
     play: t("games:play"),
     loading: t("games:loading"),
@@ -30,8 +38,67 @@ export function playerStrings(t: AppT): PlayerStrings {
     score: t("games:score", { score: "{score}" }),
     time: t("games:time", { time: "{time}" }),
     playAgain: t("games:playAgain"),
+    results: resultsStrings(t, locale, game),
   };
 }
+
+/** The site-wide achievements' names (literal keys, for i18n:check). */
+function globalAchievementName(t: AppT, id: string): string {
+  switch (id) {
+    case "regular":
+      return t("profile:achievements.regular.name");
+    case "explorer":
+      return t("profile:achievements.explorer.name");
+    case "rising-star":
+      return t("profile:achievements.risingStar.name");
+    default:
+      return id;
+  }
+}
+
+/** The results screen's text, with the game's achievements and the site-wide ones. */
+function resultsStrings(
+  t: AppT,
+  locale: Locale,
+  { manifest, text }: { manifest: GameManifest; text: GameText },
+): ResultsStrings {
+  return {
+    best: t("games:results.best", { value: "{value}" }),
+    newBest: t("games:results.newBest"),
+    xp: t("games:results.xp", { xp: "{xp}" }),
+    level: t("games:results.level", { level: "{level}" }),
+    levelUp: t("games:results.levelUp", { level: "{level}" }),
+    xpToNext: t("games:results.xpToNext", { into: "{into}", span: "{span}", next: "{next}" }),
+    achievements: t("games:results.achievements"),
+    unlocked: t("games:results.unlocked"),
+    saving: t("games:results.saving"),
+    guest: t("games:results.guest"),
+    signIn: t("games:results.signIn"),
+    signInHref: getRelativeLocaleUrl(locale, "/auth/sign-in/"),
+    share: t("games:results.share"),
+    copied: t("games:results.copied"),
+    shareText: t("games:results.shareText", { result: "{result}", game: "{game}" }),
+    notifications: t("common:notifications.label"),
+    close: t("common:actions.close"),
+    tiers: {
+      bronze: t("profile:tier.bronze"),
+      silver: t("profile:tier.silver"),
+      gold: t("profile:tier.gold"),
+    },
+    achievementNames: Object.fromEntries([
+      ...manifest.achievements.map((a): AchievementName => [
+        `${manifest.id}.${a.id}`,
+        { name: text.achievements[a.id]?.name ?? a.id, icon: a.icon },
+      ]),
+      ...GLOBAL_ACHIEVEMENTS.map((a): AchievementName => [
+        `global.${a.id}`,
+        { name: globalAchievementName(t, a.id), icon: a.icon },
+      ]),
+    ]),
+  };
+}
+
+type AchievementName = [string, ResultsStrings["achievementNames"][string]];
 
 /** What a turn-based game's setup offers, or null for other games. */
 export function turnConfig(manifest: GameManifest): TurnConfig | null {

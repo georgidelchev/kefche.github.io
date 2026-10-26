@@ -22,7 +22,8 @@ import { Button } from "@kefche/ui/components/button";
 import { loadGame } from "./loaders";
 import { createPlayRecorder } from "./play-recorder";
 import { createLowTimeSound, gameStorage, Overlay, useGameScreen, VOLUME } from "./player-parts";
-import { createPlaySupply, submitPlay } from "./plays";
+import { createPlaySupply, isAccount, submitPlay } from "./plays";
+import { rewardsState, type RewardsState } from "./rewards";
 import { fill, resultText, seatName, type TurnStrings } from "./turn/labels";
 import {
   loadChoice,
@@ -33,8 +34,13 @@ import {
   type TurnMode,
 } from "./turn/match-setup";
 
+import type { ResultsStrings } from "./GameResults";
+
 // One lazy component for the setup screen and the HUD: loaded once, for setup.
 const TurnUi = lazy(() => import("./turn/TurnUi").then((m) => ({ default: m.TurnUi })));
+// The results screen, fetched as a game starts.
+const loadResults = () => import("./GameResults");
+const GameResults = lazy(loadResults);
 
 export interface PlayerStrings {
   play: string;
@@ -54,6 +60,7 @@ export interface PlayerStrings {
   score: string;
   time: string;
   playAgain: string;
+  results: ResultsStrings;
 }
 
 interface Props {
@@ -74,9 +81,16 @@ type Phase = "idle" | "setup" | "loading" | "playing" | "paused" | "finished" | 
 
 const MODE_ICONS = { "solo-bots": Bot, hotseat: Users } as const;
 
+const focusOnMount = (element: HTMLElement | null) => {
+  element?.focus();
+};
+
 export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }: Props) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<GameResult | null>(null);
+  const [rewards, setRewards] = useState<RewardsState>({ kind: "none" });
+  // Each game's number: a late answer about an earlier game is dropped.
+  const gameRef = useRef(0);
   const [muted, setMuted] = useState(false);
   const [mode, setMode] = useState<TurnMode>("solo-bots");
   const [choice, setChoice] = useState<SetupChoice | null>(null);
@@ -113,6 +127,9 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
     setPhase("loading");
     setResult(null);
     setReport(null);
+    setRewards({ kind: "none" });
+    gameRef.current += 1;
+    void loadResults().catch(() => undefined);
     setMuted(isMuted());
     try {
       const game = await loadGame(id);
@@ -140,7 +157,15 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
             setResult(event.result);
             setPhase("finished");
             const record = recorder.finish({ id, version }, event.result, event.turns, setup);
-            if (record) void submitPlay(record);
+            if (!isAccount()) {
+              setRewards({ kind: "guest" });
+            } else if (record) {
+              const game = gameRef.current;
+              setRewards({ kind: "saving" });
+              void submitPlay(record).then((answer) => {
+                if (gameRef.current === game) setRewards(rewardsState(answer));
+              });
+            }
           }
         },
       });
@@ -207,6 +232,8 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
   function restart() {
     setResult(null);
     setReport(null);
+    setRewards({ kind: "none" });
+    gameRef.current += 1;
     instanceRef.current?.restart(nextSeed());
     setPhase("playing");
   }
@@ -247,10 +274,11 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
     };
   }, [open]);
 
-  // Move focus to the overlay's main button when the pause menu, the results
-  // or the setup screen opens (keyboard and screen-reader users land on it).
+  // Move focus to the overlay's main button when the pause menu or the setup
+  // screen opens (keyboard and screen-reader users land on it); the results
+  // screen's focuses itself (focusOnMount).
   useEffect(() => {
-    if (phase === "paused" || phase === "finished" || phase === "setup") {
+    if (phase === "paused" || phase === "setup") {
       overlayActionRef.current?.focus();
     }
   }, [phase]);
@@ -439,30 +467,42 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
             </Overlay>
           )}
           {phase === "finished" && (
-            // Board games keep the final position in view, with the results below it.
-            <Overlay placement={match ? "bottom" : "cover"}>
-              <p role="status" className="text-3xl font-semibold">
-                {headline}
-              </p>
-              {timedOut && turn && (
-                <p className="text-lg">
-                  {fill(turn.strings.outOfTime, { name: seatName(timedOut, turn.strings) })}
-                </p>
-              )}
-              {scoreText && <p className="text-xl tabular-nums">{scoreText}</p>}
-              {timeText && <p className="text-lg tabular-nums">{timeText}</p>}
-              <Button ref={overlayActionRef} onClick={restart}>
-                {strings.playAgain}
-              </Button>
-              {turn && (
-                <Button variant="outline" onClick={changeSetup}>
-                  {turn.strings.changeSetup}
+            <Suspense fallback={null}>
+              <GameResults
+                headline={headline}
+                details={
+                  <>
+                    {timedOut && turn && (
+                      <p className="text-lg">
+                        {fill(turn.strings.outOfTime, { name: seatName(timedOut, turn.strings) })}
+                      </p>
+                    )}
+                    {scoreText && <p className="text-xl tabular-nums">{scoreText}</p>}
+                    {timeText && <p className="text-lg tabular-nums">{timeText}</p>}
+                  </>
+                }
+                result={result}
+                rewards={rewards}
+                game={name}
+                locale={locale}
+                dir={dir}
+                strings={strings.results}
+                placement={match ? "bottom" : "cover"}
+              >
+                {/* Focused as the screen opens, which can be after the code loads. */}
+                <Button ref={focusOnMount} onClick={restart}>
+                  {strings.playAgain}
                 </Button>
-              )}
-              <Button variant="ghost" onClick={exit}>
-                {strings.exit}
-              </Button>
-            </Overlay>
+                {turn && (
+                  <Button variant="outline" onClick={changeSetup}>
+                    {turn.strings.changeSetup}
+                  </Button>
+                )}
+                <Button variant="ghost" onClick={exit}>
+                  {strings.exit}
+                </Button>
+              </GameResults>
+            </Suspense>
           )}
         </div>
       </div>

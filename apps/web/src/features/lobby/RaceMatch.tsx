@@ -16,7 +16,7 @@
 // - Everyone counts down on the database's clock (`server_time`), and the
 //   game is loaded during the countdown, so all start at the same moment.
 import { LoaderCircle, LogOut, Trophy, Volume2, VolumeX } from "lucide-react";
-import { useEffect, useEffectEvent, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useEffectEvent, useRef, useState } from "react";
 
 import {
   createMessenger,
@@ -39,7 +39,8 @@ import type { PlayerStrings } from "@/features/games/GamePlayer";
 import { loadGame, loadRaceEngine } from "@/features/games/loaders";
 import type { RaceSetup } from "@/features/games/page-props";
 import { gameStorage, Overlay, useGameScreen, VOLUME } from "@/features/games/player-parts";
-import { submitRaceLog } from "@/features/games/plays";
+import { isAccount, submitRaceLog } from "@/features/games/plays";
+import { rewardsState, type Rewards, type RewardsState } from "@/features/games/rewards";
 import { fill } from "@/features/games/turn/labels";
 import { send, type Supabase } from "@/lib/supabase/client";
 
@@ -50,6 +51,9 @@ import { measureServerOffset } from "./server-clock";
 import type { RoomMatch } from "./room-match";
 import type { RaceOptionValues } from "./room-settings";
 import type { RaceStrings, RoomStrings } from "./strings";
+
+const loadResults = () => import("@/features/games/GameResults");
+const GameResults = lazy(loadResults);
 
 const COUNTDOWN_MS = 3000;
 /** Progress (with the moves, for the live mini boards) goes out at most this often. */
@@ -129,6 +133,9 @@ export function RaceMatch({
   const [muted, setMuted] = useState(isMuted);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // What the server gave this account for the race: undefined until it answers.
+  const [answer, setAnswer] = useState<Rewards | null | undefined>(undefined);
+  const [account] = useState(isAccount);
   const stageRef = useRef<HTMLDivElement>(null);
   const localRef = useRef<Local | null>(null);
   const sentToRef = useRef<string | null>(null);
@@ -142,6 +149,13 @@ export function RaceMatch({
   const isHost = host === self;
   const seated = match.setup.localSeat !== undefined;
   const timeUp = now >= end;
+  const rewards: RewardsState = !seated
+    ? { kind: "none" }
+    : !account
+      ? { kind: "guest" }
+      : answer === undefined
+        ? { kind: "saving" }
+        : rewardsState(answer);
   useGameScreen(true);
 
   useEffect(() => {
@@ -161,6 +175,7 @@ export function RaceMatch({
   useEffect(() => {
     loadRaceEngine(game.id).catch(() => undefined);
     loadGame(game.id).catch(() => undefined);
+    loadResults().catch(() => undefined);
   }, [game.id]);
 
   const counting = now < raceStart;
@@ -221,7 +236,7 @@ export function RaceMatch({
     const log = packActions(local.actions);
     if (!reportedRef.current) {
       reportedRef.current = true;
-      submitRaceLog(roomId, seed, log);
+      void submitRaceLog(roomId, seed, log).then(setAnswer);
     }
     if (host === self) hostCheck(self, log);
     else transport.send(host, message("finish", { log }));
@@ -565,38 +580,57 @@ export function RaceMatch({
             </Overlay>
           )}
           {ended && (
-            <Overlay placement="bottom">
-              <p role="status" className="flex items-center gap-2 text-3xl font-semibold">
-                {place === 1 && rows[0]?.valid !== false && (
-                  <Trophy aria-hidden="true" className="size-8 text-brand-strong" />
+            <Suspense fallback={null}>
+              <GameResults
+                headline={
+                  !seated
+                    ? timeUp
+                      ? rs.timeUp
+                      : rs.allFinished
+                    : place === 1
+                      ? rs.youWon
+                      : fill(rs.yourPlace, {
+                          place: place.toLocaleString(locale),
+                          count: rows.length.toLocaleString(locale),
+                        })
+                }
+                {...(place === 1 && rows[0]?.valid !== false
+                  ? {
+                      headlineIcon: (
+                        <Trophy aria-hidden="true" className="size-8 text-brand-strong" />
+                      ),
+                    }
+                  : {})}
+                // A score race's own score tells a new best; a timed one's time is the server's.
+                result={
+                  seated && game.race.ranking === "score"
+                    ? { score: mine.score, completed: mine.finished }
+                    : null
+                }
+                rewards={rewards}
+                game={game.name}
+                locale={locale}
+                dir={dir}
+                strings={player.results}
+                placement="bottom"
+              >
+                {isHost ? (
+                  <Button disabled={busy} onClick={() => void rematch()}>
+                    {s.rematch}
+                  </Button>
+                ) : (
+                  <p className="text-muted">{s.waitingHost}</p>
                 )}
-                {!seated
-                  ? timeUp
-                    ? rs.timeUp
-                    : rs.allFinished
-                  : place === 1
-                    ? rs.youWon
-                    : fill(rs.yourPlace, {
-                        place: place.toLocaleString(locale),
-                        count: rows.length.toLocaleString(locale),
-                      })}
-              </p>
-              {isHost ? (
-                <Button disabled={busy} onClick={() => void rematch()}>
-                  {s.rematch}
+                <Button variant="ghost" onClick={onLeave}>
+                  {s.leave}
                 </Button>
-              ) : (
-                <p className="text-muted">{s.waitingHost}</p>
-              )}
-              <Button variant="ghost" onClick={onLeave}>
-                {s.leave}
-              </Button>
-              {error && (
-                <p role="alert" className="font-semibold text-danger">
-                  {error}
-                </p>
-              )}
-            </Overlay>
+                {error && (
+                  <p role="alert" className="font-semibold text-danger">
+                    {error}
+                  </p>
+                )}
+              </GameResults>
+            </Suspense>
           )}
         </div>
       </div>

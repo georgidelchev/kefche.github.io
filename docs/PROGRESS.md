@@ -1105,6 +1105,25 @@ Online modes are enabled for the Phase 4 games.
     - Real games through `submit-match`: plays 19/19, online 33/33, rated matchmaking 20/20. Each player's unlocks were stored with their match and XP, and a record sent again answered with the Sudoku's unlock.
     - In the browser, 21/21: a visitor sees the cards with no pin buttons; the owner pins three in order, is told the showcase is full, and unpins one; pinning one not unlocked is refused. The profile in English and Arabic at 360 and 1280 px in both themes: no sideways scroll, axe clean. In Arabic, a game named with digits (2048) keeps its place before the tier.
     - Flaky checks seen: once, a late Sudoku record was taken for Four in a Row's in plays (19/19 alone), and rated matchmaking's "new opponent" check can read the address a moment before it changes (20/20 again).
+- [x] Step 9: one results screen for every game (`20261025101200_match_rewards.sql`).
+  - **`GameResults`** (loaded as a game starts, 2.8 KB gzip) ends every game: alone, against bots, on one device, online (casual and rated) and races. It shows:
+    - the result and its details (score, time, who ran out of time);
+    - for an account: the best so far ("Best: 12", or "New best!"), the XP the game earned with the level bar ("+40 XP", "Level up! You're now level 2." when it crossed one), and the achievements it unlocked, with a toast each;
+    - the rating change of a rated game, with its game page;
+    - the game's own actions (Play again, Change setup, Rematch, New opponent, Leave) and Share: the system's share sheet, or the line and link copied ("Game over · Snake on kefche").
+    - A guest is asked to sign in ("Sign in to earn XP and achievements."), coming back to the game afterwards. "Saving your result…" shows while the server checks the game; a game that isn't recorded, or someone watching, shows nothing more.
+  - **The answer:** `submit-match` answers every game with `rewards` (`match_rewards`, service role only): the XP that match earned (its play, result, first play and achievements), the total since, its unlocks and the best in that game. To know which XP a match earned, every caller of `count_result` now passes the match (step 7's open end). A casual online report sent before the others' is sent again, up to 5 times 3 s apart, until the match is decided.
+  - **Leaderboard place:** comes with the leaderboards (step 10).
+  - **Strings:** 14 new ones in all 11 languages; the tiers, achievement names, "Close" and "Notifications" reuse existing ones.
+  - **Checks:**
+    - In the browser, 27/27. An account with 90 XP crashes its 10th Snake: Dedicated and Regular unlock, +40 XP, a level up to 2, two toasts, "Best: 12", and 130 XP stored. Also:
+      - Share copies the line and the link;
+      - Play again clears the screen, and the next game's results have no achievements;
+      - a guest's sign-in link comes back to the game, and Play again has the focus;
+      - the screen open in English and Arabic at 360, 768 and 1280 px in both themes: no sideways scroll, axe clean.
+    - Online 35/35, with two new checks: both players' screens show their XP and level, the first reporter's included (it asked again and got the match).
+    - Rated endings 21/21, rated matchmaking 20/20 (the rated screen: the level, the rating change, New opponent and Share), rated lobbies 22/22, plays 19/19, the history pages 16/16, Deno 47/47.
+    - Every XP event since carries its match.
 
 ---
 

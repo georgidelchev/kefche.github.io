@@ -1,10 +1,12 @@
 // A rated match's result as the server works it out (Edge Function
 // submit-match, SPEC §12.5). The host's screen shows who won at once; the
-// rating change comes from the server, which replays the moves it recorded.
+// rating change comes from the server, which replays the moves it recorded,
+// with what the game gave the player (XP, achievements).
 // While the server still thinks the game is on (a flag about to fall, with
 // its grace), it says when to ask again.
 import * as z from "zod/mini";
 
+import { rewardsSchema, type Rewards } from "@/features/games/rewards";
 import type { Supabase } from "@/lib/supabase/client";
 import type { Json } from "@/lib/supabase/database.gen";
 
@@ -32,7 +34,7 @@ export async function recordRatedAction(
 }
 
 export type RatedOutcome =
-  | { kind: "rated"; before: number; after: number; matchId: string }
+  | { kind: "rated"; before: number; after: number; matchId: string; rewards: Rewards | null }
   | { kind: "review" }
   | { kind: "failed" };
 
@@ -42,6 +44,7 @@ const response = z.union([
     matchId: z.string(),
     status: z.enum(["counted", "review"]),
     ratings: z.array(z.object({ before: z.number(), after: z.nullable(z.number()) })),
+    rewards: z.optional(z.nullable(rewardsSchema)),
   }),
 ]);
 
@@ -77,6 +80,7 @@ export async function fetchRatedOutcome(
         before: mine.before,
         after: mine.after,
         matchId: answer.matchId,
+        rewards: answer.rewards ?? null,
       };
     return { kind: "failed" };
   }

@@ -17,7 +17,9 @@
 // A game that doesn't replay is stored for review and counts for nothing.
 // After a counted game, every account in it gets the achievements its stats
 // now reach (_shared/achievements.ts), and each answer below also carries
-// "achievements": the tiers that game unlocked for the asking player.
+// "rewards" for the asking player (match_rewards): the XP that game earned
+// them, their total since, the achievements it unlocked and their best in
+// that game; null while there's no match yet.
 // Guests send nothing (Phase 7 Q2): they're refused with account_required.
 //
 // POST, Authorization: Bearer <a player's access token>
@@ -36,7 +38,7 @@
 import { createClient, type SupabaseClient, type User } from "@supabase/supabase-js";
 import * as z from "zod";
 
-import { unlockedBy, unlockForMatch } from "../_shared/achievements.ts";
+import { rewardsFor, unlockForMatch } from "../_shared/achievements.ts";
 import { decide } from "../_shared/chess-rated.ts";
 import { GAMES } from "../_shared/engines.ts";
 import { rate } from "../_shared/glicko2.ts";
@@ -269,7 +271,7 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
   if (play.matchId) {
     return json({
       ...(await storedAnswer(admin, user, play.matchId)),
-      achievements: await unlockedBy(admin, play.matchId, user.id),
+      rewards: await rewardsFor(admin, play.matchId, user.id),
     });
   }
   const game = GAMES.get(play.gameId);
@@ -337,7 +339,7 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
   log("info", "play", { play: play.id, game: play.gameId, mode: record.mode, ...answer });
   const matchId = z.uuid().parse(stored.data);
   if (answer.status === "counted") await unlockForMatch(admin, matchId);
-  return json({ matchId, ...answer, achievements: await unlockedBy(admin, matchId, user.id) });
+  return json({ matchId, ...answer, rewards: await rewardsFor(admin, matchId, user.id) });
 }
 
 /** The room's current match as the reporting player sits in it, or a refusal. */
@@ -410,10 +412,10 @@ async function submitRoom(admin: SupabaseClient, user: User, body: unknown): Pro
     game: loaded.room.gameId,
     match: matchId,
   });
-  if (!matchId) return json({ matchId, achievements: [] });
+  if (!matchId) return json({ matchId, rewards: null });
   // Decided by this report: every account in it may have unlocked something.
   if (!again) await unlockForMatch(admin, matchId);
-  return json({ matchId, achievements: await unlockedBy(admin, matchId, user.id) });
+  return json({ matchId, rewards: await rewardsFor(admin, matchId, user.id) });
 }
 
 /** A racer's moves, replayed on the room's seed with the room's options. */
@@ -445,8 +447,8 @@ async function submitRace(admin: SupabaseClient, user: User, body: unknown): Pro
   // Sent again: the race as it was stored the first time.
   if (again && matchId) {
     const { status, reason, score, timeMs } = await storedAnswer(admin, user, matchId);
-    const achievements = await unlockedBy(admin, matchId, user.id);
-    return json({ matchId, status, reason, score, timeMs, achievements });
+    const rewards = await rewardsFor(admin, matchId, user.id);
+    return json({ matchId, status, reason, score, timeMs, rewards });
   }
   log("info", "race", { room: room.roomId, game: room.gameId, match: matchId, ...verdict });
   if (matchId && verdict.status === "counted") await unlockForMatch(admin, matchId);
@@ -456,7 +458,7 @@ async function submitRace(admin: SupabaseClient, user: User, body: unknown): Pro
     reason: verdict.reason,
     score: verdict.score,
     timeMs: verdict.timeMs,
-    achievements: matchId ? await unlockedBy(admin, matchId, user.id) : [],
+    rewards: matchId ? await rewardsFor(admin, matchId, user.id) : null,
   });
 }
 
@@ -504,7 +506,7 @@ Deno.serve(async (req) => {
     if ("pending" in settled) return json(settled);
     return json({
       ...settled,
-      achievements: await unlockedBy(admin, settled.matchId, auth.user.id),
+      rewards: await rewardsFor(admin, settled.matchId, auth.user.id),
     });
   } catch (e) {
     log("error", "submit_match_failed", { error: e instanceof Error ? e.message : String(e) });

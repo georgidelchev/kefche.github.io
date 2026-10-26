@@ -21,7 +21,8 @@ import { Button } from "@kefche/ui/components/button";
 import type { PlayerStrings } from "@/features/games/GamePlayer";
 import { loadGame } from "@/features/games/loaders";
 import { gameStorage, Overlay, useGameScreen, VOLUME } from "@/features/games/player-parts";
-import { submitRoomResult } from "@/features/games/plays";
+import { isAccount, submitRoomResult } from "@/features/games/plays";
+import { rewardsState, type RewardsState } from "@/features/games/rewards";
 import { fill, resultText, type TurnStrings } from "@/features/games/turn/labels";
 import { send, type Supabase } from "@/lib/supabase/client";
 import type { Json } from "@/lib/supabase/database.gen";
@@ -37,6 +38,8 @@ import type { RoomStrings } from "./strings";
 const TurnUi = lazy(() =>
   import("@/features/games/turn/TurnUi").then((m) => ({ default: m.TurnUi })),
 );
+const loadResults = () => import("@/features/games/GameResults");
+const GameResults = lazy(loadResults);
 
 const COUNTDOWN_S = 3;
 /**
@@ -119,6 +122,7 @@ export function OnlineMatch({
   const hostHandlersRef = useRef(new Set<(host: string | null) => void>());
   const isHost = host === self;
   const [rating, setRating] = useState<RatedOutcome | "checking" | null>(null);
+  const [rewards, setRewards] = useState<RewardsState>({ kind: "none" });
   // Each player's actions reach the server's record in the order taken.
   const recordingRef = useRef<Promise<void>>(Promise.resolve());
   const isRated = rated !== null;
@@ -167,6 +171,7 @@ export function OnlineMatch({
   // Loaded during the countdown, so the board is up the moment it ends.
   useEffect(() => {
     loadGame(game.id).catch(() => undefined);
+    loadResults().catch(() => undefined);
   }, [game.id]);
 
   const finished = useEffectEvent((over: GameResult) => {
@@ -174,13 +179,25 @@ export function OnlineMatch({
     // The host records the end; the room then offers a rematch.
     if (hostRef.current === self) send(supabase.rpc("finish_room", { p_room: roomId }));
     // Casual: each account reports what it saw; the match counts when the reports agree.
-    if (!isRated && seat !== undefined) submitRoomResult(roomId, seed, over);
+    if (!isRated && seat !== undefined) {
+      if (isAccount()) {
+        setRewards({ kind: "saving" });
+        void submitRoomResult(roomId, seed, over).then((answer) => {
+          if (!closedRef.current) setRewards(rewardsState(answer));
+        });
+      } else {
+        setRewards({ kind: "guest" });
+      }
+    }
     // The players ask the server for the rated result (each its own rating).
     if (isRated && seat !== undefined) {
       setRating("checking");
+      setRewards({ kind: "saving" });
       void fetchRatedOutcome(supabase, { roomId, seed, seat }, () => closedRef.current).then(
         (outcome) => {
-          if (outcome) setRating(outcome);
+          if (!outcome) return;
+          setRating(outcome);
+          setRewards(rewardsState(outcome.kind === "rated" ? outcome.rewards : null));
         },
       );
     }
@@ -359,32 +376,49 @@ export function OnlineMatch({
           </Overlay>
         )}
         {result && (
-          <Overlay placement="bottom">
-            <p role="status" className="text-3xl font-semibold">
-              {resultText(result, match.setup, turn, locale)}
-            </p>
-            {rating && (
-              <RatingLine rating={rating} strings={s.rated} locale={locale} matchHref={matchHref} />
-            )}
-            {/* Rated matchmaking's rooms play one game; a lobby, rated or not, offers a rematch. */}
-            {rated && !rated.lobby ? (
-              !spectating && <Button onClick={onNewOpponent}>{s.rated.newOpponent}</Button>
-            ) : isHost ? (
-              <Button disabled={busy} onClick={() => void rematch()}>
-                {s.rematch}
+          <Suspense fallback={null}>
+            <GameResults
+              headline={resultText(result, match.setup, turn, locale)}
+              result={result}
+              rewards={rewards}
+              {...(rating
+                ? {
+                    rating: (
+                      <RatingLine
+                        rating={rating}
+                        strings={s.rated}
+                        locale={locale}
+                        matchHref={matchHref}
+                      />
+                    ),
+                  }
+                : {})}
+              game={game.name}
+              locale={locale}
+              dir={dir}
+              strings={player.results}
+              placement="bottom"
+            >
+              {/* Rated matchmaking's rooms play one game; a lobby, rated or not, offers a rematch. */}
+              {rated && !rated.lobby ? (
+                !spectating && <Button onClick={onNewOpponent}>{s.rated.newOpponent}</Button>
+              ) : isHost ? (
+                <Button disabled={busy} onClick={() => void rematch()}>
+                  {s.rematch}
+                </Button>
+              ) : (
+                <p className="text-muted">{s.waitingHost}</p>
+              )}
+              <Button variant="ghost" onClick={onLeave}>
+                {s.leave}
               </Button>
-            ) : (
-              <p className="text-muted">{s.waitingHost}</p>
-            )}
-            <Button variant="ghost" onClick={onLeave}>
-              {s.leave}
-            </Button>
-            {error && (
-              <p role="alert" className="font-semibold text-danger">
-                {error}
-              </p>
-            )}
-          </Overlay>
+              {error && (
+                <p role="alert" className="font-semibold text-danger">
+                  {error}
+                </p>
+              )}
+            </GameResults>
+          </Suspense>
         )}
       </div>
     </div>

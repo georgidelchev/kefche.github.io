@@ -90,7 +90,7 @@ const strings = roomStrings(t);
             }}
             locale={bcp47}
             dir={dir}
-            player={playerStrings(t)}
+            player={playerStrings(t, locale, { manifest, text })}
             strings={strings}
             guest={guestStrings(t, authStrings(t).errors)}
             chat={chatStrings(t)}

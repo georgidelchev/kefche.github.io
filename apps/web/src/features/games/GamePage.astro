@@ -149,7 +149,7 @@ const crumb = "rounded-sm hover:underline";
           name={text.name}
           locale={bcp47}
           dir={dir}
-          strings={playerStrings(t)}
+          strings={playerStrings(t, locale, { manifest, text })}
           ui={text.ui}
           {...(turn ? { turn } : {})}
         />

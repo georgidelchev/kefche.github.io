@@ -419,6 +419,9 @@ isOneToOne: false
 "match_record":
 { Args: { "p_match": string }; Returns: Json
                            },
+"match_rewards":
+{ Args: { "p_match": string,"p_user": string }; Returns: Json
+                           },
 "merge_guest":
 { Args: { "p_guest": string,"p_target": string }; Returns: undefined
                            },

@@ -70,21 +70,26 @@ export async function unlockForMatch(admin: SupabaseClient, matchId: string): Pr
   }
 }
 
-/** The tiers a match unlocked for a player (for their results screen). */
-export async function unlockedBy(
+const rewardsSchema = z.object({
+  xpGained: z.coerce.number().int().nonnegative(),
+  xp: z.coerce.number().int().nonnegative(),
+  achievements: z.array(unlockSchema),
+  best: z.object({ score: z.number().nullable(), timeMs: z.number().nullable() }).nullable(),
+});
+/** What a match gave a player: its XP, their total since, its unlocks and their best. */
+export type Rewards = z.infer<typeof rewardsSchema>;
+
+/** A match's rewards for a player (for their results screen), or null if they can't be read. */
+export async function rewardsFor(
   admin: SupabaseClient,
   matchId: string,
   userId: string,
-): Promise<Unlock[]> {
-  const { data, error } = await admin
-    .from("achievement_unlocks")
-    .select("achievement, tier")
-    .eq("match_id", matchId)
-    .eq("user_id", userId)
-    .order("unlocked_at");
-  if (error) {
-    log("error", "achievements_read_failed", { match: matchId, error: error.message });
-    return [];
+): Promise<Rewards | null> {
+  const { data, error } = await admin.rpc("match_rewards", { p_match: matchId, p_user: userId });
+  const parsed = error ? null : rewardsSchema.safeParse(data);
+  if (!parsed?.success) {
+    log("error", "rewards_read_failed", { match: matchId, error: error?.message ?? "shape" });
+    return null;
   }
-  return z.array(unlockSchema).parse(data);
+  return parsed.data;
 }
