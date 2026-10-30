@@ -4,7 +4,8 @@ import { z } from "zod";
 import type { PublicEnv } from "@/lib/env";
 
 /** Public columns only; private fields live in user_settings (owner-only). */
-const COLUMNS = "id,nickname,avatar_kind,avatar_preset,avatar_path,country,bio,xp,created_at";
+const COLUMNS =
+  "id,nickname,avatar_kind,avatar_preset,avatar_path,country,bio,xp,avatar_frame,created_at";
 
 const profileSchema = z.object({
   id: z.uuid(),
@@ -15,6 +16,7 @@ const profileSchema = z.object({
   country: z.string().nullable(),
   bio: z.string().nullable(),
   xp: z.number().int(),
+  avatar_frame: z.string().nullable(),
   created_at: z.string(),
 });
 export type PublicProfile = z.infer<typeof profileSchema>;

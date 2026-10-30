@@ -4,6 +4,7 @@ import { CloudOff } from "lucide-react";
 
 import { levelProgress } from "@kefche/game-sdk";
 import { UserAvatar } from "@kefche/ui/components/avatar";
+import { isAvatarFrame } from "@kefche/ui/lib/frames";
 
 import { avatarUrl } from "@/features/account/avatar-url";
 import NotFoundPage from "@/features/errors/NotFoundPage.astro";
@@ -219,6 +220,7 @@ const facts = profile
           id={profile.id}
           size="xl"
           {...(image ? { src: image } : {})}
+          frame={isAvatarFrame(profile.avatar_frame) ? profile.avatar_frame : null}
         />
         <h1 class="min-w-0 text-3xl break-words md:text-4xl">{profile.nickname}</h1>
       </header>

@@ -25,6 +25,8 @@
     "xpToNext": "{into} of {span} XP to level {next}",
     "place": "{board}: #{all} all time, #{week} this week",
     "dailyPlace": "Today's challenge: #{rank}",
+    "streak": "Play streak: {days}",
+    "newFrame": "New avatar frame: {frame}",
     "achievements": "Achievements unlocked",
     "unlocked": "Achievement unlocked",
     "saving": "Saving your result…",

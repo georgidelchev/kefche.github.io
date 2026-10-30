@@ -3,6 +3,7 @@ import { Avatar as AvatarPrimitive } from "radix-ui";
 
 import { initialsFor, paletteIndexFor } from "../lib/avatar";
 import { cn } from "../lib/cn";
+import { FRAME_CLASSES, type AvatarFrame } from "../lib/frames";
 
 // Adapted from shadcn/ui (new-york-v4). Default avatar = initials on a
 // color derived from the user id (SPEC §7.2), using the contrast-checked
@@ -37,17 +38,19 @@ type UserAvatarProps = VariantProps<typeof avatarVariants> & {
   /** Stable user id; picks the fallback color. */
   id: string;
   src?: string;
+  /** A frame the player unlocked (lib/frames.ts), drawn around the avatar. */
+  frame?: AvatarFrame | null;
   className?: string;
 };
 
-function UserAvatar({ name, id, src, size, className }: UserAvatarProps) {
+function UserAvatar({ name, id, src, size, frame, className }: UserAvatarProps) {
   const palette = PALETTE[paletteIndexFor(id) - 1];
   return (
     <AvatarPrimitive.Root
       data-slot="avatar"
       role="img"
       aria-label={name}
-      className={cn(avatarVariants({ size }), className)}
+      className={cn(avatarVariants({ size }), frame && FRAME_CLASSES[frame], className)}
     >
       {src !== undefined && (
         <AvatarPrimitive.Image src={src} alt="" className="aspect-square size-full object-cover" />

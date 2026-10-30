@@ -30,6 +30,27 @@
     "save": "Guardar perfil",
     "view": "Ver tu perfil público"
   },
+  "frames": {
+    "heading": "Marco del avatar",
+    "intro": "Los marcos son premios por jugar días seguidos y por logros de oro.",
+    "none": "Sin marco",
+    "streak": "Días seguidos: {current} (récord: {best})",
+    "locked": "Bloqueado",
+    "names": {
+      "streak3": "3 días seguidos",
+      "streak7": "7 días seguidos",
+      "streak30": "30 días seguidos",
+      "streak100": "100 días seguidos",
+      "gold": "Campeón de oro"
+    },
+    "hints": {
+      "streak3": "Juega 3 días seguidos",
+      "streak7": "Juega 7 días seguidos",
+      "streak30": "Juega 30 días seguidos",
+      "streak100": "Juega 100 días seguidos",
+      "gold": "Consigue un logro de oro"
+    }
+  },
   "preferences": {
     "language": "Idioma",
     "sound": "Sonido",

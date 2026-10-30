@@ -7,6 +7,7 @@ import * as z from "zod/mini";
 import { UserAvatar } from "@kefche/ui/components/avatar";
 import { Button } from "@kefche/ui/components/button";
 import { cn } from "@kefche/ui/lib/cn";
+import { AVATAR_FRAMES, isAvatarFrame, type AvatarFrame } from "@kefche/ui/lib/frames";
 
 import { syncAccount } from "@/features/account/account-state";
 import { avatarUrl } from "@/features/account/avatar-url";
@@ -35,6 +36,7 @@ interface Profile {
   country: string | null;
   bio: string | null;
   nickname_changed_at: string | null;
+  avatar_frame: string | null;
 }
 
 interface Props {
@@ -50,21 +52,31 @@ interface Props {
 interface Loaded {
   profile: Profile;
   uploadAllowed: boolean;
+  /** The frames the player has unlocked. */
+  frames: AvatarFrame[];
+  streak: { current: number; best: number } | null;
 }
 
 async function loadProfile(supabase: Supabase, user: User): Promise<Loaded> {
-  const [row, allowed] = await Promise.all([
+  const [row, allowed, frames, streak] = await Promise.all([
     supabase
       .from("profiles")
       .select(
-        "nickname, avatar_kind, avatar_preset, avatar_path, country, bio, nickname_changed_at",
+        "nickname, avatar_kind, avatar_preset, avatar_path, country, bio, nickname_changed_at, avatar_frame",
       )
       .eq("id", user.id)
       .single(),
     supabase.rpc("avatar_upload_allowed"),
+    supabase.from("frame_unlocks").select("frame").eq("user_id", user.id),
+    supabase.from("play_streaks").select("current, best").eq("user_id", user.id).maybeSingle(),
   ]);
   if (row.error) throw row.error;
-  return { profile: row.data, uploadAllowed: allowed.data === true };
+  return {
+    profile: row.data,
+    uploadAllowed: allowed.data === true,
+    frames: (frames.data ?? []).map((f) => f.frame).filter(isAvatarFrame),
+    streak: streak.data,
+  };
 }
 
 export function ProfileSettings(props: Props) {
@@ -83,7 +95,7 @@ export function ProfileSettings(props: Props) {
     return <FormMessage tone="error">{props.strings.saveFailed}</FormMessage>;
   }
   if (account.status !== "ready" || !loaded) return <div className="min-h-64" aria-busy="true" />;
-  const { profile, uploadAllowed } = loaded;
+  const { profile, uploadAllowed, frames, streak } = loaded;
   const reload = async () => {
     setLoaded(await loadProfile(account.supabase, account.user));
   };
@@ -95,6 +107,15 @@ export function ProfileSettings(props: Props) {
         user={account.user}
         profile={profile}
         uploadAllowed={uploadAllowed}
+        onSaved={reload}
+      />
+      <FramePicker
+        {...props}
+        supabase={account.supabase}
+        user={account.user}
+        profile={profile}
+        frames={frames}
+        streak={streak}
         onSaved={reload}
       />
       <ProfileForm
@@ -253,6 +274,108 @@ function AvatarPicker({
           ))}
         </div>
       </fieldset>
+    </section>
+  );
+}
+
+/**
+ * The avatar frame worn (SPEC §12.6): those unlocked by play streaks and gold
+ * achievements, or none. The locked ones say how to unlock them; the server
+ * refuses a locked one anyway (set_avatar_frame).
+ */
+function FramePicker({
+  strings,
+  supabase,
+  user,
+  profile,
+  frames,
+  streak,
+  onSaved,
+}: SectionProps & { frames: AvatarFrame[]; streak: Loaded["streak"] }) {
+  const [busy, setBusy] = useState(false);
+  const [message, setMessage] = useState<{ tone: "error" | "success"; text: string } | null>(null);
+  const picture = supabaseConfig ? avatarUrl(profile, supabaseConfig.url) : null;
+  const f = strings.frames;
+
+  async function wear(frame: AvatarFrame | null) {
+    setBusy(true);
+    setMessage(null);
+    const { error } = await supabase.rpc(
+      "set_avatar_frame",
+      frame === null ? {} : { p_frame: frame },
+    );
+    if (error) {
+      setMessage({ tone: "error", text: strings.saveFailed });
+    } else {
+      await syncAccount(supabase);
+      await onSaved();
+      setMessage({ tone: "success", text: strings.saved });
+    }
+    setBusy(false);
+  }
+
+  const option =
+    "flex min-h-11 items-center gap-3 rounded-2xl border border-border p-3 text-start hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus aria-pressed:border-brand-strong aria-pressed:bg-surface-2 disabled:cursor-not-allowed disabled:hover:bg-transparent";
+  return (
+    <section className="grid gap-3" aria-labelledby="frame-heading">
+      <h3 id="frame-heading" className="text-lg font-semibold">
+        {f.heading}
+      </h3>
+      <p className="text-sm text-muted">{f.intro}</p>
+      {streak && (
+        <p className="text-sm font-semibold">
+          {fill(f.streak, { current: String(streak.current), best: String(streak.best) })}
+        </p>
+      )}
+      <div className="grid gap-3 sm:grid-cols-2">
+        <button
+          type="button"
+          className={option}
+          disabled={busy}
+          aria-pressed={profile.avatar_frame === null}
+          onClick={() => void wear(null)}
+        >
+          <UserAvatar
+            name={profile.nickname ?? "?"}
+            id={user.id}
+            size="md"
+            {...(picture ? { src: picture } : {})}
+          />
+          <span className="font-semibold">{f.none}</span>
+        </button>
+        {AVATAR_FRAMES.map((frame) => {
+          const unlocked = frames.includes(frame);
+          return (
+            <button
+              key={frame}
+              type="button"
+              className={option}
+              disabled={busy || !unlocked}
+              aria-pressed={profile.avatar_frame === frame}
+              aria-describedby={`frame-${frame}-hint`}
+              onClick={() => void wear(frame)}
+            >
+              <span className="p-2.5">
+                <UserAvatar
+                  name={profile.nickname ?? "?"}
+                  id={user.id}
+                  size="md"
+                  frame={frame}
+                  className={unlocked ? "" : "opacity-60"}
+                  {...(picture ? { src: picture } : {})}
+                />
+              </span>
+              <span className="grid">
+                <span className="font-semibold">{f.names[frame]}</span>
+                <span id={`frame-${frame}-hint`} className="text-sm text-muted">
+                  {unlocked ? f.hints[frame] : `${f.locked} · ${f.hints[frame]}`}
+                </span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+      {message && <FormMessage tone={message.tone}>{message.text}</FormMessage>}
     </section>
   );
 }

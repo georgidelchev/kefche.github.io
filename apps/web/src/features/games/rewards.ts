@@ -11,6 +11,10 @@ export const rewardsSchema = z.object({
   xp: z.int().check(z.minimum(0)),
   achievements: z.array(z.object({ achievement: z.string().check(z.maxLength(80)), tier })),
   best: z.nullable(z.object({ score: z.nullable(z.number()), timeMs: z.nullable(z.number()) })),
+  /** The player's play streak since (null before their first). */
+  streak: z.optional(z.nullable(z.object({ current: z.int(), best: z.int() }))),
+  /** Avatar frames the game unlocked. */
+  frames: z.optional(z.array(z.string().check(z.maxLength(40)))),
   /** A game played alone: the player's places on its boards (null: not shown on them). */
   places: z.optional(
     z.array(

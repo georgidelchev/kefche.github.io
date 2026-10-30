@@ -25,6 +25,8 @@
     "xpToNext": "{into} от {span} XP до ниво {next}",
     "place": "{board}: #{all} за всички времена, #{week} тази седмица",
     "dailyPlace": "Предизвикателство на деня: #{rank}",
+    "streak": "Поредни дни: {days}",
+    "newFrame": "Нова рамка за аватара: {frame}",
     "achievements": "Отключени постижения",
     "unlocked": "Отключено постижение",
     "saving": "Запазваме резултата ти…",

@@ -25,6 +25,8 @@
     "xpToNext": "距等级 {next}：{into} / {span} XP",
     "place": "{board}：全部时间第 {all} 名，本周第 {week} 名",
     "dailyPlace": "今日挑战：第 {rank} 名",
+    "streak": "连续游玩天数：{days}",
+    "newFrame": "新头像框：{frame}",
     "achievements": "已解锁的成就",
     "unlocked": "成就已解锁",
     "saving": "正在保存结果…",

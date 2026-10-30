@@ -25,6 +25,8 @@
     "xpToNext": "{into} из {span} XP до уровня {next}",
     "place": "{board}: #{all} за всё время, #{week} на этой неделе",
     "dailyPlace": "Задание дня: #{rank}",
+    "streak": "Дней подряд: {days}",
+    "newFrame": "Новая рамка аватара: {frame}",
     "achievements": "Открытые достижения",
     "unlocked": "Достижение открыто",
     "saving": "Сохраняем результат…",

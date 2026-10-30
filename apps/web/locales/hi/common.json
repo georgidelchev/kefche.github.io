@@ -26,5 +26,8 @@
   },
   "notifications": {
     "label": "सूचनाएँ"
+  },
+  "wordOfTheDay": {
+    "title": "आज का शब्द"
   }
 }

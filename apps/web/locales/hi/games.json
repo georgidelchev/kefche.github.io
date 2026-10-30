@@ -25,6 +25,8 @@
     "xpToNext": "स्तर {next} तक {span} में से {into} XP",
     "place": "{board}: अब तक #{all}, इस सप्ताह #{week}",
     "dailyPlace": "आज की चुनौती: #{rank}",
+    "streak": "लगातार दिन: {days}",
+    "newFrame": "नया अवतार फ़्रेम: {frame}",
     "achievements": "अनलॉक हुई उपलब्धियाँ",
     "unlocked": "उपलब्धि अनलॉक हुई",
     "saving": "आपका नतीजा सहेजा जा रहा है…",

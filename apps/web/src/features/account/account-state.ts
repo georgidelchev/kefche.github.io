@@ -3,6 +3,7 @@
 // the functions themselves only run in the browser.
 import { levelForXp } from "@kefche/game-sdk";
 import { initialsFor, paletteIndexFor } from "@kefche/ui/lib/avatar";
+import { isAvatarFrame, SMALL_FRAME_CLASSES } from "@kefche/ui/lib/frames";
 
 import type { Supabase } from "@/lib/supabase/client";
 import { supabaseConfig } from "@/lib/supabase/config";
@@ -46,6 +47,11 @@ export function renderAccount(summary: AccountSummary | null): void {
     avatar
       .querySelector("[data-account-icon]")
       ?.toggleAttribute("hidden", hasPicture || initials !== "");
+    // The frame worn: one set of ring classes at a time.
+    for (const classes of Object.values(SMALL_FRAME_CLASSES))
+      avatar.classList.remove(...classes.split(" "));
+    if (isAvatarFrame(summary.frame))
+      avatar.classList.add(...SMALL_FRAME_CLASSES[summary.frame].split(" "));
   }
   const level = summary.level?.toLocaleString(root.lang);
   for (const badge of document.querySelectorAll<HTMLElement>("[data-account-level]")) {
@@ -81,7 +87,7 @@ export async function syncAccount(supabase: Supabase): Promise<AccountSummary | 
   }
   const profile = await supabase
     .from("profiles")
-    .select("nickname, avatar_kind, avatar_preset, avatar_path, xp")
+    .select("nickname, avatar_kind, avatar_preset, avatar_path, xp, avatar_frame")
     .eq("id", user.id)
     .maybeSingle();
   if (profile.error) return readAccountSummary(localStorageOrUndefined());
@@ -90,6 +96,7 @@ export async function syncAccount(supabase: Supabase): Promise<AccountSummary | 
     nickname: profile.data?.nickname ?? null,
     avatarUrl: profile.data && supabaseConfig ? avatarUrl(profile.data, supabaseConfig.url) : null,
     level: levelForXp(profile.data?.xp ?? 0),
+    frame: profile.data?.avatar_frame ?? null,
   };
   setAccount(summary);
   await syncPreferences(supabase, user.id);

@@ -25,6 +25,8 @@
     "xpToNext": "{into} من {span} نقطة خبرة حتى المستوى {next}",
     "place": "{board}: #{all} في كل الأوقات، #{week} هذا الأسبوع",
     "dailyPlace": "تحدي اليوم: #{rank}",
+    "streak": "أيام متتالية: {days}",
+    "newFrame": "إطار جديد للصورة الرمزية: {frame}",
     "achievements": "إنجازات مفتوحة",
     "unlocked": "فُتح إنجاز",
     "saving": "جارٍ حفظ نتيجتك…",

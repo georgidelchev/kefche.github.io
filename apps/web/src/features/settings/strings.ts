@@ -1,3 +1,4 @@
+import { frameHints, frameNames } from "@/features/account/frames";
 import type { AppT } from "@/i18n/i18n";
 
 /**
@@ -34,6 +35,15 @@ export function settingsStrings(t: AppT) {
       bioBlocked: t("settings:profile.bioBlocked"),
       save: t("settings:profile.save"),
       view: t("settings:profile.view"),
+    },
+    frames: {
+      heading: t("settings:frames.heading"),
+      intro: t("settings:frames.intro"),
+      none: t("settings:frames.none"),
+      streak: t("settings:frames.streak", { current: "{current}", best: "{best}" }),
+      locked: t("settings:frames.locked"),
+      names: frameNames(t),
+      hints: frameHints(t),
     },
     preferences: {
       sound: t("settings:preferences.sound"),

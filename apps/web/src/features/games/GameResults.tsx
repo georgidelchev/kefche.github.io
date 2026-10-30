@@ -51,6 +51,12 @@ export interface ResultsStrings {
   place: string;
   /** "Today's challenge: #{rank}" */
   dailyPlace: string;
+  /** "Play streak: {days}" */
+  streak: string;
+  /** "New avatar frame: {frame}" */
+  newFrame: string;
+  /** Each avatar frame's name, by id. */
+  frameNames: Record<string, string>;
   /** This game's boards by id ("<game>.<board>"): each one's name and page. */
   boards: Record<string, { name: string; href: string }>;
   achievements: string;
@@ -134,6 +140,10 @@ export default function GameResults({
   useEffect(() => {
     if (!done || toastedRef.current) return;
     toastedRef.current = true;
+    for (const frame of done.frames ?? []) {
+      const name = s.frameNames[frame];
+      if (name) toast({ title: fill(s.newFrame, { frame: name }), variant: "success" });
+    }
     for (const unlock of done.achievements) {
       const known = s.achievementNames[unlock.achievement];
       if (!known) continue;
@@ -155,6 +165,19 @@ export default function GameResults({
         {details}
         {done && <Best result={result} best={done.best} strings={s} number={number} />}
         {done && <Experience gained={done.xpGained} total={done.xp} strings={s} number={number} />}
+        {done?.streak && done.streak.current >= 2 && (
+          <p className="flex items-center gap-1.5 font-semibold">
+            <Flame aria-hidden="true" className="size-5 text-brand-strong" />
+            {fill(s.streak, { days: number(done.streak.current) })}
+          </p>
+        )}
+        {done?.frames?.map((frame) =>
+          s.frameNames[frame] ? (
+            <p key={frame} className="font-semibold">
+              {fill(s.newFrame, { frame: s.frameNames[frame] })}
+            </p>
+          ) : null,
+        )}
         {done?.places?.map((place) => {
           const board = s.boards[place.board];
           // The daily challenge's board has a place for its day; others, all time and this week.

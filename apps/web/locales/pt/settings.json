@@ -30,6 +30,27 @@
     "save": "Salvar perfil",
     "view": "Ver seu perfil público"
   },
+  "frames": {
+    "heading": "Moldura do avatar",
+    "intro": "As molduras são prêmios por jogar dias seguidos e por conquistas de ouro.",
+    "none": "Sem moldura",
+    "streak": "Dias seguidos: {current} (recorde: {best})",
+    "locked": "Bloqueada",
+    "names": {
+      "streak3": "3 dias seguidos",
+      "streak7": "7 dias seguidos",
+      "streak30": "30 dias seguidos",
+      "streak100": "100 dias seguidos",
+      "gold": "Campeão de ouro"
+    },
+    "hints": {
+      "streak3": "Jogue 3 dias seguidos",
+      "streak7": "Jogue 7 dias seguidos",
+      "streak30": "Jogue 30 dias seguidos",
+      "streak100": "Jogue 100 dias seguidos",
+      "gold": "Ganhe uma conquista de ouro"
+    }
+  },
   "preferences": {
     "language": "Idioma",
     "sound": "Som",

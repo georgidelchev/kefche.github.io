@@ -1,6 +1,7 @@
 ---
 import Logo from "@/components/Logo.astro";
 import DailyCard from "@/features/daily/DailyCard.astro";
+import WordCard from "@/features/daily/WordCard.astro";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALES, type Locale } from "@/i18n/locales";
@@ -28,10 +29,11 @@ const t = getT(locale);
     </h1>
     <p class="text-lg text-muted md:text-xl">{t("common:hero.tagline")}</p>
   </section>
-  <!-- The daily challenge needs the server (builds with accounts). -->
+  <!-- The daily challenge and Word of the Day need the server (builds with accounts). -->
   {getSupabaseEnv() && (
-    <div class="max-w-2xl pb-8">
+    <div class="grid max-w-2xl gap-6 pb-8">
       <DailyCard locale={locale} />
+      <WordCard locale={locale} />
     </div>
   )}
 </AppShell>

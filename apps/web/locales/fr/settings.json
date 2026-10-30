@@ -30,6 +30,27 @@
     "save": "Enregistrer le profil",
     "view": "Voir votre profil public"
   },
+  "frames": {
+    "heading": "Cadre de l’avatar",
+    "intro": "Les cadres récompensent les jours de jeu d’affilée et les succès d’or.",
+    "none": "Aucun cadre",
+    "streak": "Jours d’affilée : {current} (record : {best})",
+    "locked": "Verrouillé",
+    "names": {
+      "streak3": "3 jours d’affilée",
+      "streak7": "7 jours d’affilée",
+      "streak30": "30 jours d’affilée",
+      "streak100": "100 jours d’affilée",
+      "gold": "Médaillé d’or"
+    },
+    "hints": {
+      "streak3": "Jouez 3 jours d’affilée",
+      "streak7": "Jouez 7 jours d’affilée",
+      "streak30": "Jouez 30 jours d’affilée",
+      "streak100": "Jouez 100 jours d’affilée",
+      "gold": "Obtenez un succès d’or"
+    }
+  },
   "preferences": {
     "language": "Langue",
     "sound": "Son",

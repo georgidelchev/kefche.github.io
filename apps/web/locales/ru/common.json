@@ -26,5 +26,8 @@
   },
   "notifications": {
     "label": "Уведомления"
+  },
+  "wordOfTheDay": {
+    "title": "Слово дня"
   }
 }

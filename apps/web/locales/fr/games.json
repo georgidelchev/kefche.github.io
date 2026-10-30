@@ -25,6 +25,8 @@
     "xpToNext": "{into} sur {span} XP avant le niveau {next}",
     "place": "{board} : #{all} depuis toujours, #{week} cette semaine",
     "dailyPlace": "Défi du jour : #{rank}",
+    "streak": "Jours d’affilée : {days}",
+    "newFrame": "Nouveau cadre d’avatar : {frame}",
     "achievements": "Succès débloqués",
     "unlocked": "Succès débloqué",
     "saving": "Enregistrement de votre résultat…",

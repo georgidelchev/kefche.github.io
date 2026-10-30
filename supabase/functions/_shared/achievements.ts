@@ -75,8 +75,15 @@ const rewardsSchema = z.object({
   xp: z.coerce.number().int().nonnegative(),
   achievements: z.array(unlockSchema),
   best: z.object({ score: z.number().nullable(), timeMs: z.number().nullable() }).nullable(),
+  /** The player's play streak since (step 12), or null before their first. */
+  streak: z.object({ current: z.number().int(), best: z.number().int() }).nullable(),
+  /** Avatar frames the match unlocked. */
+  frames: z.array(z.string()),
 });
-/** What a match gave a player: its XP, their total since, its unlocks and their best. */
+/**
+ * What a match gave a player: its XP, their total since, its achievements,
+ * their best, their play streak and the frames it unlocked.
+ */
 export type Rewards = z.infer<typeof rewardsSchema>;
 
 /** A match's rewards for a player (for their results screen), or null if they can't be read. */

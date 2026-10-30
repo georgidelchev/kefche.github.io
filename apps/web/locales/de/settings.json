@@ -30,6 +30,27 @@
     "save": "Profil speichern",
     "view": "Dein öffentliches Profil ansehen"
   },
+  "frames": {
+    "heading": "Avatar-Rahmen",
+    "intro": "Rahmen sind Belohnungen fürs Spielen an aufeinanderfolgenden Tagen und für Gold-Erfolge.",
+    "none": "Kein Rahmen",
+    "streak": "Tage in Folge: {current} (bisher am meisten: {best})",
+    "locked": "Gesperrt",
+    "names": {
+      "streak3": "3 Tage in Folge",
+      "streak7": "7 Tage in Folge",
+      "streak30": "30 Tage in Folge",
+      "streak100": "100 Tage in Folge",
+      "gold": "Goldgewinner"
+    },
+    "hints": {
+      "streak3": "Spiele 3 Tage in Folge",
+      "streak7": "Spiele 7 Tage in Folge",
+      "streak30": "Spiele 30 Tage in Folge",
+      "streak100": "Spiele 100 Tage in Folge",
+      "gold": "Hol dir einen Gold-Erfolg"
+    }
+  },
   "preferences": {
     "language": "Sprache",
     "sound": "Ton",

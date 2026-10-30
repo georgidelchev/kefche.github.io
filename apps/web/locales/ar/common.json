@@ -26,5 +26,8 @@
   },
   "notifications": {
     "label": "الإشعارات"
+  },
+  "wordOfTheDay": {
+    "title": "كلمة اليوم"
   }
 }

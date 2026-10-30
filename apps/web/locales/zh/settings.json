@@ -30,6 +30,27 @@
     "save": "保存个人资料",
     "view": "查看你的公开资料"
   },
+  "frames": {
+    "heading": "头像框",
+    "intro": "头像框是连续多天游玩和获得金牌成就的奖励。",
+    "none": "无头像框",
+    "streak": "连续游玩天数：{current}（最高：{best}）",
+    "locked": "未解锁",
+    "names": {
+      "streak3": "连续 3 天",
+      "streak7": "连续 7 天",
+      "streak30": "连续 30 天",
+      "streak100": "连续 100 天",
+      "gold": "金牌得主"
+    },
+    "hints": {
+      "streak3": "连续 3 天游玩",
+      "streak7": "连续 7 天游玩",
+      "streak30": "连续 30 天游玩",
+      "streak100": "连续 100 天游玩",
+      "gold": "获得任意金牌成就"
+    }
+  },
   "preferences": {
     "language": "语言",
     "sound": "声音",

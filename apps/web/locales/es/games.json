@@ -25,6 +25,8 @@
     "xpToNext": "{into} de {span} XP para el nivel {next}",
     "place": "{board}: #{all} histórico, #{week} esta semana",
     "dailyPlace": "Reto diario: #{rank}",
+    "streak": "Días seguidos: {days}",
+    "newFrame": "Nuevo marco de avatar: {frame}",
     "achievements": "Logros desbloqueados",
     "unlocked": "Logro desbloqueado",
     "saving": "Guardando tu resultado…",

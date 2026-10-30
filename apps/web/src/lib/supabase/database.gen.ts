@@ -67,6 +67,26 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"frame_unlocks": {
+                  Row: {
+                    "frame": string,"match_id": string | null,"unlocked_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "frame": string,"match_id"?: string | null,"unlocked_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "frame"?: string,"match_id"?: string | null,"unlocked_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "frame_unlocks_match_id_fkey"
+      columns: ["match_id"]
+isOneToOne: false
+      referencedRelation: "matches"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"match_participants": {
                   Row: {
                     "assisted": boolean,"bot": string | null,"match_id": string,"outcome": number | null,"placement": number | null,"rating_after": number | null,"rating_before": number | null,"score": number | null,"seat": number,"time_ms": number | null,"user_id": string | null
@@ -131,14 +151,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "avatar_kind": string,"avatar_path": string | null,"avatar_preset": string | null,"bio": string | null,"country": string | null,"created_at": string,"id": string,"is_guest": boolean,"level": number,"nickname": string | null,"nickname_changed_at": string | null,"updated_at": string,"xp": number
+                    "avatar_frame": string | null,"avatar_kind": string,"avatar_path": string | null,"avatar_preset": string | null,"bio": string | null,"country": string | null,"created_at": string,"id": string,"is_guest": boolean,"level": number,"nickname": string | null,"nickname_changed_at": string | null,"updated_at": string,"xp": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "avatar_kind"?: string,"avatar_path"?: string | null,"avatar_preset"?: string | null,"bio"?: string | null,"country"?: string | null,"created_at"?: string,"id": string,"is_guest"?: boolean,"level"?: number,"nickname"?: string | null,"nickname_changed_at"?: string | null,"updated_at"?: string,"xp"?: number
+                    "avatar_frame"?: string | null,"avatar_kind"?: string,"avatar_path"?: string | null,"avatar_preset"?: string | null,"bio"?: string | null,"country"?: string | null,"created_at"?: string,"id": string,"is_guest"?: boolean,"level"?: number,"nickname"?: string | null,"nickname_changed_at"?: string | null,"updated_at"?: string,"xp"?: number
                   }
                   Update: {
-                    "avatar_kind"?: string,"avatar_path"?: string | null,"avatar_preset"?: string | null,"bio"?: string | null,"country"?: string | null,"created_at"?: string,"id"?: string,"is_guest"?: boolean,"level"?: number,"nickname"?: string | null,"nickname_changed_at"?: string | null,"updated_at"?: string,"xp"?: number
+                    "avatar_frame"?: string | null,"avatar_kind"?: string,"avatar_path"?: string | null,"avatar_preset"?: string | null,"bio"?: string | null,"country"?: string | null,"created_at"?: string,"id"?: string,"is_guest"?: boolean,"level"?: number,"nickname"?: string | null,"nickname_changed_at"?: string | null,"updated_at"?: string,"xp"?: number
                   }
                   Relationships: [
                     
@@ -541,6 +561,9 @@ isOneToOne: false
 "set_achievement_pins":
 { Args: { "p_achievements": (string)[] }; Returns: undefined
                            },
+"set_avatar_frame":
+{ Args: { "p_frame"?: string }; Returns: undefined
+                           },
 "set_guest_profile":
 { Args: { "p_nickname": string }; Returns: string
                            },
@@ -637,6 +660,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"word_of_the_day":
+{ Args: { "p_locale": string }; Returns: Json
+                           },
 "xp_events_export":
 { Args: { "p_user": string }; Returns: {
               "amount": number,"created_at": string,"day": string,"game_id": string,"match_id": string,"reason": string

@@ -1181,6 +1181,28 @@ Online modes are enabled for the Phase 4 games.
       - a guest playing it unrecorded;
       - the home page in English and Arabic and the game page with `?daily`, at 360 and 1280 px in both themes: no sideways scroll, axe clean.
     - Results 27/27, leaderboards 36/36, online 35/35 and plays 19/19.
+- [x] Step 12: play streaks, avatar frames and Word of the Day (`20261025101500_streaks_frames_words.sql`).
+  - **The play streak:** the UTC days in a row on which a signed-in player finished a game that counted (`private.count_streak`, from `count_result`, once a day). It's only its owner's to see (`play_streaks`).
+  - **Streak XP:** each day the streak carries on earns 10 XP a day of streak beyond the first, up to 50.
+  - **Avatar frames** (Q4): 3, 7, 30 and 100 days in a row, and any gold achievement (`achievements_unlock` now unlocks it too; gold achievements already won got it).
+    - **Storage:** unlocks live in `frame_unlocks` (owner-only), with the game that did it. The frame worn is `profiles.avatar_frame` (public), set through `set_avatar_frame`, which refuses a locked one.
+    - **Look:** `@kefche/ui`'s `lib/frames.ts` draws each as a ring in the theme-independent tier colours (or the brand's), with a gap in the surface colour, so it reads the same in both themes. The 100-day and gold frames add an outer line. Small avatars get a thinner ring without it. `UserAvatar` takes a `frame`. Tailwind now also scans the package's `lib/`.
+  - **Players see:**
+    - **Settings:** a frame picker beside the avatar, showing the streak ("Play streak: 3 (best: 4)") and every frame previewed on their own avatar. Locked ones are faded and say how to unlock them.
+    - **The frame worn:** on their public profile and in the header, which keeps it in the cached account summary.
+    - **The results screen:** the streak from its second day ("Play streak: 3"), and a new frame, with a toast.
+  - **Word of the Day** (Q3, scaffolding): `word_of_the_day(locale)` reads today's word in a language, and a home-page card shows it, staying hidden while there's none (all languages until Phase 15).
+  - **Privacy:** the games entry says the streak is the player's alone and the frame shows with their avatar. The data export includes the frames unlocked.
+  - **Strings:** 18 in all 11 languages.
+  - **Checks:**
+    - The rules in SQL: day 3 of a streak earns 20 streak XP and the 3-day frame; a second game that day earns no more; day 7 unlocks the 7-day frame; a gap starts again at 1 and keeps the best; an unlocked frame can be worn, a locked one is refused.
+    - In browser checks, 25/25:
+      - ResultsR, on a 2-day streak, plays Snake: the results show "Play streak: 3" and the new frame with its toast, with the streak, frame and 20 XP stored;
+      - in settings they wear it, and it shows on the header and their profile; the gold frame stays locked and the database refuses it, until a gold achievement unlocks it;
+      - today's word on the English home page, and no card on the Bulgarian one;
+      - settings in English and Arabic and the home page at 360 and 1280 px in both themes: no sideways scroll, axe clean.
+    - Migration: the file replays cleanly in a rolled-back transaction; schema lint clean; Deno 51/51.
+    - Results 27/27, achievements 21/21, leaderboards 36/36, online 35/35, plays 19/19, the history pages 16/16, rated matchmaking 20/20 (its "new opponent" timing check once at 19/20).
 
 ---
 

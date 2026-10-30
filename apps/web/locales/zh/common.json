@@ -26,5 +26,8 @@
   },
   "notifications": {
     "label": "通知"
+  },
+  "wordOfTheDay": {
+    "title": "每日一词"
   }
 }

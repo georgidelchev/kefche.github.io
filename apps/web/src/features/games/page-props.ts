@@ -4,6 +4,7 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 
 import { GLOBAL_ACHIEVEMENTS, type GameManifest, type GameText } from "@kefche/game-sdk";
 
+import { frameNames } from "@/features/account/frames";
 import type { AppT } from "@/i18n/i18n";
 import type { Locale } from "@/i18n/locales";
 import { getSupabaseEnv } from "@/lib/env";
@@ -72,6 +73,9 @@ function resultsStrings(
     xpToNext: t("games:results.xpToNext", { into: "{into}", span: "{span}", next: "{next}" }),
     place: t("games:results.place", { board: "{board}", all: "{all}", week: "{week}" }),
     dailyPlace: t("games:results.dailyPlace", { rank: "{rank}" }),
+    streak: t("games:results.streak", { days: "{days}" }),
+    newFrame: t("games:results.newFrame", { frame: "{frame}" }),
+    frameNames: frameNames(t),
     boards: Object.fromEntries([
       // The daily challenge's board (a game played as the day's challenge goes on it).
       [

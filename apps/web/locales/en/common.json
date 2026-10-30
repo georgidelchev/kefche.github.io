@@ -26,5 +26,8 @@
   },
   "notifications": {
     "label": "Notifications"
+  },
+  "wordOfTheDay": {
+    "title": "Word of the day"
   }
 }

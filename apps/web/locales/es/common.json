@@ -26,5 +26,8 @@
   },
   "notifications": {
     "label": "Notificaciones"
+  },
+  "wordOfTheDay": {
+    "title": "Palabra del día"
   }
 }

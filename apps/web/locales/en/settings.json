@@ -30,6 +30,27 @@
     "save": "Save profile",
     "view": "View your public profile"
   },
+  "frames": {
+    "heading": "Avatar frame",
+    "intro": "Frames are rewards for playing on days in a row and for gold achievements.",
+    "none": "No frame",
+    "streak": "Play streak: {current} (best: {best})",
+    "locked": "Locked",
+    "names": {
+      "streak3": "3 days in a row",
+      "streak7": "7 days in a row",
+      "streak30": "30 days in a row",
+      "streak100": "100 days in a row",
+      "gold": "Gold achiever"
+    },
+    "hints": {
+      "streak3": "Play 3 days in a row",
+      "streak7": "Play 7 days in a row",
+      "streak30": "Play 30 days in a row",
+      "streak100": "Play 100 days in a row",
+      "gold": "Win any gold achievement"
+    }
+  },
   "preferences": {
     "language": "Language",
     "sound": "Sound",

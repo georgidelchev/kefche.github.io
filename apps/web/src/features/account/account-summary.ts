@@ -18,6 +18,8 @@ export const accountSummarySchema = z.object({
   ),
   /** Missing in summaries cached before levels shipped. */
   level: z.optional(z.int().check(z.minimum(1))),
+  /** The avatar frame worn (lib/frames.ts), or none. */
+  frame: z.optional(z.nullable(z.string().check(z.maxLength(40)))),
 });
 export type AccountSummary = z.infer<typeof accountSummarySchema>;
 

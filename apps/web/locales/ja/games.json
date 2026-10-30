@@ -25,6 +25,8 @@
     "xpToNext": "レベル{next}まで {into} / {span} XP",
     "place": "{board}：全期間 #{all}、今週 #{week}",
     "dailyPlace": "今日のチャレンジ：#{rank}",
+    "streak": "連続プレイ日数：{days}",
+    "newFrame": "新しいアバターフレーム：{frame}",
     "achievements": "解除した実績",
     "unlocked": "実績を解除しました",
     "saving": "結果を保存しています…",

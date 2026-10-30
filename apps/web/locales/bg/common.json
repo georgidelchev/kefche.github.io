@@ -26,5 +26,8 @@
   },
   "notifications": {
     "label": "Известия"
+  },
+  "wordOfTheDay": {
+    "title": "Дума на деня"
   }
 }
