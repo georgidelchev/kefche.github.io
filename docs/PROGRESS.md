@@ -1337,6 +1337,31 @@ Online modes are enabled for the Phase 4 games.
 ### Status
 
 - [x] Plan approved by owner (2026-11-01, with the answers above)
+- [x] Step 1: the tables (`20261101100000_social.sql`). The RPCs that write them come with the steps that use them.
+  - **Friends and blocks:** `friendships` (one row per pair: a request, then friends) and `blocks` (only the blocker sees theirs).
+  - **Chat:**
+    - `chat_rooms`: the 11 global rooms, one per language, each with a slow mode;
+    - `conversations` and `conversation_members`: DMs, with each member's last read message and what they cleared;
+    - `messages`: text up to 500 characters and/or a GIPHY id, visible, hidden or deleted. Deleting erases the text and leaves a placeholder (Q2).
+  - **Moderation:**
+    - `reports`: one per reporter and thing reported, with a copy of what was reported;
+    - `sanctions`: warn, mute, suspend or ban, with a reason and an end;
+    - moderator actions go to the insert-only `audit_log`, rather than a separate `moderation_actions` table.
+  - **Notifications:** `notifications` (the app words each in the reader's language from its data), `push_subscriptions`, and `user_settings.notification_prefs`.
+  - **Who reads what:**
+    - Global chat is for accounts, never guests. It shows visible messages between players who haven't blocked each other, and a sender also sees their own hidden ones.
+    - A DM is read by its two members only, from what they haven't cleared, and not across a block.
+    - A report is read by its reporter and by staff; a sanction by its player and by staff.
+    - Visitors see only the room list. Nobody writes any of it directly.
+  - **Helpers:**
+    - in `private`, for the RPCs to come: `is_blocked` (either way), `are_friends` and `is_sanctioned`;
+    - in `public`, for the policies, each answering only for the caller: `blocked_with`, `is_account` and `is_staff`.
+  - **Retention:** a nightly job (`forget-old-social`) drops DMs after a year, notifications after 90 days, and resolved reports 90 days after they were resolved. The cap of 1,000 messages per global room is applied as each message is sent (step 7). Deleting an account deletes its social rows; the reports it filed stay, without the reporter.
+  - **Data export:** it now includes friendships, blocks, messages sent, conversations, reports filed, sanctions, notifications and push devices.
+  - **Privacy notice:** updated as each feature starts storing (steps 3, 7, 8, 11 and 12); this step stores nothing yet.
+  - **Checks:**
+    - SQL 32/32, rolled back: each player, a guest, a moderator and a visitor read only what they should; a block hides global chat both ways; a cleared DM stays cleared; direct writes and the private helpers are refused; retention and account deletion remove the right rows.
+    - Schema lint clean; Deno 52/52; the local export answers with the new sections.
 
 ---
 

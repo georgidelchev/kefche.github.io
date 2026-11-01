@@ -39,6 +39,34 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"blocks": {
+                  Row: {
+                    "blocked_id": string,"blocker_id": string,"created_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "blocked_id": string,"blocker_id": string,"created_at"?: string
+                  }
+                  Update: {
+                    "blocked_id"?: string,"blocker_id"?: string,"created_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"chat_rooms": {
+                  Row: {
+                    "created_at": string,"locale": string,"slow_mode_seconds": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"locale": string,"slow_mode_seconds"?: number
+                  }
+                  Update: {
+                    "created_at"?: string,"locale"?: string,"slow_mode_seconds"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"consent_records": {
                   Row: {
                     "anonymous_id": string | null,"categories": NonNullable<Json>,"created_at": string,"id": string,"policy_version": string,"user_id": string | null
@@ -49,6 +77,40 @@ isOneToOne: false
                   }
                   Update: {
                     "anonymous_id"?: string | null,"categories"?: NonNullable<Json>,"created_at"?: string,"id"?: string,"policy_version"?: string,"user_id"?: string | null
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"conversation_members": {
+                  Row: {
+                    "cleared_id": number,"conversation_id": string,"last_read_id": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "cleared_id"?: number,"conversation_id": string,"last_read_id"?: number,"user_id": string
+                  }
+                  Update: {
+                    "cleared_id"?: number,"conversation_id"?: string,"last_read_id"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "conversation_members_conversation_id_fkey"
+      columns: ["conversation_id"]
+isOneToOne: false
+      referencedRelation: "conversations"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"conversations": {
+                  Row: {
+                    "created_at": string,"id": string,"last_message_at": string | null,"user_a": string,"user_b": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"last_message_at"?: string | null,"user_a": string,"user_b": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"last_message_at"?: string | null,"user_a"?: string,"user_b"?: string
                   }
                   Relationships: [
                     
@@ -87,6 +149,20 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"friendships": {
+                  Row: {
+                    "accepted_at": string | null,"created_at": string,"requested_by": string,"status": string,"user_a": string,"user_b": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "accepted_at"?: string | null,"created_at"?: string,"requested_by": string,"status"?: string,"user_a": string,"user_b": string
+                  }
+                  Update: {
+                    "accepted_at"?: string | null,"created_at"?: string,"requested_by"?: string,"status"?: string,"user_a"?: string,"user_b"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"match_participants": {
                   Row: {
                     "assisted": boolean,"bot": string | null,"match_id": string,"outcome": number | null,"placement": number | null,"rating_after": number | null,"rating_before": number | null,"score": number | null,"seat": number,"time_ms": number | null,"user_id": string | null
@@ -117,6 +193,46 @@ isOneToOne: false
                   }
                   Update: {
                     "config"?: Json | null,"created_at"?: string,"duration_ms"?: number | null,"ended_at"?: string,"game_id"?: string,"game_version"?: number,"id"?: string,"mode"?: string,"pgn"?: string | null,"pool"?: string | null,"rated"?: boolean,"reason"?: string,"seed"?: string | null,"started_at"?: string,"status"?: string,"timer"?: NonNullable<Json>
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"messages": {
+                  Row: {
+                    "body": string | null,"conversation_id": string | null,"created_at": string,"gif_id": string | null,"id": number,"room": string | null,"sender_id": string,"status": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "body"?: string | null,"conversation_id"?: string | null,"created_at"?: string,"gif_id"?: string | null,"id"?: never,"room"?: string | null,"sender_id": string,"status"?: string
+                  }
+                  Update: {
+                    "body"?: string | null,"conversation_id"?: string | null,"created_at"?: string,"gif_id"?: string | null,"id"?: never,"room"?: string | null,"sender_id"?: string,"status"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "messages_conversation_id_fkey"
+      columns: ["conversation_id"]
+isOneToOne: false
+      referencedRelation: "conversations"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "messages_room_fkey"
+      columns: ["room"]
+isOneToOne: false
+      referencedRelation: "chat_rooms"
+      referencedColumns: ["locale"]
+    }
+                  ]
+                },"notifications": {
+                  Row: {
+                    "created_at": string,"data": NonNullable<Json>,"id": number,"read_at": string | null,"type": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"data"?: NonNullable<Json>,"id"?: never,"read_at"?: string | null,"type": string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"data"?: NonNullable<Json>,"id"?: never,"read_at"?: string | null,"type"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -163,6 +279,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"push_subscriptions": {
+                  Row: {
+                    "auth": string,"created_at": string,"endpoint": string,"failures": number,"id": string,"last_sent_at": string | null,"p256dh": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "auth": string,"created_at"?: string,"endpoint": string,"failures"?: number,"id"?: string,"last_sent_at"?: string | null,"p256dh": string,"user_id": string
+                  }
+                  Update: {
+                    "auth"?: string,"created_at"?: string,"endpoint"?: string,"failures"?: number,"id"?: string,"last_sent_at"?: string | null,"p256dh"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"rating_history": {
                   Row: {
                     "created_at": string,"game_id": string,"id": number,"match_id": string,"pool": string,"rating": number,"rd": number,"user_id": string
@@ -193,6 +323,20 @@ isOneToOne: false
                   }
                   Update: {
                     "created_at"?: string,"game_id"?: string,"games"?: number,"pool"?: string,"rating"?: number,"rd"?: number,"updated_at"?: string,"user_id"?: string,"volatility"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"reports": {
+                  Row: {
+                    "created_at": string,"details": string | null,"id": string,"reason": string,"reporter_id": string | null,"resolved_at": string | null,"resolved_by": string | null,"snapshot": NonNullable<Json>,"status": string,"target_id": string,"target_type": string,"target_user_id": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"details"?: string | null,"id"?: string,"reason": string,"reporter_id"?: string | null,"resolved_at"?: string | null,"resolved_by"?: string | null,"snapshot"?: NonNullable<Json>,"status"?: string,"target_id": string,"target_type": string,"target_user_id"?: string | null
+                  }
+                  Update: {
+                    "created_at"?: string,"details"?: string | null,"id"?: string,"reason"?: string,"reporter_id"?: string | null,"resolved_at"?: string | null,"resolved_by"?: string | null,"snapshot"?: NonNullable<Json>,"status"?: string,"target_id"?: string,"target_type"?: string,"target_user_id"?: string | null
                   }
                   Relationships: [
                     
@@ -251,6 +395,26 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"sanctions": {
+                  Row: {
+                    "created_at": string,"created_by": string | null,"ends_at": string | null,"id": string,"kind": string,"reason": string,"report_id": string | null,"revoked_at": string | null,"revoked_by": string | null,"starts_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"created_by"?: string | null,"ends_at"?: string | null,"id"?: string,"kind": string,"reason": string,"report_id"?: string | null,"revoked_at"?: string | null,"revoked_by"?: string | null,"starts_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"created_by"?: string | null,"ends_at"?: string | null,"id"?: string,"kind"?: string,"reason"?: string,"report_id"?: string | null,"revoked_at"?: string | null,"revoked_by"?: string | null,"starts_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "sanctions_report_id_fkey"
+      columns: ["report_id"]
+isOneToOne: false
+      referencedRelation: "reports"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"user_roles": {
                   Row: {
                     "created_at": string,"granted_by": string | null,"role": Database["public"]['Enums']["app_role"],"user_id": string
@@ -267,14 +431,14 @@ isOneToOne: false
                   ]
                 },"user_settings": {
                   Row: {
-                    "birth_year": number | null,"created_at": string,"haptics": boolean,"locale": string | null,"privacy_invites": string,"privacy_messages": string,"reduced_motion": string,"show_in_leaderboards": boolean,"show_online": boolean,"sound_effects": number,"sound_master": number,"sound_music": number,"theme": string,"updated_at": string,"user_id": string
+                    "birth_year": number | null,"created_at": string,"haptics": boolean,"locale": string | null,"notification_prefs": NonNullable<Json>,"privacy_invites": string,"privacy_messages": string,"reduced_motion": string,"show_in_leaderboards": boolean,"show_online": boolean,"sound_effects": number,"sound_master": number,"sound_music": number,"theme": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "birth_year"?: number | null,"created_at"?: string,"haptics"?: boolean,"locale"?: string | null,"privacy_invites"?: string,"privacy_messages"?: string,"reduced_motion"?: string,"show_in_leaderboards"?: boolean,"show_online"?: boolean,"sound_effects"?: number,"sound_master"?: number,"sound_music"?: number,"theme"?: string,"updated_at"?: string,"user_id": string
+                    "birth_year"?: number | null,"created_at"?: string,"haptics"?: boolean,"locale"?: string | null,"notification_prefs"?: NonNullable<Json>,"privacy_invites"?: string,"privacy_messages"?: string,"reduced_motion"?: string,"show_in_leaderboards"?: boolean,"show_online"?: boolean,"sound_effects"?: number,"sound_master"?: number,"sound_music"?: number,"theme"?: string,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "birth_year"?: number | null,"created_at"?: string,"haptics"?: boolean,"locale"?: string | null,"privacy_invites"?: string,"privacy_messages"?: string,"reduced_motion"?: string,"show_in_leaderboards"?: boolean,"show_online"?: boolean,"sound_effects"?: number,"sound_master"?: number,"sound_music"?: number,"theme"?: string,"updated_at"?: string,"user_id"?: string
+                    "birth_year"?: number | null,"created_at"?: string,"haptics"?: boolean,"locale"?: string | null,"notification_prefs"?: NonNullable<Json>,"privacy_invites"?: string,"privacy_messages"?: string,"reduced_motion"?: string,"show_in_leaderboards"?: boolean,"show_online"?: boolean,"sound_effects"?: number,"sound_master"?: number,"sound_music"?: number,"theme"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -318,6 +482,9 @@ isOneToOne: false
                            },
 "avatar_upload_allowed":
 { Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"blocked_with":
+{ Args: { "p_other": string }; Returns: boolean
                            },
 "can_use_room_channel":
 { Args: { "p_topic": string }; Returns: boolean
@@ -405,8 +572,14 @@ isOneToOne: false
 "has_role":
 { Args: { "p_role": Database["public"]['Enums']["app_role"] }; Returns: boolean
                            },
+"is_account":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
 "is_room_member":
 { Args: { "p_room": string }; Returns: boolean
+                           },
+"is_staff":
+{ Args: Record<PropertyKey, never>; Returns: boolean
                            },
 "join_room":
 { Args: { "p_code": string,"p_spectate"?: boolean }; Returns: {

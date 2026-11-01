@@ -44,6 +44,14 @@ Deno.serve(async (req) => {
     xp,
     boards,
     frames,
+    friends,
+    blocked,
+    sentMessages,
+    dms,
+    filedReports,
+    sanctions,
+    notifications,
+    devices,
   ] = await Promise.all([
     admin.from("profiles").select("*").eq("id", user.id).maybeSingle(),
     admin.from("user_settings").select("*").eq("user_id", user.id).maybeSingle(),
@@ -84,6 +92,34 @@ Deno.serve(async (req) => {
     admin.rpc("xp_events_export", { p_user: user.id }),
     admin.rpc("leaderboard_entries_export", { p_user: user.id }),
     admin.from("frame_unlocks").select("frame, match_id, unlocked_at").eq("user_id", user.id),
+    admin
+      .from("friendships")
+      .select("user_a, user_b, requested_by, status, created_at, accepted_at")
+      .or(`user_a.eq.${user.id},user_b.eq.${user.id}`),
+    admin.from("blocks").select("blocked_id, created_at").eq("blocker_id", user.id),
+    admin
+      .from("messages")
+      .select("id, room, conversation_id, body, gif_id, status, created_at")
+      .eq("sender_id", user.id),
+    admin
+      .from("conversation_members")
+      .select(
+        "conversation_id, last_read_id, cleared_id, conversations(user_a, user_b, created_at)",
+      )
+      .eq("user_id", user.id),
+    admin
+      .from("reports")
+      .select("target_type, target_id, reason, details, status, created_at, resolved_at")
+      .eq("reporter_id", user.id),
+    admin
+      .from("sanctions")
+      .select("kind, reason, starts_at, ends_at, revoked_at, created_at")
+      .eq("user_id", user.id),
+    admin.from("notifications").select("type, data, read_at, created_at").eq("user_id", user.id),
+    admin
+      .from("push_subscriptions")
+      .select("endpoint, created_at, last_sent_at")
+      .eq("user_id", user.id),
   ]);
   const failedPart = [
     profile,
@@ -101,6 +137,14 @@ Deno.serve(async (req) => {
     xp,
     boards,
     frames,
+    friends,
+    blocked,
+    sentMessages,
+    dms,
+    filedReports,
+    sanctions,
+    notifications,
+    devices,
   ].find((r) => r.error);
   if (failedPart?.error) {
     log("error", "export_failed", { user: user.id, error: failedPart.error.message });
@@ -134,6 +178,14 @@ Deno.serve(async (req) => {
     xp_events: xp.data,
     leaderboard_entries: boards.data,
     avatar_frames: frames.data,
+    friendships: friends.data,
+    blocks: blocked.data,
+    messages_sent: sentMessages.data,
+    conversations: dms.data,
+    reports_filed: filedReports.data,
+    sanctions: sanctions.data,
+    notifications: notifications.data,
+    push_devices: devices.data,
   };
   log("info", "export_data", { user: user.id });
   return new Response(JSON.stringify(document, null, 2), {
