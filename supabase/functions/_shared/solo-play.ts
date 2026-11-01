@@ -132,7 +132,9 @@ export function judgeSolo(
   }
   if (clock > elapsed + TIME_GRACE_MS) return verdict("review", "too-fast", known);
   if (clock > record.durationMs + TIME_GRACE_MS) return verdict("review", "time-mismatch", known);
-  const seconds = Math.max(1, elapsed / 1000);
+  // Over the shortest time claimed, since that's the time a board shows: a
+  // log sent long after its play was issued can't claim a 3-second Sudoku.
+  const seconds = Math.max(1, Math.min(elapsed, claimedTime, record.durationMs) / 1000);
   if (game.maxActionsPerSecond !== null && replay.choices / seconds > game.maxActionsPerSecond) {
     return verdict("review", "too-fast", known);
   }

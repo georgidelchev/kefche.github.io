@@ -490,3 +490,117 @@ The Web Push service worker (Phase 8) is still allowed and handles push events o
 
 - Two new players: the winner gains 162 and the loser drops 162, and a draw between equals leaves both ratings unchanged.
 - Uncertainty doesn't grow yet while a player is away: `rate()` supports an empty rating period, but nothing applies one. Phase 7's leaderboards can apply it, or filter by uncertainty.
+
+## ADR-0028: One engine on both sides: the games bundled for the Edge Functions
+
+**Date:** 2026-11-01 · **Status:** Accepted
+
+**Context.** From Phase 7, results count for stats, XP, achievements and leaderboards (SPEC §12), so the server has to check them. The browser runs each game's engine (ADR-0016), written in TypeScript with extensionless imports that Deno can't load as they are. Writing every game's rules a second time for the server would let the two drift apart.
+
+**Decision.**
+
+- **One bundle:** `pnpm functions:engines` (esbuild) bundles every game's engine and manifest into `supabase/functions/_shared/engines.gen.js`, with the SDK's isomorphic helpers the server needs: the action-log format, the XP curve and achievement tiers. `engines.ts` types it by hand. It's committed, and CI rebuilds it and fails on any difference, like `database.gen.ts`.
+- **Fixtures:** `--fixtures` plays one seeded game of each game in Node and stores its result and a hash of its final state (`engines.fixtures.json`). Deno replays them and must reach the same end, so a bundle that plays differently from the browser fails the tests. A new game needs a fixture policy in `scripts/functions-engines.mjs`.
+- **Chess** is in the bundle like the others: its engine wraps chess.js (ADR-0025), and rated games keep their own replay (ADR-0026).
+- **Rejected:** rules written twice; replaying in the database; a game server.
+
+**Consequences.**
+
+- The bundle is 127 KB, most of it chess.js. A replay fits well within an Edge Function's CPU limit: 300 moves of chess take 0.29 s, and generating a hard Sudoku takes 29 ms.
+- **Updating a game:** rerun `pnpm functions:engines` after changing an engine or a manifest (with `--fixtures` when the change alters how the game plays). Deploy `submit-match` together with the site.
+- **Versions:** each play records the game's `manifest.version`. A game played to other rules than the server's is refused (`game_updated`) and isn't recorded.
+
+## ADR-0029: Results are the server's replay, on seeds it issued
+
+**Date:** 2026-11-01 · **Status:** Accepted
+
+**Context.** A result that counts reaches stats, XP, achievements and leaderboards, so a forged one costs honest players. The games run in the browser, and SPEC §22 asks that suspicious results be quarantined. Phase 6 already decided rated chess from the server's own record (ADR-0026).
+
+**Decision.**
+
+- **Seeds from the server:** an account's game starts on a play issued by `start_play`, which records the seed and the server's time. The page asks for it in the background, so a game never waits.
+  - A play takes one result, so a record can't be sent twice or for someone else.
+  - A game without a play isn't recorded.
+  - Guests' games stay on their device (owner decision Q2).
+- **The record, not the claim:** every finished game sends its packed action log to `submit-match`. The server replays it on the play's seed with the game's own engine (ADR-0028), and the claimed result must be what the replay gives.
+- **Plausibility, where a replay can't tell:**
+  - **Times:** none longer than since the play was issued, and none shorter than the game's own clock took (Snake's ticks).
+  - **Speed:** at most the manifest's `maxActionsPerSecond` (2048 20, Sudoku 15, Snake 30). It's measured over the shortest time claimed, since that's the time a board shows.
+  - **Setup:** it must be one the game offers, and a daily game must use the day's.
+- **Set aside, not rejected:** anything that fails is stored with `status = 'review'` and its reason, and counts for nothing. The admin panel lists them in Phase 14.
+- **Other modes:**
+  - **Against bots:** every move must be one the engine offered that seat.
+  - **On one device:** the game counts as played only.
+  - **Races:** each racer's moves are replayed on the room's seed, timed by the server.
+  - **Online casual games:** counted from the players' reports when they agree, and set aside when they differ. Only the host's browser holds the moves (Known issues).
+  - **Rated games:** decided as in ADR-0026.
+- **What counts where** (owner decision Q1): games against bots count for stats, XP and achievements, but stay off leaderboards. Only games played alone on a server seed, counted and unassisted, reach a board.
+
+**Consequences.**
+
+- **Checked end to end:** these were all set aside, with no stats, XP or board entry:
+  - a raised 2048 score;
+  - an honest log sent for another seed;
+  - a garbled log;
+  - an easy Sudoku solved within a second.
+- **One hole found and closed:** the speed check used to divide by the time since the play was issued. A solver's log sent minutes later could claim a 3-second Sudoku.
+- **What a replay can't prove:** that a person made the moves, only that every move was legal. A bot playing at human speed would pass. That's why games against bots stay off boards, and why the admin panel will need a way to remove an entry.
+- **A continued Sudoku isn't recorded:** a puzzle continued from an earlier visit can't be replayed from its start (Known issues).
+- **Cost:** each finished game is one function call. The free plan's 500,000 a month is about 16,000 games a day.
+
+## ADR-0030: XP, achievements and streaks awarded in the database, rewards cosmetic only
+
+**Date:** 2026-11-01 · **Status:** Accepted
+
+**Context.** SPEC §12.2 and §12.6 ask for XP and levels, achievements in three tiers, login streaks and cosmetic rewards, with nothing that can be bought, gambled or farmed. Results are counted in more than one place: `submit-match`, and `pg_cron` for online matches whose players didn't all report in time.
+
+**Decision.**
+
+- **The curve** is isomorphic, in the SDK (`xp.ts`): level n takes 100 × n XP to leave, so level L starts at 50 × L × (L − 1). The database mirrors it (`private.level_for_xp`), and the two agree on every boundary up to level 1,000.
+- **Awards in SQL:** `private.count_result` awards XP, so every path that counts a result awards it the same way, the scheduled job included.
+  - **Within the cap:** 10 a game, plus 10 for a win or 5 for a draw, up to 100 XP per game per UTC day. A game under 10 s of play earns nothing.
+  - **Outside the cap:** 50 for a first play of a game; 50 for the day's first daily challenge; 20, 50 or 100 for a new bronze, silver or gold tier; streak XP (10 a day beyond the first, up to 50).
+  - **Results that arrive together:** the stats row is locked while the cap is worked out, so they can't all fit under it.
+- **Achievements as data:** each game's manifest lists its own: a metric the stats already keep, and the bronze, silver and gold goals. The SDK holds the site-wide ones. After each counted game, `submit-match` works out the tiers from the player's figures. A game counted without it unlocks with the next one.
+- **Streaks** count UTC days on which a signed-in player finished a game that counted. Only the player sees theirs.
+- **Rewards are avatar frames only** (owner decision Q4), for 3, 7, 30 and 100 days in a row and for any gold achievement. They're drawn in theme-independent tier colours, so each looks the same in both themes. There's no currency and no randomness.
+- **The XP ledger** (`private.xp_events`, kept 35 days) holds each award with its match. The daily caps, the weekly XP board and the results screen read it.
+
+**Consequences.**
+
+- **Checked:** 12 honest 2048 games sent at once earned exactly 100 XP for playing that day, plus the first-play 50.
+- **Older games:** games played before XP existed earned it once, from the stats and outside the ledger, so they stay off the weekly board.
+- **Adding or changing achievements:** a new one needs a manifest entry and its text in 11 languages. Changing a tier's goal later can't take back what was unlocked.
+- **More rewards** (banners, board themes) need art for both themes, and come later.
+
+## ADR-0031: Leaderboards: periods named by date, filtered when read
+
+**Date:** 2026-11-01 · **Status:** Accepted
+
+**Context.** SPEC §12.4 asks for all-time, weekly and friends boards per game, a global XP board, and a daily challenge with its own board. A player who opts out must disappear, and come back on opting in. The only job runner is `pg_cron`, and a missed job mustn't leave a stale board up.
+
+**Decision.**
+
+- **Where the boards come from:**
+  - **Game boards:** each manifest lists them: a score or a time, with an order, optionally for one setting (`when`, Sudoku's difficulty).
+  - **Rated boards** (`<game>.rating-<pool>`): read from the ratings, established ones only (10 or more games).
+  - **The XP board:** reads the profiles, or this week's ledger.
+- **Periods are names, not resets:** each player keeps one row per board and period:
+  - `all`;
+  - `week:<Monday>`, since weeks start Monday 00:00 UTC;
+  - `day:<date>`, for the daily challenge.
+
+  A new week is a new name, so nothing has to run at midnight. The nightly job only deletes weeks older than 12 and days older than 60.
+
+- **Filtered when read:** `leaderboard` leaves out guests, players without a nickname and players who opted out, at read time, so opting back in restores their places. It returns the viewer's own row even below the top, and tells an opted-out viewer they're hidden.
+- **The daily challenge** rotates through the games played alone (`private.daily_rotation`). Each day is made the first time anyone asks for it. It has its own board and stays off the game's boards, since everyone knows its seed.
+- **Friends' boards** wait for friends (Phase 8).
+
+**Consequences.**
+
+- **Checked:**
+  - last week's best stays off this week's board;
+  - the week turns at Monday 00:00 UTC (02:00 in UTC+2);
+  - an opted-out player vanishes from every board and comes back on opting in.
+- **Scale:** places are counted on each read, with an index on (board, period, value). That's fine for thousands of players per board; far more would need cached ranks.
+- **Inactive players:** rating uncertainty doesn't grow while a player is away (ADR-0027), so an established rating stays on its board until it's played again.

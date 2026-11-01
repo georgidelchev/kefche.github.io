@@ -67,6 +67,17 @@ Deno.test("too fast: Snake's ticks in less time than they take, moves faster tha
   );
 });
 
+Deno.test("too fast: a short claimed time, sent long after the play was issued", () => {
+  // The whole easy puzzle in 2 s of solve time, sent 10 minutes later.
+  const { game, play, record } = setup("sudoku");
+  const v = judgeSolo(game, play, {
+    ...record,
+    result: { ...record.result, timeMs: 2000 },
+    durationMs: 2000,
+  });
+  equal([v.status, v.reason], ["review", "too-fast"], "verdict");
+});
+
 Deno.test("a play time longer than since the play was issued is set aside", () => {
   const { game, play, record } = setup("2048", 60_000);
   equal(

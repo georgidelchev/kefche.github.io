@@ -1203,6 +1203,29 @@ Online modes are enabled for the Phase 4 games.
       - settings in English and Arabic and the home page at 360 and 1280 px in both themes: no sideways scroll, axe clean.
     - Migration: the file replays cleanly in a rolled-back transaction; schema lint clean; Deno 51/51.
     - Results 27/27, achievements 21/21, leaderboards 36/36, online 35/35, plays 19/19, the history pages 16/16, rated matchmaking 20/20 (its "new opponent" timing check once at 19/20).
+- [x] Step 13: verification and docs.
+  - **A hole found and closed:** the speed check (`maxActionsPerSecond`) divided by the time since the play was issued. A solver could take a play, wait, and send a whole easy Sudoku claiming a 2-second solve, and that time would have gone on the board. It now divides by the shortest time claimed (`_shared/solo-play.ts`), with a Deno test.
+  - **Forged results, end to end** through `submit-match` (22/22). Honest games were played in Node with the server's own engine bundle on seeds it issued, and the forgeries were made from them. Each forgery was stored for review with its reason, with no stats, XP or board entry:
+    - an easy Sudoku (43 cells) sent within a second, and another sent 12 s later claiming 2 s: both `too-fast`;
+    - a 2048 game with its score raised by 1,000: `replay-mismatch`;
+    - an honest log sent for another play's seed: it doesn't replay;
+    - a garbled log: `bad-log`.
+  - **Reports that differ:** online 35/35 again, with a casual match whose two accounts reported different results set aside as `reports-differ`.
+  - **Leaderboards:**
+    - the honest game went on the 2048 board, all time and this week;
+    - an opted-out player was off the game board, this week's and the XP board, and told so; opting back in listed them again;
+    - the week turns at Monday 00:00 UTC (02:00 in UTC+2);
+    - last week's 999,999 showed neither on this week's board nor all time.
+  - **The XP cap:** 11 honest 2048 games sent at once all counted, and that day's XP for playing 2048 came to exactly 100, plus the first-play 50.
+  - **Layout:** every page Phase 7 added or changed, in English and Arabic at 360, 768 and 1280 px in both themes: the home page with the daily card, a profile with stats and rating charts, a profile with achievements and a frame, the leaderboards, settings with the frames, and the results screen. No sideways scroll, axe clean, no page errors: 72/72. The results screen's 12 needed a second run once the script drove the game in Arabic too.
+  - **Other checks again:** the daily challenge 29/29 (today is a Snake day, which step 12's run lacked), and plays 19/19 and results 27/27, to confirm the stricter speed check still counts honest browser games.
+  - **Docs:**
+    - ADR-0028 (the engines on the server), ADR-0029 (results are the server's replay), ADR-0030 (XP, achievements and streaks) and ADR-0031 (leaderboards);
+    - ARCHITECTURE.md "Stats, XP and leaderboards";
+    - RUNBOOK "Stats, XP and leaderboards": deploying a game change, the jobs, removing a board entry, the daily challenge, Word of the Day by hand, and a stopped local edge runtime.
+  - **Local edge runtime:** after Docker restarted, its container stayed stopped and `submit-match` answered 503. The RUNBOOK says how to start it.
+  - Deno 52/52; all checks green.
+- **Phase 7 DoD:** stats show on the profile, leaderboards update, and suspicious results are set aside for review. The standing DoD holds: all checks green, 11 locales, the layout checks and the docs. **Still to do with the deploy (owner's word):** push the migrations, deploy `submit-match` and `export-data`, push `main`, then play one game on the live site to confirm the hosted function carries the engine bundle (RUNBOOK).
 
 ---
 

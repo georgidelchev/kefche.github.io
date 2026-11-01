@@ -81,7 +81,8 @@ A new Edge Function, or a change to `config.toml`, needs that restart locally to
 - an account's own game, alone, against bots or on one device, or a racer's moves, when:
   - the replay doesn't give the claimed result (`replay-mismatch`);
   - the setup or the moves are invalid (`bad-config`, `bad-log`), or the game isn't over (`not-finished`);
-  - the times can't be right (`time-mismatch`, `too-fast`).
+  - the times can't be right (`time-mismatch`), or the moves came faster than a person makes them over the time claimed (`too-fast`);
+  - a daily challenge wasn't played with the day's settings (`bad-config`).
 
   The checks are in `_shared/solo-play.ts`, `turn-play.ts` and `room-play.ts`.
 
@@ -102,6 +103,61 @@ where g.match_id = '<match id>' order by m.n;
 White's clock starts 3 s after `rated_games.started_at`, and a flag falls 2 s after a clock reaches zero. The same move recorded twice, or a move from the wrong seat, sends a game to review instead of rating it. There's no tool yet to void a rated game or correct a rating: that comes with the admin panel (Phase 14).
 
 **Stockfish** (ADR-0025) is vendored in `packages/games/chess/vendor/stockfish/`, and its README says how to update it. Under its licence (GPL-3.0), the credit lines that link its source and licence, and its entry in `packages/games/chess/CREDITS.md`, must stay whenever it's served.
+
+## Stats, XP and leaderboards
+
+How results are judged and counted: ARCHITECTURE.md ("Stats, XP and leaderboards") and ADR-0028 to ADR-0031.
+
+**Deploying a change to a game or to `submit-match`.** The browser and the server must play the same rules, so after changing an engine, a manifest or anything under `supabase/functions/`:
+
+1. Run `pnpm functions:engines` (with `--fixtures` if the change alters how the game plays) and commit the bundle with the change.
+2. Push migrations first, if any (Hosted Supabase, below).
+3. Deploy the functions: `pnpm exec supabase functions deploy --use-api`. The engine bundle goes with `submit-match`, since it imports it from `_shared/`.
+4. Push to `main` to deploy the site.
+
+Between steps 3 and 4, a browser on the old site sends the old `manifest.version`. Its game is refused as `game_updated` and isn't recorded, but nothing breaks.
+
+**After a deploy,** play one game signed in, then check that it was counted. If it shows `review`, its reason says why.
+
+```sql
+select game_id, mode, status, reason, created_at from public.matches order by created_at desc limit 5;
+```
+
+The function's logs are in the dashboard: _Edge Functions → submit-match → Logs_. An error on start (a missing import) means the bundle didn't deploy.
+
+**Jobs:**
+
+- `decide-room-matches`, every minute: online casual matches two minutes after their first report.
+- `forget-old-progress`, nightly, drops:
+  - unfinished plays after 2 days;
+  - match logs after 90 days;
+  - XP events after 35 days;
+  - weekly boards after 12 weeks;
+  - daily boards after 60 days.
+
+Check either with `select status, start_time from cron.job_run_details where jobid = (select jobid from cron.job where jobname = '<name>') order by start_time desc limit 5;`.
+
+**Removing a leaderboard entry** (a result that slipped through), until the admin panel arrives in Phase 14:
+
+1. Set the match aside: `update public.matches set status = 'review', reason = 'staff' where id = '<match id>';`.
+2. Delete its entries: `delete from private.leaderboard_entries where match_id = '<match id>';`.
+
+The player's next game on that board puts them back; no earlier best is restored. Stats and XP aren't recalculated: XP can only be added (`xp_events.amount > 0`), and corrections come with the admin panel.
+
+**The daily challenge:**
+
+- **Today's and recent days:** `select day, game_id, config from public.daily_challenges order by day desc limit 7;`.
+- **How a day is made:** the first time anyone asks for it, from `private.daily_rotation`.
+- **A broken day** (its game can't be played): delete that day's row. The next request makes it again with a new seed. Anyone who already played it keeps their result on the old day's board.
+- **A new game in the rotation:** goes in through a migration (`docs/ADDING_A_GAME.md`).
+
+**Word of the Day:** until the content packs arrive in Phase 15, add a word by hand. The home-page card shows for that language on that UTC day only.
+
+```sql
+insert into public.words_of_the_day (locale, day, word, meaning) values ('en', '2026-11-02', 'serendipity', 'Finding something good without looking for it.');
+```
+
+**Locally, `submit-match` answers 503:** the edge runtime container has stopped (it doesn't always come back after Docker restarts). Run `docker start supabase_edge_runtime_kefche`, or `pnpm db:stop && pnpm db:start`.
 
 ## Hosted Supabase
 
@@ -199,7 +255,6 @@ Copy `supabase/.env.example` to `supabase/.env` and paste each client ID and sec
 ## Sections to come
 
 - Migrations through CI with manual approval, backups _(Phase 21)_
-- Edge Function secrets and deploys _(Phase 7)_
 - Moderation escalation _(Phase 8, 10)_
 - Custom domain, DNS, email (Resend), production OAuth apps _(Phase 21)_
 - Incident response and smoke-test checklist _(Phase 21)_

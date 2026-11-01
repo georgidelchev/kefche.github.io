@@ -141,6 +141,26 @@ Measured in step 11 on local Supabase with two browsers, counting every websocke
 - Relayed messages reach every member, the sender included, so a room of N players costs about N times as much per message.
 - The free plan's 2 million messages a month allow about 260 hours of two-player turn games, or about 830 hours of idle lobbies.
 
+## Stats, XP and leaderboards (Phase 7)
+
+```mermaid
+flowchart LR
+  B["Account's browser"] -->|"start_play: seed"| P[("private.plays")]
+  B -->|"at the end: the action log"| SM["submit-match<br/>(Edge Function)"]
+  P --> SM
+  SM -->|"replay with the game's engine"| V{"holds up?"}
+  V -->|"no"| R[("matches: review")]
+  V -->|"yes"| C["count_result: stats, XP,<br/>streak · achievements · boards"]
+  C --> B
+```
+
+- **The engines on the server** (ADR-0028): `pnpm functions:engines` bundles every game's engine and manifest for Deno (`_shared/engines.gen.js`), so the server replays with the browser's own code.
+- **Results** (ADR-0029): an account's game starts on a play the server issued (`start_play`) and ends with its action log sent to `submit-match`. The server replays the log on the play's seed and checks the times and speed. A result that doesn't hold up is stored for review and counts for nothing. Guests' games stay on their device.
+- **Counting** (ADR-0030): `private.count_result` updates `player_game_stats`, awards XP (capped per game per day) and the play streak, in SQL, so the scheduled decisions of online matches count the same way. `submit-match` then unlocks achievement tiers from the stats, puts a game played alone on its boards, and answers with the rewards (`match_rewards`) the results screen shows.
+- **Leaderboards** (ADR-0031): one row per player, board and period (`all`, `week:<Monday>`, `day:<date>`), filtered when read, with the viewer's own place.
+- **The daily challenge:** one seed a day for everyone, rotating through the games played alone. It's made when first asked for, played on its own play, and has its own board.
+- **Pages:** the profile shows stats, the rating charts, the level and achievements; `/[locale]/leaderboards/` and each game page show boards; the home page has the daily challenge; settings has the avatar frames. One results screen (`GameResults`) ends every game in every mode.
+
 ## Internationalization
 
 - **Registry:** `src/i18n/locales.ts` lists every locale with its native name, BCP 47 tag, `dir`, script and OG locale. Routing, fonts, `<html lang dir>`, hreflang and the language switcher all derive from it.
@@ -203,7 +223,6 @@ GitHub Actions `CI` runs format check → lint → contrast → translations →
 ## Sections to come
 
 - Realtime message budget for real-time arenas (SPEC §10.9) _(Phase 9)_
-- Stats, XP and leaderboards _(Phase 7)_
 - Social, chat and moderation _(Phase 8)_
 - PWA install, audio and haptics _(Phase 16; no offline mode, ADR-0014)_
 - Consent, analytics and monitoring _(Phase 17)_
