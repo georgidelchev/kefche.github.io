@@ -14,7 +14,7 @@
 | 5     | Multiplayer core                                           | ✅ Done (owner signed off 2026-10-24) |
 | 6     | Chess                                                      | ✅ Done (owner signed off 2026-10-25) |
 | 7     | Stats, XP, achievements, leaderboards, daily               | ✅ Done (owner signed off 2026-11-01) |
-| 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                        |
+| 8     | Social: friends, presence, chat, moderation, notifications | 📝 Plan awaiting approval             |
 | 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                        |
 | 10    | Admin panel                                                | ⏳ Not started                        |
 | 11–14 | Game batches                                               | ⏳ Not started                        |
@@ -1233,6 +1233,103 @@ Online modes are enabled for the Phase 4 games.
   - **Checked live:** `submit-match` starts and refuses an unsigned request. The scheduled jobs `decide-room-matches` and `forget-old-progress` exist. Today's challenge (Snake) and the leaderboards answer from the hosted database. The home page's daily card, the leaderboards in English and Arabic, and a game page load.
   - **Still to confirm:** a signed-in game on the live site, stored as `counted` (RUNBOOK, "After a deploy").
 - [x] Owner sign-off (2026-11-01)
+
+---
+
+## Phase 8 — Social: friends, presence, chat, moderation, notifications
+
+**Goal (SPEC §8, §7.2, §18):**
+
+- friends, blocks, presence and invites;
+- global chat per language, DMs, and chat during online games;
+- emoji and GIFs;
+- the profanity filter, rate limits, reports and sanctions;
+- a notification center, Web Push, and the plumbing for email (sent from Phase 21).
+
+**DoD:** every chat type works in real time, with moderation; a blocked user is fully isolated. Plus the standing DoD.
+
+**Already in place:**
+
+- **Settings:** `user_settings.privacy_messages` and `privacy_invites` (everyone, friends or nobody), and `show_online`.
+- **Lobby chat** (`room_messages`): text only, masked with `private.blocked_terms`, rate-limited through `private.rate_limits`, and deleted with its room.
+- **Staff:** `user_roles` and `has_role()`; an insert-only `audit_log`.
+- **Placeholders:** the "Friends" nav entry ("soon"), and the leaderboards' empty Friends tab.
+
+### Steps (one Conventional Commit each)
+
+1. **Database:**
+   - **Social:** `friendships` (a request, then friends), `blocks`.
+   - **Chat:** `chat_rooms` (one global room per language), `conversations` and `conversation_members` (DMs), and `messages` (body, GIF id, status: visible, hidden or deleted).
+   - **Moderation:** `reports`, `sanctions`, and `moderation_actions`, also written to `audit_log`.
+   - **Notifications:** `notifications`, `push_subscriptions`, and the notification preferences per type and channel.
+   - **Rules:** RLS throughout, with every write through an RPC, and retention jobs (Q2). The data export covers it all; deleting an account removes it all.
+2. **Moderation core:**
+   - **The filter:** better matching for the blocked-terms lists: letters spaced out, digits for letters, Cyrillic and Latin look-alikes. It applies to chat, nicknames, bios and lobby names, masks by default, and mutes automatically on repeated hits (3 within 10 minutes: a 10-minute chat mute).
+   - **Rate limits:** 5 messages per 10 s per channel, and slow mode per global room.
+   - **Sanctions:** warn, mute (chat only), suspend (no online play) and ban (no sign-in), each with a duration and a reason, enforced in the RPCs. The player sees a notice with the expiry.
+3. **Friends and blocks:**
+   - **Actions:** send, accept, decline and cancel requests; remove a friend; block and unblock.
+   - **Pages:** `/[locale]/friends/` replaces the "soon" entry. Profiles get Add friend, Message, Invite to game, Block and Report, and show mutual friends.
+   - **Boards:** the leaderboards' Friends tab is filled.
+4. **Presence** (friends only, Decisions):
+   - **Statuses:** online, in a lobby (game), in a game (game), away.
+   - **Rules:** it respects `show_online`, and blocked players never see each other.
+5. **Invites:** invite friends to a lobby from the lobby or the friends list, following `privacy_invites`. Each arrives as a notification with Join.
+6. **The notification center:**
+   - **The bell:** in the header, with an unread count and live updates. Clicking an item opens what it's about.
+   - **Types:** friend requests, invites, DMs, achievements, rating milestones, the daily challenge, moderation notices and announcements (written by the admin panel, Phase 10).
+   - **Settings:** preferences per type and channel (in the app, push, email).
+7. **Global chat:** `/[locale]/chat/`, one room per language (the page's by default, any other a tab away). History pages back. Moderators can delete any message and mute a player from the chat.
+8. **DMs:** `/[locale]/messages/` (noindex): conversations with unread counts, history, and a typing indicator. Who can write is set by `privacy_messages` and blocks.
+9. **Chat during online games:** the room's chat (as in the lobby) stays open in a drawer during the match.
+10. **Emoji and GIFs:**
+    - **Emoji:** an emoji picker, with search in the page's language where the data has it.
+    - **GIFs:** search and trending through a `giphy` Edge Function proxy (rated `pg-13`, stored as GIPHY ids, media only from GIPHY's domains, "Powered by GIPHY" shown), rate-limited and cached. It sits behind a switch that stays off without a key (Q1).
+    - **Links:** a safe linkify, for `https://` only, with `rel="nofollow ugc noopener"`. No user content is ever rendered as HTML.
+11. **Reports and moderation in the chat:**
+    - **Reports:** messages, players, avatars and lobby names can be reported, with a reason. Anything with 3 distinct reports is hidden until a moderator looks.
+    - **Moderators:** delete messages and mute players inline. The queue comes with the admin panel (Phase 10); until then, the RUNBOOK gives the SQL.
+    - **Guidelines:** a Community guidelines page in all 11 languages, linked from the chats and from sign-up.
+12. **Web Push and email plumbing:**
+    - **Push:**
+      - VAPID keys: the private one is an Edge Function secret.
+      - A service worker that handles push and nothing else (ADR-0014).
+      - Opt-in per device, then per-type preferences.
+      - A `send-push` Edge Function called by the database for new notifications. It drops expired subscriptions.
+    - **Email:** the preferences and an outbox only; Resend sends from Phase 21.
+13. **Verification and docs:**
+    - **Isolation:** a blocked player is isolated everywhere: DMs, invites, friend requests, global and room chat, presence, lobbies and matchmaking.
+    - **Measurements:** the Realtime message cost of each feature.
+    - **Layout:** the 360, 768 and 1280 px checks in both themes.
+    - **Docs:** ADRs for presence and notifications, chat storage, moderation and push. The RUNBOOK gets moderation escalation and the VAPID and GIPHY secrets.
+
+### Decisions (proposed)
+
+- **One live connection per signed-in tab,** on the player's own private channel (`user:<id>`), which carries their notifications, DMs, typing indicators and friends' status changes. Nothing opens for guests or visitors. The free plan allows 200 concurrent connections, so a tab hidden for 5 minutes closes its connection and shows "away". It catches up when it's back.
+- **Presence through the database, not a shared Presence channel** (a change from SPEC §8.1's wording). A shared channel would show everyone's status to everyone, blocked players included, and the free plan allows only 20 presence messages a second. Instead, each tab reports its status (on change, and every minute); the database pushes it to each friend's own channel, and expires it after 2 minutes of silence.
+- **Global chat and DMs stored in Postgres,** sent live from the database to each room's or conversation's private channel (`realtime.send`), as lobby chat's relay does. Lobby and in-game chat stay as they are, deleted with their room.
+- **Guests:** lobby and in-game chat as now, but no global chat, DMs or friends (SPEC §7.1).
+- **A block is checked in the database,** in every RPC and policy that joins two players, so no page can forget it.
+- **No new paid service.** GIPHY's free key allows 100 calls an hour (Q1).
+
+### Risks
+
+- **Concurrent connections:** 200 on the free plan, and every open signed-in tab holds one. Closing hidden tabs keeps the count to active players. Past that, it's the Pro plan or fewer live features (measured in step 13).
+- **Spam and abuse in global chat:** the filter, rate limits, auto-mutes, reports and auto-hide, plus Q4. Moderators have no queue until Phase 10.
+- **GIFs at scale:** 100 GIPHY calls an hour site-wide is little. Trending is cached for everyone, and each player's searches are rate-limited.
+- **Push on iOS:** it works only from an installed web app (iOS 16.4+), so iPhone players see notifications in the app only until they install (Phase 16).
+- **Size:** this is the largest phase so far. The steps are ordered so each one ships on its own.
+
+### Open questions for the owner
+
+- **Q1 — GIPHY:** create a free GIPHY key (100 calls an hour; a production key may cost money, and GIFs load from GIPHY's servers, which see the viewer's IP address) and build GIFs now, behind a switch (recommended)? Or leave GIFs out until later?
+- **Q2 — How long chat is kept:** global chat for 30 days and DMs for a year, with a deleted message's text erased at once and a reported message kept with its report for 90 days (recommended)? Or longer or shorter?
+- **Q3 — Presence:** friends only, through each player's own channel (recommended: private, blocks respected, within the free plan)? Or a site-wide Presence channel as SPEC §8.1 words it (everyone online sees everyone's status)?
+- **Q4 — New accounts in global chat:** allow them at once? Or only once the account is 24 hours old, like avatar uploads (recommended: it slows down throwaway spam accounts)? DMs between friends are open at once either way.
+
+### Status
+
+- [ ] Plan approved by owner
 
 ---
 
