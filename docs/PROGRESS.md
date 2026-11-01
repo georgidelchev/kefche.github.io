@@ -13,7 +13,7 @@
 | 4     | Bots, hotseat & timers                                     | ✅ Done (owner signed off 2026-10-23) |
 | 5     | Multiplayer core                                           | ✅ Done (owner signed off 2026-10-24) |
 | 6     | Chess                                                      | ✅ Done (owner signed off 2026-10-25) |
-| 7     | Stats, XP, achievements, leaderboards, daily               | 🚧 In progress                        |
+| 7     | Stats, XP, achievements, leaderboards, daily               | ✅ Done (owner signed off 2026-11-01) |
 | 8     | Social: friends, presence, chat, moderation, notifications | ⏳ Not started                        |
 | 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                        |
 | 10    | Admin panel                                                | ⏳ Not started                        |
@@ -1225,7 +1225,14 @@ Online modes are enabled for the Phase 4 games.
     - RUNBOOK "Stats, XP and leaderboards": deploying a game change, the jobs, removing a board entry, the daily challenge, Word of the Day by hand, and a stopped local edge runtime.
   - **Local edge runtime:** after Docker restarted, its container stayed stopped and `submit-match` answered 503. The RUNBOOK says how to start it.
   - Deno 52/52; all checks green.
-- **Phase 7 DoD:** stats show on the profile, leaderboards update, and suspicious results are set aside for review. The standing DoD holds: all checks green, 11 locales, the layout checks and the docs. **Still to do with the deploy (owner's word):** push the migrations, deploy `submit-match` and `export-data`, push `main`, then play one game on the live site to confirm the hosted function carries the engine bundle (RUNBOOK).
+- **Phase 7 DoD:** stats show on the profile, leaderboards update, and suspicious results are set aside for review. The standing DoD holds: all checks green, 11 locales, the layout checks and the docs.
+- [x] Push (owner's word, 2026-11-01):
+  - the twelve Phase 7 migrations to the hosted project;
+  - `submit-match` (with the engine bundle) and `export-data`;
+  - `main`, deployed by CI (Database, build and Deploy jobs green).
+  - **Checked live:** `submit-match` starts and refuses an unsigned request. The scheduled jobs `decide-room-matches` and `forget-old-progress` exist. Today's challenge (Snake) and the leaderboards answer from the hosted database. The home page's daily card, the leaderboards in English and Arabic, and a game page load.
+  - **Still to confirm:** a signed-in game on the live site, stored as `counted` (RUNBOOK, "After a deploy").
+- [x] Owner sign-off (2026-11-01)
 
 ---
 
