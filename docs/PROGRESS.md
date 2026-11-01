@@ -14,7 +14,7 @@
 | 5     | Multiplayer core                                           | ✅ Done (owner signed off 2026-10-24) |
 | 6     | Chess                                                      | ✅ Done (owner signed off 2026-10-25) |
 | 7     | Stats, XP, achievements, leaderboards, daily               | ✅ Done (owner signed off 2026-11-01) |
-| 8     | Social: friends, presence, chat, moderation, notifications | 📝 Plan awaiting approval             |
+| 8     | Social: friends, presence, chat, moderation, notifications | 🚧 In progress                        |
 | 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                        |
 | 10    | Admin panel                                                | ⏳ Not started                        |
 | 11–14 | Game batches                                               | ⏳ Not started                        |
@@ -1271,9 +1271,9 @@ Online modes are enabled for the Phase 4 games.
    - **Actions:** send, accept, decline and cancel requests; remove a friend; block and unblock.
    - **Pages:** `/[locale]/friends/` replaces the "soon" entry. Profiles get Add friend, Message, Invite to game, Block and Report, and show mutual friends.
    - **Boards:** the leaderboards' Friends tab is filled.
-4. **Presence** (friends only, Decisions):
+4. **Presence** (Q3, Decisions):
    - **Statuses:** online, in a lobby (game), in a game (game), away.
-   - **Rules:** it respects `show_online`, and blocked players never see each other.
+   - **Who sees it:** everyone, friends only or nobody, as the player chooses in settings (`show_online` becomes this choice). Blocked players never see each other.
 5. **Invites:** invite friends to a lobby from the lobby or the friends list, following `privacy_invites`. Each arrives as a notification with Join.
 6. **The notification center:**
    - **The bell:** in the header, with an unread count and live updates. Clicking an item opens what it's about.
@@ -1306,7 +1306,7 @@ Online modes are enabled for the Phase 4 games.
 ### Decisions (proposed)
 
 - **One live connection per signed-in tab,** on the player's own private channel (`user:<id>`), which carries their notifications, DMs, typing indicators and friends' status changes. Nothing opens for guests or visitors. The free plan allows 200 concurrent connections, so a tab hidden for 5 minutes closes its connection and shows "away". It catches up when it's back.
-- **Presence through the database, not a shared Presence channel** (a change from SPEC §8.1's wording). A shared channel would show everyone's status to everyone, blocked players included, and the free plan allows only 20 presence messages a second. Instead, each tab reports its status (on change, and every minute); the database pushes it to each friend's own channel, and expires it after 2 minutes of silence.
+- **Presence through the database, not a shared Presence channel** (a change from SPEC §8.1's wording). A shared channel would show everyone's status to everyone, blocked players included, and the free plan allows only 20 presence messages a second. Instead, each tab reports its status (on change, and every minute); the database pushes it live to each friend's own channel, and expires it after 2 minutes of silence. A player visible to everyone shows as online wherever they appear (profile, chat, lobbies), read when the page loads.
 - **Global chat and DMs stored in Postgres,** sent live from the database to each room's or conversation's private channel (`realtime.send`), as lobby chat's relay does. Lobby and in-game chat stay as they are, deleted with their room.
 - **Guests:** lobby and in-game chat as now, but no global chat, DMs or friends (SPEC §7.1).
 - **A block is checked in the database,** in every RPC and policy that joins two players, so no page can forget it.
@@ -1327,9 +1327,16 @@ Online modes are enabled for the Phase 4 games.
 - **Q3 — Presence:** friends only, through each player's own channel (recommended: private, blocks respected, within the free plan)? Or a site-wide Presence channel as SPEC §8.1 words it (everyone online sees everyone's status)?
 - **Q4 — New accounts in global chat:** allow them at once? Or only once the account is 24 hours old, like avatar uploads (recommended: it slows down throwaway spam accounts)? DMs between friends are open at once either way.
 
+### Owner answers (2026-11-01)
+
+- **Q1 — GIPHY:** yes. GIFs are built behind a switch that stays off until a free key is set.
+- **Q2 — How long chat is kept:** each global chat room keeps its latest 1,000 messages; each new message deletes the oldest past that. DMs keep the proposal (a year), and a reported message stays with its report for 90 days.
+- **Q3 — Presence:** each player chooses whether everyone can see them online. The `show_online` switch becomes a choice: everyone, friends only (the default) or nobody. Blocked players never see it either way.
+- **Q4 — New accounts in global chat:** they can post once the account is 2 hours old.
+
 ### Status
 
-- [ ] Plan approved by owner
+- [x] Plan approved by owner (2026-11-01, with the answers above)
 
 ---
 
