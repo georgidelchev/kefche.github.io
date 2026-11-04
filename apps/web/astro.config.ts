@@ -119,7 +119,7 @@ export default defineConfig({
     // The same in the browser for packages only reached through a dynamic
     // import, which Vite's first scan misses.
     optimizeDeps: {
-      include: ["uqr"],
+      include: ["uqr", "frimousse"],
     },
   },
 });

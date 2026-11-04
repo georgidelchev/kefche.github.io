@@ -3,12 +3,14 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 
 import { authStaticPaths } from "@/features/auth/page-helpers";
 import { authPaths } from "@/features/auth/paths";
+import { chatToolsStrings } from "@/features/chat/strings";
 import SocialNav from "@/features/friends/SocialNav.astro";
 import { MessagesPage } from "@/features/messages/MessagesPage";
 import { messagesPageStrings } from "@/features/messages/strings";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+import { GIFS_ENABLED } from "@/lib/gifs";
 
 // Direct messages (SPEC §8.2): private and noindex; only in builds with
 // accounts. `?with=<player id>` opens the thread with that player.
@@ -16,7 +18,7 @@ export const getStaticPaths = authStaticPaths;
 
 const locale = Astro.params.locale as Locale;
 const t = getT(locale);
-const { bcp47 } = LOCALE_INFO[locale];
+const { bcp47, dir } = LOCALE_INFO[locale];
 const paths = authPaths(locale, getRelativeLocaleUrl);
 const title = t("messages:title");
 ---
@@ -38,6 +40,9 @@ const title = t("messages:title");
       bcp47={bcp47}
       signInPath={paths.signIn}
       profileBase={getRelativeLocaleUrl(locale, "/u/")}
+      tools={chatToolsStrings(t, locale)}
+      gifs={GIFS_ENABLED}
+      dir={dir}
     />
   </div>
 </AppShell>

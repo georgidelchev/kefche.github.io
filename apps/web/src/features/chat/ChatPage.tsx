@@ -35,8 +35,12 @@ import {
   type ChatMessage,
   type Sender,
 } from "./chat-data";
+import { insertText } from "./compose";
+import { EmojiButton } from "./EmojiButton";
+import { GifButton } from "./GifButton";
+import { MessageBody } from "./MessageBody";
 
-import type { ChatPageStrings } from "./strings";
+import type { ChatPageStrings, ChatToolsStrings } from "./strings";
 
 const MAX_LENGTH = 500;
 /** Mute lengths offered to moderators, in minutes. */
@@ -58,6 +62,10 @@ interface Props {
   signInPath: string;
   /** "/<locale>/u/" */
   profileBase: string;
+  tools: ChatToolsStrings;
+  /** The GIF button (builds with GIFs on). */
+  gifs: boolean;
+  dir: "ltr" | "rtl";
 }
 
 function roomFromUrl(rooms: Props["rooms"], fallback: string): string {
@@ -73,6 +81,9 @@ export function ChatPage({
   bcp47,
   signInPath,
   profileBase,
+  tools,
+  gifs,
+  dir,
 }: Props) {
   const account = useAccount(signInPath);
   const id = useId();
@@ -88,6 +99,7 @@ export function ChatPage({
   const logRef = useRef<HTMLOListElement>(null);
   const stickRef = useRef(true);
   const sendingRef = useRef(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   // The room: its history and new messages, live; its slow mode.
   useEffect(() => {
@@ -183,20 +195,21 @@ export function ChatPage({
     });
   }
 
-  async function send() {
+  async function send(gif?: string) {
     const body = text.trim();
-    if (body === "" || sendingRef.current) return;
+    if ((body === "" && !gif) || sendingRef.current) return;
     sendingRef.current = true;
     setError(null);
-    const result = await sendMessage(supabase, room, body);
+    // A GIF goes on its own; the text being written stays.
+    const result = await sendMessage(supabase, room, gif ? "" : body, gif);
     sendingRef.current = false;
     if ("message" in result) {
-      setText("");
+      if (!gif) setText("");
       stickRef.current = true;
       setMessages((current) => (current ? mergeMessages(current, [result.message]) : current));
       return;
     }
-    setError(errorText(result.error, s, bcp47));
+    setError(errorText(result.error, s, tools, bcp47));
   }
 
   async function remove(message: ChatMessage) {
@@ -290,7 +303,9 @@ export function ChatPage({
                           {time(m.at)}
                         </time>
                       </p>
-                      <p className="break-words whitespace-pre-wrap">{m.body}</p>
+                      <div className="grid justify-items-start gap-1">
+                        <MessageBody body={m.body} gifId={m.gifId ?? null} gifAlt={tools.gifAlt} />
+                      </div>
                     </div>
                     {(mine || staff) && (
                       <span className="flex shrink-0 gap-1">
@@ -326,7 +341,29 @@ export function ChatPage({
           <label htmlFor={`${id}-message`} className="sr-only">
             {s.label}
           </label>
+          <EmojiButton
+            strings={tools}
+            dir={dir}
+            onPick={(emoji) => {
+              const next = insertText(inputRef.current, text, emoji, MAX_LENGTH);
+              if (!next) return;
+              setText(next.value);
+              requestAnimationFrame(() => {
+                inputRef.current?.focus();
+                inputRef.current?.setSelectionRange(next.caret, next.caret);
+              });
+            }}
+          />
+          {gifs && (
+            <GifButton
+              supabase={supabase}
+              strings={tools}
+              dir={dir}
+              onPick={(gif) => void send(gif)}
+            />
+          )}
           <Input
+            ref={inputRef}
             id={`${id}-message`}
             value={text}
             maxLength={MAX_LENGTH}
@@ -373,7 +410,12 @@ export function ChatPage({
 }
 
 /** How a refused message reads. */
-function errorText(error: unknown, s: ChatPageStrings, bcp47: string): string {
+function errorText(
+  error: unknown,
+  s: ChatPageStrings,
+  tools: ChatToolsStrings,
+  bcp47: string,
+): string {
   const message = (error as { message?: unknown } | null)?.message;
   const muted = refusalEnd(error, "muted");
   if (muted !== undefined) {
@@ -391,6 +433,7 @@ function errorText(error: unknown, s: ChatPageStrings, bcp47: string): string {
       }),
     });
   }
+  if (message === "invalid_gif") return tools.gifInvalid;
   if (message === "rate_limited") return s.errors.tooFast;
   if (message === "invalid_message") return s.errors.tooLong;
   return s.errors.failed;

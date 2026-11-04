@@ -17,6 +17,9 @@ import { useEffect, useEffectEvent, useId, useRef, useState } from "react";
 import { Button } from "@kefche/ui/components/button";
 import { Input } from "@kefche/ui/components/input";
 
+import { insertText } from "@/features/chat/compose";
+import { EmojiButton } from "@/features/chat/EmojiButton";
+import { MessageBody } from "@/features/chat/MessageBody";
 import { fill } from "@/features/games/turn/labels";
 import { sanctionEnd, sanctionNotice } from "@/features/moderation/sanction-notice";
 import type { Supabase } from "@/lib/supabase/client";
@@ -44,11 +47,20 @@ interface Props {
   self: string;
   locale: string;
   strings: ChatStrings;
+  dir: "ltr" | "rtl";
   /** `pane` (default): the lobby's side pane. `drawer`: a button that opens it over a match. */
   layout?: "pane" | "drawer";
 }
 
-export function RoomChat({ supabase, roomId, self, locale, strings: s, layout = "pane" }: Props) {
+export function RoomChat({
+  supabase,
+  roomId,
+  self,
+  locale,
+  strings: s,
+  dir,
+  layout = "pane",
+}: Props) {
   const id = useId();
   const drawer = layout === "drawer";
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -213,7 +225,7 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s, layout = 
               <span className="font-semibold">{m.nickname}</span>
               {m.userId === self && <span className="text-sm text-muted"> ({s.you})</span>}
               <span className="text-muted">: </span>
-              <span dir="auto">{m.body}</span>
+              <MessageBody body={m.body} gifAlt={s.tools.gifAlt} />
             </li>
           ))}
         </ol>
@@ -226,6 +238,19 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s, layout = 
           void send();
         }}
       >
+        <EmojiButton
+          strings={s.tools}
+          dir={dir}
+          onPick={(emoji) => {
+            const next = insertText(inputRef.current, text, emoji, MAX_LENGTH);
+            if (!next) return;
+            setText(next.value);
+            requestAnimationFrame(() => {
+              inputRef.current?.focus();
+              inputRef.current?.setSelectionRange(next.caret, next.caret);
+            });
+          }}
+        />
         <label htmlFor={`${id}-input`} className="sr-only">
           {s.label}
         </label>

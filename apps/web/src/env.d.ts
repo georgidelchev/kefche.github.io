@@ -10,6 +10,8 @@ interface ImportMetaEnv {
   readonly PUBLIC_SUPABASE_PUBLISHABLE_KEY?: string;
   /** Read through `AUTH_PROVIDERS` in `@/lib/auth-providers`. */
   readonly PUBLIC_AUTH_PROVIDERS?: string;
+  /** Read through `GIFS_ENABLED` in `@/lib/gifs`. */
+  readonly PUBLIC_GIFS?: string;
 }
 
 interface ImportMeta {

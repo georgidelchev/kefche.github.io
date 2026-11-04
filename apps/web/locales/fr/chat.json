@@ -35,5 +35,20 @@
       "h24": "24 heures",
       "d7": "7 jours"
     }
+  },
+  "tools": {
+    "emoji": "Emoji",
+    "emojiSearch": "Rechercher un emoji",
+    "emojiEmpty": "Aucun emoji trouvé",
+    "loading": "Chargement…",
+    "gif": "GIF",
+    "gifSearch": "Rechercher des GIF",
+    "gifEmpty": "Aucun GIF trouvé",
+    "gifFailed": "Les GIF ne sont pas disponibles pour le moment.",
+    "gifBusy": "Les GIF sont saturés. Réessayez dans quelques minutes.",
+    "gifMore": "Plus de GIF",
+    "gifAlt": "GIF",
+    "gifInvalid": "Ce GIF ne peut pas être envoyé. Choisissez-en un autre.",
+    "gifPowered": "Powered by GIPHY"
   }
 }

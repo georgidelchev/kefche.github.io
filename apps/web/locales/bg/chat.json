@@ -35,5 +35,20 @@
       "h24": "24 часа",
       "d7": "7 дни"
     }
+  },
+  "tools": {
+    "emoji": "Емоджи",
+    "emojiSearch": "Търси емоджи",
+    "emojiEmpty": "Няма намерени емоджи",
+    "loading": "Зареждане…",
+    "gif": "GIF",
+    "gifSearch": "Търси GIF",
+    "gifEmpty": "Няма намерени GIF",
+    "gifFailed": "GIF-овете не са достъпни в момента.",
+    "gifBusy": "GIF-овете са претоварени. Опитай пак след няколко минути.",
+    "gifMore": "Още GIF-ове",
+    "gifAlt": "GIF",
+    "gifInvalid": "Този GIF не може да бъде изпратен. Избери друг.",
+    "gifPowered": "Powered by GIPHY"
   }
 }

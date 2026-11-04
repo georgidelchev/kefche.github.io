@@ -1,4 +1,31 @@
 import type { AppT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+import { emojiLocale } from "./emoji-locale";
+
+/** The emoji and GIF pickers of every chat. */
+export function chatToolsStrings(t: AppT, locale: Locale) {
+  return {
+    emoji: t("chat:tools.emoji"),
+    emojiSearch: t("chat:tools.emojiSearch"),
+    emojiEmpty: t("chat:tools.emojiEmpty"),
+    loading: t("chat:tools.loading"),
+    gif: t("chat:tools.gif"),
+    gifSearch: t("chat:tools.gifSearch"),
+    gifEmpty: t("chat:tools.gifEmpty"),
+    gifFailed: t("chat:tools.gifFailed"),
+    gifBusy: t("chat:tools.gifBusy"),
+    gifMore: t("chat:tools.gifMore"),
+    gifAlt: t("chat:tools.gifAlt"),
+    gifInvalid: t("chat:tools.gifInvalid"),
+    gifPowered: t("chat:tools.gifPowered"),
+    close: t("chat:actions.close"),
+    /** The picker data's language (Emojibase), and the page's for GIF searches. */
+    emojiLocale: emojiLocale(locale),
+    locale,
+  };
+}
+export type ChatToolsStrings = ReturnType<typeof chatToolsStrings>;
 
 /** The chat page's strings, translated on the server; placeholders are filled in on the client. */
 export function chatPageStrings(t: AppT) {

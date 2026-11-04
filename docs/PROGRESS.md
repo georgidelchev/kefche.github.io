@@ -1461,6 +1461,18 @@ Online modes are enabled for the Phase 4 games.
   - **The same chat:** players and spectators of the room, with the lobby's messages, limits, word filter, mutes and blocks (`send_room_message`), deleted with the room. Switching between lobby and match reads the latest messages again, so none are missed.
   - **No new strings or database changes.**
   - **Checks:** the room pages render on the dev server and the green chain passes. The drawer hasn't been clicked through in a browser here.
+- [x] Step 10: emoji, GIFs and safe links (`20261104100800_gifs.sql`, the `giphy` function, ADR-0032).
+  - **Emoji:** a button beside every chat's input (lobby and in-game, global chat, DMs) opens a picker with search; the emoji goes in at the caret. frimousse, loaded only when the picker opens (9 KB gzip), with Emojibase's data served from this site in the page's language (9 of the 11; Arabic and Bulgarian search in English).
+  - **GIFs** (global chat and DMs; the lobby chat stays text): the GIF button opens trending GIFs or a search, with "Powered by GIPHY"; picking one sends it at once, beside any text being written.
+    - **Through the `giphy` function:** pg-13 only, cached (10 minutes trending, an hour a search), 30 searches per 10 minutes per player and at most 90 GIPHY calls an hour for the site. Accounts only.
+    - **Only served GIFs:** sending accepts only ids the function handed out (`invalid_gif` otherwise); a message stores the id, and the image comes from `media.giphy.com`.
+    - **Off by default:** `PUBLIC_GIFS=on` shows the button; without `GIPHY_API_KEY` the function answers `gifs_off`. The RUNBOOK gives the setup; the privacy notice mentions GIPHY in builds with GIFs on.
+  - **Links:** `https://` addresses in any chat become links (`rel="nofollow ugc noopener"`, a new tab); everything else stays text. Nothing a player writes is rendered as HTML.
+  - **UI:** a Popover component in `@kefche/ui` (Radix), above full-screen layers so the in-game chat can use it.
+  - **Checks:**
+    - SQL 18/18, rolled back: only the service role notes ids and takes searches; a served GIF sends alone or with text, in global chat and DMs, and shows in the history, the thread and the live DM; an unserved one is refused; the per-player limit and the site's GIPHY budget (a cached answer still passes); old ids forgotten. The global chat, DM and notification suites still pass.
+    - The function: Deno lint and check pass; locally it answers `gifs_off` without a key, and CORS answers. A real search needs a GIPHY key, so that path is untried.
+    - The pages and the emoji data (`/emoji/en/data.json`) load on the dev server; the green chain passes. The pickers haven't been clicked through in a browser here.
 
 ---
 
@@ -1477,7 +1489,8 @@ Online modes are enabled for the Phase 4 games.
 - **Auth pages are near the JS budget:** sign-up 110 KB and settings 116 KB gzip before supabase-js. New React on these pages needs a size check (Phase 18 may split islands further).
 - **Guest identity creation moves to Phase 5:** step 9 built the upgrade (sign-up or OAuth link keeps the guest's user id) and the merge (Edge Function `merge-guest` plus a confirmation page). `ensureIdentity()` is built with its first users, the rooms, in Phase 5; guests aren't asked their age (owner decision, 2026-10-24). No other page creates guest sessions.
 - **CSP for Stockfish (Phase 17):** chess runs Stockfish as WebAssembly in a nested worker, so the full Content-Security-Policy must allow `'wasm-unsafe-eval'` in `script-src` and `worker-src 'self'`. The Credits page lists Stockfish (GPL-3.0) and the cburnett pieces (BSD 3-Clause) from `packages/games/chess/CREDITS.md`.
-- **Credits attribution (Phase 17):** the blocked-terms lists are adapted from LDNOOBW (CC BY 4.0), and the Credits page must say so (`supabase/blocked-terms/README.md`).
+- **Credits attribution (Phase 17):** the blocked-terms lists are adapted from LDNOOBW (CC BY 4.0), and the Credits page must say so (`supabase/blocked-terms/README.md`). It also lists frimousse and Emojibase (both MIT), and GIPHY ("Powered by GIPHY", already shown in the GIF picker).
+- **CSP for GIFs (Phase 17):** the full Content-Security-Policy must allow `https://media.giphy.com` in `img-src` (ADR-0032).
 - **Blocked terms need review:** the owner reviews the drafted Bulgarian list (`supabase/blocked-terms/bg.txt`). Native speakers review the other non-English lists in Phase 15. Russian lacks some common Cyrillic slurs. Since Phase 8 step 2, phrases match in chat too, so the lists' phrases deserve a look for everyday words.
 - **Game page prose is English in 9 locales (Phase 15):** each game's name, tagline, meta description and in-game UI strings are translated in all 11 locales. The long page sections (about, how to play, controls, tips, FAQ) are written in English and Bulgarian; the other 9 locales carry the English text until the Phase 15 translation pass (SPEC §15, §22 DoD rule).
 - **Translations need native review (Phase 15):** all strings in the 9 locales other than en/bg are my translations and haven't been reviewed by native speakers. Bulgarian should be reviewed by the owner.

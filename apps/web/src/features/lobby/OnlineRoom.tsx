@@ -856,7 +856,14 @@ function Room({
   // In the lobby the chat is the page's right-hand pane; during a match it opens
   // as a drawer from the match's bar, over the board (SPEC §6.4).
   const chatPane = (
-    <RoomChat supabase={supabase} roomId={roomId} self={self} locale={locale} strings={chat} />
+    <RoomChat
+      supabase={supabase}
+      roomId={roomId}
+      self={self}
+      locale={locale}
+      strings={chat}
+      dir={dir}
+    />
   );
   const docked = chatSlot ? createPortal(chatPane, chatSlot) : chatPane;
   const drawer = (
@@ -866,6 +873,7 @@ function Room({
       self={self}
       locale={locale}
       strings={chat}
+      dir={dir}
       layout="drawer"
     />
   );

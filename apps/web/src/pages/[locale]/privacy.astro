@@ -2,6 +2,7 @@
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALES, LOCALE_INFO, type Locale } from "@/i18n/locales";
+import { GIFS_ENABLED } from "@/lib/gifs";
 
 import type { GetStaticPaths } from "astro";
 
@@ -38,6 +39,8 @@ const sections = [
       t("legal:privacy.stored.chat"),
       t("legal:privacy.stored.globalChat"),
       t("legal:privacy.stored.messages"),
+      // Only in builds with GIFs on (docs/RUNBOOK.md).
+      ...(GIFS_ENABLED ? [t("legal:privacy.stored.gifs")] : []),
       t("legal:privacy.stored.friends"),
       t("legal:privacy.stored.invites"),
       t("legal:privacy.stored.notifications"),

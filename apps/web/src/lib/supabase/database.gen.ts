@@ -671,6 +671,9 @@ isOneToOne: false
 "my_notifications":
 { Args: { "p_before"?: number,"p_limit"?: number }; Returns: Json
                            },
+"note_gifs":
+{ Args: { "p_ids": (string)[] }; Returns: undefined
+                           },
 "play_load":
 { Args: { "p_play": string }; Returns: Json
                            },
@@ -774,10 +777,10 @@ isOneToOne: false
 { Args: { "p_kind": string,"p_minutes"?: number,"p_note"?: string,"p_reason": string,"p_report"?: string,"p_user": string }; Returns: string
                            },
 "send_chat_message":
-{ Args: { "p_body": string,"p_room": unknown }; Returns: Json
+{ Args: { "p_body"?: string,"p_gif"?: string,"p_room": unknown }; Returns: Json
                            },
 "send_direct_message":
-{ Args: { "p_body": string,"p_user": string }; Returns: Json
+{ Args: { "p_body"?: string,"p_gif"?: string,"p_user": string }; Returns: Json
                            },
 "send_room_message":
 { Args: { "p_body": string,"p_room": string }; Returns: {
@@ -874,6 +877,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"take_gif_search":
+{ Args: { "p_remote": boolean,"p_user": string }; Returns: string
+                           },
 "take_rate_limit":
 { Args: { "p_capacity": number,"p_key": string,"p_refill_per_second": number }; Returns: boolean
                            },

@@ -159,6 +159,8 @@ jobs:
           PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${{ vars.PUBLIC_SUPABASE_PUBLISHABLE_KEY || secrets.PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
           # OAuth apps for production come in Phase 21; until then, email only.
           PUBLIC_AUTH_PROVIDERS: ${{ vars.PUBLIC_AUTH_PROVIDERS || secrets.PUBLIC_AUTH_PROVIDERS || 'none' }}
+          # "on" once the giphy function has its GIPHY_API_KEY (docs/RUNBOOK.md).
+          PUBLIC_GIFS: ${{ vars.PUBLIC_GIFS || '' }}
 
       - name: Deploy to production
         if: github.event_name == 'push'

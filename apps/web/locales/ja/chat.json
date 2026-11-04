@@ -35,5 +35,20 @@
       "h24": "24 時間",
       "d7": "7 日"
     }
+  },
+  "tools": {
+    "emoji": "絵文字",
+    "emojiSearch": "絵文字を検索",
+    "emojiEmpty": "絵文字が見つかりません",
+    "loading": "読み込み中…",
+    "gif": "GIF",
+    "gifSearch": "GIF を検索",
+    "gifEmpty": "GIF が見つかりません",
+    "gifFailed": "現在 GIF は利用できません。",
+    "gifBusy": "GIF が混み合っています。数分後にもう一度お試しください。",
+    "gifMore": "GIF をもっと見る",
+    "gifAlt": "GIF",
+    "gifInvalid": "この GIF は送信できません。別の GIF を選んでください。",
+    "gifPowered": "Powered by GIPHY"
   }
 }

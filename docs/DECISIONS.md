@@ -604,3 +604,26 @@ The Web Push service worker (Phase 8) is still allowed and handles push events o
   - an opted-out player vanishes from every board and comes back on opting in.
 - **Scale:** places are counted on each read, with an index on (board, period, value). That's fine for thousands of players per board; far more would need cached ranks.
 - **Inactive players:** rating uncertainty doesn't grow while a player is away (ADR-0027), so an established rating stays on its board until it's played again.
+
+## ADR-0032: Emoji from a self-hosted Emojibase, GIFs through a GIPHY proxy
+
+**Date:** 2026-11-04 · **Status:** Accepted
+
+**Context.** Phase 8 step 10 asks for an emoji picker with search in the page's language, and GIPHY GIFs (Q1: built behind a switch, off without a key) stored as ids, rated pg-13, from GIPHY's domains only, with its attribution. Chat pages are near the JS budget, and the site makes no third-party requests it doesn't need.
+
+**Decision.**
+
+- **Emoji: frimousse 0.4.0** (MIT, React, headless, about 9 KB gzip, no dependencies) over emoji-picker-element (a web component with its own styles and UI strings to translate) and emoji-mart (larger, unmaintained since 2024). It loads only when the picker opens.
+- **Emoji data: Emojibase 18** (MIT), pinned as a dev dependency and built into `/emoji/<locale>/{data,messages}.json` (`pages/emoji/[locale]/[file].ts`) for the 9 languages Emojibase covers; Arabic and Bulgarian pages search in English. No CDN request, and frimousse keeps the data in browser storage.
+- **GIFs through an Edge Function (`giphy`):** the key stays on the server; searches carry no viewer IP to GIPHY; answers are cached per instance (10 minutes trending, an hour a search); each player gets 30 searches per 10 minutes and the site at most 90 GIPHY calls an hour (the free key allows 100).
+- **Only served GIFs can be sent:** the function notes every id it hands out (`private.gifs`, forgotten after 30 days), and `send_chat_message` / `send_direct_message` refuse any other (`invalid_gif`). A hand-made request can't post a GIF of another rating.
+- **Ids, not URLs:** a message stores the GIPHY id; the app builds the image address on `media.giphy.com` from a checked id.
+- **The switch:** `PUBLIC_GIFS=on` shows the button; without `GIPHY_API_KEY` the function answers `gifs_off` regardless. The privacy notice mentions GIPHY only in builds with the switch on.
+- **Links:** `https://` only, as React elements with `rel="nofollow ugc noopener"`; nothing a player writes is rendered as HTML.
+
+**Consequences.**
+
+- **Cost:** 9 KB gzip for the picker on first use, the language's data (about 0.8 MB, served compressed) once per browser, and 7.3 MB of static files in the build.
+- **Searches in other languages:** for Arabic and Bulgarian, until Emojibase covers them (a custom `resolveEmojiData` could add our own names later).
+- **GIPHY's budget:** at 90 calls an hour, a busy site's searches start answering "busy" sooner than its trending list; a production key (possibly paid) lifts it.
+- **Content Security Policy (Phase 17):** `img-src` must allow `https://media.giphy.com`.

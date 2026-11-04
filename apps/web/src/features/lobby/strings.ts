@@ -1,7 +1,9 @@
 // Text for online play (Phase 5), translated on the page and passed to islands.
 import type { AuthErrorKey } from "@/features/auth/errors";
+import { chatToolsStrings, type ChatToolsStrings } from "@/features/chat/strings";
 import type { PresenceStrings } from "@/features/live/presence";
 import type { AppT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
 
 import type { InviteErrorCode } from "./invites";
 
@@ -146,10 +148,13 @@ export interface ChatStrings {
   /** A mute without an end. */
   muted: string;
   failed: string;
+  /** The emoji picker. */
+  tools: ChatToolsStrings;
 }
 
-export function chatStrings(t: AppT): ChatStrings {
+export function chatStrings(t: AppT, locale: Locale): ChatStrings {
   return {
+    tools: chatToolsStrings(t, locale),
     title: t("lobby:chat.title"),
     label: t("lobby:chat.label"),
     send: t("lobby:chat.send"),

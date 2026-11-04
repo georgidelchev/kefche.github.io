@@ -444,6 +444,10 @@ import_map = "./functions/deno.json"
 [functions.merge-guest]
 import_map = "./functions/deno.json"
 
+# GIF search for the chat; needs GIPHY_API_KEY (answers gifs_off without it).
+[functions.giphy]
+import_map = "./functions/deno.json"
+
 [functions.purge-accounts]
 verify_jwt = false
 import_map = "./functions/deno.json"

@@ -35,5 +35,20 @@
       "h24": "24 小时",
       "d7": "7 天"
     }
+  },
+  "tools": {
+    "emoji": "表情",
+    "emojiSearch": "搜索表情",
+    "emojiEmpty": "未找到表情",
+    "loading": "加载中…",
+    "gif": "GIF",
+    "gifSearch": "搜索 GIF",
+    "gifEmpty": "未找到 GIF",
+    "gifFailed": "GIF 暂时不可用。",
+    "gifBusy": "GIF 服务繁忙，请几分钟后再试。",
+    "gifMore": "更多 GIF",
+    "gifAlt": "GIF",
+    "gifInvalid": "无法发送这个 GIF，请换一个。",
+    "gifPowered": "Powered by GIPHY"
   }
 }

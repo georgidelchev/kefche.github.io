@@ -35,5 +35,20 @@
       "h24": "24 ساعة",
       "d7": "7 أيام"
     }
+  },
+  "tools": {
+    "emoji": "رموز تعبيرية",
+    "emojiSearch": "ابحث عن رمز تعبيري",
+    "emojiEmpty": "لم يُعثر على رموز تعبيرية",
+    "loading": "جارٍ التحميل…",
+    "gif": "GIF",
+    "gifSearch": "ابحث عن صور GIF",
+    "gifEmpty": "لم يُعثر على صور GIF",
+    "gifFailed": "صور GIF غير متاحة الآن.",
+    "gifBusy": "خدمة GIF مشغولة. أعد المحاولة بعد دقائق.",
+    "gifMore": "المزيد من GIF",
+    "gifAlt": "صورة GIF",
+    "gifInvalid": "لا يمكن إرسال صورة GIF هذه. اختر غيرها.",
+    "gifPowered": "Powered by GIPHY"
   }
 }

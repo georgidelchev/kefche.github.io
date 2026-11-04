@@ -13,6 +13,11 @@ import { Input } from "@kefche/ui/components/input";
 import { isAvatarFrame } from "@kefche/ui/lib/frames";
 
 import { avatarUrl } from "@/features/account/avatar-url";
+import { insertText } from "@/features/chat/compose";
+import { EmojiButton } from "@/features/chat/EmojiButton";
+import { GifButton } from "@/features/chat/GifButton";
+import { MessageBody } from "@/features/chat/MessageBody";
+import type { ChatToolsStrings } from "@/features/chat/strings";
 import { fill } from "@/features/games/turn/labels";
 import { LIVE_RESUME_EVENT, UNREAD_EVENT } from "@/features/live/presence-context";
 import { refusalEnd, sanctionNotice } from "@/features/moderation/sanction-notice";
@@ -47,6 +52,10 @@ interface Props {
   signInPath: string;
   /** "/<locale>/u/" */
   profileBase: string;
+  tools: ChatToolsStrings;
+  /** The GIF button (builds with GIFs on). */
+  gifs: boolean;
+  dir: "ltr" | "rtl";
 }
 
 function withFromUrl(): string | null {
@@ -55,7 +64,15 @@ function withFromUrl(): string | null {
   return PLAYER_ID.test(asked) ? asked.toLowerCase() : null;
 }
 
-export function MessagesPage({ strings: s, bcp47, signInPath, profileBase }: Props) {
+export function MessagesPage({
+  strings: s,
+  bcp47,
+  signInPath,
+  profileBase,
+  tools,
+  gifs,
+  dir,
+}: Props) {
   const account = useAccount(signInPath);
   const [list, setList] = useState<Conversation[] | null | undefined>(undefined);
   const [withId, setWithId] = useState<string | null>(withFromUrl);
@@ -139,8 +156,8 @@ export function MessagesPage({ strings: s, bcp47, signInPath, profileBase }: Pro
                         : c.last.status === "deleted"
                           ? s.deleted
                           : c.last.senderId === account.user.id
-                            ? fill(s.you, { text: c.last.body ?? "" })
-                            : (c.last.body ?? "")}
+                            ? fill(s.you, { text: c.last.body ?? tools.gifAlt })
+                            : (c.last.body ?? tools.gifAlt)}
                     </span>
                   </span>
                   {c.unread > 0 && (
@@ -168,6 +185,9 @@ export function MessagesPage({ strings: s, bcp47, signInPath, profileBase }: Pro
           strings={s}
           bcp47={bcp47}
           profileBase={profileBase}
+          tools={tools}
+          gifs={gifs}
+          dir={dir}
           onChanged={refresh}
           onBack={() => {
             open(null);
@@ -187,6 +207,9 @@ function ThreadView({
   strings: s,
   bcp47,
   profileBase,
+  tools,
+  gifs,
+  dir,
   onChanged,
   onBack,
 }: {
@@ -196,6 +219,9 @@ function ThreadView({
   strings: MessagesPageStrings;
   bcp47: string;
   profileBase: string;
+  tools: ChatToolsStrings;
+  gifs: boolean;
+  dir: "ltr" | "rtl";
   onChanged: () => void;
   onBack: () => void;
 }) {
@@ -209,6 +235,7 @@ function ThreadView({
   const stickRef = useRef(true);
   const sendingRef = useRef(false);
   const typedRef = useRef(0);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const readNow = useCallback(() => {
     if (document.visibilityState !== "visible") return;
@@ -322,21 +349,22 @@ function ThreadView({
     });
   }
 
-  async function submit() {
+  async function submit(gif?: string) {
     const body = text.trim();
-    if (body === "" || sendingRef.current) return;
+    if ((body === "" && !gif) || sendingRef.current) return;
     sendingRef.current = true;
     setError(null);
-    const result = await sendDm(supabase, withId, body);
+    // A GIF goes on its own; the text being written stays.
+    const result = await sendDm(supabase, withId, gif ? "" : body, gif);
     sendingRef.current = false;
     if ("message" in result) {
-      setText("");
+      if (!gif) setText("");
       stickRef.current = true;
       setThread((t) => (t ? { ...t, messages: mergeDms(t.messages, [result.message]) } : t));
       onChanged();
       return;
     }
-    setError(errorText(result.error, s, bcp47));
+    setError(errorText(result.error, s, tools, bcp47));
   }
 
   async function remove(messageId: number) {
@@ -419,7 +447,11 @@ function ThreadView({
                           : "bg-surface-2"
                     }`}
                   >
-                    {deleted ? s.deleted : m.body}
+                    {deleted ? (
+                      s.deleted
+                    ) : (
+                      <MessageBody body={m.body} gifId={m.gifId ?? null} gifAlt={tools.gifAlt} />
+                    )}
                   </p>
                 </div>
                 <span className="text-xs text-muted">
@@ -447,7 +479,29 @@ function ThreadView({
             <label htmlFor={`${id}-message`} className="sr-only">
               {s.label}
             </label>
+            <EmojiButton
+              strings={tools}
+              dir={dir}
+              onPick={(emoji) => {
+                const next = insertText(inputRef.current, text, emoji, MAX_LENGTH);
+                if (!next) return;
+                setText(next.value);
+                requestAnimationFrame(() => {
+                  inputRef.current?.focus();
+                  inputRef.current?.setSelectionRange(next.caret, next.caret);
+                });
+              }}
+            />
+            {gifs && (
+              <GifButton
+                supabase={supabase}
+                strings={tools}
+                dir={dir}
+                onPick={(gif) => void submit(gif)}
+              />
+            )}
             <Input
+              ref={inputRef}
               id={`${id}-message`}
               value={text}
               maxLength={MAX_LENGTH}
@@ -479,7 +533,12 @@ function ThreadView({
 }
 
 /** How a refused message reads. */
-function errorText(error: unknown, s: MessagesPageStrings, bcp47: string): string {
+function errorText(
+  error: unknown,
+  s: MessagesPageStrings,
+  tools: ChatToolsStrings,
+  bcp47: string,
+): string {
   const message = (error as { message?: unknown } | null)?.message;
   const muted = refusalEnd(error, "muted");
   if (muted !== undefined) {
@@ -488,6 +547,7 @@ function errorText(error: unknown, s: MessagesPageStrings, bcp47: string): strin
   const tooNew = refusalEnd(error, "too_new");
   if (tooNew) return sanctionNotice(tooNew, { until: s.errors.tooNewUntil, forever: "" }, bcp47);
   if (message === "unavailable") return s.errors.unavailable;
+  if (message === "invalid_gif") return tools.gifInvalid;
   if (message === "rate_limited") return s.errors.tooFast;
   if (message === "invalid_message") return s.errors.tooLong;
   return s.errors.failed;

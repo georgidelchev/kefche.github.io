@@ -21,6 +21,7 @@ const dmSchema = z.object({
   id: z.number(),
   senderId: z.string(),
   body: z.nullable(z.string()),
+  gifId: z.optional(z.nullable(z.string())),
   status: z.string(),
   at: z.string(),
 });
@@ -65,14 +66,17 @@ export async function fetchThread(
   return parsed.success ? { ...parsed.data, messages: parsed.data.messages.toReversed() } : null;
 }
 
+/** Sends a DM (text, a GIF, or both): the stored message (masked), or the error. */
 export async function sendDm(
   supabase: Supabase,
   userId: string,
   body: string,
+  gif?: string,
 ): Promise<{ message: Dm } | { error: unknown }> {
   const { data, error } = await supabase.rpc("send_direct_message", {
     p_user: userId,
     p_body: body,
+    ...(gif ? { p_gif: gif } : {}),
   });
   if (error) return { error };
   const parsed = dmSchema.safeParse(data);

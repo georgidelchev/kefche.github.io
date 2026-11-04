@@ -229,10 +229,20 @@ The live project is `kefche` (ref `qbwljmjabloprffjlean`), on the Free plan in C
 - `PUBLIC_SUPABASE_URL` = `https://qbwljmjabloprffjlean.supabase.co`
 - `PUBLIC_SUPABASE_PUBLISHABLE_KEY` = the project's `sb_publishable_…` key (public by design)
 - `PUBLIC_AUTH_PROVIDERS`: leave unset for email only (the build defaults to `none`).
+- `PUBLIC_GIFS`: `on` once GIFs are set up ("GIFs" below); unset, the GIF button doesn't show.
 
 These sit on the production environment only, so PR previews build without accounts. The next push to `main` deploys with them.
 
 **Email:** the built-in sender is meant for testing. It sends only a few emails an hour to any address, and its messages are Supabase's generic English text. Resend, as a custom sender, comes in Phase 21.
+
+## GIFs
+
+GIFs in global chat and DMs come from GIPHY through the `giphy` Edge Function, which holds the key (Phase 8 Q1). They stay off until both steps are done:
+
+1. **The key:** create an app at developers.giphy.com (an API key, not the SDK). The free key allows 100 calls an hour; the function keeps the site under 90 and caches answers, so search gets slower to change, not broken. Then `pnpm exec supabase secrets set GIPHY_API_KEY=<key>`. Locally, put `GIPHY_API_KEY=<key>` in `supabase/functions/.env` (git-ignored) and restart the stack.
+2. **The button:** set `PUBLIC_GIFS` = `on` on the production environment (above) and push.
+
+Without the key the function answers `gifs_off`; a build with `PUBLIC_GIFS` on would then show a picker that says GIFs aren't available. GIPHY's terms ask for its attribution, which the picker shows ("Powered by GIPHY"), and a production key once the site has real traffic (it may cost money). GIFs load from GIPHY's servers, which see the viewer's IP address; the privacy notice says so in builds with `PUBLIC_GIFS` on.
 
 ## Rooms and Realtime
 

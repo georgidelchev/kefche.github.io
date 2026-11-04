@@ -35,5 +35,20 @@
       "h24": "24 घंटे",
       "d7": "7 दिन"
     }
+  },
+  "tools": {
+    "emoji": "इमोजी",
+    "emojiSearch": "इमोजी खोजें",
+    "emojiEmpty": "कोई इमोजी नहीं मिला",
+    "loading": "लोड हो रहा है…",
+    "gif": "GIF",
+    "gifSearch": "GIF खोजें",
+    "gifEmpty": "कोई GIF नहीं मिला",
+    "gifFailed": "GIF अभी उपलब्ध नहीं हैं।",
+    "gifBusy": "GIF अभी व्यस्त हैं। कुछ मिनट बाद कोशिश करें।",
+    "gifMore": "और GIF",
+    "gifAlt": "GIF",
+    "gifInvalid": "यह GIF नहीं भेजा जा सकता। कोई और चुनें।",
+    "gifPowered": "Powered by GIPHY"
   }
 }

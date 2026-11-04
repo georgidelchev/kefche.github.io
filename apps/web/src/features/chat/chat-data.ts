@@ -20,6 +20,7 @@ export type Sender = z.infer<typeof card>;
 const messageSchema = z.object({
   id: z.number(),
   body: z.nullable(z.string()),
+  gifId: z.optional(z.nullable(z.string())),
   status: z.string(),
   at: z.string(),
   sender: z.nullable(card),
@@ -47,13 +48,18 @@ export async function fetchHistory(
   return parsed.success ? parsed.data.toReversed() : null;
 }
 
-/** Sends a message: the stored message (masked), or the error. */
+/** Sends a message (text, a GIF, or both): the stored message (masked), or the error. */
 export async function sendMessage(
   supabase: Supabase,
   room: string,
   body: string,
+  gif?: string,
 ): Promise<{ message: ChatMessage } | { error: unknown }> {
-  const { data, error } = await supabase.rpc("send_chat_message", { p_room: room, p_body: body });
+  const { data, error } = await supabase.rpc("send_chat_message", {
+    p_room: room,
+    p_body: body,
+    ...(gif ? { p_gif: gif } : {}),
+  });
   if (error) return { error };
   const parsed = messageSchema.safeParse(data);
   return parsed.success ? { message: parsed.data } : { error: new Error("invalid") };
@@ -74,6 +80,7 @@ const rowSchema = z.object({
   room: z.nullable(z.string()),
   sender_id: z.string(),
   body: z.nullable(z.string()),
+  gif_id: z.nullable(z.string()),
   status: z.string(),
   created_at: z.string(),
 });
@@ -140,9 +147,11 @@ export function watchRoom(
       ({ new: raw }) => {
         const row = rowSchema.safeParse(raw);
         if (!row.success || row.data.room !== room) return;
-        const { id, sender_id, body, status, created_at } = row.data;
+        const { id, sender_id, body, gif_id, status, created_at } = row.data;
         void sender(sender_id).then((card) => {
-          if (!stopped) handlers.onMessage({ id, body, status, at: created_at, sender: card });
+          if (!stopped) {
+            handlers.onMessage({ id, body, gifId: gif_id, status, at: created_at, sender: card });
+          }
         });
       },
     )
