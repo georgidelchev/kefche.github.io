@@ -11,7 +11,8 @@
     "week": "Esta semana",
     "friends": "Amigos"
   },
-  "friendsSoon": "Las clasificaciones solo con tus amigos llegarán con los amigos.",
+  "friendsSignIn": "Inicia sesión para compararte con tus amigos.",
+  "friendsEmpty": "Añade amigos para compararte con ellos.",
   "weekEnds": "Una nueva semana empieza el {date}.",
   "you": "Tú",
   "yourPlace": "Tu puesto: #{rank} de {total}",

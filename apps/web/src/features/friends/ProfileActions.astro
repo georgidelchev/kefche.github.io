@@ -1,0 +1,120 @@
+---
+import { buttonVariants } from "@kefche/ui/components/button";
+
+import type { AppT } from "@/i18n/i18n";
+
+import { friendsStrings } from "./strings";
+
+// A profile's friend actions and mutual friends (SPEC §8.1), for a signed-in
+// viewer other than its player. The page is the same for everyone (and
+// cached), so every control starts hidden and profile-actions.client.ts shows
+// the ones that fit the viewer, from profile_relation.
+interface Props {
+  t: AppT;
+  userId: string;
+  nickname: string;
+  profileBase: string;
+  bcp47: string;
+}
+
+const { t, userId, nickname, profileBase, bcp47 } = Astro.props;
+const s = friendsStrings(t);
+const script = {
+  errors: s.errors,
+  confirm: s.confirm,
+  mutual: s.mutual,
+  mutualMore: s.mutualMore,
+  actions: { remove: s.actions.remove, block: s.actions.block },
+};
+const primary = buttonVariants({ variant: "primary" });
+const outline = buttonVariants({ variant: "outline" });
+const ghost = buttonVariants({ variant: "ghost" });
+---
+
+<section
+  hidden
+  data-profile-actions
+  data-user-id={userId}
+  data-nickname={nickname}
+  data-profile-base={profileBase}
+  data-locale={bcp47}
+  data-strings={JSON.stringify(script)}
+  class="grid gap-3"
+>
+  <div class="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
+    <span
+      hidden
+      data-status="requested"
+      class="rounded-full bg-surface-2 px-3 py-1 text-sm font-semibold"
+    >
+      {s.status.requested}
+    </span>
+    <span
+      hidden
+      data-status="incoming"
+      class="rounded-full bg-surface-2 px-3 py-1 text-sm font-semibold"
+    >
+      {s.status.incoming}
+    </span>
+    <span
+      hidden
+      data-status="friends"
+      class="rounded-full bg-success px-3 py-1 text-sm font-semibold text-on-success"
+    >
+      {s.status.friends}
+    </span>
+    <span
+      hidden
+      data-status="blocked"
+      class="rounded-full bg-surface-2 px-3 py-1 text-sm font-semibold"
+    >
+      {s.status.blocked}
+    </span>
+    <button hidden type="button" data-action="add" class={primary}>
+      {s.actions.add}
+    </button>
+    <button hidden type="button" data-action="accept" class={primary}>
+      {s.actions.accept}
+    </button>
+    <button hidden type="button" data-action="decline" class={outline}>
+      {s.actions.decline}
+    </button>
+    <button hidden type="button" data-action="cancel" class={outline}>
+      {s.actions.cancel}
+    </button>
+    <button hidden type="button" data-action="remove" class={outline}>
+      {s.actions.remove}
+    </button>
+    <button hidden type="button" data-action="unblock" class={outline}>
+      {s.actions.unblock}
+    </button>
+    <button hidden type="button" data-action="block" class={ghost}>
+      {s.actions.block}
+    </button>
+  </div>
+  <p data-message role="status" class="text-sm font-semibold text-danger empty:hidden"></p>
+  <p hidden data-mutual class="text-sm text-muted"></p>
+  <dialog
+    data-confirm
+    aria-labelledby="friend-confirm-title"
+    aria-describedby="friend-confirm-body"
+    class="m-auto w-[min(28rem,calc(100%-2rem))] rounded-2xl border border-border bg-surface p-5 text-text backdrop:bg-black/50"
+  >
+    <form method="dialog" class="grid gap-4">
+      <h2 id="friend-confirm-title" class="text-xl">
+        {s.actions.block}
+      </h2>
+      <p id="friend-confirm-body" class="text-muted"></p>
+      <div class="flex flex-wrap justify-end gap-2">
+        <button value="keep" class={outline}>
+          {s.confirm.keep}
+        </button>
+        <button
+          value="confirm"
+          data-confirm-action
+          class={buttonVariants({ variant: "danger" })}
+        ></button>
+      </div>
+    </form>
+  </dialog>
+</section>

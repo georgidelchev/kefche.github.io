@@ -8,13 +8,15 @@ export const NAV_ITEMS = [
   { id: "games", path: "/games/", status: "available" },
   // Needs Supabase: "soon" in builds without it (ADR-0011).
   { id: "play", path: "/play/", status: "accounts" },
-  { id: "friends", path: "/friends/", status: "soon" }, // Phase 8
+  { id: "friends", path: "/friends/", status: "accounts" },
   { id: "profile", path: "/profile/", status: "accounts" },
 ] as const satisfies readonly {
   id: string;
   path: string;
-  status: "available" | "soon" | "accounts";
+  status: NavStatus;
 }[];
+
+type NavStatus = "available" | "soon" | "accounts";
 
 export type NavId = (typeof NAV_ITEMS)[number]["id"];
 
@@ -23,8 +25,10 @@ export type SoonSection = Exclude<NavId, "home" | "games">;
 
 /** Sections without a real page in this build. */
 export function soonSections(accounts: boolean): SoonSection[] {
+  // Widened: no section may be "soon" right now, but the next one can be.
   return NAV_ITEMS.filter(
-    (item) => item.status === "soon" || (item.status === "accounts" && !accounts),
+    (item: { status: NavStatus }) =>
+      item.status === "soon" || (item.status === "accounts" && !accounts),
   ).map((item) => item.id as SoonSection);
 }
 

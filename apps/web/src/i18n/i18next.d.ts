@@ -4,6 +4,7 @@ import type account from "../../locales/en/account.json";
 import type auth from "../../locales/en/auth.json";
 import type common from "../../locales/en/common.json";
 import type errors from "../../locales/en/errors.json";
+import type friends from "../../locales/en/friends.json";
 import type games from "../../locales/en/games.json";
 import type leaderboards from "../../locales/en/leaderboards.json";
 import type legal from "../../locales/en/legal.json";
@@ -27,6 +28,7 @@ declare module "i18next" {
       legal: typeof legal;
       lobby: typeof lobby;
       leaderboards: typeof leaderboards;
+      friends: typeof friends;
     };
   }
 }

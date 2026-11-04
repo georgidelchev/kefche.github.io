@@ -480,8 +480,14 @@ isOneToOne: false
 "achievements_unlock":
 { Args: { "p_match": string,"p_unlocks": Json,"p_user": string }; Returns: number
                            },
+"add_friend":
+{ Args: { "p_user": string }; Returns: string
+                           },
 "avatar_upload_allowed":
 { Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"block_user":
+{ Args: { "p_user": string }; Returns: undefined
                            },
 "blocked_with":
 { Args: { "p_other": string }; Returns: boolean
@@ -635,6 +641,9 @@ isOneToOne: false
 "merge_guest":
 { Args: { "p_guest": string,"p_target": string }; Returns: undefined
                            },
+"my_friends":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "play_load":
 { Args: { "p_play": string }; Returns: Json
                            },
@@ -643,6 +652,9 @@ isOneToOne: false
                            },
 "player_history":
 { Args: { "p_limit"?: number,"p_user": string }; Returns: Json
+                           },
+"profile_relation":
+{ Args: { "p_user": string }; Returns: Json
                            },
 "public_rooms":
 { Args: { "p_game_id"?: string }; Returns: {
@@ -688,6 +700,9 @@ isOneToOne: false
                            },
 "rated_search":
 { Args: { "p_game_id": string,"p_game_version": number,"p_timer": number }; Returns: Json
+                           },
+"remove_friend":
+{ Args: { "p_user": string }; Returns: undefined
                            },
 "reopen_room":
 { Args: { "p_room": string }; Returns: undefined
@@ -816,6 +831,9 @@ isOneToOne: false
                            },
 "transfer_host":
 { Args: { "p_member": string,"p_room": string }; Returns: undefined
+                           },
+"unblock_user":
+{ Args: { "p_user": string }; Returns: undefined
                            },
 "update_room":
 { Args: { "p_allow_spectators": boolean,"p_bot_seats": (number)[],"p_players": number,"p_room": string,"p_settings": Json,"p_visibility": string }; Returns: {

@@ -22,7 +22,8 @@ const stringsSchema = z.object({
   loading: z.string(),
   failed: z.string(),
   retry: z.string(),
-  friendsSoon: z.string(),
+  friendsSignIn: z.string(),
+  friendsEmpty: z.string(),
   weekEnds: z.string(),
   xpValue: z.string(),
 });
@@ -48,7 +49,7 @@ type Row = z.infer<typeof rowSchema>;
 type Board = z.infer<typeof boardSchema>;
 type Period = "all" | "week" | "friends";
 
-async function fetchBoard(board: string, period: "all" | "week", limit: number) {
+async function fetchBoard(board: string, period: Period, limit: number) {
   const args = { p_board: board, p_period: period, p_limit: limit };
   if (hasStoredSession()) {
     const supabase = await getSupabase();
@@ -98,7 +99,8 @@ function setUp(root: HTMLElement) {
     const params = new URLSearchParams(location.search);
     const asked = params.get("board");
     if (asked && [...select.options].some((o) => o.value === asked)) select.value = asked;
-    if (params.get("period") === "week") period = "week";
+    const askedPeriod = params.get("period");
+    if (askedPeriod === "week" || askedPeriod === "friends") period = askedPeriod;
   }
   let request = 0;
 
@@ -184,7 +186,10 @@ function setUp(root: HTMLElement) {
       rows.push(gap, rowElement(me, true));
     }
     list.replaceChildren(...rows);
-    if (board.entries.length === 0) say(s.empty);
+    // Only the viewer, or nobody: no friends on this board yet.
+    if (period === "friends" && board.entries.every((row) => row.rank === me?.rank)) {
+      say(s.friendsEmpty);
+    } else if (board.entries.length === 0) say(s.empty);
     else if (board.hidden) say(s.hidden);
     else if (me)
       say(
@@ -221,13 +226,14 @@ function setUp(root: HTMLElement) {
     if (sync) {
       const params = new URLSearchParams(location.search);
       params.set("board", select.value);
-      if (period === "week") params.set("period", "week");
+      if (period !== "all") params.set("period", period);
       else params.delete("period");
       history.replaceState(null, "", `?${params.toString()}`);
     }
-    if (period === "friends") {
+    // A friends board is the signed-in player's and their friends'.
+    if (period === "friends" && !hasStoredSession()) {
       list.replaceChildren();
-      say(s.friendsSoon);
+      say(s.friendsSignIn);
       return;
     }
     const mine = ++request;

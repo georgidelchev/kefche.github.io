@@ -1,0 +1,65 @@
+{
+  "title": "Amis",
+  "description": "Vos amis sur kefche, les demandes d’ami et les joueurs que vous avez bloqués.",
+  "tabs": {
+    "friends": "Amis",
+    "requests": "Demandes",
+    "blocked": "Bloqués"
+  },
+  "add": {
+    "label": "Ajouter un ami par son pseudo",
+    "submit": "Envoyer la demande",
+    "requested": "Demande d’ami envoyée à {name}.",
+    "friends": "{name} et vous êtes maintenant amis.",
+    "notFound": "Aucun joueur n’a ce pseudo."
+  },
+  "list": {
+    "since": "Amis depuis le {date}",
+    "incoming": "Veut être votre ami",
+    "outgoing": "En attente de réponse",
+    "blockedOn": "Bloqué le {date}"
+  },
+  "empty": {
+    "friends": "Pas encore d’amis",
+    "friendsHint": "Ajoutez des amis ici par leur pseudo, ou depuis leur profil.",
+    "requests": "Aucune demande d’ami",
+    "blocked": "Vous n’avez bloqué personne"
+  },
+  "actions": {
+    "add": "Ajouter en ami",
+    "accept": "Accepter",
+    "decline": "Refuser",
+    "cancel": "Annuler la demande",
+    "remove": "Retirer des amis",
+    "block": "Bloquer",
+    "unblock": "Débloquer"
+  },
+  "status": {
+    "requested": "Demande envoyée",
+    "incoming": "Veut être votre ami",
+    "friends": "Amis",
+    "blocked": "Bloqué"
+  },
+  "confirm": {
+    "removeTitle": "Retirer {name} de vos amis ?",
+    "removeBody": "Vous pourrez lui envoyer une nouvelle demande d’ami plus tard.",
+    "blockTitle": "Bloquer {name} ?",
+    "blockBody": "Vous ne verrez plus les messages l’un de l’autre, vous ne pourrez plus vous envoyer de demandes d’ami, de messages ni d’invitations, et vous ne vous retrouverez pas dans les salons en ligne. Bloquer met aussi fin à votre amitié. Le joueur n’est pas prévenu.",
+    "keep": "Annuler",
+    "close": "Fermer"
+  },
+  "mutual": "Amis en commun",
+  "mutualMore": "et {count} de plus",
+  "loading": "Chargement de vos amis…",
+  "failed": "Impossible de charger vos amis.",
+  "retry": "Réessayer",
+  "errors": {
+    "invalid_user": "Vous ne pouvez pas ajouter ce joueur en ami.",
+    "unavailable": "Vous ne pouvez pas ajouter ce joueur en ami.",
+    "too_many_requests": "Vous avez trop de demandes d’ami en attente de réponse.",
+    "too_many_blocks": "Vous avez bloqué trop de joueurs.",
+    "rate_limited": "Trop de tentatives. Patientez un instant et réessayez.",
+    "accounts_only": "Les amis sont réservés aux comptes. Connectez-vous pour ajouter des amis.",
+    "unknown": "Une erreur s’est produite. Veuillez réessayer."
+  }
+}

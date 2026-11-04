@@ -11,7 +11,8 @@
     "week": "Diese Woche",
     "friends": "Freunde"
   },
-  "friendsSoon": "Bestenlisten nur mit deinen Freunden kommen mit den Freunden.",
+  "friendsSignIn": "Melde dich an, um dich mit deinen Freunden zu vergleichen.",
+  "friendsEmpty": "Füge Freunde hinzu, um dich mit ihnen zu vergleichen.",
   "weekEnds": "Eine neue Woche beginnt {date}.",
   "you": "Du",
   "yourPlace": "Dein Platz: #{rank} von {total}",

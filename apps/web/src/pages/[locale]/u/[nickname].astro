@@ -8,6 +8,7 @@ import { isAvatarFrame } from "@kefche/ui/lib/frames";
 
 import { avatarUrl } from "@/features/account/avatar-url";
 import NotFoundPage from "@/features/errors/NotFoundPage.astro";
+import ProfileActions from "@/features/friends/ProfileActions.astro";
 import { gameName } from "@/features/games/game-names";
 import AchievementCard from "@/features/profile/AchievementCard.astro";
 import { shownAchievements } from "@/features/profile/achievements";
@@ -34,8 +35,8 @@ import { getSupabaseEnv } from "@/lib/env";
 // links get a real title and preview. Public fields only. noindex: players
 // are 13+, so profiles stay out of search engines; links still preview.
 // Ratings, stats and recent games are public (owner decision 2026-10-24,
-// and the privacy notice since Phase 7); friends and actions arrive with
-// their phases.
+// and the privacy notice since Phase 7). A signed-in viewer also gets friend
+// actions and mutual friends, filled in by the browser (ProfileActions).
 export const prerender = false;
 
 const env = getSupabaseEnv();
@@ -224,6 +225,13 @@ const facts = profile
         />
         <h1 class="min-w-0 text-3xl break-words md:text-4xl">{profile.nickname}</h1>
       </header>
+      <ProfileActions
+        t={t}
+        userId={profile.id}
+        nickname={profile.nickname}
+        profileBase={getRelativeLocaleUrl(locale, "/u/")}
+        bcp47={bcp47}
+      />
       <dl class="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {level && (
           <div class="col-span-2 grid gap-2 rounded-2xl border border-border bg-surface p-4 sm:col-span-1">
@@ -418,4 +426,5 @@ const facts = profile
 
 <script>
   import "@/features/profile/achievement-pins.client";
+  import "@/features/friends/profile-actions.client";
 </script>

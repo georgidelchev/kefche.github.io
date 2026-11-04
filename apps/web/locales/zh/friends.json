@@ -1,0 +1,65 @@
+{
+  "title": "好友",
+  "description": "你在 kefche 上的好友、好友请求，以及你屏蔽的玩家。",
+  "tabs": {
+    "friends": "好友",
+    "requests": "请求",
+    "blocked": "已屏蔽"
+  },
+  "add": {
+    "label": "通过昵称添加好友",
+    "submit": "发送请求",
+    "requested": "已向 {name} 发送好友请求。",
+    "friends": "你和 {name} 现在是好友了。",
+    "notFound": "没有使用这个昵称的玩家。"
+  },
+  "list": {
+    "since": "{date} 成为好友",
+    "incoming": "想加你为好友",
+    "outgoing": "等待对方回应",
+    "blockedOn": "{date} 屏蔽"
+  },
+  "empty": {
+    "friends": "还没有好友",
+    "friendsHint": "在这里通过昵称添加好友，或在对方的个人资料中添加。",
+    "requests": "没有好友请求",
+    "blocked": "你没有屏蔽任何人"
+  },
+  "actions": {
+    "add": "加为好友",
+    "accept": "接受",
+    "decline": "拒绝",
+    "cancel": "取消请求",
+    "remove": "删除好友",
+    "block": "屏蔽",
+    "unblock": "取消屏蔽"
+  },
+  "status": {
+    "requested": "已发送请求",
+    "incoming": "想加你为好友",
+    "friends": "好友",
+    "blocked": "已屏蔽"
+  },
+  "confirm": {
+    "removeTitle": "要将 {name} 从好友中删除吗？",
+    "removeBody": "之后你可以再次发送好友请求。",
+    "blockTitle": "要屏蔽 {name} 吗？",
+    "blockBody": "你们将看不到对方的消息，无法互相发送好友请求、消息或邀请，也不会在在线房间中相遇。屏蔽还会解除你们的好友关系。对方不会收到通知。",
+    "keep": "取消",
+    "close": "关闭"
+  },
+  "mutual": "共同好友",
+  "mutualMore": "等另外 {count} 人",
+  "loading": "正在加载你的好友…",
+  "failed": "无法加载你的好友。",
+  "retry": "重试",
+  "errors": {
+    "invalid_user": "你不能将这名玩家加为好友。",
+    "unavailable": "你不能将这名玩家加为好友。",
+    "too_many_requests": "你有太多好友请求还在等待回应。",
+    "too_many_blocks": "你屏蔽的玩家太多了。",
+    "rate_limited": "尝试次数过多，请稍后再试。",
+    "accounts_only": "好友功能仅限账号玩家。请登录后添加好友。",
+    "unknown": "出了点问题，请重试。"
+  }
+}

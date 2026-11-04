@@ -11,7 +11,8 @@
     "week": "This week",
     "friends": "Friends"
   },
-  "friendsSoon": "Boards of just your friends arrive with friends.",
+  "friendsSignIn": "Sign in to see how you compare with your friends.",
+  "friendsEmpty": "Add friends to see how you compare with them.",
   "weekEnds": "A new week starts {date}.",
   "you": "You",
   "yourPlace": "Your place: #{rank} of {total}",

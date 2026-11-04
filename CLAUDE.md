@@ -41,6 +41,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
     - `profile/`: the public profile page, game history and the analysis island.
     - `settings/`: the settings page.
     - `lobby/`: online rooms: the lobby, the Supabase transport (`room:<code>` plus the server-stamped `room-relay:<code>`), matches, races, chat and the public lobby browser (ADR-0020 to ADR-0024), plus rated matchmaking and results (ADR-0026).
+    - `friends/`: the friends page island, and the profile's friend actions (a plain script, since profiles are public and cached).
     - `moderation/`: sanction notices. The database refuses a sanctioned player with `muted` or `suspended`, with the sanction's end as the error's `details`.
     - `errors/`
   - `lib/supabase/`: lazy client, config, generated DB types.

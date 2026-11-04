@@ -1,0 +1,65 @@
+{
+  "title": "Friends",
+  "description": "Your friends on kefche, friend requests, and the players you've blocked.",
+  "tabs": {
+    "friends": "Friends",
+    "requests": "Requests",
+    "blocked": "Blocked"
+  },
+  "add": {
+    "label": "Add a friend by nickname",
+    "submit": "Send request",
+    "requested": "Friend request sent to {name}.",
+    "friends": "You and {name} are now friends.",
+    "notFound": "There's no player with that nickname."
+  },
+  "list": {
+    "since": "Friends since {date}",
+    "incoming": "Wants to be your friend",
+    "outgoing": "Waiting for an answer",
+    "blockedOn": "Blocked on {date}"
+  },
+  "empty": {
+    "friends": "No friends yet",
+    "friendsHint": "Add friends by their nickname here, or from their profile.",
+    "requests": "No friend requests",
+    "blocked": "You haven't blocked anyone"
+  },
+  "actions": {
+    "add": "Add friend",
+    "accept": "Accept",
+    "decline": "Decline",
+    "cancel": "Cancel request",
+    "remove": "Remove friend",
+    "block": "Block",
+    "unblock": "Unblock"
+  },
+  "status": {
+    "requested": "Request sent",
+    "incoming": "Wants to be your friend",
+    "friends": "Friends",
+    "blocked": "Blocked"
+  },
+  "confirm": {
+    "removeTitle": "Remove {name} from your friends?",
+    "removeBody": "You can send them a new friend request later.",
+    "blockTitle": "Block {name}?",
+    "blockBody": "You won't see each other's messages, you can't send each other friend requests, messages or invites, and you won't meet in online rooms. Blocking also ends your friendship. They aren't notified.",
+    "keep": "Cancel",
+    "close": "Close"
+  },
+  "mutual": "Mutual friends",
+  "mutualMore": "and {count} more",
+  "loading": "Loading your friends…",
+  "failed": "We couldn't load your friends.",
+  "retry": "Try again",
+  "errors": {
+    "invalid_user": "You can't add this player as a friend.",
+    "unavailable": "You can't add this player as a friend.",
+    "too_many_requests": "You have too many friend requests waiting for an answer.",
+    "too_many_blocks": "You've blocked too many players.",
+    "rate_limited": "Too many tries. Wait a moment and try again.",
+    "accounts_only": "Friends are for accounts. Sign in to add friends.",
+    "unknown": "Something went wrong. Please try again."
+  }
+}

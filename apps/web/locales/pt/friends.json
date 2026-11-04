@@ -1,0 +1,65 @@
+{
+  "title": "Amigos",
+  "description": "Seus amigos no kefche, os pedidos de amizade e os jogadores que você bloqueou.",
+  "tabs": {
+    "friends": "Amigos",
+    "requests": "Pedidos",
+    "blocked": "Bloqueados"
+  },
+  "add": {
+    "label": "Adicione um amigo pelo apelido",
+    "submit": "Enviar pedido",
+    "requested": "Pedido de amizade enviado para {name}.",
+    "friends": "Você e {name} agora são amigos.",
+    "notFound": "Não há nenhum jogador com esse apelido."
+  },
+  "list": {
+    "since": "Amigos desde {date}",
+    "incoming": "Quer ser seu amigo",
+    "outgoing": "Aguardando resposta",
+    "blockedOn": "Bloqueado em {date}"
+  },
+  "empty": {
+    "friends": "Nenhum amigo ainda",
+    "friendsHint": "Adicione amigos aqui pelo apelido ou pelo perfil deles.",
+    "requests": "Nenhum pedido de amizade",
+    "blocked": "Você não bloqueou ninguém"
+  },
+  "actions": {
+    "add": "Adicionar amigo",
+    "accept": "Aceitar",
+    "decline": "Recusar",
+    "cancel": "Cancelar pedido",
+    "remove": "Remover amigo",
+    "block": "Bloquear",
+    "unblock": "Desbloquear"
+  },
+  "status": {
+    "requested": "Pedido enviado",
+    "incoming": "Quer ser seu amigo",
+    "friends": "Amigos",
+    "blocked": "Bloqueado"
+  },
+  "confirm": {
+    "removeTitle": "Remover {name} dos seus amigos?",
+    "removeBody": "Você pode enviar um novo pedido de amizade depois.",
+    "blockTitle": "Bloquear {name}?",
+    "blockBody": "Vocês não verão as mensagens um do outro, não poderão enviar pedidos de amizade, mensagens ou convites um ao outro e não se encontrarão em salas online. Bloquear também encerra a amizade. A pessoa não é avisada.",
+    "keep": "Cancelar",
+    "close": "Fechar"
+  },
+  "mutual": "Amigos em comum",
+  "mutualMore": "e mais {count}",
+  "loading": "Carregando seus amigos…",
+  "failed": "Não conseguimos carregar seus amigos.",
+  "retry": "Tentar de novo",
+  "errors": {
+    "invalid_user": "Você não pode adicionar este jogador como amigo.",
+    "unavailable": "Você não pode adicionar este jogador como amigo.",
+    "too_many_requests": "Você tem pedidos de amizade demais aguardando resposta.",
+    "too_many_blocks": "Você bloqueou jogadores demais.",
+    "rate_limited": "Muitas tentativas. Espere um pouco e tente de novo.",
+    "accounts_only": "Amigos são para contas. Entre para adicionar amigos.",
+    "unknown": "Algo deu errado. Tente de novo."
+  }
+}

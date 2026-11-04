@@ -11,7 +11,8 @@
     "week": "Cette semaine",
     "friends": "Amis"
   },
-  "friendsSoon": "Les classements entre amis arriveront avec les amis.",
+  "friendsSignIn": "Connectez-vous pour vous comparer à vos amis.",
+  "friendsEmpty": "Ajoutez des amis pour vous comparer à eux.",
   "weekEnds": "Une nouvelle semaine commence {date}.",
   "you": "Vous",
   "yourPlace": "Votre place : #{rank} sur {total}",

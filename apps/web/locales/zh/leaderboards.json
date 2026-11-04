@@ -11,7 +11,8 @@
     "week": "本周",
     "friends": "好友"
   },
-  "friendsSoon": "只看好友的榜单将随好友功能一起推出。",
+  "friendsSignIn": "登录后即可与好友比较。",
+  "friendsEmpty": "添加好友后即可与他们比较。",
   "weekEnds": "新的一周于 {date} 开始。",
   "you": "你",
   "yourPlace": "你的名次：第 {rank} 名，共 {total} 人",

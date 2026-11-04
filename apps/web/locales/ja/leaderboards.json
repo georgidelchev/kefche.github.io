@@ -11,7 +11,8 @@
     "week": "今週",
     "friends": "フレンド"
   },
-  "friendsSoon": "フレンドだけのランキングは、フレンド機能と一緒に登場します。",
+  "friendsSignIn": "ログインするとフレンドと比べられます。",
+  "friendsEmpty": "フレンドを追加すると比べられます。",
   "weekEnds": "新しい週は {date} に始まります。",
   "you": "あなた",
   "yourPlace": "あなたの順位：{total}人中 #{rank}",

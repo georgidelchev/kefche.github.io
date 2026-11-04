@@ -1,0 +1,65 @@
+{
+  "title": "Freunde",
+  "description": "Deine Freunde auf kefche, Freundschaftsanfragen und die Spieler, die du blockiert hast.",
+  "tabs": {
+    "friends": "Freunde",
+    "requests": "Anfragen",
+    "blocked": "Blockiert"
+  },
+  "add": {
+    "label": "Freund per Nickname hinzufügen",
+    "submit": "Anfrage senden",
+    "requested": "Freundschaftsanfrage an {name} gesendet.",
+    "friends": "Du und {name} seid jetzt befreundet.",
+    "notFound": "Es gibt keinen Spieler mit diesem Nickname."
+  },
+  "list": {
+    "since": "Befreundet seit {date}",
+    "incoming": "Möchte mit dir befreundet sein",
+    "outgoing": "Wartet auf Antwort",
+    "blockedOn": "Blockiert am {date}"
+  },
+  "empty": {
+    "friends": "Noch keine Freunde",
+    "friendsHint": "Füge Freunde hier per Nickname hinzu oder über ihr Profil.",
+    "requests": "Keine Freundschaftsanfragen",
+    "blocked": "Du hast niemanden blockiert"
+  },
+  "actions": {
+    "add": "Als Freund hinzufügen",
+    "accept": "Annehmen",
+    "decline": "Ablehnen",
+    "cancel": "Anfrage zurückziehen",
+    "remove": "Freund entfernen",
+    "block": "Blockieren",
+    "unblock": "Blockierung aufheben"
+  },
+  "status": {
+    "requested": "Anfrage gesendet",
+    "incoming": "Möchte mit dir befreundet sein",
+    "friends": "Befreundet",
+    "blocked": "Blockiert"
+  },
+  "confirm": {
+    "removeTitle": "{name} aus deinen Freunden entfernen?",
+    "removeBody": "Du kannst später eine neue Freundschaftsanfrage senden.",
+    "blockTitle": "{name} blockieren?",
+    "blockBody": "Ihr seht die Nachrichten des anderen nicht mehr, könnt euch keine Freundschaftsanfragen, Nachrichten oder Einladungen schicken und trefft euch nicht in Online-Räumen. Blockieren beendet auch eure Freundschaft. Die Person wird nicht benachrichtigt.",
+    "keep": "Abbrechen",
+    "close": "Schließen"
+  },
+  "mutual": "Gemeinsame Freunde",
+  "mutualMore": "und {count} weitere",
+  "loading": "Deine Freunde werden geladen…",
+  "failed": "Wir konnten deine Freunde nicht laden.",
+  "retry": "Erneut versuchen",
+  "errors": {
+    "invalid_user": "Du kannst diesen Spieler nicht als Freund hinzufügen.",
+    "unavailable": "Du kannst diesen Spieler nicht als Freund hinzufügen.",
+    "too_many_requests": "Zu viele deiner Freundschaftsanfragen warten noch auf Antwort.",
+    "too_many_blocks": "Du hast zu viele Spieler blockiert.",
+    "rate_limited": "Zu viele Versuche. Warte kurz und versuche es erneut.",
+    "accounts_only": "Freunde gibt es nur mit Konto. Melde dich an, um Freunde hinzuzufügen.",
+    "unknown": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+  }
+}
