@@ -6,7 +6,7 @@
 // the results show the rating change the server works out from it. In a
 // casual room each account reports the result it saw (Phase 7).
 import { LoaderCircle, LogOut, Volume2, VolumeX } from "lucide-react";
-import { lazy, Suspense, useEffect, useEffectEvent, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useEffectEvent, useRef, useState, type ReactNode } from "react";
 
 import type { GameResult, Transport } from "@kefche/game-sdk";
 import {
@@ -50,6 +50,8 @@ const COUNTDOWN_S = 3;
 export const RATED_COUNTDOWN_MS = COUNTDOWN_S * 1000;
 
 interface Props {
+  /** The room's chat, as a drawer opened from the match's bar. */
+  chat: ReactNode;
   supabase: Supabase;
   transport: Transport;
   roomId: string;
@@ -79,6 +81,7 @@ interface Props {
 }
 
 export function OnlineMatch({
+  chat,
   supabase,
   transport,
   roomId,
@@ -307,6 +310,7 @@ export function OnlineMatch({
             </span>
           )}
         </h2>
+        {chat}
         <Button
           variant="ghost"
           size="icon"

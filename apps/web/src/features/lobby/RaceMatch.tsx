@@ -16,7 +16,7 @@
 // - Everyone counts down on the database's clock (`server_time`), and the
 //   game is loaded during the countdown, so all start at the same moment.
 import { LoaderCircle, LogOut, Trophy, Volume2, VolumeX } from "lucide-react";
-import { lazy, Suspense, useEffect, useEffectEvent, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useEffectEvent, useRef, useState, type ReactNode } from "react";
 
 import {
   createMessenger,
@@ -67,6 +67,8 @@ type Progress = Payload<"progress">;
 type Result = Payload<"standings">["results"][number];
 
 interface Props {
+  /** The room's chat, as a drawer opened from the match's bar. */
+  chat: ReactNode;
   supabase: Supabase;
   transport: Transport;
   roomId: string;
@@ -99,6 +101,7 @@ interface Local {
 }
 
 export function RaceMatch({
+  chat,
   supabase,
   transport,
   roomId,
@@ -464,6 +467,7 @@ export function RaceMatch({
             {formatDuration(left)}
           </p>
         )}
+        {chat}
         <Button
           variant="ghost"
           size="icon"

@@ -1456,6 +1456,11 @@ Online modes are enabled for the Phase 4 games.
   - **Checks:**
     - SQL 41/41, rolled back: a conversation made with the first message, one notification for several, sent live to both; the list's unread counts, the thread, reading, "seen"; outsiders read nothing; friends-only and nobody, with the reply to who wrote first; blocks both ways (no writing, empty thread, gone from the list, rows hidden); new accounts to strangers refused but to friends allowed; self, guests, empty, muted, masking, the rate limit; deleting (own only, placeholder, both told); typing sent only where writing is allowed; private functions, direct writes and visitors refused. All eight Phase 8 suites pass.
     - Against local Supabase: A's message reaches both channels and notifies B; B's typing and "seen" reach A; A's deletion reaches both; B's list shows the conversation read, with the placeholder.
+- [x] Step 9: chat during online games.
+  - **The drawer:** during a match (turn games and races alike), the room's chat is a button in the match's bar, beside mute and leave, with the count of new messages. It opens the same chat over the board: a drawer on the side from 768px, a sheet from the bottom on phones. It starts closed, moves focus to its input, and closes with its button, its close button or Escape (focus goes back to the button). In the lobby the chat stays the page's side pane.
+  - **The same chat:** players and spectators of the room, with the lobby's messages, limits, word filter, mutes and blocks (`send_room_message`), deleted with the room. Switching between lobby and match reads the latest messages again, so none are missed.
+  - **No new strings or database changes.**
+  - **Checks:** the room pages render on the dev server and the green chain passes. The drawer hasn't been clicked through in a browser here.
 
 ---
 

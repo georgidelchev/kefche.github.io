@@ -2,12 +2,17 @@
 // a line to write one, for everyone in the room. The database masks blocked
 // words, limits how fast anyone can send, and refuses a muted player.
 //
-// It is a fixed pane of the room page, and the room scrolls beside it: a
-// column on the right from 768px, a band along the bottom on phones. It
-// folds into a strip (a bar on phones) that counts new messages. It starts
-// open; the choice is remembered in this browser.
-import { ChevronDown, ChevronUp, MessageSquare, PanelRightClose } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
+// In the lobby it is a fixed pane of the room page, and the room scrolls
+// beside it: a column on the right from 768px, a band along the bottom on
+// phones. It folds into a strip (a bar on phones) that counts new messages.
+// It starts open; the choice is remembered in this browser.
+//
+// During a match (`layout="drawer"`) it is a button in the match's bar,
+// counting new messages, that opens the chat over the board: a drawer on the
+// side from 768px, a sheet from the bottom on phones. It starts closed, and
+// Escape closes it.
+import { ChevronDown, ChevronUp, MessageSquare, PanelRightClose, X } from "lucide-react";
+import { useEffect, useEffectEvent, useId, useRef, useState } from "react";
 
 import { Button } from "@kefche/ui/components/button";
 import { Input } from "@kefche/ui/components/input";
@@ -39,14 +44,19 @@ interface Props {
   self: string;
   locale: string;
   strings: ChatStrings;
+  /** `pane` (default): the lobby's side pane. `drawer`: a button that opens it over a match. */
+  layout?: "pane" | "drawer";
 }
 
-export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) {
+export function RoomChat({ supabase, roomId, self, locale, strings: s, layout = "pane" }: Props) {
   const id = useId();
+  const drawer = layout === "drawer";
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [open, setOpen] = useState(initiallyOpen);
+  const [open, setOpen] = useState(() => !drawer && initiallyOpen());
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   // The newest message id the reader has seen; null until the chat loads.
   const [seen, setSeen] = useState<number | null>(null);
   const logRef = useRef<HTMLOListElement>(null);
@@ -85,12 +95,36 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
   function toggle(next: boolean) {
     setOpen(next);
     if (!next) setSeen(last?.id ?? 0);
+    if (drawer) {
+      // Into the drawer to write; back to its button when it closes.
+      requestAnimationFrame(() => {
+        (next ? inputRef.current : toggleRef.current)?.focus();
+      });
+      return;
+    }
     try {
       localStorage.setItem(OPEN_KEY, next ? "1" : "0");
     } catch {
       // Not remembered; it still toggles.
     }
   }
+
+  // Escape closes the drawer.
+  const escape = useEffectEvent((event: KeyboardEvent) => {
+    if (event.key !== "Escape") return;
+    event.stopPropagation();
+    toggle(false);
+  });
+  useEffect(() => {
+    if (!drawer || !open) return;
+    const onKey = (event: KeyboardEvent) => {
+      escape(event);
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [drawer, open]);
 
   async function send() {
     const body = text.trim();
@@ -126,47 +160,20 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
     }
   }
 
-  if (!open) {
-    return (
-      <aside
-        aria-label={s.title}
-        className="flex shrink-0 border-t border-border bg-surface py-1 ps-[max(0.5rem,env(safe-area-inset-left))] pe-[max(0.5rem,env(safe-area-inset-right))] md:w-12 md:flex-col md:items-center md:border-s md:border-t-0 md:ps-0 md:pt-3"
+  const unreadLabel =
+    unread > 0 ? `${s.show} (${fill(s.unread, { count: unread.toLocaleString(locale) })})` : s.show;
+  const badge = (className: string) =>
+    unread > 0 && (
+      <span
+        aria-hidden="true"
+        className={`flex min-w-5 items-center justify-center rounded-full bg-brand px-1 text-xs font-bold text-on-brand tabular-nums ${className}`}
       >
-        <Button
-          variant="ghost"
-          aria-label={
-            unread > 0
-              ? `${s.show} (${fill(s.unread, { count: unread.toLocaleString(locale) })})`
-              : s.show
-          }
-          aria-expanded={false}
-          className="relative w-full justify-start md:size-11 md:justify-center md:px-0"
-          onClick={() => {
-            toggle(true);
-          }}
-        >
-          <MessageSquare aria-hidden="true" />
-          <span className="md:sr-only">{s.title}</span>
-          {unread > 0 && (
-            <span
-              aria-hidden="true"
-              className="flex min-w-5 items-center justify-center rounded-full bg-brand px-1 text-xs font-bold text-on-brand tabular-nums md:absolute md:-end-1 md:-top-1"
-            >
-              {unread > 99 ? "99+" : unread.toLocaleString(locale)}
-            </span>
-          )}
-          <ChevronUp aria-hidden="true" className="ms-auto md:hidden" />
-        </Button>
-      </aside>
+        {unread > 99 ? "99+" : unread.toLocaleString(locale)}
+      </span>
     );
-  }
 
-  return (
-    <aside
-      id={`${id}-panel`}
-      aria-labelledby={`${id}-title`}
-      className="flex h-64 shrink-0 flex-col gap-2 border-t border-border bg-surface py-2 ps-[max(0.75rem,env(safe-area-inset-left))] pe-[max(0.75rem,env(safe-area-inset-right))] md:h-auto md:w-80 md:gap-3 md:border-s md:border-t-0 md:py-3 md:ps-3 xl:w-96"
-    >
+  const body = (
+    <>
       <div className="flex items-center justify-between gap-2">
         <h2 id={`${id}-title`} className="text-base md:text-xl">
           {s.title}
@@ -181,8 +188,14 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
             toggle(false);
           }}
         >
-          <ChevronDown aria-hidden="true" className="md:hidden" />
-          <PanelRightClose aria-hidden="true" className="hidden md:block rtl:-scale-x-100" />
+          {drawer ? (
+            <X aria-hidden="true" />
+          ) : (
+            <>
+              <ChevronDown aria-hidden="true" className="md:hidden" />
+              <PanelRightClose aria-hidden="true" className="hidden md:block rtl:-scale-x-100" />
+            </>
+          )}
         </Button>
       </div>
 
@@ -217,6 +230,7 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
           {s.label}
         </label>
         <Input
+          ref={inputRef}
           id={`${id}-input`}
           value={text}
           maxLength={MAX_LENGTH}
@@ -241,6 +255,71 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
       <p id={`${id}-hint`} className="hidden text-sm text-muted md:block">
         {s.hint}
       </p>
+    </>
+  );
+
+  if (drawer) {
+    return (
+      <>
+        <Button
+          ref={toggleRef}
+          variant="ghost"
+          size="icon"
+          aria-label={open ? s.hide : unreadLabel}
+          aria-expanded={open}
+          aria-controls={`${id}-panel`}
+          className="relative"
+          onClick={() => {
+            toggle(!open);
+          }}
+        >
+          <MessageSquare aria-hidden="true" />
+          {!open && badge("absolute -end-1 -top-1")}
+        </Button>
+        {open && (
+          <aside
+            id={`${id}-panel`}
+            aria-labelledby={`${id}-title`}
+            className="fixed inset-x-0 bottom-0 z-[75] flex h-[min(60dvh,28rem)] flex-col gap-2 rounded-t-2xl border-t border-border bg-surface p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] shadow-xl md:start-auto md:top-0 md:h-auto md:w-96 md:gap-3 md:rounded-none md:border-s md:border-t-0 md:pt-[max(0.75rem,env(safe-area-inset-top))]"
+          >
+            {body}
+          </aside>
+        )}
+      </>
+    );
+  }
+
+  if (!open) {
+    return (
+      <aside
+        aria-label={s.title}
+        className="flex shrink-0 border-t border-border bg-surface py-1 ps-[max(0.5rem,env(safe-area-inset-left))] pe-[max(0.5rem,env(safe-area-inset-right))] md:w-12 md:flex-col md:items-center md:border-s md:border-t-0 md:ps-0 md:pt-3"
+      >
+        <Button
+          variant="ghost"
+          aria-label={unreadLabel}
+          aria-expanded={false}
+          className="relative w-full justify-start md:size-11 md:justify-center md:px-0"
+          onClick={() => {
+            toggle(true);
+          }}
+        >
+          <MessageSquare aria-hidden="true" />
+          <span className="md:sr-only">{s.title}</span>
+          {badge("md:absolute md:-end-1 md:-top-1")}
+          <ChevronUp aria-hidden="true" className="ms-auto md:hidden" />
+        </Button>
+      </aside>
+    );
+  }
+
+  return (
+    <aside
+      id={`${id}-panel`}
+      aria-labelledby={`${id}-title`}
+      className="flex h-64 shrink-0 flex-col gap-2 border-t border-border bg-surface py-2 ps-[max(0.75rem,env(safe-area-inset-left))] pe-[max(0.75rem,env(safe-area-inset-right))] md:h-auto md:w-80 md:gap-3 md:border-s md:border-t-0 md:py-3 md:ps-3 xl:w-96"
+    >
+      {body}
     </aside>
   );
 }

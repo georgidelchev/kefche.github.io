@@ -853,52 +853,30 @@ function Room({
       ),
   };
 
-  // The chat lives in the page's right-hand pane; it stays mounted during a
-  // match (under the full-screen board), so nothing is missed.
+  // In the lobby the chat is the page's right-hand pane; during a match it opens
+  // as a drawer from the match's bar, over the board (SPEC §6.4).
   const chatPane = (
     <RoomChat supabase={supabase} roomId={roomId} self={self} locale={locale} strings={chat} />
   );
   const docked = chatSlot ? createPortal(chatPane, chatSlot) : chatPane;
+  const drawer = (
+    <RoomChat
+      supabase={supabase}
+      roomId={roomId}
+      self={self}
+      locale={locale}
+      strings={chat}
+      layout="drawer"
+    />
+  );
 
   if (match) {
     if (!transport) return <Waiting label={s.joining} />;
     if (game.race) {
       const limit = game.config.timers[onlineTimer(game.config, settings.timer)];
       return (
-        <>
-          {docked}
-          <RaceMatch
-            key={match.seed}
-            supabase={supabase}
-            transport={transport}
-            roomId={roomId}
-            self={self}
-            host={room.host_id}
-            match={match}
-            seed={match.seed}
-            startedAt={settings.startedAt}
-            limitMs={(limit?.kind === "countdown" ? limit.seconds : 600) * 1000}
-            countdown={match.countdown}
-            present={present}
-            avatars={new Map(view.members.map((m) => [m.userId, m.avatar]))}
-            game={{ id: game.id, name: game.name, ui: game.ui, race: game.race }}
-            options={settings.options}
-            locale={locale}
-            dir={dir}
-            strings={s}
-            race={race}
-            player={player}
-            onLeave={actions.leave}
-          />
-        </>
-      );
-    }
-    const status = (userId: string) => view.members.find((m) => m.userId === userId)?.status;
-    const rated = parseRated(room.rated);
-    return (
-      <>
-        {docked}
-        <OnlineMatch
+        <RaceMatch
+          chat={drawer}
           key={match.seed}
           supabase={supabase}
           transport={transport}
@@ -907,30 +885,58 @@ function Room({
           host={room.host_id}
           match={match}
           seed={match.seed}
-          rated={rated}
-          startsAt={
-            rated && settings.startedAt !== null ? settings.startedAt + RATED_COUNTDOWN_MS : null
-          }
-          // A rated matchmaking room plays one game: the players search again instead of a rematch.
-          matchHref={(id) => `${matchesPath}${id}/`}
-          onNewOpponent={() => {
-            void call(() => supabase.rpc("leave_room", { p_room: roomId })).then(() => {
-              location.assign(`${location.pathname}?rated=${String(settings.timer)}`);
-            });
-          }}
-          away={match.seatMembers.map(
-            (member) => member !== null && (!present.has(member) || status(member) === "left"),
-          )}
+          startedAt={settings.startedAt}
+          limitMs={(limit?.kind === "countdown" ? limit.seconds : 600) * 1000}
           countdown={match.countdown}
-          game={game}
+          present={present}
+          avatars={new Map(view.members.map((m) => [m.userId, m.avatar]))}
+          game={{ id: game.id, name: game.name, ui: game.ui, race: game.race }}
+          options={settings.options}
           locale={locale}
           dir={dir}
           strings={s}
+          race={race}
           player={player}
-          turn={turn}
           onLeave={actions.leave}
         />
-      </>
+      );
+    }
+    const status = (userId: string) => view.members.find((m) => m.userId === userId)?.status;
+    const rated = parseRated(room.rated);
+    return (
+      <OnlineMatch
+        chat={drawer}
+        key={match.seed}
+        supabase={supabase}
+        transport={transport}
+        roomId={roomId}
+        self={self}
+        host={room.host_id}
+        match={match}
+        seed={match.seed}
+        rated={rated}
+        startsAt={
+          rated && settings.startedAt !== null ? settings.startedAt + RATED_COUNTDOWN_MS : null
+        }
+        // A rated matchmaking room plays one game: the players search again instead of a rematch.
+        matchHref={(id) => `${matchesPath}${id}/`}
+        onNewOpponent={() => {
+          void call(() => supabase.rpc("leave_room", { p_room: roomId })).then(() => {
+            location.assign(`${location.pathname}?rated=${String(settings.timer)}`);
+          });
+        }}
+        away={match.seatMembers.map(
+          (member) => member !== null && (!present.has(member) || status(member) === "left"),
+        )}
+        countdown={match.countdown}
+        game={game}
+        locale={locale}
+        dir={dir}
+        strings={s}
+        player={player}
+        turn={turn}
+        onLeave={actions.leave}
+      />
     );
   }
 
