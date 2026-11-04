@@ -2,10 +2,11 @@
 // both ways and blocked players in tabs, each with its actions. Removing a
 // friend and blocking ask first. Every change goes through the database
 // (add_friend, remove_friend, block_user, unblock_user), then the lists are
-// read again. Friends show their online status, live.
+// read again. Friends show their online status, live. Invite to a game
+// picks a game, whose new lobby invites the friend (`?new&invite=<id>`).
 import { useCallback, useEffect, useId, useState } from "react";
 
-import { Button } from "@kefche/ui/components/button";
+import { Button, buttonVariants } from "@kefche/ui/components/button";
 import {
   Dialog,
   DialogContent,
@@ -36,8 +37,8 @@ import type { FriendsPageStrings } from "./strings";
 type Tab = "friends" | "requests" | "blocked";
 const TABS: readonly Tab[] = ["friends", "requests", "blocked"];
 
-/** A change that asks first: removing a friend or blocking a player. */
-type Confirming = { kind: "remove" | "block"; player: PlayerCard } | null;
+/** A change that asks first (removing a friend or blocking a player), or the games to invite a friend to. */
+type Confirming = { kind: "remove" | "block" | "invite"; player: PlayerCard } | null;
 
 interface Props {
   strings: FriendsPageStrings;
@@ -48,6 +49,9 @@ interface Props {
   profileBase: string;
   /** Game names by id, in the page's language (online statuses name the game). */
   gameNames: Record<string, string>;
+  /** The games with online rooms, and "/<locale>/play/". */
+  games: { id: string; name: string }[];
+  playBase: string;
 }
 
 /** The tab in the address (`?tab=requests`). Tabs only show once the account loads, in the browser. */
@@ -57,7 +61,16 @@ function initialTab(): Tab {
   return TABS.find((tab) => tab === asked) ?? "friends";
 }
 
-export function FriendsPage({ strings: s, bcp47, dir, signInPath, profileBase, gameNames }: Props) {
+export function FriendsPage({
+  strings: s,
+  bcp47,
+  dir,
+  signInPath,
+  profileBase,
+  gameNames,
+  games,
+  playBase,
+}: Props) {
   const account = useAccount(signInPath);
   const id = useId();
   const [lists, setLists] = useState<MyFriends | null | undefined>(undefined);
@@ -234,6 +247,16 @@ export function FriendsPage({ strings: s, bcp47, dir, signInPath, profileBase, g
                     status={statusText(p.id)}
                     {...rowProps}
                   >
+                    {games.length > 0 && (
+                      <Button
+                        variant="outline"
+                        onClick={() => {
+                          setConfirming({ kind: "invite", player: p });
+                        }}
+                      >
+                        {s.actions.invite}
+                      </Button>
+                    )}
                     <Button
                       variant="outline"
                       disabled={busy}
@@ -336,7 +359,31 @@ export function FriendsPage({ strings: s, bcp47, dir, signInPath, profileBase, g
           if (!open) setConfirming(null);
         }}
       >
-        {confirming && (
+        {confirming?.kind === "invite" && (
+          <DialogContent closeLabel={s.confirm.close}>
+            <DialogHeader>
+              <DialogTitle>
+                {fill(s.invite.title, { name: confirming.player.nickname })}
+              </DialogTitle>
+              <DialogDescription>
+                {fill(s.invite.hint, { name: confirming.player.nickname })}
+              </DialogDescription>
+            </DialogHeader>
+            <ul className="grid gap-2 sm:grid-cols-2">
+              {games.map((game) => (
+                <li key={game.id}>
+                  <a
+                    href={`${playBase}${game.id}/?new&invite=${confirming.player.id}`}
+                    className={buttonVariants({ variant: "outline", className: "w-full" })}
+                  >
+                    {game.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </DialogContent>
+        )}
+        {confirming && confirming.kind !== "invite" && (
           <DialogContent closeLabel={s.confirm.close}>
             <DialogHeader>
               <DialogTitle>

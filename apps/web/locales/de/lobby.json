@@ -165,5 +165,19 @@
     "rated_guests": "Für eine gewertete Partie braucht jeder auf einem Platz ein Konto.",
     "suspended": "Du bist vom Online-Spiel ausgeschlossen.",
     "unknown": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal."
+  },
+  "invite": {
+    "title": "Freunde einladen",
+    "send": "Einladen",
+    "sent": "Eingeladen",
+    "sentTo": "Einladung an {name} gesendet.",
+    "loading": "Deine Freunde werden geladen …",
+    "failed": "Deine Freunde konnten nicht geladen werden.",
+    "empty": "Noch keine Freunde zum Einladen. Füge Freunde über ihr Profil oder die Freunde-Seite hinzu.",
+    "errors": {
+      "unavailable": "Dieser Spieler nimmt keine Einladungen von dir an.",
+      "already_here": "Schon in diesem Raum.",
+      "room_locked": "Entsperre den Raum, um Freunde einzuladen."
+    }
   }
 }

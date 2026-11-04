@@ -10,7 +10,7 @@ import { avatarUrl } from "@/features/account/avatar-url";
 import NotFoundPage from "@/features/errors/NotFoundPage.astro";
 import ProfileActions from "@/features/friends/ProfileActions.astro";
 import { friendsStrings } from "@/features/friends/strings";
-import { gameName, gameNames } from "@/features/games/game-names";
+import { gameName, gameNames, roomGames } from "@/features/games/game-names";
 import AchievementCard from "@/features/profile/AchievementCard.astro";
 import { shownAchievements } from "@/features/profile/achievements";
 import { fetchPlayerHistory, PROVISIONAL_GAMES } from "@/features/profile/history";
@@ -249,6 +249,8 @@ const facts = profile
         nickname={profile.nickname}
         profileBase={getRelativeLocaleUrl(locale, "/u/")}
         bcp47={bcp47}
+        games={roomGames(locale)}
+        playBase={getRelativeLocaleUrl(locale, "/play/")}
       />
       <dl class="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {level && (

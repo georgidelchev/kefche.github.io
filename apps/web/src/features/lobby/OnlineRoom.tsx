@@ -6,6 +6,8 @@
 // `?rated=<clock>` searches for a rated opponent (accounts only), and the
 // pairing's room starts at once; a bare `?rated` ("Play rated") offers the
 // rated clocks first. A lobby's host can also make its games rated.
+// `?new&invite=<id>` (from the friends page or a profile) invites that
+// player once the new lobby opens.
 import { LoaderCircle } from "lucide-react";
 import { useEffect, useEffectEvent, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -24,6 +26,8 @@ import { getSupabase, send, type Supabase } from "@/lib/supabase/client";
 import { supabaseConfig } from "@/lib/supabase/config";
 
 import { GuestProfileForm } from "./GuestProfileForm";
+import { InviteFriends, useInviteOnOpen } from "./InviteFriends";
+import { INVITEE } from "./invites";
 import { LobbyView, type LobbyActions } from "./LobbyView";
 import { OnlineMatch, RATED_COUNTDOWN_MS } from "./OnlineMatch";
 import { RaceMatch } from "./RaceMatch";
@@ -43,6 +47,7 @@ import { createSupabaseTransport } from "./supabase-transport";
 import type {
   ChatStrings,
   GuestStrings,
+  InviteStrings,
   RaceStrings,
   RatedStrings,
   RoomErrorCode,
@@ -77,12 +82,15 @@ interface Props {
   chat: ChatStrings;
   turn: TurnStrings;
   race: RaceStrings;
+  invite: InviteStrings;
+  /** Game names by id, in the page's language (friends' online statuses name the game). */
+  gameNames: Record<string, string>;
   /** `matches`: where finished games live, `/matches/` in the page's locale. */
   paths: { game: string; privacy: string; onboarding: string; signIn: string; matches: string };
 }
 
 type Intent =
-  | { kind: "create"; public?: boolean }
+  | { kind: "create"; public?: boolean; invitee?: string }
   | { kind: "join"; code: string }
   | { kind: "quick" }
   | { kind: "pickRated" }
@@ -96,7 +104,14 @@ type Stage =
   | { kind: "onboarding" }
   | { kind: "accountsOnly"; timer: number }
   | { kind: "searching"; supabase: Supabase; identity: Identity; timer: number }
-  | { kind: "room"; supabase: Supabase; identity: Identity; roomId: string; code: string }
+  | {
+      kind: "room";
+      supabase: Supabase;
+      identity: Identity;
+      roomId: string;
+      code: string;
+      invitee: string | null;
+    }
   | { kind: "gone"; code: RoomErrorCode };
 
 const CODE = /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{6}$/;
@@ -112,9 +127,13 @@ function intentFromUrl({ modes, rated }: OnlineGame): Intent | null {
   if (rated.some((clock) => clock.timer === timer)) return { kind: "rated", timer };
   if (params.has("rated") && rated.length > 0) return { kind: "pickRated" };
   // ?new=public (from the lobby browser) lists the new room there.
-  return params.has("new")
-    ? { kind: "create", public: modes.public && params.get("new") === "public" }
-    : null;
+  if (!params.has("new")) return null;
+  const invitee = params.get("invite") ?? "";
+  return {
+    kind: "create",
+    public: modes.public && params.get("new") === "public",
+    ...(INVITEE.test(invitee) ? { invitee } : {}),
+  };
 }
 
 export function OnlineRoom({
@@ -127,6 +146,8 @@ export function OnlineRoom({
   chat,
   turn,
   race,
+  invite,
+  gameNames,
   paths,
 }: Props) {
   // A link with ?room=, ?quick, ?rated= or ?new[=public] starts at once (the page renders only in the browser).
@@ -213,7 +234,14 @@ export function OnlineRoom({
       if (joinError) throw joinError;
       // The address becomes the invite link, so a reload rejoins instead of creating again.
       history.replaceState(history.state, "", `${location.pathname}?room=${room.code}`);
-      setStage({ kind: "room", supabase, identity, roomId: room.id, code: room.code });
+      setStage({
+        kind: "room",
+        supabase,
+        identity,
+        roomId: room.id,
+        code: room.code,
+        invitee: intent.kind === "create" ? (intent.invitee ?? null) : null,
+      });
     } catch (e) {
       setError(roomErrorText(e, s, locale));
       setStage({ kind: "choose" });
@@ -308,6 +336,7 @@ export function OnlineRoom({
               identity: stage.identity,
               roomId: room.id,
               code: room.code,
+              invitee: null,
             });
           }}
           onCancel={() => {
@@ -372,6 +401,8 @@ export function OnlineRoom({
           chat={chat}
           turn={turn}
           race={race}
+          invite={invite}
+          gameNames={gameNames}
           onGone={(code) => {
             history.replaceState(history.state, "", location.pathname);
             setStage({ kind: "gone", code });
@@ -523,6 +554,8 @@ interface RoomProps {
   identity: Identity;
   roomId: string;
   code: string;
+  /** Invited once the lobby opens. */
+  invitee: string | null;
   game: OnlineGame;
   locale: string;
   dir: "ltr" | "rtl";
@@ -531,6 +564,8 @@ interface RoomProps {
   chat: ChatStrings;
   turn: TurnStrings;
   race: RaceStrings;
+  invite: InviteStrings;
+  gameNames: Record<string, string>;
   onGone: (code: RoomErrorCode) => void;
   onLeft: () => void;
   /** `/matches/` in the page's locale. */
@@ -546,6 +581,7 @@ function Room({
   identity,
   roomId,
   code,
+  invitee,
   game,
   locale,
   dir,
@@ -554,6 +590,8 @@ function Room({
   chat,
   turn,
   race,
+  invite,
+  gameNames,
   onGone,
   onLeft,
   matchesPath,
@@ -574,6 +612,7 @@ function Room({
   const seenRef = useRef(false);
   const refreshRef = useRef<(() => Promise<void>) | null>(null);
   const gone = useEffectEvent(onGone);
+  const invited = useInviteOnOpen(supabase, roomId, invitee);
 
   // Online status: in this game's lobby, then in the game.
   const roomStatus = snapshot?.room.status ?? null;
@@ -912,6 +951,20 @@ function Room({
         locale={locale}
         gameName={game.name}
         inviteUrl={`${location.origin}${location.pathname}?room=${room.code}`}
+        friends={
+          identity.guest ? null : (
+            <InviteFriends
+              supabase={supabase}
+              roomId={roomId}
+              members={
+                new Set(view.members.filter((m) => m.status === "joined").map((m) => m.userId))
+              }
+              first={invited}
+              gameNames={gameNames}
+              strings={invite}
+            />
+          )
+        }
         busy={busy}
         error={error}
         actions={actions}

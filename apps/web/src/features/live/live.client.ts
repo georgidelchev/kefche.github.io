@@ -1,7 +1,9 @@
 // The signed-in player's live connection (Phase 8 decisions): one per tab,
 // on their own private channel `user:<id>`, which only the database writes.
 // Its messages are passed on as LIVE_EVENT on the document; pages listen for
-// what concerns them. Guests and visitors open nothing.
+// what concerns them. A new notification that is an invite also shows as a
+// toast on any page (invite-toast.ts, loaded with the first notification).
+// Guests and visitors open nothing.
 //
 // The tab also reports its status: on load, when the page's context changes
 // (a lobby, a game), and every minute. Hidden for 5 minutes, it reports
@@ -25,7 +27,7 @@ import type { RealtimeChannel } from "@supabase/supabase-js";
 const HEARTBEAT_MS = 60_000;
 const AWAY_AFTER_MS = 5 * 60_000;
 /** The events the database sends on a player's channel. */
-const EVENTS = ["presence"] as const;
+const EVENTS = ["presence", "notification"] as const;
 
 function start(supabase: Supabase, userId: string) {
   const tab = crypto.randomUUID();
@@ -57,6 +59,15 @@ function start(supabase: Supabase, userId: string) {
     for (const event of EVENTS) {
       joined.on("broadcast", { event }, ({ payload }: { payload: unknown }) => {
         document.dispatchEvent(new CustomEvent(LIVE_EVENT, { detail: { event, payload } }));
+        if (event === "notification") {
+          import("./invite-toast").then(
+            ({ showNotification }) => {
+              showNotification(payload);
+            },
+            // A stale chunk after a deploy: no toast, nothing else lost.
+            () => undefined,
+          );
+        }
       });
     }
     joined.subscribe();

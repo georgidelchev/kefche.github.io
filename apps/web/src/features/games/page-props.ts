@@ -10,6 +10,7 @@ import type { Locale } from "@/i18n/locales";
 import { getSupabaseEnv } from "@/lib/env";
 
 import { BOT_NAME_KEYS } from "./catalog";
+import { hasRooms, racesInRooms } from "./game-names";
 
 import type { PlayerStrings } from "./GamePlayer";
 import type { ResultsStrings } from "./GameResults";
@@ -154,17 +155,13 @@ function onlineTimers(manifest: GameManifest): number[] {
     : allowed;
 }
 
-/** A race game played in a room (manifest mode "race"). */
-const races = (manifest: GameManifest) =>
-  manifest.kind === "race" && manifest.modes.includes("race");
-
 /**
  * What a room offers for a game: a turn game's setup, or a race's (people
  * only, from two seats; the manifest's countdowns are the time limits).
  */
 export function roomConfig(manifest: GameManifest): TurnConfig | null {
   if (manifest.kind === "turn") return turnConfig(manifest);
-  if (!races(manifest)) return null;
+  if (!racesInRooms(manifest)) return null;
   const min = Math.max(2, manifest.players.min);
   return {
     modes: [],
@@ -177,9 +174,7 @@ export function roomConfig(manifest: GameManifest): TurnConfig | null {
 
 /** Online rooms need a turn-based or race game that offers them, in a build with Supabase. */
 export const playsOnline = (manifest: GameManifest): boolean =>
-  (manifest.kind === "turn" || races(manifest)) &&
-  manifest.modes.includes("online-private") &&
-  getSupabaseEnv() !== null;
+  hasRooms(manifest) && getSupabaseEnv() !== null;
 
 /** A race option with its labels in the page's language (from the game's "ui" strings). */
 export interface RaceOptionView {
@@ -196,7 +191,7 @@ export interface RaceSetup {
 }
 
 export function raceSetup(manifest: GameManifest, ui: Record<string, string>): RaceSetup | null {
-  if (!races(manifest)) return null;
+  if (!racesInRooms(manifest)) return null;
   return {
     options: (manifest.raceOptions ?? []).map((option) => ({
       key: option.key,

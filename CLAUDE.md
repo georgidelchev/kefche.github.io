@@ -40,9 +40,9 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
     - `auth/`: sign-in, sign-up, onboarding and guest-merge pages.
     - `profile/`: the public profile page, game history and the analysis island.
     - `settings/`: the settings page.
-    - `lobby/`: online rooms: the lobby, the Supabase transport (`room:<code>` plus the server-stamped `room-relay:<code>`), matches, races, chat and the public lobby browser (ADR-0020 to ADR-0024), plus rated matchmaking and results (ADR-0026).
+    - `lobby/`: online rooms: the lobby, the Supabase transport (`room:<code>` plus the server-stamped `room-relay:<code>`), matches, races, chat and the public lobby browser (ADR-0020 to ADR-0024), plus rated matchmaking and results (ADR-0026), and inviting friends (`InviteFriends.tsx`, `invite_to_room`).
     - `friends/`: the friends page island, and the profile's friend actions (a plain script, since profiles are public and cached).
-    - `live/`: the signed-in player's live connection (`live.client.ts`, on every page: their private channel `user:<id>`, passed on as `kefche:live` document events) and online status. A page says what its player is doing with `setPresenceContext` (`presence-context.ts`, dependency-free because every page loads it).
+    - `live/`: the signed-in player's live connection (`live.client.ts`, on every page: their private channel `user:<id>`, passed on as `kefche:live` document events), online status, and the invite toast (`invite-toast.ts`, loaded with the first notification). A page says what its player is doing with `setPresenceContext` (`presence-context.ts`, dependency-free because every page loads it).
     - `moderation/`: sanction notices. The database refuses a sanctioned player with `muted` or `suspended`, with the sanction's end as the error's `details`.
     - `errors/`
   - `lib/supabase/`: lazy client, config, generated DB types.

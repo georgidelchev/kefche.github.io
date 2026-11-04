@@ -32,7 +32,8 @@
     "cancel": "申請を取り消す",
     "remove": "フレンドを解除",
     "block": "ブロック",
-    "unblock": "ブロックを解除"
+    "unblock": "ブロックを解除",
+    "invite": "ゲームに招待"
   },
   "status": {
     "requested": "申請済み",
@@ -67,5 +68,9 @@
     "lobby": "ロビー：{game}",
     "playing": "{game}をプレイ中",
     "away": "離席中"
+  },
+  "invite": {
+    "title": "{name}さんをゲームに招待",
+    "hint": "ゲームを選んでください。新しいルームが開き、{name}さんに招待が届きます。"
   }
 }

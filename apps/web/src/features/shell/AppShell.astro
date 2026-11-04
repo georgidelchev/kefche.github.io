@@ -12,8 +12,11 @@ import {
   type LucideIcon,
 } from "lucide-react";
 
+import { buttonVariants } from "@kefche/ui/components/button";
+
 import Logo from "@/components/Logo.astro";
 import AccountButton from "@/features/account/AccountButton.astro";
+import { gameNames } from "@/features/games/game-names";
 import LanguageSwitcher from "@/features/i18n/LanguageSwitcher.astro";
 import ThemeSwitcher from "@/features/theme/ThemeSwitcher.astro";
 import { getT } from "@/i18n/i18n";
@@ -70,6 +73,12 @@ const themeLabels = {
 };
 // Account features exist only in builds with Supabase settings.
 const accounts = getSupabaseEnv() !== null;
+// What invite-toast.ts needs to word and link an invite (accounts builds).
+const inviteToast = {
+  received: t("common:invite.received", { name: "{name}", game: "{game}" }),
+  playBase: getRelativeLocaleUrl(locale, "/play/"),
+  games: gameNames(locale),
+};
 const gutter = "ps-[max(1rem,env(safe-area-inset-left))] pe-[max(1rem,env(safe-area-inset-right))]";
 const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
@@ -299,6 +308,30 @@ const focusRing =
       ))}
     </ul>
   </nav>
+  {accounts && (
+    <div
+      role="region"
+      aria-label={t("common:invite.region")}
+      aria-live="polite"
+      data-live-toasts
+      data-strings={JSON.stringify(inviteToast)}
+      class="pointer-events-none fixed end-0 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-[100] grid w-full max-w-sm gap-2 p-4 md:bottom-0"
+    >
+      <template>
+        <section class="pointer-events-auto grid gap-3 rounded-2xl border border-s-4 border-border border-s-brand bg-surface p-4 text-text shadow-lg">
+          <p data-text class="font-semibold" />
+          <div class="flex flex-wrap gap-2">
+            <a data-join href={inviteToast.playBase} class={buttonVariants({ variant: "primary" })}>
+              {t("common:invite.join")}
+            </a>
+            <button type="button" data-dismiss class={buttonVariants({ variant: "ghost" })}>
+              {t("common:invite.dismiss")}
+            </button>
+          </div>
+        </section>
+      </template>
+    </div>
+  )}
 </BaseLayout>
 
 <script>

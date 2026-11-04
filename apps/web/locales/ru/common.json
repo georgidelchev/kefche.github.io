@@ -29,5 +29,11 @@
   },
   "wordOfTheDay": {
     "title": "Слово дня"
+  },
+  "invite": {
+    "region": "Приглашения",
+    "received": "{name} приглашает вас сыграть в {game}.",
+    "join": "Войти",
+    "dismiss": "Скрыть"
   }
 }

@@ -1405,6 +1405,19 @@ Online modes are enabled for the Phase 4 games.
   - **Checks:**
     - SQL 23/23, rolled back: friends told on change only, the busiest tab wins, each choice (friends, everyone, nobody) for friends, strangers and visitors, blocks both ways, leaving and expiry, validation, guests refused, each player hears only their own channel. The other suites still pass.
     - Against local Supabase: a friend's channel receives the status live, then "offline" when the tab says goodbye, and another player is refused that channel ("Unauthorized").
+- [x] Step 5: invites (`20261104100400_invites.sql`).
+  - **Sending** (`invite_to_room`): any member of a lobby who has an account invites a player, as the invitee's `privacy_invites` allows (everyone, the default; friends only; nobody) and never across a block. A refusal for privacy or a block reads the same ("This player isn't taking invites from you."). A locked room or a started match can't invite. An unread invite to the same room under 5 minutes old isn't sent again. Limit: 20 invites per 10 minutes.
+  - **The invite** is a notification (`{user, room, code, game}`). Joining the room marks it read, and deleting the room deletes it, so an old invite never leads into a later room with the same code.
+  - **Live notifications:** every new notification (invites, friend requests, acceptances, sanction notices) is sent at once to its player's channel `user:<id>` as `notification`, with the card of the player it's about. Step 6's bell builds on it.
+  - **Where to invite from:**
+    - **The lobby:** Invite friends opens the friend list (loaded on demand): friends not in the room, online ones first with their status, each with Invite. Guests don't see it.
+    - **The friends page and profiles:** Invite to a game lists the games with online rooms. Each opens a new lobby (`?new&invite=<id>`), which invites the player once (not again after a rematch) and says so. On profiles it shows for accounts, beside the friend actions.
+  - **Receiving:** on any page, an invite shows as "{name} invites you to play {game}." with Join (the room's link) and Dismiss, for 5 minutes, at most 3 at once (`features/live/invite-toast.ts`, loaded with the first notification). The bell (step 6) will keep them.
+  - **Privacy notice:** invites, and who can send them.
+  - **Cost:** every page's shell script grew by 0.2 KB gzip; the toast is a 0.8 KB chunk loaded only when a notification arrives. The Worker now carries the game manifests (plain objects, no engines) for the profile's game list.
+  - **Checks:**
+    - SQL 27/27, rolled back: sent live with the card, no repeats, read on join, members other than the host, each privacy choice, blocks both ways, self, guests and unknown players, non-members, guests and visitors refused, locked and started rooms, deleted with the room, friend requests pushed too. The other suites still pass.
+    - Against local Supabase: the invitee's channel receives the invite live, a repeat answers `already_invited`, "nobody" answers `unavailable`, and joining marks it read.
 
 ---
 

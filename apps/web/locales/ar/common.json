@@ -29,5 +29,11 @@
   },
   "wordOfTheDay": {
     "title": "كلمة اليوم"
+  },
+  "invite": {
+    "region": "الدعوات",
+    "received": "يدعوك {name} للعب {game}.",
+    "join": "انضم",
+    "dismiss": "تجاهل"
   }
 }

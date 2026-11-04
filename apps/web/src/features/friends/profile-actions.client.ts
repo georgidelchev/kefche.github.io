@@ -1,8 +1,10 @@
 // A profile's friend actions (no framework; ProfileActions.astro). For a
 // signed-in viewer other than the profile's player, shows the friendship
 // between them with what can be done about it, and their mutual friends.
-// Guests can only block. Removing a friend and blocking ask first. The
-// database decides every action; this only shows the result.
+// Guests can only block. Removing a friend and blocking ask first. Invite to
+// a game opens a list of games, each a link that opens a new lobby and
+// invites the player (`?new&invite=<id>`). The database decides every
+// action; this only shows the result.
 // zod/mini: this module ships to the browser.
 import * as z from "zod/mini";
 
@@ -32,7 +34,7 @@ const stringsSchema = z.object({
 });
 type Strings = z.infer<typeof stringsSchema>;
 
-type Action = "add" | "accept" | "decline" | "cancel" | "remove" | "unblock" | "block";
+type Action = "add" | "accept" | "decline" | "cancel" | "remove" | "unblock" | "block" | "invite";
 
 /** The controls each state shows. */
 function shown(relation: ProfileRelation, guest: boolean): { status?: string; actions: Action[] } {
@@ -40,13 +42,13 @@ function shown(relation: ProfileRelation, guest: boolean): { status?: string; ac
   if (guest) return { actions: ["block"] };
   switch (relation.friendship) {
     case "none":
-      return { actions: ["add", "block"] };
+      return { actions: ["add", "invite", "block"] };
     case "requested":
-      return { status: "requested", actions: ["cancel", "block"] };
+      return { status: "requested", actions: ["cancel", "invite", "block"] };
     case "incoming":
-      return { status: "incoming", actions: ["accept", "decline", "block"] };
+      return { status: "incoming", actions: ["accept", "decline", "invite", "block"] };
     case "friends":
-      return { status: "friends", actions: ["remove", "block"] };
+      return { status: "friends", actions: ["invite", "remove", "block"] };
   }
 }
 
@@ -57,6 +59,7 @@ function setUp(root: HTMLElement, supabase: Supabase, s: Strings, guest: boolean
   const message = root.querySelector<HTMLElement>("[data-message]");
   const mutual = root.querySelector<HTMLElement>("[data-mutual]");
   const dialog = root.querySelector<HTMLDialogElement>("dialog[data-confirm]");
+  const games = root.querySelector<HTMLDialogElement>("dialog[data-invite]");
   const buttons = [...root.querySelectorAll<HTMLButtonElement>("button[data-action]")];
   const statuses = [...root.querySelectorAll<HTMLElement>("[data-status]")];
   const say = (text: string) => {
@@ -124,6 +127,10 @@ function setUp(root: HTMLElement, supabase: Supabase, s: Strings, guest: boolean
   for (const button of buttons) {
     const action = button.dataset.action as Action;
     button.addEventListener("click", () => {
+      if (action === "invite") {
+        games?.showModal();
+        return;
+      }
       if ((action === "remove" || action === "block") && dialog) {
         pending = action;
         const title = dialog.querySelector("h2");

@@ -165,5 +165,19 @@
     "rated_guests": "Pour une partie classée, chaque personne assise doit avoir un compte.",
     "suspended": "Vous ne pouvez pas jouer en ligne.",
     "unknown": "Un problème est survenu. Veuillez réessayer."
+  },
+  "invite": {
+    "title": "Inviter des amis",
+    "send": "Inviter",
+    "sent": "Invité",
+    "sentTo": "Invitation envoyée à {name}.",
+    "loading": "Chargement de vos amis…",
+    "failed": "Impossible de charger vos amis.",
+    "empty": "Aucun ami à inviter pour l’instant. Ajoutez des amis depuis leur profil ou la page Amis.",
+    "errors": {
+      "unavailable": "Ce joueur n’accepte pas vos invitations.",
+      "already_here": "Déjà dans ce salon.",
+      "room_locked": "Déverrouillez le salon pour inviter des amis."
+    }
   }
 }

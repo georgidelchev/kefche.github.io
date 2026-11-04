@@ -165,5 +165,19 @@
     "rated_guests": "积分赛要求每位入座的玩家都有账号。",
     "suspended": "你已被禁止在线游戏。",
     "unknown": "出了点问题，请重试。"
+  },
+  "invite": {
+    "title": "邀请好友",
+    "send": "邀请",
+    "sent": "已邀请",
+    "sentTo": "已向 {name} 发送邀请。",
+    "loading": "正在加载你的好友…",
+    "failed": "无法加载你的好友。",
+    "empty": "还没有可邀请的好友。可以在对方的个人资料或“好友”页面添加好友。",
+    "errors": {
+      "unavailable": "该玩家不接受你的邀请。",
+      "already_here": "已在此房间。",
+      "room_locked": "解锁房间后才能邀请好友。"
+    }
   }
 }

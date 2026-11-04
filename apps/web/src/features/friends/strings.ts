@@ -4,7 +4,7 @@ import type { FriendErrorCode } from "./friends-data";
 
 /**
  * The strings friend features show, translated on the server and passed to
- * the friends page's island and the profile's script. `{name}`, `{date}` and
+ * the friends page's island and the profile. `{name}`, `{date}` and
  * `{count}` are filled in on the client.
  */
 export function friendsStrings(t: AppT) {
@@ -27,6 +27,11 @@ export function friendsStrings(t: AppT) {
       remove: t("friends:actions.remove"),
       block: t("friends:actions.block"),
       unblock: t("friends:actions.unblock"),
+      invite: t("friends:actions.invite"),
+    },
+    invite: {
+      title: t("friends:invite.title", { name: "{name}" }),
+      hint: t("friends:invite.hint", { name: "{name}" }),
     },
     status: {
       requested: t("friends:status.requested"),

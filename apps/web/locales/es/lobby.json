@@ -165,5 +165,19 @@
     "rated_guests": "Para una partida puntuada, todos los que ocupan un asiento necesitan una cuenta.",
     "suspended": "No puedes jugar en línea.",
     "unknown": "Algo salió mal. Inténtalo de nuevo."
+  },
+  "invite": {
+    "title": "Invitar amigos",
+    "send": "Invitar",
+    "sent": "Invitado",
+    "sentTo": "Invitación enviada a {name}.",
+    "loading": "Cargando tus amigos…",
+    "failed": "No pudimos cargar tus amigos.",
+    "empty": "Aún no tienes amigos a quienes invitar. Añade amigos desde su perfil o la página Amigos.",
+    "errors": {
+      "unavailable": "Este jugador no acepta tus invitaciones.",
+      "already_here": "Ya está en esta sala.",
+      "room_locked": "Abre la sala para invitar amigos."
+    }
   }
 }

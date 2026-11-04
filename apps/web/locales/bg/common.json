@@ -29,5 +29,11 @@
   },
   "wordOfTheDay": {
     "title": "Дума на деня"
+  },
+  "invite": {
+    "region": "Покани",
+    "received": "{name} те кани да играете {game}.",
+    "join": "Влез",
+    "dismiss": "Скрий"
   }
 }

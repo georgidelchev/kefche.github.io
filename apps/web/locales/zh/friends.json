@@ -32,7 +32,8 @@
     "cancel": "取消请求",
     "remove": "删除好友",
     "block": "屏蔽",
-    "unblock": "取消屏蔽"
+    "unblock": "取消屏蔽",
+    "invite": "邀请玩游戏"
   },
   "status": {
     "requested": "已发送请求",
@@ -67,5 +68,9 @@
     "lobby": "在大厅：{game}",
     "playing": "正在玩{game}",
     "away": "离开"
+  },
+  "invite": {
+    "title": "邀请 {name} 玩游戏",
+    "hint": "选择一个游戏：将打开一个新房间，{name} 会收到你的邀请。"
   }
 }

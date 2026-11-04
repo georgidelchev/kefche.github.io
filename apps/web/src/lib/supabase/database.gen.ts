@@ -578,6 +578,9 @@ isOneToOne: false
 "has_role":
 { Args: { "p_role": Database["public"]['Enums']["app_role"] }; Returns: boolean
                            },
+"invite_to_room":
+{ Args: { "p_room": string,"p_user": string }; Returns: string
+                           },
 "is_account":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },

@@ -165,5 +165,19 @@
     "rated_guests": "Everyone in a seat needs an account for a rated game.",
     "suspended": "You're suspended from online play.",
     "unknown": "Something went wrong. Please try again."
+  },
+  "invite": {
+    "title": "Invite friends",
+    "send": "Invite",
+    "sent": "Invited",
+    "sentTo": "Invite sent to {name}.",
+    "loading": "Loading your friends…",
+    "failed": "We couldn't load your friends.",
+    "empty": "No friends to invite yet. Add friends from their profile or the Friends page.",
+    "errors": {
+      "unavailable": "This player isn't taking invites from you.",
+      "already_here": "Already in this room.",
+      "room_locked": "Unlock the room to invite friends."
+    }
   }
 }

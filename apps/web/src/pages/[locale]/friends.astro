@@ -5,7 +5,7 @@ import { authStaticPaths } from "@/features/auth/page-helpers";
 import { authPaths } from "@/features/auth/paths";
 import { FriendsPage } from "@/features/friends/FriendsPage";
 import { friendsPageStrings } from "@/features/friends/strings";
-import { gameNames } from "@/features/games/game-names";
+import { gameNames, roomGames } from "@/features/games/game-names";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALE_INFO, type Locale } from "@/i18n/locales";
@@ -41,6 +41,8 @@ const title = t("friends:title");
       signInPath={paths.signIn}
       profileBase={getRelativeLocaleUrl(locale, "/u/")}
       gameNames={gameNames(locale)}
+      games={roomGames(locale)}
+      playBase={getRelativeLocaleUrl(locale, "/play/")}
     />
   </div>
 </AppShell>

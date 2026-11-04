@@ -2,6 +2,7 @@
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 import { authStrings } from "@/features/auth/strings";
+import { gameNames } from "@/features/games/game-names";
 import {
   onlineModes,
   playerStrings,
@@ -13,7 +14,13 @@ import {
 } from "@/features/games/page-props";
 import { listGames, type RegisteredGame } from "@/features/games/registry";
 import { OnlineRoom } from "@/features/lobby/OnlineRoom";
-import { chatStrings, guestStrings, raceStrings, roomStrings } from "@/features/lobby/strings";
+import {
+  chatStrings,
+  guestStrings,
+  inviteStrings,
+  raceStrings,
+  roomStrings,
+} from "@/features/lobby/strings";
 import AppShell from "@/features/shell/AppShell.astro";
 import SiteFooter from "@/features/shell/SiteFooter.astro";
 import { getT } from "@/i18n/i18n";
@@ -96,6 +103,8 @@ const strings = roomStrings(t);
             chat={chatStrings(t)}
             turn={turnStrings(t)}
             race={raceStrings(t)}
+            invite={inviteStrings(t)}
+            gameNames={gameNames(locale)}
             paths={{
               game: getRelativeLocaleUrl(locale, `/games/${manifest.id}/`),
               privacy: getRelativeLocaleUrl(locale, "/privacy/"),

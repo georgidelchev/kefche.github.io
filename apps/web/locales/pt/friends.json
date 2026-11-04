@@ -32,7 +32,8 @@
     "cancel": "Cancelar pedido",
     "remove": "Remover amigo",
     "block": "Bloquear",
-    "unblock": "Desbloquear"
+    "unblock": "Desbloquear",
+    "invite": "Convidar para uma partida"
   },
   "status": {
     "requested": "Pedido enviado",
@@ -67,5 +68,9 @@
     "lobby": "Numa sala: {game}",
     "playing": "Jogando {game}",
     "away": "Ausente"
+  },
+  "invite": {
+    "title": "Convidar {name} para uma partida",
+    "hint": "Escolha um jogo: uma nova sala abre e {name} recebe seu convite."
   }
 }

@@ -32,7 +32,8 @@
     "cancel": "Anfrage zurückziehen",
     "remove": "Freund entfernen",
     "block": "Blockieren",
-    "unblock": "Blockierung aufheben"
+    "unblock": "Blockierung aufheben",
+    "invite": "Zu einem Spiel einladen"
   },
   "status": {
     "requested": "Anfrage gesendet",
@@ -67,5 +68,9 @@
     "lobby": "In einer Lobby: {game}",
     "playing": "Spielt {game}",
     "away": "Abwesend"
+  },
+  "invite": {
+    "title": "{name} zu einem Spiel einladen",
+    "hint": "Wähle ein Spiel: Ein neuer Raum öffnet sich, und {name} bekommt deine Einladung."
   }
 }

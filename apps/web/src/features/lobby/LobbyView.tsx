@@ -1,10 +1,10 @@
 // The lobby before a match (SPEC §6.4, §10.2, §10.3): seats with people,
 // bots and empty places, ready checks, the host's settings and controls, and
-// the invite panel. A game with rated play (chess) lets the host make the
+// the invite panel (with friends to invite). A game with rated play (chess) lets the host make the
 // lobby's games rated: two people with accounts, a rated clock, no bots. All changes go through the room functions; the view
 // re-renders from the live room. The lobby chat is beside it (RoomChat).
 import { Copy, Crown, Lock, QrCode, Share2, WifiOff } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactElement } from "react";
 
 import type { BotDifficulty, TimerPreset } from "@kefche/game-sdk";
 import { Button } from "@kefche/ui/components/button";
@@ -59,6 +59,8 @@ interface Props {
   locale: string;
   gameName: string;
   inviteUrl: string;
+  /** Inviting friends (accounts only), under the room's code. */
+  friends: ReactElement | null;
   busy: boolean;
   error: string | null;
   actions: LobbyActions;
@@ -78,6 +80,7 @@ export function LobbyView({
   locale,
   gameName,
   inviteUrl,
+  friends,
   busy,
   error,
   actions,
@@ -123,6 +126,7 @@ export function LobbyView({
       <div className="min-w-0 2xl:col-span-2">
         <Invite code={room.code} url={inviteUrl} gameName={gameName} strings={s} />
       </div>
+      {friends !== null && <div className="min-w-0 2xl:col-span-2">{friends}</div>}
 
       <section className="grid gap-3" aria-labelledby="seats-heading">
         <div className="flex flex-wrap items-baseline justify-between gap-2">

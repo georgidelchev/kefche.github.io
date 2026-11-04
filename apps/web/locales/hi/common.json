@@ -29,5 +29,11 @@
   },
   "wordOfTheDay": {
     "title": "आज का शब्द"
+  },
+  "invite": {
+    "region": "न्योते",
+    "received": "{name} आपको {game} खेलने बुला रहे हैं।",
+    "join": "जुड़ें",
+    "dismiss": "हटाएँ"
   }
 }

@@ -32,7 +32,8 @@
     "cancel": "Cancel request",
     "remove": "Remove friend",
     "block": "Block",
-    "unblock": "Unblock"
+    "unblock": "Unblock",
+    "invite": "Invite to a game"
   },
   "status": {
     "requested": "Request sent",
@@ -67,5 +68,9 @@
     "lobby": "In a lobby: {game}",
     "playing": "Playing {game}",
     "away": "Away"
+  },
+  "invite": {
+    "title": "Invite {name} to a game",
+    "hint": "Pick a game: a new room opens, and {name} gets your invite."
   }
 }

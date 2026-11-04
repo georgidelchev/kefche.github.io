@@ -9,8 +9,9 @@ import type { ReactNode } from "react";
 
 interface Props {
   player: PlayerCard;
-  detail: string;
-  profileBase: string;
+  detail?: string;
+  /** Links the nickname to their profile; without it (in a lobby, which a link would leave) it's plain text. */
+  profileBase?: string;
   /** Their online status ("Playing Chess"), when the viewer may see it and they're online. */
   status?: { text: string; away: boolean } | null;
   /** The row's actions. */
@@ -38,12 +39,16 @@ export function PlayerRow({ player, detail, profileBase, status, children }: Pro
         frame={isAvatarFrame(player.avatarFrame) ? player.avatarFrame : null}
       />
       <span className="grid min-w-0 flex-1 basis-40">
-        <a
-          href={`${profileBase}${encodeURIComponent(player.nickname)}/`}
-          className="truncate font-semibold hover:underline"
-        >
-          {player.nickname}
-        </a>
+        {profileBase === undefined ? (
+          <span className="truncate font-semibold">{player.nickname}</span>
+        ) : (
+          <a
+            href={`${profileBase}${encodeURIComponent(player.nickname)}/`}
+            className="truncate font-semibold hover:underline"
+          >
+            {player.nickname}
+          </a>
+        )}
         {status && (
           <span
             className={`flex min-w-0 items-center gap-1.5 text-sm font-semibold ${status.away ? "text-muted" : "text-success"}`}
@@ -55,7 +60,7 @@ export function PlayerRow({ player, detail, profileBase, status, children }: Pro
             <span className="truncate">{status.text}</span>
           </span>
         )}
-        <span className="truncate text-sm text-muted">{detail}</span>
+        {detail !== undefined && <span className="truncate text-sm text-muted">{detail}</span>}
       </span>
       <span className="flex flex-wrap gap-2">{children}</span>
     </li>

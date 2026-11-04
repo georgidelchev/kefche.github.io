@@ -29,5 +29,11 @@
   },
   "wordOfTheDay": {
     "title": "今日の言葉"
+  },
+  "invite": {
+    "region": "招待",
+    "received": "{name}さんから{game}への招待が届きました。",
+    "join": "参加",
+    "dismiss": "閉じる"
   }
 }

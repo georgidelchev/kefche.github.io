@@ -29,5 +29,11 @@
   },
   "wordOfTheDay": {
     "title": "Palabra del día"
+  },
+  "invite": {
+    "region": "Invitaciones",
+    "received": "{name} te invita a jugar a {game}.",
+    "join": "Unirse",
+    "dismiss": "Descartar"
   }
 }

@@ -165,5 +165,19 @@
     "rated_guests": "Para uma partida ranqueada, todos que ocupam um lugar precisam de uma conta.",
     "suspended": "Você não pode jogar online.",
     "unknown": "Algo deu errado. Tente novamente."
+  },
+  "invite": {
+    "title": "Convidar amigos",
+    "send": "Convidar",
+    "sent": "Convidado",
+    "sentTo": "Convite enviado para {name}.",
+    "loading": "Carregando seus amigos…",
+    "failed": "Não conseguimos carregar seus amigos.",
+    "empty": "Nenhum amigo para convidar ainda. Adicione amigos pelo perfil deles ou pela página Amigos.",
+    "errors": {
+      "unavailable": "Este jogador não aceita seus convites.",
+      "already_here": "Já está nesta sala.",
+      "room_locked": "Destranque a sala para convidar amigos."
+    }
   }
 }

@@ -1,6 +1,9 @@
 // Text for online play (Phase 5), translated on the page and passed to islands.
 import type { AuthErrorKey } from "@/features/auth/errors";
+import type { PresenceStrings } from "@/features/live/presence";
 import type { AppT } from "@/i18n/i18n";
+
+import type { InviteErrorCode } from "./invites";
 
 export interface GuestStrings {
   title: string;
@@ -161,6 +164,46 @@ export function chatStrings(t: AppT): ChatStrings {
     mutedUntil: t("lobby:chat.mutedUntil", { until: "{until}" }),
     muted: t("lobby:chat.muted"),
     failed: t("lobby:errors.unknown"),
+  };
+}
+
+/** Inviting friends to the lobby (Phase 8 step 5). */
+export interface InviteStrings {
+  title: string;
+  send: string;
+  sent: string;
+  /** "Invite sent to {name}." */
+  sentTo: string;
+  loading: string;
+  failed: string;
+  empty: string;
+  errors: Record<InviteErrorCode, string>;
+  presence: PresenceStrings;
+}
+
+export function inviteStrings(t: AppT): InviteStrings {
+  return {
+    title: t("lobby:invite.title"),
+    send: t("lobby:invite.send"),
+    sent: t("lobby:invite.sent"),
+    sentTo: t("lobby:invite.sentTo", { name: "{name}" }),
+    loading: t("lobby:invite.loading"),
+    failed: t("lobby:invite.failed"),
+    empty: t("lobby:invite.empty"),
+    errors: {
+      unavailable: t("lobby:invite.errors.unavailable"),
+      already_here: t("lobby:invite.errors.already_here"),
+      room_locked: t("lobby:invite.errors.room_locked"),
+      room_started: t("lobby:errors.room_started"),
+      rate_limited: t("lobby:errors.rate_limited"),
+      unknown: t("lobby:errors.unknown"),
+    },
+    presence: {
+      online: t("friends:presence.online"),
+      lobby: t("friends:presence.lobby", { game: "{game}" }),
+      playing: t("friends:presence.playing", { game: "{game}" }),
+      away: t("friends:presence.away"),
+    },
   };
 }
 

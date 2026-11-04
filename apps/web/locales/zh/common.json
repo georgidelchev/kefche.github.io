@@ -29,5 +29,11 @@
   },
   "wordOfTheDay": {
     "title": "每日一词"
+  },
+  "invite": {
+    "region": "邀请",
+    "received": "{name} 邀请你玩{game}。",
+    "join": "加入",
+    "dismiss": "忽略"
   }
 }
