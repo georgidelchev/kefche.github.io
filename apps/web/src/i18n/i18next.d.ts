@@ -10,6 +10,7 @@ import type games from "../../locales/en/games.json";
 import type leaderboards from "../../locales/en/leaderboards.json";
 import type legal from "../../locales/en/legal.json";
 import type lobby from "../../locales/en/lobby.json";
+import type messages from "../../locales/en/messages.json";
 import type nav from "../../locales/en/nav.json";
 import type notifications from "../../locales/en/notifications.json";
 import type profile from "../../locales/en/profile.json";
@@ -33,6 +34,7 @@ declare module "i18next" {
       friends: typeof friends;
       notifications: typeof notifications;
       chat: typeof chat;
+      messages: typeof messages;
     };
   }
 }

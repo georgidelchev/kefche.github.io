@@ -19,6 +19,7 @@ export const NAMESPACES = [
   "friends",
   "notifications",
   "chat",
+  "messages",
 ] as const;
 export type Namespace = (typeof NAMESPACES)[number];
 

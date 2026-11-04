@@ -1,0 +1,32 @@
+{
+  "title": "私信",
+  "description": "你与其他玩家的对话。",
+  "conversations": "对话",
+  "empty": "还没有对话",
+  "emptyHint": "可以从玩家的个人资料或你的好友列表开始对话。",
+  "pick": "选择一个对话。",
+  "back": "对话",
+  "label": "消息",
+  "send": "发送",
+  "earlier": "查看更早的消息",
+  "loading": "正在加载你的私信…",
+  "failed": "无法加载你的私信。",
+  "retry": "重试",
+  "typing": "{name} 正在输入…",
+  "seen": "已读",
+  "deleted": "消息已删除",
+  "delete": "删除消息",
+  "you": "你：{text}",
+  "unread": "{count} 条未读",
+  "start": "向 {name} 打个招呼吧。",
+  "cantWrite": "你无法给这位玩家发私信。",
+  "errors": {
+    "unavailable": "该玩家不接受你的私信。",
+    "tooNewUntil": "新账号从 {until} 起可以给非好友发私信。",
+    "mutedUntil": "你已被禁言，{until} 后才能发消息。",
+    "muted": "你已被禁言。",
+    "tooFast": "你发消息太快了，请稍等片刻。",
+    "tooLong": "消息最多 500 个字符。",
+    "failed": "消息未发送，请重试。"
+  }
+}

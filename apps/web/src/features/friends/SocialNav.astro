@@ -5,10 +5,10 @@ import { getT } from "@/i18n/i18n";
 import type { Locale } from "@/i18n/locales";
 
 // The social pages under the Friends tab (SPEC §6.5: "Friends/Chat"): links
-// between friends and global chat.
+// between friends, global chat and direct messages.
 interface Props {
   locale: Locale;
-  current: "friends" | "chat";
+  current: "friends" | "chat" | "messages";
 }
 
 const { locale, current } = Astro.props;
@@ -16,18 +16,19 @@ const t = getT(locale);
 const links = [
   { id: "friends", href: getRelativeLocaleUrl(locale, "/friends/"), label: t("nav:friends") },
   { id: "chat", href: getRelativeLocaleUrl(locale, "/chat/"), label: t("chat:title") },
+  { id: "messages", href: getRelativeLocaleUrl(locale, "/messages/"), label: t("messages:title") },
 ] as const;
 ---
 
 <nav
   aria-label={t("nav:friends")}
-  class="flex gap-1 rounded-xl bg-surface-2 p-1 justify-self-start"
+  class="flex max-w-full gap-1 justify-self-start overflow-x-auto rounded-xl bg-surface-2 p-1"
 >
   {links.map((link) => (
     <a
       href={link.href}
       aria-current={link.id === current ? "page" : undefined}
-      class="flex min-h-11 items-center rounded-lg px-4 font-semibold text-muted hover:text-text focus-visible:outline-2 focus-visible:outline-focus aria-[current=page]:bg-surface aria-[current=page]:text-text aria-[current=page]:shadow-sm"
+      class="flex min-h-11 shrink-0 items-center rounded-lg px-3 font-semibold text-muted hover:text-text focus-visible:outline-2 focus-visible:outline-focus aria-[current=page]:bg-surface aria-[current=page]:text-text aria-[current=page]:shadow-sm"
     >
       {link.label}
     </a>

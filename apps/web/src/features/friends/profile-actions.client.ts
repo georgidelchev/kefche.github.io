@@ -62,6 +62,8 @@ function setUp(root: HTMLElement, supabase: Supabase, s: Strings, guest: boolean
   const games = root.querySelector<HTMLDialogElement>("dialog[data-invite]");
   const buttons = [...root.querySelectorAll<HTMLButtonElement>("button[data-action]")];
   const statuses = [...root.querySelectorAll<HTMLElement>("[data-status]")];
+  // Message shows with Invite: for accounts, unless the viewer blocked them.
+  const messageLink = root.querySelector<HTMLElement>("[data-message]");
   const say = (text: string) => {
     if (message) message.textContent = text;
   };
@@ -69,6 +71,7 @@ function setUp(root: HTMLElement, supabase: Supabase, s: Strings, guest: boolean
   function render(relation: ProfileRelation) {
     const { status, actions } = shown(relation, guest);
     for (const el of statuses) el.hidden = el.dataset.status !== status;
+    if (messageLink) messageLink.hidden = !actions.includes("invite");
     for (const button of buttons) {
       button.hidden = !actions.includes(button.dataset.action as Action);
       button.disabled = false;

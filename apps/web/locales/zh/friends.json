@@ -33,7 +33,8 @@
     "remove": "删除好友",
     "block": "屏蔽",
     "unblock": "取消屏蔽",
-    "invite": "邀请玩游戏"
+    "invite": "邀请玩游戏",
+    "message": "私信"
   },
   "status": {
     "requested": "已发送请求",

@@ -1,0 +1,32 @@
+{
+  "title": "Nachrichten",
+  "description": "Deine Unterhaltungen mit anderen Spielern.",
+  "conversations": "Unterhaltungen",
+  "empty": "Noch keine Unterhaltungen",
+  "emptyHint": "Beginne eine über das Profil eines Spielers oder deine Freundesliste.",
+  "pick": "Wähle eine Unterhaltung.",
+  "back": "Unterhaltungen",
+  "label": "Nachricht",
+  "send": "Senden",
+  "earlier": "Frühere Nachrichten anzeigen",
+  "loading": "Deine Nachrichten werden geladen …",
+  "failed": "Deine Nachrichten konnten nicht geladen werden.",
+  "retry": "Erneut versuchen",
+  "typing": "{name} schreibt …",
+  "seen": "Gesehen",
+  "deleted": "Nachricht gelöscht",
+  "delete": "Nachricht löschen",
+  "you": "Du: {text}",
+  "unread": "{count} ungelesen",
+  "start": "Sag {name} Hallo.",
+  "cantWrite": "Du kannst diesem Spieler keine Nachrichten schicken.",
+  "errors": {
+    "unavailable": "Dieser Spieler nimmt keine Nachrichten von dir an.",
+    "tooNewUntil": "Neue Konten können ab {until} Spielern schreiben, die keine Freunde sind.",
+    "mutedUntil": "Du bist bis {until} stummgeschaltet.",
+    "muted": "Du bist stummgeschaltet.",
+    "tooFast": "Du schreibst zu schnell. Warte einen Moment.",
+    "tooLong": "Nachrichten dürfen bis zu 500 Zeichen lang sein.",
+    "failed": "Deine Nachricht wurde nicht gesendet. Bitte versuch es noch einmal."
+  }
+}

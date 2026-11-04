@@ -1,0 +1,32 @@
+{
+  "title": "Mensagens",
+  "description": "Suas conversas com outros jogadores.",
+  "conversations": "Conversas",
+  "empty": "Nenhuma conversa ainda",
+  "emptyHint": "Comece uma pelo perfil de um jogador ou pela sua lista de amigos.",
+  "pick": "Escolha uma conversa.",
+  "back": "Conversas",
+  "label": "Mensagem",
+  "send": "Enviar",
+  "earlier": "Ver mensagens anteriores",
+  "loading": "Carregando suas mensagens…",
+  "failed": "Não conseguimos carregar suas mensagens.",
+  "retry": "Tentar de novo",
+  "typing": "{name} está digitando…",
+  "seen": "Vista",
+  "deleted": "Mensagem apagada",
+  "delete": "Apagar mensagem",
+  "you": "Você: {text}",
+  "unread": "{count} não lidas",
+  "start": "Diga oi para {name}.",
+  "cantWrite": "Você não pode enviar mensagens para este jogador.",
+  "errors": {
+    "unavailable": "Este jogador não aceita suas mensagens.",
+    "tooNewUntil": "Contas novas podem escrever para quem não é amigo a partir de {until}.",
+    "mutedUntil": "Você não pode escrever até {until}.",
+    "muted": "Você não pode escrever mensagens.",
+    "tooFast": "Você está enviando mensagens rápido demais. Espere um pouco.",
+    "tooLong": "As mensagens podem ter até 500 caracteres.",
+    "failed": "Sua mensagem não foi enviada. Tente de novo."
+  }
+}

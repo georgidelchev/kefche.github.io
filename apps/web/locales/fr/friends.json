@@ -33,7 +33,8 @@
     "remove": "Retirer des amis",
     "block": "Bloquer",
     "unblock": "Débloquer",
-    "invite": "Inviter à une partie"
+    "invite": "Inviter à une partie",
+    "message": "Message"
   },
   "status": {
     "requested": "Demande envoyée",

@@ -33,7 +33,8 @@
     "remove": "Remover amigo",
     "block": "Bloquear",
     "unblock": "Desbloquear",
-    "invite": "Convidar para uma partida"
+    "invite": "Convidar para uma partida",
+    "message": "Mensagem"
   },
   "status": {
     "requested": "Pedido enviado",

@@ -33,7 +33,8 @@
     "remove": "フレンドを解除",
     "block": "ブロック",
     "unblock": "ブロックを解除",
-    "invite": "ゲームに招待"
+    "invite": "ゲームに招待",
+    "message": "メッセージ"
   },
   "status": {
     "requested": "申請済み",

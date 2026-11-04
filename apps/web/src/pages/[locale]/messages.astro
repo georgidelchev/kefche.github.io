@@ -1,0 +1,43 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import { authStaticPaths } from "@/features/auth/page-helpers";
+import { authPaths } from "@/features/auth/paths";
+import SocialNav from "@/features/friends/SocialNav.astro";
+import { MessagesPage } from "@/features/messages/MessagesPage";
+import { messagesPageStrings } from "@/features/messages/strings";
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+
+// Direct messages (SPEC §8.2): private and noindex; only in builds with
+// accounts. `?with=<player id>` opens the thread with that player.
+export const getStaticPaths = authStaticPaths;
+
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+const { bcp47 } = LOCALE_INFO[locale];
+const paths = authPaths(locale, getRelativeLocaleUrl);
+const title = t("messages:title");
+---
+
+<AppShell
+  locale={locale}
+  path="/messages/"
+  section="friends"
+  title={t("common:meta.sectionTitle", { section: title })}
+  description={t("messages:description")}
+  noindex
+>
+  <div class="mx-auto grid w-full max-w-4xl gap-6 pb-6">
+    <SocialNav locale={locale} current="messages" />
+    <h1 class="text-3xl md:text-4xl">{title}</h1>
+    <MessagesPage
+      client:load
+      strings={messagesPageStrings(t)}
+      bcp47={bcp47}
+      signInPath={paths.signIn}
+      profileBase={getRelativeLocaleUrl(locale, "/u/")}
+    />
+  </div>
+</AppShell>

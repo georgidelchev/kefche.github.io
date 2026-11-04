@@ -193,6 +193,7 @@ export interface NotificationPaths {
   play: string;
   profile: string;
   leaderboards: string;
+  messages: string;
 }
 
 const SLUG = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -211,6 +212,8 @@ export function notificationHref(n: Notification, p: NotificationPaths): string 
       return SLUG.test(game) && CODE.test(text(d.code))
         ? `${p.play}${game}/?room=${text(d.code)}`
         : null;
+    case "message":
+      return n.from ? `${p.messages}?with=${n.from.id}` : p.messages;
     case "achievement":
       return p.profile;
     case "rating":

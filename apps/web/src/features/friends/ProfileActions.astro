@@ -20,9 +20,11 @@ interface Props {
   /** The games with online rooms, and "/<locale>/play/". */
   games: { id: string; name: string }[];
   playBase: string;
+  /** "/<locale>/messages/" */
+  messagesPath: string;
 }
 
-const { t, userId, nickname, profileBase, bcp47, games, playBase } = Astro.props;
+const { t, userId, nickname, profileBase, bcp47, games, playBase, messagesPath } = Astro.props;
 const s = friendsStrings(t);
 const script = {
   errors: s.errors,
@@ -87,6 +89,9 @@ const ghost = buttonVariants({ variant: "ghost" });
     <button hidden type="button" data-action="cancel" class={outline}>
       {s.actions.cancel}
     </button>
+    <a hidden data-message href={`${messagesPath}?with=${userId}`} class={outline}>
+      {s.actions.message}
+    </a>
     {games.length > 0 && (
       <button hidden type="button" data-action="invite" class={outline}>
         {s.actions.invite}

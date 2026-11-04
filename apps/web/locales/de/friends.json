@@ -33,7 +33,8 @@
     "remove": "Freund entfernen",
     "block": "Blockieren",
     "unblock": "Blockierung aufheben",
-    "invite": "Zu einem Spiel einladen"
+    "invite": "Zu einem Spiel einladen",
+    "message": "Nachricht"
   },
   "status": {
     "requested": "Anfrage gesendet",

@@ -1,0 +1,32 @@
+{
+  "title": "Messages",
+  "description": "Your conversations with other players.",
+  "conversations": "Conversations",
+  "empty": "No conversations yet",
+  "emptyHint": "Start one from a player's profile or your friends list.",
+  "pick": "Pick a conversation.",
+  "back": "Conversations",
+  "label": "Message",
+  "send": "Send",
+  "earlier": "Show earlier messages",
+  "loading": "Loading your messages…",
+  "failed": "We couldn't load your messages.",
+  "retry": "Try again",
+  "typing": "{name} is typing…",
+  "seen": "Seen",
+  "deleted": "Message deleted",
+  "delete": "Delete message",
+  "you": "You: {text}",
+  "unread": "{count} unread",
+  "start": "Say hello to {name}.",
+  "cantWrite": "You can't send messages to this player.",
+  "errors": {
+    "unavailable": "This player doesn't accept messages from you.",
+    "tooNewUntil": "New accounts can message players who aren't friends from {until}.",
+    "mutedUntil": "You're muted until {until}.",
+    "muted": "You're muted.",
+    "tooFast": "You're sending messages too fast. Wait a moment.",
+    "tooLong": "Messages can be up to 500 characters.",
+    "failed": "Your message wasn't sent. Please try again."
+  }
+}

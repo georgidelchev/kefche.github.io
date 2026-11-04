@@ -52,6 +52,8 @@ interface Props {
   /** The games with online rooms, and "/<locale>/play/". */
   games: { id: string; name: string }[];
   playBase: string;
+  /** "/<locale>/messages/" */
+  messagesPath: string;
 }
 
 /** The tab in the address (`?tab=requests`). Tabs only show once the account loads, in the browser. */
@@ -70,6 +72,7 @@ export function FriendsPage({
   gameNames,
   games,
   playBase,
+  messagesPath,
 }: Props) {
   const account = useAccount(signInPath);
   const id = useId();
@@ -247,6 +250,12 @@ export function FriendsPage({
                     status={statusText(p.id)}
                     {...rowProps}
                   >
+                    <a
+                      href={`${messagesPath}?with=${p.id}`}
+                      className={buttonVariants({ variant: "outline" })}
+                    >
+                      {s.actions.message}
+                    </a>
                     {games.length > 0 && (
                       <Button
                         variant="outline"

@@ -572,6 +572,15 @@ isOneToOne: false
 "delete_chat_message":
 { Args: { "p_message": number }; Returns: undefined
                            },
+"delete_direct_message":
+{ Args: { "p_message": number }; Returns: undefined
+                           },
+"direct_thread":
+{ Args: { "p_before"?: number,"p_limit"?: number,"p_user": string }; Returns: Json
+                           },
+"direct_typing":
+{ Args: { "p_user": string }; Returns: undefined
+                           },
 "due_account_deletions":
 { Args: { "p_limit"?: number }; Returns: string[]
                            },
@@ -653,6 +662,9 @@ isOneToOne: false
 "merge_guest":
 { Args: { "p_guest": string,"p_target": string }; Returns: undefined
                            },
+"my_conversations":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "my_friends":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
@@ -719,6 +731,9 @@ isOneToOne: false
 "rated_search":
 { Args: { "p_game_id": string,"p_game_version": number,"p_timer": number }; Returns: Json
                            },
+"read_direct_messages":
+{ Args: { "p_user": string }; Returns: number
+                           },
 "read_notifications":
 { Args: { "p_ids"?: (number)[] }; Returns: number
                            },
@@ -760,6 +775,9 @@ isOneToOne: false
                            },
 "send_chat_message":
 { Args: { "p_body": string,"p_room": unknown }; Returns: Json
+                           },
+"send_direct_message":
+{ Args: { "p_body": string,"p_user": string }; Returns: Json
                            },
 "send_room_message":
 { Args: { "p_body": string,"p_room": string }; Returns: {

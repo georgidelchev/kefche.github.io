@@ -28,6 +28,7 @@ export function friendsStrings(t: AppT) {
       block: t("friends:actions.block"),
       unblock: t("friends:actions.unblock"),
       invite: t("friends:actions.invite"),
+      message: t("friends:actions.message"),
     },
     invite: {
       title: t("friends:invite.title", { name: "{name}" }),

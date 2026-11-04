@@ -1443,6 +1443,19 @@ Online modes are enabled for the Phase 4 games.
   - **Checks:**
     - SQL 39/39, rolled back: sending, trimming and masking; empty, too long and unknown rooms refused; the rate limit per room; new accounts wait (with when) while new staff don't; guests and visitors refused; slow mode, staff excepted; blocks hide both ways (history and policy); hidden messages seen by their sender only; deleting (own yes, another's no, staff any, audited, announced, text erased); muted players refused; who may listen to a room's channel; the 1,000 cap; paging. The other suites still pass.
     - Against local Realtime: with B blocking A, A's message reaches C and A but not B, B's reaches C and B but not A; without the block everyone gets both. A deletion is announced to the room.
+- [x] Step 8: direct messages (`20261104100700_direct_messages.sql`).
+  - **The page:** `/[locale]/messages/` (accounts builds, noindex), the third link beside Friends and Chat. Conversations latest first, with the last message and the unread count, beside the open thread; on phones one or the other. A thread is the one with `?with=<player id>`, opened from a conversation, a profile's Message button, a friend's row or a notification; the first message starts the conversation.
+  - **The thread:** the latest 50 messages, earlier ones 50 at a time; your own on the other side; "Seen" under your last message once they've read it; "… is typing" while they write; deleted messages stay as a placeholder. Opening it (or a message arriving while it's open and visible) reads it, and the bell updates.
+  - **Who may write** (`send_direct_message`): never across a block; otherwise as the recipient's "Who can message me" allows, and always back to a player who wrote first in the conversation. Accounts under 2 hours old write only to friends (Q4); muted players can't. Up to 500 characters, 5 per 10 s per conversation, 20 new conversations an hour, the word filter with its automatic mutes. A thread says when you can't write there.
+  - **Live:** the database sends each message, deletion, "seen" and typing signal to the two players' own channels. Unlike global chat, a broadcast is safe here: a DM has exactly two readers, both checked when it's sent. Typing goes through the database too (`direct_typing`, at most every 3 s), since only the database writes to a player's channel.
+  - **Notifications:** the first unread message of a conversation notifies its recipient (leading to the thread); more don't until it's read. Reading the thread reads the notification.
+  - **Deleting:** your own messages; the text is erased at once and both sides see the placeholder.
+  - **Kept:** a year (`forget-old-social`, since step 1). Blocked players vanish from each other's list and threads.
+  - **Privacy notice:** direct messages, who reads them, how long they're kept and who may write.
+  - **Cost:** the page's island is 4.3 KB gzip. Realtime: two messages per DM (one per player), one per typing burst.
+  - **Checks:**
+    - SQL 41/41, rolled back: a conversation made with the first message, one notification for several, sent live to both; the list's unread counts, the thread, reading, "seen"; outsiders read nothing; friends-only and nobody, with the reply to who wrote first; blocks both ways (no writing, empty thread, gone from the list, rows hidden); new accounts to strangers refused but to friends allowed; self, guests, empty, muted, masking, the rate limit; deleting (own only, placeholder, both told); typing sent only where writing is allowed; private functions, direct writes and visitors refused. All eight Phase 8 suites pass.
+    - Against local Supabase: A's message reaches both channels and notifies B; B's typing and "seen" reach A; A's deletion reaches both; B's list shows the conversation read, with the placeholder.
 
 ---
 

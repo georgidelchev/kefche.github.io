@@ -1,0 +1,32 @@
+{
+  "title": "Messages",
+  "description": "Vos conversations avec d’autres joueurs.",
+  "conversations": "Conversations",
+  "empty": "Aucune conversation pour l’instant",
+  "emptyHint": "Commencez-en une depuis le profil d’un joueur ou votre liste d’amis.",
+  "pick": "Choisissez une conversation.",
+  "back": "Conversations",
+  "label": "Message",
+  "send": "Envoyer",
+  "earlier": "Voir les messages précédents",
+  "loading": "Chargement de vos messages…",
+  "failed": "Impossible de charger vos messages.",
+  "retry": "Réessayer",
+  "typing": "{name} écrit…",
+  "seen": "Vu",
+  "deleted": "Message supprimé",
+  "delete": "Supprimer le message",
+  "you": "Vous : {text}",
+  "unread": "{count} non lus",
+  "start": "Dites bonjour à {name}.",
+  "cantWrite": "Vous ne pouvez pas envoyer de messages à ce joueur.",
+  "errors": {
+    "unavailable": "Ce joueur n’accepte pas vos messages.",
+    "tooNewUntil": "Les nouveaux comptes peuvent écrire à d’autres joueurs que leurs amis à partir du {until}.",
+    "mutedUntil": "Vous ne pouvez pas écrire jusqu’au {until}.",
+    "muted": "Vous ne pouvez pas écrire de messages.",
+    "tooFast": "Vous envoyez des messages trop vite. Patientez un instant.",
+    "tooLong": "Les messages peuvent compter jusqu’à 500 caractères.",
+    "failed": "Votre message n’a pas été envoyé. Réessayez."
+  }
+}

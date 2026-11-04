@@ -31,7 +31,7 @@ import type { RealtimeChannel } from "@supabase/supabase-js";
 const HEARTBEAT_MS = 60_000;
 const AWAY_AFTER_MS = 5 * 60_000;
 /** The events the database sends on a player's channel. */
-const EVENTS = ["presence", "notification"] as const;
+const EVENTS = ["presence", "notification", "dm", "dm_deleted", "dm_read", "typing"] as const;
 
 function start(supabase: Supabase, userId: string) {
   const tab = crypto.randomUUID();
