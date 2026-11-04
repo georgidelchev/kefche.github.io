@@ -153,6 +153,7 @@
     "room_locked": "这个房间已锁定。",
     "room_full": "这个房间已满。",
     "room_kicked": "你已被移出这个房间。",
+    "room_blocked": "你无法加入这个房间。",
     "room_started": "比赛已经开始了。",
     "not_host": "只有房主可以这样做。",
     "not_ready": "需要所有人先准备好。",

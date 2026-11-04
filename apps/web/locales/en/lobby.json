@@ -153,6 +153,7 @@
     "room_locked": "This room is locked.",
     "room_full": "This room is full.",
     "room_kicked": "You were removed from this room.",
+    "room_blocked": "You can't join this room.",
     "room_started": "The match has already started.",
     "not_host": "Only the host can do that.",
     "not_ready": "Everyone must be ready first.",

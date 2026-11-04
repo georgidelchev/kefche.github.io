@@ -1380,7 +1380,7 @@ Online modes are enabled for the Phase 4 games.
     - SQL 35/35, rolled back: the automatic mute; the rate limit; who may sanction (players, moderators, admins); bad input refused; suspended players can't chat, rejoin, create, quick-match or search; revoking restores play; a ban sets and clears `banned_until` and ends sessions; slow mode; the private functions are closed; bios and nicknames use the new filter.
     - Against the local services: PostgREST returns the end in `details`, and Supabase Auth refuses a banned sign-in with `user_banned`.
     - Filter cases (spaced, symbols, stretched, look-alikes, phrases, CJK) and innocent words ("cockpit", "Scunthorpe", "assassin", "computadora", "therapist") pass; schema lint clean.
-- [ ] Step 3: friends and blocks.
+- [x] Step 3: friends and blocks.
   - [x] **Friends** (`20261104100100_friends.sql`):
     - **Actions:** `add_friend` asks, or accepts when the other player asked first; `remove_friend` withdraws, declines or unfriends; `block_user` and `unblock_user`. Friends are for accounts; anyone signed in can block, guests included. A block ends the friendship and any request between the two, and neither can ask again across it. Requests notify the player asked, acceptances the one who asked, and a request taken back takes its notification with it.
     - **Limits:** 30 friend actions and 30 block actions per 10 minutes, 100 requests waiting, 1,000 blocks.
@@ -1389,7 +1389,11 @@ Online modes are enabled for the Phase 4 games.
     - **Leaderboards:** the Friends tab ranks the viewer and their friends (all time) on every board; visitors are asked to sign in, and a board without friends says so.
     - **Privacy notice:** friends, requests and blocks.
     - **Checks:** SQL 33/33, rolled back (requests both ways, acceptance, notifications given and taken back, mutual friends, the Friends board, blocks both ways and their effects, guests, visitors, direct writes refused); schema lint clean; the pages render on the dev server.
-  - [ ] **Blocks in rooms:** room chat, joining, quick match, the public lobby list and rated pairing.
+  - [x] **Blocks in rooms** (`20261104100200_room_blocks.sql`):
+    - **Joining:** a trigger on `room_members` refuses joining a room (as a player or spectator, by any path) while someone in it is blocked either way, with `room_blocked` ("You can't join this room."), which doesn't say who.
+    - **Finding rooms:** quick match skips such rooms, the public lobby list hides them from the viewer (visitors still see every room), and rated matchmaking never pairs the two.
+    - **Already together:** players in one room when a block starts finish their match, but stop reading each other's lobby chat (the read policy), and neither can rejoin.
+    - **Checks:** SQL 14/14, rolled back; the moderation (35/35) and friends (33/33) checks still pass; schema lint clean. The copies of `quick_match` and `rated_search` differ from the originals only by the block filter.
 
 ---
 

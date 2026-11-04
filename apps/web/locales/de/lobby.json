@@ -153,6 +153,7 @@
     "room_locked": "Dieser Raum ist gesperrt.",
     "room_full": "Dieser Raum ist voll.",
     "room_kicked": "Du wurdest aus diesem Raum entfernt.",
+    "room_blocked": "Du kannst diesem Raum nicht beitreten.",
     "room_started": "Die Partie hat schon begonnen.",
     "not_host": "Nur der Gastgeber kann das.",
     "not_ready": "Zuerst müssen alle bereit sein.",

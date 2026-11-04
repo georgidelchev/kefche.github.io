@@ -153,6 +153,7 @@
     "room_locked": "Esta sala está trancada.",
     "room_full": "Esta sala está cheia.",
     "room_kicked": "Você foi removido desta sala.",
+    "room_blocked": "Você não pode entrar nesta sala.",
     "room_started": "A partida já começou.",
     "not_host": "Só o anfitrião pode fazer isso.",
     "not_ready": "Primeiro todos precisam estar prontos.",

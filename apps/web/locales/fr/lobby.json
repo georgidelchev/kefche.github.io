@@ -153,6 +153,7 @@
     "room_locked": "Ce salon est verrouillé.",
     "room_full": "Ce salon est complet.",
     "room_kicked": "Vous avez été retiré de ce salon.",
+    "room_blocked": "Vous ne pouvez pas rejoindre ce salon.",
     "room_started": "La partie a déjà commencé.",
     "not_host": "Seul l'hôte peut faire cela.",
     "not_ready": "Tout le monde doit d'abord être prêt.",
