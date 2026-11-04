@@ -61,5 +61,11 @@
     "rate_limited": "Trop de tentatives. Patientez un instant et réessayez.",
     "accounts_only": "Les amis sont réservés aux comptes. Connectez-vous pour ajouter des amis.",
     "unknown": "Une erreur s’est produite. Veuillez réessayer."
+  },
+  "presence": {
+    "online": "En ligne",
+    "lobby": "Dans un salon : {game}",
+    "playing": "Joue à {game}",
+    "away": "Absent"
   }
 }

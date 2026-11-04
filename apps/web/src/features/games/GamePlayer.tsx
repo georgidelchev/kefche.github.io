@@ -29,6 +29,8 @@ import {
 } from "@kefche/game-sdk/browser";
 import { Button } from "@kefche/ui/components/button";
 
+import { setPresenceContext } from "@/features/live/presence-context";
+
 import { fetchDaily, startDaily, type DailyChallenge } from "./daily";
 import { loadGame } from "./loaders";
 import { createPlayRecorder } from "./play-recorder";
@@ -108,6 +110,16 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
   const [mode, setMode] = useState<TurnMode>("solo-bots");
   const [choice, setChoice] = useState<SetupChoice | null>(null);
   const [match, setMatch] = useState<MatchSetup | null>(null);
+
+  // Online status: playing this game while a game is on (paused included).
+  const inGame = phase === "playing" || phase === "paused";
+  useEffect(() => {
+    if (!inGame) return;
+    setPresenceContext({ status: "playing", game: id });
+    return () => {
+      setPresenceContext({ status: "online" });
+    };
+  }, [inGame, id]);
   const [report, setReport] = useState<TurnReport | null>(null);
   const [codeReady, setCodeReady] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);

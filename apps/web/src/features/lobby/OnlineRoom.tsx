@@ -19,6 +19,7 @@ import type { PlayerStrings } from "@/features/games/GamePlayer";
 import type { RaceSetup, RatedClock } from "@/features/games/page-props";
 import { fill, timerLabel, type TurnStrings } from "@/features/games/turn/labels";
 import type { TurnConfig } from "@/features/games/turn/match-setup";
+import { setPresenceContext } from "@/features/live/presence-context";
 import { getSupabase, send, type Supabase } from "@/lib/supabase/client";
 import { supabaseConfig } from "@/lib/supabase/config";
 
@@ -573,6 +574,16 @@ function Room({
   const seenRef = useRef(false);
   const refreshRef = useRef<(() => Promise<void>) | null>(null);
   const gone = useEffectEvent(onGone);
+
+  // Online status: in this game's lobby, then in the game.
+  const roomStatus = snapshot?.room.status ?? null;
+  useEffect(() => {
+    if (roomStatus === null) return;
+    setPresenceContext({ status: roomStatus === "playing" ? "playing" : "lobby", game: game.id });
+    return () => {
+      setPresenceContext({ status: "online" });
+    };
+  }, [roomStatus, game.id]);
 
   // The live room. A deleted room lost its last player; a member missing
   // from it, or marked kicked, was removed.

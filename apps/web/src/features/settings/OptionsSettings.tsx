@@ -14,13 +14,13 @@ interface Options {
   reduced_motion: string;
   privacy_messages: string;
   privacy_invites: string;
-  show_online: boolean;
+  show_online_to: string;
   show_in_leaderboards: boolean;
 }
 type Change = Partial<Options>;
 
 const COLUMNS =
-  "sound_master, sound_music, sound_effects, haptics, reduced_motion, privacy_messages, privacy_invites, show_online, show_in_leaderboards";
+  "sound_master, sound_music, sound_effects, haptics, reduced_motion, privacy_messages, privacy_invites, show_online_to, show_in_leaderboards";
 
 const selectClass =
   "min-h-11 w-full cursor-pointer rounded-xl border border-border-strong bg-surface-2 px-3 text-base text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
@@ -164,6 +164,7 @@ export function OptionsSettings({ strings, group, signInPath }: Props) {
             [
               ["privacy_messages", s.messages],
               ["privacy_invites", s.invites],
+              ["show_online_to", s.showOnlineTo],
             ] as const
           ).map(([key, label]) => (
             <div key={key} className="grid gap-1.5">
@@ -182,24 +183,17 @@ export function OptionsSettings({ strings, group, signInPath }: Props) {
               </select>
             </div>
           ))}
-          {(
-            [
-              ["show_online", s.showOnline],
-              ["show_in_leaderboards", s.showInLeaderboards],
-            ] as const
-          ).map(([key, label]) => (
-            <label key={key} className="flex min-h-11 items-center gap-3">
-              <input
-                type="checkbox"
-                className={checkClass}
-                checked={options[key]}
-                onChange={(e) => {
-                  change({ [key]: e.currentTarget.checked });
-                }}
-              />
-              {label}
-            </label>
-          ))}
+          <label className="flex min-h-11 items-center gap-3">
+            <input
+              type="checkbox"
+              className={checkClass}
+              checked={options.show_in_leaderboards}
+              onChange={(e) => {
+                change({ show_in_leaderboards: e.currentTarget.checked });
+              }}
+            />
+            {s.showInLeaderboards}
+          </label>
         </>
       )}
       <p role="status" className="min-h-6 text-sm font-semibold">

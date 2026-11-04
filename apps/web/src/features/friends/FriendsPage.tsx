@@ -2,7 +2,7 @@
 // both ways and blocked players in tabs, each with its actions. Removing a
 // friend and blocking ask first. Every change goes through the database
 // (add_friend, remove_friend, block_user, unblock_user), then the lists are
-// read again.
+// read again. Friends show their online status, live.
 import { useCallback, useEffect, useId, useState } from "react";
 
 import { Button } from "@kefche/ui/components/button";
@@ -18,6 +18,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@kefche/ui/components/
 
 import { FormMessage, TextField } from "@/features/auth/components/fields";
 import { fill } from "@/features/games/turn/labels";
+import {
+  fetchStatuses,
+  onPresenceChange,
+  presenceText,
+  type Status,
+} from "@/features/live/presence";
+import { LIVE_RESUME_EVENT } from "@/features/live/presence-context";
 import { useAccount } from "@/features/settings/use-account";
 import type { Supabase } from "@/lib/supabase/client";
 
@@ -39,6 +46,8 @@ interface Props {
   signInPath: string;
   /** "/<locale>/u/": a profile is `${profileBase}${nickname}/`. */
   profileBase: string;
+  /** Game names by id, in the page's language (online statuses name the game). */
+  gameNames: Record<string, string>;
 }
 
 /** The tab in the address (`?tab=requests`). Tabs only show once the account loads, in the browser. */
@@ -48,7 +57,7 @@ function initialTab(): Tab {
   return TABS.find((tab) => tab === asked) ?? "friends";
 }
 
-export function FriendsPage({ strings: s, bcp47, dir, signInPath, profileBase }: Props) {
+export function FriendsPage({ strings: s, bcp47, dir, signInPath, profileBase, gameNames }: Props) {
   const account = useAccount(signInPath);
   const id = useId();
   const [lists, setLists] = useState<MyFriends | null | undefined>(undefined);
@@ -57,6 +66,7 @@ export function FriendsPage({ strings: s, bcp47, dir, signInPath, profileBase }:
   const [note, setNote] = useState<{ tone: "error" | "success"; text: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [confirming, setConfirming] = useState<Confirming>(null);
+  const [statuses, setStatuses] = useState<Record<string, Status>>({});
   const date = (iso: string) => new Date(iso).toLocaleDateString(bcp47, { dateStyle: "medium" });
 
   const load = useCallback(async (supabase: Supabase) => {
@@ -66,6 +76,28 @@ export function FriendsPage({ strings: s, bcp47, dir, signInPath, profileBase }:
   useEffect(() => {
     if (account.status === "ready") void fetchMyFriends(account.supabase).then(setLists);
   }, [account]);
+
+  // Friends' statuses: read for the list, then kept live; read again when the tab comes back.
+  const friendIds = lists?.friends.map((f) => f.id).join(",") ?? "";
+  useEffect(() => {
+    if (account.status !== "ready" || friendIds === "") return;
+    const supabase = account.supabase;
+    const read = () => {
+      void fetchStatuses(supabase, friendIds.split(",")).then(setStatuses);
+    };
+    read();
+    const stop = onPresenceChange((user, status) => {
+      setStatuses((current) => {
+        if (status) return { ...current, [user]: status };
+        return Object.fromEntries(Object.entries(current).filter(([id]) => id !== user));
+      });
+    });
+    document.addEventListener(LIVE_RESUME_EVENT, read);
+    return () => {
+      stop();
+      document.removeEventListener(LIVE_RESUME_EVENT, read);
+    };
+  }, [account, friendIds]);
 
   if (account.status === "error" || lists === null) {
     return (
@@ -129,6 +161,12 @@ export function FriendsPage({ strings: s, bcp47, dir, signInPath, profileBase }:
   }
 
   const rowProps = { profileBase };
+  const statusText = (user: string) => {
+    const status = statuses[user];
+    return status
+      ? { text: presenceText(status, s.presence, gameNames), away: status.status === "away" }
+      : null;
+  };
   return (
     <div className="grid gap-6">
       <form
@@ -185,33 +223,37 @@ export function FriendsPage({ strings: s, bcp47, dir, signInPath, profileBase }:
             <Empty title={s.empty.friends} hint={s.empty.friendsHint} />
           ) : (
             <ul className="grid gap-2">
-              {lists.friends.map((p) => (
-                <PlayerRow
-                  key={p.id}
-                  player={p}
-                  detail={fill(s.list.since, { date: date(p.since) })}
-                  {...rowProps}
-                >
-                  <Button
-                    variant="outline"
-                    disabled={busy}
-                    onClick={() => {
-                      setConfirming({ kind: "remove", player: p });
-                    }}
+              {/* Online friends first, in their own order. */}
+              {lists.friends
+                .toSorted((a, b) => Number(b.id in statuses) - Number(a.id in statuses))
+                .map((p) => (
+                  <PlayerRow
+                    key={p.id}
+                    player={p}
+                    detail={fill(s.list.since, { date: date(p.since) })}
+                    status={statusText(p.id)}
+                    {...rowProps}
                   >
-                    {s.actions.remove}
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    disabled={busy}
-                    onClick={() => {
-                      setConfirming({ kind: "block", player: p });
-                    }}
-                  >
-                    {s.actions.block}
-                  </Button>
-                </PlayerRow>
-              ))}
+                    <Button
+                      variant="outline"
+                      disabled={busy}
+                      onClick={() => {
+                        setConfirming({ kind: "remove", player: p });
+                      }}
+                    >
+                      {s.actions.remove}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      disabled={busy}
+                      onClick={() => {
+                        setConfirming({ kind: "block", player: p });
+                      }}
+                    >
+                      {s.actions.block}
+                    </Button>
+                  </PlayerRow>
+                ))}
             </ul>
           )}
         </TabsContent>

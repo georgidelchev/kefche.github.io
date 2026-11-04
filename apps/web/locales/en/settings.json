@@ -71,7 +71,7 @@
     "everyone": "Everyone",
     "friends": "Friends only",
     "nobody": "Nobody",
-    "showOnline": "Show when I'm online",
+    "showOnlineTo": "Who can see when I'm online",
     "showInLeaderboards": "Show me on leaderboards"
   },
   "account": {

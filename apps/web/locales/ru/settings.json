@@ -71,7 +71,7 @@
     "everyone": "Все",
     "friends": "Только друзья",
     "nobody": "Никто",
-    "showOnline": "Показывать, когда я в сети",
+    "showOnlineTo": "Кто видит, когда я в сети",
     "showInLeaderboards": "Показывать меня в рейтингах"
   },
   "account": {

@@ -431,14 +431,14 @@ isOneToOne: false
                   ]
                 },"user_settings": {
                   Row: {
-                    "birth_year": number | null,"created_at": string,"haptics": boolean,"locale": string | null,"notification_prefs": NonNullable<Json>,"privacy_invites": string,"privacy_messages": string,"reduced_motion": string,"show_in_leaderboards": boolean,"show_online": boolean,"sound_effects": number,"sound_master": number,"sound_music": number,"theme": string,"updated_at": string,"user_id": string
+                    "birth_year": number | null,"created_at": string,"haptics": boolean,"locale": string | null,"notification_prefs": NonNullable<Json>,"privacy_invites": string,"privacy_messages": string,"reduced_motion": string,"show_in_leaderboards": boolean,"show_online_to": string,"sound_effects": number,"sound_master": number,"sound_music": number,"theme": string,"updated_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "birth_year"?: number | null,"created_at"?: string,"haptics"?: boolean,"locale"?: string | null,"notification_prefs"?: NonNullable<Json>,"privacy_invites"?: string,"privacy_messages"?: string,"reduced_motion"?: string,"show_in_leaderboards"?: boolean,"show_online"?: boolean,"sound_effects"?: number,"sound_master"?: number,"sound_music"?: number,"theme"?: string,"updated_at"?: string,"user_id": string
+                    "birth_year"?: number | null,"created_at"?: string,"haptics"?: boolean,"locale"?: string | null,"notification_prefs"?: NonNullable<Json>,"privacy_invites"?: string,"privacy_messages"?: string,"reduced_motion"?: string,"show_in_leaderboards"?: boolean,"show_online_to"?: string,"sound_effects"?: number,"sound_master"?: number,"sound_music"?: number,"theme"?: string,"updated_at"?: string,"user_id": string
                   }
                   Update: {
-                    "birth_year"?: number | null,"created_at"?: string,"haptics"?: boolean,"locale"?: string | null,"notification_prefs"?: NonNullable<Json>,"privacy_invites"?: string,"privacy_messages"?: string,"reduced_motion"?: string,"show_in_leaderboards"?: boolean,"show_online"?: boolean,"sound_effects"?: number,"sound_master"?: number,"sound_music"?: number,"theme"?: string,"updated_at"?: string,"user_id"?: string
+                    "birth_year"?: number | null,"created_at"?: string,"haptics"?: boolean,"locale"?: string | null,"notification_prefs"?: NonNullable<Json>,"privacy_invites"?: string,"privacy_messages"?: string,"reduced_motion"?: string,"show_in_leaderboards"?: boolean,"show_online_to"?: string,"sound_effects"?: number,"sound_master"?: number,"sound_music"?: number,"theme"?: string,"updated_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     
@@ -626,6 +626,9 @@ isOneToOne: false
 "leaderboard_submit":
 { Args: { "p_entries": Json,"p_match": string,"p_user": string }; Returns: Json
                            },
+"leave_presence":
+{ Args: { "p_tab": string }; Returns: undefined
+                           },
 "leave_room":
 { Args: { "p_room": string }; Returns: undefined
                            },
@@ -652,6 +655,9 @@ isOneToOne: false
                            },
 "player_history":
 { Args: { "p_limit"?: number,"p_user": string }; Returns: Json
+                           },
+"presence_of":
+{ Args: { "p_users": (string)[] }; Returns: Json
                            },
 "profile_relation":
 { Args: { "p_user": string }; Returns: Json
@@ -706,6 +712,9 @@ isOneToOne: false
                            },
 "reopen_room":
 { Args: { "p_room": string }; Returns: undefined
+                           },
+"report_presence":
+{ Args: { "p_game"?: string,"p_status": string,"p_tab": string }; Returns: undefined
                            },
 "request_account_deletion":
 { Args: Record<PropertyKey, never>; Returns: string

@@ -64,7 +64,7 @@ export function settingsStrings(t: AppT) {
       everyone: t("settings:privacy.everyone"),
       friends: t("settings:privacy.friends"),
       nobody: t("settings:privacy.nobody"),
-      showOnline: t("settings:privacy.showOnline"),
+      showOnlineTo: t("settings:privacy.showOnlineTo"),
       showInLeaderboards: t("settings:privacy.showInLeaderboards"),
     },
     account: {

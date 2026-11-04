@@ -71,7 +71,7 @@
     "everyone": "所有人",
     "friends": "仅好友",
     "nobody": "没有人",
-    "showOnline": "显示我在线",
+    "showOnlineTo": "谁能看到我是否在线",
     "showInLeaderboards": "在排行榜中显示我"
   },
   "account": {

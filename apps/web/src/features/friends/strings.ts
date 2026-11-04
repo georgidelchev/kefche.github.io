@@ -42,6 +42,12 @@ export function friendsStrings(t: AppT) {
       keep: t("friends:confirm.keep"),
       close: t("friends:confirm.close"),
     },
+    presence: {
+      online: t("friends:presence.online"),
+      lobby: t("friends:presence.lobby", { game: "{game}" }),
+      playing: t("friends:presence.playing", { game: "{game}" }),
+      away: t("friends:presence.away"),
+    },
     mutual: t("friends:mutual"),
     mutualMore: t("friends:mutualMore", { count: "{count}" }),
   };

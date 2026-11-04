@@ -9,7 +9,8 @@ import { isAvatarFrame } from "@kefche/ui/lib/frames";
 import { avatarUrl } from "@/features/account/avatar-url";
 import NotFoundPage from "@/features/errors/NotFoundPage.astro";
 import ProfileActions from "@/features/friends/ProfileActions.astro";
-import { gameName } from "@/features/games/game-names";
+import { friendsStrings } from "@/features/friends/strings";
+import { gameName, gameNames } from "@/features/games/game-names";
 import AchievementCard from "@/features/profile/AchievementCard.astro";
 import { shownAchievements } from "@/features/profile/achievements";
 import { fetchPlayerHistory, PROVISIONAL_GAMES } from "@/features/profile/history";
@@ -223,7 +224,24 @@ const facts = profile
           {...(image ? { src: image } : {})}
           frame={isAvatarFrame(profile.avatar_frame) ? profile.avatar_frame : null}
         />
-        <h1 class="min-w-0 text-3xl break-words md:text-4xl">{profile.nickname}</h1>
+        <div class="grid min-w-0 justify-items-center gap-1 sm:justify-items-start">
+          <h1 class="min-w-0 text-3xl break-words md:text-4xl">{profile.nickname}</h1>
+          <p
+            hidden
+            data-presence
+            data-user-id={profile.id}
+            data-strings={JSON.stringify(friendsStrings(t).presence)}
+            data-games={JSON.stringify(gameNames(locale))}
+            class="flex items-center gap-1.5 font-semibold"
+          >
+            <span
+              aria-hidden="true"
+              data-presence-dot
+              class="size-2.5 rounded-full bg-success"
+            ></span>
+            <span data-presence-text></span>
+          </p>
+        </div>
       </header>
       <ProfileActions
         t={t}
@@ -427,4 +445,5 @@ const facts = profile
 <script>
   import "@/features/profile/achievement-pins.client";
   import "@/features/friends/profile-actions.client";
+  import "@/features/live/profile-presence.client";
 </script>

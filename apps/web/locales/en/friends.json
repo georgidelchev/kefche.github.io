@@ -61,5 +61,11 @@
     "rate_limited": "Too many tries. Wait a moment and try again.",
     "accounts_only": "Friends are for accounts. Sign in to add friends.",
     "unknown": "Something went wrong. Please try again."
+  },
+  "presence": {
+    "online": "Online",
+    "lobby": "In a lobby: {game}",
+    "playing": "Playing {game}",
+    "away": "Away"
   }
 }

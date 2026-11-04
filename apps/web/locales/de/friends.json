@@ -61,5 +61,11 @@
     "rate_limited": "Zu viele Versuche. Warte kurz und versuche es erneut.",
     "accounts_only": "Freunde gibt es nur mit Konto. Melde dich an, um Freunde hinzuzufügen.",
     "unknown": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+  },
+  "presence": {
+    "online": "Online",
+    "lobby": "In einer Lobby: {game}",
+    "playing": "Spielt {game}",
+    "away": "Abwesend"
   }
 }

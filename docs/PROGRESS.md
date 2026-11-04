@@ -1394,6 +1394,17 @@ Online modes are enabled for the Phase 4 games.
     - **Finding rooms:** quick match skips such rooms, the public lobby list hides them from the viewer (visitors still see every room), and rated matchmaking never pairs the two.
     - **Already together:** players in one room when a block starts finish their match, but stop reading each other's lobby chat (the read policy), and neither can rejoin.
     - **Checks:** SQL 14/14, rolled back; the moderation (35/35) and friends (33/33) checks still pass; schema lint clean. The copies of `quick_match` and `rated_search` differ from the originals only by the block filter.
+- [x] Step 4: online status (`20261104100300_presence.sql`).
+  - **The connection** (`features/live/live.client.ts`, on every page for a signed-in account; guests and visitors open nothing): one per tab, on the player's private channel `user:<id>`. Only the player may listen, and only the database sends there. It's the channel steps 6 and 8 reuse for notifications and DMs.
+  - **Reporting:** each tab reports what it's doing (`report_presence`): on load, when its page says (`setPresenceContext`: a room's lobby or match, a game in progress), and every minute. Hidden for 5 minutes, it reports away and closes its connection; back in view, it reconnects and pages read again (`kefche:live-resume`). A closing tab says goodbye (`leave_presence`, a keepalive request).
+  - **The status:** the busiest live tab wins (in a game, in a lobby, online, away). Tabs silent for 2 minutes are cleared by a job every minute (`expire-presence`). When what others see changes, each friend is told on their own channel.
+  - **Who sees it** (Q3): `user_settings.show_online_to` replaces `show_online`: everyone, friends only (the default; `show_online` on became this) or nobody (off became this). A change applies at once. Blocked players never see each other's status. `presence_of` reads it for a list of players, visitors included (only those shown to everyone).
+  - **Where it shows:** the friends page (online friends first, live) and profiles (under the nickname, live for a friend). Settings has the three-way choice.
+  - **Cost:** every page's shell script grew by 0.8 KB gzip. Realtime messages: one per friend per status change; heartbeats without a change send nothing.
+  - **Privacy notice:** the status, kept 2 minutes past the last report, and the choice of who sees it.
+  - **Checks:**
+    - SQL 23/23, rolled back: friends told on change only, the busiest tab wins, each choice (friends, everyone, nobody) for friends, strangers and visitors, blocks both ways, leaving and expiry, validation, guests refused, each player hears only their own channel. The other suites still pass.
+    - Against local Supabase: a friend's channel receives the status live, then "offline" when the tab says goodbye, and another player is refused that channel ("Unauthorized").
 
 ---
 

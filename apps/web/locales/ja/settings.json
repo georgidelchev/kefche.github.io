@@ -71,7 +71,7 @@
     "everyone": "全員",
     "friends": "フレンドのみ",
     "nobody": "誰も不可",
-    "showOnline": "オンライン状態を表示する",
+    "showOnlineTo": "オンライン状態を見られる人",
     "showInLeaderboards": "ランキングに表示する"
   },
   "account": {

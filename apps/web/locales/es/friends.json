@@ -61,5 +61,11 @@
     "rate_limited": "Demasiados intentos. Espera un momento y vuelve a intentarlo.",
     "accounts_only": "Los amigos son para cuentas. Inicia sesión para añadir amigos.",
     "unknown": "Algo ha salido mal. Inténtalo de nuevo."
+  },
+  "presence": {
+    "online": "En línea",
+    "lobby": "En una sala: {game}",
+    "playing": "Jugando a {game}",
+    "away": "Ausente"
   }
 }

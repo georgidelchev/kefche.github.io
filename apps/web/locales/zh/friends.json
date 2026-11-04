@@ -61,5 +61,11 @@
     "rate_limited": "尝试次数过多，请稍后再试。",
     "accounts_only": "好友功能仅限账号玩家。请登录后添加好友。",
     "unknown": "出了点问题，请重试。"
+  },
+  "presence": {
+    "online": "在线",
+    "lobby": "在大厅：{game}",
+    "playing": "正在玩{game}",
+    "away": "离开"
   }
 }

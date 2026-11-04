@@ -22,3 +22,13 @@ export const gameName = (id: string, locale: Locale): string => names[file(id, l
 /** The game's "ui" strings (empty for an unknown game). */
 export const gameUi = (id: string, locale: Locale): Record<string, string> =>
   uis[file(id, locale)] ?? {};
+
+/** Every game's name in this locale, by id, for browser code that names a game (online status). */
+export function gameNames(locale: Locale): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const [path, name] of Object.entries(names)) {
+    const match = /\/games\/([^/]+)\/i18n\/([^/]+)\.json$/.exec(path);
+    if (match?.[1] && match[2] === locale) out[match[1]] = name;
+  }
+  return out;
+}

@@ -71,7 +71,7 @@
     "everyone": "Tout le monde",
     "friends": "Mes amis uniquement",
     "nobody": "Personne",
-    "showOnline": "Montrer quand je suis en ligne",
+    "showOnlineTo": "Qui peut voir quand je suis en ligne",
     "showInLeaderboards": "M’afficher dans les classements"
   },
   "account": {

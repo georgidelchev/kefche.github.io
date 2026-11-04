@@ -11,12 +11,14 @@ interface Props {
   player: PlayerCard;
   detail: string;
   profileBase: string;
+  /** Their online status ("Playing Chess"), when the viewer may see it and they're online. */
+  status?: { text: string; away: boolean } | null;
   /** The row's actions. */
   children: ReactNode;
 }
 
 /** A player in a list: avatar, nickname (to their profile), a line about them, and actions. */
-export function PlayerRow({ player, detail, profileBase, children }: Props) {
+export function PlayerRow({ player, detail, profileBase, status, children }: Props) {
   const image = supabaseConfig
     ? avatarUrl(
         {
@@ -42,6 +44,17 @@ export function PlayerRow({ player, detail, profileBase, children }: Props) {
         >
           {player.nickname}
         </a>
+        {status && (
+          <span
+            className={`flex min-w-0 items-center gap-1.5 text-sm font-semibold ${status.away ? "text-muted" : "text-success"}`}
+          >
+            <span
+              aria-hidden="true"
+              className={`size-2 shrink-0 rounded-full ${status.away ? "bg-warning" : "bg-success"}`}
+            />
+            <span className="truncate">{status.text}</span>
+          </span>
+        )}
         <span className="truncate text-sm text-muted">{detail}</span>
       </span>
       <span className="flex flex-wrap gap-2">{children}</span>
