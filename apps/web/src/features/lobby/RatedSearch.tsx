@@ -13,9 +13,7 @@ import { Button } from "@kefche/ui/components/button";
 import { fill } from "@/features/games/turn/labels";
 import { send, type Supabase } from "@/lib/supabase/client";
 
-import { roomErrorCode } from "./room-store";
-
-import type { RatedStrings, RoomErrorCode } from "./strings";
+import type { RatedStrings } from "./strings";
 
 const POLL_MS = 2000;
 
@@ -41,7 +39,8 @@ interface Props {
   locale: string;
   onPaired: (room: PairedRoom) => void;
   onCancel: () => void;
-  onError: (code: RoomErrorCode) => void;
+  /** The database's refusal, for roomErrorText. */
+  onError: (error: unknown) => void;
 }
 
 /** "about 15 s", "about 2 min". */
@@ -85,8 +84,8 @@ export function RatedSearch({
         p_timer: timer,
       });
       if (error?.code) {
-        // The database said no (a guest, too many tries): final.
-        if (!stopped) failed(roomErrorCode(error));
+        // The database said no (a guest, a suspension, too many tries): final.
+        if (!stopped) failed(error);
         return;
       }
       const parsed = error ? null : answerSchema.safeParse(data);

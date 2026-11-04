@@ -1,6 +1,6 @@
 // The lobby's chat (SPEC §6.4, §8.2): the room's latest messages, live, and
 // a line to write one, for everyone in the room. The database masks blocked
-// words and limits how fast anyone can send.
+// words, limits how fast anyone can send, and refuses a muted player.
 //
 // It is a fixed pane of the room page, and the room scrolls beside it: a
 // column on the right from 768px, a band along the bottom on phones. It
@@ -13,6 +13,7 @@ import { Button } from "@kefche/ui/components/button";
 import { Input } from "@kefche/ui/components/input";
 
 import { fill } from "@/features/games/turn/labels";
+import { sanctionEnd, sanctionNotice } from "@/features/moderation/sanction-notice";
 import type { Supabase } from "@/lib/supabase/client";
 
 import { chatMessage, mergeMessages, watchChat, type ChatMessage } from "./room-chat";
@@ -102,12 +103,15 @@ export function RoomChat({ supabase, roomId, self, locale, strings: s }: Props) 
         p_body: body,
       });
       if (rpcError) {
+        const muted = sanctionEnd(rpcError, "muted");
         setError(
-          rpcError.message === "rate_limited"
-            ? s.tooFast
-            : rpcError.message === "invalid_message"
-              ? s.tooLong
-              : s.failed,
+          muted !== undefined
+            ? sanctionNotice(muted, { until: s.mutedUntil, forever: s.muted }, locale)
+            : rpcError.message === "rate_limited"
+              ? s.tooFast
+              : rpcError.message === "invalid_message"
+                ? s.tooLong
+                : s.failed,
         );
         return;
       }

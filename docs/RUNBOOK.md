@@ -46,6 +46,30 @@ select id, 'admin' from auth.users where email = 'you@example.com';
 
 Roles travel in the access token (`app_roles` claim), so a change applies at the user's next token refresh, at most an hour later. Signing out and in again applies it immediately. Privileged actions re-check the table, so a revoked admin can't perform admin actions in the meantime.
 
+## Sanctions
+
+Until the admin panel (Phase 10), staff sanction players from the SQL editor, acting as themselves so the database checks their role and the audit log names them. Run each block as a whole: the first line lasts for that transaction only.
+
+```sql
+begin;
+select set_config('request.jwt.claims', json_build_object('sub', '<your user id>')::text, true);
+-- Kind: warn, mute (no chat), suspend (no online play) or ban (no sign-in; admins only).
+-- Reason: spam, harassment, hate, sexual, self-harm, cheating or other.
+-- Minutes: null for until revoked (a warning takes null). The note is shown to the player.
+select public.sanction_player(
+  (select id from public.profiles where nickname = 'TheirNickname'),
+  'mute', 'harassment', 60, 'Please keep the chat friendly.'
+);
+commit;
+```
+
+To end one early, the same way: `select public.revoke_sanction('<sanction id>');`. The player's sanctions: `select * from public.sanctions where user_id = '<id>' order by created_at desc;`.
+
+- **Who may:** moderators warn, mute and suspend; only admins ban, sanction staff, or revoke a ban.
+- **What the player sees:** a moderation notification (the notification center arrives in step 6), and the end of the sanction wherever it refuses them (chat, joining a room, rated search). A banned player is signed out everywhere and can't sign in until the ban ends; an access token they already hold lasts up to an hour, during which chat and rooms still refuse them.
+- **Automatic mutes:** the third chat message masked by the word filter within 10 minutes mutes the sender for 10 minutes (reason `filter`, no moderator).
+- **Slow mode:** `select public.set_slow_mode('en', 30);` (seconds between messages per player in that global room; 0 turns it off), in the same kind of block.
+
 ## Account deletion job
 
 "Delete my account" schedules a hard delete 7 days later. Every hour, `pg_cron` runs `private.invoke_purge_accounts()`, which calls the `purge-accounts` Edge Function through `pg_net`. The function removes the account's Storage files and then the account. The job does nothing until both pieces below exist.
@@ -255,6 +279,6 @@ Copy `supabase/.env.example` to `supabase/.env` and paste each client ID and sec
 ## Sections to come
 
 - Migrations through CI with manual approval, backups _(Phase 21)_
-- Moderation escalation _(Phase 8, 10)_
+- Moderation escalation and reports _(Phase 8 step 11, Phase 10)_
 - Custom domain, DNS, email (Resend), production OAuth apps _(Phase 21)_
 - Incident response and smoke-test checklist _(Phase 21)_

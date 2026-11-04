@@ -1362,6 +1362,24 @@ Online modes are enabled for the Phase 4 games.
   - **Checks:**
     - SQL 32/32, rolled back: each player, a guest, a moderator and a visitor read only what they should; a block hides global chat both ways; a cleared DM stays cleared; direct writes and the private helpers are refused; retention and account deletion remove the right rows.
     - Schema lint clean; Deno 52/52; the local export answers with the new sections.
+- [x] Step 2: the moderation core (`20261104100000_moderation.sql`, and the lists again in `20261104100001_blocked_terms.sql`).
+  - **The filter** (`private.blocked_spans`, behind `has_blocked_term` and `mask_blocked_terms`):
+    - **Catches** letters spaced out (`f u c k`, `f.u.c.k`), digits and symbols for letters (`$h1t`, `ni99er`), stretched letters (`fuuuck`), Latin and Cyrillic look-alikes mixed in a word (`fuсk`, `xyй`), and phrases across words (`hijo de puta`). A new `phrase` match mode, written by `pnpm db:terms` for terms with spaces or marks inside, matches whole words only.
+    - **Applies to** nicknames and bios (refused) and chat (masked). Lobbies have no names of their own; the public lobby list shows the host's nickname, which is checked.
+    - **List changes:** phrases used to match only in nicknames, so the English list lost the ones that would mask everyday game talk ("how to kill", "girl on", "big black"), plus escort, domination and hardcore (game modes); a few compound words joined the allowed list (`supabase/blocked-terms/README.md`).
+    - **Speed:** about 10 ms for a 500-character message, 35 ms at worst (250 single letters).
+  - **Automatic mute:** each masked chat message is a strike; the third within 10 minutes mutes the sender for 10 minutes (`private.filter_chat`). Strikes are forgotten after 10 minutes.
+  - **Rate limits:** 5 messages per 10 s per player in each channel (`private.chat_rate_limit`, now used by lobby chat). Slow mode per global room (`private.check_slow_mode`, staff exempt), set by staff with `set_slow_mode`. Global chat and DMs call these in steps 7 and 8.
+  - **Sanctions:**
+    - **Issuing:** `sanction_player` and `revoke_sanction`. Moderators warn, mute and suspend; only admins ban, sanction staff or revoke a ban. The reason is a category the app translates, with an optional note. Each one is audited and notifies the player.
+    - **Enforced in the database:** a mute, suspension or ban refuses chat (`muted`); a suspension or ban refuses joining rooms and rated search, through triggers on `room_members` and `match_queue` (`suspended`). The error's detail is when it ends.
+    - **A ban** sets Supabase Auth's `banned_until` and ends the player's sessions; sign-in then fails with `user_banned`.
+  - **Notices:** the lobby chat says "You're muted until …", joining a room or searching says "You're suspended from online play until …", and sign-in says the account is banned. All 11 languages.
+  - **Docs:** the RUNBOOK explains sanctions from the SQL editor until the admin panel; the privacy notice covers strikes, sanctions and their notices.
+  - **Checks:**
+    - SQL 35/35, rolled back: the automatic mute; the rate limit; who may sanction (players, moderators, admins); bad input refused; suspended players can't chat, rejoin, create, quick-match or search; revoking restores play; a ban sets and clears `banned_until` and ends sessions; slow mode; the private functions are closed; bios and nicknames use the new filter.
+    - Against the local services: PostgREST returns the end in `details`, and Supabase Auth refuses a banned sign-in with `user_banned`.
+    - Filter cases (spaced, symbols, stretched, look-alikes, phrases, CJK) and innocent words ("cockpit", "Scunthorpe", "assassin", "computadora", "therapist") pass; schema lint clean.
 
 ---
 
@@ -1379,7 +1397,7 @@ Online modes are enabled for the Phase 4 games.
 - **Guest identity creation moves to Phase 5:** step 9 built the upgrade (sign-up or OAuth link keeps the guest's user id) and the merge (Edge Function `merge-guest` plus a confirmation page). `ensureIdentity()` is built with its first users, the rooms, in Phase 5; guests aren't asked their age (owner decision, 2026-10-24). No other page creates guest sessions.
 - **CSP for Stockfish (Phase 17):** chess runs Stockfish as WebAssembly in a nested worker, so the full Content-Security-Policy must allow `'wasm-unsafe-eval'` in `script-src` and `worker-src 'self'`. The Credits page lists Stockfish (GPL-3.0) and the cburnett pieces (BSD 3-Clause) from `packages/games/chess/CREDITS.md`.
 - **Credits attribution (Phase 17):** the blocked-terms lists are adapted from LDNOOBW (CC BY 4.0), and the Credits page must say so (`supabase/blocked-terms/README.md`).
-- **Blocked terms need review:** the owner reviews the drafted Bulgarian list (`supabase/blocked-terms/bg.txt`). Native speakers review the other non-English lists in Phase 15. Russian lacks some common Cyrillic slurs, and Phase 8 improves free-text matching for chat.
+- **Blocked terms need review:** the owner reviews the drafted Bulgarian list (`supabase/blocked-terms/bg.txt`). Native speakers review the other non-English lists in Phase 15. Russian lacks some common Cyrillic slurs. Since Phase 8 step 2, phrases match in chat too, so the lists' phrases deserve a look for everyday words.
 - **Game page prose is English in 9 locales (Phase 15):** each game's name, tagline, meta description and in-game UI strings are translated in all 11 locales. The long page sections (about, how to play, controls, tips, FAQ) are written in English and Bulgarian; the other 9 locales carry the English text until the Phase 15 translation pass (SPEC §15, §22 DoD rule).
 - **Translations need native review (Phase 15):** all strings in the 9 locales other than en/bg are my translations and haven't been reviewed by native speakers. Bulgarian should be reviewed by the owner.
 

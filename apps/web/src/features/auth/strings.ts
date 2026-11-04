@@ -14,6 +14,7 @@ export function authStrings(t: AppT) {
     samePassword: t("auth:errors.samePassword"),
     invalidCredentials: t("auth:errors.invalidCredentials"),
     emailNotConfirmed: t("auth:errors.emailNotConfirmed"),
+    banned: t("auth:errors.banned"),
     emailTaken: t("auth:errors.emailTaken"),
     identityTaken: t("auth:errors.identityTaken"),
     rateLimited: t("auth:errors.rateLimited"),

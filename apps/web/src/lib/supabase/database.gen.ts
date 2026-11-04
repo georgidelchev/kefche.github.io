@@ -397,14 +397,14 @@ isOneToOne: false
                   ]
                 },"sanctions": {
                   Row: {
-                    "created_at": string,"created_by": string | null,"ends_at": string | null,"id": string,"kind": string,"reason": string,"report_id": string | null,"revoked_at": string | null,"revoked_by": string | null,"starts_at": string,"user_id": string
+                    "created_at": string,"created_by": string | null,"ends_at": string | null,"id": string,"kind": string,"note": string | null,"reason": string,"report_id": string | null,"revoked_at": string | null,"revoked_by": string | null,"starts_at": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "created_at"?: string,"created_by"?: string | null,"ends_at"?: string | null,"id"?: string,"kind": string,"reason": string,"report_id"?: string | null,"revoked_at"?: string | null,"revoked_by"?: string | null,"starts_at"?: string,"user_id": string
+                    "created_at"?: string,"created_by"?: string | null,"ends_at"?: string | null,"id"?: string,"kind": string,"note"?: string | null,"reason": string,"report_id"?: string | null,"revoked_at"?: string | null,"revoked_by"?: string | null,"starts_at"?: string,"user_id": string
                   }
                   Update: {
-                    "created_at"?: string,"created_by"?: string | null,"ends_at"?: string | null,"id"?: string,"kind"?: string,"reason"?: string,"report_id"?: string | null,"revoked_at"?: string | null,"revoked_by"?: string | null,"starts_at"?: string,"user_id"?: string
+                    "created_at"?: string,"created_by"?: string | null,"ends_at"?: string | null,"id"?: string,"kind"?: string,"note"?: string | null,"reason"?: string,"report_id"?: string | null,"revoked_at"?: string | null,"revoked_by"?: string | null,"starts_at"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -695,6 +695,9 @@ isOneToOne: false
 "request_account_deletion":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
+"revoke_sanction":
+{ Args: { "p_sanction": string }; Returns: undefined
+                           },
 "room_goodbye":
 { Args: { "p_room": string }; Returns: undefined
                            },
@@ -712,6 +715,9 @@ isOneToOne: false
                            },
 "room_report_record":
 { Args: { "p_report": Json,"p_seed": string,"p_user": string }; Returns: Json
+                           },
+"sanction_player":
+{ Args: { "p_kind": string,"p_minutes"?: number,"p_note"?: string,"p_reason": string,"p_report"?: string,"p_user": string }; Returns: string
                            },
 "send_room_message":
 { Args: { "p_body": string,"p_room": string }; Returns: {
@@ -768,6 +774,9 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"set_slow_mode":
+{ Args: { "p_room": unknown,"p_seconds": number }; Returns: undefined
+                           },
 "set_user_role":
 { Args: { "p_granted": boolean,"p_role": Database["public"]['Enums']["app_role"],"p_user_id": string }; Returns: undefined
                            },

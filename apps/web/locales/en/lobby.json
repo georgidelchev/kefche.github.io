@@ -63,7 +63,8 @@
     "playOnline": "Play online",
     "onboarding": "Finish setting up your account to play online.",
     "onboardingLink": "Finish setup",
-    "backToGame": "Back to the game"
+    "backToGame": "Back to the game",
+    "suspendedUntil": "You're suspended from online play until {until}."
   },
   "browser": {
     "title": "Public lobbies",
@@ -140,6 +141,8 @@
     "hint": "Be kind. Messages are deleted when the room closes.",
     "tooFast": "You're sending messages too fast. Wait a few seconds.",
     "tooLong": "Messages can be up to 300 characters.",
+    "mutedUntil": "You're muted until {until}.",
+    "muted": "You're muted and can't chat.",
     "show": "Show chat",
     "hide": "Hide chat",
     "unread": "New messages: {count}"
@@ -159,6 +162,7 @@
     "connection": "We lost the connection to the room. Trying again…",
     "accounts_only": "Rated games are for accounts. Sign in to play.",
     "rated_guests": "Everyone in a seat needs an account for a rated game.",
+    "suspended": "You're suspended from online play.",
     "unknown": "Something went wrong. Please try again."
   }
 }

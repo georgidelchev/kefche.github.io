@@ -63,7 +63,8 @@
     "playOnline": "Jugar en línea",
     "onboarding": "Termina de configurar tu cuenta para jugar en línea.",
     "onboardingLink": "Terminar la configuración",
-    "backToGame": "Volver al juego"
+    "backToGame": "Volver al juego",
+    "suspendedUntil": "No puedes jugar en línea hasta {until}."
   },
   "browser": {
     "title": "Salas públicas",
@@ -140,6 +141,8 @@
     "hint": "Sé amable. Los mensajes se borran cuando se cierra la sala.",
     "tooFast": "Estás enviando mensajes demasiado rápido. Espera unos segundos.",
     "tooLong": "Los mensajes pueden tener hasta 300 caracteres.",
+    "mutedUntil": "No puedes escribir en el chat hasta {until}.",
+    "muted": "No puedes escribir en el chat.",
     "show": "Mostrar el chat",
     "hide": "Ocultar el chat",
     "unread": "Mensajes nuevos: {count}"
@@ -159,6 +162,7 @@
     "connection": "Se perdió la conexión con la sala. Reintentando…",
     "accounts_only": "Las partidas puntuadas son solo para cuentas. Inicia sesión para jugar.",
     "rated_guests": "Para una partida puntuada, todos los que ocupan un asiento necesitan una cuenta.",
+    "suspended": "No puedes jugar en línea.",
     "unknown": "Algo salió mal. Inténtalo de nuevo."
   }
 }

@@ -6,6 +6,7 @@ export const AUTH_ERROR_KEYS = [
   "samePassword",
   "invalidCredentials",
   "emailNotConfirmed",
+  "banned",
   "emailTaken",
   "identityTaken",
   "rateLimited",
@@ -30,6 +31,8 @@ export const isAuthErrorKey = (value: unknown): value is AuthErrorKey =>
 const SERVER_CODES = new Map<string, AuthErrorKey>([
   ["invalid_credentials", "invalidCredentials"],
   ["email_not_confirmed", "emailNotConfirmed"],
+  // A ban in force (public.sanctions, mirrored to banned_until).
+  ["user_banned", "banned"],
   ["email_exists", "emailTaken"],
   ["user_already_exists", "emailTaken"],
   ["identity_already_exists", "identityTaken"],

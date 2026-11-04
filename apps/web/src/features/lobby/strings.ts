@@ -84,6 +84,8 @@ export interface RoomStrings {
   onboarding: string;
   onboardingLink: string;
   backToGame: string;
+  /** "You can't play online until {until}." (`errors.suspended`: without an end). */
+  suspendedUntil: string;
   errors: Record<RoomErrorCode, string>;
   rated: RatedStrings;
 }
@@ -136,6 +138,10 @@ export interface ChatStrings {
   unread: string;
   tooFast: string;
   tooLong: string;
+  /** "You're muted until {until}." */
+  mutedUntil: string;
+  /** A mute without an end. */
+  muted: string;
   failed: string;
 }
 
@@ -152,6 +158,8 @@ export function chatStrings(t: AppT): ChatStrings {
     unread: t("lobby:chat.unread", { count: "{count}" }),
     tooFast: t("lobby:chat.tooFast"),
     tooLong: t("lobby:chat.tooLong"),
+    mutedUntil: t("lobby:chat.mutedUntil", { until: "{until}" }),
+    muted: t("lobby:chat.muted"),
     failed: t("lobby:errors.unknown"),
   };
 }
@@ -262,6 +270,7 @@ export const ROOM_ERROR_CODES = [
   "rate_limited",
   "accounts_only",
   "rated_guests",
+  "suspended",
   "connection",
   "unknown",
 ] as const;
@@ -327,6 +336,7 @@ export function roomStrings(t: AppT): RoomStrings {
     onboarding: t("lobby:room.onboarding"),
     onboardingLink: t("lobby:room.onboardingLink"),
     backToGame: t("lobby:room.backToGame"),
+    suspendedUntil: t("lobby:room.suspendedUntil", { until: "{until}" }),
     errors: {
       room_not_found: t("lobby:errors.room_not_found"),
       room_closed: t("lobby:errors.room_closed"),
@@ -341,6 +351,7 @@ export function roomStrings(t: AppT): RoomStrings {
       rate_limited: t("lobby:errors.rate_limited"),
       accounts_only: t("lobby:errors.accounts_only"),
       rated_guests: t("lobby:errors.rated_guests"),
+      suspended: t("lobby:errors.suspended"),
       connection: t("lobby:errors.connection"),
       unknown: t("lobby:errors.unknown"),
     },

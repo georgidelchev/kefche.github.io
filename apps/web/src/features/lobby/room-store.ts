@@ -4,11 +4,12 @@
 // one consistent read.
 
 import { avatarUrl } from "@/features/account/avatar-url";
+import { sanctionEnd, sanctionNotice } from "@/features/moderation/sanction-notice";
 import type { Supabase } from "@/lib/supabase/client";
 import { supabaseConfig } from "@/lib/supabase/config";
 import type { Tables } from "@/lib/supabase/database.gen";
 
-import { ROOM_ERROR_CODES, type RoomErrorCode } from "./strings";
+import { ROOM_ERROR_CODES, type RoomErrorCode, type RoomStrings } from "./strings";
 
 export type RoomRow = Tables<"rooms">;
 
@@ -141,4 +142,16 @@ export function roomErrorCode(error: unknown): RoomErrorCode {
   return (ROOM_ERROR_CODES as readonly unknown[]).includes(message)
     ? (message as RoomErrorCode)
     : "unknown";
+}
+
+/** What to tell the player about a room function's error; a suspension says until when. */
+export function roomErrorText(
+  error: unknown,
+  s: Pick<RoomStrings, "errors" | "suspendedUntil">,
+  locale: string,
+): string {
+  const ends = sanctionEnd(error, "suspended");
+  return ends === undefined
+    ? s.errors[roomErrorCode(error)]
+    : sanctionNotice(ends, { until: s.suspendedUntil, forever: s.errors.suspended }, locale);
 }

@@ -63,7 +63,8 @@
     "playOnline": "Jogar online",
     "onboarding": "Termine de configurar sua conta para jogar online.",
     "onboardingLink": "Concluir a configuração",
-    "backToGame": "Voltar ao jogo"
+    "backToGame": "Voltar ao jogo",
+    "suspendedUntil": "Você não pode jogar online até {until}."
   },
   "browser": {
     "title": "Salas públicas",
@@ -140,6 +141,8 @@
     "hint": "Seja gentil. As mensagens são apagadas quando a sala fecha.",
     "tooFast": "Você está enviando mensagens rápido demais. Espere alguns segundos.",
     "tooLong": "As mensagens podem ter até 300 caracteres.",
+    "mutedUntil": "Você não pode escrever no chat até {until}.",
+    "muted": "Você não pode escrever no chat.",
     "show": "Mostrar o chat",
     "hide": "Ocultar o chat",
     "unread": "Novas mensagens: {count}"
@@ -159,6 +162,7 @@
     "connection": "A conexão com a sala caiu. Tentando de novo…",
     "accounts_only": "Partidas ranqueadas são só para contas. Entre para jogar.",
     "rated_guests": "Para uma partida ranqueada, todos que ocupam um lugar precisam de uma conta.",
+    "suspended": "Você não pode jogar online.",
     "unknown": "Algo deu errado. Tente novamente."
   }
 }

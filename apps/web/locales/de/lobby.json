@@ -63,7 +63,8 @@
     "playOnline": "Online spielen",
     "onboarding": "Richte dein Konto fertig ein, um online zu spielen.",
     "onboardingLink": "Einrichtung abschließen",
-    "backToGame": "Zurück zum Spiel"
+    "backToGame": "Zurück zum Spiel",
+    "suspendedUntil": "Du bist bis {until} vom Online-Spiel ausgeschlossen."
   },
   "browser": {
     "title": "Öffentliche Räume",
@@ -140,6 +141,8 @@
     "hint": "Sei freundlich. Nachrichten werden gelöscht, wenn der Raum schließt.",
     "tooFast": "Du schreibst zu schnell. Warte ein paar Sekunden.",
     "tooLong": "Nachrichten dürfen höchstens 300 Zeichen lang sein.",
+    "mutedUntil": "Du bist bis {until} stummgeschaltet.",
+    "muted": "Du bist stummgeschaltet und kannst nicht chatten.",
     "show": "Chat anzeigen",
     "hide": "Chat ausblenden",
     "unread": "Neue Nachrichten: {count}"
@@ -159,6 +162,7 @@
     "connection": "Die Verbindung zum Raum ist weg. Neuer Versuch…",
     "accounts_only": "Gewertete Partien gibt es nur mit Konto. Melde dich an, um zu spielen.",
     "rated_guests": "Für eine gewertete Partie braucht jeder auf einem Platz ein Konto.",
+    "suspended": "Du bist vom Online-Spiel ausgeschlossen.",
     "unknown": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal."
   }
 }

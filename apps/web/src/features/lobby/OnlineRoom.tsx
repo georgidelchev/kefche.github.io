@@ -29,7 +29,13 @@ import { RaceMatch } from "./RaceMatch";
 import { RatedSearch } from "./RatedSearch";
 import { onlineTimer, roomMatch, type RoomMatch } from "./room-match";
 import { parseRated, parseRoomSettings, settingsJson } from "./room-settings";
-import { roomErrorCode, watchRoom, type RoomMember, type RoomSnapshot } from "./room-store";
+import {
+  roomErrorCode,
+  roomErrorText,
+  watchRoom,
+  type RoomMember,
+  type RoomSnapshot,
+} from "./room-store";
 import { RoomChat } from "./RoomChat";
 import { createSupabaseTransport } from "./supabase-transport";
 
@@ -208,7 +214,7 @@ export function OnlineRoom({
       history.replaceState(history.state, "", `${location.pathname}?room=${room.code}`);
       setStage({ kind: "room", supabase, identity, roomId: room.id, code: room.code });
     } catch (e) {
-      setError(s.errors[roomErrorCode(e)]);
+      setError(roomErrorText(e, s, locale));
       setStage({ kind: "choose" });
     }
   }
@@ -307,9 +313,9 @@ export function OnlineRoom({
             history.replaceState(history.state, "", `${location.pathname}?rated`);
             setStage({ kind: "pickRated" });
           }}
-          onError={(code) => {
+          onError={(e) => {
             history.replaceState(history.state, "", location.pathname);
-            setError(s.errors[code]);
+            setError(roomErrorText(e, s, locale));
             setStage({ kind: "choose" });
           }}
         />

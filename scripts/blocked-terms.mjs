@@ -23,7 +23,8 @@ const readList = (file) =>
 
 function matchMode(lang, term) {
   if (CJK.test(term)) return "contains";
-  if (/\s/.test(term)) return "contains"; // phrase, matched with spaces removed
+  // Several words, or marks inside ("g-spot"): matched as a run of whole words.
+  if (/[^\p{L}\p{N}]/u.test(term)) return "phrase";
   if (lang === "en" && term.replace(NON_WORD, "").length >= 4) return "contains";
   return "token";
 }
