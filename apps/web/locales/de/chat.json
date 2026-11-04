@@ -1,0 +1,39 @@
+{
+  "title": "Chat",
+  "description": "Schreib mit Spielern in deiner Sprache oder in jeder anderen.",
+  "room": "Raum",
+  "label": "Nachricht",
+  "send": "Senden",
+  "empty": "Noch keine Nachrichten. Sag Hallo!",
+  "loading": "Chat wird geladen …",
+  "failed": "Der Chat konnte nicht geladen werden.",
+  "retry": "Erneut versuchen",
+  "earlier": "Frühere Nachrichten anzeigen",
+  "slowMode": "Langsamer Modus: eine Nachricht alle {seconds} s.",
+  "errors": {
+    "tooFast": "Du schreibst zu schnell. Warte einen Moment.",
+    "tooLong": "Nachrichten dürfen bis zu 500 Zeichen lang sein.",
+    "tooNewUntil": "Neue Konten können ab {until} im Chat schreiben.",
+    "slowUntil": "Langsamer Modus: Du kannst um {until} wieder schreiben.",
+    "mutedUntil": "Du bist bis {until} stummgeschaltet.",
+    "muted": "Du bist stummgeschaltet.",
+    "failed": "Deine Nachricht wurde nicht gesendet. Bitte versuch es noch einmal."
+  },
+  "actions": {
+    "delete": "Nachricht löschen",
+    "mute": "{name} stummschalten",
+    "muteTitle": "{name} in allen Chats stummschalten?",
+    "duration": "Wie lange",
+    "reason": "Grund",
+    "submit": "Stummschalten",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "muted": "{name} ist stummgeschaltet.",
+    "durations": {
+      "m10": "10 Minuten",
+      "h1": "1 Stunde",
+      "h24": "24 Stunden",
+      "d7": "7 Tage"
+    }
+  }
+}

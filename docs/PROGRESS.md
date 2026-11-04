@@ -1432,6 +1432,17 @@ Online modes are enabled for the Phase 4 games.
   - **Checks:**
     - SQL 28/28, rolled back: listed with the sender's card, the unread count from a status report, reading some and all, paging, only one's own; a type turned off isn't stored or sent but its request still happens; preferences merge; moderation can't be turned off and arrives anyway, with its note; bad preferences refused; achievements; rating milestones (none while provisional, none within the peak's hundred, once per new hundred); the daily results ranked and sent once; private functions and visitors refused. The other suites still pass.
     - Against local Supabase: `report_presence` answers the unread count, the list carries the sender, reading all leaves 0, a preference saves and merges, and a direct write to the preferences is refused.
+- [x] Step 7: global chat (`20261104100600_global_chat.sql`).
+  - **The page:** `/[locale]/chat/` (accounts builds, noindex; guests and visitors are sent to sign in), under the Friends tab with a Friends · Chat switch on both pages (SPEC §6.5's "Friends/Chat"). The page's language room by default, any other from a list (`?room=bg`). The latest 50 messages, earlier ones 50 at a time, new ones live; the log stays at the newest message unless the reader scrolled up.
+  - **Sending** (`send_chat_message`): accounts only, 2 hours after sign-up (Q4; staff excepted), up to 500 characters, 5 per 10 s per room, the room's slow mode (shown above the log), and the word filter with its automatic mutes. Each refusal says why, with until when where it applies (muted, too new, slow mode).
+  - **Kept:** each room's latest 1,000 messages (Q2). Deleting a message erases its text at once.
+  - **Deleting and muting:** players delete their own messages; moderators delete any (audited, without the text) and mute a player from the chat for 10 minutes to 7 days with a reason (`sanction_player`).
+  - **Live, and blocks** (a change from the Phase 8 decision): new messages reach readers as Postgres changes on `messages`, which Realtime checks against the read policy for each reader, so a block hides messages both ways live just as in the history. A broadcast from the database would have reached everyone in the room, blocked players included. Deletions go out on the room's private channel `chat:<locale>` (an id only), since a deleted row is no longer readable.
+  - **Privacy notice:** global chat messages and how long they're kept.
+  - **Cost:** the chat page's island is 4.4 KB gzip. Realtime: Postgres changes check each new message once per reader in the room; at 5 messages per 10 s per player that stays small at the free plan's 200 connections, and step 13 measures it.
+  - **Checks:**
+    - SQL 39/39, rolled back: sending, trimming and masking; empty, too long and unknown rooms refused; the rate limit per room; new accounts wait (with when) while new staff don't; guests and visitors refused; slow mode, staff excepted; blocks hide both ways (history and policy); hidden messages seen by their sender only; deleting (own yes, another's no, staff any, audited, announced, text erased); muted players refused; who may listen to a room's channel; the 1,000 cap; paging. The other suites still pass.
+    - Against local Realtime: with B blocking A, A's message reaches C and A but not B, B's reaches C and B but not A; without the block everyone gets both. A deletion is announced to the room.
 
 ---
 

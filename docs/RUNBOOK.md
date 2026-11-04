@@ -68,6 +68,7 @@ To end one early, the same way: `select public.revoke_sanction('<sanction id>');
 - **Who may:** moderators warn, mute and suspend; only admins ban, sanction staff, or revoke a ban.
 - **What the player sees:** a moderation notification with the reason and the note (on `/notifications/`; it can't be turned off), and the end of the sanction wherever it refuses them (chat, joining a room, rated search). A banned player is signed out everywhere and can't sign in until the ban ends; an access token they already hold lasts up to an hour, during which chat and rooms still refuse them.
 - **Automatic mutes:** the third chat message masked by the word filter within 10 minutes mutes the sender for 10 minutes (reason `filter`, no moderator).
+- **In the chat:** a moderator deletes any global chat message and mutes its sender from `/chat/` (the staff role reaches the page with the next sign-in or token refresh).
 - **Slow mode:** `select public.set_slow_mode('en', 30);` (seconds between messages per player in that global room; 0 turns it off), in the same kind of block.
 
 ## Announcements

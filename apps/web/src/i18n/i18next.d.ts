@@ -2,6 +2,7 @@
 // English source files, so a typo is a type error.
 import type account from "../../locales/en/account.json";
 import type auth from "../../locales/en/auth.json";
+import type chat from "../../locales/en/chat.json";
 import type common from "../../locales/en/common.json";
 import type errors from "../../locales/en/errors.json";
 import type friends from "../../locales/en/friends.json";
@@ -31,6 +32,7 @@ declare module "i18next" {
       leaderboards: typeof leaderboards;
       friends: typeof friends;
       notifications: typeof notifications;
+      chat: typeof chat;
     };
   }
 }

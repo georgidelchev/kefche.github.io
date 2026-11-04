@@ -1,0 +1,39 @@
+{
+  "title": "Chat",
+  "description": "Talk with players in your language, or in any other.",
+  "room": "Room",
+  "label": "Message",
+  "send": "Send",
+  "empty": "No messages yet. Say hello!",
+  "loading": "Loading the chat…",
+  "failed": "We couldn't load the chat.",
+  "retry": "Try again",
+  "earlier": "Show earlier messages",
+  "slowMode": "Slow mode: one message every {seconds} s.",
+  "errors": {
+    "tooFast": "You're sending messages too fast. Wait a moment.",
+    "tooLong": "Messages can be up to 500 characters.",
+    "tooNewUntil": "New accounts can post in the chat from {until}.",
+    "slowUntil": "Slow mode: you can post again at {until}.",
+    "mutedUntil": "You're muted until {until}.",
+    "muted": "You're muted.",
+    "failed": "Your message wasn't sent. Please try again."
+  },
+  "actions": {
+    "delete": "Delete message",
+    "mute": "Mute {name}",
+    "muteTitle": "Mute {name} in every chat?",
+    "duration": "For how long",
+    "reason": "Reason",
+    "submit": "Mute",
+    "cancel": "Cancel",
+    "close": "Close",
+    "muted": "{name} is muted.",
+    "durations": {
+      "m10": "10 minutes",
+      "h1": "1 hour",
+      "h24": "24 hours",
+      "d7": "7 days"
+    }
+  }
+}

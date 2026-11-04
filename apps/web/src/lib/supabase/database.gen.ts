@@ -501,6 +501,9 @@ isOneToOne: false
 "cancel_rated_search":
 { Args: Record<PropertyKey, never>; Returns: undefined
                            },
+"chat_history":
+{ Args: { "p_before"?: number,"p_limit"?: number,"p_room": unknown }; Returns: Json
+                           },
 "check_nickname":
 { Args: { "p_nickname": string }; Returns: string
                            },
@@ -565,6 +568,9 @@ isOneToOne: false
                            },
 "daily_submit":
 { Args: { "p_day": string,"p_entry": Json,"p_match": string,"p_user": string }; Returns: Json
+                           },
+"delete_chat_message":
+{ Args: { "p_message": number }; Returns: undefined
                            },
 "due_account_deletions":
 { Args: { "p_limit"?: number }; Returns: string[]
@@ -751,6 +757,9 @@ isOneToOne: false
                            },
 "sanction_player":
 { Args: { "p_kind": string,"p_minutes"?: number,"p_note"?: string,"p_reason": string,"p_report"?: string,"p_user": string }; Returns: string
+                           },
+"send_chat_message":
+{ Args: { "p_body": string,"p_room": unknown }; Returns: Json
                            },
 "send_room_message":
 { Args: { "p_body": string,"p_room": string }; Returns: {

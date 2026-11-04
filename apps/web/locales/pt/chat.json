@@ -1,0 +1,39 @@
+{
+  "title": "Chat",
+  "description": "Converse com jogadores no seu idioma ou em qualquer outro.",
+  "room": "Sala",
+  "label": "Mensagem",
+  "send": "Enviar",
+  "empty": "Nenhuma mensagem ainda. Diga oi!",
+  "loading": "Carregando o chat…",
+  "failed": "Não conseguimos carregar o chat.",
+  "retry": "Tentar de novo",
+  "earlier": "Ver mensagens anteriores",
+  "slowMode": "Modo lento: uma mensagem a cada {seconds} s.",
+  "errors": {
+    "tooFast": "Você está enviando mensagens rápido demais. Espere um pouco.",
+    "tooLong": "As mensagens podem ter até 500 caracteres.",
+    "tooNewUntil": "Contas novas podem escrever no chat a partir de {until}.",
+    "slowUntil": "Modo lento: você pode escrever de novo às {until}.",
+    "mutedUntil": "Você não pode escrever no chat até {until}.",
+    "muted": "Você não pode escrever no chat.",
+    "failed": "Sua mensagem não foi enviada. Tente de novo."
+  },
+  "actions": {
+    "delete": "Apagar mensagem",
+    "mute": "Silenciar {name}",
+    "muteTitle": "Silenciar {name} em todos os chats?",
+    "duration": "Por quanto tempo",
+    "reason": "Motivo",
+    "submit": "Silenciar",
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "muted": "{name} foi silenciado.",
+    "durations": {
+      "m10": "10 minutos",
+      "h1": "1 hora",
+      "h24": "24 horas",
+      "d7": "7 dias"
+    }
+  }
+}

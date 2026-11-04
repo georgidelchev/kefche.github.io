@@ -4,6 +4,7 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import { authStaticPaths } from "@/features/auth/page-helpers";
 import { authPaths } from "@/features/auth/paths";
 import { FriendsPage } from "@/features/friends/FriendsPage";
+import SocialNav from "@/features/friends/SocialNav.astro";
 import { friendsPageStrings } from "@/features/friends/strings";
 import { gameNames, roomGames } from "@/features/games/game-names";
 import AppShell from "@/features/shell/AppShell.astro";
@@ -24,11 +25,13 @@ const title = t("friends:title");
 <AppShell
   locale={locale}
   path="/friends/"
+  section="friends"
   title={t("common:meta.sectionTitle", { section: title })}
   description={t("friends:description")}
   noindex
 >
   <div class="mx-auto grid w-full max-w-2xl gap-6 pb-6">
+    <SocialNav locale={locale} current="friends" />
     <header class="grid gap-2">
       <h1 class="text-3xl md:text-4xl">{title}</h1>
       <p class="text-muted">{t("friends:description")}</p>

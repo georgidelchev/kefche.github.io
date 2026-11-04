@@ -1,0 +1,39 @@
+{
+  "title": "Chat",
+  "description": "Discutez avec des joueurs dans votre langue, ou dans une autre.",
+  "room": "Salon",
+  "label": "Message",
+  "send": "Envoyer",
+  "empty": "Aucun message pour l’instant. Dites bonjour !",
+  "loading": "Chargement du chat…",
+  "failed": "Impossible de charger le chat.",
+  "retry": "Réessayer",
+  "earlier": "Voir les messages précédents",
+  "slowMode": "Mode lent : un message toutes les {seconds} s.",
+  "errors": {
+    "tooFast": "Vous envoyez des messages trop vite. Patientez un instant.",
+    "tooLong": "Les messages peuvent compter jusqu’à 500 caractères.",
+    "tooNewUntil": "Les nouveaux comptes peuvent écrire dans le chat à partir du {until}.",
+    "slowUntil": "Mode lent : vous pourrez écrire de nouveau à {until}.",
+    "mutedUntil": "Vous ne pouvez pas écrire dans le chat jusqu’au {until}.",
+    "muted": "Vous ne pouvez pas écrire dans le chat.",
+    "failed": "Votre message n’a pas été envoyé. Réessayez."
+  },
+  "actions": {
+    "delete": "Supprimer le message",
+    "mute": "Rendre {name} muet",
+    "muteTitle": "Rendre {name} muet dans tous les chats ?",
+    "duration": "Pour combien de temps",
+    "reason": "Motif",
+    "submit": "Rendre muet",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "muted": "{name} est rendu muet.",
+    "durations": {
+      "m10": "10 minutes",
+      "h1": "1 heure",
+      "h24": "24 heures",
+      "d7": "7 jours"
+    }
+  }
+}

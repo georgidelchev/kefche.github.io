@@ -41,6 +41,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
     - `profile/`: the public profile page, game history and the analysis island.
     - `settings/`: the settings page.
     - `lobby/`: online rooms: the lobby, the Supabase transport (`room:<code>` plus the server-stamped `room-relay:<code>`), matches, races, chat and the public lobby browser (ADR-0020 to ADR-0024), plus rated matchmaking and results (ADR-0026), and inviting friends (`InviteFriends.tsx`, `invite_to_room`).
+    - `chat/`: global chat, one room per language (`chat-data.ts`: history, sending, and new messages as Postgres changes so the read policy keeps blocked players apart).
     - `friends/`: the friends page island, and the profile's friend actions (a plain script, since profiles are public and cached).
     - `live/`: the signed-in player's live connection (`live.client.ts`, on every page: their private channel `user:<id>`, passed on as `kefche:live` document events), online status, and the invite toast (`invite-toast.ts`, loaded with the first notification). A page says what its player is doing with `setPresenceContext` (`presence-context.ts`, dependency-free because every page loads it).
     - `notifications/`: the header bell (`bell.ts`, counting from `kefche:unread`), the notifications page, and how each type reads and where it leads (`notifications-data.ts`).

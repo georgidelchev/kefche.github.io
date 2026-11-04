@@ -1,0 +1,39 @@
+{
+  "title": "聊天",
+  "description": "用你的语言或任何其他语言和玩家聊天。",
+  "room": "房间",
+  "label": "消息",
+  "send": "发送",
+  "empty": "还没有消息。打个招呼吧！",
+  "loading": "正在加载聊天…",
+  "failed": "无法加载聊天。",
+  "retry": "重试",
+  "earlier": "查看更早的消息",
+  "slowMode": "慢速模式：每 {seconds} 秒一条消息。",
+  "errors": {
+    "tooFast": "你发消息太快了，请稍等片刻。",
+    "tooLong": "消息最多 500 个字符。",
+    "tooNewUntil": "新账号从 {until} 起可以在聊天中发言。",
+    "slowUntil": "慢速模式：你可以在 {until} 再次发言。",
+    "mutedUntil": "你已被禁言，{until} 后才能发言。",
+    "muted": "你已被禁言。",
+    "failed": "消息未发送，请重试。"
+  },
+  "actions": {
+    "delete": "删除消息",
+    "mute": "禁言 {name}",
+    "muteTitle": "在所有聊天中禁言 {name}？",
+    "duration": "时长",
+    "reason": "原因",
+    "submit": "禁言",
+    "cancel": "取消",
+    "close": "关闭",
+    "muted": "已禁言 {name}。",
+    "durations": {
+      "m10": "10 分钟",
+      "h1": "1 小时",
+      "h24": "24 小时",
+      "d7": "7 天"
+    }
+  }
+}
