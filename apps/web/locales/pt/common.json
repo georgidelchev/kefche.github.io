@@ -25,7 +25,8 @@
     "close": "Fechar"
   },
   "notifications": {
-    "label": "Notificações"
+    "label": "Notificações",
+    "unread": "{count} não lidas"
   },
   "wordOfTheDay": {
     "title": "Palavra do dia"

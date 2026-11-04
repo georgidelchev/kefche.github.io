@@ -71,6 +71,23 @@ function gameText(game: string, id: string, locale: Locale, bcp47: string, goal:
   return { name: text.name, description: String(description) };
 }
 
+/** Every achievement's name in this locale, by "<game id>.<id>" or "global.<id>" (notifications name them). */
+export function achievementNames(t: AppT, locale: Locale): Record<string, string> {
+  const names: Record<string, string> = {};
+  for (const def of GLOBAL_ACHIEVEMENTS) {
+    const text = globalText(t, def.id, 0);
+    if (text) names[`global.${def.id}`] = text.name;
+  }
+  for (const [game, defs] of gameDefs) {
+    const text = texts[`../../../../../packages/games/${game}/i18n/${locale}.json`];
+    for (const def of defs) {
+      const name = text?.[def.id]?.name;
+      if (name) names[`${game}.${def.id}`] = name;
+    }
+  }
+  return names;
+}
+
 export interface ShownAchievement {
   /** "<game id>.<id>" or "global.<id>". */
   key: string;

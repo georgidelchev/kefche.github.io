@@ -5,6 +5,7 @@
     "profile": "Profil",
     "preferences": "Préférences",
     "privacy": "Confidentialité",
+    "notifications": "Notifications",
     "account": "Compte",
     "data": "Vos données"
   },
@@ -73,6 +74,18 @@
     "nobody": "Personne",
     "showOnlineTo": "Qui peut voir quand je suis en ligne",
     "showInLeaderboards": "M’afficher dans les classements"
+  },
+  "notifications": {
+    "hint": "Choisissez ce qui apparaît dans vos notifications. Les avis concernant votre compte apparaissent toujours.",
+    "types": {
+      "friend_request": "Demandes d’ami",
+      "friend_accepted": "Demandes acceptées",
+      "invite": "Invitations à jouer",
+      "message": "Messages",
+      "achievement": "Succès",
+      "rating": "Paliers de classement",
+      "daily": "Résultats du défi du jour"
+    }
   },
   "account": {
     "email": "E-mail",

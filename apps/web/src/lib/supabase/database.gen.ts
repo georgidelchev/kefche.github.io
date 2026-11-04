@@ -650,6 +650,9 @@ isOneToOne: false
 "my_friends":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"my_notifications":
+{ Args: { "p_before"?: number,"p_limit"?: number }; Returns: Json
+                           },
 "play_load":
 { Args: { "p_play": string }; Returns: Json
                            },
@@ -710,6 +713,9 @@ isOneToOne: false
 "rated_search":
 { Args: { "p_game_id": string,"p_game_version": number,"p_timer": number }; Returns: Json
                            },
+"read_notifications":
+{ Args: { "p_ids"?: (number)[] }; Returns: number
+                           },
 "remove_friend":
 { Args: { "p_user": string }; Returns: undefined
                            },
@@ -717,7 +723,7 @@ isOneToOne: false
 { Args: { "p_room": string }; Returns: undefined
                            },
 "report_presence":
-{ Args: { "p_game"?: string,"p_status": string,"p_tab": string }; Returns: undefined
+{ Args: { "p_game"?: string,"p_status": string,"p_tab": string }; Returns: number
                            },
 "request_account_deletion":
 { Args: Record<PropertyKey, never>; Returns: string
@@ -772,6 +778,9 @@ isOneToOne: false
                            },
 "set_guest_profile":
 { Args: { "p_nickname": string }; Returns: string
+                           },
+"set_notification_pref":
+{ Args: { "p_channel": string,"p_on": boolean,"p_type": string }; Returns: undefined
                            },
 "set_ready":
 { Args: { "p_ready": boolean,"p_room": string }; Returns: undefined

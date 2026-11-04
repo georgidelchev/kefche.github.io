@@ -1,0 +1,40 @@
+{
+  "title": "お知らせ",
+  "description": "フレンド申請、招待、実績など、あなたへのお知らせ。",
+  "loading": "お知らせを読み込み中…",
+  "failed": "お知らせを読み込めませんでした。",
+  "retry": "再試行",
+  "empty": "お知らせはまだありません",
+  "emptyHint": "フレンド申請、招待、実績がここに表示されます。",
+  "more": "以前のお知らせを表示",
+  "new": "新着",
+  "someone": "プレイヤー",
+  "types": {
+    "friend_request": "{name}さんからフレンド申請が届きました。",
+    "friend_accepted": "{name}さんがフレンド申請を承認しました。",
+    "invite": "{name}さんから{game}への招待が届きました。",
+    "message": "{name}さんからメッセージが届きました。",
+    "achievement": "実績を解除：{name}（{tier}）。",
+    "rating": "{game}（{pool}）のレーティングが {rating} に到達しました。",
+    "daily": "{date} のデイリーチャレンジ（{game}）：{total} 人中 {rank} 位でした。"
+  },
+  "moderation": {
+    "warn": "モデレーターから警告が届きました。",
+    "muteUntil": "{until} までチャットできません。",
+    "mute": "チャットできません。",
+    "suspendUntil": "{until} までオンライン対戦できません。",
+    "suspend": "オンライン対戦できません。",
+    "ban": "アカウントが停止されています。",
+    "reason": "理由：{reason}。"
+  },
+  "reasons": {
+    "spam": "スパム",
+    "harassment": "嫌がらせ",
+    "hate": "ヘイト",
+    "sexual": "性的なコンテンツ",
+    "selfHarm": "自傷",
+    "cheating": "不正行為",
+    "filter": "禁止語",
+    "other": "その他"
+  }
+}

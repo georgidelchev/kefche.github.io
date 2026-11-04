@@ -25,7 +25,8 @@
     "close": "Fermer"
   },
   "notifications": {
-    "label": "Notifications"
+    "label": "Notifications",
+    "unread": "{count} non lues"
   },
   "wordOfTheDay": {
     "title": "Mot du jour"

@@ -1,0 +1,40 @@
+{
+  "title": "Notificaciones",
+  "description": "Solicitudes de amistad, invitaciones, logros y otras novedades para ti.",
+  "loading": "Cargando tus notificaciones…",
+  "failed": "No pudimos cargar tus notificaciones.",
+  "retry": "Reintentar",
+  "empty": "Aún no hay notificaciones",
+  "emptyHint": "Aquí aparecerán las solicitudes de amistad, las invitaciones y los logros.",
+  "more": "Ver anteriores",
+  "new": "Nueva",
+  "someone": "Un jugador",
+  "types": {
+    "friend_request": "{name} quiere ser tu amigo.",
+    "friend_accepted": "{name} aceptó tu solicitud de amistad.",
+    "invite": "{name} te invita a jugar a {game}.",
+    "message": "{name} te envió un mensaje.",
+    "achievement": "Logro desbloqueado: {name} ({tier}).",
+    "rating": "Tu puntuación en {game} ({pool}) llegó a {rating}.",
+    "daily": "Desafío diario del {date} ({game}): quedaste en el puesto {rank} de {total}."
+  },
+  "moderation": {
+    "warn": "Los moderadores te enviaron una advertencia.",
+    "muteUntil": "No puedes escribir en el chat hasta {until}.",
+    "mute": "No puedes escribir en el chat.",
+    "suspendUntil": "No puedes jugar en línea hasta {until}.",
+    "suspend": "No puedes jugar en línea.",
+    "ban": "Tu cuenta está bloqueada.",
+    "reason": "Motivo: {reason}."
+  },
+  "reasons": {
+    "spam": "spam",
+    "harassment": "acoso",
+    "hate": "odio",
+    "sexual": "contenido sexual",
+    "selfHarm": "autolesiones",
+    "cheating": "trampas",
+    "filter": "palabras bloqueadas",
+    "other": "otro"
+  }
+}

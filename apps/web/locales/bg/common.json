@@ -25,7 +25,8 @@
     "close": "Затвори"
   },
   "notifications": {
-    "label": "Известия"
+    "label": "Известия",
+    "unread": "{count} непрочетени"
   },
   "wordOfTheDay": {
     "title": "Дума на деня"

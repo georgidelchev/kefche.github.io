@@ -5,6 +5,7 @@
     "profile": "प्रोफ़ाइल",
     "preferences": "पसंद",
     "privacy": "निजता",
+    "notifications": "सूचनाएँ",
     "account": "खाता",
     "data": "आपका डेटा"
   },
@@ -73,6 +74,18 @@
     "nobody": "कोई नहीं",
     "showOnlineTo": "कौन देख सकता है कि मैं ऑनलाइन हूँ",
     "showInLeaderboards": "मुझे लीडरबोर्ड पर दिखाएँ"
+  },
+  "notifications": {
+    "hint": "चुनें कि आपकी सूचनाओं में क्या दिखे। आपके खाते से जुड़ी सूचनाएँ हमेशा दिखती हैं।",
+    "types": {
+      "friend_request": "दोस्ती के अनुरोध",
+      "friend_accepted": "माने गए अनुरोध",
+      "invite": "गेम के न्योते",
+      "message": "संदेश",
+      "achievement": "उपलब्धियाँ",
+      "rating": "रेटिंग के पड़ाव",
+      "daily": "दैनिक चुनौती के नतीजे"
+    }
   },
   "account": {
     "email": "ईमेल",

@@ -1,0 +1,56 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import { authStaticPaths } from "@/features/auth/page-helpers";
+import { authPaths } from "@/features/auth/paths";
+import { gameNames } from "@/features/games/game-names";
+import { NotificationsPage } from "@/features/notifications/NotificationsPage";
+import { notificationsPageStrings } from "@/features/notifications/strings";
+import { achievementNames } from "@/features/profile/achievements";
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+
+// Notifications (SPEC §8.4): private and noindex; only in builds with
+// accounts. The header's bell leads here.
+export const getStaticPaths = authStaticPaths;
+
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+const { bcp47 } = LOCALE_INFO[locale];
+const paths = authPaths(locale, getRelativeLocaleUrl);
+const title = t("notifications:title");
+---
+
+<AppShell
+  locale={locale}
+  path="/notifications/"
+  title={t("common:meta.sectionTitle", { section: title })}
+  description={t("notifications:description")}
+  noindex
+>
+  <div class="mx-auto grid w-full max-w-2xl gap-6 pb-6">
+    <header class="grid gap-2">
+      <h1 class="text-3xl md:text-4xl">{title}</h1>
+      <p class="text-muted">{t("notifications:description")}</p>
+    </header>
+    <NotificationsPage
+      client:load
+      strings={notificationsPageStrings(t)}
+      naming={{
+        games: gameNames(locale),
+        achievements: achievementNames(t, locale),
+        locale,
+        bcp47,
+      }}
+      paths={{
+        friends: getRelativeLocaleUrl(locale, "/friends/"),
+        profileBase: getRelativeLocaleUrl(locale, "/u/"),
+        play: getRelativeLocaleUrl(locale, "/play/"),
+        profile: getRelativeLocaleUrl(locale, "/profile/"),
+        leaderboards: getRelativeLocaleUrl(locale, "/leaderboards/"),
+      }}
+      signInPath={paths.signIn}
+    />
+  </div>
+</AppShell>

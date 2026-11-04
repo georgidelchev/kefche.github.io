@@ -1,0 +1,40 @@
+{
+  "title": "Benachrichtigungen",
+  "description": "Freundschaftsanfragen, Einladungen, Erfolge und andere Neuigkeiten für dich.",
+  "loading": "Deine Benachrichtigungen werden geladen …",
+  "failed": "Deine Benachrichtigungen konnten nicht geladen werden.",
+  "retry": "Erneut versuchen",
+  "empty": "Noch keine Benachrichtigungen",
+  "emptyHint": "Freundschaftsanfragen, Einladungen und Erfolge erscheinen hier.",
+  "more": "Ältere anzeigen",
+  "new": "Neu",
+  "someone": "Ein Spieler",
+  "types": {
+    "friend_request": "{name} möchte mit dir befreundet sein.",
+    "friend_accepted": "{name} hat deine Freundschaftsanfrage angenommen.",
+    "invite": "{name} lädt dich zu {game} ein.",
+    "message": "{name} hat dir eine Nachricht geschickt.",
+    "achievement": "Erfolg freigeschaltet: {name} ({tier}).",
+    "rating": "Deine Wertung in {game} ({pool}) hat {rating} erreicht.",
+    "daily": "Tägliche Herausforderung vom {date} ({game}): Du bist Platz {rank} von {total}."
+  },
+  "moderation": {
+    "warn": "Die Moderatoren haben dir eine Verwarnung geschickt.",
+    "muteUntil": "Du bist bis {until} stummgeschaltet.",
+    "mute": "Du bist stummgeschaltet.",
+    "suspendUntil": "Du bist bis {until} vom Online-Spiel ausgeschlossen.",
+    "suspend": "Du bist vom Online-Spiel ausgeschlossen.",
+    "ban": "Dein Konto ist gesperrt.",
+    "reason": "Grund: {reason}."
+  },
+  "reasons": {
+    "spam": "Spam",
+    "harassment": "Belästigung",
+    "hate": "Hass",
+    "sexual": "sexuelle Inhalte",
+    "selfHarm": "Selbstverletzung",
+    "cheating": "Betrug",
+    "filter": "gesperrte Wörter",
+    "other": "Sonstiges"
+  }
+}

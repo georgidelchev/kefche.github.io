@@ -25,7 +25,8 @@
     "close": "閉じる"
   },
   "notifications": {
-    "label": "通知"
+    "label": "通知",
+    "unread": "未読 {count} 件"
   },
   "wordOfTheDay": {
     "title": "今日の言葉"

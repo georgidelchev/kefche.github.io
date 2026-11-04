@@ -5,6 +5,7 @@
     "profile": "プロフィール",
     "preferences": "各種設定",
     "privacy": "プライバシー",
+    "notifications": "お知らせ",
     "account": "アカウント",
     "data": "あなたのデータ"
   },
@@ -73,6 +74,18 @@
     "nobody": "誰も不可",
     "showOnlineTo": "オンライン状態を見られる人",
     "showInLeaderboards": "ランキングに表示する"
+  },
+  "notifications": {
+    "hint": "お知らせに表示する内容を選べます。アカウントに関するお知らせは常に表示されます。",
+    "types": {
+      "friend_request": "フレンド申請",
+      "friend_accepted": "承認されたフレンド申請",
+      "invite": "ゲームへの招待",
+      "message": "メッセージ",
+      "achievement": "実績",
+      "rating": "レーティングの節目",
+      "daily": "デイリーチャレンジの結果"
+    }
   },
   "account": {
     "email": "メールアドレス",

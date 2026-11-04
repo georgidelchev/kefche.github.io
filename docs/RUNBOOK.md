@@ -66,9 +66,25 @@ commit;
 To end one early, the same way: `select public.revoke_sanction('<sanction id>');`. The player's sanctions: `select * from public.sanctions where user_id = '<id>' order by created_at desc;`.
 
 - **Who may:** moderators warn, mute and suspend; only admins ban, sanction staff, or revoke a ban.
-- **What the player sees:** a moderation notification (the notification center arrives in step 6), and the end of the sanction wherever it refuses them (chat, joining a room, rated search). A banned player is signed out everywhere and can't sign in until the ban ends; an access token they already hold lasts up to an hour, during which chat and rooms still refuse them.
+- **What the player sees:** a moderation notification with the reason and the note (on `/notifications/`; it can't be turned off), and the end of the sanction wherever it refuses them (chat, joining a room, rated search). A banned player is signed out everywhere and can't sign in until the ban ends; an access token they already hold lasts up to an hour, during which chat and rooms still refuse them.
 - **Automatic mutes:** the third chat message masked by the word filter within 10 minutes mutes the sender for 10 minutes (reason `filter`, no moderator).
 - **Slow mode:** `select public.set_slow_mode('en', 30);` (seconds between messages per player in that global room; 0 turns it off), in the same kind of block.
+
+## Announcements
+
+Until the admin panel (Phase 10) writes them, an announcement is a notification inserted from the SQL editor, one per player. It reaches everyone, whatever their settings, and arrives live for those online. Write the text in every language you can; a player whose language is missing sees English. `url` is optional and must be a path on the site.
+
+```sql
+insert into public.notifications (user_id, type, data)
+select p.id, 'announcement', jsonb_build_object(
+  'text', jsonb_build_object('en', 'New game: Reversi!', 'bg', 'Нова игра: Реверси!'),
+  'url', '/en/games/reversi/'
+)
+from public.profiles p
+where not p.is_guest and p.nickname is not null;
+```
+
+Each one sends a Realtime message to a player who is online, so on the free plan send at most a few thousand at a time.
 
 ## Account deletion job
 

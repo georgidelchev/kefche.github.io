@@ -20,3 +20,5 @@ export const presenceContext = (): PresenceContext => current;
 export const LIVE_EVENT = "kefche:live";
 /** The tab is back after being away: whatever it shows live may have changed meanwhile. */
 export const LIVE_RESUME_EVENT = "kefche:live-resume";
+/** How many notifications are unread ({count}), as the database or the notifications page says. */
+export const UNREAD_EVENT = "kefche:unread";

@@ -3,6 +3,8 @@
 // Its messages are passed on as LIVE_EVENT on the document; pages listen for
 // what concerns them. A new notification that is an invite also shows as a
 // toast on any page (invite-toast.ts, loaded with the first notification).
+// Each status report answers with the unread count, which the header's bell
+// shows (features/notifications/bell.ts).
 // Guests and visitors open nothing.
 //
 // The tab also reports its status: on load, when the page's context changes
@@ -12,7 +14,8 @@
 // closing tab says goodbye.
 import { localStorageOrUndefined } from "@/features/account/account-state";
 import { readAccountSummary } from "@/features/account/account-summary";
-import { getSupabase, hasStoredSession, send, type Supabase } from "@/lib/supabase/client";
+import { startBell } from "@/features/notifications/bell";
+import { getSupabase, hasStoredSession, type Supabase } from "@/lib/supabase/client";
 import { supabaseConfig } from "@/lib/supabase/config";
 
 import {
@@ -20,6 +23,7 @@ import {
   LIVE_RESUME_EVENT,
   PRESENCE_CONTEXT_EVENT,
   presenceContext,
+  UNREAD_EVENT,
 } from "./presence-context";
 
 import type { RealtimeChannel } from "@supabase/supabase-js";
@@ -44,13 +48,20 @@ function start(supabase: Supabase, userId: string) {
   const report = () => {
     if (stopped) return;
     const context = away ? { status: "away" as const } : presenceContext();
-    send(
-      supabase.rpc("report_presence", {
+    supabase
+      .rpc("report_presence", {
         p_tab: tab,
         p_status: context.status,
         ...("game" in context ? { p_game: context.game } : {}),
-      }),
-    );
+      })
+      .then(
+        ({ data }) => {
+          if (typeof data === "number") {
+            document.dispatchEvent(new CustomEvent(UNREAD_EVENT, { detail: { count: data } }));
+          }
+        },
+        () => undefined,
+      );
   };
 
   const connect = () => {
@@ -129,6 +140,7 @@ function start(supabase: Supabase, userId: string) {
     if (event.persisted) report();
   });
 
+  startBell();
   connect();
   report();
 }

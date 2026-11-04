@@ -1,0 +1,40 @@
+{
+  "title": "Notifications",
+  "description": "Demandes d’ami, invitations, succès et autres nouvelles pour vous.",
+  "loading": "Chargement de vos notifications…",
+  "failed": "Impossible de charger vos notifications.",
+  "retry": "Réessayer",
+  "empty": "Aucune notification pour l’instant",
+  "emptyHint": "Les demandes d’ami, les invitations et les succès apparaîtront ici.",
+  "more": "Voir les plus anciennes",
+  "new": "Nouveau",
+  "someone": "Un joueur",
+  "types": {
+    "friend_request": "{name} veut être votre ami.",
+    "friend_accepted": "{name} a accepté votre demande d’ami.",
+    "invite": "{name} vous invite à jouer à {game}.",
+    "message": "{name} vous a envoyé un message.",
+    "achievement": "Succès débloqué : {name} ({tier}).",
+    "rating": "Votre classement à {game} ({pool}) a atteint {rating}.",
+    "daily": "Défi du jour du {date} ({game}) : vous avez fini {rank}e sur {total}."
+  },
+  "moderation": {
+    "warn": "Les modérateurs vous ont adressé un avertissement.",
+    "muteUntil": "Vous ne pouvez pas écrire dans le chat jusqu’au {until}.",
+    "mute": "Vous ne pouvez pas écrire dans le chat.",
+    "suspendUntil": "Vous ne pouvez pas jouer en ligne jusqu’au {until}.",
+    "suspend": "Vous ne pouvez pas jouer en ligne.",
+    "ban": "Votre compte est banni.",
+    "reason": "Motif : {reason}."
+  },
+  "reasons": {
+    "spam": "spam",
+    "harassment": "harcèlement",
+    "hate": "haine",
+    "sexual": "contenu sexuel",
+    "selfHarm": "automutilation",
+    "cheating": "triche",
+    "filter": "mots bloqués",
+    "other": "autre"
+  }
+}

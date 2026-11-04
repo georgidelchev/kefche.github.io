@@ -25,7 +25,8 @@
     "close": "إغلاق"
   },
   "notifications": {
-    "label": "الإشعارات"
+    "label": "الإشعارات",
+    "unread": "غير المقروءة: {count}"
   },
   "wordOfTheDay": {
     "title": "كلمة اليوم"

@@ -5,6 +5,7 @@
     "profile": "Perfil",
     "preferences": "Preferências",
     "privacy": "Privacidade",
+    "notifications": "Notificações",
     "account": "Conta",
     "data": "Seus dados"
   },
@@ -73,6 +74,18 @@
     "nobody": "Ninguém",
     "showOnlineTo": "Quem pode ver quando estou online",
     "showInLeaderboards": "Mostrar-me nos rankings"
+  },
+  "notifications": {
+    "hint": "Escolha o que aparece nas suas notificações. Avisos sobre sua conta aparecem sempre.",
+    "types": {
+      "friend_request": "Pedidos de amizade",
+      "friend_accepted": "Pedidos aceitos",
+      "invite": "Convites para partidas",
+      "message": "Mensagens",
+      "achievement": "Conquistas",
+      "rating": "Marcos de pontuação",
+      "daily": "Resultados do desafio diário"
+    }
   },
   "account": {
     "email": "E-mail",

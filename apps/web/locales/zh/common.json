@@ -25,7 +25,8 @@
     "close": "关闭"
   },
   "notifications": {
-    "label": "通知"
+    "label": "通知",
+    "unread": "{count} 条未读"
   },
   "wordOfTheDay": {
     "title": "每日一词"

@@ -25,7 +25,8 @@
     "close": "Close"
   },
   "notifications": {
-    "label": "Notifications"
+    "label": "Notifications",
+    "unread": "{count} unread"
   },
   "wordOfTheDay": {
     "title": "Word of the day"

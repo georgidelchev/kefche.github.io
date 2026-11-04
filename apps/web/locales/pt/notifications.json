@@ -1,0 +1,40 @@
+{
+  "title": "Notificações",
+  "description": "Pedidos de amizade, convites, conquistas e outras novidades para você.",
+  "loading": "Carregando suas notificações…",
+  "failed": "Não conseguimos carregar suas notificações.",
+  "retry": "Tentar de novo",
+  "empty": "Nenhuma notificação ainda",
+  "emptyHint": "Pedidos de amizade, convites e conquistas vão aparecer aqui.",
+  "more": "Ver anteriores",
+  "new": "Nova",
+  "someone": "Um jogador",
+  "types": {
+    "friend_request": "{name} quer ser seu amigo.",
+    "friend_accepted": "{name} aceitou seu pedido de amizade.",
+    "invite": "{name} convida você para jogar {game}.",
+    "message": "{name} enviou uma mensagem para você.",
+    "achievement": "Conquista desbloqueada: {name} ({tier}).",
+    "rating": "Sua pontuação em {game} ({pool}) chegou a {rating}.",
+    "daily": "Desafio diário de {date} ({game}): você terminou em {rank}º de {total}."
+  },
+  "moderation": {
+    "warn": "Os moderadores enviaram um aviso para você.",
+    "muteUntil": "Você não pode escrever no chat até {until}.",
+    "mute": "Você não pode escrever no chat.",
+    "suspendUntil": "Você não pode jogar online até {until}.",
+    "suspend": "Você não pode jogar online.",
+    "ban": "Sua conta está banida.",
+    "reason": "Motivo: {reason}."
+  },
+  "reasons": {
+    "spam": "spam",
+    "harassment": "assédio",
+    "hate": "ódio",
+    "sexual": "conteúdo sexual",
+    "selfHarm": "automutilação",
+    "cheating": "trapaça",
+    "filter": "palavras bloqueadas",
+    "other": "outro"
+  }
+}

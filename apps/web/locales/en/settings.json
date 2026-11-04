@@ -5,6 +5,7 @@
     "profile": "Profile",
     "preferences": "Preferences",
     "privacy": "Privacy",
+    "notifications": "Notifications",
     "account": "Account",
     "data": "Your data"
   },
@@ -73,6 +74,18 @@
     "nobody": "Nobody",
     "showOnlineTo": "Who can see when I'm online",
     "showInLeaderboards": "Show me on leaderboards"
+  },
+  "notifications": {
+    "hint": "Choose what appears in your notifications. Notices about your account always appear.",
+    "types": {
+      "friend_request": "Friend requests",
+      "friend_accepted": "Accepted friend requests",
+      "invite": "Invites to games",
+      "message": "Messages",
+      "achievement": "Achievements",
+      "rating": "Rating milestones",
+      "daily": "Daily challenge results"
+    }
   },
   "account": {
     "email": "Email",

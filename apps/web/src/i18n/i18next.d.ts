@@ -10,6 +10,7 @@ import type leaderboards from "../../locales/en/leaderboards.json";
 import type legal from "../../locales/en/legal.json";
 import type lobby from "../../locales/en/lobby.json";
 import type nav from "../../locales/en/nav.json";
+import type notifications from "../../locales/en/notifications.json";
 import type profile from "../../locales/en/profile.json";
 import type settings from "../../locales/en/settings.json";
 
@@ -29,6 +30,7 @@ declare module "i18next" {
       lobby: typeof lobby;
       leaderboards: typeof leaderboards;
       friends: typeof friends;
+      notifications: typeof notifications;
     };
   }
 }

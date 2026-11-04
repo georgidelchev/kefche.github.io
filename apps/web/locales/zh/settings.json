@@ -5,6 +5,7 @@
     "profile": "个人资料",
     "preferences": "偏好",
     "privacy": "隐私",
+    "notifications": "通知",
     "account": "账户",
     "data": "你的数据"
   },
@@ -73,6 +74,18 @@
     "nobody": "没有人",
     "showOnlineTo": "谁能看到我是否在线",
     "showInLeaderboards": "在排行榜中显示我"
+  },
+  "notifications": {
+    "hint": "选择通知中显示的内容。关于你账号的通知总是会显示。",
+    "types": {
+      "friend_request": "好友请求",
+      "friend_accepted": "已接受的好友请求",
+      "invite": "游戏邀请",
+      "message": "消息",
+      "achievement": "成就",
+      "rating": "等级分里程碑",
+      "daily": "每日挑战结果"
+    }
   },
   "account": {
     "email": "电子邮箱",

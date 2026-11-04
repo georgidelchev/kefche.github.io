@@ -1,0 +1,40 @@
+{
+  "title": "通知",
+  "description": "好友请求、邀请、成就以及其他与你有关的消息。",
+  "loading": "正在加载你的通知…",
+  "failed": "无法加载你的通知。",
+  "retry": "重试",
+  "empty": "还没有通知",
+  "emptyHint": "好友请求、邀请和成就会显示在这里。",
+  "more": "查看更早的",
+  "new": "新",
+  "someone": "一位玩家",
+  "types": {
+    "friend_request": "{name} 想加你为好友。",
+    "friend_accepted": "{name} 接受了你的好友请求。",
+    "invite": "{name} 邀请你玩{game}。",
+    "message": "{name} 给你发了一条消息。",
+    "achievement": "成就解锁：{name}（{tier}）。",
+    "rating": "你在{game}（{pool}）的等级分达到了 {rating}。",
+    "daily": "{date} 的每日挑战（{game}）：你获得第 {rank} 名，共 {total} 人。"
+  },
+  "moderation": {
+    "warn": "管理员向你发出了警告。",
+    "muteUntil": "你已被禁言，{until} 后才能发言。",
+    "mute": "你已被禁言。",
+    "suspendUntil": "你已被禁止在线游戏，直到 {until}。",
+    "suspend": "你已被禁止在线游戏。",
+    "ban": "你的账号已被封禁。",
+    "reason": "原因：{reason}。"
+  },
+  "reasons": {
+    "spam": "垃圾信息",
+    "harassment": "骚扰",
+    "hate": "仇恨言论",
+    "sexual": "色情内容",
+    "selfHarm": "自残",
+    "cheating": "作弊",
+    "filter": "违禁词",
+    "other": "其他"
+  }
+}

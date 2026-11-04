@@ -25,7 +25,8 @@
     "close": "बंद करें"
   },
   "notifications": {
-    "label": "सूचनाएँ"
+    "label": "सूचनाएँ",
+    "unread": "{count} अपठित"
   },
   "wordOfTheDay": {
     "title": "आज का शब्द"

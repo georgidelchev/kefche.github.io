@@ -25,7 +25,8 @@
     "close": "Закрыть"
   },
   "notifications": {
-    "label": "Уведомления"
+    "label": "Уведомления",
+    "unread": "Непрочитанных: {count}"
   },
   "wordOfTheDay": {
     "title": "Слово дня"

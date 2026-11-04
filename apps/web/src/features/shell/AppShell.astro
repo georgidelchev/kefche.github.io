@@ -1,6 +1,7 @@
 ---
 import { getRelativeLocaleUrl } from "astro:i18n";
 import {
+  Bell,
   CircleUser,
   Gamepad2,
   House,
@@ -163,7 +164,28 @@ const focusRing =
       </div>
 
       {accounts && (
-        <div class="ms-auto lg:ms-0">
+        <div class="ms-auto flex items-center gap-2 lg:ms-0">
+          <!-- The bell shows for accounts (set before paint); bell.ts keeps its count. -->
+          <a
+            href={getRelativeLocaleUrl(locale, "/notifications/")}
+            data-bell
+            data-unread={t("common:notifications.unread", { count: "{count}" })}
+            class:list={[
+              "relative hidden size-11 items-center justify-center rounded-full border border-border-strong bg-surface-2 text-text hover:bg-surface group-data-[account=signed-in]/root:flex",
+              focusRing,
+            ]}
+          >
+            <Bell aria-hidden="true" className="size-5" />
+            <span data-bell-label class="sr-only">
+              {t("common:notifications.label")}
+            </span>
+            <span
+              hidden
+              data-bell-count
+              aria-hidden="true"
+              class="absolute -end-1 -top-1 min-w-5 rounded-full bg-danger px-1 text-center text-xs leading-5 font-bold text-on-danger"
+            />
+          </a>
           <AccountButton locale={locale} />
         </div>
       )}

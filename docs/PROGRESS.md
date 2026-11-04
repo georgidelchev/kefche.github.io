@@ -1418,6 +1418,20 @@ Online modes are enabled for the Phase 4 games.
   - **Checks:**
     - SQL 27/27, rolled back: sent live with the card, no repeats, read on join, members other than the host, each privacy choice, blocks both ways, self, guests and unknown players, non-members, guests and visitors refused, locked and started rooms, deleted with the room, friend requests pushed too. The other suites still pass.
     - Against local Supabase: the invitee's channel receives the invite live, a repeat answers `already_invited`, "nobody" answers `unavailable`, and joining marks it read.
+- [x] Step 6: the notification center (`20261104100500_notification_center.sql`).
+  - **The bell:** in the header for accounts (shown before paint, like the account button), with the unread count (9+ past nine) in its label and badge. The count comes back with each status report (`report_presence` now returns it), so it costs no request of its own and other tabs catch up within a minute. Each notification that arrives live adds one.
+  - **The page:** `/[locale]/notifications/` (accounts builds, noindex): newest first, 30 at a time with Show older. Opening it reads them all (the bell goes to 0); those that were unread keep a "New" mark while it's open, and new ones appear at the top live. Each leads to what it's about: friend requests to the Requests tab, an acceptance to their profile, an invite to its room, an achievement to your profile, a rating or daily result to its board. A sanction shows its reason, end and the moderator's note.
+  - **What sends them:**
+    - **Achievements:** each tier unlocked.
+    - **Ratings:** an established rating (10 games) first reaching a new hundred above 1500.
+    - **Daily challenge:** at 00:07 UTC, each player on yesterday's board gets their place (`notify-daily-results`).
+    - **Already:** friend requests and acceptances, invites, sanctions. Messages come with step 8; announcements with the admin panel (Phase 10; the RUNBOOK gives the SQL until then).
+  - **Settings:** a Notifications section turns each type off or on in the app (`set_notification_pref`; a type that's off isn't stored, so it's neither listed nor sent live). Account notices and announcements always arrive. Push and email join these in step 12.
+  - **Privacy notice:** notifications, kept 90 days, and the choice of types.
+  - **Cost:** every page's shell script grew by 0.2 KB gzip (1.9 KB); the page's island is 2.6 KB.
+  - **Checks:**
+    - SQL 28/28, rolled back: listed with the sender's card, the unread count from a status report, reading some and all, paging, only one's own; a type turned off isn't stored or sent but its request still happens; preferences merge; moderation can't be turned off and arrives anyway, with its note; bad preferences refused; achievements; rating milestones (none while provisional, none within the peak's hundred, once per new hundred); the daily results ranked and sent once; private functions and visitors refused. The other suites still pass.
+    - Against local Supabase: `report_presence` answers the unread count, the list carries the sender, reading all leaves 0, a preference saves and merges, and a direct write to the preferences is refused.
 
 ---
 

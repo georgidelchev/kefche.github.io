@@ -1,0 +1,40 @@
+{
+  "title": "Notifications",
+  "description": "Friend requests, invites, achievements and other news for you.",
+  "loading": "Loading your notifications…",
+  "failed": "We couldn't load your notifications.",
+  "retry": "Try again",
+  "empty": "No notifications yet",
+  "emptyHint": "Friend requests, invites and achievements will show up here.",
+  "more": "Show older",
+  "new": "New",
+  "someone": "A player",
+  "types": {
+    "friend_request": "{name} wants to be your friend.",
+    "friend_accepted": "{name} accepted your friend request.",
+    "invite": "{name} invites you to play {game}.",
+    "message": "{name} sent you a message.",
+    "achievement": "Achievement unlocked: {name} ({tier}).",
+    "rating": "Your {game} rating ({pool}) reached {rating}.",
+    "daily": "Daily challenge of {date} ({game}): you finished #{rank} of {total}."
+  },
+  "moderation": {
+    "warn": "The moderators sent you a warning.",
+    "muteUntil": "You're muted until {until}.",
+    "mute": "You're muted.",
+    "suspendUntil": "You're suspended from online play until {until}.",
+    "suspend": "You're suspended from online play.",
+    "ban": "Your account is banned.",
+    "reason": "Reason: {reason}."
+  },
+  "reasons": {
+    "spam": "spam",
+    "harassment": "harassment",
+    "hate": "hate",
+    "sexual": "sexual content",
+    "selfHarm": "self-harm",
+    "cheating": "cheating",
+    "filter": "blocked words",
+    "other": "other"
+  }
+}
