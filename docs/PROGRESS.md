@@ -1799,6 +1799,18 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
       - back within 5 s with the same worm, back after 5 s with a new one, a second tab taking over;
       - a nameless guest and an unknown game refused with their code; off the edge, knocked out and respawned.
       - Not run live: the 16th player (10 guests keep within the hosted sign-in limit) and the suspended player (it needs the service key to add a sanction). Both passed locally. The run's 11 guests are left for the stale-guest clean-up.
+- [x] Step 5: the arena controls (`createArenaControls` in `@kefche/game-sdk/browser`), shared by later arena games. One steering state, a heading and a held action (boost), from every input:
+  - **Touch:**
+    - a floating joystick wherever the thumb lands (HUD buttons excepted); a thumb past its edge drags the base along, so turning back is quick;
+    - a hold-to-act button, usable while the other thumb steers;
+    - **repositionable:** in editing mode (the HUD's "Move controls", step 8) dragging the button moves it, and nothing steers;
+    - **left-handed mode** puts the button on the left and mirrors a moved one;
+    - the layout is saved on the device (`kefche:arena-controls`, checked with zod when read).
+    - The touch controls show on touch screens and after any touch, and hide when a mouse is used. Positions are physical, not mirrored in RTL: they follow the hands.
+  - **Mouse:** steer toward the pointer from the player's own entity (the game says where it is on screen); hold the button to act, and letting go outside the stage still lets go.
+  - **Keyboard:** arrows or WASD in eight directions, Space to act; keys typed into a field are left alone, and leaving the window lets go of everything.
+  - Letting go of steering keeps the last heading. Changes too small for a heading byte aren't reported.
+  - **Checks,** 30/30 in Chrome at 400×700, with real multi-touch through the DevTools protocol: the joystick's maths, steering, the base following, boosting with a second finger while steering, HUD touches ignored, left-handed mode, moving the button and reloading its place, a bad stored layout, mouse and keyboard steering and acting, fields and window blur, disposal, and axe (WCAG 2 A and AA) clean. Checked by eye at 360 px in both themes.
 
 ## Known issues
 

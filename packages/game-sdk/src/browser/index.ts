@@ -1,5 +1,6 @@
 // @kefche/game-sdk/browser: runtime helpers for game renderers (browser only).
 export * from "./arena-client";
+export * from "./arena-controls";
 export * from "./bot-worker";
 export * from "./broadcast-transport";
 export * from "./game-module";
