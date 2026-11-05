@@ -31,6 +31,9 @@ export const ARENA_ERRORS = {
   arena_full: { fatal: true },
   replaced: { fatal: true },
   suspended: { fatal: true },
+  /** A guest without a name yet: the page asks for one, then joins again. */
+  nickname_required: { fatal: true },
+  unknown_game: { fatal: true },
   closing: { fatal: false },
 } as const;
 export type ArenaErrorCode = keyof typeof ARENA_ERRORS;

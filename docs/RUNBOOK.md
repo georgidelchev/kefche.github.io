@@ -359,7 +359,7 @@ The preferences and the outbox exist; nothing sends yet (Resend arrives in Phase
 
 ## Arena server
 
-Real-time arenas (Phase 9) run on their own Worker, `kefche-arena` (`apps/arena`), with one Durable Object per arena. Players connect to `wss://kefche-arena.alienguymc.workers.dev/arenas/<name>` with their Supabase access token. Supabase Realtime isn't involved.
+Real-time arenas (Phase 9) run on their own Worker, `kefche-arena` (`apps/arena`), with one Durable Object per arena and one directory per game. The page asks `https://kefche-arena.alienguymc.workers.dev/games/<game>/arena` which arena to join, then connects to `wss://kefche-arena.alienguymc.workers.dev/arenas/<game>/<arena>` with the player's Supabase access token. The arena checks it with `public.arena_entry`, so **push the migrations before the arena Worker** when they change together. Supabase Realtime isn't involved.
 
 - **Deploy:** CI deploys it after the site on every push to `main`, passing the Supabase URL and publishable key from the production environment as `--var`. By hand: `pnpm --filter arena run cf:deploy --var SUPABASE_URL:… --var SUPABASE_PUBLISHABLE_KEY:…`. Roll back as for the site, choosing `kefche-arena`.
 - **Locally:** copy `apps/arena/.dev.vars.example` to `.dev.vars` with the local stack's values (`pnpm exec supabase status`), then `pnpm --filter arena dev` (port 8787).

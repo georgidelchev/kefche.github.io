@@ -1,7 +1,10 @@
 import type { Arena } from "./arena";
+import type { Directory } from "./directory";
 
 export interface Env {
   ARENA: DurableObjectNamespace<Arena>;
+  /** One per game: its open arenas. */
+  DIRECTORY: DurableObjectNamespace<Directory>;
   /** The Supabase project ("https://<ref>.supabase.co"); `--var` in CI, `.dev.vars` locally. */
   SUPABASE_URL: string;
   /** Its publishable key (`sb_publishable_…`), public by design. */

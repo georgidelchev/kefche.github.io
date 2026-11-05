@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "description": "Real-time arena server: a Cloudflare Worker with one Durable Object per arena (Phase 9, ADR to come).",
+  "description": "Real-time arena server: a Cloudflare Worker with one Durable Object per arena (Phase 9).",
   "scripts": {
     "dev": "wrangler dev --port 8787",
     "build": "wrangler deploy --dry-run --outdir dist",
@@ -17,6 +17,8 @@
     "wrangler": "4.151.3"
   },
   "dependencies": {
+    "@kefche/game-sdk": "workspace:*",
+    "@kefche/game-worm-rush": "workspace:*",
     "zod": "4.6.7"
   }
 }

@@ -1,226 +1,261 @@
-// One arena (Phase 9 step 1, the spike): a Durable Object that holds its
-// players' WebSockets, runs the world at 30 Hz while anyone is connected, and
-// sends each player at 15 Hz only what is near them. Sending is free on
-// Cloudflare; each incoming message bills as 1/20 of a request, so clients
-// send inputs only when they change, plus a ping every 2 s.
+// One arena: a Durable Object holding its players' WebSockets and the game's
+// ArenaHost, stepped at the engine's tick rate while anyone is there. Sending
+// is free on Cloudflare and each incoming message bills as 1/20 of a request,
+// so clients send inputs only when they change, plus a ping every 2 s.
 //
-// The world here is dummy movers (bots wandering, players steering at a
-// fixed speed): enough to measure the transport before Worm Rush's engine
-// (steps 2 and 7) takes its place.
+// A player whose socket drops keeps their place for 5 s and gets it back by
+// joining again (SPEC §10.5); after that they leave the arena. One socket per
+// player: a second tab takes over from the first.
 import { DurableObject } from "cloudflare:workers";
-import { z } from "zod/mini";
 
-import { verifyToken } from "./auth";
-import { decodeClientFrame, encodeSnapshot, type Input, type WireEntity } from "./wire";
+import {
+  ARENA_PROTOCOL_VERSION,
+  ArenaHost,
+  arenaClientText,
+  decodeArenaFrame,
+  encodePongFrame,
+  parseArenaText,
+  type ArenaErrorCode,
+} from "@kefche/game-sdk";
+
+import { arenaEntry } from "./entry";
+import { GAMES, type ArenaGame } from "./games";
 
 import type { Env } from "./env";
 
-const TICK_HZ = 30;
-const TICK_MS = 1000 / TICK_HZ;
-const MAX_CATCH_UP = 4;
-const SNAPSHOT_EVERY = 2; // ticks: 15 Hz
-const MAX_PLAYERS = 15;
-const BOTS = 20;
-const WORLD_RADIUS = 3000;
-const VIEW_RADIUS = 1400;
-const SPEED = 140; // units a second
-const BOOST = 2;
-const TURN_RATE = 4; // radians a second
 const HELLO_MS = 5000;
+/** Silent this long (no input, no ping), a socket counts as dropped. */
+const SILENT_MS = 6000;
+/** A dropped player's place is kept this long. */
+const AWAY_MS = 5000;
 const MAX_INPUTS_PER_SECOND = 20;
+/** Past this, a client isn't just eager: it's closed. */
+const FLOOD_PER_SECOND = 60;
+const REPORT_MS = 30_000;
+const MAX_CATCH_UP = 4;
 
-const helloSchema = z.object({
-  t: z.literal("hello"),
-  token: z.string().check(z.minLength(1), z.maxLength(4096)),
-});
-
-interface Mover extends WireEntity {
-  /** The heading it turns toward. */
-  target: number;
-  boost: boolean;
-}
-
-interface Player {
-  userId: string;
-  mover: Mover;
-  /** Inputs this second, for the rate limit. */
-  inputs: number;
+interface Connection {
+  connectedAt: number;
+  lastHeard: number;
+  /** The participant id once welcomed. */
+  person: number | null;
+  userId: string | null;
+  frames: number;
   windowStart: number;
 }
 
-export class Arena extends DurableObject<Env> {
-  private readonly pending = new Map<WebSocket, number>();
-  private readonly players = new Map<WebSocket, Player>();
-  private readonly bots: Mover[] = [];
-  private nextId = 1;
-  private tick = 0;
-  private loop: ReturnType<typeof setInterval> | null = null;
-  /** When the world's latest tick was due. */
-  private lastTickAt = 0;
-  /** When the latest tick actually ran, for the stats. */
-  private lastStepAt = 0;
-  private readonly stats = {
-    inFrames: 0,
-    outFrames: 0,
-    outBytes: 0,
-    latestTickMs: 0,
-    worstTickMs: 0,
-  };
+interface Place {
+  person: number;
+  socket: WebSocket | null;
+  /** When their socket dropped, while it's gone. */
+  awaySince: number | null;
+}
 
-  override fetch(): Response {
+export class Arena extends DurableObject<Env> {
+  private game: ArenaGame | null = null;
+  private gameId = "";
+  private name = "";
+  private host: ArenaHost<unknown, unknown, unknown, unknown, undefined> | null = null;
+  private readonly connections = new Map<WebSocket, Connection>();
+  private readonly places = new Map<string, Place>();
+  private loop: ReturnType<typeof setInterval> | null = null;
+  private dueAt = 0;
+  private reportedPeople = -1;
+  private reportedAt = 0;
+
+  override fetch(request: Request): Response {
+    const [, , gameId = "", name = ""] = new URL(request.url).pathname.split("/");
     const [client, server] = Object.values(new WebSocketPair()) as [WebSocket, WebSocket];
     this.ctx.acceptWebSocket(server);
-    this.pending.set(server, Date.now());
-    this.start();
+    const now = Date.now();
+    this.connections.set(server, {
+      connectedAt: now,
+      lastHeard: now,
+      person: null,
+      userId: null,
+      frames: 0,
+      windowStart: now,
+    });
+    const game = GAMES[gameId];
+    if (!game) {
+      this.refuse(server, "unknown_game");
+    } else {
+      this.game = game;
+      this.gameId = gameId;
+      this.name = name;
+      this.start();
+    }
     return new Response(null, { status: 101, webSocket: client });
   }
 
   override async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer): Promise<void> {
-    this.stats.inFrames++;
-    const player = this.players.get(ws);
-    if (player) {
-      if (typeof message === "string") {
-        if (message === '{"t":"stats"}') this.sendText(ws, { t: "stats", ...this.report() });
-        return;
-      }
-      const frame = decodeClientFrame(message);
-      if (frame?.kind === "ping") this.send(ws, frame.frame);
-      else if (frame?.kind === "input" && this.allowInput(player))
-        this.steer(player.mover, frame.input);
-      return;
-    }
-    if (!this.pending.has(ws)) {
+    const connection = this.connections.get(ws);
+    if (!connection || !this.host || !this.game) {
       ws.close(4000, "unknown");
       return;
     }
-    const hello = typeof message === "string" ? helloSchema.safeParse(safeJson(message)) : null;
-    if (!hello?.success) {
+    const now = Date.now();
+    connection.lastHeard = now;
+    if (now - connection.windowStart >= 1000) {
+      connection.windowStart = now;
+      connection.frames = 0;
+    }
+    if (++connection.frames > FLOOD_PER_SECOND) {
+      this.drop(ws);
+      return;
+    }
+
+    if (typeof message !== "string") {
+      if (connection.person === null) return;
+      const frame = decodeArenaFrame(new Uint8Array(message));
+      if (frame?.kind === "ping") this.send(ws, encodePongFrame(frame.nonce, this.host.tick));
+      else if (frame?.kind === "input" && connection.frames <= MAX_INPUTS_PER_SECOND) {
+        this.host.input(connection.person, frame.seq, frame.input);
+      }
+      return;
+    }
+
+    const text = parseArenaText(arenaClientText, message);
+    if (text?.t === "respawn") {
+      if (connection.person !== null) this.host.respawn(connection.person);
+      return;
+    }
+    if (text?.t !== "hello" || connection.userId !== null) {
       this.refuse(ws, "hello_expected");
       return;
     }
-    const user = await verifyToken(this.env, hello.data.token);
-    if (!this.pending.delete(ws)) return; // closed while we checked
-    if (!user) {
-      this.refuse(ws, "invalid_token");
+    if (text.v !== ARENA_PROTOCOL_VERSION) {
+      this.refuse(ws, "version");
       return;
     }
-    // One socket per player: a second tab takes over from the first.
-    for (const [other, p] of this.players) {
-      if (p.userId === user.id) this.leave(other, 4002, "replaced");
-    }
-    if (this.players.size >= MAX_PLAYERS) {
-      this.refuse(ws, "arena_full");
+    const player = await arenaEntry(this.env, text.token);
+    if (!this.connections.has(ws)) return; // closed while we asked
+    if (typeof player === "string") {
+      this.refuse(ws, player);
       return;
     }
-    const mover = this.spawn();
-    this.players.set(ws, { userId: user.id, mover, inputs: 0, windowStart: Date.now() });
+    connection.userId = player.userId;
+    const look = text.look < this.game.looks ? text.look : 0;
+    const place = this.places.get(player.userId);
+    if (place) {
+      // Back within 5 s, or a second tab: the same place, a full snapshot first.
+      if (place.socket && place.socket !== ws) this.refuse(place.socket, "replaced", false);
+      place.socket = ws;
+      place.awaySince = null;
+      this.host.resetDelta(place.person);
+      connection.person = place.person;
+    } else {
+      const person = this.host.join({ name: player.name, look });
+      if (person === null) {
+        this.refuse(ws, "arena_full");
+        return;
+      }
+      this.places.set(player.userId, { person, socket: ws, awaySince: null });
+      connection.person = person;
+    }
+    const engine = this.game.engine;
     this.sendText(ws, {
       t: "welcome",
-      self: mover.id,
-      tickRate: TICK_HZ,
-      snapshotRate: TICK_HZ / SNAPSHOT_EVERY,
+      self: connection.person,
+      tickRate: engine.ticksPerSecond,
+      snapshotRate: engine.snapshotsPerSecond,
     });
+    this.report();
   }
 
   override webSocketClose(ws: WebSocket): void {
-    this.leave(ws);
+    this.drop(ws);
   }
 
   override webSocketError(ws: WebSocket): void {
-    this.leave(ws);
+    this.drop(ws);
   }
 
   private start(): void {
-    if (this.loop) return;
-    while (this.bots.length < BOTS) this.bots.push(this.spawn());
-    this.lastTickAt = Date.now();
-    // Timers aren't exact (Windows rounds them to 15.6 ms), so the interval
-    // runs twice as often as the world and steps it by the clock, catching
-    // up at most MAX_CATCH_UP ticks at once.
+    if (this.loop || !this.game) return;
+    this.host ??= new ArenaHost(this.game.engine, this.game.bots, {
+      ...this.game.host,
+      seed: `${this.gameId}/${this.name}/${crypto.randomUUID()}`,
+      config: undefined,
+    });
+    const tickMs = 1000 / this.game.engine.ticksPerSecond;
+    this.dueAt = Date.now();
+    // Timers aren't exact, so the interval runs twice as often as the world
+    // and steps it by the clock, catching up at most MAX_CATCH_UP ticks.
     this.loop = setInterval(() => {
       const now = Date.now();
-      let due = Math.min(MAX_CATCH_UP, Math.floor((now - this.lastTickAt) / TICK_MS));
-      if (due === MAX_CATCH_UP) this.lastTickAt = now - due * TICK_MS;
+      let due = Math.min(MAX_CATCH_UP, Math.floor((now - this.dueAt) / tickMs));
+      if (due === MAX_CATCH_UP) this.dueAt = now - due * tickMs;
       while (due-- > 0) {
-        this.lastTickAt += TICK_MS;
-        this.step();
+        this.dueAt += tickMs;
+        this.tick();
       }
-    }, TICK_MS / 2);
+      this.housekeeping(now);
+    }, tickMs / 2);
   }
 
-  private stopIfEmpty(): void {
-    if (this.players.size > 0 || this.pending.size > 0 || !this.loop) return;
-    clearInterval(this.loop);
-    this.loop = null;
-    this.lastStepAt = 0;
-    this.bots.length = 0;
-  }
-
-  private step(): void {
-    const now = Date.now();
-    if (this.lastStepAt) {
-      this.stats.latestTickMs = now - this.lastStepAt;
-      this.stats.worstTickMs = Math.max(this.stats.worstTickMs, this.stats.latestTickMs);
-    }
-    this.lastStepAt = now;
-    const dt = 1 / TICK_HZ;
-    for (const [ws, at] of this.pending) {
-      if (now - at > HELLO_MS) this.refuse(ws, "hello_timeout");
-    }
-    for (const bot of this.bots) {
-      if (Math.random() < dt / 2) bot.target = Math.random() * Math.PI * 2;
-      move(bot, dt);
-    }
-    for (const { mover } of this.players.values()) move(mover, dt);
-    this.tick++;
-    if (this.tick % SNAPSHOT_EVERY === 0) this.sendSnapshots();
-  }
-
-  private sendSnapshots(): void {
-    const everyone = [...this.bots, ...[...this.players.values()].map((p) => p.mover)];
-    for (const [ws, { mover }] of this.players) {
-      const near = everyone.filter(
-        (e) => (e.x - mover.x) ** 2 + (e.y - mover.y) ** 2 <= VIEW_RADIUS ** 2,
-      );
-      this.send(ws, encodeSnapshot(this.tick, near));
+  private tick(): void {
+    if (!this.host) return;
+    const { frames } = this.host.step();
+    if (frames.size === 0) return;
+    for (const place of this.places.values()) {
+      const frame = place.socket ? frames.get(place.person) : undefined;
+      if (place.socket && frame) this.send(place.socket, frame);
     }
   }
 
-  private spawn(): Mover {
-    const angle = Math.random() * Math.PI * 2;
-    const r = Math.sqrt(Math.random()) * WORLD_RADIUS * 0.8;
-    const heading = Math.random() * Math.PI * 2;
-    return {
-      id: this.nextId++ & 0xffff,
-      x: Math.cos(angle) * r,
-      y: Math.sin(angle) * r,
-      heading,
-      target: heading,
-      boost: false,
-    };
-  }
-
-  private steer(mover: Mover, input: Input): void {
-    mover.target = input.heading;
-    mover.boost = input.boost;
-  }
-
-  private allowInput(player: Player): boolean {
-    const now = Date.now();
-    if (now - player.windowStart >= 1000) {
-      player.windowStart = now;
-      player.inputs = 0;
+  private housekeeping(now: number): void {
+    for (const [ws, c] of this.connections) {
+      if (c.userId === null && now - c.connectedAt > HELLO_MS) this.refuse(ws, "hello_timeout");
+      else if (c.person !== null && now - c.lastHeard > SILENT_MS) this.drop(ws);
     }
-    return ++player.inputs <= MAX_INPUTS_PER_SECOND;
+    for (const [userId, place] of this.places) {
+      if (place.awaySince !== null && now - place.awaySince > AWAY_MS) {
+        this.host?.leave(place.person);
+        this.places.delete(userId);
+      }
+    }
+    if (now - this.reportedAt > REPORT_MS) this.report();
+    if (this.connections.size === 0 && this.places.size === 0 && this.loop) {
+      clearInterval(this.loop);
+      this.loop = null;
+      this.report();
+    }
   }
 
-  private send(ws: WebSocket, data: ArrayBuffer | string): void {
+  /** Tells the game's directory how many people are here (on change, and every 30 s). */
+  private report(): void {
+    const people = this.places.size;
+    if (people === this.reportedPeople && Date.now() - this.reportedAt < REPORT_MS) return;
+    this.reportedPeople = people;
+    this.reportedAt = Date.now();
+    const directory = this.env.DIRECTORY.getByName(this.gameId);
+    this.ctx.waitUntil(directory.report(this.name, people).catch(() => undefined));
+  }
+
+  /** The socket is gone: its player's place is kept for AWAY_MS. */
+  private drop(ws: WebSocket): void {
+    const connection = this.connections.get(ws);
+    this.connections.delete(ws);
+    try {
+      ws.close(1000);
+    } catch {
+      // Already closed.
+    }
+    if (connection?.userId) {
+      const place = this.places.get(connection.userId);
+      if (place?.socket === ws) {
+        place.socket = null;
+        place.awaySince = Date.now();
+      }
+    }
+  }
+
+  private send(ws: WebSocket, data: Uint8Array<ArrayBuffer> | string): void {
     try {
       ws.send(data);
-      this.stats.outFrames++;
-      this.stats.outBytes += typeof data === "string" ? data.length : data.byteLength;
     } catch {
-      this.leave(ws);
+      this.drop(ws);
     }
   }
 
@@ -228,43 +263,19 @@ export class Arena extends DurableObject<Env> {
     this.send(ws, JSON.stringify(value));
   }
 
-  private refuse(ws: WebSocket, code: string): void {
+  /** An error frame, then the socket closes (the client closes it at once on its side). */
+  private refuse(ws: WebSocket, code: ArenaErrorCode, keepPlace = true): void {
     this.sendText(ws, { t: "error", code });
-    this.pending.delete(ws);
-    this.leave(ws, 4001, code);
-  }
-
-  private leave(ws: WebSocket, code = 1000, reason = ""): void {
-    this.pending.delete(ws);
-    this.players.delete(ws);
+    if (keepPlace) {
+      this.drop(ws);
+      return;
+    }
+    // Replaced by another tab: the place moves to the new socket, so only this one goes.
+    this.connections.delete(ws);
     try {
-      ws.close(code, reason);
+      ws.close(4001, code);
     } catch {
       // Already closed.
     }
-    this.stopIfEmpty();
-  }
-
-  private report() {
-    return { players: this.players.size, bots: this.bots.length, tick: this.tick, ...this.stats };
-  }
-}
-
-function move(m: Mover, dt: number): void {
-  // Turn toward the target the short way, at most TURN_RATE a second.
-  const diff = Math.atan2(Math.sin(m.target - m.heading), Math.cos(m.target - m.heading));
-  m.heading += Math.max(-TURN_RATE * dt, Math.min(TURN_RATE * dt, diff));
-  const speed = SPEED * (m.boost ? BOOST : 1) * dt;
-  m.x += Math.cos(m.heading) * speed;
-  m.y += Math.sin(m.heading) * speed;
-  // The edge turns movers back toward the middle.
-  if (m.x * m.x + m.y * m.y > WORLD_RADIUS * WORLD_RADIUS) m.target = Math.atan2(-m.y, -m.x);
-}
-
-function safeJson(text: string): unknown {
-  try {
-    return JSON.parse(text) as unknown;
-  } catch {
-    return null;
   }
 }

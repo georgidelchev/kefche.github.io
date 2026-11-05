@@ -483,6 +483,9 @@ isOneToOne: false
 "add_friend":
 { Args: { "p_user": string }; Returns: string
                            },
+"arena_entry":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "avatar_upload_allowed":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },

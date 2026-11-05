@@ -1772,6 +1772,28 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
     - **determinism:** the same seed and inputs make the same arena;
     - **inputs and names:** inputs round trip and bad ones are refused; names in any script round trip, and long ones are cut at whole characters;
     - **bots,** 10 minutes of bots only: easy ones died most (86 lives against 31 for medium), and mean best length rose with difficulty (94, 98, 107). Hard bots die more often than medium ones because they hunt: tuning for step 12's playtests.
+- [x] Step 4: the arena server runs Worm Rush (`apps/arena` on `ArenaHost`, `20261105100200_arena_entry.sql`).
+  - **Routes:**
+    - `GET /games/<game>/arena` answers which arena "Play online" joins;
+    - `/arenas/<game>/<name>` is that arena's WebSocket, held by its Durable Object;
+    - only the site's pages may use either. The spike's own wire format is gone: the server speaks the SDK's arena protocol (step 3).
+  - **Joining:** the hello's token goes to a new database function, `arena_entry`, called with that token. It answers the player's name (an account's nickname or a guest's name) and refuses a guest without a name (`nickname_required`, so the page can ask for one) and a suspended or banned player (`suspended`), as rooms do. One request checks the token, the name and sanctions. A look outside the game's range becomes the first one.
+  - **The arena:** Worm Rush's `ArenaHost` (bots to 10, at most 15 people, bots in a mix of difficulties with readable names, back 3 s after a knockout). Each person's frame goes to their socket. The game list (`src/games.ts`) is where later arena games join.
+  - **Dropped and returning players** (SPEC §10.5):
+    - a socket that closes, or goes 6 s without a frame (pings come every 2 s), leaves its player's worm in play for 5 s;
+    - joining again in that time takes the same worm back, with a full snapshot first; after it, the player leaves the arena;
+    - a second tab takes the place over and the first is told `replaced`.
+  - **Limits:** 20 inputs a second are applied; past 60 frames a second the socket is closed.
+  - **The directory** (a second Durable Object, one per game): arenas report their people on every change and every 30 s, and one silent for a minute is forgotten. A player goes to the fullest arena with room, or a new one. Places handed out count as taken for 10 s, so a rush spreads out (the arena still has the last word: `arena_full`).
+  - **Checks:**
+    - SQL 5/5, rolled back: `arena_entry` answers a named guest and an account, refuses a nameless guest, a suspended player and a visitor; schema lint clean.
+    - End to end against the local Worker, 15/15, with the SDK's own `connectArena` and Worm Rush's codecs:
+      - 15 named guests sent to one arena by the directory, and the 16th to another;
+      - all welcomed, with exactly 15 snapshots a second each, carrying worms, orbs and names;
+      - back within 5 s with the same worm; back after 5 s with a new one;
+      - a second tab taking over;
+      - a nameless guest, a suspended player and an unknown game each refused with their code;
+      - a worm steered off the edge, knocked out, then respawned.
 
 ## Known issues
 

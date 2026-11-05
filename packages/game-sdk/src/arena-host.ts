@@ -52,7 +52,7 @@ interface BotSeat<World, Input> {
 export interface ArenaStep<Event> {
   events: Event[];
   /** Snapshot frames to send, per person, on snapshot ticks (empty otherwise). */
-  frames: Map<number, Uint8Array>;
+  frames: Map<number, Uint8Array<ArrayBuffer>>;
 }
 
 export class ArenaHost<World, Input, Snapshot, Event, Config> {
@@ -153,7 +153,7 @@ export class ArenaHost<World, Input, Snapshot, Event, Config> {
     }
     const events = this.engine.step(this.world, inputs);
     this.tickCount++;
-    const frames = new Map<number, Uint8Array>();
+    const frames = new Map<number, Uint8Array<ArrayBuffer>>();
     if (this.tickCount % this.snapshotEvery === 0) {
       for (const [id, person] of this.people) {
         const snapshot = this.engine.snapshot(this.world, id);
