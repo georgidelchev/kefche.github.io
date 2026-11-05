@@ -2,6 +2,12 @@
 import type { AuthErrorKey } from "@/features/auth/errors";
 import { chatToolsStrings, type ChatToolsStrings } from "@/features/chat/strings";
 import type { PresenceStrings } from "@/features/live/presence";
+import {
+  muteStrings,
+  reportStrings,
+  type MuteStrings,
+  type ReportStrings,
+} from "@/features/moderation/strings";
 import type { AppT } from "@/i18n/i18n";
 import type { Locale } from "@/i18n/locales";
 
@@ -150,11 +156,21 @@ export interface ChatStrings {
   failed: string;
   /** The emoji picker. */
   tools: ChatToolsStrings;
+  delete: string;
+  report: ReportStrings;
+  /** A moderator's mute. */
+  mute: MuteStrings;
+  /** "/<locale>/guidelines/" */
+  guidelinesPath: string;
 }
 
-export function chatStrings(t: AppT, locale: Locale): ChatStrings {
+export function chatStrings(t: AppT, locale: Locale, guidelinesPath: string): ChatStrings {
   return {
     tools: chatToolsStrings(t, locale),
+    delete: t("chat:actions.delete"),
+    report: reportStrings(t),
+    mute: muteStrings(t),
+    guidelinesPath,
     title: t("lobby:chat.title"),
     label: t("lobby:chat.label"),
     send: t("lobby:chat.send"),

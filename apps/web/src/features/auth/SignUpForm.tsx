@@ -210,6 +210,14 @@ export function SignUpForm({ strings, paths, locale, monthNames }: Props) {
         >
           {strings.signUp.privacyLink}
         </a>
+        <br />
+        {strings.signUp.guidelinesNote}{" "}
+        <a
+          href={paths.guidelines}
+          className="font-semibold text-link underline-offset-4 hover:underline"
+        >
+          {strings.signUp.guidelinesLink}
+        </a>
       </p>
 
       <p className="text-center">

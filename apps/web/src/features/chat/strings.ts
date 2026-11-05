@@ -1,3 +1,4 @@
+import { muteStrings, reportStrings } from "@/features/moderation/strings";
 import type { AppT } from "@/i18n/i18n";
 import type { Locale } from "@/i18n/locales";
 
@@ -51,30 +52,10 @@ export function chatPageStrings(t: AppT) {
     },
     actions: {
       delete: t("chat:actions.delete"),
-      mute: t("chat:actions.mute", { name: "{name}" }),
-      muteTitle: t("chat:actions.muteTitle", { name: "{name}" }),
-      duration: t("chat:actions.duration"),
-      reason: t("chat:actions.reason"),
-      submit: t("chat:actions.submit"),
-      cancel: t("chat:actions.cancel"),
-      close: t("chat:actions.close"),
-      muted: t("chat:actions.muted", { name: "{name}" }),
-      durations: {
-        m10: t("chat:actions.durations.m10"),
-        h1: t("chat:actions.durations.h1"),
-        h24: t("chat:actions.durations.h24"),
-        d7: t("chat:actions.durations.d7"),
-      },
     },
-    // A moderator's reasons for a mute, as notifications word them.
-    reasons: {
-      spam: t("notifications:reasons.spam"),
-      harassment: t("notifications:reasons.harassment"),
-      hate: t("notifications:reasons.hate"),
-      sexual: t("notifications:reasons.sexual"),
-      selfHarm: t("notifications:reasons.selfHarm"),
-      other: t("notifications:reasons.other"),
-    },
+    mute: muteStrings(t),
+    report: reportStrings(t),
+    guidelines: t("legal:guidelines.title"),
   };
 }
 export type ChatPageStrings = ReturnType<typeof chatPageStrings>;

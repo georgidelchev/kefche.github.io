@@ -1,6 +1,8 @@
 // The lobby's chat (SPEC §6.4, §8.2): the room's latest messages, live, and
 // a line to write one, for everyone in the room. The database masks blocked
 // words, limits how fast anyone can send, and refuses a muted player.
+// Players delete their own messages and report others'; moderators delete
+// any and mute. What 3 accounts report is hidden (its sender sees a note).
 //
 // In the lobby it is a fixed pane of the room page, and the room scrolls
 // beside it: a column on the right from 768px, a band along the bottom on
@@ -11,8 +13,17 @@
 // counting new messages, that opens the chat over the board: a drawer on the
 // side from 768px, a sheet from the bottom on phones. It starts closed, and
 // Escape closes it.
-import { ChevronDown, ChevronUp, MessageSquare, PanelRightClose, X } from "lucide-react";
-import { useEffect, useEffectEvent, useId, useRef, useState } from "react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Flag,
+  MessageSquare,
+  PanelRightClose,
+  Trash2,
+  VolumeX,
+  X,
+} from "lucide-react";
+import { useEffect, useEffectEvent, useId, useRef, useState, type ReactNode } from "react";
 
 import { Button } from "@kefche/ui/components/button";
 import { Input } from "@kefche/ui/components/input";
@@ -21,6 +32,8 @@ import { insertText } from "@/features/chat/compose";
 import { EmojiButton } from "@/features/chat/EmojiButton";
 import { MessageBody } from "@/features/chat/MessageBody";
 import { fill } from "@/features/games/turn/labels";
+import { MuteDialog, mutePlayer } from "@/features/moderation/MuteDialog";
+import { ReportDialog, type ReportTarget } from "@/features/moderation/ReportDialog";
 import { sanctionEnd, sanctionNotice } from "@/features/moderation/sanction-notice";
 import type { Supabase } from "@/lib/supabase/client";
 
@@ -66,6 +79,10 @@ export function RoomChat({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [staff, setStaff] = useState(false);
+  const [reporting, setReporting] = useState<ReportTarget | null>(null);
+  const [muting, setMuting] = useState<{ id: string; nickname: string } | null>(null);
   const [open, setOpen] = useState(() => !drawer && initiallyOpen());
   const toggleRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -84,12 +101,27 @@ export function RoomChat({
           // What was there on arrival counts as read.
           setSeen((current) => current ?? Math.max(0, ...added.map((m) => m.id)));
         },
+        (removed, hidden) => {
+          // A hidden message stays for its sender, marked.
+          setMessages((current) =>
+            current.flatMap((m) =>
+              m.id !== removed ? [m] : hidden && m.userId === self ? [{ ...m, hidden: true }] : [],
+            ),
+          );
+        },
         () => {
           setError(s.failed);
         },
       ),
-    [supabase, roomId, s],
+    [supabase, roomId, self, s],
   );
+
+  // Moderators get their tools.
+  useEffect(() => {
+    void supabase.rpc("is_staff").then(({ data }) => {
+      setStaff(data === true);
+    });
+  }, [supabase]);
 
   const last = messages.at(-1);
   const unread = open
@@ -172,6 +204,14 @@ export function RoomChat({
     }
   }
 
+  async function remove(message: ChatMessage) {
+    const { error: rpcError } = await supabase.rpc("delete_room_message", {
+      p_message: message.id,
+    });
+    if (rpcError) setError(s.failed);
+    else setMessages((current) => current.filter((m) => m.id !== message.id));
+  }
+
   const unreadLabel =
     unread > 0 ? `${s.show} (${fill(s.unread, { count: unread.toLocaleString(locale) })})` : s.show;
   const badge = (className: string) =>
@@ -220,14 +260,47 @@ export function RoomChat({
           aria-labelledby={`${id}-title`}
           className="grid min-h-0 flex-1 content-start gap-1.5 overflow-y-auto overscroll-contain pe-1"
         >
-          {messages.map((m) => (
-            <li key={m.id} className="break-words">
-              <span className="font-semibold">{m.nickname}</span>
-              {m.userId === self && <span className="text-sm text-muted"> ({s.you})</span>}
-              <span className="text-muted">: </span>
-              <MessageBody body={m.body} gifAlt={s.tools.gifAlt} />
-            </li>
-          ))}
+          {messages.map((m) => {
+            const mine = m.userId === self;
+            return (
+              <li key={m.id} className="flex items-start gap-1">
+                <p className="min-w-0 flex-1 break-words">
+                  <span className="font-semibold">{m.nickname}</span>
+                  {mine && <span className="text-sm text-muted"> ({s.you})</span>}
+                  <span className="text-muted">: </span>
+                  <MessageBody body={m.body} gifAlt={s.tools.gifAlt} />
+                  {m.hidden && (
+                    <span className="block text-xs text-muted italic">{s.report.hidden}</span>
+                  )}
+                </p>
+                {!mine && (
+                  <ChatAction
+                    label={s.report.message}
+                    onClick={() => {
+                      setReporting({ type: "room_message", id: String(m.id), name: m.nickname });
+                    }}
+                  >
+                    <Flag aria-hidden="true" className="size-3.5" />
+                  </ChatAction>
+                )}
+                {staff && !mine && (
+                  <ChatAction
+                    label={fill(s.mute.mute, { name: m.nickname })}
+                    onClick={() => {
+                      setMuting({ id: m.userId, nickname: m.nickname });
+                    }}
+                  >
+                    <VolumeX aria-hidden="true" className="size-3.5" />
+                  </ChatAction>
+                )}
+                {(mine || staff) && (
+                  <ChatAction label={s.delete} onClick={() => void remove(m)}>
+                    <Trash2 aria-hidden="true" className="size-3.5" />
+                  </ChatAction>
+                )}
+              </li>
+            );
+          })}
         </ol>
       )}
 
@@ -276,6 +349,34 @@ export function RoomChat({
           {error}
         </p>
       )}
+      <p role="status" className="text-sm font-semibold text-success empty:hidden">
+        {notice ?? ""}
+      </p>
+      <ReportDialog
+        target={reporting}
+        supabase={supabase}
+        strings={s.report}
+        guidelinesPath={s.guidelinesPath}
+        onClose={() => {
+          setReporting(null);
+        }}
+      />
+      <MuteDialog
+        player={muting}
+        strings={s.mute}
+        onClose={() => {
+          setMuting(null);
+        }}
+        onMute={(minutes, reason) => {
+          const player = muting;
+          setMuting(null);
+          if (!player) return;
+          void mutePlayer(supabase, player, minutes, reason, s.mute).then((done) => {
+            if (done) setNotice(done);
+            else setError(s.failed);
+          });
+        }}
+      />
       {/* Shown from 768px; the phone band is too short for it (screen readers still get it). */}
       <p id={`${id}-hint`} className="hidden text-sm text-muted md:block">
         {s.hint}
@@ -346,5 +447,28 @@ export function RoomChat({
     >
       {body}
     </aside>
+  );
+}
+
+/** A small icon button beside a message. */
+function ChatAction({
+  label,
+  onClick,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      title={label}
+      onClick={onClick}
+      className="inline-flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md text-muted opacity-60 hover:bg-surface-2 hover:text-text hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-focus"
+    >
+      {children}
+      <span className="sr-only">{label}</span>
+    </button>
   );
 }

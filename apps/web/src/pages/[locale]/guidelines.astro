@@ -1,0 +1,122 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import { LOCALES, LOCALE_INFO, type Locale } from "@/i18n/locales";
+
+import type { GetStaticPaths } from "astro";
+
+// Community guidelines (SPEC §8.3, §17), linked from the footer, every chat,
+// the report forms and sign-up. What it says moderators and the filter do
+// must match what the system does; change the text in the same commit as the
+// behaviour. Phase 17 reviews it with the other legal pages.
+export const getStaticPaths = (() =>
+  LOCALES.map((locale) => ({ params: { locale } }))) satisfies GetStaticPaths;
+
+/** When the guidelines last changed. */
+const UPDATED = new Date("2026-11-05T00:00:00Z");
+
+const locale = Astro.params.locale as Locale;
+const t = getT(locale);
+const { bcp47 } = LOCALE_INFO[locale];
+const updated = new Intl.DateTimeFormat(bcp47, { dateStyle: "long", timeZone: "UTC" }).format(
+  UPDATED,
+);
+
+const sections = [
+  {
+    id: "kind",
+    title: t("legal:guidelines.kind.title"),
+    items: [
+      t("legal:guidelines.kind.respect"),
+      t("legal:guidelines.kind.harassment"),
+      t("legal:guidelines.kind.hate"),
+    ],
+  },
+  {
+    id: "safe",
+    title: t("legal:guidelines.safe.title"),
+    items: [
+      t("legal:guidelines.safe.sexual"),
+      t("legal:guidelines.safe.selfHarm"),
+      t("legal:guidelines.safe.private"),
+    ],
+  },
+  {
+    id: "fair",
+    title: t("legal:guidelines.fair.title"),
+    items: [t("legal:guidelines.fair.cheating"), t("legal:guidelines.fair.accounts")],
+  },
+  {
+    id: "spam",
+    title: t("legal:guidelines.spam.title"),
+    items: [t("legal:guidelines.spam.ads"), t("legal:guidelines.spam.impersonation")],
+  },
+  {
+    id: "names",
+    title: t("legal:guidelines.names.title"),
+    items: [t("legal:guidelines.names.rules"), t("legal:guidelines.names.filter")],
+  },
+  {
+    id: "report",
+    title: t("legal:guidelines.report.title"),
+    items: [
+      t("legal:guidelines.report.how"),
+      t("legal:guidelines.report.hidden"),
+      t("legal:guidelines.report.block"),
+      t("legal:guidelines.report.honest"),
+    ],
+  },
+  {
+    id: "moderators",
+    title: t("legal:guidelines.moderators.title"),
+    items: [
+      t("legal:guidelines.moderators.actions"),
+      t("legal:guidelines.moderators.notice"),
+      t("legal:guidelines.moderators.automatic"),
+    ],
+  },
+];
+---
+
+<AppShell
+  locale={locale}
+  path="/guidelines/"
+  title={t("common:meta.sectionTitle", { section: t("legal:guidelines.title") })}
+  description={t("legal:guidelines.description")}
+>
+  <article class="mx-auto grid w-full max-w-prose gap-8 pb-6">
+    <header class="grid gap-3">
+      <h1 class="text-4xl md:text-5xl">{t("legal:guidelines.title")}</h1>
+      <p class="text-sm text-muted">{t("legal:guidelines.updated", { date: updated })}</p>
+      <p class="text-lg">{t("legal:guidelines.intro")}</p>
+    </header>
+    {sections.map(({ id, title, items }) => (
+      <section class="grid gap-3" aria-labelledby={id}>
+        <h2 id={id} class="text-2xl">
+          {title}
+        </h2>
+        <ul class="grid list-disc gap-2 ps-6">
+          {items.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </section>
+    ))}
+    <section class="grid gap-3" aria-labelledby="appeal">
+      <h2 id="appeal" class="text-2xl">
+        {t("legal:guidelines.appeal.title")}
+      </h2>
+      <p>{t("legal:guidelines.appeal.body")}</p>
+      <p>
+        <a
+          href={`${getRelativeLocaleUrl(locale, "/privacy/")}#contact`}
+          class="font-semibold text-link underline underline-offset-4"
+        >
+          {t("legal:guidelines.appeal.link")}
+        </a>
+      </p>
+    </section>
+  </article>
+</AppShell>

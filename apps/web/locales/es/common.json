@@ -36,5 +36,35 @@
     "received": "{name} te invita a jugar a {game}.",
     "join": "Unirse",
     "dismiss": "Descartar"
+  },
+  "report": {
+    "action": "Denunciar",
+    "message": "Denunciar mensaje",
+    "titleMessage": "Denunciar el mensaje de {name}",
+    "titlePlayer": "Denunciar a {name}",
+    "what": "¿Qué quieres denunciar?",
+    "whatProfile": "Su apodo o su biografía",
+    "whatAvatar": "Su avatar",
+    "reason": "Motivo",
+    "reasons": {
+      "spam": "Spam o estafas",
+      "harassment": "Acoso o intimidación",
+      "hate": "Odio",
+      "sexual": "Contenido sexual",
+      "selfHarm": "Autolesiones",
+      "cheating": "Trampas",
+      "other": "Otra cosa"
+    },
+    "details": "Detalles para el moderador (opcional)",
+    "hint": "Los moderadores ven una copia de lo que denuncias. Al jugador no se le dice quién lo denunció.",
+    "submit": "Enviar denuncia",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "sent": "Gracias. Un moderador lo revisará.",
+    "already": "Ya lo has denunciado.",
+    "rateLimited": "Has enviado muchas denuncias. Inténtalo de nuevo en unos minutos.",
+    "gone": "Esto ya no se puede denunciar.",
+    "failed": "No se pudo enviar la denuncia. Inténtalo de nuevo.",
+    "hidden": "Oculto tras varias denuncias, hasta que lo revise un moderador."
   }
 }

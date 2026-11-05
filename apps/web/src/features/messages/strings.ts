@@ -1,3 +1,4 @@
+import { reportStrings } from "@/features/moderation/strings";
 import type { AppT } from "@/i18n/i18n";
 
 /** The messages page's strings, translated on the server; placeholders are filled in on the client. */
@@ -22,6 +23,7 @@ export function messagesPageStrings(t: AppT) {
     unread: t("messages:unread", { count: "{count}" }),
     start: t("messages:start", { name: "{name}" }),
     cantWrite: t("messages:cantWrite"),
+    report: reportStrings(t),
     errors: {
       unavailable: t("messages:errors.unavailable"),
       tooNewUntil: t("messages:errors.tooNewUntil", { until: "{until}" }),

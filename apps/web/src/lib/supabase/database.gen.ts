@@ -363,14 +363,14 @@ isOneToOne: false
                   ]
                 },"room_messages": {
                   Row: {
-                    "body": string,"created_at": string,"id": number,"nickname": string,"room_id": string,"user_id": string
+                    "body": string,"created_at": string,"hidden": boolean,"id": number,"nickname": string,"room_id": string,"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "body": string,"created_at"?: string,"id"?: never,"nickname": string,"room_id": string,"user_id": string
+                    "body": string,"created_at"?: string,"hidden"?: boolean,"id"?: never,"nickname": string,"room_id": string,"user_id": string
                   }
                   Update: {
-                    "body"?: string,"created_at"?: string,"id"?: never,"nickname"?: string,"room_id"?: string,"user_id"?: string
+                    "body"?: string,"created_at"?: string,"hidden"?: boolean,"id"?: never,"nickname"?: string,"room_id"?: string,"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -575,6 +575,9 @@ isOneToOne: false
 "delete_direct_message":
 { Args: { "p_message": number }; Returns: undefined
                            },
+"delete_room_message":
+{ Args: { "p_message": number }; Returns: undefined
+                           },
 "direct_thread":
 { Args: { "p_before"?: number,"p_limit"?: number,"p_user": string }; Returns: Json
                            },
@@ -746,11 +749,17 @@ isOneToOne: false
 "reopen_room":
 { Args: { "p_room": string }; Returns: undefined
                            },
+"report":
+{ Args: { "p_details"?: string,"p_reason": string,"p_target": string,"p_type": string }; Returns: string
+                           },
 "report_presence":
 { Args: { "p_game"?: string,"p_status": string,"p_tab": string }; Returns: number
                            },
 "request_account_deletion":
 { Args: Record<PropertyKey, never>; Returns: string
+                           },
+"resolve_reports":
+{ Args: { "p_outcome": string,"p_target": string,"p_type": string }; Returns: number
                            },
 "revoke_sanction":
 { Args: { "p_sanction": string }; Returns: undefined
@@ -786,6 +795,7 @@ isOneToOne: false
 { Args: { "p_body": string,"p_room": string }; Returns: {
               "body": string,
 "created_at": string,
+"hidden": boolean,
 "id": number,
 "nickname": string,
 "room_id": string,

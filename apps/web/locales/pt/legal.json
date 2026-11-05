@@ -22,6 +22,7 @@
       "notifications": "Notificações (só contas): pedidos de amizade, convites, conquistas, marcos de pontuação, resultados do desafio diário e avisos sobre sua conta, que só você pode ver. São apagadas após 90 dias. Quais você recebe é escolha sua nas configurações.",
       "presence": "Status online (só contas): se você está online, numa sala ou numa partida (e de qual jogo) ou ausente, como suas abas abertas informam. O aviso de cada aba é apagado 2 minutos após o último, então nada fica guardado depois que você sai. Quem vê é escolha sua nas configurações: todos, só amigos (o padrão) ou ninguém.",
       "moderation": "Moderação: verificamos as mensagens do chat em busca de palavras proibidas, que são ocultadas. Três ocultadas em 10 minutos silenciam você por 10 minutos, por isso anotamos cada uma durante esses 10 minutos. Advertências, silenciamentos, suspensões ou banimentos que você receber são guardados com o motivo e o fim enquanto sua conta existir, e enviamos um aviso sobre cada um (os avisos são apagados após 90 dias).",
+      "reports": "Denúncias: quando você denuncia algo, guardamos sua denúncia (o motivo e os detalhes que você incluir) com uma cópia do que foi denunciado, para que um moderador possa revisar mesmo que mude. Só os moderadores veem quem denunciou; o jogador não fica sabendo. Uma denúncia é apagada 90 dias depois de um moderador resolvê-la; se sua conta for apagada, suas denúncias ficam sem o seu nome.",
       "security": "Registros de segurança: limites de quantas vezes uma ação pode ser repetida e um registro das mudanças importantes na conta. Quando precisam do seu endereço IP, guardamos apenas um hash com sal, nunca o endereço em si."
     },
     "device": {
@@ -47,5 +48,57 @@
       "issuesLink": "Abrir o rastreador de problemas"
     },
     "signUpNote": "Como tratamos seus dados:"
+  },
+  "guidelines": {
+    "title": "Diretrizes da comunidade",
+    "description": "Como jogamos juntos no kefche: o que é bem-vindo nos chats, nomes e avatares, como funcionam as denúncias e o que os moderadores fazem.",
+    "updated": "Última atualização: {date}",
+    "intro": "O kefche é para jogadores a partir de 13 anos, de muitos países. Estas diretrizes mantêm o ambiente amigável. Elas valem em tudo o que você escreve ou mostra: chat global, mensagens, chat da sala e da partida, seu apelido, sua bio e seu avatar.",
+    "signUpNote": "Como jogamos juntos:",
+    "kind": {
+      "title": "Seja gentil",
+      "respect": "Trate os outros jogadores com respeito, ganhando ou perdendo. Uma boa partida vale mais do que se gabar.",
+      "harassment": "Nada de assédio ou bullying: não insulte, ameace, persiga nem se junte contra ninguém.",
+      "hate": "Nada de ódio: nada que ataque as pessoas pelo que elas são, como etnia, nacionalidade, religião, gênero, sexualidade ou deficiência."
+    },
+    "safe": {
+      "title": "Mantenha a segurança",
+      "sexual": "Nada de conteúdo sexual, nem violento ou chocante. Muitos jogadores são jovens.",
+      "selfHarm": "Não incentive a automutilação. Se alguém parecer estar em perigo, denuncie. Se você estiver passando por dificuldades, converse com alguém de confiança ou com um serviço de apoio da sua região.",
+      "private": "Mantenha dados pessoais em sigilo, seus e dos outros: nada de endereços, telefones, senhas ou fotos de outras pessoas."
+    },
+    "fair": {
+      "title": "Jogue limpo",
+      "cheating": "Nada de trapaça: nada de engines ou ajuda externa em partidas ranqueadas, nada de perder de propósito para favorecer alguém e nada de explorar bugs (conte para a gente).",
+      "accounts": "Termine suas partidas: enrolar ou sair para fugir de uma derrota estraga o jogo do outro."
+    },
+    "spam": {
+      "title": "Nada de spam",
+      "ads": "Nada de anúncios, golpes, correntes ou inundar o chat. Links são bem-vindos quando ajudam a conversa.",
+      "impersonation": "Não finja ser outra pessoa, nem alguém da equipe."
+    },
+    "names": {
+      "title": "Nomes, bios e avatares",
+      "rules": "Seu apelido, sua bio e seu avatar seguem as mesmas regras do chat.",
+      "filter": "Um filtro oculta palavras ofensivas comuns no chat e as recusa em apelidos e bios. Por favor, não tente driblá-lo."
+    },
+    "report": {
+      "title": "Denunciar e bloquear",
+      "how": "Denuncie uma mensagem pela bandeira ao lado dela, e um jogador ou o avatar dele pelo perfil. Escolha o motivo que melhor se encaixa. O jogador não fica sabendo quem o denunciou.",
+      "hidden": "Tudo o que três jogadores denunciam fica oculto até um moderador revisar.",
+      "block": "Bloquear alguém mantém vocês separados em todo lugar: chats, mensagens, convites, pedidos de amizade e salas.",
+      "honest": "Denuncie com honestidade: denunciar alguém por vingança também é contra as regras."
+    },
+    "moderators": {
+      "title": "O que os moderadores fazem",
+      "actions": "Os moderadores apagam mensagens e dão um aviso, um silenciamento no chat, uma suspensão do jogo online ou um banimento, conforme a gravidade e se já aconteceu antes.",
+      "notice": "Você recebe um aviso com o motivo e, se tiver fim, quando termina.",
+      "automatic": "Três mensagens barradas pelo filtro em 10 minutos silenciam você automaticamente por 10 minutos."
+    },
+    "appeal": {
+      "title": "Se você acha que erramos",
+      "body": "Diga qual decisão e por quê, e um moderador vai rever. Por enquanto nosso contato é público, então não inclua dados privados.",
+      "link": "Como falar com a gente"
+    }
   }
 }

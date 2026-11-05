@@ -3,8 +3,8 @@
 // the one with `?with=<player id>`, from a profile, the friends list or a
 // notification; the first message starts the conversation. Messages,
 // deletions, "seen" and typing arrive live on the player's own channel.
-// The database decides who may write (blocks, privacy, new accounts, mutes).
-import { ArrowLeft, Trash2 } from "lucide-react";
+// The other player's messages can be reported. The database decides who may write (blocks, privacy, new accounts, mutes).
+import { ArrowLeft, Flag, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 
 import { UserAvatar } from "@kefche/ui/components/avatar";
@@ -20,6 +20,7 @@ import { MessageBody } from "@/features/chat/MessageBody";
 import type { ChatToolsStrings } from "@/features/chat/strings";
 import { fill } from "@/features/games/turn/labels";
 import { LIVE_RESUME_EVENT, UNREAD_EVENT } from "@/features/live/presence-context";
+import { ReportDialog, type ReportTarget } from "@/features/moderation/ReportDialog";
 import { refusalEnd, sanctionNotice } from "@/features/moderation/sanction-notice";
 import { useAccount } from "@/features/settings/use-account";
 import { send, type Supabase } from "@/lib/supabase/client";
@@ -52,6 +53,7 @@ interface Props {
   signInPath: string;
   /** "/<locale>/u/" */
   profileBase: string;
+  guidelinesPath: string;
   tools: ChatToolsStrings;
   /** The GIF button (builds with GIFs on). */
   gifs: boolean;
@@ -69,6 +71,7 @@ export function MessagesPage({
   bcp47,
   signInPath,
   profileBase,
+  guidelinesPath,
   tools,
   gifs,
   dir,
@@ -185,6 +188,7 @@ export function MessagesPage({
           strings={s}
           bcp47={bcp47}
           profileBase={profileBase}
+          guidelinesPath={guidelinesPath}
           tools={tools}
           gifs={gifs}
           dir={dir}
@@ -207,6 +211,7 @@ function ThreadView({
   strings: s,
   bcp47,
   profileBase,
+  guidelinesPath,
   tools,
   gifs,
   dir,
@@ -219,6 +224,7 @@ function ThreadView({
   strings: MessagesPageStrings;
   bcp47: string;
   profileBase: string;
+  guidelinesPath: string;
   tools: ChatToolsStrings;
   gifs: boolean;
   dir: "ltr" | "rtl";
@@ -227,6 +233,7 @@ function ThreadView({
 }) {
   const id = useId();
   const [thread, setThread] = useState<Thread | null | undefined>(undefined);
+  const [reporting, setReporting] = useState<ReportTarget | null>(null);
   const [earlier, setEarlier] = useState(false);
   const [typing, setTyping] = useState(false);
   const [text, setText] = useState("");
@@ -438,6 +445,19 @@ function ThreadView({
                       <span className="sr-only">{s.delete}</span>
                     </button>
                   )}
+                  {!mine && !deleted && (
+                    <button
+                      type="button"
+                      title={s.report.message}
+                      onClick={() => {
+                        setReporting({ type: "message", id: String(m.id), name: other.nickname });
+                      }}
+                      className="order-last inline-flex size-8 cursor-pointer items-center justify-center rounded-lg text-muted opacity-60 hover:bg-surface-2 hover:text-text hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-focus"
+                    >
+                      <Flag aria-hidden="true" className="size-4" />
+                      <span className="sr-only">{s.report.message}</span>
+                    </button>
+                  )}
                   <p
                     className={`rounded-2xl px-3 py-2 break-words whitespace-pre-wrap ${
                       deleted
@@ -528,6 +548,23 @@ function ThreadView({
       <p role="alert" className="text-sm font-semibold text-danger empty:hidden">
         {error ?? ""}
       </p>
+      <p className="text-sm">
+        <a
+          href={guidelinesPath}
+          className="font-semibold text-link underline-offset-4 hover:underline"
+        >
+          {s.report.guidelines}
+        </a>
+      </p>
+      <ReportDialog
+        target={reporting}
+        supabase={supabase}
+        strings={s.report}
+        guidelinesPath={guidelinesPath}
+        onClose={() => {
+          setReporting(null);
+        }}
+      />
     </section>
   );
 }

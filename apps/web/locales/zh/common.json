@@ -36,5 +36,35 @@
     "received": "{name} 邀请你玩{game}。",
     "join": "加入",
     "dismiss": "忽略"
+  },
+  "report": {
+    "action": "举报",
+    "message": "举报消息",
+    "titleMessage": "举报 {name} 的消息",
+    "titlePlayer": "举报 {name}",
+    "what": "你要举报什么？",
+    "whatProfile": "昵称或简介",
+    "whatAvatar": "头像",
+    "reason": "原因",
+    "reasons": {
+      "spam": "垃圾信息或诈骗",
+      "harassment": "骚扰或欺凌",
+      "hate": "仇恨",
+      "sexual": "色情内容",
+      "selfHarm": "自我伤害",
+      "cheating": "作弊",
+      "other": "其他"
+    },
+    "details": "给管理员的说明（可选）",
+    "hint": "管理员会看到你所举报内容的副本。被举报的玩家不会知道是谁举报的。",
+    "submit": "提交举报",
+    "cancel": "取消",
+    "close": "关闭",
+    "sent": "谢谢。管理员会查看。",
+    "already": "你已经举报过了。",
+    "rateLimited": "你的举报太多了，请几分钟后再试。",
+    "gone": "此内容已无法举报。",
+    "failed": "举报未能发送，请重试。",
+    "hidden": "因被举报已隐藏，等待管理员审核。"
   }
 }

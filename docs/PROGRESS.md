@@ -1473,6 +1473,23 @@ Online modes are enabled for the Phase 4 games.
     - SQL 18/18, rolled back: only the service role notes ids and takes searches; a served GIF sends alone or with text, in global chat and DMs, and shows in the history, the thread and the live DM; an unserved one is refused; the per-player limit and the site's GIPHY budget (a cached answer still passes); old ids forgotten. The global chat, DM and notification suites still pass.
     - The function: Deno lint and check pass; locally it answers `gifs_off` without a key, and CORS answers. A real search needs a GIPHY key, so that path is untried.
     - The pages and the emoji data (`/emoji/en/data.json`) load on the dev server; the green chain passes. The pickers haven't been clicked through in a browser here.
+- [x] Step 11: reports and moderation in the chat (`20261104100900_reports.sql`).
+  - **Reporting** (`report`): anyone signed in (guests too) reports, with a reason and optional details (up to 500 characters), from a flag beside the message or the profile's Report button:
+    - a global chat message (accounts read those), or a DM sent to them;
+    - a lobby or in-game chat message, while in the room;
+    - a player (their nickname or bio), or their uploaded avatar (by its path, so a new upload is a new thing to report).
+    - One report per reporter and thing (a repeat says so), 10 per 10 minutes, never yourself. Each keeps a copy of what was reported, as it was.
+  - **Lobby names:** lobbies have no names of their own (step 2); the public lobby list shows the host's nickname, reported from the host's profile.
+  - **Hidden pending review:** once 3 different accounts have open reports on a thing, it's hidden until a moderator looks. Guests' reports don't count toward it, since a guest costs nothing to make. A chat message disappears live for everyone but its sender, who sees "Hidden after reports"; a bio is cleared; an avatar goes back to initials and that file can't be set again. A DM has one possible reporter, so it's never hidden this way.
+  - **Resolving** (`resolve_reports`, staff; the RUNBOOK gives the SQL until the admin panel's queue in Phase 10): every open report on a thing at once, dismissed (what was hidden comes back) or actioned (a message is deleted, a DM for both players; a bio or avatar stays off). Audited. A sanction follows separately, linked to a report.
+  - **Moderators in the chat:** lobby and in-game chat get the global chat's tools: players delete their own messages and report others'; moderators delete any (audited) and mute (the mute dialog is shared now). Lobby chat's channel `room-chat:<room id>` became private: new messages still arrive as Postgres changes, and removals (deleted or hidden) as broadcasts from the database, for the room's members only.
+  - **Community guidelines:** `/[locale]/guidelines/` in all 11 languages: kindness, safety, fair play, spam, names and avatars, reporting and blocking, what moderators and the word filter do, and how to ask for a second look. Linked from the footer, global chat, DMs, every report form, and sign-up (TODO #2). Phase 17 reviews it with the other legal pages.
+  - **Dialogs** (`@kefche/ui`) now sit above full-screen layers (z-80), so a report opens over a match and its chat drawer.
+  - **Privacy notice:** reports, the copy they keep, who sees the reporter, and how long they're kept.
+  - **Checks:**
+    - SQL 62/62, rolled back: validation (types, reasons, details, unknown or malformed ids, yourself); once per reporter; the copy and trimmed details; guests can't report global chat, and their lobby reports don't count; outsiders can't report a DM or a room's chat; hidden at the third account (the room told, readers lose it, its sender keeps it); players can't resolve or read others' reports; dismissing restores and actioning deletes (global chat, a DM with both told, a lobby message), audited; lobby chat deletion (own, not another's, staff any with audit); bios cleared and restored; avatars hidden, refused while held and once actioned, a new one allowed; the rate limit; visitors, private functions and direct writes refused; the room's channel forgotten with the room. All nine earlier Phase 8 suites still pass.
+    - Against local Realtime: a lobby member and the host hear new messages and the removals on `room-chat:<room id>`, an outsider is refused the channel; three reports hide a lobby message and a global chat message live (the sender still reads theirs); deleting one's own lobby message tells the room.
+    - The green chain passes. The report dialogs haven't been clicked through in a browser here.
 
 ---
 
@@ -1499,9 +1516,9 @@ Online modes are enabled for the Phase 4 games.
 
 Each code `TODO` must reference an entry here (`TODO #n`). Resolved entries stay listed so the numbers aren't reused.
 
-| #   | Where                                                        | What                                                                                                                    | Status                             |
-| --- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| 1   | `apps/web/src/pages/[locale]/index.astro`, `astro.config.ts` | Only `en` generated, hard-coded English copy, fixed `/` → `/en/` 302.                                                   | ✅ Resolved (Phase 1 steps 4–5)    |
-| 2   | `apps/web/src/features/auth/SignUpForm.tsx`                  | Link the Community Guidelines page from sign-up (SPEC §8.3).                                                            | Open: the page arrives in Phase 17 |
-| 3   | `supabase/templates/*.html`                                  | Auth emails are English only; localize and brand them (SPEC §3).                                                        | Open: Phase 21, with Resend        |
-| 4   | `apps/web/src/pages/[locale]/privacy.astro`                  | Privacy contact is the public GitHub issue tracker; replace it with a dedicated privacy address once the owner has one. | Open: owner to create the address  |
+| #   | Where                                                        | What                                                                                                                    | Status                            |
+| --- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| 1   | `apps/web/src/pages/[locale]/index.astro`, `astro.config.ts` | Only `en` generated, hard-coded English copy, fixed `/` → `/en/` 302.                                                   | ✅ Resolved (Phase 1 steps 4–5)   |
+| 2   | `apps/web/src/features/auth/SignUpForm.tsx`                  | Link the Community Guidelines page from sign-up (SPEC §8.3).                                                            | ✅ Resolved (Phase 8 step 11)     |
+| 3   | `supabase/templates/*.html`                                  | Auth emails are English only; localize and brand them (SPEC §3).                                                        | Open: Phase 21, with Resend       |
+| 4   | `apps/web/src/pages/[locale]/privacy.astro`                  | Privacy contact is the public GitHub issue tracker; replace it with a dedicated privacy address once the owner has one. | Open: owner to create the address |

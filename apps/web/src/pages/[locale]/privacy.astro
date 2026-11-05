@@ -14,7 +14,7 @@ export const getStaticPaths = (() =>
   LOCALES.map((locale) => ({ params: { locale } }))) satisfies GetStaticPaths;
 
 /** When the notice last changed. */
-const UPDATED = new Date("2026-11-04T00:00:00Z");
+const UPDATED = new Date("2026-11-05T00:00:00Z");
 // TODO #4: a dedicated privacy address replaces the public issue tracker.
 const ISSUES = "https://github.com/georgidelchev/kefche.github.io/issues";
 
@@ -46,6 +46,7 @@ const sections = [
       t("legal:privacy.stored.notifications"),
       t("legal:privacy.stored.presence"),
       t("legal:privacy.stored.moderation"),
+      t("legal:privacy.stored.reports"),
       t("legal:privacy.stored.security"),
     ],
   },

@@ -36,5 +36,35 @@
     "received": "{name} invites you to play {game}.",
     "join": "Join",
     "dismiss": "Dismiss"
+  },
+  "report": {
+    "action": "Report",
+    "message": "Report message",
+    "titleMessage": "Report {name}'s message",
+    "titlePlayer": "Report {name}",
+    "what": "What are you reporting?",
+    "whatProfile": "Their nickname or bio",
+    "whatAvatar": "Their avatar",
+    "reason": "Reason",
+    "reasons": {
+      "spam": "Spam or scams",
+      "harassment": "Harassment or bullying",
+      "hate": "Hate",
+      "sexual": "Sexual content",
+      "selfHarm": "Self-harm",
+      "cheating": "Cheating",
+      "other": "Something else"
+    },
+    "details": "Details for the moderator (optional)",
+    "hint": "Moderators see a copy of what you report. The player isn't told who reported them.",
+    "submit": "Send report",
+    "cancel": "Cancel",
+    "close": "Close",
+    "sent": "Thanks. A moderator will take a look.",
+    "already": "You've already reported this.",
+    "rateLimited": "You've sent a lot of reports. Try again in a few minutes.",
+    "gone": "This can't be reported any more.",
+    "failed": "The report didn't go through. Try again.",
+    "hidden": "Hidden after reports, until a moderator reviews it."
   }
 }

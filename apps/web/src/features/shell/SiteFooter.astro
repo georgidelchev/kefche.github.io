@@ -30,4 +30,11 @@ const focusRing =
   >
     {t("legal:privacy.link")}
   </a>
+  <a
+    href={getRelativeLocaleUrl(locale, "/guidelines/")}
+    aria-current={path === "/guidelines/" ? "page" : undefined}
+    class:list={["rounded-sm hover:text-text hover:underline", focusRing]}
+  >
+    {t("legal:guidelines.title")}
+  </a>
 </footer>

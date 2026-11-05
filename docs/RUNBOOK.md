@@ -68,8 +68,43 @@ To end one early, the same way: `select public.revoke_sanction('<sanction id>');
 - **Who may:** moderators warn, mute and suspend; only admins ban, sanction staff, or revoke a ban.
 - **What the player sees:** a moderation notification with the reason and the note (on `/notifications/`; it can't be turned off), and the end of the sanction wherever it refuses them (chat, joining a room, rated search). A banned player is signed out everywhere and can't sign in until the ban ends; an access token they already hold lasts up to an hour, during which chat and rooms still refuse them.
 - **Automatic mutes:** the third chat message masked by the word filter within 10 minutes mutes the sender for 10 minutes (reason `filter`, no moderator).
-- **In the chat:** a moderator deletes any global chat message and mutes its sender from `/chat/` (the staff role reaches the page with the next sign-in or token refresh).
+- **In the chat:** a moderator deletes any global or lobby chat message and mutes its sender from the chat itself (`/chat/`, a room's chat); the staff role reaches the page with the next sign-in or token refresh.
 - **Slow mode:** `select public.set_slow_mode('en', 30);` (seconds between messages per player in that global room; 0 turns it off), in the same kind of block.
+
+## Reports
+
+Players report global chat messages, DMs sent to them, lobby chat messages, players (nickname or bio) and uploaded avatars, each with a reason and optional details. Until the admin panel's queue (Phase 10), staff review them from the SQL editor, acting as themselves as for sanctions.
+
+- **Hidden pending review:** once 3 different accounts have open reports on the same thing, it's hidden: a chat message disappears for everyone but its sender, a bio is cleared, an avatar goes back to initials (and that file can't be set again). Guests' reports reach the list but don't count toward hiding. A DM has one possible reporter, so it's never hidden this way.
+- **Lobby names:** lobbies have no names of their own. The public lobby list shows the host's nickname, which is reported from the host's profile.
+
+The open reports, one row per thing, most reported first:
+
+```sql
+select target_type, target_id, count(*) as reports,
+       count(distinct reporter_id) filter (where u.is_anonymous is not true) as from_accounts,
+       (array_agg(reason order by r.created_at desc))[1] as latest_reason,
+       (array_agg(snapshot order by r.created_at desc))[1] as copy,
+       (select nickname from public.profiles where id = (array_agg(target_user_id))[1]) as player,
+       min(r.created_at) as first_reported
+from public.reports r left join auth.users u on u.id = r.reporter_id
+where r.status = 'open'
+group by target_type, target_id
+order by reports desc, first_reported;
+```
+
+`copy` is the thing as it was when last reported (the message's text, the bio, the avatar's storage path), and `details` on each report row holds what the reporter added. Resolve every open report on one thing in the same kind of block as a sanction:
+
+```sql
+begin;
+select set_config('request.jwt.claims', json_build_object('sub', '<your user id>')::text, true);
+-- 'dismissed' puts back what was hidden; 'actioned' deletes the message (a DM
+-- too, both players told) or keeps the bio or avatar off.
+select public.resolve_reports('message', '<target_id>', 'actioned');
+commit;
+```
+
+Then sanction the player if it's warranted, passing one of the reports' ids as `p_report` to `sanction_player`. Resolutions are audited (`report.resolve`). A resolved report is deleted 90 days later. An actioned avatar's file stays in Storage until the player replaces it; delete it from Studio's Storage browser (`avatars/<user id>/…`) if it must go at once.
 
 ## Announcements
 

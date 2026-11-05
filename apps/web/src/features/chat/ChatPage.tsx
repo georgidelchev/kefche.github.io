@@ -1,27 +1,22 @@
 // Global chat (SPEC §8.2), for accounts: one room per language, the page's
 // by default and any other a pick away (`?room=bg`). The latest messages,
 // earlier ones a page at a time, new ones live. Players delete their own
-// messages; moderators delete any and mute from the chat. The database
+// messages and report others'; moderators delete any and mute from the
+// chat. What 3 players report is hidden (its sender sees a note). The database
 // masks blocked words, limits the pace, applies slow mode and refuses new
 // accounts for their first 2 hours, muted players and guests.
-import { Trash2, VolumeX } from "lucide-react";
+import { Flag, Trash2, VolumeX } from "lucide-react";
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 
 import { UserAvatar } from "@kefche/ui/components/avatar";
 import { Button } from "@kefche/ui/components/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@kefche/ui/components/dialog";
 import { Input } from "@kefche/ui/components/input";
 import { isAvatarFrame } from "@kefche/ui/lib/frames";
 
 import { avatarUrl } from "@/features/account/avatar-url";
 import { fill } from "@/features/games/turn/labels";
+import { MuteDialog, mutePlayer } from "@/features/moderation/MuteDialog";
+import { ReportDialog, type ReportTarget } from "@/features/moderation/ReportDialog";
 import { refusalEnd, sanctionNotice } from "@/features/moderation/sanction-notice";
 import { useAccount } from "@/features/settings/use-account";
 import { supabaseConfig } from "@/lib/supabase/config";
@@ -43,14 +38,6 @@ import { MessageBody } from "./MessageBody";
 import type { ChatPageStrings, ChatToolsStrings } from "./strings";
 
 const MAX_LENGTH = 500;
-/** Mute lengths offered to moderators, in minutes. */
-const MUTES = [
-  ["m10", 10],
-  ["h1", 60],
-  ["h24", 1440],
-  ["d7", 10080],
-] as const;
-const MUTE_REASONS = ["spam", "harassment", "hate", "sexual", "self-harm", "other"] as const;
 
 interface Props {
   strings: ChatPageStrings;
@@ -62,6 +49,7 @@ interface Props {
   signInPath: string;
   /** "/<locale>/u/" */
   profileBase: string;
+  guidelinesPath: string;
   tools: ChatToolsStrings;
   /** The GIF button (builds with GIFs on). */
   gifs: boolean;
@@ -81,6 +69,7 @@ export function ChatPage({
   bcp47,
   signInPath,
   profileBase,
+  guidelinesPath,
   tools,
   gifs,
   dir,
@@ -96,6 +85,7 @@ export function ChatPage({
   const [slow, setSlow] = useState(0);
   const [staff, setStaff] = useState(false);
   const [muting, setMuting] = useState<Sender | null>(null);
+  const [reporting, setReporting] = useState<ReportTarget | null>(null);
   const logRef = useRef<HTMLOListElement>(null);
   const stickRef = useRef(true);
   const sendingRef = useRef(false);
@@ -105,6 +95,7 @@ export function ChatPage({
   useEffect(() => {
     if (account.status !== "ready") return;
     const { supabase } = account;
+    const me = account.user.id;
     void supabase
       .from("chat_rooms")
       .select("slow_mode_seconds")
@@ -123,6 +114,14 @@ export function ChatPage({
       },
       onDeleted: (deleted) => {
         setMessages((current) => current?.filter((m) => m.id !== deleted));
+      },
+      onHidden: (hidden, sender) => {
+        // Gone for readers; its sender keeps it, marked.
+        setMessages((current) =>
+          sender === me
+            ? current?.map((m) => (m.id === hidden ? { ...m, status: "hidden" } : m))
+            : current?.filter((m) => m.id !== hidden),
+        );
       },
       onError: () => {
         setMessages((current) => current ?? null);
@@ -305,25 +304,42 @@ export function ChatPage({
                       </p>
                       <div className="grid justify-items-start gap-1">
                         <MessageBody body={m.body} gifId={m.gifId ?? null} gifAlt={tools.gifAlt} />
+                        {m.status === "hidden" && (
+                          <p className="text-xs text-muted italic">{s.report.hidden}</p>
+                        )}
                       </div>
                     </div>
-                    {(mine || staff) && (
-                      <span className="flex shrink-0 gap-1">
-                        {staff && !mine && sender && (
-                          <IconButton
-                            label={fill(s.actions.mute, { name: sender.nickname })}
-                            onClick={() => {
-                              setMuting(sender);
-                            }}
-                          >
-                            <VolumeX aria-hidden="true" className="size-4" />
-                          </IconButton>
-                        )}
+                    <span className="flex shrink-0 gap-1">
+                      {!mine && sender && (
+                        <IconButton
+                          label={s.report.message}
+                          onClick={() => {
+                            setReporting({
+                              type: "message",
+                              id: String(m.id),
+                              name: sender.nickname,
+                            });
+                          }}
+                        >
+                          <Flag aria-hidden="true" className="size-4" />
+                        </IconButton>
+                      )}
+                      {staff && !mine && sender && (
+                        <IconButton
+                          label={fill(s.mute.mute, { name: sender.nickname })}
+                          onClick={() => {
+                            setMuting(sender);
+                          }}
+                        >
+                          <VolumeX aria-hidden="true" className="size-4" />
+                        </IconButton>
+                      )}
+                      {(mine || staff) && (
                         <IconButton label={s.actions.delete} onClick={() => void remove(m)}>
                           <Trash2 aria-hidden="true" className="size-4" />
                         </IconButton>
-                      </span>
-                    )}
+                      )}
+                    </span>
                   </li>
                 );
               })}
@@ -386,23 +402,38 @@ export function ChatPage({
       <p role="status" className="text-sm font-semibold text-success empty:hidden">
         {notice ?? ""}
       </p>
+      <p className="text-sm">
+        <a
+          href={guidelinesPath}
+          className="font-semibold text-link underline-offset-4 hover:underline"
+        >
+          {s.guidelines}
+        </a>
+      </p>
 
       <MuteDialog
-        sender={muting}
-        strings={s}
+        player={muting}
+        strings={s.mute}
         onClose={() => {
           setMuting(null);
         }}
-        onMute={async (sender, minutes, reason) => {
+        onMute={(minutes, reason) => {
+          const sender = muting;
           setMuting(null);
-          const { error: rpcError } = await supabase.rpc("sanction_player", {
-            p_user: sender.id,
-            p_kind: "mute",
-            p_reason: reason,
-            p_minutes: minutes,
+          if (!sender) return;
+          void mutePlayer(supabase, sender, minutes, reason, s.mute).then((done) => {
+            if (done) setNotice(done);
+            else setError(s.errors.failed);
           });
-          if (rpcError) setError(s.errors.failed);
-          else setNotice(fill(s.actions.muted, { name: sender.nickname }));
+        }}
+      />
+      <ReportDialog
+        target={reporting}
+        supabase={supabase}
+        strings={s.report}
+        guidelinesPath={guidelinesPath}
+        onClose={() => {
+          setReporting(null);
         }}
       />
     </div>
@@ -481,86 +512,5 @@ function IconButton({
       {children}
       <span className="sr-only">{label}</span>
     </button>
-  );
-}
-
-function MuteDialog({
-  sender,
-  strings: s,
-  onClose,
-  onMute,
-}: {
-  sender: Sender | null;
-  strings: ChatPageStrings;
-  onClose: () => void;
-  onMute: (sender: Sender, minutes: number, reason: string) => Promise<void>;
-}) {
-  const id = useId();
-  const [minutes, setMinutes] = useState<number>(MUTES[0][1]);
-  const [reason, setReason] = useState<string>(MUTE_REASONS[0]);
-  const select =
-    "min-h-11 w-full cursor-pointer rounded-xl border border-border-strong bg-surface-2 px-3 text-base text-text";
-  return (
-    <Dialog
-      open={sender !== null}
-      onOpenChange={(open) => {
-        if (!open) onClose();
-      }}
-    >
-      {sender && (
-        <DialogContent closeLabel={s.actions.close}>
-          <DialogHeader>
-            <DialogTitle>{fill(s.actions.muteTitle, { name: sender.nickname })}</DialogTitle>
-            <DialogDescription className="sr-only">
-              {fill(s.actions.mute, { name: sender.nickname })}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-3">
-            <label htmlFor={`${id}-minutes`} className="grid gap-1.5 font-semibold">
-              {s.actions.duration}
-              <select
-                id={`${id}-minutes`}
-                className={select}
-                value={minutes}
-                onChange={(e) => {
-                  setMinutes(Number(e.currentTarget.value));
-                }}
-              >
-                {MUTES.map(([key, value]) => (
-                  <option key={key} value={value}>
-                    {s.actions.durations[key]}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label htmlFor={`${id}-reason`} className="grid gap-1.5 font-semibold">
-              {s.actions.reason}
-              <select
-                id={`${id}-reason`}
-                className={select}
-                value={reason}
-                onChange={(e) => {
-                  setReason(e.currentTarget.value);
-                }}
-              >
-                {MUTE_REASONS.map((r) => (
-                  <option key={r} value={r}>
-                    {s.reasons[r === "self-harm" ? "selfHarm" : r]}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={onClose}>
-              {s.actions.cancel}
-            </Button>
-            <Button variant="danger" onClick={() => void onMute(sender, minutes, reason)}>
-              {s.actions.submit}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      )}
-    </Dialog>
   );
 }

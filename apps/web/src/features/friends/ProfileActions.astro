@@ -2,6 +2,8 @@
 import { buttonVariants } from "@kefche/ui/components/button";
 
 import { fill } from "@/features/games/turn/labels";
+import { DETAILS_MAX, REASON_KEYS, REPORT_REASONS } from "@/features/moderation/report";
+import { reportStrings } from "@/features/moderation/strings";
 import type { AppT } from "@/i18n/i18n";
 
 import { friendsStrings } from "./strings";
@@ -11,6 +13,7 @@ import { friendsStrings } from "./strings";
 // cached), so every control starts hidden and profile-actions.client.ts shows
 // the ones that fit the viewer, from profile_relation. Invite to a game lists
 // the games with online rooms, each opening a new lobby that invites them.
+// Report (guests too) reports their nickname or bio, or an uploaded avatar.
 interface Props {
   t: AppT;
   userId: string;
@@ -22,17 +25,36 @@ interface Props {
   playBase: string;
   /** "/<locale>/messages/" */
   messagesPath: string;
+  /** "/<locale>/guidelines/" */
+  guidelinesPath: string;
+  /** Their uploaded avatar's path, which can be reported; null for initials or a preset. */
+  avatarPath: string | null;
 }
 
-const { t, userId, nickname, profileBase, bcp47, games, playBase, messagesPath } = Astro.props;
+const {
+  t,
+  userId,
+  nickname,
+  profileBase,
+  bcp47,
+  games,
+  playBase,
+  messagesPath,
+  guidelinesPath,
+  avatarPath,
+} = Astro.props;
 const s = friendsStrings(t);
+const r = reportStrings(t);
 const script = {
   errors: s.errors,
   confirm: s.confirm,
   mutual: s.mutual,
   mutualMore: s.mutualMore,
   actions: { remove: s.actions.remove, block: s.actions.block },
+  report: r.outcomes,
 };
+const field =
+  "min-h-11 w-full cursor-pointer rounded-xl border border-border-strong bg-surface-2 px-3 text-base font-normal text-text";
 const primary = buttonVariants({ variant: "primary" });
 const outline = buttonVariants({ variant: "outline" });
 const ghost = buttonVariants({ variant: "ghost" });
@@ -106,6 +128,9 @@ const ghost = buttonVariants({ variant: "ghost" });
     <button hidden type="button" data-action="block" class={ghost}>
       {s.actions.block}
     </button>
+    <button hidden type="button" data-action="report" class={ghost}>
+      {r.action}
+    </button>
   </div>
   <p data-message role="status" class="text-sm font-semibold text-danger empty:hidden"></p>
   <p hidden data-mutual class="text-sm text-muted"></p>
@@ -160,6 +185,70 @@ const ghost = buttonVariants({ variant: "ghost" });
       <button value="close" class:list={[ghost, "justify-self-end"]}>
         {s.confirm.close}
       </button>
+    </form>
+  </dialog>
+  <dialog
+    data-report
+    data-avatar-path={avatarPath ?? undefined}
+    aria-labelledby="report-title"
+    aria-describedby="report-hint"
+    class="m-auto w-[min(28rem,calc(100%-2rem))] rounded-2xl border border-border bg-surface p-5 text-text backdrop:bg-black/50"
+  >
+    <form method="dialog" class="grid gap-4">
+      <h2 id="report-title" class="text-xl">
+        {fill(r.titlePlayer, { name: nickname })}
+      </h2>
+      <p id="report-hint" class="text-muted">
+        {r.hint}
+      </p>
+      <div data-report-fields class="grid gap-3">
+        {avatarPath && (
+          <label class="grid gap-1.5 font-semibold">
+            {r.what}
+            <select name="type" class={field}>
+              <option value="user">{r.whatProfile}</option>
+              <option value="avatar">{r.whatAvatar}</option>
+            </select>
+          </label>
+        )}
+        <label class="grid gap-1.5 font-semibold">
+          {r.reason}
+          <select name="reason" class={field}>
+            {REPORT_REASONS.map((reason) => (
+              <option value={reason}>{r.reasons[REASON_KEYS[reason]]}</option>
+            ))}
+          </select>
+        </label>
+        <label class="grid gap-1.5 font-semibold">
+          {r.details}
+          <textarea
+            name="details"
+            rows="3"
+            maxlength={DETAILS_MAX}
+            class="w-full rounded-xl border border-border-strong bg-surface-2 p-3 text-base font-normal text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+          ></textarea>
+        </label>
+        <a
+          href={guidelinesPath}
+          target="_blank"
+          rel="noopener"
+          class="justify-self-start text-sm font-semibold text-link underline-offset-4 hover:underline"
+        >
+          {r.guidelines}
+        </a>
+      </div>
+      <p data-report-outcome role="status" class="font-semibold empty:hidden"></p>
+      <div class="flex flex-wrap justify-end gap-2">
+        <button value="cancel" data-report-cancel class={outline}>
+          {r.cancel}
+        </button>
+        <button value="send" data-report-send class={buttonVariants({ variant: "danger" })}>
+          {r.submit}
+        </button>
+        <button hidden value="close" data-report-close class={primary}>
+          {r.close}
+        </button>
+      </div>
     </form>
   </dialog>
 </section>

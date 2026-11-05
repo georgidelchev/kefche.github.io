@@ -22,6 +22,7 @@
       "notifications": "Notifications (accounts only): friend requests, invites, achievements, rating milestones, daily challenge results and notices about your account, which only you can see. They're deleted after 90 days. Which ones you get is your choice in settings.",
       "presence": "Online status (accounts only): whether you're online, in a lobby or a game (and which game) or away, as your open tabs report it. Each tab's report is deleted 2 minutes after its last one, so nothing is kept once you leave. Who sees it is your choice in settings: everyone, friends only (the default) or nobody.",
       "moderation": "Moderation: chat messages are checked for blocked words, which are hidden. Three hidden in 10 minutes mute you for 10 minutes, so we note each one for those 10 minutes. A warning, mute, suspension or ban you receive is kept with its reason and end while your account exists, and we send you a notice about it (notices are deleted after 90 days).",
+      "reports": "Reports: when you report something, we keep your report (the reason and any details you add) with a copy of what you reported, so a moderator can review it even if it changes. Only moderators see who reported; the player isn't told. A report is deleted 90 days after a moderator resolves it; if your account is deleted, the reports you made stay without your name.",
       "security": "Security records: limits on how often an action can be repeated, and a log of important account changes. Where these need your IP address, we keep only a salted hash of it, never the address itself."
     },
     "device": {
@@ -47,5 +48,57 @@
       "issuesLink": "Open the issue tracker"
     },
     "signUpNote": "How we handle your data:"
+  },
+  "guidelines": {
+    "title": "Community guidelines",
+    "description": "How we play together on kefche: what's welcome in chats, names and avatars, how reporting works and what moderators do.",
+    "updated": "Last updated {date}",
+    "intro": "kefche is for players aged 13 and over, from many countries. These guidelines keep it friendly. They apply everywhere you write or show something: global chat, messages, lobby and game chat, your nickname, bio and avatar.",
+    "signUpNote": "How we play together:",
+    "kind": {
+      "title": "Be kind",
+      "respect": "Treat other players with respect, whether you win or lose. A good game beats gloating.",
+      "harassment": "No harassment or bullying: don't insult, threaten, stalk or gang up on anyone.",
+      "hate": "No hate: nothing that attacks people for who they are, such as their ethnicity, nationality, religion, gender, sexuality or disability."
+    },
+    "safe": {
+      "title": "Keep it safe",
+      "sexual": "No sexual content, and nothing violent or shocking. Many players are young.",
+      "selfHarm": "Don't encourage self-harm. If someone seems to be in danger, report it. If you're struggling yourself, please talk to someone you trust or a local helpline.",
+      "private": "Keep personal details private, yours and other people's: no addresses, phone numbers, passwords or photos of others."
+    },
+    "fair": {
+      "title": "Play fair",
+      "cheating": "No cheating: no engines or outside help in rated games, no losing on purpose to boost someone, and no using bugs (tell us about them instead).",
+      "accounts": "Finish your games: stalling or leaving to dodge a loss spoils it for the other player."
+    },
+    "spam": {
+      "title": "No spam",
+      "ads": "No ads, scams, chain messages or flooding the chat. Links are fine when they help the conversation.",
+      "impersonation": "Don't pretend to be someone else, including staff."
+    },
+    "names": {
+      "title": "Names, bios and avatars",
+      "rules": "Your nickname, bio and avatar follow the same rules as chat.",
+      "filter": "A word filter hides common offensive words in chat and refuses them in nicknames and bios. Please don't try to get around it."
+    },
+    "report": {
+      "title": "Reporting and blocking",
+      "how": "Report a message with the flag beside it, and a player or their avatar from their profile. Pick the reason that fits best. The player isn't told who reported them.",
+      "hidden": "Anything that three players report is hidden until a moderator looks at it.",
+      "block": "Blocking someone keeps you apart everywhere: chats, messages, invites, friend requests and lobbies.",
+      "honest": "Report honestly: reporting someone to get back at them is against the rules too."
+    },
+    "moderators": {
+      "title": "What moderators do",
+      "actions": "Moderators delete messages and give a warning, a chat mute, a suspension from online play or a ban, depending on how serious it is and whether it has happened before.",
+      "notice": "You get a notice with the reason and, if it ends, when.",
+      "automatic": "Three messages caught by the word filter within 10 minutes mute you automatically for 10 minutes."
+    },
+    "appeal": {
+      "title": "If you think we got it wrong",
+      "body": "Tell us which decision and why, and a moderator will look again. Our contact is public for now, so don't include private details.",
+      "link": "How to contact us"
+    }
   }
 }

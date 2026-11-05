@@ -1,8 +1,9 @@
 // Global chat (SPEC §8.2): a room's history (`chat_history`), its new
 // messages live, and sending. New messages arrive as Postgres changes,
 // which Realtime checks against the read policy for each reader, so blocked
-// players don't reach each other; deletions arrive on the room's private
-// channel. zod/mini: this module ships to the browser.
+// players don't reach each other; deletions, and messages hidden by
+// reports, arrive on the room's private channel. zod/mini: this module
+// ships to the browser.
 import * as z from "zod/mini";
 
 import type { Supabase } from "@/lib/supabase/client";
@@ -88,7 +89,8 @@ const rowSchema = z.object({
 /**
  * Watches a room: `onLoad` with the latest messages on every (re)subscription
  * (so nothing missed offline is lost), `onMessage` with each new one,
- * `onDeleted` with each deleted id. A new message's sender is read once and
+ * `onDeleted` with each deleted id, `onHidden` with each id reports hid
+ * (and its sender). A new message's sender is read once and
  * remembered. Returns a stop function.
  */
 export function watchRoom(
@@ -98,6 +100,7 @@ export function watchRoom(
     onLoad: (messages: ChatMessage[]) => void;
     onMessage: (message: ChatMessage) => void;
     onDeleted: (id: number) => void;
+    onHidden: (id: number, sender: string) => void;
     onError: () => void;
   },
 ): () => void {
@@ -158,6 +161,10 @@ export function watchRoom(
     .on("broadcast", { event: "deleted" }, ({ payload }: { payload: unknown }) => {
       const parsed = z.object({ id: z.number() }).safeParse(payload);
       if (parsed.success && !stopped) handlers.onDeleted(parsed.data.id);
+    })
+    .on("broadcast", { event: "hidden" }, ({ payload }: { payload: unknown }) => {
+      const parsed = z.object({ id: z.number(), sender: z.string() }).safeParse(payload);
+      if (parsed.success && !stopped) handlers.onHidden(parsed.data.id, parsed.data.sender);
     })
     .subscribe((status) => {
       const state: string = status;

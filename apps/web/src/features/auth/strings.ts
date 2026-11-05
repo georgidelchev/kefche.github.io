@@ -66,6 +66,8 @@ export function authStrings(t: AppT) {
       haveAccount: t("auth:signUp.haveAccount"),
       privacyNote: t("legal:privacy.signUpNote"),
       privacyLink: t("legal:privacy.title"),
+      guidelinesNote: t("legal:guidelines.signUpNote"),
+      guidelinesLink: t("legal:guidelines.title"),
       signIn: t("auth:signIn.submit"),
       checkEmailTitle: t("auth:signUp.checkEmailTitle"),
       // Filled in on the client; the placeholder survives ICU formatting.

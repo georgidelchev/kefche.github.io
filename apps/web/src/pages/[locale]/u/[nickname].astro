@@ -252,6 +252,8 @@ const facts = profile
         games={roomGames(locale)}
         playBase={getRelativeLocaleUrl(locale, "/play/")}
         messagesPath={getRelativeLocaleUrl(locale, "/messages/")}
+        guidelinesPath={getRelativeLocaleUrl(locale, "/guidelines/")}
+        avatarPath={profile.avatar_kind === "upload" ? profile.avatar_path : null}
       />
       <dl class="grid grid-cols-2 gap-3 sm:grid-cols-3">
         {level && (

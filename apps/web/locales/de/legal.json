@@ -22,6 +22,7 @@
       "notifications": "Benachrichtigungen (nur mit Konto): Freundschaftsanfragen, Einladungen, Erfolge, Wertungsmeilensteine, Ergebnisse der täglichen Herausforderung und Mitteilungen zu deinem Konto, die nur du sehen kannst. Sie werden nach 90 Tagen gelöscht. Welche du bekommst, wählst du in den Einstellungen.",
       "presence": "Online-Status (nur mit Konto): ob du online bist, in einer Lobby oder einem Spiel (und welchem) oder abwesend, wie es deine offenen Tabs melden. Die Meldung jedes Tabs wird 2 Minuten nach der letzten gelöscht, sobald du gehst, bleibt also nichts gespeichert. Wer ihn sieht, wählst du in den Einstellungen: alle, nur Freunde (Standard) oder niemand.",
       "moderation": "Moderation: Chatnachrichten werden auf gesperrte Wörter geprüft, die ausgeblendet werden. Drei ausgeblendete in 10 Minuten schalten dich für 10 Minuten stumm, deshalb merken wir uns jede davon für diese 10 Minuten. Verwarnungen, Stummschaltungen, Spielsperren oder Sperren, die du erhältst, werden mit Grund und Ende gespeichert, solange dein Konto besteht, und du bekommst jeweils eine Mitteilung (Mitteilungen werden nach 90 Tagen gelöscht).",
+      "reports": "Meldungen: Wenn du etwas meldest, speichern wir deine Meldung (den Grund und deine Details) mit einer Kopie des Gemeldeten, damit die Moderation es prüfen kann, auch wenn es sich ändert. Nur die Moderation sieht, wer gemeldet hat; der Spieler erfährt es nicht. Eine Meldung wird 90 Tage nach ihrer Bearbeitung gelöscht; wird dein Konto gelöscht, bleiben deine Meldungen ohne deinen Namen erhalten.",
       "security": "Sicherheitsdaten: Grenzen, wie oft eine Aktion wiederholt werden darf, und ein Protokoll wichtiger Kontoänderungen. Wo dafür deine IP-Adresse nötig ist, speichern wir nur einen gesalzenen Hash davon, nie die Adresse selbst."
     },
     "device": {
@@ -47,5 +48,57 @@
       "issuesLink": "Issue-Tracker öffnen"
     },
     "signUpNote": "So gehen wir mit deinen Daten um:"
+  },
+  "guidelines": {
+    "title": "Community-Richtlinien",
+    "description": "Wie wir auf kefche miteinander spielen: was in Chats, Namen und Avataren willkommen ist, wie Meldungen funktionieren und was die Moderation tut.",
+    "updated": "Zuletzt aktualisiert: {date}",
+    "intro": "kefche ist für Spieler ab 13 Jahren aus vielen Ländern. Diese Richtlinien halten es freundlich. Sie gelten überall, wo du etwas schreibst oder zeigst: im globalen Chat, in Nachrichten, im Raum- und Spielchat, in deinem Spitznamen, deiner Bio und deinem Avatar.",
+    "signUpNote": "Wie wir miteinander spielen:",
+    "kind": {
+      "title": "Sei freundlich",
+      "respect": "Behandle andere mit Respekt, ob du gewinnst oder verlierst. Ein gutes Spiel ist besser als Angeben.",
+      "harassment": "Keine Belästigung und kein Mobbing: Beleidige, bedrohe und verfolge niemanden und verbünde dich nicht gegen andere.",
+      "hate": "Kein Hass: nichts, was Menschen dafür angreift, wer sie sind, etwa wegen Herkunft, Nationalität, Religion, Geschlecht, Sexualität oder Behinderung."
+    },
+    "safe": {
+      "title": "Bleib sicher",
+      "sexual": "Keine sexuellen Inhalte und nichts Gewalttätiges oder Schockierendes. Viele Spieler sind jung.",
+      "selfHarm": "Ermutige niemanden zur Selbstverletzung. Wenn jemand in Gefahr zu sein scheint, melde es. Wenn es dir selbst schlecht geht, sprich bitte mit jemandem, dem du vertraust, oder mit einer Beratungsstelle in deiner Nähe.",
+      "private": "Behalte persönliche Daten für dich, deine und die anderer: keine Adressen, Telefonnummern, Passwörter oder Fotos von anderen."
+    },
+    "fair": {
+      "title": "Spiel fair",
+      "cheating": "Kein Schummeln: keine Engines oder Hilfe von außen in gewerteten Partien, kein absichtliches Verlieren, um jemanden zu pushen, und kein Ausnutzen von Fehlern (sag uns lieber Bescheid).",
+      "accounts": "Spiel deine Partien zu Ende: Hinhalten oder Gehen, um einer Niederlage auszuweichen, verdirbt sie dem anderen."
+    },
+    "spam": {
+      "title": "Kein Spam",
+      "ads": "Keine Werbung, Betrügereien, Kettenbriefe oder Chat-Fluten. Links sind in Ordnung, wenn sie dem Gespräch helfen.",
+      "impersonation": "Gib dich nicht als jemand anderes aus, auch nicht als Teammitglied."
+    },
+    "names": {
+      "title": "Namen, Bios und Avatare",
+      "rules": "Für deinen Spitznamen, deine Bio und deinen Avatar gelten dieselben Regeln wie im Chat.",
+      "filter": "Ein Wortfilter blendet gängige beleidigende Wörter im Chat aus und lehnt sie in Spitznamen und Bios ab. Bitte versuch nicht, ihn zu umgehen."
+    },
+    "report": {
+      "title": "Melden und blockieren",
+      "how": "Melde eine Nachricht mit der Flagge daneben und einen Spieler oder seinen Avatar über sein Profil. Wähle den passendsten Grund. Der Spieler erfährt nicht, wer ihn gemeldet hat.",
+      "hidden": "Was drei Spieler melden, wird ausgeblendet, bis die Moderation es sich ansieht.",
+      "block": "Wenn du jemanden blockierst, seid ihr überall getrennt: in Chats, Nachrichten, Einladungen, Freundschaftsanfragen und Räumen.",
+      "honest": "Melde ehrlich: Jemanden aus Rache zu melden, verstößt ebenfalls gegen die Regeln."
+    },
+    "moderators": {
+      "title": "Was die Moderation tut",
+      "actions": "Die Moderation löscht Nachrichten und spricht eine Verwarnung, eine Chatsperre, eine Sperre für das Online-Spiel oder einen Bann aus, je nachdem, wie schwer es wiegt und ob es schon einmal vorkam.",
+      "notice": "Du bekommst eine Mitteilung mit dem Grund und, falls es endet, wann.",
+      "automatic": "Drei vom Wortfilter erfasste Nachrichten innerhalb von 10 Minuten schalten dich automatisch für 10 Minuten stumm."
+    },
+    "appeal": {
+      "title": "Wenn du glaubst, dass wir falschliegen",
+      "body": "Sag uns, um welche Entscheidung es geht und warum, und die Moderation sieht sie sich noch einmal an. Unser Kontakt ist vorerst öffentlich, schreib also nichts Privates hinein.",
+      "link": "So erreichst du uns"
+    }
   }
 }

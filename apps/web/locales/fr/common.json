@@ -36,5 +36,35 @@
     "received": "{name} vous invite à jouer à {game}.",
     "join": "Rejoindre",
     "dismiss": "Ignorer"
+  },
+  "report": {
+    "action": "Signaler",
+    "message": "Signaler le message",
+    "titleMessage": "Signaler le message de {name}",
+    "titlePlayer": "Signaler {name}",
+    "what": "Que signalez-vous ?",
+    "whatProfile": "Son pseudo ou sa bio",
+    "whatAvatar": "Son avatar",
+    "reason": "Motif",
+    "reasons": {
+      "spam": "Spam ou arnaque",
+      "harassment": "Harcèlement ou intimidation",
+      "hate": "Haine",
+      "sexual": "Contenu sexuel",
+      "selfHarm": "Automutilation",
+      "cheating": "Triche",
+      "other": "Autre chose"
+    },
+    "details": "Précisions pour le modérateur (facultatif)",
+    "hint": "Les modérateurs voient une copie de ce que vous signalez. Le joueur ne sait pas qui l’a signalé.",
+    "submit": "Envoyer le signalement",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "sent": "Merci. Un modérateur va y jeter un œil.",
+    "already": "Vous l’avez déjà signalé.",
+    "rateLimited": "Vous avez envoyé beaucoup de signalements. Réessayez dans quelques minutes.",
+    "gone": "Ceci ne peut plus être signalé.",
+    "failed": "Le signalement n’est pas passé. Réessayez.",
+    "hidden": "Masqué après des signalements, en attendant un modérateur."
   }
 }

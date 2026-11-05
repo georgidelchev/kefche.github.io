@@ -36,5 +36,35 @@
     "received": "{name} lädt dich zu {game} ein.",
     "join": "Beitreten",
     "dismiss": "Ausblenden"
+  },
+  "report": {
+    "action": "Melden",
+    "message": "Nachricht melden",
+    "titleMessage": "Nachricht von {name} melden",
+    "titlePlayer": "{name} melden",
+    "what": "Was möchtest du melden?",
+    "whatProfile": "Den Spitznamen oder die Bio",
+    "whatAvatar": "Den Avatar",
+    "reason": "Grund",
+    "reasons": {
+      "spam": "Spam oder Betrug",
+      "harassment": "Belästigung oder Mobbing",
+      "hate": "Hass",
+      "sexual": "Sexuelle Inhalte",
+      "selfHarm": "Selbstverletzung",
+      "cheating": "Schummeln",
+      "other": "Etwas anderes"
+    },
+    "details": "Details für die Moderation (optional)",
+    "hint": "Die Moderation sieht eine Kopie dessen, was du meldest. Der Spieler erfährt nicht, wer ihn gemeldet hat.",
+    "submit": "Meldung senden",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "sent": "Danke. Jemand aus der Moderation sieht es sich an.",
+    "already": "Du hast das bereits gemeldet.",
+    "rateLimited": "Du hast viele Meldungen gesendet. Versuch es in ein paar Minuten noch einmal.",
+    "gone": "Das kann nicht mehr gemeldet werden.",
+    "failed": "Die Meldung ging nicht durch. Versuch es noch einmal.",
+    "hidden": "Nach Meldungen ausgeblendet, bis die Moderation es prüft."
   }
 }

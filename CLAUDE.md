@@ -46,7 +46,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
     - `live/`: the signed-in player's live connection (`live.client.ts`, on every page: their private channel `user:<id>`, passed on as `kefche:live` document events), online status, and the invite toast (`invite-toast.ts`, loaded with the first notification). A page says what its player is doing with `setPresenceContext` (`presence-context.ts`, dependency-free because every page loads it).
     - `notifications/`: the header bell (`bell.ts`, counting from `kefche:unread`), the notifications page, and how each type reads and where it leads (`notifications-data.ts`).
     - `messages/`: direct messages (`dm-data.ts`: conversations, threads, and the live `dm`, `dm_deleted`, `dm_read` and `typing` events on the player's own channel).
-    - `moderation/`: sanction notices. The database refuses a sanctioned player with `muted` or `suspended`, with the sanction's end as the error's `details`.
+    - `moderation/`: sanction notices (the database refuses a sanctioned player with `muted` or `suspended`, with the sanction's end as the error's `details`), reporting (`report.ts`, `ReportDialog.tsx`; the profile has its own plain-script dialog) and the moderator's mute dialog, shared by every chat.
     - `errors/`
   - `lib/supabase/`: lazy client, config, generated DB types.
   - `components/`: BootScript, Fonts, SeoHead, Logo.

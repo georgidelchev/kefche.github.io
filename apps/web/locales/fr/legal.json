@@ -22,6 +22,7 @@
       "notifications": "Notifications (comptes uniquement) : demandes d’ami, invitations, succès, paliers de classement, résultats du défi du jour et avis concernant votre compte, que vous seul pouvez voir. Elles sont supprimées après 90 jours. Lesquelles vous recevez est votre choix dans les paramètres.",
       "presence": "Statut en ligne (comptes uniquement) : si vous êtes en ligne, dans un salon ou une partie (et à quel jeu) ou absent, tel que vos onglets ouverts l’indiquent. Le signal de chaque onglet est supprimé 2 minutes après le dernier, donc rien n’est conservé une fois que vous partez. Qui le voit est votre choix dans les paramètres : tout le monde, vos amis seulement (par défaut) ou personne.",
       "moderation": "Modération : nous vérifions les messages du chat pour y repérer les mots interdits, qui sont masqués. Trois masqués en 10 minutes vous rendent muet pendant 10 minutes : nous notons donc chacun pendant ces 10 minutes. Les avertissements, mises en sourdine, suspensions ou bannissements que vous recevez sont conservés avec leur motif et leur fin tant que votre compte existe, et nous vous envoyons un avis pour chacun (les avis sont supprimés après 90 jours).",
+      "reports": "Signalements : quand vous signalez quelque chose, nous gardons votre signalement (le motif et les précisions ajoutées) avec une copie de ce que vous avez signalé, pour qu’un modérateur puisse l’examiner même s’il change. Seuls les modérateurs voient qui a signalé ; le joueur n’en est pas informé. Un signalement est supprimé 90 jours après qu’un modérateur l’a traité ; si votre compte est supprimé, vos signalements restent sans votre nom.",
       "security": "Données de sécurité : des limites sur la fréquence d'une action et un journal des changements importants du compte. Quand votre adresse IP est nécessaire, nous n'en gardons qu'un hachage salé, jamais l'adresse elle-même."
     },
     "device": {
@@ -47,5 +48,57 @@
       "issuesLink": "Ouvrir le suivi des tickets"
     },
     "signUpNote": "Comment nous traitons vos données :"
+  },
+  "guidelines": {
+    "title": "Règles de la communauté",
+    "description": "Comment nous jouons ensemble sur kefche : ce qui est bienvenu dans les chats, les pseudos et les avatars, comment fonctionnent les signalements et ce que font les modérateurs.",
+    "updated": "Dernière mise à jour : {date}",
+    "intro": "kefche s’adresse aux joueurs de 13 ans et plus, de nombreux pays. Ces règles le gardent convivial. Elles s’appliquent partout où vous écrivez ou montrez quelque chose : le chat global, les messages, le chat du salon et de la partie, votre pseudo, votre bio et votre avatar.",
+    "signUpNote": "Comment nous jouons ensemble :",
+    "kind": {
+      "title": "Soyez bienveillant",
+      "respect": "Respectez les autres joueurs, que vous gagniez ou perdiez. Une belle partie vaut mieux que la vantardise.",
+      "harassment": "Pas de harcèlement ni d’intimidation : n’insultez, ne menacez, ne traquez personne et ne vous liguez contre personne.",
+      "hate": "Pas de haine : rien qui attaque des personnes pour ce qu’elles sont, comme leur origine, leur nationalité, leur religion, leur genre, leur sexualité ou leur handicap."
+    },
+    "safe": {
+      "title": "Restez prudent",
+      "sexual": "Pas de contenu sexuel, ni de contenu violent ou choquant. Beaucoup de joueurs sont jeunes.",
+      "selfHarm": "N’encouragez pas l’automutilation. Si quelqu’un semble en danger, signalez-le. Si vous traversez une période difficile, parlez-en à une personne de confiance ou à une ligne d’écoute près de chez vous.",
+      "private": "Gardez les informations personnelles privées, les vôtres comme celles des autres : pas d’adresses, de numéros de téléphone, de mots de passe ni de photos d’autres personnes."
+    },
+    "fair": {
+      "title": "Jouez franc-jeu",
+      "cheating": "Pas de triche : ni moteur ni aide extérieure dans les parties classées, pas de défaite volontaire pour faire monter quelqu’un, et pas d’exploitation de bugs (signalez-les-nous plutôt).",
+      "accounts": "Terminez vos parties : traîner ou partir pour éviter une défaite gâche le jeu de l’autre joueur."
+    },
+    "spam": {
+      "title": "Pas de spam",
+      "ads": "Pas de publicité, d’arnaques, de chaînes ni d’inondation du chat. Les liens sont les bienvenus quand ils servent la conversation.",
+      "impersonation": "Ne vous faites pas passer pour quelqu’un d’autre, y compris l’équipe."
+    },
+    "names": {
+      "title": "Pseudos, bios et avatars",
+      "rules": "Votre pseudo, votre bio et votre avatar suivent les mêmes règles que le chat.",
+      "filter": "Un filtre masque les mots offensants courants dans le chat et les refuse dans les pseudos et les bios. Merci de ne pas chercher à le contourner."
+    },
+    "report": {
+      "title": "Signaler et bloquer",
+      "how": "Signalez un message avec le drapeau à côté, et un joueur ou son avatar depuis son profil. Choisissez le motif qui convient le mieux. Le joueur ne sait pas qui l’a signalé.",
+      "hidden": "Ce que trois joueurs signalent est masqué jusqu’à ce qu’un modérateur l’examine.",
+      "block": "Bloquer quelqu’un vous sépare partout : chats, messages, invitations, demandes d’ami et salons.",
+      "honest": "Signalez honnêtement : signaler quelqu’un pour se venger est aussi contraire aux règles."
+    },
+    "moderators": {
+      "title": "Ce que font les modérateurs",
+      "actions": "Les modérateurs suppriment des messages et donnent un avertissement, une mise en sourdine du chat, une suspension du jeu en ligne ou un bannissement, selon la gravité et les antécédents.",
+      "notice": "Vous recevez un avis avec le motif et, s’il y en a une, la date de fin.",
+      "automatic": "Trois messages bloqués par le filtre en 10 minutes vous mettent automatiquement en sourdine pendant 10 minutes."
+    },
+    "appeal": {
+      "title": "Si vous pensez que nous nous sommes trompés",
+      "body": "Dites-nous quelle décision et pourquoi, et un modérateur la réexaminera. Notre contact est public pour l’instant : n’y mettez pas d’informations privées.",
+      "link": "Comment nous contacter"
+    }
   }
 }

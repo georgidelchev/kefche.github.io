@@ -9,6 +9,7 @@ export interface AuthPaths {
   reset: string;
   callback: string;
   privacy: string;
+  guidelines: string;
   onboarding: string;
   merge: string;
   settings: string;
@@ -27,6 +28,7 @@ export function authPaths(
     reset: localeUrl(locale, "/auth/reset-password/"),
     callback: localeUrl(locale, "/auth/callback/"),
     privacy: localeUrl(locale, "/privacy/"),
+    guidelines: localeUrl(locale, "/guidelines/"),
     onboarding: localeUrl(locale, "/auth/onboarding/"),
     merge: localeUrl(locale, "/auth/merge/"),
     settings: localeUrl(locale, "/settings/"),
