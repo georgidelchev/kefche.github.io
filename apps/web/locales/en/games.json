@@ -3,6 +3,7 @@
   "loading": "Loading the game…",
   "loadFailed": "The game didn't load. Check your connection and try again.",
   "retry": "Try again",
+  "arenaCancel": "Cancel",
   "pause": "Pause",
   "paused": "Paused",
   "resume": "Resume",

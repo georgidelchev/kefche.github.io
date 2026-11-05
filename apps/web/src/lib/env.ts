@@ -36,6 +36,26 @@ export function parseSupabaseEnv(source: Record<string, unknown>): PublicEnv | n
   return parsePublicEnv(source);
 }
 
+const arenaUrlSchema = z.url({ protocol: /^https?$/ });
+
+/**
+ * The real-time arena server (Phase 9) for `source`, without a trailing
+ * slash, or null when PUBLIC_ARENA_URL isn't set (arena games then play the
+ * solo arena only). An invalid value fails.
+ */
+export function parseArenaUrl(source: Record<string, unknown>): string | null {
+  const value = source.PUBLIC_ARENA_URL;
+  if (value === undefined || value === "") return null;
+  const parsed = arenaUrlSchema.safeParse(value);
+  if (!parsed.success) {
+    throw new Error(`Invalid environment variables:\n${z.prettifyError(parsed.error)}`);
+  }
+  return parsed.data.replace(/\/$/, "");
+}
+
+/** {@link parseArenaUrl} for the running build. Server and build time only. */
+export const getArenaUrl = (): string | null => parseArenaUrl(import.meta.env);
+
 let cached: PublicEnv | null | undefined;
 
 /** {@link parseSupabaseEnv} for the running build, parsed once. Server and build time only. */

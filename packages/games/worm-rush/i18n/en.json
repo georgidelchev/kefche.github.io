@@ -31,6 +31,18 @@
     "knockouts": "Knockouts",
     "timeAlive": "Time",
     "playAgain": "Play again",
-    "boost": "Boost"
+    "boost": "Boost",
+    "modeTitle": "Where do you want to play?",
+    "online": "Online arena",
+    "onlineHint": "Play against people, with bots filling the arena.",
+    "solo": "Solo arena",
+    "soloHint": "Just you and bots, on this device.",
+    "unavailable": "The online arena can't be reached right now.",
+    "suspendedOnline": "Your account can't play online right now.",
+    "outdated": "This page is out of date. Reload it to play online.",
+    "needsName": "Finish setting up your account, with a nickname, to play online.",
+    "replaced": "You're playing this arena in another tab.",
+    "tryAgain": "Try again",
+    "playSolo": "Play solo"
   }
 }

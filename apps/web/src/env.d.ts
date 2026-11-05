@@ -16,6 +16,8 @@ interface ImportMetaEnv {
   readonly PUBLIC_VAPID_PUBLIC_KEY?: string;
   /** Read through `EMAIL_NOTIFICATIONS` in `@/lib/notification-channels`. */
   readonly PUBLIC_EMAIL_NOTIFICATIONS?: string;
+  /** Read through `getArenaUrl()` in `@/lib/env`. */
+  readonly PUBLIC_ARENA_URL?: string;
 }
 
 interface ImportMeta {

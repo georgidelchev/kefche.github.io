@@ -16,7 +16,14 @@ import { getSupabaseEnv } from "@/lib/env";
 
 import { CATEGORY_KEYS, playablePlayers } from "./catalog";
 import { GamePlayer } from "./GamePlayer";
-import { onlineModes, playerStrings, playsOnline, turnConfig, turnStrings } from "./page-props";
+import {
+  arenaProps,
+  onlineModes,
+  playerStrings,
+  playsOnline,
+  turnConfig,
+  turnStrings,
+} from "./page-props";
 
 import type { RegisteredGame } from "./registry";
 
@@ -93,6 +100,8 @@ const jsonLd = [
 // Turn-based games open a setup screen (seats, bots, timer) instead of starting at once.
 const config = turnConfig(manifest);
 const turn = config && config.modes.length > 0 ? { config, strings: turnStrings(t) } : null;
+// Real-time games: the online arena, when this build has one.
+const arena = arenaProps(manifest, t, locale);
 const online = playsOnline(manifest) ? getRelativeLocaleUrl(locale, `/play/${manifest.id}/`) : null;
 const modes = onlineModes(manifest);
 const room = roomStrings(t);
@@ -157,6 +166,7 @@ const crumb = "rounded-sm hover:underline";
           strings={playerStrings(t, locale, { manifest, text })}
           ui={text.ui}
           {...(turn ? { turn } : {})}
+          {...(arena ? { arena } : {})}
         />
       </div>
       {online && (

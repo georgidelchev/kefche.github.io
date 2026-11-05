@@ -31,6 +31,18 @@
     "knockouts": "淘汰数",
     "timeAlive": "时间",
     "playAgain": "再玩一次",
-    "boost": "加速"
+    "boost": "加速",
+    "modeTitle": "你想在哪里玩？",
+    "online": "在线竞技场",
+    "onlineHint": "与真人对战，机器人补满竞技场。",
+    "solo": "单人竞技场",
+    "soloHint": "只有你和机器人，在这台设备上。",
+    "unavailable": "目前无法连接在线竞技场。",
+    "suspendedOnline": "你的账号目前不能在线游戏。",
+    "outdated": "此页面已过期。请重新加载以在线游戏。",
+    "needsName": "请完成账号设置并选择昵称，才能在线游戏。",
+    "replaced": "你正在另一个标签页中玩这个竞技场。",
+    "tryAgain": "重试",
+    "playSolo": "单人游戏"
   }
 }

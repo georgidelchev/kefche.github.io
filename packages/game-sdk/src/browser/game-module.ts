@@ -121,6 +121,21 @@ export type GameEvent =
   | TurnReport
   | { type: "finish"; result: GameResult; turns?: TurnRecord };
 
+/**
+ * The online arena, for real-time games (Phase 9), when this build has one:
+ * the arena server and the player's way in. Accounts and guests alike.
+ */
+export interface ArenaAccess {
+  /** The arena server's base URL (http or https). */
+  url: string;
+  /**
+   * A fresh access token for this player. A guest identity is made the
+   * first time, and a guest without a name is asked for one first; rejects
+   * with an Error "cancelled" when they decline.
+   */
+  token(): Promise<string>;
+}
+
 export interface GameContext {
   locale: string;
   dir: "ltr" | "rtl";
@@ -137,6 +152,8 @@ export interface GameContext {
   race?: RaceContext;
   /** Single-player games: where they record each game they play. */
   log?: PlayLog;
+  /** Real-time games: the online arena, when this build has one. */
+  arena?: ArenaAccess;
   /** Tells the player about progress; "finish" opens the results screen. */
   report: (event: GameEvent) => void;
 }

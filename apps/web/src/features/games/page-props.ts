@@ -5,9 +5,11 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import { GLOBAL_ACHIEVEMENTS, type GameManifest, type GameText } from "@kefche/game-sdk";
 
 import { frameNames } from "@/features/account/frames";
+import { authStrings } from "@/features/auth/strings";
+import { guestStrings, type GuestStrings } from "@/features/lobby/strings";
 import type { AppT } from "@/i18n/i18n";
 import type { Locale } from "@/i18n/locales";
-import { getSupabaseEnv } from "@/lib/env";
+import { getArenaUrl, getSupabaseEnv } from "@/lib/env";
 
 import { BOT_NAME_KEYS } from "./catalog";
 import { hasRooms, racesInRooms } from "./game-names";
@@ -259,5 +261,27 @@ export function turnStrings(t: AppT): TurnStrings {
     botNames: Object.fromEntries(
       Object.entries(BOT_NAME_KEYS).map(([id, key]) => [id, t(key)]),
     ) as TurnStrings["botNames"],
+  };
+}
+
+/** What a real-time game's player needs for the online arena. */
+export interface ArenaProps {
+  url: string;
+  /** The guest's name form, shown before a guest's first online game. */
+  guest: GuestStrings;
+  /** Declining the name form (back to the game's mode screen). */
+  cancel: string;
+  privacy: string;
+}
+
+/** The online arena for a real-time game, in a build with Supabase and an arena server. */
+export function arenaProps(manifest: GameManifest, t: AppT, locale: Locale): ArenaProps | null {
+  const url = getArenaUrl();
+  if (manifest.kind !== "realtime" || url === null || getSupabaseEnv() === null) return null;
+  return {
+    url,
+    guest: guestStrings(t, authStrings(t).errors),
+    cancel: t("games:arenaCancel"),
+    privacy: getRelativeLocaleUrl(locale, "/privacy/"),
   };
 }

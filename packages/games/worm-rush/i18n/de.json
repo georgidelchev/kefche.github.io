@@ -31,6 +31,18 @@
     "knockouts": "Ausgeschaltet",
     "timeAlive": "Zeit",
     "playAgain": "Nochmal spielen",
-    "boost": "Boost"
+    "boost": "Boost",
+    "modeTitle": "Wo möchtest du spielen?",
+    "online": "Online-Arena",
+    "onlineHint": "Spiel gegen Menschen, Bots füllen die Arena auf.",
+    "solo": "Solo-Arena",
+    "soloHint": "Nur du und Bots, auf diesem Gerät.",
+    "unavailable": "Die Online-Arena ist gerade nicht erreichbar.",
+    "suspendedOnline": "Dein Konto kann gerade nicht online spielen.",
+    "outdated": "Diese Seite ist veraltet. Lade sie neu, um online zu spielen.",
+    "needsName": "Richte dein Konto mit einem Spitznamen fertig ein, um online zu spielen.",
+    "replaced": "Du spielst diese Arena in einem anderen Tab.",
+    "tryAgain": "Nochmal versuchen",
+    "playSolo": "Solo spielen"
   }
 }

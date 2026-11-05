@@ -1870,6 +1870,18 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
     - steered off the edge with the mouse: the card says why, with the life's numbers, screen readers hear it, and Space on Play again brings the worm back;
     - pause holds the solo arena still, resume carries on, restart opens a new arena, destroy leaves nothing behind.
     - Checked by eye: 360 px in English and Arabic, 768 px in Arabic, 1280 px, the panel and the card.
+- [ ] Step 9: modes and results, in three commits (9a, 9b, 9c).
+  - [x] **9a: the online mode.**
+    - **The player** hands real-time games the online arena (`GameContext.arena`) when the build has Supabase and an arena server (`PUBLIC_ARENA_URL`; CI uses the deployed Worker). Its `token()` makes a guest identity when needed and shows the lobby's name form to a guest without a name (Cancel goes back to the game's mode screen), then answers a fresh access token.
+    - **The SDK:** `findArena` asks the arena server's directory where to play, and `arenaSocketUrl` names that arena's socket.
+    - **Worm Rush** starts on a mode screen, the online arena or the solo arena (straight to the solo arena in a build without an arena server). Online:
+      - joining shows a notice; then the HUD, with the round trip;
+      - an arena that filled up first sends the player to another (twice at most);
+      - a refusal says why, with the way on: playing in another tab (Try again), no name yet, suspended or banned, or an outdated page (Play solo only for the last two);
+      - an arena server that can't be reached, or 15 s of reconnecting, offers Try again and the solo arena. This is also what players see past the free plan's daily limit.
+    - **Strings:** 12 more in the game's "ui" (all 11 locales), and `games:arenaCancel` for the name form.
+    - **Checks,** 12/12 against the local arena Worker and local Supabase: no arena in the build starts the solo arena at once; the mode screen; online play with the round trip shown and the player on the board; a second tab taking over and Try again; a guest declining to pick a name; the arena refusing a player without a name and a suspended player; an arena server out of reach, then the solo arena. The HUD's check again 62/62.
+    - **Not checked here:** the player's own part (the guest name form before the first online game) needs the game listed, so it's checked with step 12's run on the real page.
 
 ## Known issues
 

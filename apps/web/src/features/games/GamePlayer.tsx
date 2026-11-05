@@ -2,7 +2,9 @@
 // pressed, mounts it, and owns the chrome around it: pause menu, mute, exit,
 // results, screen wake lock. The game draws everything inside the stage.
 // Turn-based games (Phase 4) first get a setup screen (seats, bots, timer)
-// and a HUD with every seat, whose turn it is and the clocks.
+// and a HUD with every seat, whose turn it is and the clocks. Real-time
+// games (Phase 9) get the way into the online arena (context.arena): a
+// guest identity when needed, and a guest's name asked for first.
 import {
   Bot,
   CalendarDays,
@@ -29,7 +31,9 @@ import {
 } from "@kefche/game-sdk/browser";
 import { Button } from "@kefche/ui/components/button";
 
+import { ensureIdentity } from "@/features/account/identity";
 import { setPresenceContext } from "@/features/live/presence-context";
+import { getSupabase } from "@/lib/supabase/client";
 
 import { fetchDaily, startDaily, type DailyChallenge } from "./daily";
 import { loadGame } from "./loaders";
@@ -48,12 +52,16 @@ import {
 } from "./turn/match-setup";
 
 import type { ResultsStrings } from "./GameResults";
+import type { ArenaProps } from "./page-props";
 
 // One lazy component for the setup screen and the HUD: loaded once, for setup.
 const TurnUi = lazy(() => import("./turn/TurnUi").then((m) => ({ default: m.TurnUi })));
 // The results screen, fetched as a game starts.
 const loadResults = () => import("./GameResults");
 const GameResults = lazy(loadResults);
+const GuestProfileForm = lazy(() =>
+  import("@/features/lobby/GuestProfileForm").then((m) => ({ default: m.GuestProfileForm })),
+);
 
 export interface PlayerStrings {
   play: string;
@@ -90,6 +98,8 @@ interface Props {
   ui: Record<string, string>;
   /** Turn-based games: what the setup screen offers, and its text. */
   turn?: { config: TurnConfig; strings: TurnStrings };
+  /** Real-time games: the online arena, when this build has one. */
+  arena?: ArenaProps;
 }
 
 type Phase = "idle" | "setup" | "loading" | "playing" | "paused" | "finished" | "error";
@@ -100,7 +110,7 @@ const focusOnMount = (element: HTMLElement | null) => {
   element?.focus();
 };
 
-export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }: Props) {
+export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn, arena }: Props) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<GameResult | null>(null);
   const [rewards, setRewards] = useState<RewardsState>({ kind: "none" });
@@ -150,6 +160,35 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
 
   const open = phase !== "idle";
 
+  // A guest's name, asked for before their first online arena game.
+  const [naming, setNaming] = useState<{ done: () => void; cancel: () => void } | null>(null);
+  const arenaAccess = arena && {
+    url: arena.url,
+    token: async () => {
+      const supabase = await getSupabase();
+      if (!supabase) throw new Error("no_supabase");
+      const identity = await ensureIdentity(supabase);
+      if (identity.guest && identity.nickname === null) {
+        await new Promise<void>((resolve, reject) => {
+          setNaming({
+            done: () => {
+              setNaming(null);
+              resolve();
+            },
+            cancel: () => {
+              setNaming(null);
+              reject(new Error("cancelled"));
+            },
+          });
+        });
+      }
+      // A stored session past its expiry is refreshed here.
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) throw new Error("no_session");
+      return data.session.access_token;
+    },
+  };
+
   /** The next game's seed: the ready play's, or a local one (not recorded). */
   function nextSeed(): string {
     const play = supply.take();
@@ -184,6 +223,7 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
         storage,
         ...(setup ? { match: setup } : { log: recorder.log }),
         ...(dailyRef.current ? { race: { config: dailyRef.current.config } } : {}),
+        ...(arenaAccess ? { arena: arenaAccess } : {}),
         report: (event) => {
           if (event.type === "turn") {
             setReport((previous) => {
@@ -470,6 +510,22 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn }
         <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-auto p-3">
           <div ref={stageRef} className="flex h-full w-full items-center justify-center" />
 
+          {naming && arena && (
+            <div className="absolute inset-0 z-20 overflow-auto bg-bg p-4">
+              <div className="mx-auto grid max-w-sm gap-4">
+                <Suspense fallback={null}>
+                  <GuestProfileForm
+                    strings={arena.guest}
+                    privacyHref={arena.privacy}
+                    onDone={naming.done}
+                  />
+                </Suspense>
+                <Button variant="ghost" onClick={naming.cancel}>
+                  {arena.cancel}
+                </Button>
+              </div>
+            </div>
+          )}
           {phase === "setup" && turn && choice && (
             <div className="absolute inset-0 z-10 overflow-auto bg-bg p-4">
               <Suspense fallback={null}>

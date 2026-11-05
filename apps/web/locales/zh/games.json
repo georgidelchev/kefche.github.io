@@ -3,6 +3,7 @@
   "loading": "正在加载游戏…",
   "loadFailed": "游戏加载失败。请检查网络后重试。",
   "retry": "重试",
+  "arenaCancel": "取消",
   "pause": "暂停",
   "paused": "已暂停",
   "resume": "继续",

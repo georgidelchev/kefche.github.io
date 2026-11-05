@@ -31,6 +31,18 @@
     "knockouts": "Éliminations",
     "timeAlive": "Temps",
     "playAgain": "Rejouer",
-    "boost": "Accélérer"
+    "boost": "Accélérer",
+    "modeTitle": "Où voulez-vous jouer ?",
+    "online": "Arène en ligne",
+    "onlineHint": "Jouez contre des personnes, des bots complètent l’arène.",
+    "solo": "Arène en solo",
+    "soloHint": "Vous et des bots, sur cet appareil.",
+    "unavailable": "L’arène en ligne est injoignable pour le moment.",
+    "suspendedOnline": "Votre compte ne peut pas jouer en ligne pour le moment.",
+    "outdated": "Cette page n’est plus à jour. Rechargez-la pour jouer en ligne.",
+    "needsName": "Terminez la configuration de votre compte, avec un pseudo, pour jouer en ligne.",
+    "replaced": "Vous jouez dans cette arène dans un autre onglet.",
+    "tryAgain": "Réessayer",
+    "playSolo": "Jouer en solo"
   }
 }

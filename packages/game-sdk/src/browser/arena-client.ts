@@ -220,6 +220,30 @@ export function connectArena<Input, Snapshot>(
   };
 }
 
+/**
+ * Asks the arena server's directory which arena of `gameId` to join (the
+ * fullest with room, or a new one). Throws when the server can't be reached
+ * or won't answer (down, or past its daily limit): the game offers the solo
+ * arena instead.
+ */
+export async function findArena(url: string, gameId: string): Promise<string> {
+  const response = await fetch(`${url.replace(/\/$/, "")}/games/${gameId}/arena`, {
+    cache: "no-store",
+  });
+  if (!response.ok) throw new Error(`arena_directory_${String(response.status)}`);
+  const body: unknown = await response.json();
+  const arena =
+    typeof body === "object" && body !== null && "arena" in body ? body.arena : undefined;
+  if (typeof arena !== "string" || !/^[a-z0-9-]{1,40}$/.test(arena)) {
+    throw new Error("arena_directory_bad_answer");
+  }
+  return arena;
+}
+
+/** The WebSocket address of arena `name` of `gameId`. */
+export const arenaSocketUrl = (url: string, gameId: string, name: string): string =>
+  `${url.replace(/\/$/, "").replace(/^http/, "ws")}/arenas/${gameId}/${name}`;
+
 export interface LocalArenaOptions<World, Input, Snapshot, Event, Config> {
   engine: RealtimeEngine<World, Input, Snapshot, Event, Config>;
   bots: ArenaBots<World, Input>;

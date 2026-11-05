@@ -172,6 +172,8 @@ jobs:
           PUBLIC_VAPID_PUBLIC_KEY: ${{ vars.PUBLIC_VAPID_PUBLIC_KEY || '' }}
           # "on" once Resend sends the email outbox (Phase 21).
           PUBLIC_EMAIL_NOTIFICATIONS: ${{ vars.PUBLIC_EMAIL_NOTIFICATIONS || '' }}
+          # The arena server (apps/arena), deployed by this job too.
+          PUBLIC_ARENA_URL: ${{ vars.PUBLIC_ARENA_URL || 'https://kefche-arena.alienguymc.workers.dev' }}
 
       - name: Deploy to production
         if: github.event_name == 'push'

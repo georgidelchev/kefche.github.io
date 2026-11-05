@@ -3,6 +3,7 @@
   "loading": "Spiel wird geladen…",
   "loadFailed": "Das Spiel wurde nicht geladen. Prüfe deine Verbindung und versuche es erneut.",
   "retry": "Erneut versuchen",
+  "arenaCancel": "Abbrechen",
   "pause": "Pause",
   "paused": "Pausiert",
   "resume": "Weiter",
