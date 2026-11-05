@@ -51,17 +51,6 @@ function reachedTiers(definitions, figures) {
   return reached;
 }
 
-// packages/game-sdk/src/engines.ts
-function canonicalJson(value) {
-  const sorted = (v) => Array.isArray(v) ? v.map(sorted) : v !== null && typeof v === "object" ? Object.fromEntries(
-    Object.entries(v).sort(([a], [b]) => a < b ? -1 : 1).map(([k, x]) => [k, sorted(x)])
-  ) : v;
-  return JSON.stringify(sorted(value) ?? null);
-}
-
-// packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest8) => manifest8;
-
 // packages/game-sdk/src/prng.ts
 function seedRng(seed) {
   let h1 = 1779033703;
@@ -129,6 +118,17 @@ var Rng = class _Rng {
     return out;
   }
 };
+
+// packages/game-sdk/src/engines.ts
+function canonicalJson(value) {
+  const sorted = (v) => Array.isArray(v) ? v.map(sorted) : v !== null && typeof v === "object" ? Object.fromEntries(
+    Object.entries(v).sort(([a], [b]) => a < b ? -1 : 1).map(([k, x]) => [k, sorted(x)])
+  ) : v;
+  return JSON.stringify(sorted(value) ?? null);
+}
+
+// packages/game-sdk/src/manifest.ts
+var defineManifest = (manifest8) => manifest8;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };

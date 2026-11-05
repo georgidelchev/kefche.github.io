@@ -2,6 +2,8 @@
 // Browser runtime helpers live in `@kefche/game-sdk/browser`; build-time
 // manifest validation in `@kefche/game-sdk/manifest-schema`.
 export * from "./achievements";
+export * from "./arena-host";
+export * from "./arena-protocol";
 export * from "./bytes";
 export * from "./bots";
 export * from "./engines";

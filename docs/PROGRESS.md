@@ -1727,6 +1727,31 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
     - `botsWanted`;
     - a small test engine on the contract: 150 delta frames decode to what was sent, the same seed and inputs give the same frames, another seed differs, a full world refuses joins, and bad inputs are refused.
   - The server engines and push wording bundles are unchanged (the new code isn't in them).
+- [x] Step 3: the arena's netcode.
+  - **The protocol** (`arena-protocol.ts`, shared by the server and the browser):
+    - text frames for hello (with the protocol version and the chosen look), welcome, respawn and errors, checked with zod;
+    - binary frames for inputs (with a 16-bit seq), snapshots (with the tick and the last input seq applied), and ping and pong.
+    - Each error code says whether the client may reconnect: `arena_full`, `replaced`, `suspended`, `version` and `hello_expected` mean stop.
+  - **`ArenaHost`** (SDK core) is the one authority, the same code on the arena server (step 4) and in the page for the solo arena:
+    - it keeps each person's latest input, refusing stale seqs and inputs that don't decode;
+    - it fills the arena with bots to its minimum population, and a person joining a full world takes a bot's place;
+    - it lets bots steer every few ticks, spread over different ticks, and brings knocked-out bots back after a while;
+    - on snapshot ticks it encodes each person's snapshot against the last one they were sent, sending a full one after a reconnect (`resetDelta`).
+    - No timers inside: the platform steps it.
+  - **In the browser** (`@kefche/game-sdk/browser`):
+    - **`ServerClock`:** the server's time from snapshot ticks, following the fastest arrival of the last 2 s, so jitter doesn't move it.
+    - **`SnapshotBuffer`:** everyone else drawn 100 ms behind, between the two snapshots around that moment, held still past the last (a stall shows as a pause, not a guess).
+    - **`Predictor`:** the player's own entity, run ahead with their inputs and corrected from each snapshot. Inputs the server hadn't applied yet are played again, and any difference left is eased out over 5 ticks. It trails the server by the age of the snapshot (a tick or two), which keeps it steady.
+    - **`connectArena`:** the WebSocket, sending inputs only when they change and at most 10 a second (the latest always goes), with a ping every 2 s. It closes the socket itself on any error frame (step 1's slow close). It reconnects with backoff and a fresh token, re-sending the held input, unless the error was fatal.
+    - **`createLocalArena`:** the solo arena, `ArenaHost` stepped in the page through the same codecs, stopping while the page is hidden.
+  - **Checks,** 46/46 in Node:
+    - **the protocol:** frames round trip, malformed frames and texts are refused, seqs wrap;
+    - **`ArenaHost`:** bots fill and give way to people, the people limit, stale and bad inputs refused, frames only on snapshot ticks, 100 deltas decode to the world as it is, a full snapshot after a reset, bots respawn, deterministic;
+    - **the clock** within 1.4 ms of the fastest arrival under 100 ms of jitter, and the buffer's brackets;
+    - **prediction:** it settles next to the server and stays within the latency bound while inputs are in flight, easing in without jumps;
+    - **the local arena:** 15 snapshots a second, stopping while hidden without a burst after;
+    - **`connectArena`,** against a fake socket wired to an `ArenaHost`: inputs at most every 100 ms with the latest delivered, pings, a reconnect after a drop with a new token and a full snapshot, a fatal error stopping for good, an expired token retried, and the client closing on error frames.
+  - **Also:** `engines.gen.js` regenerated; only the order of two SDK modules changed in it, so the deployed function needn't change.
 
 ## Known issues
 
