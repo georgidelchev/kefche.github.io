@@ -1,6 +1,55 @@
 {
   "name": "Wurm-Rennen",
-  "achievements": {},
+  "tagline": "Friss leuchtende Kugeln, wachse und schneide anderen Würmern den Weg ab.",
+  "description": "Spiel Wurm-Rennen gratis im Browser: Steuere einen Wurm durch eine leuchtende Arena, friss Kugeln und schneide Rivalen den Weg ab. Online oder solo gegen Bots.",
+  "about": [
+    "Worm Rush is an arena game for everyone at once. You steer a worm through a round arena full of glowing orbs. Every orb you eat makes the worm longer, and the longest worms rise to the top of the live board. Other players' worms share the arena with yours, and bots join in, so there is always someone to race.",
+    "The worms never stop moving. When a worm's head touches another worm's body, it's out, and its whole body turns into orbs for everyone else to eat. That is the heart of the game: a long worm is strong, but it is also a big meal. Slip in front of a rival, curl around a smaller worm, or keep a careful distance and grow slowly.",
+    "Each life is a game. When you're knocked out, you see how long you grew, how many worms you took out and how long you lasted, and you're back in the arena in a moment. Play online in an arena with other people, or in a solo arena with bots on this device. You don't need an account: guests pick a name and play straight away."
+  ],
+  "howToPlay": [
+    "Choose the online arena or the solo arena.",
+    "Steer your worm toward the orbs. Bigger orbs are worth more.",
+    "Boost to move almost twice as fast. Boosting costs length, which you leave behind as small orbs.",
+    "If your head touches another worm's body or the edge of the arena, you're out. Two heads that meet both go out.",
+    "Take out other worms by making them run into you: cross in front of them, or circle around them.",
+    "When you're out, press Play again for a new life."
+  ],
+  "controls": [
+    "Phones and tablets: drag anywhere to steer, and hold the boost button. The gear button lets you move the boost button or switch to left-handed mode.",
+    "Mouse: the worm heads toward the pointer; hold the mouse button to boost.",
+    "Keyboard: arrow keys or W, A, S, D to steer, and hold Space to boost.",
+    "Escape opens the pause menu. Online, the arena doesn't stop, so your worm keeps moving."
+  ],
+  "tips": [
+    "Early on, keep away from big worms and eat the scattered orbs. Remember that longer worms turn wider.",
+    "Watch the heads, not the bodies: you only go out when your head touches something, so keep the space in front of you clear.",
+    "Boost in short bursts to cut in front of a rival, then let it run into you.",
+    "When a big worm goes out, a trail of large orbs appears where it was. Get there fast, and watch for others doing the same.",
+    "The edge ends a worm too: the minimap shows where you are, and the red ring marks the end of the arena."
+  ],
+  "faq": [
+    {
+      "question": "Do I need an account to play online?",
+      "answer": "No. Guests pick a name and play at once. With an account, your online lives also count toward your stats, XP and the longest-worm board."
+    },
+    {
+      "question": "Who are the other worms?",
+      "answer": "People playing online, and bots that keep every arena busy. Bots are marked on the top 10."
+    },
+    {
+      "question": "What counts on the leaderboard?",
+      "answer": "The longest length you reach in one life in the online arena. Solo lives count toward your stats and XP, but not the leaderboard."
+    },
+    {
+      "question": "Why do other worms sometimes seem a little behind?",
+      "answer": "Online, other worms are drawn a fraction of a second in the past, so their movement stays smooth. If your connection drops, the game reconnects by itself and keeps your worm in play for five seconds."
+    },
+    {
+      "question": "Is Worm Rush free to play?",
+      "answer": "Yes. kefche is free and has no ads."
+    }
+  ],
   "ui": {
     "length": "Länge",
     "place": "Platz {place} von {count}",
@@ -44,5 +93,18 @@
     "replaced": "Du spielst diese Arena in einem anderen Tab.",
     "tryAgain": "Nochmal versuchen",
     "playSolo": "Solo spielen"
+  },
+  "achievements": {
+    "long-worm": {
+      "name": "Langer Wurm",
+      "description": "Erreiche in einem Leben eine Länge von {count, number}"
+    },
+    "regular": {
+      "name": "Stammgast",
+      "description": "Spiele {count, plural, one {# Leben} other {# Leben}}"
+    }
+  },
+  "leaderboards": {
+    "longest": "Längster Wurm"
   }
 }

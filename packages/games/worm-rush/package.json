@@ -6,6 +6,7 @@
   "sideEffects": false,
   "exports": {
     ".": "./index.ts",
+    "./manifest": "./manifest.ts",
     "./engine": "./engine/index.ts"
   },
   "scripts": {

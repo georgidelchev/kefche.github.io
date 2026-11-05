@@ -1,7 +1,15 @@
 // The bundled engines (engines.gen.js) replay, in Deno, the games recorded in
 // Node by `pnpm functions:engines --fixtures` to the same end. Run:
 // deno test _shared/engines.test.ts
-import { canonicalJson, GAMES, replayRace, replayTurn, type SeatedAction } from "./engines.ts";
+import {
+  type ArenaInput,
+  canonicalJson,
+  GAMES,
+  replayArena,
+  replayRace,
+  replayTurn,
+  type SeatedAction,
+} from "./engines.ts";
 import fixtures from "./engines.fixtures.json" with { type: "json" };
 
 interface Fixture {
@@ -12,6 +20,9 @@ interface Fixture {
   seats?: number;
   actions?: unknown[];
   moves?: SeatedAction[];
+  /** Real-time games: one solo life's inputs by tick, for at most `ticks`. */
+  inputs?: ArenaInput[];
+  ticks?: number;
   expected: { result: unknown; score?: number | null; progress?: number; state: string };
 }
 const all = fixtures as Fixture[];
@@ -38,7 +49,11 @@ for (const f of all) {
     const game = GAMES.get(f.id);
     if (!game) throw new Error(`no game ${f.id}`);
     const config = f.config ?? undefined;
-    if (game.kind === "race") {
+    if (game.kind === "realtime") {
+      const replay = replayArena(game, f.seed, f.inputs ?? [], f.ticks ?? 0);
+      equal(replay.result, f.expected.result, "result");
+      equal(await hash(replay.state), f.expected.state, "final state");
+    } else if (game.kind === "race") {
       const replay = replayRace(game.engine, config, f.seed, f.actions ?? []);
       equal(replay.result, f.expected.result, "result");
       equal(replay.score, f.expected.score, "score");

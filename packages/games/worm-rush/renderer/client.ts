@@ -80,6 +80,8 @@ export interface WormClientOptions {
   actionLabel: string;
   actionIcon?: Node;
   reducedMotion?: boolean;
+  /** The player started boosting (for its sound). */
+  onBoost?: () => void;
 }
 
 export interface WormClient {
@@ -129,6 +131,7 @@ export async function createWormClient(options: WormClientOptions): Promise<Worm
   let wasAlive = false;
   let paused = false;
   let frameId = 0;
+  let boosting = false;
 
   const publish = (next: Partial<HudState>) => {
     state = { ...state, ...next };
@@ -223,6 +226,8 @@ export async function createWormClient(options: WormClientOptions): Promise<Worm
     actionLabel: options.actionLabel,
     ...(options.actionIcon ? { actionIcon: options.actionIcon } : {}),
     onChange: (steer) => {
+      if (steer.action && !boosting) options.onBoost?.();
+      boosting = steer.action;
       if (steer.heading === null) return;
       const input = { heading: steer.heading, boost: steer.action };
       const seq = connection.setInput(input);

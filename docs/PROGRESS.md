@@ -1754,6 +1754,23 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
   - **Also:** `engines.gen.js` regenerated; only the order of two SDK modules changed in it, so the deployed function needn't change.
 - **Order changed:** step 7 (the Worm Rush engine) comes before step 4, so the arena server hosts the real game from its first version instead of a stand-in.
 - **Order changed again (2026-11-05):** after 9b come step 11 (the manifest, art, sounds and page text), then step 10 (skins: some unlock with the game's achievements, which the manifest declares), then 9c (solo replay needs the manifest's engines bundle), then step 12.
+- [x] Step 11: Worm Rush listed: its manifest, page text, art, sounds and credits.
+  - **The manifest** (`manifest.ts`): the Arenas category, kind `realtime`, 1 to 15 people, bots at three difficulties, the solo arena (`solo-bots`) and the online arenas (`online-public`, joined through the arena server, not rooms), PixiJS, a longest-worm board (`longest`, fed by online lives, step 9b) and two achievements: **Long worm** (a longest length of 150, 500, 1,500) and **Regular** (10, 50, 200 lives). Its version is the one the arena server reports with lives.
+  - **Text:** English and Bulgarian in full (597 and 540 words: about, how to play, controls, tips, FAQ), with no offline claims. The other nine locales have their own name, tagline, description, achievements and board name, and the long sections in English until Phase 15 (Known issues).
+  - **Art:** a striped worm of round segments with googly eyes, rising toward glowing orbs, in the sticker style (`assets/art.mjs`, `pnpm art:generate`).
+  - **Sounds and vibration** from the shared palette, for the player's own moments: a boost (`swish`), taking a worm out (`kalimba-rise`, a short buzz), being knocked out (`marimba-lose`, the losing buzz) and coming back (`small-bubble`). Eating is too frequent for a sound.
+  - **`CREDITS.md`:** everything made for kefche; PixiJS (MIT) listed.
+  - **The server's engines bundle** now carries real-time games: the engine, its bots and how its arenas fill, with the SDK's `ArenaHost` (`scripts/functions-engines.mjs`). `engines.ts` types them and adds `replayArena` (one solo life, from its seed, with its inputs by tick, stopped at the knockout or a tick limit) for step 9c.
+    - **Its fixture:** 20 s of a solo life with random steering, recorded in Node and replayed in Deno to the same arena (the tick, the randomness, every worm and orb) and result: the engine is deterministic across both.
+    - **The bundle stays small:** `ArenaHost` imported the arena protocol, whose text messages use zod, and brought all of zod (875 KB). The binary frames moved to `arena-frames.ts` (no zod), which `arena-protocol.ts` re-exports: 162 KB, against 135 KB before.
+  - **The player** gives real-time games no Phase 7 plays, play log or daily challenge until step 9c records solo lives.
+  - **Checks,** 28/28 on the real site (`pnpm dev`, the local arena Worker and Supabase):
+    - listed in the catalog and the Arenas category;
+    - the game page in English, Bulgarian and Arabic at 360, 768 and 1280 px, light and dark: no sideways scroll, axe (WCAG 2.2 AA) clean, no page errors, and no game code before Play;
+    - Play loads the game in its own chunk and offers both arenas; the solo arena plays in the player and fits the screen; axe clean with the player open;
+    - **a new visitor's first online game:** Online, the guest name form, a name, then the online arena with the round trip shown, as a guest of that name.
+    - The Deno tests 67/67 (Worm Rush's fixture with them). Checked by eye: the page in Bulgarian at 360 px, the art beside Snake's, the name form.
+  - **Noticed:** the guest name form is the lobby's, so it says others "in the room" will see the name. It reads fine in an arena, but a wording of its own could come with Phase 15's review.
 - [x] Step 7: the Worm Rush engine and bots (`packages/games/worm-rush/engine`). No manifest yet, so the game isn't listed; the discovery scripts (server bundles, push wording, translation check) now skip a game folder without one.
   - **The rules:**
     - a round arena of radius 3,000 holding up to 30 worms;
@@ -1882,7 +1899,7 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
       - an arena server that can't be reached, or 15 s of reconnecting, offers Try again and the solo arena. This is also what players see past the free plan's daily limit.
     - **Strings:** 12 more in the game's "ui" (all 11 locales), and `games:arenaCancel` for the name form.
     - **Checks,** 12/12 against the local arena Worker and local Supabase: no arena in the build starts the solo arena at once; the mode screen; online play with the round trip shown and the player on the board; a second tab taking over and Try again; a guest declining to pick a name; the arena refusing a player without a name and a suspended player; an arena server out of reach, then the solo arena. The HUD's check again 62/62.
-    - **Not checked here:** the player's own part (the guest name form before the first online game) needs the game listed, so it's checked with step 12's run on the real page.
+    - **The player's part** (the guest name form before the first online game) was checked once the game was listed, in step 11's run on the real page.
   - [x] **9b: online lives count** (`20261105100400_arena_results.sql`).
     - **The arena server reports** each account's life when it ends: knocked out by a worm or the edge, or leaving the arena while in play (gone past the 5 s grace). A report carries the life's longest length, its knockouts (counted from the game's events), how long it lasted and how it ended, with a key unique to the life. Reports go to `submit-match` with `ARENA_SECRET`, once per loop when lives ended, tried three times. Guests' lives aren't reported (Phase 7 Q2).
     - **`submit-match`** has a branch for the arena's secret. Each life goes to `arena_life_record` (service role only): one counted match per life (`mode` online, the arena as its `seed`, the knockouts in `config`), its score the longest length, then `count_result` for the stats and XP. A key already recorded answers its match again, so a retry counts once. Then the game's score boards and achievements, as for any counted game.

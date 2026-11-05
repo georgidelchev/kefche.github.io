@@ -4,6 +4,7 @@
 // @kefche/game-sdk's, which Deno can't import (its sources import without file
 // extensions).
 import {
+  ArenaHost,
   canonicalJson,
   GAMES as BUNDLED,
   levelForXp,
@@ -49,6 +50,14 @@ export interface TurnEngine {
   sideActions?(state: unknown, seat: number): unknown[];
   /** The result when `seat` runs out of time (chess: a draw if nobody can mate). */
   timeoutResult?(state: unknown, seat: number): GameResult;
+}
+
+/** Real-time games (the SDK's RealtimeEngine), as far as a replay needs it. */
+export interface RealtimeEngine {
+  ticksPerSecond: number;
+  inputCodec: { encode(input: unknown): Uint8Array };
+  alive(world: unknown, id: number): boolean;
+  result(world: unknown, id: number): GameResult | null;
 }
 
 /** A setting a single-player game is played with (the manifest's raceOptions). */
@@ -117,10 +126,18 @@ interface Rules {
 }
 
 export type ServerGame =
-  (Rules & { kind: "race"; engine: RaceEngine }) | (Rules & { kind: "turn"; engine: TurnEngine });
+  | (Rules & { kind: "race"; engine: RaceEngine })
+  | (Rules & { kind: "turn"; engine: TurnEngine })
+  | (Rules & {
+      kind: "realtime";
+      engine: RealtimeEngine;
+      /** Its bots and how its arenas fill (ArenaHost's options without seed and config). */
+      bots: unknown;
+      host: object;
+    });
 
 interface BundledManifest {
-  kind: "race" | "turn";
+  kind: "race" | "turn" | "realtime";
   version: number;
   modes: string[];
   players: { min: number; max: number };
@@ -135,7 +152,7 @@ interface BundledManifest {
 
 /** Every game by id. */
 export const GAMES: ReadonlyMap<string, ServerGame> = new Map(
-  Object.entries(BUNDLED).map(([id, { manifest, engine }]) => {
+  Object.entries(BUNDLED).map(([id, { manifest, engine, bots, host }]) => {
     const m = manifest as BundledManifest;
     const rules: Rules = {
       version: m.version,
@@ -152,10 +169,75 @@ export const GAMES: ReadonlyMap<string, ServerGame> = new Map(
     const game: ServerGame =
       m.kind === "race"
         ? { ...rules, kind: "race", engine: engine as RaceEngine }
-        : { ...rules, kind: "turn", engine: engine as TurnEngine };
+        : m.kind === "turn"
+          ? { ...rules, kind: "turn", engine: engine as TurnEngine }
+          : {
+              ...rules,
+              kind: "realtime",
+              engine: engine as RealtimeEngine,
+              bots,
+              host: (host ?? {}) as object,
+            };
     return [id, game];
   }),
 );
+
+/** An input of a solo arena life: the tick it was given at, and the input. */
+export type ArenaInput = readonly [tick: number, heading: number, boost: boolean];
+
+export interface ArenaReplay {
+  /** What a replay compares: the arena's tick, randomness, worms and orbs. */
+  state: unknown;
+  /** The life's result at its end, or when the replay stopped. */
+  result: GameResult | null;
+  /** Ticks stepped: to the knockout, or `maxTicks`. */
+  ticks: number;
+  alive: boolean;
+}
+
+/**
+ * One life in a solo arena, replayed from its seed (Phase 9 step 9c): the
+ * same ArenaHost the page ran, with its bots, the player's inputs applied at
+ * their ticks, stepped until the player is out or `maxTicks` have run.
+ */
+export function replayArena(
+  game: Extract<ServerGame, { kind: "realtime" }>,
+  seed: string,
+  inputs: readonly ArenaInput[],
+  maxTicks: number,
+): ArenaReplay {
+  const host = new ArenaHost(game.engine, game.bots, { ...game.host, seed, config: undefined });
+  const self = host.join({ name: "replay", look: 0 });
+  if (self === null) throw new Error("the arena has no room for its player");
+  let next = 0;
+  let seq = 0;
+  let tick = 0;
+  for (; tick < maxTicks && game.engine.alive(host.world, self); tick++) {
+    while (next < inputs.length && (inputs[next]?.[0] ?? Infinity) <= tick) {
+      const [, heading, boost] = inputs[next] as ArenaInput;
+      host.input(self, ++seq, game.engine.inputCodec.encode({ heading, boost }));
+      next++;
+    }
+    host.step();
+  }
+  const world = host.world as {
+    tick: number;
+    rng: unknown;
+    worms: Map<number, unknown>;
+    orbs: Map<number, unknown>;
+  };
+  return {
+    state: {
+      tick: world.tick,
+      rng: world.rng,
+      worms: [...world.worms.values()],
+      orbs: [...world.orbs.values()],
+    },
+    result: game.engine.result(host.world, self),
+    ticks: tick,
+    alive: game.engine.alive(host.world, self),
+  };
+}
 
 export interface RaceReplay {
   state: unknown;

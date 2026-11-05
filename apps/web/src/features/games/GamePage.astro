@@ -166,6 +166,7 @@ const crumb = "rounded-sm hover:underline";
           strings={playerStrings(t, locale, { manifest, text })}
           ui={text.ui}
           {...(turn ? { turn } : {})}
+          realtime={manifest.kind === "realtime"}
           {...(arena ? { arena } : {})}
         />
       </div>

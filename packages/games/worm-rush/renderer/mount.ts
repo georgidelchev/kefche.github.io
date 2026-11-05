@@ -30,6 +30,7 @@ import {
 import { createWormClient, type WormClient, type WormClientOptions } from "./client";
 import { Hud } from "./Hud";
 import { Joining, ModeScreen, ProblemScreen, type Mode, type Problem } from "./Screens";
+import { createSounds, playMoments } from "./sounds";
 import { CSS } from "./styles";
 
 const GAME_ID = "worm-rush";
@@ -79,6 +80,9 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
   root.append(style, stage, overlay);
   container.append(root);
   const react = createRoot(overlay);
+  const sounds = createSounds(context);
+  sounds.preload();
+  let unsound: (() => void) | null = null;
 
   let client: WormClient | null = null;
   let local: LocalArena<World, Input, Snapshot, Event, undefined> | null = null;
@@ -92,6 +96,8 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
 
   const stop = () => {
     generation++;
+    unsound?.();
+    unsound = null;
     unsubscribe?.();
     unsubscribe = null;
     if (stall) clearTimeout(stall);
@@ -106,10 +112,19 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
     actionLabel: t("boost"),
     actionIcon: boostIcon(),
     reducedMotion: context.settings.reducedMotion,
+    onBoost: () => {
+      sounds.play("boost");
+    },
   });
 
   const show = (made: WormClient) => {
     client = made;
+    let before = made.state();
+    unsound = made.subscribe(() => {
+      const after = made.state();
+      playMoments(sounds, context, before, after);
+      before = after;
+    });
     made.pause(paused);
     react.render(createElement(Hud, { client: made, t, locale: context.locale }));
   };
@@ -243,6 +258,7 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
     },
     destroy() {
       stop();
+      sounds.dispose();
       react.unmount();
       root.remove();
     },

@@ -9,8 +9,12 @@
 // each, played here in Node on the bundle, with its result and a hash of its
 // final state. The Deno tests (_shared/engines.test.ts) replay them and must
 // agree. A new game needs a fixture policy below.
+//
+// Real-time games (Phase 9) also bring their bots and how their arenas are
+// filled (the engine's `bots` and `arenaHost`), with the SDK's ArenaHost: a
+// solo arena replays from its seed with the player's inputs by tick.
 import { createHash } from "node:crypto";
-import { existsSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -28,18 +32,30 @@ const ids = readdirSync(join(root, "packages/games"), { withFileTypes: true })
   .map((entry) => entry.name)
   .sort();
 
+// Read from the manifest's source, before anything is bundled.
+const realtime = new Set(
+  ids.filter((id) =>
+    /kind:s*"realtime"/.test(readFileSync(join(root, "packages/games", id, "manifest.ts"), "utf8")),
+  ),
+);
+
 const entry = [
   ...ids.flatMap((id, i) => [
-    `import { engine as e${String(i)} } from "./packages/games/${id}/engine/index.ts";`,
+    realtime.has(id)
+      ? `import { engine as e${String(i)}, bots as b${String(i)}, arenaHost as h${String(i)} } from "./packages/games/${id}/engine/index.ts";`
+      : `import { engine as e${String(i)} } from "./packages/games/${id}/engine/index.ts";`,
     `import { manifest as m${String(i)} } from "./packages/games/${id}/manifest.ts";`,
   ]),
+  'export { ArenaHost } from "./packages/game-sdk/src/arena-host.ts";',
   'export { canonicalJson } from "./packages/game-sdk/src/engines.ts";',
   'export { RACE_LOG_LIMITS, unpackActions } from "./packages/game-sdk/src/race-log.ts";',
   'export { levelForXp, levelProgress, xpForLevel } from "./packages/game-sdk/src/xp.ts";',
   'export { reachedTiers } from "./packages/game-sdk/src/achievements.ts";',
   "export const GAMES = {",
-  ...ids.map(
-    (id, i) => `  ${JSON.stringify(id)}: { manifest: m${String(i)}, engine: e${String(i)} },`,
+  ...ids.map((id, i) =>
+    realtime.has(id)
+      ? `  ${JSON.stringify(id)}: { manifest: m${String(i)}, engine: e${String(i)}, bots: b${String(i)}, host: h${String(i)} },`
+      : `  ${JSON.stringify(id)}: { manifest: m${String(i)}, engine: e${String(i)} },`,
   ),
   "};",
 ].join("\n");
@@ -69,7 +85,19 @@ writeFileSync(
   join(out, "engines.gen.d.ts"),
   [
     "// Generated with engines.gen.js: do not edit. Typed in engines.ts.",
-    "export declare const GAMES: Readonly<Record<string, { manifest: unknown; engine: unknown }>>;",
+    "export declare const GAMES: Readonly<",
+    "  Record<string, { manifest: unknown; engine: unknown; bots?: unknown; host?: unknown }>",
+    ">;",
+    "/** The SDK's ArenaHost: an arena stepped with its bots (real-time games). */",
+    "export declare class ArenaHost {",
+    "  constructor(engine: unknown, bots: unknown, options: unknown);",
+    "  readonly world: unknown;",
+    "  readonly tick: number;",
+    "  join(joiner: { name: string; look: number }): number | null;",
+    "  respawn(id: number): boolean;",
+    "  input(id: number, seq: number, bytes: Uint8Array): boolean;",
+    "  step(): { events: unknown[]; frames: Map<number, Uint8Array> };",
+    "}",
     "export declare function canonicalJson(value: unknown): string;",
     "export declare const RACE_LOG_LIMITS: { readonly dict: number; readonly runs: number };",
     "export declare function unpackActions(",
@@ -91,7 +119,7 @@ writeFileSync(
 console.log(`engines.gen.js: ${ids.join(", ")} (${String(Math.round(bundle.length / 1024))} KB)`);
 
 if (process.argv.includes("--fixtures")) {
-  const { GAMES, canonicalJson } = await import(
+  const { GAMES, ArenaHost, canonicalJson } = await import(
     `${pathToFileURL(join(out, "engines.gen.js")).href}?t=${String(Date.now())}`
   );
 
@@ -166,12 +194,48 @@ if (process.argv.includes("--fixtures")) {
     reversi: undefined,
   };
   const MAX_ACTIONS = 400;
+  /** Real-time games: 20 s of a solo arena, the player steering at random. */
+  const ARENA_TICKS = 600;
+  /** What a replay compares: the arena's tick, randomness, worms and orbs. */
+  const arenaState = (world) => ({
+    tick: world.tick,
+    rng: world.rng,
+    worms: [...world.worms.values()],
+    orbs: [...world.orbs.values()],
+  });
   const hash = (state) => createHash("sha256").update(canonicalJson(state)).digest("hex");
 
   const fixtures = ids.map((id) => {
     const { manifest, engine } = GAMES[id];
     const seed = `fixture-${id}`;
     const random = rng(seed);
+    if (manifest.kind === "realtime") {
+      // One life (a solo game is one life, step 9c), recorded as the server
+      // replays it (engines.ts replayArena): at each tick, that tick's input,
+      // then the step.
+      const { bots, host: options } = GAMES[id];
+      const host = new ArenaHost(engine, bots, { ...options, seed, config: undefined });
+      const self = host.join({ name: "replay", look: 0 });
+      const inputs = [];
+      let seq = 0;
+      for (let tick = 0; tick < ARENA_TICKS && engine.alive(host.world, self); tick++) {
+        if (tick % 10 === 0) {
+          const input = { heading: random() * Math.PI * 2, boost: random() < 0.15 };
+          inputs.push([tick, input.heading, input.boost]);
+          host.input(self, ++seq, engine.inputCodec.encode(input));
+        }
+        host.step();
+      }
+      return {
+        id,
+        version: manifest.version,
+        config: null,
+        seed,
+        ticks: ARENA_TICKS,
+        inputs,
+        expected: { result: engine.result(host.world, self), state: hash(arenaState(host.world)) },
+      };
+    }
     if (manifest.kind === "race") {
       const policy = racePolicies[id];
       if (!policy) throw new Error(`Add a fixture policy for the race game "${id}".`);
@@ -228,6 +292,6 @@ if (process.argv.includes("--fixtures")) {
   });
   writeFileSync(join(out, "engines.fixtures.json"), `${JSON.stringify(fixtures)}\n`);
   console.log(
-    `engines.fixtures.json: ${fixtures.map((f) => `${f.id} ${String((f.actions ?? f.moves).length)}`).join(", ")}`,
+    `engines.fixtures.json: ${fixtures.map((f) => `${f.id} ${String((f.actions ?? f.moves ?? f.inputs).length)}`).join(", ")}`,
   );
 }

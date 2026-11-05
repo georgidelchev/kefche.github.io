@@ -51,6 +51,27 @@ function reachedTiers(definitions, figures) {
   return reached;
 }
 
+// packages/game-sdk/src/arena-frames.ts
+var ARENA_FRAME = { input: 1, snapshot: 2, ping: 3, pong: 4 };
+function frame(kind, header, headerBytes, body) {
+  const bytes = new Uint8Array(1 + headerBytes + (body?.length ?? 0));
+  const view = new DataView(bytes.buffer);
+  view.setUint8(0, kind);
+  header(view);
+  if (body) bytes.set(body, 1 + headerBytes);
+  return bytes;
+}
+var encodeSnapshotFrame = (tick, ack, snapshot2) => frame(
+  ARENA_FRAME.snapshot,
+  (v) => {
+    v.setUint32(1, tick >>> 0, true);
+    v.setUint16(5, ack & 65535, true);
+  },
+  6,
+  snapshot2
+);
+var seqAfter = (a, b) => (a - b & 65535) !== 0 && (a - b & 65535) < 32768;
+
 // packages/game-sdk/src/prng.ts
 function seedRng(seed) {
   let h1 = 1779033703;
@@ -119,6 +140,322 @@ var Rng = class _Rng {
   }
 };
 
+// packages/game-sdk/src/realtime.ts
+function botsWanted(people, minimum, capacity) {
+  return Math.max(0, Math.min(minimum - people, capacity - people));
+}
+
+// packages/game-sdk/src/arena-host.ts
+var ArenaHost = class {
+  constructor(engine9, bots, options) {
+    this.engine = engine9;
+    this.bots = bots;
+    this.options = options;
+    this.world = engine9.createWorld(options.config, options.seed);
+    this.rng = Rng.fromSeed(`${options.seed}:bots`);
+    this.snapshotEvery = Math.max(1, Math.round(engine9.ticksPerSecond / engine9.snapshotsPerSecond));
+    this.balance();
+  }
+  engine;
+  bots;
+  options;
+  world;
+  people = /* @__PURE__ */ new Map();
+  botSeats = /* @__PURE__ */ new Map();
+  rng;
+  snapshotEvery;
+  bornBots = 0;
+  tickCount = 0;
+  get tick() {
+    return this.tickCount;
+  }
+  get peopleCount() {
+    return this.people.size;
+  }
+  get botCount() {
+    return this.botSeats.size;
+  }
+  /** Adds a person; null when the arena has no room for another. */
+  join(joiner) {
+    if (this.people.size >= this.options.maxPeople) return null;
+    let id = this.engine.join(this.world, { ...joiner, bot: null });
+    if (id === null) {
+      const botId = this.botSeats.keys().next().value;
+      if (botId === void 0) return null;
+      this.removeBot(botId);
+      id = this.engine.join(this.world, { ...joiner, bot: null });
+      if (id === null) return null;
+    }
+    this.people.set(id, { input: void 0, ack: 0, previous: null });
+    this.balance();
+    return id;
+  }
+  leave(id) {
+    if (!this.people.delete(id)) return;
+    this.engine.leave(this.world, id);
+    this.balance();
+  }
+  respawn(id) {
+    return this.people.has(id) && this.engine.respawn(this.world, id);
+  }
+  /** A person's input frame body; false when it's stale or doesn't decode. */
+  input(id, seq, bytes) {
+    const person = this.people.get(id);
+    if (!person || person.ack !== 0 && !seqAfter(seq, person.ack)) return false;
+    const input = this.engine.inputCodec.decode(bytes);
+    if (input === null) return false;
+    person.input = input;
+    person.ack = seq;
+    return true;
+  }
+  /** The next snapshot to `id` is a full one (they reconnected). */
+  resetDelta(id) {
+    const person = this.people.get(id);
+    if (person) person.previous = null;
+  }
+  step() {
+    const inputs = /* @__PURE__ */ new Map();
+    for (const [id, person] of this.people)
+      if (person.input !== void 0) inputs.set(id, person.input);
+    for (const [id, seat] of this.botSeats) {
+      if (!this.engine.alive(this.world, id)) {
+        seat.outSince ??= this.tickCount;
+        if (this.tickCount - seat.outSince >= this.options.botRespawnTicks && this.engine.respawn(this.world, id)) {
+          seat.outSince = null;
+        }
+        continue;
+      }
+      if (seat.bot && (this.tickCount + seat.phase) % seat.bot.thinkEvery === 0) {
+        seat.input = seat.bot.steer(this.world, id, { rng: this.rng });
+      }
+      if (seat.input !== void 0) inputs.set(id, seat.input);
+    }
+    const events = this.engine.step(this.world, inputs);
+    this.tickCount++;
+    const frames = /* @__PURE__ */ new Map();
+    if (this.tickCount % this.snapshotEvery === 0) {
+      for (const [id, person] of this.people) {
+        const snapshot2 = this.engine.snapshot(this.world, id);
+        const bytes = this.engine.snapshotCodec.encode(snapshot2, person.previous);
+        person.previous = snapshot2;
+        frames.set(id, encodeSnapshotFrame(this.tickCount, person.ack, bytes));
+      }
+    }
+    return { events, frames };
+  }
+  balance() {
+    const want = botsWanted(this.people.size, this.options.minimumPopulation, this.engine.capacity);
+    while (this.botSeats.size > want) {
+      const id = this.botSeats.keys().next().value;
+      if (id === void 0) break;
+      this.removeBot(id);
+    }
+    while (this.botSeats.size < want) {
+      const n = this.bornBots++;
+      const difficulties = this.options.botDifficulties;
+      const difficulty = difficulties[n % difficulties.length] ?? "easy";
+      const id = this.engine.join(this.world, {
+        ...this.options.botJoiner(n, difficulty),
+        bot: difficulty
+      });
+      if (id === null) break;
+      this.botSeats.set(id, {
+        bot: this.bots[difficulty],
+        input: void 0,
+        phase: n,
+        outSince: null
+      });
+    }
+  }
+  removeBot(id) {
+    this.botSeats.delete(id);
+    this.engine.leave(this.world, id);
+  }
+};
+
+// packages/game-sdk/src/bytes.ts
+var TURN = Math.PI * 2;
+var ByteWriter = class {
+  bytes;
+  view;
+  length = 0;
+  constructor(initialSize = 256) {
+    this.bytes = new Uint8Array(initialSize);
+    this.view = new DataView(this.bytes.buffer);
+  }
+  u8(value) {
+    this.reserve(1);
+    this.view.setUint8(this.length, value);
+    this.length += 1;
+    return this;
+  }
+  u16(value) {
+    this.reserve(2);
+    this.view.setUint16(this.length, value, true);
+    this.length += 2;
+    return this;
+  }
+  /** Clamped to −32,768…32,767. */
+  i16(value) {
+    this.reserve(2);
+    this.view.setInt16(this.length, Math.max(-32768, Math.min(32767, Math.round(value))), true);
+    this.length += 2;
+    return this;
+  }
+  u32(value) {
+    this.reserve(4);
+    this.view.setUint32(this.length, value >>> 0, true);
+    this.length += 4;
+    return this;
+  }
+  /** An unsigned integer up to 2^32 − 1 in 1–5 bytes (LEB128). */
+  varint(value) {
+    let v = value >>> 0;
+    while (v >= 128) {
+      this.u8(v & 127 | 128);
+      v >>>= 7;
+    }
+    return this.u8(v);
+  }
+  /** A signed integer in 1–5 bytes (zigzag, then LEB128): small changes stay one byte. */
+  svarint(value) {
+    const v = Math.round(value) | 0;
+    return this.varint((v << 1 ^ v >> 31) >>> 0);
+  }
+  /** A short string (a name): its UTF-8 bytes, up to 255 of them, after a length byte. */
+  string(value) {
+    const bytes = utf8(value);
+    this.u8(bytes.length);
+    for (const b of bytes) this.u8(b);
+    return this;
+  }
+  /** What was written, as a copy of just those bytes. */
+  finish() {
+    return this.bytes.slice(0, this.length);
+  }
+  reserve(n) {
+    if (this.length + n <= this.bytes.length) return;
+    const next = new Uint8Array(Math.max(this.bytes.length * 2, this.length + n));
+    next.set(this.bytes);
+    this.bytes = next;
+    this.view = new DataView(next.buffer);
+  }
+};
+var ByteReader = class {
+  view;
+  at = 0;
+  constructor(bytes) {
+    this.view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  }
+  get done() {
+    return this.at >= this.view.byteLength;
+  }
+  u8() {
+    const v = this.view.getUint8(this.at);
+    this.at += 1;
+    return v;
+  }
+  u16() {
+    const v = this.view.getUint16(this.at, true);
+    this.at += 2;
+    return v;
+  }
+  i16() {
+    const v = this.view.getInt16(this.at, true);
+    this.at += 2;
+    return v;
+  }
+  u32() {
+    const v = this.view.getUint32(this.at, true);
+    this.at += 4;
+    return v;
+  }
+  varint() {
+    let result2 = 0;
+    for (let shift = 0; shift < 35; shift += 7) {
+      const byte = this.u8();
+      result2 |= (byte & 127) << shift;
+      if (byte < 128) return result2 >>> 0;
+    }
+    throw new RangeError("varint longer than 5 bytes");
+  }
+  svarint() {
+    const v = this.varint();
+    return v >>> 1 ^ -(v & 1);
+  }
+  string() {
+    const length = this.u8();
+    const bytes = [];
+    for (let i = 0; i < length; i++) bytes.push(this.u8());
+    return fromUtf8(bytes);
+  }
+};
+function utf8(value) {
+  const out = [];
+  for (const ch of value) {
+    const c = ch.codePointAt(0) ?? 0;
+    const bytes = c < 128 ? [c] : c < 2048 ? [192 | c >> 6, 128 | c & 63] : c < 65536 ? [224 | c >> 12, 128 | c >> 6 & 63, 128 | c & 63] : [240 | c >> 18, 128 | c >> 12 & 63, 128 | c >> 6 & 63, 128 | c & 63];
+    if (out.length + bytes.length > 255) break;
+    out.push(...bytes);
+  }
+  return out;
+}
+function fromUtf8(bytes) {
+  let out = "";
+  for (let i = 0; i < bytes.length; ) {
+    const b = bytes[i] ?? 0;
+    const extra = b >= 240 ? 3 : b >= 224 ? 2 : b >= 192 ? 1 : 0;
+    let c = extra === 0 ? b : b & 63 >> extra;
+    for (let k = 1; k <= extra; k++) c = c << 6 | (bytes[i + k] ?? 0) & 63;
+    out += String.fromCodePoint(c);
+    i += extra + 1;
+  }
+  return out;
+}
+function angleToByte(radians) {
+  return Math.round((radians % TURN + TURN) % TURN * (256 / TURN)) & 255;
+}
+function byteToAngle(byte) {
+  return (byte & 255) * TURN / 256;
+}
+
+// packages/game-sdk/src/det-math.ts
+var PI = 3.141592653589793;
+var TAU = 6.283185307179586;
+var HALF_PI = 1.5707963267948966;
+var QUARTER_PI = 0.7853981633974483;
+var TAN_EIGHTH_PI = 0.41421356237309503;
+function wrapAngle(x) {
+  return x - Math.round(x / TAU) * TAU;
+}
+function detSin(x) {
+  let r = wrapAngle(x);
+  if (r > HALF_PI) r = PI - r;
+  else if (r < -HALF_PI) r = -PI - r;
+  const r2 = r * r;
+  return r * (1 + r2 * (-1 / 6 + r2 * (1 / 120 + r2 * (-1 / 5040 + r2 * (1 / 362880 + r2 * (-1 / 39916800 + r2 * (1 / 6227020800 + r2 * (-1 / 1307674368e3))))))));
+}
+function detCos(x) {
+  return detSin(x + HALF_PI);
+}
+function atanSmall(t) {
+  const t2 = t * t;
+  let sum = 0;
+  for (let n = 23; n >= 1; n -= 2) sum = 1 / n - t2 * sum;
+  return t * sum;
+}
+function atanUnit(a) {
+  return a > TAN_EIGHTH_PI ? QUARTER_PI + atanSmall((a - 1) / (a + 1)) : atanSmall(a);
+}
+function detAtan2(y, x) {
+  const ax = Math.abs(x);
+  const ay = Math.abs(y);
+  if (ax === 0 && ay === 0) return 0;
+  const a = ax >= ay ? atanUnit(ay / ax) : HALF_PI - atanUnit(ax / ay);
+  const angle = x >= 0 ? a : PI - a;
+  return y < 0 ? -angle : angle;
+}
+
 // packages/game-sdk/src/engines.ts
 function canonicalJson(value) {
   const sorted = (v) => Array.isArray(v) ? v.map(sorted) : v !== null && typeof v === "object" ? Object.fromEntries(
@@ -128,7 +465,7 @@ function canonicalJson(value) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest8) => manifest8;
+var defineManifest = (manifest9) => manifest9;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -146,6 +483,69 @@ function unpackActions(log, maxActions = 2e5) {
   }
   return out;
 }
+
+// packages/game-sdk/src/spatial-grid.ts
+var OFFSET = 32768;
+var SpatialGrid = class {
+  /** `cellSize`: about the radius of the largest query, in world units. */
+  constructor(cellSize) {
+    this.cellSize = cellSize;
+  }
+  cellSize;
+  cells = /* @__PURE__ */ new Map();
+  ids = [];
+  xs = [];
+  ys = [];
+  clear() {
+    for (const cell of this.cells.values()) cell.length = 0;
+    this.ids.length = 0;
+    this.xs.length = 0;
+    this.ys.length = 0;
+  }
+  insert(id, x, y) {
+    const key = this.key(this.cell(x), this.cell(y));
+    let cell = this.cells.get(key);
+    if (!cell) {
+      cell = [];
+      this.cells.set(key, cell);
+    }
+    cell.push(this.ids.length);
+    this.ids.push(id);
+    this.xs.push(x);
+    this.ys.push(y);
+  }
+  /** Ids within `radius` of (x, y), added to `out`, which is returned. */
+  query(x, y, radius, out = []) {
+    this.forEach(x, y, radius, (id) => out.push(id));
+    return out;
+  }
+  /** Calls `visit` for each entry within `radius` of (x, y), with its position and squared distance. */
+  forEach(x, y, radius, visit) {
+    const r2 = radius * radius;
+    const x0 = this.cell(x - radius);
+    const x1 = this.cell(x + radius);
+    const y0 = this.cell(y - radius);
+    const y1 = this.cell(y + radius);
+    for (let cy = y0; cy <= y1; cy++) {
+      for (let cx = x0; cx <= x1; cx++) {
+        const cell = this.cells.get(this.key(cx, cy));
+        if (!cell) continue;
+        for (const i of cell) {
+          const px = this.xs[i] ?? 0;
+          const py = this.ys[i] ?? 0;
+          const d2 = (px - x) * (px - x) + (py - y) * (py - y);
+          if (d2 <= r2) visit(this.ids[i] ?? -1, px, py, d2);
+        }
+      }
+    }
+  }
+  cell(v) {
+    return Math.floor(v / this.cellSize);
+  }
+  key(cx, cy) {
+    return (cx + OFFSET & 65535) * 65536 + (cy + OFFSET & 65535);
+  }
+};
 
 // packages/game-sdk/src/xp.ts
 var LEVEL_STEP_XP = 100;
@@ -172,32 +572,32 @@ function levelProgress(xp) {
 // packages/games/2048/engine/index.ts
 var SIZE = 4;
 var GOAL = 2048;
-function spawn(snapshot) {
-  const taken = new Set(snapshot.tiles.map((t) => t.row * SIZE + t.col));
+function spawn(snapshot2) {
+  const taken = new Set(snapshot2.tiles.map((t) => t.row * SIZE + t.col));
   const free = Array.from({ length: SIZE * SIZE }, (_, i) => i).filter((i) => !taken.has(i));
-  if (free.length === 0) return snapshot;
-  const rng = new Rng(snapshot.rng);
+  if (free.length === 0) return snapshot2;
+  const rng = new Rng(snapshot2.rng);
   const cell = rng.pick(free);
   const value = rng.next() < 0.9 ? 2 : 4;
   return {
     tiles: [
-      ...snapshot.tiles,
-      { id: snapshot.nextId, value, row: Math.floor(cell / SIZE), col: cell % SIZE, spawned: true }
+      ...snapshot2.tiles,
+      { id: snapshot2.nextId, value, row: Math.floor(cell / SIZE), col: cell % SIZE, spawned: true }
     ],
-    score: snapshot.score,
+    score: snapshot2.score,
     rng: rng.state,
-    nextId: snapshot.nextId + 1
+    nextId: snapshot2.nextId + 1
   };
 }
-function slide(snapshot, direction) {
+function slide(snapshot2, direction) {
   const vertical = direction === "up" || direction === "down";
   const reverse = direction === "right" || direction === "down";
-  let nextId = snapshot.nextId;
+  let nextId = snapshot2.nextId;
   let gained = 0;
   let moved = false;
   const out = [];
   for (let line = 0; line < SIZE; line++) {
-    const inLine = snapshot.tiles.filter((t) => (vertical ? t.col : t.row) === line).sort((a, b) => (vertical ? a.row - b.row : a.col - b.col) * (reverse ? -1 : 1));
+    const inLine = snapshot2.tiles.filter((t) => (vertical ? t.col : t.row) === line).sort((a, b) => (vertical ? a.row - b.row : a.col - b.col) * (reverse ? -1 : 1));
     let slot = 0;
     for (let i = 0; i < inLine.length; i++) {
       const tile = inLine[i];
@@ -218,9 +618,9 @@ function slide(snapshot, direction) {
       slot++;
     }
   }
-  return moved ? { tiles: out, score: snapshot.score + gained, rng: snapshot.rng, nextId } : null;
+  return moved ? { tiles: out, score: snapshot2.score + gained, rng: snapshot2.rng, nextId } : null;
 }
-var canMove = (snapshot) => ["up", "down", "left", "right"].some((d) => slide(snapshot, d) !== null);
+var canMove = (snapshot2) => ["up", "down", "left", "right"].some((d) => slide(snapshot2, d) !== null);
 var snapshotOf = (s) => ({
   tiles: s.tiles,
   score: s.score,
@@ -307,8 +707,8 @@ var manifest = defineManifest({
 function rootNode(comment) {
   return comment !== null ? { comment, variations: [] } : { variations: [] };
 }
-function node(move, suffix, nag, comment, variations) {
-  const node2 = { move, variations };
+function node(move2, suffix, nag, comment, variations) {
+  const node2 = { move: move2, variations };
   if (suffix) {
     node2.suffix = suffix;
   }
@@ -577,8 +977,8 @@ function peg$parse(input, options) {
   var peg$f9 = function(line) {
     return line;
   };
-  var peg$f10 = function(result, comment) {
-    return { result, comment };
+  var peg$f10 = function(result2, comment) {
+    return { result: result2, comment };
   };
   var peg$currPos = options.peg$currPos | 0;
   var peg$posDetailsCache = [{ line: 1, column: 1 }];
@@ -1565,12 +1965,12 @@ function xoroshiro128(state) {
   return function() {
     let s0 = BigInt(state & MASK64);
     let s1 = BigInt(state >> 64n & MASK64);
-    const result = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
+    const result2 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
     s1 ^= s0;
     s0 = (rotl(s0, 24n) ^ s1 ^ s1 << 16n) & MASK64;
     s1 = rotl(s1, 37n);
     state = s1 << 64n | s0;
-    return result;
+    return result2;
   };
 }
 var rand = xoroshiro128(0xa187eb39cdcaed8f31c4b365b102e01en);
@@ -2409,10 +2809,10 @@ function validateFen(fen) {
   }
   return { ok: true };
 }
-function getDisambiguator(move, moves) {
-  const from = move.from;
-  const to = move.to;
-  const piece = move.piece;
+function getDisambiguator(move2, moves) {
+  const from = move2.from;
+  const to = move2.to;
+  const piece = move2.piece;
   let ambiguities = 0;
   let sameRank = 0;
   let sameFile = 0;
@@ -2482,8 +2882,8 @@ function inferPieceType(san) {
   }
   return pieceType;
 }
-function strippedSan(move) {
-  return move.replace(/=/, "").replace(/[+#]?[?!]*$/, "");
+function strippedSan(move2) {
+  return move2.replace(/=/, "").replace(/[+#]?[?!]*$/, "");
 }
 var Chess = class {
   _board = new Array(128);
@@ -2965,9 +3365,9 @@ var Chess = class {
   moves({ verbose = false, square = void 0, piece = void 0 } = {}) {
     const moves = this._moves({ square, piece });
     if (verbose) {
-      return moves.map((move) => new Move(this, move));
+      return moves.map((move2) => new Move(this, move2));
     } else {
-      return moves.map((move) => this._moveToSan(move, moves));
+      return moves.map((move2) => this._moveToSan(move2, moves));
     }
   }
   _moves({ legal = true, piece = void 0, square = void 0 } = {}) {
@@ -3073,26 +3473,26 @@ var Chess = class {
     }
     return legalMoves;
   }
-  move(move, { strict = false } = {}) {
+  move(move2, { strict = false } = {}) {
     let moveObj = null;
-    if (typeof move === "string") {
-      moveObj = this._moveFromSan(move, strict);
-    } else if (move === null) {
+    if (typeof move2 === "string") {
+      moveObj = this._moveFromSan(move2, strict);
+    } else if (move2 === null) {
       moveObj = this._moveFromSan(SAN_NULLMOVE, strict);
-    } else if (typeof move === "object") {
+    } else if (typeof move2 === "object") {
       const moves = this._moves();
       for (let i = 0, len = moves.length; i < len; i++) {
-        if (move.from === algebraic(moves[i].from) && move.to === algebraic(moves[i].to) && (!("promotion" in moves[i]) || move.promotion === moves[i].promotion)) {
+        if (move2.from === algebraic(moves[i].from) && move2.to === algebraic(moves[i].to) && (!("promotion" in moves[i]) || move2.promotion === moves[i].promotion)) {
           moveObj = moves[i];
           break;
         }
       }
     }
     if (!moveObj) {
-      if (typeof move === "string") {
-        throw new Error(`Invalid move: ${move}`);
+      if (typeof move2 === "string") {
+        throw new Error(`Invalid move: ${move2}`);
       } else {
-        throw new Error(`Invalid move: ${JSON.stringify(move)}`);
+        throw new Error(`Invalid move: ${JSON.stringify(move2)}`);
       }
     }
     if (this.isCheck() && moveObj.flags & BITS.NULL_MOVE) {
@@ -3103,9 +3503,9 @@ var Chess = class {
     this._incPositionCount();
     return prettyMove;
   }
-  _push(move) {
+  _push(move2) {
     this._history.push({
-      move,
+      move: move2,
       kings: { b: this._kings.b, w: this._kings.w },
       turn: this._turn,
       castling: { b: this._castling.b, w: this._castling.w },
@@ -3120,11 +3520,11 @@ var Chess = class {
     delete this._board[from];
     this._hash ^= this._pieceKey(to);
   }
-  _makeMove(move) {
+  _makeMove(move2) {
     const us = this._turn;
     const them = swapColor(us);
-    this._push(move);
-    if (move.flags & BITS.NULL_MOVE) {
+    this._push(move2);
+    if (move2.flags & BITS.NULL_MOVE) {
       if (us === BLACK) {
         this._moveNumber++;
       }
@@ -3135,37 +3535,37 @@ var Chess = class {
     }
     this._hash ^= this._epKey();
     this._hash ^= this._castlingKey();
-    if (move.captured) {
-      this._hash ^= this._pieceKey(move.to);
+    if (move2.captured) {
+      this._hash ^= this._pieceKey(move2.to);
     }
-    this._movePiece(move.from, move.to);
-    if (move.flags & BITS.EP_CAPTURE) {
+    this._movePiece(move2.from, move2.to);
+    if (move2.flags & BITS.EP_CAPTURE) {
       if (this._turn === BLACK) {
-        this._clear(move.to - 16);
+        this._clear(move2.to - 16);
       } else {
-        this._clear(move.to + 16);
+        this._clear(move2.to + 16);
       }
     }
-    if (move.promotion) {
-      this._clear(move.to);
-      this._set(move.to, { type: move.promotion, color: us });
+    if (move2.promotion) {
+      this._clear(move2.to);
+      this._set(move2.to, { type: move2.promotion, color: us });
     }
-    if (this._board[move.to].type === KING) {
-      this._kings[us] = move.to;
-      if (move.flags & BITS.KSIDE_CASTLE) {
-        const castlingTo = move.to - 1;
-        const castlingFrom = move.to + 1;
+    if (this._board[move2.to].type === KING) {
+      this._kings[us] = move2.to;
+      if (move2.flags & BITS.KSIDE_CASTLE) {
+        const castlingTo = move2.to - 1;
+        const castlingFrom = move2.to + 1;
         this._movePiece(castlingFrom, castlingTo);
-      } else if (move.flags & BITS.QSIDE_CASTLE) {
-        const castlingTo = move.to + 1;
-        const castlingFrom = move.to - 2;
+      } else if (move2.flags & BITS.QSIDE_CASTLE) {
+        const castlingTo = move2.to + 1;
+        const castlingFrom = move2.to - 2;
         this._movePiece(castlingFrom, castlingTo);
       }
       this._castling[us] = 0;
     }
     if (this._castling[us]) {
       for (let i = 0, len = ROOKS[us].length; i < len; i++) {
-        if (move.from === ROOKS[us][i].square && this._castling[us] & ROOKS[us][i].flag) {
+        if (move2.from === ROOKS[us][i].square && this._castling[us] & ROOKS[us][i].flag) {
           this._castling[us] ^= ROOKS[us][i].flag;
           break;
         }
@@ -3173,21 +3573,21 @@ var Chess = class {
     }
     if (this._castling[them]) {
       for (let i = 0, len = ROOKS[them].length; i < len; i++) {
-        if (move.to === ROOKS[them][i].square && this._castling[them] & ROOKS[them][i].flag) {
+        if (move2.to === ROOKS[them][i].square && this._castling[them] & ROOKS[them][i].flag) {
           this._castling[them] ^= ROOKS[them][i].flag;
           break;
         }
       }
     }
     this._hash ^= this._castlingKey();
-    if (move.flags & BITS.BIG_PAWN) {
+    if (move2.flags & BITS.BIG_PAWN) {
       let epSquare;
       if (us === BLACK) {
-        epSquare = move.to - 16;
+        epSquare = move2.to - 16;
       } else {
-        epSquare = move.to + 16;
+        epSquare = move2.to + 16;
       }
-      if (!(move.to - 1 & 136) && this._board[move.to - 1]?.type === PAWN && this._board[move.to - 1]?.color === them || !(move.to + 1 & 136) && this._board[move.to + 1]?.type === PAWN && this._board[move.to + 1]?.color === them) {
+      if (!(move2.to - 1 & 136) && this._board[move2.to - 1]?.type === PAWN && this._board[move2.to - 1]?.color === them || !(move2.to + 1 & 136) && this._board[move2.to + 1]?.type === PAWN && this._board[move2.to + 1]?.color === them) {
         this._epSquare = epSquare;
         this._hash ^= this._epKey();
       } else {
@@ -3196,9 +3596,9 @@ var Chess = class {
     } else {
       this._epSquare = EMPTY;
     }
-    if (move.piece === PAWN) {
+    if (move2.piece === PAWN) {
       this._halfMoves = 0;
-    } else if (move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE)) {
+    } else if (move2.flags & (BITS.CAPTURE | BITS.EP_CAPTURE)) {
       this._halfMoves = 0;
     } else {
       this._halfMoves++;
@@ -3211,9 +3611,9 @@ var Chess = class {
   }
   undo() {
     const hash = this._hash;
-    const move = this._undoMove();
-    if (move) {
-      const prettyMove = new Move(this, move);
+    const move2 = this._undoMove();
+    if (move2) {
+      const prettyMove = new Move(this, move2);
       this._decPositionCount(hash);
       return prettyMove;
     }
@@ -3226,7 +3626,7 @@ var Chess = class {
     }
     this._hash ^= this._epKey();
     this._hash ^= this._castlingKey();
-    const move = old.move;
+    const move2 = old.move;
     this._kings = old.kings;
     this._turn = old.turn;
     this._castling = old.castling;
@@ -3238,51 +3638,51 @@ var Chess = class {
     this._hash ^= SIDE_KEY;
     const us = this._turn;
     const them = swapColor(us);
-    if (move.flags & BITS.NULL_MOVE) {
-      return move;
+    if (move2.flags & BITS.NULL_MOVE) {
+      return move2;
     }
-    this._movePiece(move.to, move.from);
-    if (move.piece) {
-      this._clear(move.from);
-      this._set(move.from, { type: move.piece, color: us });
+    this._movePiece(move2.to, move2.from);
+    if (move2.piece) {
+      this._clear(move2.from);
+      this._set(move2.from, { type: move2.piece, color: us });
     }
-    if (move.captured) {
-      if (move.flags & BITS.EP_CAPTURE) {
+    if (move2.captured) {
+      if (move2.flags & BITS.EP_CAPTURE) {
         let index;
         if (us === BLACK) {
-          index = move.to - 16;
+          index = move2.to - 16;
         } else {
-          index = move.to + 16;
+          index = move2.to + 16;
         }
         this._set(index, { type: PAWN, color: them });
       } else {
-        this._set(move.to, { type: move.captured, color: them });
+        this._set(move2.to, { type: move2.captured, color: them });
       }
     }
-    if (move.flags & (BITS.KSIDE_CASTLE | BITS.QSIDE_CASTLE)) {
+    if (move2.flags & (BITS.KSIDE_CASTLE | BITS.QSIDE_CASTLE)) {
       let castlingTo, castlingFrom;
-      if (move.flags & BITS.KSIDE_CASTLE) {
-        castlingTo = move.to + 1;
-        castlingFrom = move.to - 1;
+      if (move2.flags & BITS.KSIDE_CASTLE) {
+        castlingTo = move2.to + 1;
+        castlingFrom = move2.to - 1;
       } else {
-        castlingTo = move.to - 2;
-        castlingFrom = move.to + 1;
+        castlingTo = move2.to - 2;
+        castlingFrom = move2.to + 1;
       }
       this._movePiece(castlingFrom, castlingTo);
     }
-    return move;
+    return move2;
   }
   pgn({ newline = "\n", maxWidth = 0 } = {}) {
-    const result = [];
+    const result2 = [];
     let headerExists = false;
     for (const i in this._header) {
       const headerTag = this._header[i];
       if (headerTag)
-        result.push(`[${i} "${this._header[i]}"]` + newline);
+        result2.push(`[${i} "${this._header[i]}"]` + newline);
       headerExists = true;
     }
     if (headerExists && this._history.length) {
-      result.push(newline);
+      result2.push(newline);
     }
     const appendComment = (moveString2) => {
       const comment = this._comments[this.fen()];
@@ -3303,38 +3703,38 @@ var Chess = class {
     }
     while (reversedHistory.length > 0) {
       moveString = appendComment(moveString);
-      const move = reversedHistory.pop();
-      if (!move) {
+      const move2 = reversedHistory.pop();
+      if (!move2) {
         break;
       }
-      if (!this._history.length && move.color === "b") {
+      if (!this._history.length && move2.color === "b") {
         const prefix = `${this._moveNumber}. ...`;
         moveString = moveString ? `${moveString} ${prefix}` : prefix;
-      } else if (move.color === "w") {
+      } else if (move2.color === "w") {
         if (moveString.length) {
           moves.push(moveString);
         }
         moveString = this._moveNumber + ".";
       }
-      moveString = moveString + " " + this._moveToSan(move, this._moves({ legal: true }));
-      this._makeMove(move);
+      moveString = moveString + " " + this._moveToSan(move2, this._moves({ legal: true }));
+      this._makeMove(move2);
     }
     if (moveString.length) {
       moves.push(appendComment(moveString));
     }
     moves.push(this._header.Result || "*");
     if (maxWidth === 0) {
-      return result.join("") + moves.join(" ");
+      return result2.join("") + moves.join(" ");
     }
     const strip = function() {
-      if (result.length > 0 && result[result.length - 1] === " ") {
-        result.pop();
+      if (result2.length > 0 && result2[result2.length - 1] === " ") {
+        result2.pop();
         return true;
       }
       return false;
     };
-    const wrapComment = function(width, move) {
-      for (const token of move.split(" ")) {
+    const wrapComment = function(width, move2) {
+      for (const token of move2.split(" ")) {
         if (!token) {
           continue;
         }
@@ -3342,12 +3742,12 @@ var Chess = class {
           while (strip()) {
             width--;
           }
-          result.push(newline);
+          result2.push(newline);
           width = 0;
         }
-        result.push(token);
+        result2.push(token);
         width += token.length;
-        result.push(" ");
+        result2.push(" ");
         width++;
       }
       if (strip()) {
@@ -3364,19 +3764,19 @@ var Chess = class {
         }
       }
       if (currentWidth + moves[i].length > maxWidth && i !== 0) {
-        if (result[result.length - 1] === " ") {
-          result.pop();
+        if (result2[result2.length - 1] === " ") {
+          result2.pop();
         }
-        result.push(newline);
+        result2.push(newline);
         currentWidth = 0;
       } else if (i !== 0) {
-        result.push(" ");
+        result2.push(" ");
         currentWidth++;
       }
-      result.push(moves[i]);
+      result2.push(moves[i]);
       currentWidth += moves[i].length;
     }
-    return result.join("");
+    return result2.join("");
   }
   /**
    * @deprecated Use `setHeader` and `getHeaders` instead. This method will return null header tags (which is not what you want)
@@ -3440,11 +3840,11 @@ var Chess = class {
     let node2 = parsedPgn.root;
     while (node2) {
       if (node2.move) {
-        const move = this._moveFromSan(node2.move, strict);
-        if (move == null) {
+        const move2 = this._moveFromSan(node2.move, strict);
+        if (move2 == null) {
           throw new Error(`Invalid move in PGN: ${node2.move}`);
         } else {
-          this._makeMove(move);
+          this._makeMove(move2);
           this._incPositionCount();
         }
       }
@@ -3453,9 +3853,9 @@ var Chess = class {
       }
       node2 = node2.variations[0];
     }
-    const result = parsedPgn.result;
-    if (result && Object.keys(this._header).length && this._header["Result"] !== result) {
-      this.setHeader("Result", result);
+    const result2 = parsedPgn.result;
+    if (result2 && Object.keys(this._header).length && this._header["Result"] !== result2) {
+      this.setHeader("Result", result2);
     }
   }
   /*
@@ -3469,31 +3869,31 @@ var Chess = class {
    * 4. ... Nge7 is overly disambiguated because the knight on c6 is pinned
    * 4. ... Ne7 is technically the valid SAN
    */
-  _moveToSan(move, moves) {
+  _moveToSan(move2, moves) {
     let output = "";
-    if (move.flags & BITS.KSIDE_CASTLE) {
+    if (move2.flags & BITS.KSIDE_CASTLE) {
       output = "O-O";
-    } else if (move.flags & BITS.QSIDE_CASTLE) {
+    } else if (move2.flags & BITS.QSIDE_CASTLE) {
       output = "O-O-O";
-    } else if (move.flags & BITS.NULL_MOVE) {
+    } else if (move2.flags & BITS.NULL_MOVE) {
       return SAN_NULLMOVE;
     } else {
-      if (move.piece !== PAWN) {
-        const disambiguator = getDisambiguator(move, moves);
-        output += move.piece.toUpperCase() + disambiguator;
+      if (move2.piece !== PAWN) {
+        const disambiguator = getDisambiguator(move2, moves);
+        output += move2.piece.toUpperCase() + disambiguator;
       }
-      if (move.flags & (BITS.CAPTURE | BITS.EP_CAPTURE)) {
-        if (move.piece === PAWN) {
-          output += algebraic(move.from)[0];
+      if (move2.flags & (BITS.CAPTURE | BITS.EP_CAPTURE)) {
+        if (move2.piece === PAWN) {
+          output += algebraic(move2.from)[0];
         }
         output += "x";
       }
-      output += algebraic(move.to);
-      if (move.promotion) {
-        output += "=" + move.promotion.toUpperCase();
+      output += algebraic(move2.to);
+      if (move2.promotion) {
+        output += "=" + move2.promotion.toUpperCase();
       }
     }
-    this._makeMove(move);
+    this._makeMove(move2);
     if (this.isCheck()) {
       if (this.isCheckmate()) {
         output += "#";
@@ -3505,8 +3905,8 @@ var Chess = class {
     return output;
   }
   // convert a move from Standard Algebraic Notation (SAN) to 0x88 coordinates
-  _moveFromSan(move, strict = false) {
-    let cleanMove = strippedSan(move);
+  _moveFromSan(move2, strict = false) {
+    let cleanMove = strippedSan(move2);
     if (!strict) {
       if (cleanMove === "0-0") {
         cleanMove = "O-O";
@@ -3670,16 +4070,16 @@ var Chess = class {
       reversedHistory.push(this._undoMove());
     }
     while (true) {
-      const move = reversedHistory.pop();
-      if (!move) {
+      const move2 = reversedHistory.pop();
+      if (!move2) {
         break;
       }
       if (verbose) {
-        moveHistory.push(new Move(this, move));
+        moveHistory.push(new Move(this, move2));
       } else {
-        moveHistory.push(this._moveToSan(move, this._moves()));
+        moveHistory.push(this._moveToSan(move2, this._moves()));
       }
-      this._makeMove(move);
+      this._makeMove(move2);
     }
     return moveHistory;
   }
@@ -3714,11 +4114,11 @@ var Chess = class {
     }
     copyComment(this.fen());
     while (true) {
-      const move = reversedHistory.pop();
-      if (!move) {
+      const move2 = reversedHistory.pop();
+      if (!move2) {
         break;
       }
-      this._makeMove(move);
+      this._makeMove(move2);
       copyComment(this.fen());
     }
     this._comments = currentComments;
@@ -3771,8 +4171,8 @@ var Chess = class {
       }
     }
     this._updateCastlingRights();
-    const result = this.getCastlingRights(color);
-    return (rights[KING] === void 0 || rights[KING] === result[KING]) && (rights[QUEEN] === void 0 || rights[QUEEN] === result[QUEEN]);
+    const result2 = this.getCastlingRights(color);
+    return (rights[KING] === void 0 || rights[KING] === result2[KING]) && (rights[QUEEN] === void 0 || rights[QUEEN] === result2[QUEEN]);
   }
   getCastlingRights(color) {
     return {
@@ -3790,7 +4190,7 @@ var START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 var seatOf = (color) => color === "w" ? 0 : 1;
 var turnOf = (state) => state.fen.split(" ")[1] === "b" ? 1 : 0;
 var other = (seat) => 1 - seat;
-var uciOf = (move) => `${move.from}${move.to}${move.promotion ?? ""}`;
+var uciOf = (move2) => `${move2.from}${move2.to}${move2.promotion ?? ""}`;
 function play(chess, uci) {
   const from = uci.slice(0, 2);
   const to = uci.slice(2, 4);
@@ -3875,13 +4275,13 @@ var engine2 = {
       case "move": {
         if (seat !== turnOf(state)) return state;
         const chess = boardOf(state);
-        const move = play(chess, action.uci);
-        if (!move) return state;
+        const move2 = play(chess, action.uci);
+        if (!move2) return state;
         boards.delete(state);
         return withBoard(
           {
             ...state,
-            moves: [...state.moves, uciOf(move)],
+            moves: [...state.moves, uciOf(move2)],
             fen: chess.fen(),
             // Moving answers the other side's offer with a no; a takeback request lapses.
             drawOffer: state.drawOffer === seat ? seat : null,
@@ -4730,7 +5130,7 @@ function search(grid, order, onSolution) {
     cols[k] = (cols[k] ?? 0) | bit;
     boxes[b] = (boxes[b] ?? 0) | bit;
   }
-  const step = () => {
+  const step2 = () => {
     let best = -1;
     let bestMask = 0;
     let bestCount = 10;
@@ -4757,7 +5157,7 @@ function search(grid, order, onSolution) {
       rows[r] = (rows[r] ?? 0) | bit;
       cols[k] = (cols[k] ?? 0) | bit;
       boxes[b] = (boxes[b] ?? 0) | bit;
-      if (step()) return true;
+      if (step2()) return true;
       cells[best] = 0;
       rows[r] = (rows[r] ?? 0) & ~bit;
       cols[k] = (cols[k] ?? 0) & ~bit;
@@ -4765,7 +5165,7 @@ function search(grid, order, onSolution) {
     }
     return false;
   };
-  step();
+  step2();
   return true;
 }
 var DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -4963,6 +5363,574 @@ var manifest7 = defineManifest({
   tags: ["puzzle", "numbers", "single-player"]
 });
 
+// packages/games/worm-rush/engine/world.ts
+var TICKS_PER_SECOND = 30;
+var SNAPSHOTS_PER_SECOND = 15;
+var TRAIL_EVERY = TICKS_PER_SECOND / SNAPSHOTS_PER_SECOND;
+var ARENA_RADIUS = 3e3;
+var CAPACITY = 30;
+var POSITION_SCALE = 4;
+var START_MASS = 20;
+var BOOST_MIN_MASS = 15;
+var BOOST_MASS_PER_SECOND = 5;
+var BOOST_MASS_PER_TICK = BOOST_MASS_PER_SECOND / TICKS_PER_SECOND;
+var SPEED_PER_TICK = 150 / TICKS_PER_SECOND;
+var BOOST_SPEED_PER_TICK = 280 / TICKS_PER_SECOND;
+var NATURAL_ORBS = 1e3;
+var MAX_ORBS = 2500;
+var DROP_SHARE = 0.7;
+var MAX_DROPS = 60;
+var HIT_SHARE = 0.8;
+var SUCTION = 6;
+var CELL_SIZE = 120;
+var wormLength = (mass) => 100 + 40 * Math.sqrt(mass);
+var wormRadius = (mass) => 8 + 2 * Math.sqrt(Math.sqrt(mass));
+var turnPerTick = (mass) => 3.8 / (1 + mass / 2e3) / TICKS_PER_SECOND;
+var viewRadius = (mass) => 900 + 0.25 * wormLength(mass);
+var orbRadius = (value) => Math.min(14, 3 + 2 * Math.sqrt(value));
+var MAX_WORM_RADIUS = wormRadius(1e5);
+var quantize = (v) => Math.round(v * POSITION_SCALE) / POSITION_SCALE;
+var ORB_HUES = 6;
+function trimTrail(headX, headY, trail, length) {
+  let travelled = 0;
+  let px = headX;
+  let py = headY;
+  for (let i = 0; i < trail.length; i += 2) {
+    const x = trail[i] ?? 0;
+    const y = trail[i + 1] ?? 0;
+    travelled += Math.sqrt((x - px) * (x - px) + (y - py) * (y - py));
+    if (travelled >= length) {
+      trail.length = i + 2;
+      return;
+    }
+    px = x;
+    py = y;
+  }
+}
+
+// packages/games/worm-rush/engine/codec.ts
+var Q = POSITION_SCALE;
+var CONTINUING = 1;
+var BOOSTING = 2;
+function rebuiltTrail(previous, x, y, mass) {
+  const trail = [x, y, ...previous.trail];
+  trimTrail(x, y, trail, wormLength(mass));
+  return trail;
+}
+var sameTrail = (a, b) => a.length === b.length && a.every((v, i) => v === b[i]);
+function mentioned(s) {
+  return /* @__PURE__ */ new Set([
+    ...s.worms.map((w) => w.id),
+    ...s.board.map((b) => b.id),
+    ...s.feed.flatMap((f) => f.by ? [f.victim, f.by] : [f.victim])
+  ]);
+}
+function writeIds(w, ids) {
+  w.varint(ids.length);
+  let last = 0;
+  for (const id of ids) {
+    w.varint(id - last);
+    last = id;
+  }
+}
+function readIds(r) {
+  const ids = [];
+  let last = 0;
+  for (let n = r.varint(); n > 0; n--) {
+    last += r.varint();
+    ids.push(last);
+  }
+  return ids;
+}
+var snapshotCodec = {
+  encode(s, previous) {
+    const w = new ByteWriter(512);
+    const { self } = s;
+    w.u8(self.alive ? 1 : 0).varint(self.mass).varint(self.best).varint(self.kills);
+    w.varint(self.rank).varint(self.of).varint(self.by).i16(self.x * Q).i16(self.y * Q);
+    const before = new Map(previous?.worms.map((x) => [x.id, x]) ?? []);
+    w.varint(s.worms.length);
+    let lastId = 0;
+    for (const worm of s.worms) {
+      w.varint(worm.id - lastId);
+      lastId = worm.id;
+      const p = before.get(worm.id);
+      const boost = worm.boosting ? BOOSTING : 0;
+      if (p && sameTrail(rebuiltTrail(p, worm.x, worm.y, worm.mass), worm.trail)) {
+        w.u8(CONTINUING | boost).svarint((worm.x - p.x) * Q).svarint((worm.y - p.y) * Q);
+        w.u8(worm.heading).svarint(worm.mass - p.mass);
+        continue;
+      }
+      w.u8(boost).i16(worm.x * Q).i16(worm.y * Q).u8(worm.heading).varint(worm.mass);
+      w.varint(worm.trail.length / 2);
+      let px = worm.x;
+      let py = worm.y;
+      for (let i = 0; i < worm.trail.length; i += 2) {
+        const x = worm.trail[i] ?? 0;
+        const y = worm.trail[i + 1] ?? 0;
+        w.svarint((x - px) * Q).svarint((y - py) * Q);
+        px = x;
+        py = y;
+      }
+    }
+    const had = new Set(previous?.orbs.map((o) => o.id) ?? []);
+    const has = new Set(s.orbs.map((o) => o.id));
+    writeIds(
+      w,
+      [...had].filter((id) => !has.has(id)).sort((a, b) => a - b)
+    );
+    const added = s.orbs.filter((o) => !had.has(o.id));
+    writeIds(
+      w,
+      added.map((o) => o.id)
+    );
+    for (const orb of added)
+      w.i16(orb.x * Q).i16(orb.y * Q).varint(orb.value).u8(orb.hue);
+    w.u8(s.board.length);
+    for (const b of s.board) w.varint(b.id).varint(b.mass);
+    w.varint(s.feed.length);
+    for (const f of s.feed) w.varint(f.victim).varint(f.by);
+    const known = new Map(previous?.names.map((n) => [n.id, n]) ?? []);
+    const named = new Set(s.names.map((n) => n.id));
+    writeIds(
+      w,
+      [...mentioned(s)].filter((id) => known.has(id) && !named.has(id)).sort((a, b) => a - b)
+    );
+    const fresh = s.names.filter((n) => !known.has(n.id));
+    writeIds(
+      w,
+      fresh.map((n) => n.id)
+    );
+    for (const n of fresh)
+      w.u8(n.bot ? 1 : 0).u8(n.look).string(n.name);
+    return w.finish();
+  },
+  decode(bytes, previous) {
+    const r = new ByteReader(bytes);
+    const self = {
+      alive: r.u8() === 1,
+      mass: r.varint(),
+      best: r.varint(),
+      kills: r.varint(),
+      rank: r.varint(),
+      of: r.varint(),
+      by: r.varint(),
+      x: r.i16() / Q,
+      y: r.i16() / Q
+    };
+    const before = new Map(previous?.worms.map((x) => [x.id, x]) ?? []);
+    const worms = [];
+    let lastId = 0;
+    for (let n = r.varint(); n > 0; n--) {
+      const id = lastId += r.varint();
+      const flags = r.u8();
+      const boosting = (flags & BOOSTING) !== 0;
+      if (flags & CONTINUING) {
+        const p = before.get(id);
+        if (!p) throw new RangeError(`worm ${String(id)} continues but wasn't in view`);
+        const x2 = p.x + r.svarint() / Q;
+        const y2 = p.y + r.svarint() / Q;
+        const heading2 = r.u8();
+        const mass2 = p.mass + r.svarint();
+        worms.push({ id, x: x2, y: y2, heading: heading2, mass: mass2, boosting, trail: rebuiltTrail(p, x2, y2, mass2) });
+        continue;
+      }
+      const x = r.i16() / Q;
+      const y = r.i16() / Q;
+      const heading = r.u8();
+      const mass = r.varint();
+      const trail = [];
+      let px = x;
+      let py = y;
+      for (let k = r.varint(); k > 0; k--) {
+        px += r.svarint() / Q;
+        py += r.svarint() / Q;
+        trail.push(px, py);
+      }
+      worms.push({ id, x, y, heading, mass, boosting, trail });
+    }
+    const gone = new Set(readIds(r));
+    const orbs = (previous?.orbs ?? []).filter((o) => !gone.has(o.id));
+    for (const id of readIds(r))
+      orbs.push({ id, x: r.i16() / Q, y: r.i16() / Q, value: r.varint(), hue: r.u8() });
+    orbs.sort((a, b) => a.id - b.id);
+    const board = Array.from({ length: r.u8() }, () => ({ id: r.varint(), mass: r.varint() }));
+    const feed = Array.from({ length: r.varint() }, () => ({ victim: r.varint(), by: r.varint() }));
+    const dropped = new Set(readIds(r));
+    const known = new Map(previous?.names.map((n) => [n.id, n]) ?? []);
+    for (const id of readIds(r)) {
+      const bot = r.u8() === 1;
+      const look = r.u8();
+      known.set(id, { id, name: r.string(), look, bot });
+    }
+    const names = [...mentioned({ worms, board, feed })].filter((id) => !dropped.has(id)).map((id) => known.get(id)).filter((n) => n !== void 0).sort((a, b) => a.id - b.id);
+    if (!r.done) throw new RangeError("bytes left over after a snapshot");
+    return { self, worms, orbs, board, feed, names };
+  }
+};
+var inputCodec = {
+  encode: (input) => new Uint8Array([angleToByte(input.heading), input.boost ? 1 : 0]),
+  decode(bytes) {
+    if (bytes.length !== 2 || (bytes[1] ?? 0) > 1) return null;
+    return { heading: byteToAngle(bytes[0] ?? 0), boost: bytes[1] === 1 };
+  }
+};
+
+// packages/games/worm-rush/engine/rules.ts
+function createWorld(seed) {
+  const world = {
+    rng: seedRng(seed),
+    tick: 0,
+    worms: /* @__PURE__ */ new Map(),
+    nextWorm: 1,
+    orbs: /* @__PURE__ */ new Map(),
+    nextOrb: 1,
+    naturalOrbs: 0,
+    knockouts: [],
+    bodies: new SpatialGrid(CELL_SIZE),
+    orbGrid: new SpatialGrid(CELL_SIZE)
+  };
+  const rng = new Rng(world.rng);
+  while (world.naturalOrbs < NATURAL_ORBS) addNaturalOrb(world, rng);
+  world.rng = rng.state;
+  rebuildGrids(world);
+  return world;
+}
+function join(world, joiner) {
+  if (world.worms.size >= CAPACITY) return null;
+  const id = world.nextWorm++;
+  const worm = {
+    id,
+    name: joiner.name,
+    look: joiner.look,
+    bot: joiner.bot !== null,
+    alive: false,
+    x: 0,
+    y: 0,
+    heading: 0,
+    target: 0,
+    boosting: false,
+    mass: START_MASS,
+    boostDebt: 0,
+    trail: [],
+    best: START_MASS,
+    kills: 0,
+    bornTick: world.tick,
+    by: null,
+    lastLife: null
+  };
+  world.worms.set(id, worm);
+  spawn2(world, worm);
+  return id;
+}
+function leave(world, id) {
+  world.worms.delete(id);
+}
+function respawn(world, id) {
+  const worm = world.worms.get(id);
+  if (!worm || worm.alive) return false;
+  spawn2(world, worm);
+  return true;
+}
+var alive = (world, id) => world.worms.get(id)?.alive === true;
+function step(world, inputs) {
+  const rng = new Rng(world.rng);
+  world.tick++;
+  const trailTick = world.tick % TRAIL_EVERY === 0;
+  for (const worm of world.worms.values()) {
+    if (!worm.alive) continue;
+    const input = inputs.get(worm.id);
+    if (input) {
+      worm.target = input.heading;
+      worm.boosting = input.boost;
+    }
+    move(world, worm, rng);
+    if (trailTick) {
+      worm.trail.unshift(worm.x, worm.y);
+      trimTrail(worm.x, worm.y, worm.trail, wormLength(worm.mass));
+    }
+  }
+  rebuildGrids(world);
+  eat(world);
+  const events = collide(world);
+  for (let i = 0; i < 3 && world.naturalOrbs < NATURAL_ORBS && world.orbs.size < MAX_ORBS; i++) {
+    addNaturalOrb(world, rng);
+  }
+  world.knockouts = world.knockouts.filter((k) => k.tick > world.tick - TICKS_PER_SECOND);
+  world.rng = rng.state;
+  return events;
+}
+function moveHead(head, target, boost) {
+  const turn = turnPerTick(head.mass);
+  const diff = wrapAngle(target - head.heading);
+  head.heading = wrapAngle(head.heading + Math.max(-turn, Math.min(turn, diff)));
+  const boosting = boost && head.mass > BOOST_MIN_MASS;
+  const speed = boosting ? BOOST_SPEED_PER_TICK : SPEED_PER_TICK;
+  head.x = quantize(head.x + detCos(head.heading) * speed);
+  head.y = quantize(head.y + detSin(head.heading) * speed);
+  return boosting;
+}
+function move(world, worm, rng) {
+  if (moveHead(worm, worm.target, worm.boosting)) {
+    worm.boostDebt += BOOST_MASS_PER_TICK;
+    while (worm.boostDebt >= 1 && worm.mass > BOOST_MIN_MASS) {
+      worm.boostDebt -= 1;
+      worm.mass -= 1;
+      const tx = worm.trail.at(-2) ?? worm.x;
+      const ty = worm.trail.at(-1) ?? worm.y;
+      addOrb(world, tx + rng.int(-6, 6), ty + rng.int(-6, 6), 1, hueOf(worm), false);
+    }
+  }
+}
+function eat(world) {
+  for (const worm of world.worms.values()) {
+    if (!worm.alive) continue;
+    const reach = wormRadius(worm.mass) + SUCTION;
+    const eaten = [];
+    world.orbGrid.forEach(worm.x, worm.y, reach + 14, (id, _x, _y, d2) => {
+      const orb = world.orbs.get(id);
+      if (orb && d2 <= (reach + orbRadius(orb.value)) ** 2) eaten.push(id);
+    });
+    for (const id of eaten) {
+      const orb = world.orbs.get(id);
+      if (!orb) continue;
+      world.orbs.delete(id);
+      if (orb.natural) world.naturalOrbs--;
+      worm.mass += orb.value;
+      worm.best = Math.max(worm.best, worm.mass);
+    }
+  }
+}
+function collide(world) {
+  const hits = [];
+  for (const worm of world.worms.values()) {
+    if (!worm.alive) continue;
+    const head = wormRadius(worm.mass);
+    if (worm.x * worm.x + worm.y * worm.y >= (ARENA_RADIUS - head) ** 2) {
+      hits.push({ worm, by: null });
+      continue;
+    }
+    const found = { by: null };
+    world.bodies.forEach(worm.x, worm.y, head * HIT_SHARE + MAX_WORM_RADIUS, (id, _x, _y, d2) => {
+      if (found.by || id === worm.id) return;
+      const other2 = world.worms.get(id);
+      if (other2?.alive && d2 < (head * HIT_SHARE + wormRadius(other2.mass)) ** 2) found.by = other2;
+    });
+    if (found.by) hits.push({ worm, by: found.by });
+  }
+  const events = [];
+  for (const { worm, by } of hits) {
+    events.push({ type: "knockout", victim: worm.id, by: by?.id ?? null, mass: worm.mass });
+    knockOut(world, worm, by);
+  }
+  return events;
+}
+function knockOut(world, worm, by) {
+  worm.alive = false;
+  worm.by = by?.id ?? null;
+  worm.lastLife = lifeResult(world, worm);
+  if (by) by.kills++;
+  world.knockouts.push({
+    tick: world.tick,
+    victim: worm.id,
+    by: by?.id ?? null
+  });
+  const points = worm.trail.length / 2;
+  const count2 = Math.max(1, Math.min(MAX_DROPS, Math.floor(points / 2)));
+  const value = Math.max(1, Math.round(worm.mass * DROP_SHARE / count2));
+  const rng = new Rng(world.rng);
+  for (let i = 0; i < count2; i++) {
+    const p = Math.floor(i * points / count2) * 2;
+    addOrb(
+      world,
+      (worm.trail[p] ?? worm.x) + rng.int(-8, 8),
+      (worm.trail[p + 1] ?? worm.y) + rng.int(-8, 8),
+      value,
+      hueOf(worm),
+      false
+    );
+  }
+  world.rng = rng.state;
+}
+function lifeResult(world, worm) {
+  return {
+    score: worm.best,
+    timeMs: Math.round((world.tick - worm.bornTick) * 1e3 / TICKS_PER_SECOND),
+    completed: true
+  };
+}
+function result(world, id) {
+  const worm = world.worms.get(id);
+  if (!worm) return null;
+  return worm.alive ? lifeResult(world, worm) : worm.lastLife;
+}
+function spawn2(world, worm) {
+  const rng = new Rng(world.rng);
+  let x = 0;
+  let y = 0;
+  for (let attempt = 0; attempt < 20; attempt++) {
+    const angle = rng.next() * Math.PI * 2;
+    const r = Math.sqrt(rng.next()) * ARENA_RADIUS * 0.75;
+    x = quantize(detCos(angle) * r);
+    y = quantize(detSin(angle) * r);
+    if (world.bodies.query(x, y, 300).length === 0) break;
+  }
+  world.rng = rng.state;
+  const heading = wrapAngle(detAtan2(-y, -x) + (rng.next() - 0.5));
+  Object.assign(worm, {
+    alive: true,
+    x,
+    y,
+    heading,
+    target: heading,
+    boosting: false,
+    mass: START_MASS,
+    boostDebt: 0,
+    trail: [x, y],
+    best: START_MASS,
+    kills: 0,
+    bornTick: world.tick,
+    by: null
+  });
+}
+function rebuildGrids(world) {
+  world.bodies.clear();
+  for (const worm of world.worms.values()) {
+    if (!worm.alive) continue;
+    world.bodies.insert(worm.id, worm.x, worm.y);
+    for (let i = 0; i < worm.trail.length; i += 2) {
+      world.bodies.insert(worm.id, worm.trail[i] ?? 0, worm.trail[i + 1] ?? 0);
+    }
+  }
+  world.orbGrid.clear();
+  for (const orb of world.orbs.values()) world.orbGrid.insert(orb.id, orb.x, orb.y);
+}
+function addNaturalOrb(world, rng) {
+  const angle = rng.next() * Math.PI * 2;
+  const r = Math.sqrt(rng.next()) * (ARENA_RADIUS - 40);
+  const roll = rng.next();
+  const value = roll < 0.6 ? 1 : roll < 0.85 ? 2 : 3;
+  if (addOrb(world, detCos(angle) * r, detSin(angle) * r, value, rng.int(0, ORB_HUES - 1), true)) {
+    world.naturalOrbs++;
+  }
+}
+function addOrb(world, x, y, value, hue, natural) {
+  if (world.orbs.size >= MAX_ORBS) return false;
+  const limit = ARENA_RADIUS - 30;
+  const d = Math.sqrt(x * x + y * y);
+  const scale = d > limit ? limit / d : 1;
+  const orb = {
+    id: world.nextOrb++,
+    x: quantize(x * scale),
+    y: quantize(y * scale),
+    value,
+    hue,
+    natural
+  };
+  world.orbs.set(orb.id, orb);
+  return true;
+}
+var hueOf = (worm) => worm.look % ORB_HUES;
+function snapshot(world, id) {
+  const me = world.worms.get(id);
+  const ranked = [...world.worms.values()].filter((w) => w.alive).sort((a, b) => b.mass - a.mass || a.id - b.id);
+  const cx = me?.x ?? 0;
+  const cy = me?.y ?? 0;
+  const view = viewRadius(me?.mass ?? START_MASS);
+  const worms = [];
+  for (const worm of world.worms.values()) {
+    if (!worm.alive) continue;
+    const reach = view + wormLength(worm.mass) + wormRadius(worm.mass);
+    if ((worm.x - cx) ** 2 + (worm.y - cy) ** 2 > reach * reach) continue;
+    worms.push({
+      id: worm.id,
+      x: worm.x,
+      y: worm.y,
+      heading: angleToByte(worm.heading),
+      mass: worm.mass,
+      boosting: worm.boosting && worm.mass > BOOST_MIN_MASS,
+      trail: [...worm.trail]
+    });
+  }
+  worms.sort((a, b) => a.id - b.id);
+  const orbs = world.orbGrid.query(cx, cy, view + 20).map((orbId) => world.orbs.get(orbId)).filter((orb) => orb !== void 0).map(({ id: orbId, x, y, value, hue }) => ({ id: orbId, x, y, value, hue })).sort((a, b) => a.id - b.id);
+  const board = ranked.slice(0, 10).map((w) => ({ id: w.id, mass: w.mass }));
+  const feed = world.knockouts.filter((k) => k.tick > world.tick - TRAIL_EVERY).map((k) => ({ victim: k.victim, by: k.by ?? 0 }));
+  const mentioned2 = /* @__PURE__ */ new Set([
+    ...worms.map((w) => w.id),
+    ...board.map((b) => b.id),
+    ...feed.flatMap((f) => f.by ? [f.victim, f.by] : [f.victim])
+  ]);
+  const names = [...mentioned2].map((wid) => world.worms.get(wid)).filter((w) => w !== void 0).map((w) => ({ id: w.id, name: w.name, look: w.look, bot: w.bot })).sort((a, b) => a.id - b.id);
+  const rank2 = me?.alive ? ranked.indexOf(me) + 1 : 0;
+  return {
+    self: {
+      alive: me?.alive === true,
+      mass: me?.mass ?? 0,
+      best: me?.best ?? 0,
+      kills: me?.kills ?? 0,
+      rank: rank2,
+      of: ranked.length,
+      by: me?.by ?? 0,
+      x: cx,
+      y: cy
+    },
+    worms,
+    orbs,
+    board,
+    feed,
+    names
+  };
+}
+
+// packages/games/worm-rush/engine/index.ts
+var engine8 = {
+  ticksPerSecond: TICKS_PER_SECOND,
+  snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
+  capacity: CAPACITY,
+  createWorld: (_config, seed) => createWorld(seed),
+  join,
+  leave,
+  respawn,
+  alive,
+  step,
+  snapshot,
+  result,
+  snapshotCodec,
+  inputCodec
+};
+
+// packages/games/worm-rush/manifest.ts
+var manifest8 = defineManifest({
+  id: "worm-rush",
+  // Stored with every result; the arena server reports it with online lives.
+  version: 1,
+  category: "arenas",
+  kind: "realtime",
+  // People in one online arena; bots fill it to 10 (apps/arena, engine/arena.ts).
+  players: { min: 1, max: 15, default: 1 },
+  // The solo arena against bots, and the online arenas (not rooms: arenas are
+  // joined through the arena server's directory).
+  modes: ["solo-bots", "online-public"],
+  bots: { supported: true, difficulties: ["easy", "medium", "hard"], canFillSeats: true },
+  timers: [],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["joystick", "mouse", "keyboard"],
+  renderer: "pixi",
+  estimatedMinutes: [2, 15],
+  // Online lives only (Phase 9 Q5): the arena server decides them.
+  leaderboards: [{ id: "longest", metric: "score", order: "desc" }],
+  achievements: [
+    { id: "long-worm", icon: "trophy", metric: "bestScore", tiers: [150, 500, 1500] },
+    { id: "regular", icon: "repeat", metric: "played", tiers: [10, 50, 200] }
+  ],
+  // Solo lives replay from the seed and the inputs by tick (step 9c).
+  scoreValidation: { kind: "replay" },
+  tags: ["arena", "multiplayer", "reflexes", "bots"]
+});
+
 // engines-entry.js
 var GAMES = {
   "2048": { manifest, engine },
@@ -4971,9 +5939,11 @@ var GAMES = {
   "four-in-a-row": { manifest: manifest4, engine: engine4 },
   "reversi": { manifest: manifest5, engine: engine5 },
   "snake": { manifest: manifest6, engine: engine6 },
-  "sudoku": { manifest: manifest7, engine: engine7 }
+  "sudoku": { manifest: manifest7, engine: engine7 },
+  "worm-rush": { manifest: manifest8, engine: engine8 }
 };
 export {
+  ArenaHost,
   GAMES,
   RACE_LOG_LIMITS,
   canonicalJson,

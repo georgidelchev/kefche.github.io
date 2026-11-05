@@ -98,6 +98,8 @@ interface Props {
   ui: Record<string, string>;
   /** Turn-based games: what the setup screen offers, and its text. */
   turn?: { config: TurnConfig; strings: TurnStrings };
+  /** A real-time game (Phase 9): its lives aren't recorded as plays yet (step 9c). */
+  realtime?: boolean;
   /** Real-time games: the online arena, when this build has one. */
   arena?: ArenaProps;
 }
@@ -110,7 +112,18 @@ const focusOnMount = (element: HTMLElement | null) => {
   element?.focus();
 };
 
-export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn, arena }: Props) {
+export function GamePlayer({
+  id,
+  version,
+  name,
+  locale,
+  dir,
+  strings,
+  ui,
+  turn,
+  realtime = false,
+  arena,
+}: Props) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<GameResult | null>(null);
   const [rewards, setRewards] = useState<RewardsState>({ kind: "none" });
@@ -144,19 +157,19 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn, 
   const [supply] = useState(() => createPlaySupply(id, version));
   const [recorder] = useState(() => createPlayRecorder());
   useEffect(() => {
-    supply.prefetch();
-  }, [supply]);
+    if (!realtime) supply.prefetch();
+  }, [supply, realtime]);
   // The daily challenge (?daily, from the home page): offered when it's this
   // game today. Its games run with the day's settings (as in a race) on the
   // day's seed, each on a play of its own for an account.
   const [daily, setDaily] = useState<DailyChallenge | null>(null);
   const dailyRef = useRef<DailyChallenge | null>(null);
   useEffect(() => {
-    if (turn || !new URLSearchParams(location.search).has("daily")) return;
+    if (turn || realtime || !new URLSearchParams(location.search).has("daily")) return;
     void fetchDaily().then((today) => {
       if (today?.gameId === id) setDaily(today);
     });
-  }, [id, turn]);
+  }, [id, turn, realtime]);
 
   const open = phase !== "idle";
 
@@ -191,6 +204,7 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn, 
 
   /** The next game's seed: the ready play's, or a local one (not recorded). */
   function nextSeed(): string {
+    if (realtime) return randomSeed();
     const play = supply.take();
     recorder.start(play);
     return play?.seed ?? randomSeed();
@@ -221,7 +235,7 @@ export function GamePlayer({ id, version, name, locale, dir, strings, ui, turn, 
           reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
         },
         storage,
-        ...(setup ? { match: setup } : { log: recorder.log }),
+        ...(setup ? { match: setup } : realtime ? {} : { log: recorder.log }),
         ...(dailyRef.current ? { race: { config: dailyRef.current.config } } : {}),
         ...(arenaAccess ? { arena: arenaAccess } : {}),
         report: (event) => {

@@ -7,9 +7,9 @@ import {
   bots as wormBots,
   engine as wormEngine,
   LOOKS as wormLooks,
-  VERSION as wormVersion,
   type Event as WormEvent,
 } from "@kefche/game-worm-rush/engine";
+import { manifest as wormManifest } from "@kefche/game-worm-rush/manifest";
 
 /** A participant's life ended; `by` is who did it (null: the arena itself, like an edge). */
 export interface LifeEnd {
@@ -40,7 +40,7 @@ const erase = <World, Input, Snapshot, Event>(
 
 export const GAMES: Readonly<Record<string, ArenaGame>> = {
   "worm-rush": {
-    version: wormVersion,
+    version: wormManifest.version,
     ...erase(wormEngine, wormBots),
     host: wormHost,
     looks: wormLooks,

@@ -5,9 +5,6 @@ import type { ArenaHostOptions, BotDifficulty } from "@kefche/game-sdk";
 
 import { TICKS_PER_SECOND } from "./world";
 
-/** The rules' version, stored with every result (the manifest's version, step 11). */
-export const VERSION = 1;
-
 /** Looks a player may pick (0 to LOOKS − 1): the skins. */
 export const LOOKS = 12;
 

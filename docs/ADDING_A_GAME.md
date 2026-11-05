@@ -43,6 +43,7 @@ The games built so far are worked examples. Copy from the one closest to yours:
     - Add a fixture policy for the game in `scripts/functions-engines.mjs`: a config, plus a plausible next action for a race game.
     - Run `pnpm functions:engines --fixtures` and commit the bundle and `engines.fixtures.json`.
     - The Deno tests fail until every game has a fixture.
+    - A real-time game (kind `realtime`, Phase 9) needs no policy: its engine module exports `bots` and `arenaHost` (how its arenas fill) beside `engine`, and its fixture is a solo life with random steering (`replayArena` in `_shared/engines.ts`).
 11. **Check it.** Run the green checks from `CLAUDE.md`, then play it in `pnpm dev` (see "Verify" below).
 
 ## Checklist

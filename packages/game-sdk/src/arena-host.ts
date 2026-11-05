@@ -5,7 +5,7 @@
 // encodes each person's snapshot against the last one they were sent.
 // No timers here: the platform calls step() at the engine's tick rate.
 
-import { encodeSnapshotFrame, seqAfter } from "./arena-protocol";
+import { encodeSnapshotFrame, seqAfter } from "./arena-frames";
 import { Rng } from "./prng";
 import {
   botsWanted,
