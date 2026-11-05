@@ -76,7 +76,8 @@
     "showInLeaderboards": "Mich in Bestenlisten zeigen"
   },
   "notifications": {
-    "hint": "Wähle, was in deinen Benachrichtigungen erscheint. Mitteilungen zu deinem Konto erscheinen immer.",
+    "hint": "Wähle, worüber und wie du benachrichtigt wirst. Mitteilungen zu deinem Konto kommen immer an.",
+    "type": "Benachrichtigung",
     "types": {
       "friend_request": "Freundschaftsanfragen",
       "friend_accepted": "Angenommene Anfragen",
@@ -84,8 +85,28 @@
       "message": "Nachrichten",
       "achievement": "Erfolge",
       "rating": "Wertungsmeilensteine",
-      "daily": "Ergebnisse der täglichen Herausforderung"
-    }
+      "daily": "Ergebnisse der täglichen Herausforderung",
+      "announcement": "Ankündigungen",
+      "digest": "Wöchentliche Zusammenfassung"
+    },
+    "channels": {
+      "app": "In der App",
+      "push": "Push",
+      "email": "E-Mail"
+    },
+    "push": {
+      "title": "Push auf diesem Gerät",
+      "hint": "Push-Benachrichtigungen erreichen dieses Gerät, während du nicht auf kefche bist. Schalte sie auf jedem Gerät einzeln ein.",
+      "on": "Push ist auf diesem Gerät an.",
+      "off": "Push ist auf diesem Gerät aus.",
+      "turnOn": "Push einschalten",
+      "turnOff": "Push ausschalten",
+      "unsupported": "Dieser Browser kann keine Push-Benachrichtigungen empfangen.",
+      "install": "Füge kefche auf iPhone und iPad zum Home-Bildschirm hinzu, öffne es von dort und schalte dann Push ein.",
+      "denied": "Benachrichtigungen sind für diese Seite blockiert. Erlaube sie in den Einstellungen deines Browsers und komm dann hierher zurück.",
+      "failed": "Push konnte auf diesem Gerät nicht geändert werden. Versuch es noch einmal."
+    },
+    "emailHint": "E-Mails gehen an die Adresse deines Kontos. Wichtige E-Mails zu deinem Konto kommen immer an."
   },
   "account": {
     "email": "E-Mail",

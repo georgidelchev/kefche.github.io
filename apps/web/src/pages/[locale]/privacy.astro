@@ -3,6 +3,7 @@ import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALES, LOCALE_INFO, type Locale } from "@/i18n/locales";
 import { GIFS_ENABLED } from "@/lib/gifs";
+import { VAPID_PUBLIC_KEY } from "@/lib/notification-channels";
 
 import type { GetStaticPaths } from "astro";
 
@@ -44,6 +45,9 @@ const sections = [
       t("legal:privacy.stored.friends"),
       t("legal:privacy.stored.invites"),
       t("legal:privacy.stored.notifications"),
+      // Only in builds with push (a VAPID key; docs/RUNBOOK.md, "Web Push").
+      ...(VAPID_PUBLIC_KEY ? [t("legal:privacy.stored.push")] : []),
+      t("legal:privacy.stored.email"),
       t("legal:privacy.stored.presence"),
       t("legal:privacy.stored.moderation"),
       t("legal:privacy.stored.reports"),
@@ -61,6 +65,7 @@ const sections = [
     items: [
       t("legal:privacy.processors.supabase"),
       t("legal:privacy.processors.cloudflare"),
+      ...(VAPID_PUBLIC_KEY ? [t("legal:privacy.processors.push")] : []),
       t("legal:privacy.processors.selling"),
     ],
   },

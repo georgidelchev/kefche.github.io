@@ -575,6 +575,9 @@ isOneToOne: false
 "delete_direct_message":
 { Args: { "p_message": number }; Returns: undefined
                            },
+"delete_push_subscription":
+{ Args: { "p_endpoint": string }; Returns: undefined
+                           },
 "delete_room_message":
 { Args: { "p_message": number }; Returns: undefined
                            },
@@ -700,6 +703,12 @@ isOneToOne: false
 "purge_account":
 { Args: { "p_user": string }; Returns: undefined
                            },
+"push_load":
+{ Args: { "p_notification": number }; Returns: Json
+                           },
+"push_record":
+{ Args: { "p_results": Json }; Returns: undefined
+                           },
 "quick_match":
 { Args: { "p_game_id": string,"p_game_version": number,"p_players": number,"p_settings"?: Json }; Returns: {
               "allow_spectators": boolean,
@@ -784,6 +793,9 @@ isOneToOne: false
                            },
 "sanction_player":
 { Args: { "p_kind": string,"p_minutes"?: number,"p_note"?: string,"p_reason": string,"p_report"?: string,"p_user": string }; Returns: string
+                           },
+"save_push_subscription":
+{ Args: { "p_auth": string,"p_endpoint": string,"p_p256dh": string }; Returns: undefined
                            },
 "send_chat_message":
 { Args: { "p_body"?: string,"p_gif"?: string,"p_room": unknown }; Returns: Json

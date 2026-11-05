@@ -452,6 +452,13 @@ import_map = "./functions/deno.json"
 verify_jwt = false
 import_map = "./functions/deno.json"
 
+# Called by the database with SEND_PUSH_SECRET for each notification to push;
+# needs the VAPID keys too (answers push_off without them). Locally these go in
+# supabase/functions/.env (docs/RUNBOOK.md, "Web Push").
+[functions.send-push]
+verify_jwt = false
+import_map = "./functions/deno.json"
+
 # Players call it with their token; pg_cron with SUBMIT_MATCH_SECRET, which
 # isn't a JWT, so the function checks every token itself.
 [functions.submit-match]

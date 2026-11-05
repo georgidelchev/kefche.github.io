@@ -1,6 +1,6 @@
 import type { AppT } from "@/i18n/i18n";
 
-import type { NotificationStrings, OptionalType } from "./notifications-data";
+import type { NotificationStrings, OptionalType } from "./notification-text";
 
 /** How notifications read, translated on the server; placeholders are filled in on the client. */
 export function notificationStrings(t: AppT): NotificationStrings {
@@ -72,9 +72,9 @@ export function notificationsPageStrings(t: AppT) {
 }
 export type NotificationsPageStrings = ReturnType<typeof notificationsPageStrings>;
 
-/** The settings section: what each optional type is called. */
+/** The settings section: what each type and channel is called, and push on this device. */
 export function notificationSettingsStrings(t: AppT) {
-  const types: Record<OptionalType, string> = {
+  const types: Record<OptionalType | "announcement" | "digest", string> = {
     friend_request: t("settings:notifications.types.friend_request"),
     friend_accepted: t("settings:notifications.types.friend_accepted"),
     invite: t("settings:notifications.types.invite"),
@@ -82,10 +82,31 @@ export function notificationSettingsStrings(t: AppT) {
     achievement: t("settings:notifications.types.achievement"),
     rating: t("settings:notifications.types.rating"),
     daily: t("settings:notifications.types.daily"),
+    announcement: t("settings:notifications.types.announcement"),
+    digest: t("settings:notifications.types.digest"),
   };
   return {
     hint: t("settings:notifications.hint"),
+    type: t("settings:notifications.type"),
     types,
+    channels: {
+      app: t("settings:notifications.channels.app"),
+      push: t("settings:notifications.channels.push"),
+      email: t("settings:notifications.channels.email"),
+    },
+    push: {
+      title: t("settings:notifications.push.title"),
+      hint: t("settings:notifications.push.hint"),
+      on: t("settings:notifications.push.on"),
+      off: t("settings:notifications.push.off"),
+      turnOn: t("settings:notifications.push.turnOn"),
+      turnOff: t("settings:notifications.push.turnOff"),
+      unsupported: t("settings:notifications.push.unsupported"),
+      install: t("settings:notifications.push.install"),
+      denied: t("settings:notifications.push.denied"),
+      failed: t("settings:notifications.push.failed"),
+    },
+    emailHint: t("settings:notifications.emailHint"),
     saved: t("settings:saved"),
     saveFailed: t("settings:saveFailed"),
   };

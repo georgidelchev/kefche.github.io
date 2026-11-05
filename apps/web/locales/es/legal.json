@@ -20,6 +20,8 @@
       "friends": "Amigos (solo cuentas): tus amigos y solicitudes de amistad, que solo ves tú y ellos, y los jugadores que bloqueas, que solo ves tú. Se borran con tu cuenta.",
       "invites": "Invitaciones (solo cuentas): una invitación a una sala se guarda como aviso para el jugador invitado y se borra cuando la sala se cierra. Quién puede invitarte lo eliges en los ajustes: todos (por defecto), solo amigos o nadie.",
       "notifications": "Notificaciones (solo cuentas): solicitudes de amistad, invitaciones, logros, hitos de puntuación, resultados del desafío diario y avisos sobre tu cuenta, que solo tú puedes ver. Se borran a los 90 días. Cuáles recibes lo eliges en los ajustes.",
+      "push": "Notificaciones push (cuentas, en los dispositivos donde las actives): para cada dispositivo, la dirección que nos dio el servicio push de su navegador y las claves que cifran los mensajes que recibe. Se borran al desactivar push en ese dispositivo o cerrar sesión en él, y también cuando el servicio push indica que el dispositivo ya no existe.",
+      "email": "Notificaciones por correo (cuentas con una dirección de correo confirmada): las notificaciones que elegiste recibir por correo y los avisos sobre tu cuenta esperan en una cola 7 días como máximo. La cola indica de qué notificación trata cada correo, nunca tu dirección.",
       "presence": "Estado en línea (solo cuentas): si estás en línea, en una sala o en una partida (y a qué juego) o ausente, según lo indican tus pestañas abiertas. El aviso de cada pestaña se borra 2 minutos después del último, así que no se guarda nada cuando te vas. Quién lo ve lo eliges en los ajustes: todos, solo amigos (por defecto) o nadie.",
       "moderation": "Moderación: revisamos los mensajes del chat en busca de palabras prohibidas, que se ocultan. Tres ocultas en 10 minutos te silencian 10 minutos, así que anotamos cada una durante esos 10 minutos. Las advertencias, silencios, suspensiones o bloqueos que recibas se guardan con su motivo y su fin mientras exista tu cuenta, y te enviamos un aviso de cada uno (los avisos se borran a los 90 días).",
       "reports": "Denuncias: cuando denuncias algo, guardamos tu denuncia (el motivo y los detalles que añadas) con una copia de lo denunciado, para que un moderador pueda revisarlo aunque cambie. Solo los moderadores ven quién denunció; al jugador no se le dice. Una denuncia se borra 90 días después de que un moderador la resuelva; si se borra tu cuenta, tus denuncias se quedan sin tu nombre.",
@@ -34,6 +36,7 @@
       "title": "Quién lo gestiona",
       "supabase": "Nuestra base de datos, el inicio de sesión, el almacenamiento de archivos y los correos de la cuenta funcionan en Supabase, en la Unión Europea (Fráncfort, Alemania).",
       "cloudflare": "Cloudflare sirve el sitio y ve los datos técnicos que lleva cualquier petición web, como tu dirección IP.",
+      "push": "Si activas push, el servicio push de tu navegador (Google, Mozilla, Microsoft o Apple, según el navegador) entrega las notificaciones en tu dispositivo, cifradas para que solo tu dispositivo pueda leerlas.",
       "selling": "Nunca vendemos tus datos."
     },
     "choices": {

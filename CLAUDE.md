@@ -22,6 +22,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 | `pnpm db:terms`                          | New migration from the word lists in `supabase/blocked-terms/`.             |
 | `pnpm db:types`                          | Regenerate `apps/web/src/lib/supabase/database.gen.ts` (CI checks drift).   |
 | `pnpm functions:engines [--fixtures]`    | Bundle the game engines for the Edge Functions (CI checks drift).           |
+| `pnpm functions:push`                    | Bundle the notification wording for `send-push` (CI checks drift).          |
 | `pnpm --filter web run cf:deploy`        | Deploy to Cloudflare Workers (CI does this on `main`).                      |
 
 **Green before every commit:** `pnpm format:check && pnpm lint && pnpm check:contrast && pnpm i18n:check && pnpm typecheck && pnpm build`. The dev-only component gallery is at `/en/dev/ui/` (and `/ar/dev/ui/` for RTL).
@@ -44,7 +45,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
     - `chat/`: global chat, one room per language (`chat-data.ts`: history, sending, and new messages as Postgres changes so the read policy keeps blocked players apart), plus what every chat shares: the emoji and GIF pickers, `MessageBody` (a GIF and safe links) and `insertText` (ADR-0032).
     - `friends/`: the friends page island, the profile's friend actions (a plain script, since profiles are public and cached), and the Friends · Chat · Messages switch (`SocialNav.astro`).
     - `live/`: the signed-in player's live connection (`live.client.ts`, on every page: their private channel `user:<id>`, passed on as `kefche:live` document events), online status, and the invite toast (`invite-toast.ts`, loaded with the first notification). A page says what its player is doing with `setPresenceContext` (`presence-context.ts`, dependency-free because every page loads it).
-    - `notifications/`: the header bell (`bell.ts`, counting from `kefche:unread`), the notifications page, and how each type reads and where it leads (`notifications-data.ts`).
+    - `notifications/`: the header bell (`bell.ts`, counting from `kefche:unread`), the notifications page, how each type reads and where it leads (`notification-text.ts`, also bundled for push), and push on this device (`push.ts`, with the push-only `public/push-sw.js`).
     - `messages/`: direct messages (`dm-data.ts`: conversations, threads, and the live `dm`, `dm_deleted`, `dm_read` and `typing` events on the player's own channel).
     - `moderation/`: sanction notices (the database refuses a sanctioned player with `muted` or `suspended`, with the sanction's end as the error's `details`), reporting (`report.ts`, `ReportDialog.tsx`; the profile has its own plain-script dialog) and the moderator's mute dialog, shared by every chat.
     - `errors/`
@@ -82,7 +83,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
   - **Dependencies:** shared imports live in `supabase/functions/deno.json`, pinned exactly, with `deno.lock` committed. Helpers go in `_shared/`.
   - **Request handling:** verify every token with Supabase Auth, validate input with Zod, return a stable error code, and log details with `log()`.
   - **Checks:** ESLint skips this folder; CI runs `deno lint`, `deno check --frozen` and `deno test --frozen _shared/`. Locally, without Deno: `docker run --rm -v "$PWD/supabase/functions:/fn" -w /fn denoland/deno:2.1.4 sh -c "deno lint && deno check */index.ts && deno test _shared/"`.
-- **Server engines:** Edge Functions replay games with every game's engine and manifest, bundled into `supabase/functions/_shared/engines.gen.js` (typed in `engines.ts`). After changing an engine or a manifest, run `pnpm functions:engines`. If the change alters how a game plays, add `--fixtures` and review the new expected results in `engines.fixtures.json` before committing them. A new game needs a fixture policy in `scripts/functions-engines.mjs`.
+- **Server engines:** Edge Functions replay games with every game's engine and manifest, bundled into `supabase/functions/_shared/engines.gen.js` (typed in `engines.ts`). After changing an engine or a manifest, run `pnpm functions:engines`. If the change alters how a game plays, add `--fixtures` and review the new expected results in `engines.fixtures.json` before committing them. A new game needs a fixture policy in `scripts/functions-engines.mjs`. After changing a notification string, a game name or an achievement name, run `pnpm functions:push` (send-push words notifications with the same code and strings).
 - **Commits:** Conventional Commits, one small focused commit per step.
 
 ## Dependencies

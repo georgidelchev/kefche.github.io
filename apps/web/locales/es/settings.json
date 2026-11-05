@@ -76,7 +76,8 @@
     "showInLeaderboards": "Mostrarme en las clasificaciones"
   },
   "notifications": {
-    "hint": "Elige qué aparece en tus notificaciones. Los avisos sobre tu cuenta aparecen siempre.",
+    "hint": "Elige de qué te avisamos y cómo. Los avisos sobre tu cuenta llegan siempre.",
+    "type": "Notificación",
     "types": {
       "friend_request": "Solicitudes de amistad",
       "friend_accepted": "Solicitudes aceptadas",
@@ -84,8 +85,28 @@
       "message": "Mensajes",
       "achievement": "Logros",
       "rating": "Hitos de puntuación",
-      "daily": "Resultados del desafío diario"
-    }
+      "daily": "Resultados del desafío diario",
+      "announcement": "Anuncios",
+      "digest": "Resumen semanal"
+    },
+    "channels": {
+      "app": "En la app",
+      "push": "Push",
+      "email": "Correo"
+    },
+    "push": {
+      "title": "Push en este dispositivo",
+      "hint": "Las notificaciones push llegan a este dispositivo cuando no estás en kefche. Actívalas por separado en cada dispositivo.",
+      "on": "Push está activado en este dispositivo.",
+      "off": "Push está desactivado en este dispositivo.",
+      "turnOn": "Activar push",
+      "turnOff": "Desactivar push",
+      "unsupported": "Este navegador no puede recibir notificaciones push.",
+      "install": "En iPhone y iPad, añade kefche a tu pantalla de inicio, ábrelo desde ahí y luego activa push.",
+      "denied": "Las notificaciones están bloqueadas para este sitio. Permítelas en la configuración de tu navegador y vuelve aquí.",
+      "failed": "No pudimos cambiar push en este dispositivo. Inténtalo de nuevo."
+    },
+    "emailHint": "Los correos van a la dirección de tu cuenta. Los correos importantes sobre tu cuenta llegan siempre."
   },
   "account": {
     "email": "Correo electrónico",

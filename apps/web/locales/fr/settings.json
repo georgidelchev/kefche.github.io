@@ -76,7 +76,8 @@
     "showInLeaderboards": "M’afficher dans les classements"
   },
   "notifications": {
-    "hint": "Choisissez ce qui apparaît dans vos notifications. Les avis concernant votre compte apparaissent toujours.",
+    "hint": "Choisissez de quoi vous êtes averti et comment. Les avis concernant votre compte arrivent toujours.",
+    "type": "Notification",
     "types": {
       "friend_request": "Demandes d’ami",
       "friend_accepted": "Demandes acceptées",
@@ -84,8 +85,28 @@
       "message": "Messages",
       "achievement": "Succès",
       "rating": "Paliers de classement",
-      "daily": "Résultats du défi du jour"
-    }
+      "daily": "Résultats du défi du jour",
+      "announcement": "Annonces",
+      "digest": "Résumé hebdomadaire"
+    },
+    "channels": {
+      "app": "Sur le site",
+      "push": "Push",
+      "email": "E-mail"
+    },
+    "push": {
+      "title": "Push sur cet appareil",
+      "hint": "Les notifications push arrivent sur cet appareil quand vous n’êtes pas sur kefche. Activez-les séparément sur chaque appareil.",
+      "on": "Le push est activé sur cet appareil.",
+      "off": "Le push est désactivé sur cet appareil.",
+      "turnOn": "Activer le push",
+      "turnOff": "Désactiver le push",
+      "unsupported": "Ce navigateur ne peut pas recevoir de notifications push.",
+      "install": "Sur iPhone et iPad, ajoutez kefche à l’écran d’accueil, ouvrez-le depuis là, puis activez le push.",
+      "denied": "Les notifications sont bloquées pour ce site. Autorisez-les dans les réglages de votre navigateur, puis revenez ici.",
+      "failed": "Impossible de modifier le push sur cet appareil. Réessayez."
+    },
+    "emailHint": "Les e-mails sont envoyés à l’adresse de votre compte. Les e-mails importants concernant votre compte arrivent toujours."
   },
   "account": {
     "email": "E-mail",

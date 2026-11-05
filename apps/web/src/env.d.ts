@@ -12,6 +12,10 @@ interface ImportMetaEnv {
   readonly PUBLIC_AUTH_PROVIDERS?: string;
   /** Read through `GIFS_ENABLED` in `@/lib/gifs`. */
   readonly PUBLIC_GIFS?: string;
+  /** Read through `VAPID_PUBLIC_KEY` in `@/lib/notification-channels`. */
+  readonly PUBLIC_VAPID_PUBLIC_KEY?: string;
+  /** Read through `EMAIL_NOTIFICATIONS` in `@/lib/notification-channels`. */
+  readonly PUBLIC_EMAIL_NOTIFICATIONS?: string;
 }
 
 interface ImportMeta {

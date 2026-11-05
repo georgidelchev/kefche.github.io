@@ -265,6 +265,8 @@ The live project is `kefche` (ref `qbwljmjabloprffjlean`), on the Free plan in C
 - `PUBLIC_SUPABASE_PUBLISHABLE_KEY` = the project's `sb_publishable_…` key (public by design)
 - `PUBLIC_AUTH_PROVIDERS`: leave unset for email only (the build defaults to `none`).
 - `PUBLIC_GIFS`: `on` once GIFs are set up ("GIFs" below); unset, the GIF button doesn't show.
+- `PUBLIC_VAPID_PUBLIC_KEY`: the public VAPID key once push is set up ("Web Push" below); unset, settings don't offer push.
+- `PUBLIC_EMAIL_NOTIFICATIONS`: `on` once Resend sends the outbox (Phase 21; "Email notifications" below).
 
 These sit on the production environment only, so PR previews build without accounts. The next push to `main` deploys with them.
 
@@ -278,6 +280,32 @@ GIFs in global chat and DMs come from GIPHY through the `giphy` Edge Function, w
 2. **The button:** set `PUBLIC_GIFS` = `on` on the production environment (above) and push.
 
 Without the key the function answers `gifs_off`; a build with `PUBLIC_GIFS` on would then show a picker that says GIFs aren't available. GIPHY's terms ask for its attribution, which the picker shows ("Powered by GIPHY"), and a production key once the site has real traffic (it may cost money). GIFs load from GIPHY's servers, which see the viewer's IP address; the privacy notice says so in builds with `PUBLIC_GIFS` on.
+
+## Web Push
+
+Push notifications (Phase 8 step 12) go from the database to the `send-push` Edge Function, which words each one in the player's language and sends it to their devices through the browsers' push services (Google, Mozilla, Microsoft, Apple). Players turn push on per device in settings. Nothing is sent, and settings don't offer push, until all four steps are done:
+
+1. **VAPID keys** (one pair for the site; changing them later means every device has to turn push on again):
+
+   ```sh
+   node -e 'const c=require("crypto");const k=c.generateKeyPairSync("ec",{namedCurve:"prime256v1"}).privateKey.export({format:"jwk"});console.log("VAPID_PUBLIC_KEY="+Buffer.concat([Buffer.from([4]),Buffer.from(k.x,"base64url"),Buffer.from(k.y,"base64url")]).toString("base64url")+"\nVAPID_PRIVATE_KEY="+k.d)'
+   ```
+
+2. **The function's secrets:** the two keys, `VAPID_SUBJECT` (a contact for the push services: `mailto:<an address>` or the site's `https://` URL) and `SEND_PUSH_SECRET` (another long random string).
+   - **Hosted:** `pnpm exec supabase secrets set VAPID_PUBLIC_KEY=… VAPID_PRIVATE_KEY=… VAPID_SUBJECT=… SEND_PUSH_SECRET=…`.
+   - **Locally:** the same four lines in `supabase/functions/.env` (git-ignored), then restart the stack.
+3. **Vault entries:** `project_url` as for the deletion job, plus `select vault.create_secret('<the same SEND_PUSH_SECRET>', 'send_push_secret');`.
+4. **The build:** set `PUBLIC_VAPID_PUBLIC_KEY` (the public key again) on the production environment and push. The settings page then offers push, and the privacy notice names the push services.
+
+**What gets sent:** a new notification goes out as a push when the player has a device with push on, wants that type as a push (friend requests, accepted requests, invites and messages by default; account notices always), and has no tab of the site open that they're looking at. To check: `select status_code, content, created from net._http_response order by created desc limit 5;` (pg_net's answers, kept 6 hours) and the function's logs (`push_refused`, `push_send_failed`).
+
+**Devices:** `public.push_subscriptions`. A device is deleted when its push service says it's gone (404 or 410), after 10 failed sends in a row, when the player turns push off there or signs out, and with the account. At most 10 per player.
+
+**Wording:** `send-push` uses the notifications page's own wording, bundled with every locale's strings into `supabase/functions/_shared/push-words.gen.js` by `pnpm functions:push`. Run it after changing a notification string, a game's name or an achievement's name, and deploy the function; CI fails while it's stale.
+
+## Email notifications
+
+The preferences and the outbox exist; nothing sends yet (Resend arrives in Phase 21, with the domain). `private.email_outbox` gets a row for each notification a player chose to get by email, and for every account notice, when the account has a confirmed address. Rows are kept 7 days (`forget-email-outbox`, daily). The settings page shows the email column only in builds with `PUBLIC_EMAIL_NOTIFICATIONS` = `on`: set it once the sender works. The sender should read the address from `auth.users` when sending (the outbox never copies it), mark rows `sent_at`, and may group a player's rows into one email.
 
 ## Rooms and Realtime
 

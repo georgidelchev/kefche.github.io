@@ -17,6 +17,7 @@ import AppShell from "@/features/shell/AppShell.astro";
 import ThemeSwitcher from "@/features/theme/ThemeSwitcher.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+import { EMAIL_NOTIFICATIONS, VAPID_PUBLIC_KEY } from "@/lib/notification-channels";
 
 // Settings (SPEC §7.3): private and noindex; only in builds with accounts.
 // Theme and language use the site-wide switchers, which save to the profile
@@ -109,6 +110,8 @@ const section = "grid gap-5 rounded-2xl border border-border bg-surface p-5 md:p
         client:visible
         strings={notificationSettingsStrings(t)}
         signInPath={paths.signIn}
+        vapidKey={VAPID_PUBLIC_KEY}
+        email={EMAIL_NOTIFICATIONS}
       />
     </section>
 

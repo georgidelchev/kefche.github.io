@@ -20,6 +20,8 @@
       "friends": "Friends (accounts only): your friends and friend requests, which only you and they can see, and the players you block, which only you can see. They're deleted with your account.",
       "invites": "Invites (accounts only): an invite to a room is kept as a notice for the player invited, and deleted when the room closes. Who can invite you is your choice in settings: everyone (the default), friends only or nobody.",
       "notifications": "Notifications (accounts only): friend requests, invites, achievements, rating milestones, daily challenge results and notices about your account, which only you can see. They're deleted after 90 days. Which ones you get is your choice in settings.",
+      "push": "Push notifications (accounts, on the devices where you turn them on): for each device, the address its browser's push service gave us for it and the keys that encrypt messages to it. Turning push off on a device, or signing out there, deletes them, and so does the push service saying the device is gone.",
+      "email": "Notifications by email (accounts with a confirmed email address): the notifications you chose to get by email, and notices about your account, wait in a queue for 7 days at most. The queue says which notification each email is about, never your address.",
       "presence": "Online status (accounts only): whether you're online, in a lobby or a game (and which game) or away, as your open tabs report it. Each tab's report is deleted 2 minutes after its last one, so nothing is kept once you leave. Who sees it is your choice in settings: everyone, friends only (the default) or nobody.",
       "moderation": "Moderation: chat messages are checked for blocked words, which are hidden. Three hidden in 10 minutes mute you for 10 minutes, so we note each one for those 10 minutes. A warning, mute, suspension or ban you receive is kept with its reason and end while your account exists, and we send you a notice about it (notices are deleted after 90 days).",
       "reports": "Reports: when you report something, we keep your report (the reason and any details you add) with a copy of what you reported, so a moderator can review it even if it changes. Only moderators see who reported; the player isn't told. A report is deleted 90 days after a moderator resolves it; if your account is deleted, the reports you made stay without your name.",
@@ -34,6 +36,7 @@
       "title": "Who handles it",
       "supabase": "Our database, sign-in, file storage and account emails run on Supabase, in the European Union (Frankfurt, Germany).",
       "cloudflare": "Cloudflare delivers the site and sees the technical details every web request carries, such as your IP address.",
+      "push": "If you turn on push, your browser's push service (Google, Mozilla, Microsoft or Apple, depending on your browser) delivers notifications to your device, encrypted so that only your device can read them.",
       "selling": "We never sell your data."
     },
     "choices": {

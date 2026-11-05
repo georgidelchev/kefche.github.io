@@ -28,14 +28,16 @@ import type { Supabase } from "@/lib/supabase/client";
 import { supabaseConfig } from "@/lib/supabase/config";
 
 import {
-  fetchNotifications,
   notificationHref,
-  notificationSchema,
   notificationText,
-  readNotifications,
   type NamingContext,
-  type Notification,
   type NotificationPaths,
+} from "./notification-text";
+import {
+  fetchNotifications,
+  notificationSchema,
+  readNotifications,
+  type Notification,
 } from "./notifications-data";
 
 import type { NotificationsPageStrings } from "./strings";

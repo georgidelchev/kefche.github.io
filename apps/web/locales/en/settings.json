@@ -76,7 +76,8 @@
     "showInLeaderboards": "Show me on leaderboards"
   },
   "notifications": {
-    "hint": "Choose what appears in your notifications. Notices about your account always appear.",
+    "hint": "Choose what you're notified of, and how. Notices about your account always arrive.",
+    "type": "Notification",
     "types": {
       "friend_request": "Friend requests",
       "friend_accepted": "Accepted friend requests",
@@ -84,8 +85,28 @@
       "message": "Messages",
       "achievement": "Achievements",
       "rating": "Rating milestones",
-      "daily": "Daily challenge results"
-    }
+      "daily": "Daily challenge results",
+      "announcement": "Announcements",
+      "digest": "Weekly digest"
+    },
+    "channels": {
+      "app": "In the app",
+      "push": "Push",
+      "email": "Email"
+    },
+    "push": {
+      "title": "Push on this device",
+      "hint": "Push notifications reach this device while you're away from kefche. Turn them on separately on each device.",
+      "on": "Push is on for this device.",
+      "off": "Push is off for this device.",
+      "turnOn": "Turn on push",
+      "turnOff": "Turn off push",
+      "unsupported": "This browser can't receive push notifications.",
+      "install": "On iPhone and iPad, add kefche to your Home Screen, open it from there, then turn on push.",
+      "denied": "Notifications are blocked for this site. Allow them in your browser's settings, then come back here.",
+      "failed": "We couldn't change push on this device. Try again."
+    },
+    "emailHint": "Emails go to your account's email address. Important emails about your account always arrive."
   },
   "account": {
     "email": "Email",

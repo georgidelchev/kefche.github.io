@@ -105,6 +105,9 @@ export async function syncAccount(supabase: Supabase): Promise<AccountSummary | 
 
 /** Signs out (this device, or everywhere) and forgets the account locally. */
 export async function signOut(supabase: Supabase, scope: "local" | "global"): Promise<void> {
+  // This device's push goes with the player (loaded here only: every page imports this module).
+  const { turnOffPush } = await import("@/features/notifications/push");
+  await turnOffPush(supabase);
   await supabase.auth.signOut({ scope });
   clearUnsaved();
   setAccount(null);

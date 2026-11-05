@@ -11,3 +11,5 @@ docs/SPEC.md
 # Generated for the Edge Functions by `pnpm functions:engines`.
 supabase/functions/_shared/engines.gen.*
 supabase/functions/_shared/engines.fixtures.json
+# Generated for send-push by `pnpm functions:push`.
+supabase/functions/_shared/push-words.gen.*

@@ -20,6 +20,8 @@
       "friends": "Amigos (só contas): seus amigos e pedidos de amizade, que só você e eles veem, e os jogadores que você bloqueia, que só você vê. São apagados com sua conta.",
       "invites": "Convites (só contas): um convite para uma sala fica guardado como aviso para o jogador convidado e é apagado quando a sala fecha. Quem pode convidar você é escolha sua nas configurações: todos (o padrão), só amigos ou ninguém.",
       "notifications": "Notificações (só contas): pedidos de amizade, convites, conquistas, marcos de pontuação, resultados do desafio diário e avisos sobre sua conta, que só você pode ver. São apagadas após 90 dias. Quais você recebe é escolha sua nas configurações.",
+      "push": "Notificações push (contas, nos dispositivos em que você as ativar): para cada dispositivo, o endereço que o serviço push do navegador nos deu e as chaves que criptografam as mensagens para ele. Elas são apagadas quando você desativa o push no dispositivo ou sai da conta nele, e também quando o serviço push informa que o dispositivo não existe mais.",
+      "email": "Notificações por e-mail (contas com e-mail confirmado): as notificações que você escolheu receber por e-mail e os avisos sobre sua conta esperam numa fila por no máximo 7 dias. A fila guarda de qual notificação cada e-mail trata, nunca o seu endereço.",
       "presence": "Status online (só contas): se você está online, numa sala ou numa partida (e de qual jogo) ou ausente, como suas abas abertas informam. O aviso de cada aba é apagado 2 minutos após o último, então nada fica guardado depois que você sai. Quem vê é escolha sua nas configurações: todos, só amigos (o padrão) ou ninguém.",
       "moderation": "Moderação: verificamos as mensagens do chat em busca de palavras proibidas, que são ocultadas. Três ocultadas em 10 minutos silenciam você por 10 minutos, por isso anotamos cada uma durante esses 10 minutos. Advertências, silenciamentos, suspensões ou banimentos que você receber são guardados com o motivo e o fim enquanto sua conta existir, e enviamos um aviso sobre cada um (os avisos são apagados após 90 dias).",
       "reports": "Denúncias: quando você denuncia algo, guardamos sua denúncia (o motivo e os detalhes que você incluir) com uma cópia do que foi denunciado, para que um moderador possa revisar mesmo que mude. Só os moderadores veem quem denunciou; o jogador não fica sabendo. Uma denúncia é apagada 90 dias depois de um moderador resolvê-la; se sua conta for apagada, suas denúncias ficam sem o seu nome.",
@@ -34,6 +36,7 @@
       "title": "Quem trata os dados",
       "supabase": "Nosso banco de dados, o login, o armazenamento de arquivos e os e-mails da conta funcionam na Supabase, na União Europeia (Frankfurt, Alemanha).",
       "cloudflare": "A Cloudflare entrega o site e vê os dados técnicos que qualquer requisição na web carrega, como seu endereço IP.",
+      "push": "Se você ativar o push, o serviço push do seu navegador (Google, Mozilla, Microsoft ou Apple, conforme o navegador) entrega as notificações no seu dispositivo, criptografadas para que só ele possa lê-las.",
       "selling": "Nunca vendemos seus dados."
     },
     "choices": {

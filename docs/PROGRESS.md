@@ -1490,6 +1490,37 @@ Online modes are enabled for the Phase 4 games.
     - SQL 62/62, rolled back: validation (types, reasons, details, unknown or malformed ids, yourself); once per reporter; the copy and trimmed details; guests can't report global chat, and their lobby reports don't count; outsiders can't report a DM or a room's chat; hidden at the third account (the room told, readers lose it, its sender keeps it); players can't resolve or read others' reports; dismissing restores and actioning deletes (global chat, a DM with both told, a lobby message), audited; lobby chat deletion (own, not another's, staff any with audit); bios cleared and restored; avatars hidden, refused while held and once actioned, a new one allowed; the rate limit; visitors, private functions and direct writes refused; the room's channel forgotten with the room. All nine earlier Phase 8 suites still pass.
     - Against local Realtime: a lobby member and the host hear new messages and the removals on `room-chat:<room id>`, an outsider is refused the channel; three reports hide a lobby message and a global chat message live (the sender still reads theirs); deleting one's own lobby message tells the room.
     - The green chain passes. The report dialogs haven't been clicked through in a browser here.
+- [x] Step 12: Web Push and the email plumbing (`20261105100000_push_email.sql`, the `send-push` function).
+  - **Opt-in per device:** settings' Notifications section has "Push on this device" with Turn on and Turn off. Turning it on asks the browser's permission, registers the service worker and saves the subscription (`save_push_subscription`); turning it off, or signing out, deletes it. Each device is turned on on its own (up to 10 per player). Accounts only. Settings also say when the browser can't do push, when it has blocked the site, and that iPhones and iPads need the site added to the Home Screen first.
+  - **The service worker** (`public/push-sw.js`) shows the push and opens its page when clicked, nothing else (ADR-0014): no fetch handler, no cache. A click only ever opens a page on this site.
+  - **Per type and channel:** the settings are now a table of In the app, Push and (once switched on) Email for each type, plus announcements (push and email) and the weekly digest (email only). Push is on by default for friend requests, accepted requests, invites and messages; account notices always come by push and email.
+  - **Sending:** each new notification the player wants as a push asks `send-push` through pg_net, unless the player has a tab of the site open that they're looking at (the bell and the toasts have it then).
+    - The function words it in the player's language with the notifications page's own code and strings, bundled by `pnpm functions:push` (CI checks it's up to date). A sanction's push leaves out its end, which the server would show in its own time zone.
+    - It encrypts and signs it for each device with web-push 3.6.7 and sends it with fetch.
+    - Devices the push service says are gone are deleted, and so are those failing 10 times in a row.
+    - Endpoints must belong to the browsers' push services (Google, Mozilla, Microsoft, Apple), checked by the database and again by the function.
+  - **Off until set up:** without the VAPID keys and the Vault entries nothing is sent, and without `PUBLIC_VAPID_PUBLIC_KEY` settings don't offer push. The RUNBOOK ("Web Push") gives the setup.
+  - **Email:** the preferences and an outbox only (`private.email_outbox`): a row for each notification chosen by email, and each account notice, for accounts with a confirmed address. The address is never copied. Kept 7 days. The email column shows only with `PUBLIC_EMAIL_NOTIFICATIONS=on`, for Phase 21, when Resend sends them.
+  - **Also:** the notifications' wording moved to `notification-text.ts` (free of dependencies, so the function can bundle it), and announcement links refuse `/\`, which browsers read as another site.
+  - **Privacy notice:** push devices and the push services (in builds with push), and the email queue.
+  - **Cost:** the settings island is 1.8 KB gzip; the push helper is a 0.9 KB chunk loaded by settings and at sign-out. Realtime: none. One Edge Function call per pushed notification.
+  - **Checks:**
+    - SQL 62/62, rolled back:
+      - endpoints and keys validated (including look-alike hosts); the four push services accepted;
+      - a device moves to whoever signs in there; 10 at most; the rate limit; guests and visitors refused; a player's devices read and deleted by that player only;
+      - the defaults; the new preferences;
+      - send-push asked only with Vault set, a device, the type wanted as a push, and no tab being looked at;
+      - push_load (language, devices, no note, nothing once turned off) and push_record (sent, gone, failed, the 10th failure) for the service role only;
+      - the outbox: opt-in, confirmed addresses only, account notices always, deleted with its notification and the account, the 7-day job, closed to players.
+      - All ten earlier Phase 8 suites still pass.
+    - Deno 63/63, including the push wording in several languages and a message encrypted by the function and decrypted as the device would.
+    - Against local Supabase, with test keys:
+      - a notification inserted by the database reached `send-push` through pg_net;
+      - the function signed and encrypted the push and sent it to FCM for a made-up device;
+      - FCM answered that the device doesn't exist, and the function deleted it;
+      - a wrong secret is refused.
+    - The green chain passes, and settings, the privacy notice and the service worker load on the dev server.
+    - **Not tried:** a real device receiving a push (it needs a browser here), and the settings table clicked through.
 
 ---
 

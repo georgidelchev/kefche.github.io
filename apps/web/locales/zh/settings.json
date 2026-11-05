@@ -76,7 +76,8 @@
     "showInLeaderboards": "在排行榜中显示我"
   },
   "notifications": {
-    "hint": "选择通知中显示的内容。关于你账号的通知总是会显示。",
+    "hint": "选择接收哪些通知以及接收方式。关于你账号的通知总会送达。",
+    "type": "通知",
     "types": {
       "friend_request": "好友请求",
       "friend_accepted": "已接受的好友请求",
@@ -84,8 +85,28 @@
       "message": "消息",
       "achievement": "成就",
       "rating": "等级分里程碑",
-      "daily": "每日挑战结果"
-    }
+      "daily": "每日挑战结果",
+      "announcement": "公告",
+      "digest": "每周摘要"
+    },
+    "channels": {
+      "app": "站内",
+      "push": "推送",
+      "email": "邮件"
+    },
+    "push": {
+      "title": "此设备上的推送",
+      "hint": "当你不在 kefche 时，推送通知会发送到此设备。每台设备需要分别开启。",
+      "on": "此设备已开启推送。",
+      "off": "此设备已关闭推送。",
+      "turnOn": "开启推送",
+      "turnOff": "关闭推送",
+      "unsupported": "此浏览器无法接收推送通知。",
+      "install": "在 iPhone 和 iPad 上，请先将 kefche 添加到主屏幕，从那里打开，再开启推送。",
+      "denied": "此网站的通知已被屏蔽。请在浏览器设置中允许通知，然后回到这里。",
+      "failed": "无法更改此设备的推送设置，请重试。"
+    },
+    "emailHint": "邮件会发送到你账号的邮箱。关于你账号的重要邮件总会送达。"
   },
   "account": {
     "email": "电子邮箱",

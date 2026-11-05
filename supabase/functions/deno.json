@@ -1,7 +1,10 @@
 {
   "imports": {
     "@supabase/supabase-js": "npm:@supabase/supabase-js@2.118.0",
+    "@types/web-push": "npm:@types/web-push@3.6.4",
     "chess.js": "npm:chess.js@1.4.0",
+    "http_ece": "npm:http_ece@1.2.0",
+    "web-push": "npm:web-push@3.6.7",
     "zod": "npm:zod@4.6.7"
   },
   "compilerOptions": {
@@ -13,6 +16,6 @@
     "rules": {
       "tags": ["recommended"]
     },
-    "exclude": ["_shared/engines.gen.js"]
+    "exclude": ["_shared/engines.gen.js", "_shared/push-words.gen.js"]
   }
 }
