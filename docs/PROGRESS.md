@@ -1679,9 +1679,30 @@ The server also decides everything, so nobody can fake their worm's length. The 
 - **Q4 — Skins:** 12 original skins, 4 free and 8 unlocked by level and achievements (recommended)? Or all free?
 - **Q5 — Leaderboards:** a longest-worm board from online arenas only (server-recorded, so trustworthy; recommended), or solo games too?
 
+### Owner answers (2026-11-05)
+
+The owner left the choices to me ("you decide"), so each takes the recommendation:
+
+- **Q1 — The arena transport:** an arena server on Cloudflare Durable Objects, on Workers Free. Moving to Workers Paid ($5/month) is a paid service, so it waits for the owner's word when usage calls for it.
+- **Q2 — Arena format:** endless drop-in arenas.
+- **Q3 — Guests online:** yes, at once, with their guest name.
+- **Q4 — Skins:** 12 original skins, 4 free and 8 unlocked by level and achievements.
+- **Q5 — Leaderboards:** a longest-worm board from online arenas only.
+
 ### Status
 
-- [ ] Plan approved by owner
+- [x] Plan approved by owner (2026-11-05, with the answers above)
+- [ ] Step 1: the arena server spike (`apps/arena`). Built and measured locally; the measurements on Cloudflare wait for its first deploy.
+  - **The Worker** `kefche-arena`: `/arenas/<name>` hands the WebSocket to that arena's Durable Object (SQLite-backed, as Workers Free requires); `/health` answers. Only the site's pages may connect (`SITE_ORIGINS`). CI deploys it after the site, with the Supabase URL and publishable key. `pnpm build` checks its bundle (93 KB gzip).
+  - **Joining:** the first message is `hello` with the player's Supabase access token (accounts and guests), checked with Supabase Auth, within 5 s. One socket per player (a second tab takes over) and 15 players per arena. Each refusal has a stable code: `invalid_token`, `hello_expected`, `hello_timeout`, `arena_full`.
+  - **The loop:** 30 Hz while anyone is connected (stepped by the clock, since timers aren't exact), with 20 dummy bots. Each player gets a binary snapshot of what's within view at 15 Hz (`src/wire.ts`: 7 bytes an entity). Inputs are 3 bytes, at most 20 a second, and pings are answered at once.
+  - **Measured locally** (15 guests on `wrangler dev`, 60 s, each steering about 6 times a second and pinging every 2 s):
+    - all 15 joined;
+    - 30 ticks and 15.1 snapshots a second per player, about 0.7 KB/s each with the dummy world;
+    - snapshot gaps: median 63 ms, worst 95 ms, under the planned 100 ms buffer (Windows timers; Cloudflare's should be steadier);
+    - 96 frames a second from the players, which bills as **about 17,300 requests per full-arena hour**: about 5.8 such hours a day on Workers Free, as the plan estimated.
+  - **Refusals,** 10/11: a bad token, a missing hello, the second tab, the 16th player, another site's page, a plain request and a bad arena name. The 11th: a client that never says hello gets `hello_timeout` at 5 s, but the socket closes only 10 s later when it was the arena's last one (when others are connected it closes at once). Players won't see it, since the client closes on any error; to check on Cloudflare.
+  - **Still to do:** the deploy, then latency from Bulgaria, billed requests and duration in Cloudflare's metrics, steadier ticks, and the decision gate.
 
 ## Known issues
 

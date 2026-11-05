@@ -1,0 +1,8 @@
+{
+  // A Cloudflare Worker: the Workers runtime's types, no DOM and no Node.
+  "extends": "@kefche/config/tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types"]
+  },
+  "include": ["src"]
+}

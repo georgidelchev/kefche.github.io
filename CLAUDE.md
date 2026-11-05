@@ -4,32 +4,34 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 
 ## Commands (run from the repo root)
 
-| Command                                  | What it does                                                                |
-| ---------------------------------------- | --------------------------------------------------------------------------- |
-| `pnpm install`                           | Install. pnpm also downloads the pinned Node.js (`devEngines.runtime`).     |
-| `pnpm dev`                               | Astro dev server for `apps/web` at http://localhost:4321 (runs on workerd). |
-| `pnpm lint` / `pnpm lint:fix`            | ESLint over the whole repo, zero warnings allowed.                          |
-| `pnpm typecheck`                         | `astro check` (web) + `tsc` (packages).                                     |
-| `pnpm build`                             | Build every package that has a `build` script.                              |
-| `pnpm format` / `pnpm format:check`      | Prettier.                                                                   |
-| `pnpm check:contrast`                    | WCAG contrast of every token pair in both themes (`tokens.css`).            |
-| `pnpm i18n:check`                        | All 11 locales match English: keys, ICU, placeholders, no unused keys.      |
-| `pnpm icons:generate`                    | Rebuild favicon and app icons from `packages/ui/src/brand/marks.ts`.        |
-| `pnpm avatars:generate`                  | Rebuild the 24 preset avatars in `apps/web/public/avatars/`.                |
-| `pnpm new:game <id> --kind=race\|turn`   | Scaffold `packages/games/<id>/`; then replace every `TODO(new-game)`.       |
-| `pnpm art:generate`                      | Rebuild each game's `assets/thumbnail.svg` and `hero.svg` from `art.mjs`.   |
-| `pnpm db:start` / `db:stop` / `db:reset` | Local Supabase (needs Docker).                                              |
-| `pnpm db:terms`                          | New migration from the word lists in `supabase/blocked-terms/`.             |
-| `pnpm db:types`                          | Regenerate `apps/web/src/lib/supabase/database.gen.ts` (CI checks drift).   |
-| `pnpm functions:engines [--fixtures]`    | Bundle the game engines for the Edge Functions (CI checks drift).           |
-| `pnpm functions:push`                    | Bundle the notification wording for `send-push` (CI checks drift).          |
-| `pnpm --filter web run cf:deploy`        | Deploy to Cloudflare Workers (CI does this on `main`).                      |
+| Command                                  | What it does                                                                      |
+| ---------------------------------------- | --------------------------------------------------------------------------------- |
+| `pnpm install`                           | Install. pnpm also downloads the pinned Node.js (`devEngines.runtime`).           |
+| `pnpm dev`                               | Astro dev server for `apps/web` at http://localhost:4321 (runs on workerd).       |
+| `pnpm lint` / `pnpm lint:fix`            | ESLint over the whole repo, zero warnings allowed.                                |
+| `pnpm typecheck`                         | `astro check` (web) + `tsc` (packages).                                           |
+| `pnpm build`                             | Build every package that has a `build` script.                                    |
+| `pnpm format` / `pnpm format:check`      | Prettier.                                                                         |
+| `pnpm check:contrast`                    | WCAG contrast of every token pair in both themes (`tokens.css`).                  |
+| `pnpm i18n:check`                        | All 11 locales match English: keys, ICU, placeholders, no unused keys.            |
+| `pnpm icons:generate`                    | Rebuild favicon and app icons from `packages/ui/src/brand/marks.ts`.              |
+| `pnpm avatars:generate`                  | Rebuild the 24 preset avatars in `apps/web/public/avatars/`.                      |
+| `pnpm new:game <id> --kind=race\|turn`   | Scaffold `packages/games/<id>/`; then replace every `TODO(new-game)`.             |
+| `pnpm art:generate`                      | Rebuild each game's `assets/thumbnail.svg` and `hero.svg` from `art.mjs`.         |
+| `pnpm db:start` / `db:stop` / `db:reset` | Local Supabase (needs Docker).                                                    |
+| `pnpm db:terms`                          | New migration from the word lists in `supabase/blocked-terms/`.                   |
+| `pnpm db:types`                          | Regenerate `apps/web/src/lib/supabase/database.gen.ts` (CI checks drift).         |
+| `pnpm functions:engines [--fixtures]`    | Bundle the game engines for the Edge Functions (CI checks drift).                 |
+| `pnpm functions:push`                    | Bundle the notification wording for `send-push` (CI checks drift).                |
+| `pnpm --filter web run cf:deploy`        | Deploy to Cloudflare Workers (CI does this on `main`).                            |
+| `pnpm --filter arena dev`                | The arena server locally at http://localhost:8787 (needs `apps/arena/.dev.vars`). |
 
 **Green before every commit:** `pnpm format:check && pnpm lint && pnpm check:contrast && pnpm i18n:check && pnpm typecheck && pnpm build`. The dev-only component gallery is at `/en/dev/ui/` (and `/ar/dev/ui/` for RTL).
 
 ## Layout
 
 - `apps/web`: Astro 7 + React islands, Tailwind 4, `@astrojs/cloudflare` (Workers + static assets). Routes live under `src/pages/[locale]/`. Env vars are validated in `src/lib/env.ts` and documented in `apps/web/.env.example`.
+- `apps/arena`: the real-time arena server (Phase 9), a separate Worker (`kefche-arena`) with one Durable Object per arena. Its WebSocket protocol is in `src/wire.ts`; CI deploys it after the site.
 - `packages/config`: shared `tsconfig.base.json`, ESLint preset (`eslint-preset.js`) and Prettier preset (`prettier-preset.js`). The root `eslint.config.js` and `prettier.config.js` use them.
 - `apps/web/src`:
   - `i18n/`: locale registry, `getT`, negotiation.

@@ -357,6 +357,18 @@ Push notifications (Phase 8 step 12) go from the database to the `send-push` Edg
 
 The preferences and the outbox exist; nothing sends yet (Resend arrives in Phase 21, with the domain). `private.email_outbox` gets a row for each notification a player chose to get by email, and for every account notice, when the account has a confirmed address. Rows are kept 7 days (`forget-email-outbox`, daily). The settings page shows the email column only in builds with `PUBLIC_EMAIL_NOTIFICATIONS` = `on`: set it once the sender works. The sender should read the address from `auth.users` when sending (the outbox never copies it), mark rows `sent_at`, and may group a player's rows into one email.
 
+## Arena server
+
+Real-time arenas (Phase 9) run on their own Worker, `kefche-arena` (`apps/arena`), with one Durable Object per arena. Players connect to `wss://kefche-arena.alienguymc.workers.dev/arenas/<name>` with their Supabase access token. Supabase Realtime isn't involved.
+
+- **Deploy:** CI deploys it after the site on every push to `main`, passing the Supabase URL and publishable key from the production environment as `--var`. By hand: `pnpm --filter arena run cf:deploy --var SUPABASE_URL:… --var SUPABASE_PUBLISHABLE_KEY:…`. Roll back as for the site, choosing `kefche-arena`.
+- **Locally:** copy `apps/arena/.dev.vars.example` to `.dev.vars` with the local stack's values (`pnpm exec supabase status`), then `pnpm --filter arena dev` (port 8787).
+- **Which pages may connect:** `SITE_ORIGINS` in `apps/arena/wrangler.jsonc`. Add the custom domain there in Phase 21.
+- **Usage:** the Cloudflare dashboard, _Workers & Pages → kefche-arena → Metrics_, and _Durable Objects_ for requests and duration.
+  - **Workers Free** allows 100,000 Durable Object requests and 13,000 GB-s a day, reset at 00:00 UTC. Each incoming WebSocket message bills as 1/20 of a request; sending is free. Past either limit, arenas refuse until the reset.
+  - **A full arena** (15 players) costs about 17,300 requests an hour (measured locally), so about 5–6 full-arena hours a day fit.
+  - **Workers Paid** ($5/month) is the owner's call.
+
 ## Rooms and Realtime
 
 How online play works is in ARCHITECTURE.md ("Online play") and ADR-0020 to ADR-0024. Run the SQL below with `pnpm exec supabase db query --linked "<sql>"` (hosted) or in Studio (local).

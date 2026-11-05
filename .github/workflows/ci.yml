@@ -177,6 +177,18 @@ jobs:
         if: github.event_name == 'push'
         run: pnpm --filter web run cf:deploy --message "${GITHUB_SHA::7}"
 
+      # The arena server (Phase 9), a Worker of its own with a Durable Object
+      # per arena. Production only: previews share the production arenas.
+      - name: Deploy the arena server
+        if: github.event_name == 'push'
+        env:
+          SUPABASE_URL: ${{ vars.PUBLIC_SUPABASE_URL || secrets.PUBLIC_SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ vars.PUBLIC_SUPABASE_PUBLISHABLE_KEY || secrets.PUBLIC_SUPABASE_PUBLISHABLE_KEY }}
+        run: >-
+          pnpm --filter arena run cf:deploy --message "${GITHUB_SHA::7}"
+          --var "SUPABASE_URL:${SUPABASE_URL}"
+          --var "SUPABASE_PUBLISHABLE_KEY:${SUPABASE_PUBLISHABLE_KEY}"
+
       - name: Upload preview
         if: github.event_name == 'pull_request'
         env:

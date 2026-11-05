@@ -1,0 +1,4 @@
+# Copy to .dev.vars (git-ignored) for `pnpm --filter arena dev`. The values of
+# the local Supabase stack (`pnpm exec supabase status`).
+SUPABASE_URL=http://127.0.0.1:54321
+SUPABASE_PUBLISHABLE_KEY=sb_publishable_...

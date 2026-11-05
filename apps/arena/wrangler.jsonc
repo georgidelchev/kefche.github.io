@@ -1,0 +1,22 @@
+// The arena server (Phase 9): a Worker that hands each WebSocket to the
+// Durable Object of its arena. Deploy with `pnpm --filter arena run cf:deploy`;
+// CI passes the Supabase project's URL and publishable key with --var.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "kefche-arena",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-12",
+  "workers_dev": true,
+  "observability": { "enabled": true },
+  // Smaller bundles start faster.
+  "minify": true,
+  "durable_objects": {
+    "bindings": [{ "name": "ARENA", "class_name": "Arena" }],
+  },
+  // Workers Free allows only SQLite-backed Durable Objects.
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Arena"] }],
+  "vars": {
+    // Pages allowed to open an arena's WebSocket (comma-separated origins).
+    "SITE_ORIGINS": "https://kefche.alienguymc.workers.dev,http://localhost:4321",
+  },
+}
