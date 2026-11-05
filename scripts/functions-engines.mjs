@@ -35,7 +35,9 @@ const ids = readdirSync(join(root, "packages/games"), { withFileTypes: true })
 // Read from the manifest's source, before anything is bundled.
 const realtime = new Set(
   ids.filter((id) =>
-    /kind:s*"realtime"/.test(readFileSync(join(root, "packages/games", id, "manifest.ts"), "utf8")),
+    /kind:\s*"realtime"/.test(
+      readFileSync(join(root, "packages/games", id, "manifest.ts"), "utf8"),
+    ),
   ),
 );
 

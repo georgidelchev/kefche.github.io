@@ -1762,6 +1762,7 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
   - **`CREDITS.md`:** everything made for kefche; PixiJS (MIT) listed.
   - **The server's engines bundle** now carries real-time games: the engine, its bots and how its arenas fill, with the SDK's `ArenaHost` (`scripts/functions-engines.mjs`). `engines.ts` types them and adds `replayArena` (one solo life, from its seed, with its inputs by tick, stopped at the knockout or a tick limit) for step 9c.
     - **Its fixture:** 20 s of a solo life with random steering, recorded in Node and replayed in Deno to the same arena (the tick, the randomness, every worm and orb) and result: the engine is deterministic across both.
+    - **Corrected in 9c:** the script's test for a real-time manifest had lost a `\s` (`kind:s*"realtime"`), so the bundle carried Worm Rush without its bots and arena settings, and the fixture was an arena with no bots. Fixed, the bundle is 166 KB and the fixture fills to 10 worms; Deno 67/67 again.
     - **The bundle stays small:** `ArenaHost` imported the arena protocol, whose text messages use zod, and brought all of zod (875 KB). The binary frames moved to `arena-frames.ts` (no zod), which `arena-protocol.ts` re-exports: 162 KB, against 135 KB before.
   - **The player** gives real-time games no Phase 7 plays, play log or daily challenge until step 9c records solo lives.
   - **Checks,** 28/28 on the real site (`pnpm dev`, the local arena Worker and Supabase):

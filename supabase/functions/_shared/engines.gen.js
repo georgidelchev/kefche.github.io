@@ -147,9 +147,9 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine9, bots, options) {
+  constructor(engine9, bots2, options) {
     this.engine = engine9;
-    this.bots = bots;
+    this.bots = bots2;
     this.options = options;
     this.world = engine9.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
@@ -3251,15 +3251,15 @@ var Chess = class {
         }
         const offset = RAYS[index];
         let j = i + offset;
-        let blocked = false;
+        let blocked2 = false;
         while (j !== square) {
           if (this._board[j] != null) {
-            blocked = true;
+            blocked2 = true;
             break;
           }
           j += offset;
         }
-        if (!blocked) {
+        if (!blocked2) {
           if (!verbose) {
             return true;
           } else {
@@ -5559,9 +5559,9 @@ var snapshotCodec = {
     const dropped = new Set(readIds(r));
     const known = new Map(previous?.names.map((n) => [n.id, n]) ?? []);
     for (const id of readIds(r)) {
-      const bot = r.u8() === 1;
+      const bot2 = r.u8() === 1;
       const look = r.u8();
-      known.set(id, { id, name: r.string(), look, bot });
+      known.set(id, { id, name: r.string(), look, bot: bot2 });
     }
     const names = [...mentioned({ worms, board, feed })].filter((id) => !dropped.has(id)).map((id) => known.get(id)).filter((n) => n !== void 0).sort((a, b) => a.id - b.id);
     if (!r.done) throw new RangeError("bytes left over after a snapshot");
@@ -5883,6 +5883,129 @@ function snapshot(world, id) {
   };
 }
 
+// packages/games/worm-rush/engine/arena.ts
+var BOT_NAMES = [
+  "Mila",
+  "Teo",
+  "Ana",
+  "Kai",
+  "Lena",
+  "Omar",
+  "Yuki",
+  "Nia",
+  "Ivo",
+  "Sara",
+  "Leo",
+  "Ema",
+  "Rafa",
+  "Zoe",
+  "Niko",
+  "Aya",
+  "Dani",
+  "Iris",
+  "Mateo",
+  "Lia"
+];
+var arenaHost = {
+  minimumPopulation: 10,
+  maxPeople: 15,
+  botDifficulties: ["easy", "medium", "easy", "hard", "medium"],
+  botJoiner: (n, difficulty) => ({
+    name: BOT_NAMES[n % BOT_NAMES.length] ?? "Bot",
+    // Bots wear the free looks; which one follows from their number.
+    look: (n * 5 + difficulty.length) % 4
+  }),
+  botRespawnTicks: 3 * TICKS_PER_SECOND
+};
+
+// packages/games/worm-rush/engine/bots.ts
+var STYLES = {
+  easy: { thinkEvery: 12, sight: 220, caution: 0, wobble: 0.7, hunts: false },
+  medium: { thinkEvery: 6, sight: 450, caution: 120, wobble: 0.25, hunts: false },
+  hard: { thinkEvery: 4, sight: 650, caution: 180, wobble: 0.08, hunts: true }
+};
+var TURNS = [0, 0.4, -0.4, 0.8, -0.8, 1.3, -1.3, 2, -2, 2.8];
+function wanted(world, me, style) {
+  const toCentre = detAtan2(-me.y, -me.x);
+  const fromCentre = Math.sqrt(me.x * me.x + me.y * me.y);
+  if (fromCentre > ARENA_RADIUS - 250) return { heading: toCentre, boost: false };
+  if (style.hunts && me.mass > 120) {
+    let prey = null;
+    let nearest = 400 * 400;
+    for (const other2 of world.worms.values()) {
+      if (!other2.alive || other2.id === me.id || other2.mass * 1.6 > me.mass) continue;
+      const d2 = (other2.x - me.x) ** 2 + (other2.y - me.y) ** 2;
+      if (d2 < nearest) {
+        nearest = d2;
+        prey = other2;
+      }
+    }
+    if (prey) {
+      const ahead = 60 + wormRadius(prey.mass) * 4;
+      const tx = prey.x + detCos(prey.heading) * ahead;
+      const ty = prey.y + detSin(prey.heading) * ahead;
+      return {
+        heading: detAtan2(ty - me.y, tx - me.x),
+        boost: nearest < 220 * 220 && me.mass > 150
+      };
+    }
+  }
+  let best = -1;
+  let heading = me.heading;
+  world.orbGrid.forEach(me.x, me.y, style.sight, (id, x, y, d2) => {
+    const orb = world.orbs.get(id);
+    if (!orb) return;
+    const worth = orb.value / (Math.sqrt(d2) + 40);
+    if (worth > best) {
+      best = worth;
+      heading = detAtan2(y - me.y, x - me.x);
+    }
+  });
+  if (best < 0) heading = wrapAngle(toCentre + 0.6);
+  return { heading, boost: false };
+}
+function blocked(world, me, heading, distance) {
+  const mine = wormRadius(me.mass);
+  for (const step2 of [0.5, 1]) {
+    const x = me.x + detCos(heading) * distance * step2;
+    const y = me.y + detSin(heading) * distance * step2;
+    if (x * x + y * y > (ARENA_RADIUS - mine - 40) ** 2) return true;
+    if (world.bodies.query(x, y, mine + 40).some((id) => id !== me.id)) return true;
+  }
+  return false;
+}
+function bot(style) {
+  return {
+    thinkEvery: style.thinkEvery,
+    steer(world, id, { rng }) {
+      const me = world.worms.get(id);
+      if (!me?.alive) return { heading: 0, boost: false };
+      const goal = wanted(world, me, style);
+      let heading = goal.heading;
+      let swerved = false;
+      if (style.caution > 0) {
+        const index = TURNS.findIndex(
+          (t) => !blocked(
+            world,
+            me,
+            wrapAngle(goal.heading + t),
+            style.caution + wormRadius(me.mass) * 2
+          )
+        );
+        heading = wrapAngle(goal.heading + (TURNS[Math.max(0, index)] ?? 0));
+        swerved = index > 0;
+      }
+      heading = wrapAngle(heading + (rng.next() - 0.5) * style.wobble);
+      return { heading, boost: goal.boost && !swerved };
+    }
+  };
+}
+var bots = {
+  easy: bot(STYLES.easy),
+  medium: bot(STYLES.medium),
+  hard: bot(STYLES.hard)
+};
+
 // packages/games/worm-rush/engine/index.ts
 var engine8 = {
   ticksPerSecond: TICKS_PER_SECOND,
@@ -5940,7 +6063,7 @@ var GAMES = {
   "reversi": { manifest: manifest5, engine: engine5 },
   "snake": { manifest: manifest6, engine: engine6 },
   "sudoku": { manifest: manifest7, engine: engine7 },
-  "worm-rush": { manifest: manifest8, engine: engine8 }
+  "worm-rush": { manifest: manifest8, engine: engine8, bots, host: arenaHost }
 };
 export {
   ArenaHost,
