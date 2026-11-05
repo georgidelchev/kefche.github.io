@@ -168,6 +168,10 @@ jobs:
           PUBLIC_AUTH_PROVIDERS: ${{ vars.PUBLIC_AUTH_PROVIDERS || secrets.PUBLIC_AUTH_PROVIDERS || 'none' }}
           # "on" once the giphy function has its GIPHY_API_KEY (docs/RUNBOOK.md).
           PUBLIC_GIFS: ${{ vars.PUBLIC_GIFS || '' }}
+          # The public VAPID key once send-push has its secrets ("Web Push").
+          PUBLIC_VAPID_PUBLIC_KEY: ${{ vars.PUBLIC_VAPID_PUBLIC_KEY || '' }}
+          # "on" once Resend sends the email outbox (Phase 21).
+          PUBLIC_EMAIL_NOTIFICATIONS: ${{ vars.PUBLIC_EMAIL_NOTIFICATIONS || '' }}
 
       - name: Deploy to production
         if: github.event_name == 'push'
