@@ -19,7 +19,16 @@ import {
 import { CAPACITY, SNAPSHOTS_PER_SECOND, TICKS_PER_SECOND, type World } from "./world";
 
 export { bots } from "./bots";
-export type { Event, Input, Snapshot, SnapshotName, SnapshotOrb, SnapshotWorm } from "./rules";
+export { moveHead } from "./rules";
+export type {
+  Event,
+  Head,
+  Input,
+  Snapshot,
+  SnapshotName,
+  SnapshotOrb,
+  SnapshotWorm,
+} from "./rules";
 export * from "./world";
 
 export const engine: RealtimeEngine<World, Input, Snapshot, Event> = {

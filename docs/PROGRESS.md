@@ -1811,6 +1811,44 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
   - **Keyboard:** arrows or WASD in eight directions, Space to act; keys typed into a field are left alone, and leaving the window lets go of everything.
   - Letting go of steering keeps the last heading. Changes too small for a heading byte aren't reported.
   - **Checks,** 30/30 in Chrome at 400×700, with real multi-touch through the DevTools protocol: the joystick's maths, steering, the base following, boosting with a second finger while steering, HUD touches ignored, left-handed mode, moving the button and reloading its place, a bad stored layout, mouse and keyboard steering and acting, fields and window blur, disposal, and axe (WCAG 2 A and AA) clean. Checked by eye at 360 px in both themes.
+- [x] Step 6: rendering with PixiJS 8.22.0 (`packages/games/worm-rush/renderer`), adopted after measuring it against Canvas 2D.
+  - **The measurement,** before adopting it: the same live arena (the real engine and 30 bots at 30 Hz, about 2,600 body points and 1,700 orbs) drawn both ways in Chrome on a phone profile (412×915, device pixel ratio 2.625 capped at 2), with the CPU slowed 4× and 6×:
+
+    | At 6× slowdown            | Canvas 2D (stroked paths) | PixiJS (batched sprites) |
+    | ------------------------- | ------------------------- | ------------------------ |
+    | Drawing, median / p95     | 7.9 / 9.2–10.7 ms         | 2.8 / 6.3–7.1 ms         |
+    | Extra JavaScript, gzipped | about 6 KB                | about 164 KB             |
+
+    PixiJS leaves most of a 60 Hz frame (16.7 ms) to the game, and it loads only with Worm Rush (a lazy chunk). The desktop's GPU can't be slowed down, so only the CPU side is measured here; step 12's phone run covers the rest.
+
+  - **What it draws:**
+    - a grid that scrolls with the camera, the arena's edge, and the outside dimmed;
+    - glowing orbs that pulse and grow in when they appear;
+    - worms as rows of shaded discs, evenly spaced so patterns stay steady at any speed, with eyes that look where they head and a glow while boosting;
+    - names as page text over the canvas, so the browser shapes every script (checked with Japanese, Cyrillic and Devanagari names) and a new name costs no texture upload. They are hidden from screen readers; the HUD's board names worms (step 8).
+    - The arena keeps its own night colours in both site themes. Motion (pulsing, growing in) stops under reduced motion.
+  - **The frame** (`frame.ts`, no PixiJS, tested in Node):
+    - everyone else drawn between the two snapshots around 100 ms ago: the head moves on from the older snapshot's body;
+    - the player's own worm at its predicted head, on the latest snapshot's body. Prediction moves the head with the rules' own function (`moveHead`, now shared by the engine), so they agree exactly;
+    - **the zoom:** a worm's surroundings fill the screen's shorter side (a new worm is about 13 px wide on a 360 px phone), widening as it grows, but never showing past what the arena sends.
+  - **Skins** (`skins.ts`): 12 provisional colours, each with an accent and a pattern (solid, stripes, rings, fade). Which are free, how the rest unlock, and the colour-blind check come with the picker (step 10).
+  - **Two stalls found and fixed:**
+    - the first frame took about 280 ms at 6× (shaders and textures), so the scene now draws a warm-up frame while loading;
+    - names drawn by PixiJS stalled about 100 ms when several worms came into view, hence the page-text names.
+  - **CSP:** PixiJS loads its `unsafe-eval` module, so it needs no `eval()` under the full Content-Security-Policy (Phase 17).
+  - **Checks:**
+    - **Node,** 18/18: body resampling (even spacing, exact length, short and repeated paths); prediction against the rules over 300 ticks, exactly; others halfway between snapshots; bodies as long as the worm or its path so far; the player drawn at the predicted head; held snapshots; the zoom never showing past the view on 7 screen sizes and 4 masses; the skins' patterns.
+    - **Chrome,** the whole client loop on the solo arena (`createLocalArena`, the clock, the snapshot buffer, prediction, the step 5 controls and the scene), phone profile:
+
+      | CPU slowdown | Fresh arena (median / p95 / worst, two runs) | Grown worms, ~400 segments and ~550 orbs in view |
+      | ------------ | -------------------------------------------- | ------------------------------------------------ |
+      | 4×           | 0.7–0.8 / 1.0–1.1 / 2.4–3.2 ms               | 1.6 / 2.1–2.2 / 3.4–4.5 ms                       |
+      | 6×           | 1.2 / 1.6–1.8 / 6.6–6.7 ms                   | 2.4–2.7 / 3.2–3.7 / 5.3–7.4 ms                   |
+
+      The canvas renders at twice its CSS size (capped from 2.625); the scene is ready in about 60 ms; disposing removes it, and a frame drawn after that does nothing; no page errors. Checked by eye at 360, 412 and 1280 px.
+
+    - The engine's own check (step 7) again 20/20, its bot runs unchanged by the `moveHead` refactor.
+  - **Not yet:** the page that mounts the game, with its loading screen and HUD (steps 8 and 9). The ADR for PixiJS is step 12's, with the others.
 
 ## Known issues
 
@@ -1825,7 +1863,7 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
 - **Auth pages are near the JS budget:** sign-up 110 KB and settings 116 KB gzip before supabase-js. New React on these pages needs a size check (Phase 18 may split islands further).
 - **Guest identity creation moves to Phase 5:** step 9 built the upgrade (sign-up or OAuth link keeps the guest's user id) and the merge (Edge Function `merge-guest` plus a confirmation page). `ensureIdentity()` is built with its first users, the rooms, in Phase 5; guests aren't asked their age (owner decision, 2026-10-24). No other page creates guest sessions.
 - **CSP for Stockfish (Phase 17):** chess runs Stockfish as WebAssembly in a nested worker, so the full Content-Security-Policy must allow `'wasm-unsafe-eval'` in `script-src` and `worker-src 'self'`. The Credits page lists Stockfish (GPL-3.0) and the cburnett pieces (BSD 3-Clause) from `packages/games/chess/CREDITS.md`.
-- **Credits attribution (Phase 17):** the blocked-terms lists are adapted from LDNOOBW (CC BY 4.0), and the Credits page must say so (`supabase/blocked-terms/README.md`). It also lists frimousse and Emojibase (both MIT), and GIPHY ("Powered by GIPHY", already shown in the GIF picker).
+- **Credits attribution (Phase 17):** the blocked-terms lists are adapted from LDNOOBW (CC BY 4.0), and the Credits page must say so (`supabase/blocked-terms/README.md`). It also lists frimousse, Emojibase and PixiJS (all MIT), and GIPHY ("Powered by GIPHY", already shown in the GIF picker).
 - **CSP for GIFs (Phase 17):** the full Content-Security-Policy must allow `https://media.giphy.com` in `img-src` (ADR-0032).
 - **The emoji picker is patched (Phase 8):** frimousse 0.4.0 numbers its grid from 0, which ARIA forbids, so `patches/frimousse@0.4.0.patch` shifts it by one. Upgrading frimousse means checking whether a release fixed it, then dropping or redoing the patch (`patches/README.md`). Worth reporting upstream.
 - **Blocked terms need review:** the owner reviews the drafted Bulgarian list (`supabase/blocked-terms/bg.txt`). Native speakers review the other non-English lists in Phase 15. Russian lacks some common Cyrillic slurs. Since Phase 8 step 2, phrases match in chat too, so the lists' phrases deserve a look for everyday words.

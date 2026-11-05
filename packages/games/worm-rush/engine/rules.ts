@@ -209,15 +209,32 @@ export function step(world: World, inputs: ReadonlyMap<number, Input>): Event[] 
   return events;
 }
 
-function move(world: World, worm: Worm, rng: Rng): void {
-  const turn = turnPerTick(worm.mass);
-  const diff = wrapAngle(worm.target - worm.heading);
-  worm.heading = wrapAngle(worm.heading + Math.max(-turn, Math.min(turn, diff)));
-  const boosting = worm.boosting && worm.mass > BOOST_MIN_MASS;
+/** A worm's head: where it is (quarter units), where it faces, and its mass. */
+export interface Head {
+  x: number;
+  y: number;
+  heading: number;
+  mass: number;
+}
+
+/**
+ * One tick of a head's movement: turning toward `target` and moving on.
+ * Returns whether it boosted. The rules and the player's own prediction both
+ * move heads with it, so the two agree exactly.
+ */
+export function moveHead(head: Head, target: number, boost: boolean): boolean {
+  const turn = turnPerTick(head.mass);
+  const diff = wrapAngle(target - head.heading);
+  head.heading = wrapAngle(head.heading + Math.max(-turn, Math.min(turn, diff)));
+  const boosting = boost && head.mass > BOOST_MIN_MASS;
   const speed = boosting ? BOOST_SPEED_PER_TICK : SPEED_PER_TICK;
-  worm.x = quantize(worm.x + detCos(worm.heading) * speed);
-  worm.y = quantize(worm.y + detSin(worm.heading) * speed);
-  if (boosting) {
+  head.x = quantize(head.x + detCos(head.heading) * speed);
+  head.y = quantize(head.y + detSin(head.heading) * speed);
+  return boosting;
+}
+
+function move(world: World, worm: Worm, rng: Rng): void {
+  if (moveHead(worm, worm.target, worm.boosting)) {
     // Boosting burns length, left behind as small orbs at the tail.
     worm.boostDebt += BOOST_MASS_PER_TICK;
     while (worm.boostDebt >= 1 && worm.mass > BOOST_MIN_MASS) {

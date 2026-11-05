@@ -5,13 +5,15 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    "./engine": "./engine/index.ts"
+    "./engine": "./engine/index.ts",
+    "./renderer": "./renderer/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc -p engine"
+    "typecheck": "tsc -p engine && tsc -p renderer"
   },
   "dependencies": {
-    "@kefche/game-sdk": "workspace:*"
+    "@kefche/game-sdk": "workspace:*",
+    "pixi.js": "8.22.0"
   },
   "devDependencies": {
     "@kefche/config": "workspace:*",
