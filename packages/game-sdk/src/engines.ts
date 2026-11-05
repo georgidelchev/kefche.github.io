@@ -109,13 +109,7 @@ export interface TurnMove<Action> {
   action: Action;
 }
 
-/** Real-time games (SPEC §9.4.2). Fixed timestep; implemented in Phase 9. */
-export interface RealtimeEngine<State, Input, Config = undefined> {
-  readonly ticksPerSecond: number;
-  initialState(config: Config, seats: number, seed: string): State;
-  step(state: State, inputs: ReadonlyMap<number, Input>): State;
-  result(state: State): GameResult | null;
-}
+// Real-time arenas (SPEC §9.4.2) have their own contract: realtime.ts.
 
 /** Simultaneous-choice rounds (SPEC §9.4.3). Implemented with party games. */
 export interface RoundEngine<State, Choice, Config = undefined> {

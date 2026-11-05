@@ -2,6 +2,7 @@
 // Browser runtime helpers live in `@kefche/game-sdk/browser`; build-time
 // manifest validation in `@kefche/game-sdk/manifest-schema`.
 export * from "./achievements";
+export * from "./bytes";
 export * from "./bots";
 export * from "./engines";
 export * from "./game-text";
@@ -9,8 +10,10 @@ export * from "./manifest";
 export * from "./prng";
 export * from "./protocol";
 export * from "./race-log";
+export * from "./realtime";
 export * from "./search";
 export * from "./seats";
+export * from "./spatial-grid";
 export * from "./timers";
 export * from "./transport";
 export * from "./xp";

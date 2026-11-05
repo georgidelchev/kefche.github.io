@@ -1709,6 +1709,24 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
   - **Refusals,** locally 10/11 and live 8/9 (the 16-player check runs locally only, since the hosted project allows about 30 guest sign-ins an hour): a bad token, a missing hello, the second tab, the 16th player, another site's page, the site's own page, a plain request and a bad arena name.
   - **A close from the loop is slow:** the server's error reaches the client at once, but a socket the server closes from its timer (a client that never says hello) closes 10 s later, locally and on Cloudflare alike. Closes made while handling a message take under 30 ms. The client therefore closes itself on any error frame (step 3), and later steps that remove players from the loop (step 4) must not rely on the server's close.
   - **Not measured here:** billed duration and requests as Cloudflare counts them (the dashboard, _kefche-arena → Metrics_; no API access from this machine). The counts above come from the frames themselves.
+- [x] Step 2: the real-time contracts in `@kefche/game-sdk` (isomorphic).
+  - **`RealtimeEngine`** (`realtime.ts`) replaces the placeholder from Phase 3, which had fixed seats and returned a new state each tick:
+    - **Drop-in:** people and bots join and leave at any time (`join`, `leave`), with `respawn` and `alive` for players knocked out.
+    - **Ticks:** `step` takes each participant's latest input and returns that tick's events.
+    - **Per player:** `snapshot` is what one participant sees; `result` is the score of their life.
+    - **Rates:** each engine declares its tick and snapshot rates and its capacity.
+  - **The world changes in place,** unlike the other engine kinds: copying an arena 30 times a second would be most of the work. It stays deterministic all the same: no clocks, no `Math.random`, randomness only from the world's `RngState`.
+  - **Codecs:** each game brings a `SnapshotCodec` and an `InputCodec`. A snapshot is encoded against the previous one sent to the same player: a WebSocket delivers frames whole and in order, so a delta needs no acknowledgement. Inputs from clients decode to null when invalid.
+  - **Bytes** (`bytes.ts`): `ByteWriter` and `ByteReader` for fixed widths and varints, zigzag for signed changes (a small move is one byte), and a heading in one byte.
+  - **Area of interest and collisions** (`spatial-grid.ts`): a uniform grid rebuilt every tick, whose queries come in a fixed order.
+  - **Bots:** an `ArenaBot` steers inside the world every `thinkEvery` ticks (its reaction time), costing no messages. `botsWanted` fills an arena to its minimum population, never past its capacity.
+  - **Checks,** 17/17 in Node:
+    - bytes round trip, clamped and rounded, and reading past the end throws;
+    - headings within half a step;
+    - the grid matches brute force over 600 queries, negative coordinates included, in a fixed order;
+    - `botsWanted`;
+    - a small test engine on the contract: 150 delta frames decode to what was sent, the same seed and inputs give the same frames, another seed differs, a full world refuses joins, and bad inputs are refused.
+  - The server engines and push wording bundles are unchanged (the new code isn't in them).
 
 ## Known issues
 
