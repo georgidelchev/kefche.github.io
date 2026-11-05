@@ -162,6 +162,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  frimousse@0.4.0: 209120411ff24074796d632e34f33b362da337f0ea8a4e843747524141d89c73
+
 importers:
 
   .:
@@ -222,7 +225,7 @@ importers:
         version: 7.4.1(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)
       frimousse:
         specifier: 0.4.0
-        version: 0.4.0(react@19.3.1)(typescript@6.0.3)
+        version: 0.4.0(patch_hash=209120411ff24074796d632e34f33b362da337f0ea8a4e843747524141d89c73)(react@19.3.1)(typescript@6.0.3)
       i18next:
         specifier: 26.5.3
         version: 26.5.3(typescript@6.0.3)
@@ -7873,7 +7876,7 @@ snapshots:
     dependencies:
       tiny-inflate: 1.0.3
 
-  frimousse@0.4.0(react@19.3.1)(typescript@6.0.3):
+  frimousse@0.4.0(patch_hash=209120411ff24074796d632e34f33b362da337f0ea8a4e843747524141d89c73)(react@19.3.1)(typescript@6.0.3):
     dependencies:
       react: 19.3.1
     optionalDependencies:

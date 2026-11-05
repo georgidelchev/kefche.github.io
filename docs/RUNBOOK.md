@@ -106,6 +106,56 @@ commit;
 
 Then sanction the player if it's warranted, passing one of the reports' ids as `p_report` to `sanction_player`. Resolutions are audited (`report.resolve`). A resolved report is deleted 90 days later. An actioned avatar's file stays in Storage until the player replaces it; delete it from Studio's Storage browser (`avatars/<user id>/…`) if it must go at once.
 
+## Moderation escalation
+
+Moderators handle everyday reports with the SQL above. An admin, the owner until there are others, takes over in the cases below. Act first on anything that is still visible, then record and follow up. The evidence keeps:
+
+- reports keep a copy of what was reported until 90 days after they're resolved;
+- sanctions stay while the account exists;
+- `audit_log` can't be edited.
+
+1. **Someone may be in danger** (threats of violence, self-harm).
+   - Action the report, or delete the message (global chat: `select public.delete_chat_message(<id>);`; a lobby: `public.delete_room_message`), in the staff block above.
+   - The site holds no names, addresses or locations. If a message describes an immediate threat to someone's life, contact the police where you are with what you have: the copy, the nickname, the time and the account id. They can ask for account data through legal channels; the data export (`export-data`) shows what exists.
+2. **Sexual content involving a minor, or any illegal image.**
+   - Don't download, copy or forward it, even to report it.
+   - Action the report. For an avatar, also delete the file from Storage at once (`avatars/<user id>/…`).
+   - Ban the account (until revoked).
+   - Report it to a hotline: the INHOPE member where the site operates (in Bulgaria, the Safenet hotline at safenet.bg), or NCMEC's CyberTipline (report.cybertip.org).
+   - Keep the report and audit rows. Phase 17's legal review settles any further duty to report.
+3. **Private information posted** (an address, a phone number, someone's photos):
+   - delete the message at once rather than waiting for three reports;
+   - mute or suspend the sender;
+   - for an avatar, action its report and delete the file.
+4. **A spam wave or a raid in a global room:**
+   - turn on slow mode (`set_slow_mode('<locale>', 30)`);
+   - mute the accounts;
+   - add the words or links to `supabase/blocked-terms/` and run `pnpm db:terms`. That makes a migration, which then has to be pushed.
+   - New accounts already wait 2 hours before posting. A longer wait is a code change (`send_chat_message`).
+5. **A moderator misusing the role.** What a moderator did, newest first:
+
+   ```sql
+   select created_at, action, target_type, target_id, details
+   from public.audit_log where actor_id = '<their user id>' order by created_at desc limit 100;
+   ```
+
+   An admin removes the role with `select public.set_user_role('<their user id>', 'moderator', false);`, in the staff block above, and revokes the sanctions that shouldn't stand.
+
+6. **An appeal** (players ask through the contact on the guidelines page):
+   - an admin who didn't make the decision looks again, at the sanction, its report and the copy;
+   - `revoke_sanction` ends it, and the player is told.
+
+A player's record (their sanctions, and the open and resolved reports against them):
+
+```sql
+select 'sanction' as kind, kind::text as what, reason, created_at, ends_at as until
+from public.sanctions where user_id = '<id>'
+union all
+select 'report', target_type, reason, created_at, resolved_at
+from public.reports where target_user_id = '<id>'
+order by created_at desc;
+```
+
 ## Announcements
 
 Until the admin panel (Phase 10) writes them, an announcement is a notification inserted from the SQL editor, one per player. It reaches everyone, whatever their settings, and arrives live for those online. Write the text in every language you can; a player whose language is missing sees English. `url` is optional and must be a path on the site.
@@ -370,6 +420,6 @@ Copy `supabase/.env.example` to `supabase/.env` and paste each client ID and sec
 ## Sections to come
 
 - Migrations through CI with manual approval, backups _(Phase 21)_
-- Moderation escalation and reports _(Phase 8 step 11, Phase 10)_
+- The moderation queue and the admin panel's tools _(Phase 10)_
 - Custom domain, DNS, email (Resend), production OAuth apps _(Phase 21)_
 - Incident response and smoke-test checklist _(Phase 21)_

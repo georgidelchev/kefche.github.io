@@ -161,6 +161,47 @@ flowchart LR
 - **The daily challenge:** one seed a day for everyone, rotating through the games played alone. It's made when first asked for, played on its own play, and has its own board.
 - **Pages:** the profile shows stats, the rating charts, the level and achievements; `/[locale]/leaderboards/` and each game page show boards; the home page has the daily challenge; settings has the avatar frames. One results screen (`GameResults`) ends every game in every mode.
 
+## Social, chat and moderation (Phase 8)
+
+```mermaid
+flowchart LR
+  T["Signed-in tab"] -->|"RPCs: report_presence, send_*,<br/>add_friend, block_user, report…"| DB[(Postgres + RLS<br/>filter · limits · sanctions · blocks)]
+  DB -->|"realtime.send: notifications, DMs,<br/>typing, seen, friends' status"| U["user:ID<br/>its player only"]
+  DB -->|"Postgres changes, checked<br/>per reader; removals by id"| C["chat:LOCALE · room-chat:ROOM"]
+  U --> T
+  C --> T
+  DB -->|"pg_net: new notification"| SP["send-push<br/>(Edge Function)"]
+  SP -->|"encrypted, VAPID-signed"| PS["Browsers' push services"]
+```
+
+- **Live connection and status** (ADR-0033): one connection per signed-in tab, on its player's private channel `user:<id>`, which only the database writes. Tabs report what they're doing; the database works out each player's status, tells their friends, and answers `presence_of` for everyone else allowed. A tab hidden for 5 minutes disconnects.
+- **Chat** (ADR-0034): global chat and DMs in `public.messages`, lobby and in-game chat in `room_messages`, all written through RPCs. Global and lobby chat arrive as Postgres changes, checked against the read policy for each reader; DMs as broadcasts to the two players' channels.
+- **Moderation** (ADR-0035): the word filter, rate limits, slow mode, sanctions, reports (hidden at three accounts) and blocks are enforced in SQL. Staff actions go to `audit_log`. Until the admin panel, the RUNBOOK gives the SQL.
+- **Notifications and push** (ADR-0036): rows in `notifications`, worded by the app in the reader's language and sent live on `user:<id>`. A trigger asks `send-push` for the ones a player wants as a push; it words them with the same code (`pnpm functions:push`). Email has preferences and an outbox for Phase 21.
+- **Emoji and GIFs** (ADR-0032): a self-hosted Emojibase, and GIPHY through the `giphy` function, behind `PUBLIC_GIFS`.
+- **Pages:** `/[locale]/friends/`, `/[locale]/chat/`, `/[locale]/messages/` and `/[locale]/notifications/` (accounts builds, noindex), the community guidelines, the profile's friend actions, the bell, and settings' privacy and notification sections.
+
+### Realtime message budget (Phase 8)
+
+Measured in step 13 on local Supabase: five accounts, A with four friends, each listening as the site does. The counts are messages received. Supabase also bills each broadcast once as sent, and the database broadcasts once per player's channel, so a status change to 4 friends bills 8 and a DM 4. A Postgres change bills only what's received.
+
+| Action                                                           | Received | What they are                                           |
+| ---------------------------------------------------------------- | -------: | ------------------------------------------------------- |
+| A's status changes (comes online, opens a lobby, closes the tab) |        4 | One per friend                                          |
+| A's minute heartbeat, no change                                  |        0 |                                                         |
+| An invite, a friend request, any notification                    |        1 | To its player                                           |
+| A DM                                                             |        2 | To both players (the first unread one also notifies: 3) |
+| Typing, "seen"                                                   |        1 | To the other player                                     |
+| Deleting a DM                                                    |        2 | To both players                                         |
+| A global chat message, 5 in the room                             |        5 | One per reader, the sender included                     |
+| Deleting it                                                      |        5 | One per reader                                          |
+| A lobby chat message, 3 in the room                              |        3 | One per reader, the sender included                     |
+| Removing a friend                                                |        0 |                                                         |
+
+- **Global chat dominates:** each message costs one per reader. A room of 50 readers with a message every 10 s costs about 18,000 an hour, so 4 such hours a day use about 2.2 million a month, past the free plan's 2 million. Slow mode is the lever; the Pro plan includes 5 million.
+- **Everything else is small:** a player with 20 friends online who changes status 10 times an hour bills about 400 an hour, and 100 DMs about 400.
+- **Connections, not messages, may bind first:** every open, visible, signed-in tab holds one of the free plan's 200 concurrent connections.
+
 ## Internationalization
 
 - **Registry:** `src/i18n/locales.ts` lists every locale with its native name, BCP 47 tag, `dir`, script and OG locale. Routing, fonts, `<html lang dir>`, hreflang and the language switcher all derive from it.
@@ -223,6 +264,5 @@ GitHub Actions `CI` runs format check → lint → contrast → translations →
 ## Sections to come
 
 - Realtime message budget for real-time arenas (SPEC §10.9) _(Phase 9)_
-- Social, chat and moderation _(Phase 8)_
 - PWA install, audio and haptics _(Phase 16; no offline mode, ADR-0014)_
 - Consent, analytics and monitoring _(Phase 17)_

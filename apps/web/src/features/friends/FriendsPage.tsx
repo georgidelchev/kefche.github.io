@@ -184,7 +184,7 @@ export function FriendsPage({
       : null;
   };
   return (
-    <div className="grid gap-6">
+    <div className="grid min-w-0 grid-cols-1 gap-6">
       <form
         className="grid gap-3"
         onSubmit={(e) => {
@@ -213,6 +213,7 @@ export function FriendsPage({
       </form>
 
       <Tabs
+        className="min-w-0"
         dir={dir}
         value={tab}
         onValueChange={(value) => {

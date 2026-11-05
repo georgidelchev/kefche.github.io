@@ -125,7 +125,7 @@ export function MessagesPage({
   };
 
   return (
-    <div className="grid gap-4 md:grid-cols-[18rem_1fr] md:items-start">
+    <div className="grid min-w-0 grid-cols-1 gap-4 md:grid-cols-[18rem_minmax(0,1fr)] md:items-start">
       <section
         aria-label={s.conversations}
         className={withId ? "hidden md:grid md:gap-2" : "grid gap-2"}
@@ -388,8 +388,8 @@ function ThreadView({
     });
 
   return (
-    <section aria-labelledby={`${id}-with`} className="grid gap-3">
-      <div className="flex items-center gap-3">
+    <section aria-labelledby={`${id}-with`} className="grid grid-cols-1 gap-3">
+      <div className="flex min-w-0 items-center gap-3">
         <span className="md:hidden">
           <BackButton label={s.back} onClick={onBack} />
         </span>
@@ -404,7 +404,7 @@ function ThreadView({
         </h2>
       </div>
 
-      <div className="grid rounded-2xl border border-border bg-surface">
+      <div className="grid grid-cols-1 rounded-2xl border border-border bg-surface">
         <ol
           ref={logRef}
           aria-label={other.nickname}
@@ -413,7 +413,7 @@ function ThreadView({
             const log = e.currentTarget;
             stickRef.current = log.scrollHeight - log.scrollTop - log.clientHeight < 48;
           }}
-          className="grid h-[min(32rem,calc(100dvh-20rem))] min-h-64 content-start gap-2 overflow-y-auto overscroll-contain p-3"
+          className="grid h-[min(32rem,calc(100dvh-20rem))] min-h-64 grid-cols-1 content-start gap-2 overflow-y-auto overscroll-contain p-3"
         >
           {earlier && (
             <li className="justify-self-center">
@@ -433,13 +433,13 @@ function ThreadView({
                 key={m.id}
                 className={`group grid max-w-[85%] gap-0.5 ${mine ? "justify-items-end justify-self-end" : "justify-self-start"}`}
               >
-                <div className="flex items-center gap-1">
+                <div className="flex max-w-full items-center gap-1">
                   {mine && !deleted && (
                     <button
                       type="button"
                       title={s.delete}
                       onClick={() => void remove(m.id)}
-                      className="inline-flex size-8 cursor-pointer items-center justify-center rounded-lg text-muted opacity-60 hover:bg-surface-2 hover:text-text hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-focus"
+                      className="inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-lg text-muted opacity-60 hover:bg-surface-2 hover:text-text hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-focus"
                     >
                       <Trash2 aria-hidden="true" className="size-4" />
                       <span className="sr-only">{s.delete}</span>
@@ -452,14 +452,14 @@ function ThreadView({
                       onClick={() => {
                         setReporting({ type: "message", id: String(m.id), name: other.nickname });
                       }}
-                      className="order-last inline-flex size-8 cursor-pointer items-center justify-center rounded-lg text-muted opacity-60 hover:bg-surface-2 hover:text-text hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-focus"
+                      className="order-last inline-flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-lg text-muted opacity-60 hover:bg-surface-2 hover:text-text hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-focus"
                     >
                       <Flag aria-hidden="true" className="size-4" />
                       <span className="sr-only">{s.report.message}</span>
                     </button>
                   )}
                   <p
-                    className={`rounded-2xl px-3 py-2 break-words whitespace-pre-wrap ${
+                    className={`min-w-0 rounded-2xl px-3 py-2 break-words whitespace-pre-wrap ${
                       deleted
                         ? "border border-dashed border-border text-sm text-muted italic"
                         : mine

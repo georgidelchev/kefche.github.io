@@ -23,3 +23,6 @@ allowBuilds:
   # Native resolver used by eslint-import-resolver-typescript; the platform
   # binary ships as an optional dependency, so the postinstall is not needed.
   unrs-resolver: false
+
+patchedDependencies:
+  frimousse@0.4.0: patches/frimousse@0.4.0.patch

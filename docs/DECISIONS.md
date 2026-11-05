@@ -627,3 +627,146 @@ The Web Push service worker (Phase 8) is still allowed and handles push events o
 - **Searches in other languages:** for Arabic and Bulgarian, until Emojibase covers them (a custom `resolveEmojiData` could add our own names later).
 - **GIPHY's budget:** at 90 calls an hour, a busy site's searches start answering "busy" sooner than its trending list; a production key (possibly paid) lifts it.
 - **Content Security Policy (Phase 17):** `img-src` must allow `https://media.giphy.com`.
+
+---
+
+## ADR-0033: Presence and notifications on each player's own private channel
+
+**Date:** 2026-11-05 · **Status:** Accepted (owner answer Q3, 2026-11-01)
+
+**Context.** SPEC §8.1 describes a site-wide Presence channel. That would show every player's status to everyone online, blocked players included. The free plan also allows only 20 Presence messages a second and 200 concurrent connections. Phase 8 needs live notifications, DMs and typing for signed-in players, and Q3 lets each player choose who sees them online.
+
+**Decision.**
+
+- **One connection per signed-in tab** (`features/live/live.client.ts`, on every page), on the private channel `user:<id>`. Only its player may listen (Realtime Authorization), and only the database sends there (`realtime.send`). Guests and visitors open nothing. The channel carries notifications, DMs, "seen", typing and friends' status changes.
+- **Presence through the database, not a Presence channel.**
+  - Each tab reports what it's doing (`report_presence`: online, in a lobby, in a game, away) into `private.presence_tabs`, when that changes and every minute.
+  - The busiest live tab is the player's status. A job every minute clears tabs silent for 2 minutes.
+  - When what others see changes, the database tells each friend on their own channel. A heartbeat without a change sends nothing.
+- **Who sees it:** `user_settings.show_online_to` is everyone, friends only (the default) or nobody. Blocked players never see each other's status. Friends get it live; anyone else allowed reads it when a page loads (`presence_of`).
+- **Hidden tabs:** after 5 minutes hidden, a tab reports away and closes its connection. When it's back in view, it reconnects and reloads what it shows (`kefche:live-resume`).
+- **Notifications:**
+  - They're rows in `public.notifications` holding data, not text, so the app words each one in the reader's current language. Kept 90 days.
+  - A type turned off in the app isn't stored.
+  - Each new row goes live to its player's channel, with the card of the player it's about.
+  - The unread count comes back with every status report, so the bell costs no request of its own.
+
+**Consequences.**
+
+- **Connections:** the free plan's 200 concurrent connections count open, visible, signed-in tabs, not everyone with the site open somewhere.
+- **Measured cost** (Phase 8 step 13): a status change is one message received per friend, and each is also billed once as sent. A heartbeat costs nothing, and a notification costs one. ARCHITECTURE.md has the table.
+- **Database load:** a report per tab per minute; 200 tabs make about 3 writes a second.
+- **Non-friends see the status from when the page loaded,** not a live one.
+- **Blocks are enforced where the data is,** so no page can forget them (ADR-0035).
+
+---
+
+## ADR-0034: Chat in Postgres; global chat delivered as Postgres changes, DMs as broadcasts
+
+**Date:** 2026-11-05 · **Status:** Accepted (owner answers Q2 and Q4, 2026-11-01)
+
+**Context.** Phase 8 adds global chat (one room per language), DMs and chat during matches. Each one must:
+
+- keep history;
+- respect blocks both ways;
+- support moderation (deleting, and hiding after reports);
+- stay within the free plan's Realtime budget.
+
+Lobby chat already existed (ADR-0023).
+
+**Decision.**
+
+- **One table, `public.messages`,** for global chat (`room`) and DMs (`conversation_id`).
+  - Only RPCs write it (`send_chat_message`, `send_direct_message`). They check the account, its age (2 hours, Q4), sanctions, rate limits, slow mode and the word filter.
+  - It's read through RLS, never across a block.
+- **Global chat arrives as Postgres changes** on the private channel `chat:<locale>`.
+  - Realtime checks each new row against the read policy for each listener, so a block hides messages live just as it does in the history.
+  - The plan was a broadcast from the database, which would have reached blocked players too.
+  - Deletions and hiding go out as broadcasts of the id only, since a removed row can no longer be read.
+- **DMs arrive as broadcasts** from the database to the two players' own channels (ADR-0033), sent after the checks. That's safe because a DM has exactly two readers, both checked when it's sent. Typing goes through the database too (`direct_typing`, at most every 3 s), because only the database writes to a player's channel.
+- **Lobby and in-game chat** stay in `room_messages` (ADR-0023) and are deleted with the room. They're now on a private channel, `room-chat:<room id>`, with the same Postgres-changes delivery and the global chat's moderation tools.
+- **Retention:**
+  - each global room keeps its latest 1,000 messages, trimmed as each one is sent;
+  - DMs are kept a year;
+  - deleting a message erases its text at once and leaves a placeholder;
+  - a reported message's copy stays with its report until 90 days after the report is resolved.
+- **Guests** have lobby and in-game chat only: no global chat, DMs or friends (SPEC §7.1).
+
+**Consequences.**
+
+- **Measured cost** (step 13):
+  - a global or lobby chat message costs one message per reader in the room;
+  - a deletion costs one per reader, plus the send;
+  - a DM costs two, plus two sends;
+  - typing and "seen" cost one each.
+- **Busy global rooms are the largest Realtime cost:** 50 readers and a message every 10 s make 18,000 messages an hour. Slow mode is the first lever; past that, the Pro plan (5 million a month included).
+- **Database work grows with readers × messages too,** because each Postgres change is checked against the policy for every listener.
+- **A DM sent while its reader is offline costs only the send.** The thread and the bell catch up when a page loads.
+
+---
+
+## ADR-0035: Moderation enforced in the database
+
+**Date:** 2026-11-05 · **Status:** Accepted
+
+**Context.** Phase 8 opens global chat, DMs, bios and avatars to everyone with an account. SPEC §8.3 asks for a word filter, rate limits, reports, sanctions and blocks. Moderators have no queue until the admin panel (Phase 10), and a browser can't be trusted to apply any of it.
+
+**Decision.**
+
+- **The word filter is in SQL** (`private.blocked_spans`, behind `has_blocked_term` and `mask_blocked_terms`), over the per-language lists in `supabase/blocked-terms/`.
+  - It catches letters spaced out, digits and symbols for letters, stretched letters, Latin and Cyrillic look-alikes, and whole-word phrases.
+  - It masks chat and refuses nicknames and bios.
+  - Each masked chat message is a strike; the third within 10 minutes mutes the sender for 10 minutes.
+- **Rate limits:** 5 messages per 10 s per player and channel, plus slow mode per global room, set by staff.
+- **Sanctions** (`sanctions`):
+  - **Kinds:** warn, mute (no chat), suspend (no online play) and ban (no sign-in, through Supabase Auth's `banned_until`, which also ends the player's sessions).
+  - **Enforcement:** the RPCs refuse sanctioned players, and so do triggers on `room_members` and `match_queue`.
+  - **Notices:** each sanction notifies the player, and account notices can't be turned off.
+  - **Who may:** moderators warn, mute and suspend; only admins ban or sanction staff.
+- **Reports** (`report`):
+  - each keeps a copy of what was reported;
+  - once three different accounts have open reports on a thing, it's hidden until a moderator looks; guests' reports are listed but don't count;
+  - `resolve_reports` handles every open report on one thing at once: dismissing restores it, actioning deletes it.
+- **Blocks:**
+  - They're checked in every RPC and policy that joins two players: friends, DMs, typing, invites, global and room chat, status, joining and listing rooms, and quick and rated matchmaking.
+  - A block also takes back the two players' notifications about each other (`20261105100100_block_notifications.sql`, step 13).
+- **Every staff action goes to the insert-only `audit_log`,** rather than a separate `moderation_actions` table. Until Phase 10, the RUNBOOK gives the SQL.
+
+**Consequences.**
+
+- **No client can skip a rule,** and the admin panel will call the same functions.
+- **The filter costs about 10 ms per 500-character message** (35 ms at worst). It will have false positives and misses, and the non-English lists need native review (Phase 15).
+- **Three accounts can hide a message or a bio** until a moderator looks. The 2-hour wait for new accounts, and guests not counting, make that harder to abuse; dismissing restores it.
+- **Until the queue exists,** reports wait for someone to run the RUNBOOK's query.
+
+---
+
+## ADR-0036: Web Push from the database through an Edge Function
+
+**Date:** 2026-11-05 · **Status:** Accepted
+
+**Context.** SPEC §18 asks for Web Push per device and per type, with email to follow in Phase 21. ADR-0014 allows a service worker for push only. The private VAPID key must stay on the server. Every notification already starts in the database, and a push must read in the player's language with the site's own wording.
+
+**Decision.**
+
+- **A push-only service worker** (`public/push-sw.js`): it shows the push and, on a click, opens its page, only ever on this site. It has no fetch handler and no cache.
+- **Opt-in:** per device in settings (`save_push_subscription`, at most 10 devices), and per type and channel in `notification_prefs`. Push is on by default for friend requests, accepted requests, invites and messages; account notices always come.
+- **Sent from the database:**
+  - A trigger on `notifications` posts the notification's id to the `send-push` function through pg_net (after commit), with the project URL and a shared secret from Vault.
+  - It skips the push when the player has a tab in view that reported in the last 2 minutes, since the bell already shows it.
+- **The wording:**
+  - It's the notifications page's own code (`notification-text.ts`) and every locale's strings, bundled for Deno by `pnpm functions:push` into `_shared/push-words.gen.js`. CI fails while that bundle is stale.
+  - A sanction's push leaves out its end, which the server would show in its own time zone.
+- **Sending:** `web-push` 3.6.7 (MPL-2.0) only encrypts (RFC 8291, aes128gcm) and signs (RFC 8292, VAPID), through `generateRequestDetails`; Deno's `fetch` sends.
+  - **Why this library:** it's the reference implementation, and a Deno test decrypts what it produces. The alternatives, @negrel/webpush (JSR, Deno-native) and web-push-neo, are younger.
+  - **Risk:** its last release was in January 2024. If it breaks under Deno, move to one of those.
+- **Devices are deleted** when their push service says they're gone (404 or 410), after 10 failures in a row, on sign-out, and with the account.
+- **Allowed push services:** endpoints must belong to Google, Mozilla, Microsoft or Apple's push services. Both the database and the function check this, so a stored address can't point the function anywhere else.
+- **Email:** the same preferences, plus `private.email_outbox` (no address copied, kept 7 days) for Phase 21's sender.
+
+**Consequences.**
+
+- **One function call per pushed notification.** An announcement to every player makes one call per player.
+- **No retry:** a push lost to an outage stays lost, though the bell still has the notification.
+- **iPhones and iPads** get push only once the site is added to the Home Screen (iOS 16.4+).
+- **Off until set up:** without the keys, the Vault entries and `PUBLIC_VAPID_PUBLIC_KEY`, nothing is sent and settings don't offer push (RUNBOOK, "Web Push").

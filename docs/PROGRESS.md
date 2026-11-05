@@ -1521,6 +1521,35 @@ Online modes are enabled for the Phase 4 games.
       - a wrong secret is refused.
     - The green chain passes, and settings, the privacy notice and the service worker load on the dev server.
     - **Not tried:** a real device receiving a push (it needs a browser here), and the settings table clicked through.
+- [x] Step 13: verification and docs.
+  - **A gap found and closed:** a block took back only friend requests. The blocked player's invite (with Join, into a room the block refuses), message notice (leading to an empty thread) and friend acceptance stayed in the other's bell, and the same the other way. A block now takes back every notification either player holds about the other, with their queued emails (`20261105100100_block_notifications.sql`).
+  - **Isolation,** SQL 46/46, rolled back. Two friends with a conversation, an invite, global chat, a shared public lobby and statuses shown to everyone; then one blocks the other. Both ways:
+    - friends: ended, neither can ask again, and the blocked player's profile view shows no block;
+    - notifications about each other: gone;
+    - DMs: refused, typing sent neither way, threads empty, the conversation off both lists, the other's rows hidden;
+    - invites: refused;
+    - global chat: old and new messages hidden in the history and in the rows Realtime checks, while a bystander reads both;
+    - lobby chat while already together: hidden, each keeping their own;
+    - lobbies: rejoining and spectating refused, the lobby not listed, quick match skips it, neither joins the other's room;
+    - rated matchmaking: never pairs them;
+    - status: neither reads the other's, and a change isn't sent to the blocker; a bystander reads both.
+    - Unblocking lifts it all without bringing back the friendship.
+    - All eleven earlier Phase 8 suites still pass.
+  - **Realtime cost, measured** on local Supabase (five accounts, one with four friends, each listening as the site does). The table is in ARCHITECTURE.md:
+    - a status change: one message per friend; a heartbeat without a change: none;
+    - a notification: one; a DM: two (three when it also notifies); typing and "seen": one;
+    - a global or lobby chat message, and its deletion: one per reader in the room.
+    - Supabase also bills each broadcast once as sent. Global chat dominates: 50 readers and a message every 10 s make about 18,000 an hour, so four such hours a day pass the free plan's 2 million a month. Slow mode is the lever, then the Pro plan.
+  - **Layout:** every page Phase 8 added or changed, in English and Arabic at 360, 768 and 1280 px in both themes, with push, email and GIFs switched on: friends (three tabs), global chat (also with the emoji picker and a report dialog open), messages (list and thread), notifications, settings, the guidelines, the privacy notice, a friend's profile, and a lobby with Invite friends open. Checked for no sideways scroll, axe clean and no page errors: 168/168. Three problems found and fixed on the way:
+    - **The DM thread at 360 px** was wider than the screen: the header's nickname and the long words in messages set the width of the grids around them. The grids now size to the screen, so the name truncates and messages wrap.
+    - **The friends page at 360 px** with requests and blocks: the tab row pushed the page wider; now it scrolls inside itself.
+    - **The emoji picker** numbered its grid's rows and cells from 0, which ARIA forbids (axe `aria-valid-attr-value`). frimousse 0.4.0 is the latest release, so it's patched through pnpm (`patches/`, explained in its README); the patch goes once a release fixes it.
+  - **Docs:**
+    - ADR-0033 (presence and notifications on each player's channel), ADR-0034 (chat storage and delivery), ADR-0035 (moderation in the database) and ADR-0036 (Web Push);
+    - ARCHITECTURE.md "Social, chat and moderation", with the Realtime budget;
+    - RUNBOOK "Moderation escalation": someone in danger, illegal images, private information, spam waves and raids, a moderator misusing the role, appeals, and a player's record. The VAPID and GIPHY secrets were already there (steps 10 and 12).
+  - **Not tried here:** the in-game chat drawer during a match (it needs two players in a started match), and a real device receiving a push.
+- **Phase 8 DoD:** every chat type works in real time with moderation, and a blocked player is isolated everywhere. The standing DoD holds: all checks green, 11 locales, the layout checks and the docs.
 
 ---
 
@@ -1539,6 +1568,7 @@ Online modes are enabled for the Phase 4 games.
 - **CSP for Stockfish (Phase 17):** chess runs Stockfish as WebAssembly in a nested worker, so the full Content-Security-Policy must allow `'wasm-unsafe-eval'` in `script-src` and `worker-src 'self'`. The Credits page lists Stockfish (GPL-3.0) and the cburnett pieces (BSD 3-Clause) from `packages/games/chess/CREDITS.md`.
 - **Credits attribution (Phase 17):** the blocked-terms lists are adapted from LDNOOBW (CC BY 4.0), and the Credits page must say so (`supabase/blocked-terms/README.md`). It also lists frimousse and Emojibase (both MIT), and GIPHY ("Powered by GIPHY", already shown in the GIF picker).
 - **CSP for GIFs (Phase 17):** the full Content-Security-Policy must allow `https://media.giphy.com` in `img-src` (ADR-0032).
+- **The emoji picker is patched (Phase 8):** frimousse 0.4.0 numbers its grid from 0, which ARIA forbids, so `patches/frimousse@0.4.0.patch` shifts it by one. Upgrading frimousse means checking whether a release fixed it, then dropping or redoing the patch (`patches/README.md`). Worth reporting upstream.
 - **Blocked terms need review:** the owner reviews the drafted Bulgarian list (`supabase/blocked-terms/bg.txt`). Native speakers review the other non-English lists in Phase 15. Russian lacks some common Cyrillic slurs. Since Phase 8 step 2, phrases match in chat too, so the lists' phrases deserve a look for everyday words.
 - **Game page prose is English in 9 locales (Phase 15):** each game's name, tagline, meta description and in-game UI strings are translated in all 11 locales. The long page sections (about, how to play, controls, tips, FAQ) are written in English and Bulgarian; the other 9 locales carry the English text until the Phase 15 translation pass (SPEC §15, §22 DoD rule).
 - **Translations need native review (Phase 15):** all strings in the 9 locales other than en/bg are my translations and haven't been reviewed by native speakers. Bulgarian should be reviewed by the owner.
