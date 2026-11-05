@@ -1927,7 +1927,7 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
     - steered off the edge with the mouse: the card says why, with the life's numbers, screen readers hear it, and Space on Play again brings the worm back;
     - pause holds the solo arena still, resume carries on, restart opens a new arena, destroy leaves nothing behind.
     - Checked by eye: 360 px in English and Arabic, 768 px in Arabic, 1280 px, the panel and the card.
-- [ ] Step 9: modes and results, in three commits (9a, 9b, 9c).
+- [x] Step 9: modes and results, in three commits (9a, 9b, 9c).
   - [x] **9a: the online mode.**
     - **The player** hands real-time games the online arena (`GameContext.arena`) when the build has Supabase and an arena server (`PUBLIC_ARENA_URL`; CI uses the deployed Worker). Its `token()` makes a guest identity when needed and shows the lobby's name form to a guest without a name (Cancel goes back to the game's mode screen), then answers a fresh access token.
     - **The SDK:** `findArena` asks the arena server's directory where to play, and `arenaSocketUrl` names that arena's socket.
@@ -1949,10 +1949,30 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
       - **Deno,** the report's schema and the boards (66/66 with the others);
       - the arena server's own check (step 4) again 15/15.
     - **Production needs `ARENA_SECRET`** in Supabase and on the Worker (RUNBOOK, "Arena server"); until it's set, online lives aren't recorded.
-  - [ ] **9c: solo lives count for XP, by replay** (after step 11 and step 10: see "Order changed" below).
-    - **Measured:** replaying a solo arena (the player and 9 bots, the same `ArenaHost` from the seed) costs about 0.15 ms a tick in Node on this desktop: a 1-minute session 0.2 s, 5 minutes 1.3 s, 10 minutes 2.9 s, growing with the session. Edge Functions get about 2 s of CPU a request, on slower machines than this one, so a whole endless session can't be replayed.
-    - **So:** each solo life is its own game, on a fresh arena from a seed the server issued (`start_play`); Play again in the solo arena starts a new one. The record is the life's inputs by tick. The replay stops at 3 minutes of play (5,400 ticks, about 0.8 s here): a longer life counts with its length at that point. Solo lives count for the stats and XP, not for the longest-worm board (Q5).
-    - **It needs the manifest:** the server replays with the engines bundle (`pnpm functions:engines`), which is built from the games' manifests, and Worm Rush's comes in step 11.
+  - [x] **9c: solo lives count for XP, by replay** (after step 11 and step 10: see "Order changed" above).
+    - **Measured first:** replaying a solo arena (the player and 9 bots, the same `ArenaHost` from the seed) costs about 0.15 ms a tick in Node on this desktop: a 1-minute session 0.2 s, 5 minutes 1.3 s, 10 minutes 2.9 s, growing with the session. Edge Functions get about 2 s of CPU a request, on slower machines than this one, so a whole endless session can't be replayed.
+    - **So each solo life is a game of its own,** on a fresh arena from a seed the server issued (`start_play`), and Play again in the solo arena starts the next. The player keeps the next play ready for real-time games too.
+    - **The record** (`arena-log.ts` in the SDK): the player's input in effect at each tick, as the hex of its encoded bytes, packed like a race log, so steady steering packs into runs.
+      - The local arena reports each tick's input before stepping (`createLocalArena`'s `onStep`).
+      - The record ends at the knockout ("out"), or after 3 minutes of play or when the player leaves (a new game, the online arena, closing the player): "playing".
+      - Worst case, a new input every tick for 3 minutes, it's well inside the race log's limits (under 30,000 characters, at most 512 distinct inputs).
+    - **The player** gives real-time games `context.lives`: `start()` takes the ready play and answers its seed (a local one for guests), and `finish(life)` sends the record as `mode: "arena"` and resolves with the XP it earned. The knocked-out card shows it ("+50 XP"), and screen readers hear it.
+    - **The server** (`_shared/arena-solo.ts`) replays the life on the play's seed, with the same bots and the player's skin (a skin sets the colour of the orbs a worm drops), for at most 3 minutes (5,400 ticks):
+      - checks: it must end as the record says (knocked out on its last tick, or still in play), with the same result; no longer than since the play was issued; no faster than the arena's clock;
+      - stored as a `solo-bots` match ("out", "left", or "limit" for a life still in play at 3 minutes), its score the life's longest length;
+      - counted for the stats and XP, and so for Long worm and Regular; not on the longest-worm board (Q5), and no best time.
+      - Anything else is set aside for review.
+    - **Fixed on the way:** the server's engines bundle had been missing Worm Rush's bots and arena settings since step 11 (a separate commit; see step 11).
+    - **Checks:**
+      - **Deno,** 75/75, eight of them new:
+        - the fixture's life counting as left;
+        - a life steered into the edge counting as out;
+        - a life still in play at 3 minutes counting as it stood then. Its input changes every tick, and the whole test (recording and replaying 3 minutes) took about 1 s;
+        - set aside: out claimed while still in play, ticks cut before the knockout or added after it, a claimed length the inputs don't reach, another seed, three wrong times, and five logs that can't be replayed (empty, not hex, an input the game can't read, no input after one, past 3 minutes).
+      - **The real site,** 12/12 (`pnpm dev`, local Supabase and its Edge Functions):
+        - an account knocked out at the edge sends one record, which the server replays and counts: a `solo-bots` match as out, with the card's length, in the stats with XP, and "+50 XP" on the card;
+        - Play again starts a new life on a new seed; closing the player mid-life counts that life as left;
+        - a visitor's lives send nothing and show no XP; no page errors.
 
 ## Known issues
 

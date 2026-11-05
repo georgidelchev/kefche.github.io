@@ -10,7 +10,8 @@
 //   played on a seed the server issued (start_play). The function replays it
 //   with the game's own engine (_shared/engines.ts), checks the result and
 //   the times (_shared/solo-play.ts, _shared/turn-play.ts), and stores the
-//   match and the stats once.
+//   match and the stats once. A real-time game's solo arena sends each life
+//   (Phase 9), replayed tick by tick (_shared/arena-solo.ts).
 // - Rooms (Phase 7): each account in an online casual game reports the
 //   result it saw, and the match counts when the reports agree. Each racer's
 //   moves are replayed on the room's seed (_shared/room-play.ts).
@@ -33,7 +34,8 @@
 //   → { "pending": true, "retryInMs": n } while the game is still on, or
 //     { "matchId", "status", "reason", "outcome", "ratings": [{ "before", "after" }] }
 //   Body: { "play": <record> }: an account's own game (apps/web/src/features/games/plays.ts),
-//   alone ("solo"), against bots ("solo-bots") or on one device ("hotseat").
+//   alone ("solo"), against bots ("solo-bots"), on one device ("hotseat"), or a
+//   life in a real-time game's solo arena ("arena", _shared/arena-solo.ts).
 //   → { "matchId", "status", "reason", "score", "timeMs", "assisted", "outcome" }
 //   Body: { "room": { roomId, seed, result } }: an online casual game's result.
 //   → { "matchId" } once decided, or { "matchId": null } while others may still report
@@ -49,6 +51,7 @@ import * as z from "zod";
 
 import { rewardsFor, unlockForMatch } from "../_shared/achievements.ts";
 import { arenaBoardEntries, arenaReportSchema } from "../_shared/arena-play.ts";
+import { arenaLifeRecordSchema, judgeArena } from "../_shared/arena-solo.ts";
 import { decide } from "../_shared/chess-rated.ts";
 import { GAMES } from "../_shared/engines.ts";
 import { rate } from "../_shared/glicko2.ts";
@@ -75,7 +78,7 @@ import { judgeTurn, turnRecordSchema } from "../_shared/turn-play.ts";
 const playerBody = z.object({ roomId: z.uuid(), seed: z.string().min(1).max(64) });
 const sweepBody = z.object({ sweep: z.literal(true) });
 const playBody = z.object({
-  play: z.discriminatedUnion("mode", [soloRecordSchema, turnRecordSchema]),
+  play: z.discriminatedUnion("mode", [soloRecordSchema, turnRecordSchema, arenaLifeRecordSchema]),
 });
 const roomBody = z.object({ room: roomResultSchema });
 const raceBody = z.object({ race: raceLogSchema });
@@ -344,6 +347,25 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
         completed: v.completed,
       });
     }
+  } else if (record.mode === "arena") {
+    // A life in a real-time game's solo arena: stats and XP, no leaderboard (Phase 9 Q5).
+    if (game.kind !== "realtime" || !game.modes.includes("solo-bots") || daily) {
+      return fail("bad_request", 400);
+    }
+    const v = judgeArena(game, issued, record);
+    const counted = { score: v.score, timeMs: null, assisted: false };
+    result = {
+      status: v.status,
+      reason: v.reason,
+      mode: "solo-bots",
+      config: null,
+      timer: null,
+      durationMs: v.durationMs,
+      log: { end: record.end, look: record.look, log: record.log },
+      participants: [{ seat: 0, self: true, ...counted }],
+      count: { outcome: null, ...counted },
+    };
+    answer = { status: v.status, reason: v.reason, ...counted, outcome: null };
   } else {
     if (game.kind !== "turn" || daily) return fail("bad_request", 400);
     const v = judgeTurn(game, issued, record);

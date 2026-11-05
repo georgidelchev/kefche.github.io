@@ -4,9 +4,11 @@
 // @kefche/game-sdk's, which Deno can't import (its sources import without file
 // extensions).
 import {
+  ARENA_REPLAY_SECONDS,
   ArenaHost,
   canonicalJson,
   GAMES as BUNDLED,
+  hexInput,
   levelForXp,
   levelProgress,
   RACE_LOG_LIMITS,
@@ -16,7 +18,15 @@ import {
 } from "./engines.gen.js";
 
 // The SDK's level curve (SPEC §12.6); the database mirrors it in private.level_for_xp.
-export { canonicalJson, levelForXp, levelProgress, RACE_LOG_LIMITS, unpackActions, xpForLevel };
+export {
+  ARENA_REPLAY_SECONDS,
+  canonicalJson,
+  levelForXp,
+  levelProgress,
+  RACE_LOG_LIMITS,
+  unpackActions,
+  xpForLevel,
+};
 
 /** How a game ended (the SDK's GameResult). */
 export interface GameResult {
@@ -182,41 +192,42 @@ export const GAMES: ReadonlyMap<string, ServerGame> = new Map(
   }),
 );
 
-/** An input of a solo arena life: the tick it was given at, and the input. */
-export type ArenaInput = readonly [tick: number, heading: number, boost: boolean];
-
 export interface ArenaReplay {
   /** What a replay compares: the arena's tick, randomness, worms and orbs. */
   state: unknown;
-  /** The life's result at its end, or when the replay stopped. */
+  /** The life's result where the replay stopped. */
   result: GameResult | null;
-  /** Ticks stepped: to the knockout, or `maxTicks`. */
+  /** Ticks stepped: the record's, or fewer when the player was knocked out first. */
   ticks: number;
   alive: boolean;
 }
 
 /**
  * One life in a solo arena, replayed from its seed (Phase 9 step 9c): the
- * same ArenaHost the page ran, with its bots, the player's inputs applied at
- * their ticks, stepped until the player is out or `maxTicks` have run.
+ * same ArenaHost the page ran, with its bots and the player in their look.
+ * Each action is the player's input in effect at that tick, as hex
+ * (arena-log.ts), null before their first; a tick is stepped per action,
+ * until they run out or the player is knocked out. Throws on an input the
+ * game can't read.
  */
 export function replayArena(
   game: Extract<ServerGame, { kind: "realtime" }>,
   seed: string,
-  inputs: readonly ArenaInput[],
-  maxTicks: number,
+  look: number,
+  actions: readonly unknown[],
 ): ArenaReplay {
   const host = new ArenaHost(game.engine, game.bots, { ...game.host, seed, config: undefined });
-  const self = host.join({ name: "replay", look: 0 });
+  const self = host.join({ name: "replay", look });
   if (self === null) throw new Error("the arena has no room for its player");
-  let next = 0;
+  let current: unknown = null;
   let seq = 0;
   let tick = 0;
-  for (; tick < maxTicks && game.engine.alive(host.world, self); tick++) {
-    while (next < inputs.length && (inputs[next]?.[0] ?? Infinity) <= tick) {
-      const [, heading, boost] = inputs[next] as ArenaInput;
-      host.input(self, ++seq, game.engine.inputCodec.encode({ heading, boost }));
-      next++;
+  for (; tick < actions.length && game.engine.alive(host.world, self); tick++) {
+    const action = actions[tick];
+    if (action !== current) {
+      const bytes = typeof action === "string" ? hexInput(action) : null;
+      if (!bytes || !host.input(self, ++seq, bytes)) throw new Error("bad input");
+      current = action;
     }
     host.step();
   }

@@ -68,6 +68,8 @@ export interface HudState {
   map: { x: number; y: number };
   /** The life that just ended, while out of play. */
   out: { by: string | null; best: number; kills: number; ms: number } | null;
+  /** The XP the life that just ended earned, once the server counted it (solo, for an account). */
+  earned: number | null;
 }
 
 export interface WormClientOptions {
@@ -82,6 +84,8 @@ export interface WormClientOptions {
   reducedMotion?: boolean;
   /** The player started boosting (for its sound). */
   onBoost?: () => void;
+  /** Play again starts something else than a respawn (the solo arena: a new arena per life). */
+  onPlayAgain?: () => void;
 }
 
 export interface WormClient {
@@ -89,7 +93,10 @@ export interface WormClient {
   readonly connection: ArenaConnection<Input>;
   subscribe: (listener: () => void) => () => void;
   state: () => HudState;
+  /** Play again: back in this arena, or what `onPlayAgain` starts. */
   respawn(): void;
+  /** Shows the XP the life that just ended earned. */
+  setEarned(xp: number): void;
   /** Stops drawing and lets go of the controls (the player's pause). */
   pause(paused: boolean): void;
   destroy(): void;
@@ -109,6 +116,7 @@ const INITIAL: HudState = {
   feed: [],
   map: { x: 0, y: 0 },
   out: null,
+  earned: null,
 };
 
 export async function createWormClient(options: WormClientOptions): Promise<WormClient> {
@@ -174,10 +182,11 @@ export async function createWormClient(options: WormClientOptions): Promise<Worm
         at: now,
       });
     }
-    let out = state.out;
+    let { out, earned } = state;
     if (me.alive && !wasAlive) {
       bornAt = now;
       out = null;
+      earned = null;
     } else if (!me.alive && wasAlive) {
       out = {
         by: me.by === 0 ? null : name(me.by),
@@ -204,6 +213,7 @@ export async function createWormClient(options: WormClientOptions): Promise<Worm
         y: me.y / POSITION_SCALE / ARENA_RADIUS,
       },
       out,
+      earned,
       latency: options.showLatency ? connection.latency() : null,
     });
   };
@@ -265,7 +275,11 @@ export async function createWormClient(options: WormClientOptions): Promise<Worm
     },
     state: () => state,
     respawn() {
-      connection.respawn();
+      if (options.onPlayAgain) options.onPlayAgain();
+      else connection.respawn();
+    },
+    setEarned(xp) {
+      publish({ earned: xp });
     },
     pause(next) {
       if (next === paused) return;

@@ -6,6 +6,7 @@
 import type { PlayerProgress } from "../achievements";
 import type { GameResult, TurnMove } from "../engines";
 import type { TimerPreset } from "../manifest";
+import type { PackedLog } from "../race-log";
 import type { Seat } from "../seats";
 import type { Transport } from "../transport";
 
@@ -137,6 +138,32 @@ export interface ArenaAccess {
   token(): Promise<string>;
 }
 
+/** A solo arena life, as the player sends it for the server to replay (Phase 9 step 9c). */
+export interface ArenaLife {
+  /**
+   * "out": knocked out at the log's last tick. "playing": still in play after
+   * it (the player left, or ARENA_REPLAY_SECONDS were recorded).
+   */
+  end: "out" | "playing";
+  /** The life's result at that point (the engine's). */
+  result: GameResult;
+  look: number;
+  /** The player's input in effect at each tick (arena-log.ts), packed with packActions. */
+  log: PackedLog;
+}
+
+/**
+ * Real-time games' solo lives (Phase 9 step 9c): each life is a game of its
+ * own, on a fresh arena. For an account it runs on a seed the server issued,
+ * and its record goes back to be replayed and counted.
+ */
+export interface ArenaLives {
+  /** A new life: the seed its arena starts from (a local one when it won't be recorded). */
+  start(): string;
+  /** The life is over for its record; resolves with the XP it earned, or null (not recorded, or not counted). */
+  finish(life: ArenaLife): Promise<number | null>;
+}
+
 export interface GameContext {
   locale: string;
   dir: "ltr" | "rtl";
@@ -155,6 +182,8 @@ export interface GameContext {
   log?: PlayLog;
   /** Real-time games: the online arena, when this build has one. */
   arena?: ArenaAccess;
+  /** Real-time games: where their solo lives go. */
+  lives?: ArenaLives;
   /**
    * The player's level and this game's unlocked tiers, for cosmetic unlocks
    * (SPEC §12.6). Never makes a guest; resolves with no progress when

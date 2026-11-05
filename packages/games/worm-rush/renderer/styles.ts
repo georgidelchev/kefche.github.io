@@ -46,6 +46,9 @@ export const CSS = `
 .gwr-primary, .gwr-secondary { min-height: 2.75rem; padding: 0 1.1rem; border-radius: 0.7rem; font-weight: 700; }
 .gwr-primary { border: 0; background: var(--brand); color: var(--on-brand); }
 .gwr-out .gwr-primary { width: 100%; }
+.gwr-card .gwr-earned { margin: -0.5rem 0 0.75rem; font-weight: 700; }
+/* Kept in the page while empty, so screen readers hear the XP when it comes. */
+.gwr-card .gwr-earned:empty { margin: 0; }
 .gwr-secondary { border: 1px solid var(--border-strong); background: transparent; color: var(--text); }
 .gwr-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 0.5rem; }
 .gwr-panel { position: absolute; top: 0.5rem; left: 50%; transform: translateX(-50%); width: min(21rem, calc(100% - 1rem)); }

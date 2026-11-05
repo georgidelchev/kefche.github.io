@@ -254,6 +254,9 @@ export function Hud({ client, t, locale }: Props) {
                 <dd>{formatTime(hud.out.ms, number)}</dd>
               </div>
             </dl>
+            <p className="gwr-earned" role="status">
+              {hud.earned === null ? "" : t("xpEarned", { xp: number.format(hud.earned) })}
+            </p>
             <button
               ref={againRef}
               type="button"

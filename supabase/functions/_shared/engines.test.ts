@@ -2,7 +2,6 @@
 // Node by `pnpm functions:engines --fixtures` to the same end. Run:
 // deno test _shared/engines.test.ts
 import {
-  type ArenaInput,
   canonicalJson,
   GAMES,
   replayArena,
@@ -18,11 +17,12 @@ interface Fixture {
   config: unknown;
   seed: string;
   seats?: number;
+  /** Race games' actions; real-time games' input at each tick of one solo life. */
   actions?: unknown[];
   moves?: SeatedAction[];
-  /** Real-time games: one solo life's inputs by tick, for at most `ticks`. */
-  inputs?: ArenaInput[];
-  ticks?: number;
+  /** Real-time games: the player's look, and how the life ended. */
+  look?: number;
+  end?: "out" | "playing";
   expected: { result: unknown; score?: number | null; progress?: number; state: string };
 }
 const all = fixtures as Fixture[];
@@ -50,8 +50,9 @@ for (const f of all) {
     if (!game) throw new Error(`no game ${f.id}`);
     const config = f.config ?? undefined;
     if (game.kind === "realtime") {
-      const replay = replayArena(game, f.seed, f.inputs ?? [], f.ticks ?? 0);
+      const replay = replayArena(game, f.seed, f.look ?? 0, f.actions ?? []);
       equal(replay.result, f.expected.result, "result");
+      equal(replay.alive, f.end === "playing", "how the life ended");
       equal(await hash(replay.state), f.expected.state, "final state");
     } else if (game.kind === "race") {
       const replay = replayRace(game.engine, config, f.seed, f.actions ?? []);

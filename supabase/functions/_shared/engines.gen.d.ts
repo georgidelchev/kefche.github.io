@@ -12,6 +12,10 @@ export declare class ArenaHost {
   input(id: number, seq: number, bytes: Uint8Array): boolean;
   step(): { events: unknown[]; frames: Map<number, Uint8Array> };
 }
+/** A solo arena life's record (arena-log.ts): the most of it replayed, and its inputs as hex. */
+export declare const ARENA_REPLAY_SECONDS: number;
+export declare function hexInput(hex: string): Uint8Array | null;
+export declare function inputHex(bytes: Uint8Array): string;
 export declare function canonicalJson(value: unknown): string;
 export declare const RACE_LOG_LIMITS: { readonly dict: number; readonly runs: number };
 export declare function unpackActions(

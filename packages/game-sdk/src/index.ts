@@ -3,6 +3,7 @@
 // manifest validation in `@kefche/game-sdk/manifest-schema`.
 export * from "./achievements";
 export * from "./arena-host";
+export * from "./arena-log";
 export * from "./arena-protocol";
 export * from "./bytes";
 export * from "./det-math";

@@ -80,6 +80,7 @@
     "knockouts": "倒した数",
     "timeAlive": "時間",
     "playAgain": "もう一度",
+    "xpEarned": "+{xp} XP",
     "boost": "ブースト",
     "modeTitle": "どこで遊びますか？",
     "online": "オンラインアリーナ",

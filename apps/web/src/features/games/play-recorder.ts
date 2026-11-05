@@ -2,7 +2,7 @@
 // runs on, a single-player game's log, and the play time without pauses.
 // The clock is injected, so it can be tested.
 import { packActions, type GameResult } from "@kefche/game-sdk";
-import type { MatchSetup, PlayLog, TurnRecord } from "@kefche/game-sdk/browser";
+import type { ArenaLife, MatchSetup, PlayLog, TurnRecord } from "@kefche/game-sdk/browser";
 
 import type { Play, PlayRecord } from "./plays";
 
@@ -20,6 +20,8 @@ export interface PlayRecorder {
     turns: TurnRecord | undefined,
     match: MatchSetup | null,
   ): PlayRecord | null;
+  /** A solo arena life's record (real-time games), or null when it isn't recorded. Once per play. */
+  finishLife(game: { id: string; version: number }, life: ArenaLife): PlayRecord | null;
 }
 
 export function createPlayRecorder(now: () => number = () => performance.now()): PlayRecorder {
@@ -32,6 +34,21 @@ export function createPlayRecorder(now: () => number = () => performance.now()):
     startedAt = now();
     pausedAt = null;
     pausedMs = 0;
+  };
+
+  /** The play's record so far: which play, which game, and the play time without pauses. */
+  const take = (game: { id: string; version: number }, result: GameResult) => {
+    const current = play;
+    play = null;
+    if (!current) return null;
+    const paused = pausedMs + (pausedAt === null ? 0 : now() - pausedAt);
+    return {
+      playId: current.id,
+      gameId: game.id,
+      version: game.version,
+      result,
+      durationMs: Math.max(0, Math.round(now() - startedAt - paused)),
+    };
   };
 
   return {
@@ -59,17 +76,8 @@ export function createPlayRecorder(now: () => number = () => performance.now()):
       pausedAt = null;
     },
     finish(game, result, turns, match) {
-      const current = play;
-      play = null;
-      if (!current) return null;
-      const paused = pausedMs + (pausedAt === null ? 0 : now() - pausedAt);
-      const base = {
-        playId: current.id,
-        gameId: game.id,
-        version: game.version,
-        result,
-        durationMs: Math.max(0, Math.round(now() - startedAt - paused)),
-      };
+      const base = take(game, result);
+      if (!base) return null;
       if (match) {
         // Online matches have their own way (rooms); a match taken over midway can't be replayed.
         if (match.mode === "online" || !turns?.complete) return null;
@@ -94,6 +102,10 @@ export function createPlayRecorder(now: () => number = () => performance.now()):
       // A continued game (Sudoku's saved puzzle) wasn't logged from its start.
       if (!log) return null;
       return { ...base, mode: "solo", config: log.config ?? null, log: packActions(log.actions) };
+    },
+    finishLife(game, life) {
+      const base = take(game, life.result);
+      return base && { ...base, mode: "arena", end: life.end, look: life.look, log: life.log };
     },
   };
 }

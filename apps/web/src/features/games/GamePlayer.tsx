@@ -4,7 +4,8 @@
 // Turn-based games (Phase 4) first get a setup screen (seats, bots, timer)
 // and a HUD with every seat, whose turn it is and the clocks. Real-time
 // games (Phase 9) get the way into the online arena (context.arena): a
-// guest identity when needed, and a guest's name asked for first.
+// guest identity when needed, and a guest's name asked for first. Their solo
+// lives are plays of their own (context.lives), replayed by the server.
 import {
   Bot,
   CalendarDays,
@@ -25,6 +26,7 @@ import {
   isMuted,
   setMuted as saveMuted,
   vibrate,
+  type ArenaLives,
   type GameInstance,
   type MatchSetup,
   type TurnReport,
@@ -158,8 +160,8 @@ export function GamePlayer({
   const [supply] = useState(() => createPlaySupply(id, version));
   const [recorder] = useState(() => createPlayRecorder());
   useEffect(() => {
-    if (!realtime) supply.prefetch();
-  }, [supply, realtime]);
+    supply.prefetch();
+  }, [supply]);
   // The daily challenge (?daily, from the home page): offered when it's this
   // game today. Its games run with the day's settings (as in a race) on the
   // day's seed, each on a play of its own for an account.
@@ -203,6 +205,19 @@ export function GamePlayer({
     },
   };
 
+  // Real-time games: each solo life is a play of its own (Phase 9 step 9c).
+  const lives: ArenaLives = {
+    start: () => {
+      const play = supply.take();
+      recorder.start(play);
+      return play?.seed ?? randomSeed();
+    },
+    finish: async (life) => {
+      const record = recorder.finishLife({ id, version }, life);
+      return record ? ((await submitPlay(record))?.xpGained ?? null) : null;
+    },
+  };
+
   /** The next game's seed: the ready play's, or a local one (not recorded). */
   function nextSeed(): string {
     if (realtime) return randomSeed();
@@ -239,6 +254,7 @@ export function GamePlayer({
         ...(setup ? { match: setup } : realtime ? {} : { log: recorder.log }),
         ...(dailyRef.current ? { race: { config: dailyRef.current.config } } : {}),
         ...(arenaAccess ? { arena: arenaAccess } : {}),
+        ...(realtime ? { lives } : {}),
         progress: () => playerProgress(id),
         report: (event) => {
           if (event.type === "turn") {

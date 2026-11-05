@@ -252,6 +252,11 @@ export interface LocalArenaOptions<World, Input, Snapshot, Event, Config> {
   handlers: ArenaHandlers<Snapshot>;
   /** Every tick's events, for the solo arena's sounds and its result. */
   onEvents?: (events: Event[]) => void;
+  /**
+   * Before each step: the player's input in effect for it (null before their
+   * first), for the life's record (arena-log.ts).
+   */
+  onStep?: (input: Uint8Array | null) => void;
 }
 
 export interface LocalArena<World, Input, Snapshot, Event, Config> extends ArenaConnection<Input> {
@@ -293,6 +298,7 @@ export function createLocalArena<World, Input, Snapshot, Event, Config>(
     if (ticks === 4) due = now - ticks * tickMs;
     while (ticks-- > 0) {
       due += tickMs;
+      options.onStep?.(last);
       const { events, frames } = host.step();
       if (events.length > 0) options.onEvents?.(events);
       const frame = frames.get(self);

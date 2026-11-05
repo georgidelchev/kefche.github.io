@@ -273,6 +273,20 @@ var ArenaHost = class {
   }
 };
 
+// packages/game-sdk/src/arena-log.ts
+var ARENA_REPLAY_SECONDS = 180;
+function inputHex(bytes) {
+  let hex = "";
+  for (const byte of bytes) hex += byte.toString(16).padStart(2, "0");
+  return hex;
+}
+function hexInput(hex) {
+  if (hex.length % 2 !== 0 || hex.length > 128 || !/^[0-9a-f]*$/.test(hex)) return null;
+  const bytes = new Uint8Array(hex.length / 2);
+  for (let i = 0; i < bytes.length; i++) bytes[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+  return bytes;
+}
+
 // packages/game-sdk/src/bytes.ts
 var TURN = Math.PI * 2;
 var ByteWriter = class {
@@ -6066,10 +6080,13 @@ var GAMES = {
   "worm-rush": { manifest: manifest8, engine: engine8, bots, host: arenaHost }
 };
 export {
+  ARENA_REPLAY_SECONDS,
   ArenaHost,
   GAMES,
   RACE_LOG_LIMITS,
   canonicalJson,
+  hexInput,
+  inputHex,
   levelForXp,
   levelProgress,
   reachedTiers,

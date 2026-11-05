@@ -49,6 +49,7 @@ const entry = [
     `import { manifest as m${String(i)} } from "./packages/games/${id}/manifest.ts";`,
   ]),
   'export { ArenaHost } from "./packages/game-sdk/src/arena-host.ts";',
+  'export { ARENA_REPLAY_SECONDS, hexInput, inputHex } from "./packages/game-sdk/src/arena-log.ts";',
   'export { canonicalJson } from "./packages/game-sdk/src/engines.ts";',
   'export { RACE_LOG_LIMITS, unpackActions } from "./packages/game-sdk/src/race-log.ts";',
   'export { levelForXp, levelProgress, xpForLevel } from "./packages/game-sdk/src/xp.ts";',
@@ -100,6 +101,10 @@ writeFileSync(
     "  input(id: number, seq: number, bytes: Uint8Array): boolean;",
     "  step(): { events: unknown[]; frames: Map<number, Uint8Array> };",
     "}",
+    "/** A solo arena life's record (arena-log.ts): the most of it replayed, and its inputs as hex. */",
+    "export declare const ARENA_REPLAY_SECONDS: number;",
+    "export declare function hexInput(hex: string): Uint8Array | null;",
+    "export declare function inputHex(bytes: Uint8Array): string;",
     "export declare function canonicalJson(value: unknown): string;",
     "export declare const RACE_LOG_LIMITS: { readonly dict: number; readonly runs: number };",
     "export declare function unpackActions(",
@@ -121,7 +126,7 @@ writeFileSync(
 console.log(`engines.gen.js: ${ids.join(", ")} (${String(Math.round(bundle.length / 1024))} KB)`);
 
 if (process.argv.includes("--fixtures")) {
-  const { GAMES, ArenaHost, canonicalJson } = await import(
+  const { GAMES, ArenaHost, canonicalJson, inputHex } = await import(
     `${pathToFileURL(join(out, "engines.gen.js")).href}?t=${String(Date.now())}`
   );
 
@@ -212,20 +217,23 @@ if (process.argv.includes("--fixtures")) {
     const seed = `fixture-${id}`;
     const random = rng(seed);
     if (manifest.kind === "realtime") {
-      // One life (a solo game is one life, step 9c), recorded as the server
-      // replays it (engines.ts replayArena): at each tick, that tick's input,
-      // then the step.
+      // One life (a solo game is one life, step 9c), recorded as the page
+      // records it (arena-log.ts): the input in effect at each tick, as hex.
       const { bots, host: options } = GAMES[id];
       const host = new ArenaHost(engine, bots, { ...options, seed, config: undefined });
-      const self = host.join({ name: "replay", look: 0 });
-      const inputs = [];
+      const look = 3;
+      const self = host.join({ name: "replay", look });
+      const actions = [];
+      let current = null;
       let seq = 0;
       for (let tick = 0; tick < ARENA_TICKS && engine.alive(host.world, self); tick++) {
         if (tick % 10 === 0) {
           const input = { heading: random() * Math.PI * 2, boost: random() < 0.15 };
-          inputs.push([tick, input.heading, input.boost]);
-          host.input(self, ++seq, engine.inputCodec.encode(input));
+          const bytes = engine.inputCodec.encode(input);
+          current = inputHex(bytes);
+          host.input(self, ++seq, bytes);
         }
+        actions.push(current);
         host.step();
       }
       return {
@@ -233,8 +241,9 @@ if (process.argv.includes("--fixtures")) {
         version: manifest.version,
         config: null,
         seed,
-        ticks: ARENA_TICKS,
-        inputs,
+        look,
+        end: engine.alive(host.world, self) ? "playing" : "out",
+        actions,
         expected: { result: engine.result(host.world, self), state: hash(arenaState(host.world)) },
       };
     }
@@ -294,6 +303,6 @@ if (process.argv.includes("--fixtures")) {
   });
   writeFileSync(join(out, "engines.fixtures.json"), `${JSON.stringify(fixtures)}\n`);
   console.log(
-    `engines.fixtures.json: ${fixtures.map((f) => `${f.id} ${String((f.actions ?? f.moves ?? f.inputs).length)}`).join(", ")}`,
+    `engines.fixtures.json: ${fixtures.map((f) => `${f.id} ${String((f.actions ?? f.moves).length)}`).join(", ")}`,
   );
 }

@@ -102,6 +102,13 @@ export type PlayRecord = {
       moves: TurnMove<unknown>[];
       timedOut?: number;
     }
+  | {
+      /** A life in a real-time game's solo arena (Phase 9 step 9c): how it ended, the skin and the inputs by tick. */
+      mode: "arena";
+      end: "out" | "playing";
+      look: number;
+      log: PackedLog;
+    }
 );
 
 /**

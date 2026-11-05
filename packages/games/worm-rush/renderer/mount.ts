@@ -4,11 +4,19 @@
 // a new game comes back to that choice.
 // Online, a full arena sends the player to another; a refusal or a server
 // that can't be reached (down, or past its daily limit) offers the solo
-// arena instead.
+// arena instead. In the solo arena each life is a game of its own, on a
+// fresh arena, recorded tick by tick for the server to replay (step 9c).
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
 
-import { NO_PROGRESS, type ArenaErrorCode, type PlayerProgress } from "@kefche/game-sdk";
+import {
+  ARENA_REPLAY_SECONDS,
+  inputHex,
+  NO_PROGRESS,
+  packActions,
+  type ArenaErrorCode,
+  type PlayerProgress,
+} from "@kefche/game-sdk";
 import {
   arenaSocketUrl,
   connectArena,
@@ -102,8 +110,29 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
   const look = () => (lookUnlocked(chosen, progress) ? chosen : 0);
   // Each start's number: work for an earlier one (a scene still loading) is dropped.
   let generation = 0;
+  /** The solo life being recorded: its arena, skin and input at each tick. */
+  let life: {
+    arena: LocalArena<World, Input, Snapshot, Event, undefined>;
+    look: number;
+    actions: (string | null)[];
+  } | null = null;
+
+  /** The life's record ends: knocked out, or still in play (left, or the replay's limit). */
+  const endLife = (end: "out" | "playing") => {
+    const ended = life;
+    life = null;
+    const result = ended && engine.result(ended.arena.host.world, ended.arena.self);
+    if (!ended || !result || ended.actions.length === 0 || !context.lives) return;
+    const shown = client;
+    void context.lives
+      .finish({ end, result, look: ended.look, log: packActions(ended.actions) })
+      .then((xp) => {
+        if (xp !== null && client === shown) shown?.setEarned(xp);
+      });
+  };
 
   const stop = () => {
+    endLife("playing");
     generation++;
     unsound?.();
     unsound = null;
@@ -141,23 +170,43 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
   const playSolo = async () => {
     stop();
     const mine = generation;
+    const lifeSeed = context.lives?.start() ?? seed;
+    const wearing = look();
+    const maxTicks = ARENA_REPLAY_SECONDS * engine.ticksPerSecond;
     const made = await createWormClient({
       ...base(),
       showLatency: false,
+      // Play again is the next life, on a fresh arena.
+      onPlayAgain: () => void playSolo(),
       connect: (handlers) => {
-        local = createLocalArena({
+        const actions: (string | null)[] = [];
+        const arena = createLocalArena({
           engine,
           bots,
-          host: { ...arenaHost, seed, config: undefined },
-          player: { name: t("you"), look: look() },
+          host: { ...arenaHost, seed: lifeSeed, config: undefined },
+          player: { name: t("you"), look: wearing },
           handlers,
+          onStep: (input) => {
+            if (life?.arena !== arena) return;
+            if (actions.length === maxTicks) endLife("playing");
+            else actions.push(input ? inputHex(input) : null);
+          },
+          onEvents: (events) => {
+            if (life?.arena === arena && events.some((e) => e.victim === arena.self)) {
+              endLife("out");
+            }
+          },
         });
+        life = { arena, look: wearing, actions };
+        local = arena;
         local.pause(paused);
         return local;
       },
     });
-    if (mine !== generation) made.destroy();
-    else show(made);
+    if (mine !== generation) {
+      if (life?.arena === made.connection) life = null;
+      made.destroy();
+    } else show(made);
   };
 
   const problem = (which: Problem) => {
