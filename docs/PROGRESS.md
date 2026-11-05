@@ -1692,7 +1692,7 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
 ### Status
 
 - [x] Plan approved by owner (2026-11-05, with the answers above)
-- [ ] Step 1: the arena server spike (`apps/arena`). Built and measured locally; the measurements on Cloudflare wait for its first deploy.
+- [x] Step 1: the arena server spike (`apps/arena`), deployed by CI as `kefche-arena` and measured live. **Decision gate: passed.**
   - **The Worker** `kefche-arena`: `/arenas/<name>` hands the WebSocket to that arena's Durable Object (SQLite-backed, as Workers Free requires); `/health` answers. Only the site's pages may connect (`SITE_ORIGINS`). CI deploys it after the site, with the Supabase URL and publishable key. `pnpm build` checks its bundle (93 KB gzip).
   - **Joining:** the first message is `hello` with the player's Supabase access token (accounts and guests), checked with Supabase Auth, within 5 s. One socket per player (a second tab takes over) and 15 players per arena. Each refusal has a stable code: `invalid_token`, `hello_expected`, `hello_timeout`, `arena_full`.
   - **The loop:** 30 Hz while anyone is connected (stepped by the clock, since timers aren't exact), with 20 dummy bots. Each player gets a binary snapshot of what's within view at 15 Hz (`src/wire.ts`: 7 bytes an entity). Inputs are 3 bytes, at most 20 a second, and pings are answered at once.
@@ -1701,8 +1701,14 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
     - 30 ticks and 15.1 snapshots a second per player, about 0.7 KB/s each with the dummy world;
     - snapshot gaps: median 63 ms, worst 95 ms, under the planned 100 ms buffer (Windows timers; Cloudflare's should be steadier);
     - 96 frames a second from the players, which bills as **about 17,300 requests per full-arena hour**: about 5.8 such hours a day on Workers Free, as the plan estimated.
-  - **Refusals,** 10/11: a bad token, a missing hello, the second tab, the 16th player, another site's page, a plain request and a bad arena name. The 11th: a client that never says hello gets `hello_timeout` at 5 s, but the socket closes only 10 s later when it was the arena's last one (when others are connected it closes at once). Players won't see it, since the client closes on any error; to check on Cloudflare.
-  - **Still to do:** the deploy, then latency from Bulgaria, billed requests and duration in Cloudflare's metrics, steadier ticks, and the decision gate.
+  - **Measured live** (15 guests from Bulgaria against Cloudflare, 60 s, the same load):
+    - all 15 joined; **26 ms** round trip (95th percentile 28 ms);
+    - 30 ticks and 15.3 snapshots a second per player;
+    - snapshot gaps: median 64 ms, 99th percentile 82 ms, with one hiccup of 694 ms in the minute;
+    - about **17,500 billed requests per full-arena hour**, as locally.
+  - **Refusals,** locally 10/11 and live 8/9 (the 16-player check runs locally only, since the hosted project allows about 30 guest sign-ins an hour): a bad token, a missing hello, the second tab, the 16th player, another site's page, the site's own page, a plain request and a bad arena name.
+  - **A close from the loop is slow:** the server's error reaches the client at once, but a socket the server closes from its timer (a client that never says hello) closes 10 s later, locally and on Cloudflare alike. Closes made while handling a message take under 30 ms. The client therefore closes itself on any error frame (step 3), and later steps that remove players from the loop (step 4) must not rely on the server's close.
+  - **Not measured here:** billed duration and requests as Cloudflare counts them (the dashboard, _kefche-arena → Metrics_; no API access from this machine). The counts above come from the frames themselves.
 
 ## Known issues
 

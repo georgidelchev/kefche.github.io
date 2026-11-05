@@ -366,7 +366,7 @@ Real-time arenas (Phase 9) run on their own Worker, `kefche-arena` (`apps/arena`
 - **Which pages may connect:** `SITE_ORIGINS` in `apps/arena/wrangler.jsonc`. Add the custom domain there in Phase 21.
 - **Usage:** the Cloudflare dashboard, _Workers & Pages → kefche-arena → Metrics_, and _Durable Objects_ for requests and duration.
   - **Workers Free** allows 100,000 Durable Object requests and 13,000 GB-s a day, reset at 00:00 UTC. Each incoming WebSocket message bills as 1/20 of a request; sending is free. Past either limit, arenas refuse until the reset.
-  - **A full arena** (15 players) costs about 17,300 requests an hour (measured locally), so about 5–6 full-arena hours a day fit.
+  - **A full arena** (15 players) costs about 17,500 requests an hour (measured live), so about 5–6 full-arena hours a day fit.
   - **Workers Paid** ($5/month) is the owner's call.
 
 ## Rooms and Realtime
