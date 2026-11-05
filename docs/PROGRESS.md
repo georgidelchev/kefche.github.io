@@ -14,8 +14,8 @@
 | 5     | Multiplayer core                                           | ✅ Done (owner signed off 2026-10-24) |
 | 6     | Chess                                                      | ✅ Done (owner signed off 2026-10-25) |
 | 7     | Stats, XP, achievements, leaderboards, daily               | ✅ Done (owner signed off 2026-11-01) |
-| 8     | Social: friends, presence, chat, moderation, notifications | 🚧 In progress                        |
-| 9     | Real-time arena framework & Worm Rush                      | ⏳ Not started                        |
+| 8     | Social: friends, presence, chat, moderation, notifications | ✅ Done (owner signed off 2026-11-05) |
+| 9     | Real-time arena framework & Worm Rush                      | 🚧 In progress                        |
 | 10    | Admin panel                                                | ⏳ Not started                        |
 | 11–14 | Game batches                                               | ⏳ Not started                        |
 | 15    | Translation pass & content packs                           | ⏳ Not started                        |
@@ -1550,8 +1550,138 @@ Online modes are enabled for the Phase 4 games.
     - RUNBOOK "Moderation escalation": someone in danger, illegal images, private information, spam waves and raids, a moderator misusing the role, appeals, and a player's record. The VAPID and GIPHY secrets were already there (steps 10 and 12).
   - **Not tried here:** the in-game chat drawer during a match (it needs two players in a started match), and a real device receiving a push.
 - **Phase 8 DoD:** every chat type works in real time with moderation, and a blocked player is isolated everywhere. The standing DoD holds: all checks green, 11 locales, the layout checks and the docs.
+- [x] Push (owner's word, 2026-11-05):
+  - the fourteen Phase 8 migrations to the hosted project (no config changes);
+  - the Edge Functions, with the new `giphy` and `send-push`;
+  - `main`, deployed by CI (Database, build and Deploy jobs green). The production build now receives `PUBLIC_VAPID_PUBLIC_KEY` and `PUBLIC_EMAIL_NOTIFICATIONS`, which it didn't before.
+  - **Checked live:** the 13 scheduled jobs, including the five new ones (`expire-presence`, `forget-old-social`, `notify-daily-results`, `forget-gifs`, `forget-email-outbox`); the 11 global rooms; the 1,420 blocked terms. `send-push` refuses a wrong secret, and `giphy` refuses a request without a token. The friends, chat, messages, notifications, guidelines, privacy and settings pages, the push service worker and the emoji data load. The privacy notice leaves out push and GIPHY while their switches are off.
+  - **Off until the owner sets them up:** GIFs (RUNBOOK, "GIFs") and push (RUNBOOK, "Web Push": the keys, the function's secrets, `send_push_secret` in Vault and `PUBLIC_VAPID_PUBLIC_KEY`).
+  - **Still to confirm:** two signed-in players on the live site, a friend request, a DM and a global chat message between them.
+- [x] Owner sign-off (2026-11-05)
 
 ---
+
+## Phase 9 — Real-time arena framework & Worm Rush
+
+**Goal (SPEC §10.8, §10.9, §22):**
+
+- the `realtime` engine kind, with interpolation and prediction, compact snapshots, a bot population and area of interest;
+- an arena HUD, and touch joystick and boost controls;
+- **Worm Rush**, complete: grow by eating glowing orbs, boost by spending length, cut others off, bots fill the arena, a live top 10, and cosmetic skins. Its name, art, sounds and look are its own.
+
+**DoD:** 15 players plus bots run smoothly on a mid-range phone, and the measured Realtime message use is documented. Plus the standing DoD.
+
+**Already in place:**
+
+- **SDK:** `realtime` is already an engine kind, with no game using it. The fixed-step loop, input helpers, the canvas stage, sounds, haptics and bot workers already exist.
+- **Rooms:** rooms, seats, host authority with migration, and race mode (Phase 5), over the `Transport` contract (ADR-0020).
+- **Results:** `submit-match` and `count_result` count results for stats, XP and boards (Phase 7).
+- **Cosmetics:** avatar frames unlocked by level and achievements (Phase 7).
+
+### The problem with the spec's design (Q1)
+
+SPEC §10.8 has the host's browser simulating and sending snapshots over Supabase Realtime. On the free plan, that can't carry one full arena:
+
+- **The limit:** Supabase's free plan allows 100 messages a second for the whole project, and disconnects past that. Pro allows 500.
+- **Snapshots:** a broadcast is billed once sent plus once per receiver, so 10 snapshots a second to 15 players is about 150 messages a second.
+- **Inputs:** our transport can't address one member, so every player's input reaches all 15. At 5 inputs a second that's about 1,100 messages a second.
+- **The month:** the free plan's 2 million messages a month would last about 4 hours of snapshots alone.
+
+The free plan could carry only tiny arenas (2–4 players at low rates) plus bots. That doesn't meet the DoD.
+
+**The alternative I recommend: an arena server on Cloudflare Durable Objects.** The site already runs on Cloudflare Workers, and Durable Objects work on the Workers Free plan. Cloudflare's billing suits a game server:
+
+- **Sending is free:** a Durable Object can send each player their own snapshot, filtered to what they can see, at no message cost.
+- **Receiving is cheap:** 20 incoming WebSocket messages bill as one request.
+- **Budget:**
+
+  | Plan                    | Included                                    | One full arena (15 players sending about 6 inputs a second)                                               |
+  | ----------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+  | Workers Free            | 100,000 requests and 13,000 GB-s a day      | About 16,000 requests and 460 GB-s an hour, so **about 6 full-arena hours a day**; requests run out first |
+  | Workers Paid ($5/month) | 1 million requests and 400,000 GB-s a month | About 60 full-arena hours a month included, then about $0.0025 per arena-hour                             |
+
+- **Past the free limit,** further arena requests fail until 00:00 UTC. The game then offers the solo arena against bots.
+
+The server also decides everything, so nobody can fake their worm's length. The `Transport` abstraction already allows for a dedicated arena server later (SPEC §10.9). Supabase keeps accounts, guests, results and everything else.
+
+### Steps (one Conventional Commit each; the steps assume Q1 = Durable Objects)
+
+1. **Spike: an arena server end to end**, measured before anything is built on it.
+   - **The Worker:** a separate `apps/arena` Worker with a Durable Object per arena, deployed by CI beside the site.
+   - **Joining:** a player joins over a WebSocket with their Supabase access token (accounts and guests), checked with Supabase Auth.
+   - **The loop:** a 30 Hz loop with dummy entities, and snapshots to each player at 15 Hz.
+   - **To measure:** latency from Bulgaria, CPU per step, billed requests and duration, and what happens at the free limit.
+   - **Decision gate:** if the numbers are bad, back to Q1.
+2. **Real-time SDK contracts** (`@kefche/game-sdk`, isomorphic):
+   - a `RealtimeEngine` (players joining and leaving, inputs, a fixed step, the world as each player sees it);
+   - a spatial grid for area of interest;
+   - quantizing and delta-encoding snapshots;
+   - a bot interface for the population;
+   - deterministic from a seed, so one engine runs on the server, in the browser and in tests (as ADR-0028).
+3. **Netcode in the browser** (`@kefche/game-sdk/browser`):
+   - a snapshot buffer drawn 100 ms behind, with interpolation;
+   - prediction of the player's own worm, corrected by the server;
+   - the server clock's offset, and sending inputs only on a change (at most 10 a second, plus a keepalive);
+   - a reconnecting state.
+   - An `ArenaTransport` with two implementations: the WebSocket to the arena server, and a local one in the same page for the solo arena and tests.
+4. **The arena server:**
+   - the authoritative simulation with the same engine bundle;
+   - each player's snapshot filtered to what they can see;
+   - bots filling the arena to the host's minimum population (default 10), at most 15 players (SPEC: up to 30), and late joining;
+   - a player who's gone for 5 s is removed and respawns on return (SPEC §10.5);
+   - input rate limits, sanctions respected (suspended players can't join), and the arena closing when no one is left;
+   - **finding an arena:** "Play online" joins the fullest open arena, or opens one.
+5. **Controls:** a floating touch joystick with a boost button, repositionable, with a left-handed mode (SPEC §6.4); mouse steering with click or Space to boost; arrow keys. Shared in the SDK for later arena games.
+6. **Rendering:** PixiJS 8.22 (WebGL, SPEC §3), loaded only by arena games, with the device pixel ratio capped at 2. Its size and frame rate are measured on a throttled phone profile before it's adopted. Canvas 2D is the fallback if it doesn't pay for itself.
+7. **Worm Rush engine:**
+   - steering with a turn limit, and boosting, which spends length and drops orbs;
+   - orbs and growth;
+   - a head against another worm's body ends that worm, and its body turns into orbs;
+   - a round arena whose edge ends a worm, and spawning away from others;
+   - bots at three difficulties: wandering and eating, avoiding, and cutting players off.
+8. **Arena HUD:** length and place, the live top 10, a minimap, the connection and ping, a feed of who took out whom, and the respawn screen. 360 px first, and the stage fits the screen without page scroll.
+9. **Modes and results:**
+   - **The solo arena** against bots, in the browser: instant, for guests too, and no server cost.
+   - **The online arena.**
+   - **Counting:** online results are reported by the arena server itself (trusted, through `submit-match` with its secret) for stats, XP, the longest-worm board and achievements. Solo results count on the device and for XP, by replay as in Phase 7.
+10. **Skins:** 12 original skins, each a color paired with a pattern (color-blind safe). Four are free; the others unlock by level and achievements, cosmetic only (SPEC §12.6). Chosen in the game's setup and remembered.
+11. **Art, sounds and text:** the thumbnail and hero art, sounds, the SEO text in English and Bulgarian, and the UI in all 11 languages.
+12. **Verification and docs:**
+    - **The DoD run:** 15 simulated players from Node plus bots, with one real browser on a throttled mid-range phone profile: frame rate, and input-to-screen time.
+    - **Measured cost:** requests, duration and bandwidth per arena-hour in ARCHITECTURE.md; and the free limit reached on purpose, to check the solo fallback.
+    - **Layout:** the 360, 768 and 1280 px checks in both themes.
+    - **ADRs:** the arena server, the netcode, PixiJS. RUNBOOK: deploying the arena Worker, its secrets, and watching usage.
+
+### Decisions (proposed)
+
+- **Server-authoritative arenas on Durable Objects,** rather than the host's browser (a change from SPEC §10.8's wording). No host migration in arenas, and no trusting a player's numbers.
+- **Endless drop-in arenas** (Q2): join any time, play a life, see your best; no rounds.
+- **Snapshots as compact binary** (quantized positions, worm bodies rebuilt from their heads' paths, only what changed), since phones on 4G pay for bandwidth even when Cloudflare doesn't charge per message.
+- **Supabase Realtime isn't used for arenas** at all; the room system stays for turn games and races.
+- **Worm Rush is original:** its own name, art, colors and sounds; it shares only its genre with other worm games.
+
+### Risks
+
+- **A new deploy target:** the arena Worker has its own CI job, secrets and usage to watch. The spike (step 1) proves it first.
+- **The free limit is per day:** a busy day ends online arenas at the limit until 00:00 UTC, with the solo arena as the fallback. The Workers Paid plan ($5/month) lifts it; that's a paid service, so it's the owner's call when it's needed.
+- **One region:** a Durable Object lives where it was created, so arenas opened from Europe are slower for players far away.
+- **Phones:** 30 worms with long bodies and hundreds of orbs at 60 fps on a mid-range phone; PixiJS batching is the bet, measured in step 6.
+- **Size:** PixiJS is large and loads only for Worm Rush; content pages are unaffected.
+
+### Open questions for the owner
+
+- **Q1 — The arena transport:**
+  - **(a)** an arena server on Cloudflare Durable Objects: Workers Free to start (about 6 full-arena hours a day), Workers Paid ($5/month) when it's busy (recommended);
+  - **(b)** the spec's host browser over Supabase Realtime: free, but arenas of 2–4 players at most, filled with bots;
+  - **(c)** browser-to-browser WebRTC with the host relaying: no message costs, but heavy for a phone acting as host, unreliable behind some networks (TURN relay: Cloudflare's first 1,000 GB a month are free), and the most complex.
+- **Q2 — Arena format:** endless drop-in arenas (recommended), or timed 3-minute matches with a winner?
+- **Q3 — Guests online:** guests play the online arena at once, with their guest name (recommended, "instant play"), or only accounts?
+- **Q4 — Skins:** 12 original skins, 4 free and 8 unlocked by level and achievements (recommended)? Or all free?
+- **Q5 — Leaderboards:** a longest-worm board from online arenas only (server-recorded, so trustworthy; recommended), or solo games too?
+
+### Status
+
+- [ ] Plan approved by owner
 
 ## Known issues
 
