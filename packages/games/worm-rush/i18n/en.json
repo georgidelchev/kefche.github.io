@@ -92,7 +92,24 @@
     "needsName": "Finish setting up your account, with a nickname, to play online.",
     "replaced": "You're playing this arena in another tab.",
     "tryAgain": "Try again",
-    "playSolo": "Play solo"
+    "playSolo": "Play solo",
+    "soloTitle": "Ready for the arena?",
+    "skinTitle": "Skin",
+    "unlockLevel": "Unlocks at level {level}",
+    "unlockLength": "Unlocks at length {length}",
+    "unlockLives": "Unlocks after {count} lives",
+    "skinEmber": "Ember",
+    "skinLagoon": "Lagoon",
+    "skinHoney": "Honey",
+    "skinDusk": "Dusk",
+    "skinSky": "Sky",
+    "skinMoss": "Moss",
+    "skinBerry": "Berry",
+    "skinGlacier": "Glacier",
+    "skinOrchid": "Orchid",
+    "skinBee": "Bee",
+    "skinSunset": "Sunset",
+    "skinComet": "Comet"
   },
   "achievements": {
     "long-worm": {

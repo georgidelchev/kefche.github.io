@@ -92,7 +92,24 @@
     "needsName": "Termine de configurar sua conta, com um apelido, para jogar online.",
     "replaced": "Você está jogando esta arena em outra aba.",
     "tryAgain": "Tentar de novo",
-    "playSolo": "Jogar solo"
+    "playSolo": "Jogar solo",
+    "soloTitle": "Vamos para a arena?",
+    "skinTitle": "Visual",
+    "unlockLevel": "Desbloqueia no nível {level}",
+    "unlockLength": "Desbloqueia com comprimento {length}",
+    "unlockLives": "Desbloqueia após {count} vidas",
+    "skinEmber": "Brasa",
+    "skinLagoon": "Lagoa",
+    "skinHoney": "Mel",
+    "skinDusk": "Crepúsculo",
+    "skinSky": "Céu",
+    "skinMoss": "Musgo",
+    "skinBerry": "Amora",
+    "skinGlacier": "Geleira",
+    "skinOrchid": "Orquídea",
+    "skinBee": "Abelha",
+    "skinSunset": "Pôr do sol",
+    "skinComet": "Cometa"
   },
   "achievements": {
     "long-worm": {

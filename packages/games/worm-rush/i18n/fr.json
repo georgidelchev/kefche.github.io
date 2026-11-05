@@ -92,7 +92,24 @@
     "needsName": "Terminez la configuration de votre compte, avec un pseudo, pour jouer en ligne.",
     "replaced": "Vous jouez dans cette arène dans un autre onglet.",
     "tryAgain": "Réessayer",
-    "playSolo": "Jouer en solo"
+    "playSolo": "Jouer en solo",
+    "soloTitle": "Envie d’entrer dans l’arène ?",
+    "skinTitle": "Apparence",
+    "unlockLevel": "Débloquée au niveau {level}",
+    "unlockLength": "Débloquée à la longueur {length}",
+    "unlockLives": "Débloquée après {count} vies",
+    "skinEmber": "Braise",
+    "skinLagoon": "Lagon",
+    "skinHoney": "Miel",
+    "skinDusk": "Crépuscule",
+    "skinSky": "Ciel",
+    "skinMoss": "Mousse",
+    "skinBerry": "Baie",
+    "skinGlacier": "Glacier",
+    "skinOrchid": "Orchidée",
+    "skinBee": "Abeille",
+    "skinSunset": "Couchant",
+    "skinComet": "Comète"
   },
   "achievements": {
     "long-worm": {

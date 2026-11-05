@@ -92,7 +92,24 @@
     "needsName": "Завърши профила си, с псевдоним, за да играеш онлайн.",
     "replaced": "Играеш тази арена в друг раздел.",
     "tryAgain": "Опитай пак",
-    "playSolo": "Играй сам"
+    "playSolo": "Играй сам",
+    "soloTitle": "Готов ли си за арената?",
+    "skinTitle": "Облик",
+    "unlockLevel": "Отключва се на ниво {level}",
+    "unlockLength": "Отключва се при дължина {length}",
+    "unlockLives": "Отключва се след {count} изиграни живота",
+    "skinEmber": "Жарава",
+    "skinLagoon": "Лагуна",
+    "skinHoney": "Мед",
+    "skinDusk": "Здрач",
+    "skinSky": "Небе",
+    "skinMoss": "Мъх",
+    "skinBerry": "Малина",
+    "skinGlacier": "Ледник",
+    "skinOrchid": "Орхидея",
+    "skinBee": "Пчела",
+    "skinSunset": "Залез",
+    "skinComet": "Комета"
   },
   "achievements": {
     "long-worm": {

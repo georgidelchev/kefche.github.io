@@ -92,7 +92,24 @@
     "needsName": "أكمل إعداد حسابك، مع اسم مستعار، للعب عبر الإنترنت.",
     "replaced": "أنت تلعب في هذه الساحة في علامة تبويب أخرى.",
     "tryAgain": "حاول مجددًا",
-    "playSolo": "العب فرديًا"
+    "playSolo": "العب فرديًا",
+    "soloTitle": "هل أنت مستعد للساحة؟",
+    "skinTitle": "المظهر",
+    "unlockLevel": "يُفتح عند المستوى {level}",
+    "unlockLength": "يُفتح عند الوصول إلى طول {length}",
+    "unlockLives": "يُفتح بعد لعب حيوات عددها {count}",
+    "skinEmber": "جمرة",
+    "skinLagoon": "بحيرة",
+    "skinHoney": "عسل",
+    "skinDusk": "غسق",
+    "skinSky": "سماء",
+    "skinMoss": "طحلب",
+    "skinBerry": "توت",
+    "skinGlacier": "نهر جليدي",
+    "skinOrchid": "أوركيد",
+    "skinBee": "نحلة",
+    "skinSunset": "غروب",
+    "skinComet": "مذنّب"
   },
   "achievements": {
     "long-worm": {

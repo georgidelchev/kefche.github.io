@@ -1,8 +1,11 @@
-// The screens before and around play: choosing the online or the solo arena,
-// joining, and why the online arena can't be played (with the way on).
-import { useEffect, useRef } from "react";
+// The screens before and around play: choosing a skin and the online or the
+// solo arena, joining, and why the online arena can't be played (with the
+// way on).
+import { useEffect, useRef, type ComponentProps } from "react";
 
 import type { GameContext } from "@kefche/game-sdk/browser";
+
+import { SkinPicker } from "./SkinPicker";
 
 type T = GameContext["t"];
 
@@ -27,28 +30,44 @@ function useFocusFirst<E extends HTMLElement>() {
   return ref;
 }
 
-export function ModeScreen({ t, onPick }: { t: T; onPick: (mode: Mode) => void }) {
+/** The setup: the skin, then the online arena (when this build has one) or the solo arena. */
+export function ModeScreen({
+  t,
+  online,
+  skins,
+  onPick,
+}: {
+  t: T;
+  online: boolean;
+  skins: Omit<ComponentProps<typeof SkinPicker>, "t">;
+  onPick: (mode: Mode) => void;
+}) {
   const first = useFocusFirst<HTMLButtonElement>();
   return (
     <div className="gwr-screen">
       <section className="gwr-card" aria-labelledby="gwr-mode-title">
-        <h2 id="gwr-mode-title">{t("modeTitle")}</h2>
+        <h2 id="gwr-mode-title">{t(online ? "modeTitle" : "soloTitle")}</h2>
+        <SkinPicker t={t} {...skins} />
         <div className="gwr-modes">
+          {online && (
+            <button
+              ref={first}
+              type="button"
+              className="gwr-mode"
+              data-main=""
+              onClick={() => {
+                onPick("online");
+              }}
+            >
+              <strong>{t("online")}</strong>
+              <span>{t("onlineHint")}</span>
+            </button>
+          )}
           <button
-            ref={first}
+            ref={online ? undefined : first}
             type="button"
             className="gwr-mode"
-            data-main=""
-            onClick={() => {
-              onPick("online");
-            }}
-          >
-            <strong>{t("online")}</strong>
-            <span>{t("onlineHint")}</span>
-          </button>
-          <button
-            type="button"
-            className="gwr-mode"
+            data-main={online ? undefined : ""}
             onClick={() => {
               onPick("solo");
             }}

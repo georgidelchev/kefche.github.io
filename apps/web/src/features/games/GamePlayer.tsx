@@ -40,6 +40,7 @@ import { loadGame } from "./loaders";
 import { createPlayRecorder } from "./play-recorder";
 import { createLowTimeSound, gameStorage, Overlay, useGameScreen, VOLUME } from "./player-parts";
 import { createPlaySupply, isAccount, submitPlay } from "./plays";
+import { playerProgress } from "./progress";
 import { rewardsState, type RewardsState } from "./rewards";
 import { fill, resultText, seatName, type TurnStrings } from "./turn/labels";
 import {
@@ -238,6 +239,7 @@ export function GamePlayer({
         ...(setup ? { match: setup } : realtime ? {} : { log: recorder.log }),
         ...(dailyRef.current ? { race: { config: dailyRef.current.config } } : {}),
         ...(arenaAccess ? { arena: arenaAccess } : {}),
+        progress: () => playerProgress(id),
         report: (event) => {
           if (event.type === "turn") {
             setReport((previous) => {

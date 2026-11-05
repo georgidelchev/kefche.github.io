@@ -92,7 +92,24 @@
     "needsName": "请完成账号设置并选择昵称，才能在线游戏。",
     "replaced": "你正在另一个标签页中玩这个竞技场。",
     "tryAgain": "重试",
-    "playSolo": "单人游戏"
+    "playSolo": "单人游戏",
+    "soloTitle": "准备好进入竞技场了吗？",
+    "skinTitle": "皮肤",
+    "unlockLevel": "{level} 级解锁",
+    "unlockLength": "长度达到 {length} 解锁",
+    "unlockLives": "玩 {count} 条命后解锁",
+    "skinEmber": "余烬",
+    "skinLagoon": "泻湖",
+    "skinHoney": "蜂蜜",
+    "skinDusk": "黄昏",
+    "skinSky": "天空",
+    "skinMoss": "苔藓",
+    "skinBerry": "莓果",
+    "skinGlacier": "冰川",
+    "skinOrchid": "兰花",
+    "skinBee": "蜜蜂",
+    "skinSunset": "日落",
+    "skinComet": "彗星"
   },
   "achievements": {
     "long-worm": {

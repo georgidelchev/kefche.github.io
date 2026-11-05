@@ -92,7 +92,24 @@
     "needsName": "Richte dein Konto mit einem Spitznamen fertig ein, um online zu spielen.",
     "replaced": "Du spielst diese Arena in einem anderen Tab.",
     "tryAgain": "Nochmal versuchen",
-    "playSolo": "Solo spielen"
+    "playSolo": "Solo spielen",
+    "soloTitle": "Bereit für die Arena?",
+    "skinTitle": "Skin",
+    "unlockLevel": "Freigeschaltet ab Level {level}",
+    "unlockLength": "Freigeschaltet ab Länge {length}",
+    "unlockLives": "Freigeschaltet nach {count} Leben",
+    "skinEmber": "Glut",
+    "skinLagoon": "Lagune",
+    "skinHoney": "Honig",
+    "skinDusk": "Dämmerung",
+    "skinSky": "Himmel",
+    "skinMoss": "Moos",
+    "skinBerry": "Beere",
+    "skinGlacier": "Gletscher",
+    "skinOrchid": "Orchidee",
+    "skinBee": "Biene",
+    "skinSunset": "Abendrot",
+    "skinComet": "Komet"
   },
   "achievements": {
     "long-worm": {

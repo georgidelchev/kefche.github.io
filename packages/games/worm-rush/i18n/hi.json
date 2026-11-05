@@ -92,7 +92,24 @@
     "needsName": "ऑनलाइन खेलने के लिए अपना खाता उपनाम के साथ पूरा करें।",
     "replaced": "आप यह अखाड़ा किसी दूसरे टैब में खेल रहे हैं।",
     "tryAgain": "फिर से कोशिश करें",
-    "playSolo": "अकेले खेलें"
+    "playSolo": "अकेले खेलें",
+    "soloTitle": "अखाड़े के लिए तैयार?",
+    "skinTitle": "स्किन",
+    "unlockLevel": "स्तर {level} पर खुलेगा",
+    "unlockLength": "{length} की लंबाई पर खुलेगा",
+    "unlockLives": "{count} जीवन खेलने के बाद खुलेगा",
+    "skinEmber": "अंगारा",
+    "skinLagoon": "लैगून",
+    "skinHoney": "शहद",
+    "skinDusk": "सांझ",
+    "skinSky": "आसमान",
+    "skinMoss": "काई",
+    "skinBerry": "बेरी",
+    "skinGlacier": "ग्लेशियर",
+    "skinOrchid": "ऑर्किड",
+    "skinBee": "मधुमक्खी",
+    "skinSunset": "सूर्यास्त",
+    "skinComet": "धूमकेतु"
   },
   "achievements": {
     "long-worm": {

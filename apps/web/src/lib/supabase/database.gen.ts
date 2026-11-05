@@ -484,7 +484,7 @@ isOneToOne: false
 { Args: { "p_user": string }; Returns: string
                            },
 "arena_entry":
-{ Args: Record<PropertyKey, never>; Returns: Json
+{ Args: { "p_game"?: string }; Returns: Json
                            },
 "arena_life_record":
 { Args: { "p_game": string,"p_life": Json,"p_version": number }; Returns: string

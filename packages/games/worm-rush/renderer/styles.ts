@@ -65,6 +65,19 @@ export const CSS = `
 .gwr-mode span { color: var(--text-muted); font-size: 0.85rem; }
 .gwr-mode[data-main] { border: 0; background: var(--brand); color: var(--on-brand); }
 .gwr-mode[data-main] span { color: var(--on-brand); }
+.gwr-skins { min-width: 0; margin: 0.2rem 0 0.75rem; padding: 0; border: 0; }
+.gwr-skins legend { margin-bottom: 0.35rem; padding: 0; font-size: 0.9rem; font-weight: 600; }
+.gwr-skin-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.4rem; }
+.gwr-skin { position: relative; display: grid; place-items: center; min-height: 2.75rem; padding: 0.3rem; border: 1px solid var(--border-strong); border-radius: 0.6rem; background: #0b1020; }
+.gwr-skin > svg { grid-area: 1 / 1; }
+.gwr-skin-art { width: 100%; max-width: 4rem; height: auto; }
+.gwr-skin-art:dir(rtl) { transform: scaleX(-1); }
+.gwr-skin[aria-pressed="true"] { border-color: transparent; box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--text); }
+.gwr-skin[aria-disabled="true"] { cursor: not-allowed; }
+.gwr-skin[aria-disabled="true"] .gwr-skin-art { opacity: 0.5; }
+.gwr-skin-lock { position: absolute; top: 0.2rem; inset-inline-start: 0.2rem; width: 1.1rem; height: 1.1rem; padding: 0.15rem; border-radius: 50%; background: #fff; color: #0b1020; }
+.gwr-card .gwr-skin-caption { min-height: 1.3em; margin: 0.45rem 0 0; color: var(--text-muted); font-size: 0.85rem; }
+.gwr-skin-caption strong { color: var(--text); }
 .gwr-joining { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin: 0; font-weight: 600; }
 .gwr-spinner { width: 1.25rem; height: 1.25rem; border-radius: 50%; border: 3px solid var(--border-strong); border-top-color: var(--brand); animation: gwr-spin 0.9s linear infinite; }
 @keyframes gwr-spin { to { transform: rotate(1turn); } }

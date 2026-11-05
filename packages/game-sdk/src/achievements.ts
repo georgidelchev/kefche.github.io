@@ -106,3 +106,16 @@ export function reachedTiers(
   }
   return reached;
 }
+
+/**
+ * What a game's cosmetic unlocks read (Worm Rush's skins): the player's
+ * level, and the tiers they've unlocked in that game, as "<id>.<tier>"
+ * without the game's prefix. Level 1 and none for someone signed out.
+ */
+export interface PlayerProgress {
+  level: number;
+  tiers: readonly string[];
+}
+
+/** No progress: level 1 and no tiers. */
+export const NO_PROGRESS: PlayerProgress = { level: 1, tiers: [] };

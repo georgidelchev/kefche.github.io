@@ -18,8 +18,9 @@ import {
 } from "./rules";
 import { CAPACITY, SNAPSHOTS_PER_SECOND, TICKS_PER_SECOND, type World } from "./world";
 
-export { arenaHost, LOOKS } from "./arena";
+export { arenaHost } from "./arena";
 export { bots } from "./bots";
+export { LOOK_UNLOCKS, LOOKS, lookUnlocked, type LookUnlock } from "./looks";
 export { moveHead } from "./rules";
 export type {
   Event,

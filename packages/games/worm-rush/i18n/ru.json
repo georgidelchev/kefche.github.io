@@ -92,7 +92,24 @@
     "needsName": "Завершите настройку аккаунта и выберите ник, чтобы играть онлайн.",
     "replaced": "Вы играете на этой арене в другой вкладке.",
     "tryAgain": "Повторить",
-    "playSolo": "Играть одному"
+    "playSolo": "Играть одному",
+    "soloTitle": "Готовы выйти на арену?",
+    "skinTitle": "Облик",
+    "unlockLevel": "Откроется на уровне {level}",
+    "unlockLength": "Откроется при длине {length}",
+    "unlockLives": "Откроется после {count} жизней",
+    "skinEmber": "Уголёк",
+    "skinLagoon": "Лагуна",
+    "skinHoney": "Мёд",
+    "skinDusk": "Сумерки",
+    "skinSky": "Небо",
+    "skinMoss": "Мох",
+    "skinBerry": "Ягода",
+    "skinGlacier": "Ледник",
+    "skinOrchid": "Орхидея",
+    "skinBee": "Пчела",
+    "skinSunset": "Закат",
+    "skinComet": "Комета"
   },
   "achievements": {
     "long-worm": {

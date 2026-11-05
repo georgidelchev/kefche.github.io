@@ -1,12 +1,12 @@
 // The games the arena server runs, by id (their manifests' ids). Each is the
 // game's own engine and bots, with how its arenas are filled and how its
 // events tell that a life ended.
-import type { ArenaBots, ArenaHostOptions, RealtimeEngine } from "@kefche/game-sdk";
+import type { ArenaBots, ArenaHostOptions, PlayerProgress, RealtimeEngine } from "@kefche/game-sdk";
 import {
   arenaHost as wormHost,
   bots as wormBots,
   engine as wormEngine,
-  LOOKS as wormLooks,
+  lookUnlocked as wormLookUnlocked,
   type Event as WormEvent,
 } from "@kefche/game-worm-rush/engine";
 import { manifest as wormManifest } from "@kefche/game-worm-rush/manifest";
@@ -23,8 +23,8 @@ export interface ArenaGame {
   engine: RealtimeEngine<unknown, unknown, unknown, unknown>;
   bots: ArenaBots<unknown, unknown>;
   host: Omit<ArenaHostOptions<undefined>, "seed" | "config">;
-  /** Looks a player may pick (0 to looks − 1). */
-  looks: number;
+  /** Whether a player with this progress may wear `look` (the skins they've unlocked). */
+  lookUnlocked(look: number, progress: PlayerProgress): boolean;
   /** The lives a tick's events ended. */
   lifeEnds(events: readonly unknown[]): LifeEnd[];
 }
@@ -43,7 +43,7 @@ export const GAMES: Readonly<Record<string, ArenaGame>> = {
     version: wormManifest.version,
     ...erase(wormEngine, wormBots),
     host: wormHost,
-    looks: wormLooks,
+    lookUnlocked: wormLookUnlocked,
     // Worm Rush's only events are knockouts.
     lifeEnds: (events) =>
       (events as readonly WormEvent[]).map(({ victim, by }) => ({ victim, by })),

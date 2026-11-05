@@ -3,6 +3,7 @@
 // everything inside its container and renders it however it likes (React,
 // Canvas, Pixi). Games never import app code.
 
+import type { PlayerProgress } from "../achievements";
 import type { GameResult, TurnMove } from "../engines";
 import type { TimerPreset } from "../manifest";
 import type { Seat } from "../seats";
@@ -154,6 +155,12 @@ export interface GameContext {
   log?: PlayLog;
   /** Real-time games: the online arena, when this build has one. */
   arena?: ArenaAccess;
+  /**
+   * The player's level and this game's unlocked tiers, for cosmetic unlocks
+   * (SPEC §12.6). Never makes a guest; resolves with no progress when
+   * signed out or offline.
+   */
+  progress?: () => Promise<PlayerProgress>;
   /** Tells the player about progress; "finish" opens the results screen. */
   report: (event: GameEvent) => void;
 }

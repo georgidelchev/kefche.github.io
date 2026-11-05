@@ -92,7 +92,24 @@
     "needsName": "オンラインで遊ぶには、ニックネームを決めてアカウントの設定を完了してください。",
     "replaced": "別のタブでこのアリーナをプレイ中です。",
     "tryAgain": "もう一度試す",
-    "playSolo": "ソロで遊ぶ"
+    "playSolo": "ソロで遊ぶ",
+    "soloTitle": "アリーナへ行きましょう",
+    "skinTitle": "スキン",
+    "unlockLevel": "レベル{level}で解放",
+    "unlockLength": "長さ{length}で解放",
+    "unlockLives": "ライフを{count}回遊ぶと解放",
+    "skinEmber": "残り火",
+    "skinLagoon": "ラグーン",
+    "skinHoney": "はちみつ",
+    "skinDusk": "夕暮れ",
+    "skinSky": "空",
+    "skinMoss": "こけ",
+    "skinBerry": "ベリー",
+    "skinGlacier": "氷河",
+    "skinOrchid": "オーキッド",
+    "skinBee": "ミツバチ",
+    "skinSunset": "夕焼け",
+    "skinComet": "彗星"
   },
   "achievements": {
     "long-worm": {

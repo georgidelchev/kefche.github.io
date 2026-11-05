@@ -1,13 +1,14 @@
 // Worm Rush entry for the player: the arena fills the container, with the
-// HUD (React) over it. With an online arena in this build the player picks
-// it or the solo arena first; without one, the solo arena starts at once.
+// HUD (React) over it. The player first picks a skin (remembered on this
+// device) and the online arena, when this build has one, or the solo arena;
+// a new game comes back to that choice.
 // Online, a full arena sends the player to another; a refusal or a server
 // that can't be reached (down, or past its daily limit) offers the solo
 // arena instead.
 import { createElement } from "react";
 import { createRoot } from "react-dom/client";
 
-import type { ArenaErrorCode } from "@kefche/game-sdk";
+import { NO_PROGRESS, type ArenaErrorCode, type PlayerProgress } from "@kefche/game-sdk";
 import {
   arenaSocketUrl,
   connectArena,
@@ -22,6 +23,8 @@ import {
   arenaHost,
   bots,
   engine,
+  LOOKS,
+  lookUnlocked,
   type Event,
   type Input,
   type Snapshot,
@@ -29,11 +32,13 @@ import {
 } from "../engine";
 import { createWormClient, type WormClient, type WormClientOptions } from "./client";
 import { Hud } from "./Hud";
-import { Joining, ModeScreen, ProblemScreen, type Mode, type Problem } from "./Screens";
+import { Joining, ModeScreen, ProblemScreen, type Problem } from "./Screens";
 import { createSounds, playMoments } from "./sounds";
 import { CSS } from "./styles";
 
 const GAME_ID = "worm-rush";
+/** Where the chosen skin is kept (GameStorage). */
+const SKIN_KEY = "skin";
 const BOOST = "M13 2 4 14h7l-1 8 9-12h-7l1-8Z";
 /** Reconnecting this long means the online arena is out of reach. */
 const STALL_MS = 15_000;
@@ -88,9 +93,13 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
   let local: LocalArena<World, Input, Snapshot, Event, undefined> | null = null;
   let unsubscribe: (() => void) | null = null;
   let stall: ReturnType<typeof setTimeout> | null = null;
-  let mode: Mode | null = null;
   let seed = context.seed;
   let paused = false;
+  let progress: PlayerProgress = NO_PROGRESS;
+  const stored = Number(context.storage.get(SKIN_KEY));
+  let chosen = Number.isInteger(stored) && stored >= 0 && stored < LOOKS ? stored : 0;
+  /** The skin to play in: the chosen one if it's (still) unlocked, else the first. */
+  const look = () => (lookUnlocked(chosen, progress) ? chosen : 0);
   // Each start's number: work for an earlier one (a scene still loading) is dropped.
   let generation = 0;
 
@@ -131,7 +140,6 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
 
   const playSolo = async () => {
     stop();
-    mode = "solo";
     const mine = generation;
     const made = await createWormClient({
       ...base(),
@@ -141,7 +149,7 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
           engine,
           bots,
           host: { ...arenaHost, seed, config: undefined },
-          player: { name: t("you"), look: 0 },
+          player: { name: t("you"), look: look() },
           handlers,
         });
         local.pause(paused);
@@ -166,24 +174,39 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
 
   const choose = () => {
     stop();
-    mode = null;
-    if (!context.arena) {
-      void playSolo();
-      return;
-    }
-    react.render(
-      createElement(ModeScreen, {
-        t,
-        onPick: (picked) => void (picked === "solo" ? playSolo() : playOnline(0)),
-      }),
-    );
+    const mine = generation;
+    const render = () => {
+      if (mine !== generation) return; // playing, or gone, since
+      react.render(
+        createElement(ModeScreen, {
+          t,
+          online: context.arena !== undefined,
+          skins: {
+            locale: context.locale,
+            look: look(),
+            progress,
+            onLook: (picked) => {
+              chosen = picked;
+              context.storage.set(SKIN_KEY, String(picked));
+              render();
+            },
+          },
+          onPick: (picked) => void (picked === "solo" ? playSolo() : playOnline(0)),
+        }),
+      );
+    };
+    render();
+    // Free skins until the player's progress is in; then theirs too.
+    void context.progress?.().then((loaded) => {
+      progress = loaded;
+      render();
+    });
   };
 
   const playOnline = async (fullTries: number) => {
     const arena = context.arena;
     if (!arena) return;
     stop();
-    mode = "online";
     const mine = generation;
     react.render(createElement(Joining, { t }));
     let name: string;
@@ -204,7 +227,7 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
         connectArena({
           url: arenaSocketUrl(arena.url, GAME_ID, name),
           token: () => arena.token(),
-          look: 0,
+          look: look(),
           engine,
           handlers,
         }),
@@ -252,9 +275,7 @@ export function mount(container: HTMLElement, context: GameContext): GameInstanc
     },
     restart(next) {
       seed = next;
-      if (mode === "online") void playOnline(0);
-      else if (mode === "solo") void playSolo();
-      else choose();
+      choose();
     },
     destroy() {
       stop();

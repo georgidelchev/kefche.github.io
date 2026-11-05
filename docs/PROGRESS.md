@@ -1771,6 +1771,44 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
     - **a new visitor's first online game:** Online, the guest name form, a name, then the online arena with the round trip shown, as a guest of that name.
     - The Deno tests 67/67 (Worm Rush's fixture with them). Checked by eye: the page in Bulgarian at 360 px, the art beside Snake's, the name form.
   - **Noticed:** the guest name form is the lobby's, so it says others "in the room" will see the name. It reads fine in an arena, but a wording of its own could come with Phase 15's review.
+- [x] Step 10: skins (`20261105100500_arena_skins.sql`).
+  - **12 skins** (`renderer/skins.ts`), each a colour, an accent and one of five patterns along the body: solid, stripes, rings, fade and beads (new: every other segment). They are named (Ember, Lagoon, Honey, Dusk, Sky, Moss, Berry, Glacier, Orchid, Bee, Sunset, Comet) in all 11 locales.
+  - **Unlocks** (`engine/looks.ts`, shared by the picker and the arena server), cosmetic only:
+    - **free:** Ember, Lagoon, Honey and Dusk (one of each first pattern; bots wear these);
+    - **by level:** Sky at 5, Glacier at 10;
+    - **by Worm Rush's achievements:** Regular bronze, silver and gold (Moss, Orchid, Sunset) and Long worm bronze, silver and gold (Berry, Bee, Comet).
+    - Only accounts earn levels and achievements, so guests and visitors have the free four.
+  - **Colour-blind check:** simulated protanopia, deuteranopia, tritanopia (Machado 2009, full severity) and greyscale:
+    - skins with the same pattern differ by an OKLab ΔE of at least 0.1 in body colour or accent. The closest pair is 0.18 under the colour-blind simulations (Lagoon and Bee) and 0.147 in greyscale (Moss and Comet);
+    - every body colour has a contrast of at least 3:1 against the arena's night background, and every accent at least 2:1, so no part of a worm disappears;
+    - each pattern shows in every simulation (colour and accent at least 0.15 apart in lightness).
+    - The first palette failed 20 of these (dark accents lost on the night background; Honey and Moss alike for protanopes). Two skins changed pattern, and five accents and one colour changed.
+  - **The picker** is on the setup screen, above the choice of arena:
+    - 12 little worms on the arena's colour, four to a row; the chosen one is ringed;
+    - locked ones are dimmed, with a lock badge, and can't be picked. The focused or hovered skin's name and what unlocks it ("Unlocks at level 5", "Unlocks at length 1,500", "Unlocks after 10 lives") show under the grid, and screen readers hear it from the button;
+    - the worms face the reading direction, so they are mirrored in Arabic.
+    - The choice is remembered on the device (the game's storage). A remembered skin that's locked for whoever plays now (signed out, another account) plays as Ember.
+    - Without an online arena in the build, the setup still shows, with the solo arena alone. A new game from the pause menu comes back to it, to change skin.
+  - **The player's progress:** `GameContext.progress()` gives a game the player's level and that game's unlocked tiers (`PlayerProgress` in the SDK). Only accounts load it (`features/games/progress.ts`); anything that goes wrong is no progress.
+  - **The arena server checks:** `arena_entry(p_game)` also answers the level and the game's tiers, and a look the player hasn't unlocked joins as Ember.
+    - **Either order deploys safely:** the old Worker calls it without a game, which the new function accepts (no tiers), and the new Worker reads a database without the new fields as level 1 with no tiers.
+    - A player back within 5 s keeps their place, and so their earlier skin, as before.
+  - **Checks:**
+    - **the arena server,** 16/16 against the local Worker and Supabase:
+      - the level and only this game's tiers answered;
+      - free skins worn, locked ones joining as Ember, for accounts and guests;
+      - the level edges (4 and 5 for Sky; 5 and 12 for Glacier);
+      - bronze unlocks but silver doesn't; gold unlocks;
+      - a look past the last.
+    - **the real site,** 22/22:
+      - a visitor sees 8 locked skins, with their unlocks on screen and for screen readers;
+      - a locked skin can't be picked and a free one can, remembered after a reload;
+      - the solo arena draws the player in that skin (sampled from the canvas), and a new game comes back to the setup;
+      - a remembered locked skin isn't used;
+      - English at 360, 768 and 1280 px in both themes, Arabic and Bulgarian at 360: fits, axe clean, no errors;
+      - an account at level 5 with Long worm bronze gets Sky and Berry, and plays online in Berry.
+    - One run of four failed one check; I didn't keep which. The likeliest is the canvas colour sample, which an orb or another worm can cross. The other three runs passed.
+    - Checked by eye: 360 px light and dark, Arabic, 1280 px, the online arena in Berry.
 - [x] Step 7: the Worm Rush engine and bots (`packages/games/worm-rush/engine`). No manifest yet, so the game isn't listed; the discovery scripts (server bundles, push wording, translation check) now skip a game folder without one.
   - **The rules:**
     - a round arena of radius 3,000 holding up to 30 worms;
@@ -1849,7 +1887,7 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
     - everyone else drawn between the two snapshots around 100 ms ago: the head moves on from the older snapshot's body;
     - the player's own worm at its predicted head, on the latest snapshot's body. Prediction moves the head with the rules' own function (`moveHead`, now shared by the engine), so they agree exactly;
     - **the zoom:** a worm's surroundings fill the screen's shorter side (a new worm is about 13 px wide on a 360 px phone), widening as it grows, but never showing past what the arena sends.
-  - **Skins** (`skins.ts`): 12 provisional colours, each with an accent and a pattern (solid, stripes, rings, fade). Which are free, how the rest unlock, and the colour-blind check come with the picker (step 10).
+  - **Skins** (`skins.ts`): 12 provisional colours, each with an accent and a pattern (solid, stripes, rings, fade). Which are free, how the rest unlock, and the colour-blind check come with the picker (step 10, which retuned them).
   - **Two stalls found and fixed:**
     - the first frame took about 280 ms at 6× (shaders and textures), so the scene now draws a warm-up frame while loading;
     - names drawn by PixiJS stalled about 100 ms when several worms came into view, hence the page-text names.

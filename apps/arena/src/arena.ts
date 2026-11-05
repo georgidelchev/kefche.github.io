@@ -142,14 +142,15 @@ export class Arena extends DurableObject<Env> {
       this.refuse(ws, "version");
       return;
     }
-    const player = await arenaEntry(this.env, text.token);
+    const player = await arenaEntry(this.env, text.token, this.gameId);
     if (!this.connections.has(ws)) return; // closed while we asked
     if (typeof player === "string") {
       this.refuse(ws, player);
       return;
     }
     connection.userId = player.userId;
-    const look = text.look < this.game.looks ? text.look : 0;
+    // A look they haven't unlocked is the first one (the picker offers only theirs).
+    const look = this.game.lookUnlocked(text.look, player.progress) ? text.look : 0;
     const place = this.places.get(player.userId);
     if (place) {
       // Back within 5 s, or a second tab: the same place, a full snapshot first.
