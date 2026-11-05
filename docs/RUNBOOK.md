@@ -371,10 +371,16 @@ Real-time arenas (Phase 9) run on their own Worker, `kefche-arena` (`apps/arena`
   3. **Cloudflare:** `pnpm --filter arena exec wrangler secret put ARENA_SECRET` (signed in with `wrangler login`, or with `CLOUDFLARE_API_TOKEN` set), and paste it.
   - **Locally:** the same value as `ARENA_SECRET` in `supabase/.env` (then restart Supabase) and in `apps/arena/.dev.vars`.
   - **Failed reports** show in the Worker's logs as "arena: lives not reported" (after three tries); `submit-match` logs each report as `arena_lives`.
-- **Usage:** the Cloudflare dashboard, _Workers & Pages → kefche-arena → Metrics_, and _Durable Objects_ for requests and duration.
+- **Releasing an arena change** that touches the database or results, in this order:
+  1. the migrations (`supabase db push --dry-run`, review, then `supabase db push`; see "Hosted Supabase");
+  2. the Edge Functions, when `_shared/` or `submit-match` changed (`pnpm exec supabase functions deploy --use-api`): solo lives are judged there, with the engines bundle;
+  3. then push to `main`: CI deploys the site, then the arena Worker.
+  - **Either order is safe** for `arena_entry`'s skins (step 10), but a site whose solo lives reach an old `submit-match` gets "bad request" back, and those lives don't count until the function is deployed.
+- **Usage:** the Cloudflare dashboard, _Workers & Pages → kefche-arena → Metrics_, and the dashboard's _Durable Objects_ page for requests and duration (the dashboard counts every message; billing counts 20 to a request).
   - **Workers Free** allows 100,000 Durable Object requests and 13,000 GB-s a day, reset at 00:00 UTC. Each incoming WebSocket message bills as 1/20 of a request; sending is free. Past either limit, arenas refuse until the reset.
-  - **A full arena** (15 players) costs about 17,500 requests an hour (measured live), so about 5–6 full-arena hours a day fit.
-  - **Workers Paid** ($5/month) is the owner's call.
+  - **A full arena** (15 players) costs about 26,200 requests and 461 GB-s an hour (measured in Phase 9 step 12; ARCHITECTURE, "Arena cost"), so about 3.8 full-arena hours a day fit. Requests run out first.
+  - **Signs of the limit:** players see "The online arena can't be reached right now" with Play solo (checked by simulating it), and the Worker's requests stop at the cap in the metrics. Nothing needs doing: it resets at 00:00 UTC.
+  - **When it's often reached:** Workers Paid ($5/month) is the owner's call. Lowering the input cap (ADR-0038) is the other lever.
 
 ## Rooms and Realtime
 

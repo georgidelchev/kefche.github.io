@@ -770,3 +770,77 @@ Lobby chat already existed (ADR-0023).
 - **No retry:** a push lost to an outage stays lost, though the bell still has the notification.
 - **iPhones and iPads** get push only once the site is added to the Home Screen (iOS 16.4+).
 - **Off until set up:** without the keys, the Vault entries and `PUBLIC_VAPID_PUBLIC_KEY`, nothing is sent and settings don't offer push (RUNBOOK, "Web Push").
+
+---
+
+## ADR-0037: Real-time arenas on Cloudflare Durable Objects
+
+**Date:** 2026-11-05 · **Status:** Accepted (Phase 9 Q1)
+
+**Context.** SPEC §10.8 has the host's browser simulate an arena and send snapshots over Supabase Realtime. On Supabase's free plan that can't carry one full arena of 15: the project allows 100 messages a second, and a broadcast bills once per receiver (PROGRESS, Phase 9 plan). A browser host can also fake its own length, and leaves when its tab closes.
+
+**Decision.**
+
+- **One Worker,** `kefche-arena` (`apps/arena`), deployed by CI after the site:
+  - **One Durable Object per arena,** holding the players' WebSockets and stepping the game at 30 Hz with the SDK's `ArenaHost`, the same code the solo arena runs in the page;
+  - **One directory object per game:** it says which arena "Play online" joins, filling arenas before opening new ones.
+- **The server decides everything:** players send only inputs; lengths, knockouts and lives are the server's. It reports each account's life to `submit-match` with a shared secret (`ARENA_SECRET`), and the life counts for stats, XP, the board and achievements.
+- **Joining:**
+  - only the site's pages may connect (`SITE_ORIGINS`);
+  - the first message carries the player's Supabase access token, checked by `public.arena_entry` with that token. One request checks the token, the name, sanctions and the skins the player may wear.
+- **Endless, drop-in arenas** (Q2): at most 15 people, bots to 10, a dropped player's worm kept 5 s.
+- **Workers Free** to start. Workers Paid ($5/month) is the owner's call when usage needs it.
+- **Supabase keeps** accounts, guests, results and everything else.
+
+**Consequences.**
+
+- **Cost:** players' messages bill at 20 to a request, and sending is free. A full arena costs about 26,000 requests and 461 GB-s an hour (ARCHITECTURE, "Real-time arenas"), so Workers Free allows about 3.8 full-arena hours a day, with requests running out first.
+- **Past the daily limit,** arenas refuse until 00:00 UTC, and the game offers the solo arena (checked by simulation, step 12).
+- **One region per arena:** a Durable Object lives near whoever first opened it, so players far from it see a longer round trip.
+- **Another moving part:** a second Worker to deploy, its secret to set, and its usage to watch (RUNBOOK, "Arena server"). The SDK's protocol and `ArenaHost` keep the server game-agnostic: a new arena game is an entry in `src/games.ts`.
+
+---
+
+## ADR-0038: Arena netcode: snapshots with deltas, interpolation and prediction
+
+**Date:** 2026-11-05 · **Status:** Accepted
+
+**Context.** Arenas are played on phones over mobile networks, at 30 ticks a second, with up to 30 worms whose bodies are hundreds of points long. Movement must look smooth and respond at once, while the server stays the only authority (ADR-0037).
+
+**Decision.**
+
+- **Binary frames** (`arena-frames.ts`): inputs (a heading in one byte and a held action) and snapshots, with quantized positions, varints and zigzag for small changes. Text frames only for hello, welcome, respawn and errors.
+- **Per-player snapshots at 15 Hz:** only what the player can see, encoded against the last snapshot sent to them. A WebSocket delivers in order, so deltas need no acknowledgement. A body goes as its head's move; the reader rebuilds it as the server did, and it goes whole when it comes into view or the rebuild wouldn't match.
+- **Others drawn 100 ms behind,** between the two snapshots around that moment (`SnapshotBuffer`, timed by `ServerClock`), held still past the last rather than guessed.
+- **The player's own worm predicted** with the rules' own movement (`moveHead`): inputs the server hasn't applied yet are played again on each snapshot, and any difference is eased out over 5 ticks.
+- **Inputs only when they change,** at most 10 a second (the latest always goes), and a ping every 2 s. On any drop, it reconnects with backoff and a fresh token, and the server keeps the worm in play for 5 s.
+- **Deterministic rules** (`det-math.ts`): no `Math.sin` and friends in the engine, so a solo life replays the same on the server (Phase 9 step 9c).
+
+**Consequences.**
+
+- **Measured** (step 12): about 1.25 KB/s per player down, 50 bytes/s up; snapshots every 63 ms (99th percentile 93 ms) on the local Worker. Input to screen 16–19 ms median on a phone profile at 4–6× CPU slowdown.
+- **Inputs are the cost:** each player's input rate is most of the arena's billed requests. Lowering the cap from 10 to 6 a second would give about 5.7 full-arena hours a day on Workers Free instead of 3.8, at the price of larger corrections. It stays at 10 until play says otherwise.
+- **100 ms behind** is the time others are shown late, on top of the round trip: a cut that looks close can miss. Knockouts are the server's.
+
+---
+
+## ADR-0039: PixiJS for arena rendering
+
+**Date:** 2026-11-05 · **Status:** Accepted
+
+**Context.** An arena draws hundreds of body segments, orbs and glows at 60 frames a second or more, on mid-range phones, beside the netcode's own work. SPEC §3 allows Canvas or PixiJS per game.
+
+**Decision.**
+
+- **PixiJS 8.22.0** (MIT), adopted after measuring it against Canvas 2D on the same scene: 2.8 ms against 7.9 ms a frame at 6× CPU slowdown on a phone profile (PROGRESS, Phase 9 step 6).
+- **Loaded only with the game,** in a lazy chunk (about 164 KB gzip), with only the parts used (`pixi.js/graphics`, `sprite-tiling`, `skipExtensionImports`) and its `unsafe-eval` module, so it runs under the full Content-Security-Policy without `eval()`.
+- **Pooled sprites** of a few textures made at start (a shaded disc, a glow, a dot, the grid), tinted per segment, so a worm of any length batches into a few draw calls. A warm-up frame is drawn while the game loads.
+- **Names are page text** over the canvas, not PixiJS text: the browser shapes every script, and a new name costs no texture upload mid-game.
+- The netcode's frame building (`frame.ts`) has no PixiJS, so it is tested in Node.
+
+**Consequences.**
+
+- **Smooth on a phone profile:** the whole client loop takes 1.2 ms median at 6× slowdown (2.4–2.7 ms with grown worms), and the step 12 run held the display's rate with no frame over 33 ms.
+- **About 164 KB gzip** more for arena games, only when Play is pressed.
+- **WebGL:** the scene asks PixiJS for WebGL, so a browser without it can't draw the arena.
+- **Credits:** PixiJS is listed in the game's `CREDITS.md` and on the Credits page (Phase 17).

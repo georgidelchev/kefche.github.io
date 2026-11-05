@@ -202,6 +202,41 @@ Measured in step 13 on local Supabase: five accounts, A with four friends, each 
 - **Everything else is small:** a player with 20 friends online who changes status 10 times an hour bills about 400 an hour, and 100 DMs about 400.
 - **Connections, not messages, may bind first:** every open, visible, signed-in tab holds one of the free plan's 200 concurrent connections.
 
+## Real-time arenas (Phase 9)
+
+Arenas run on their own Worker, `kefche-arena`, with one Durable Object per arena (ADR-0037). The netcode is ADR-0038, the rendering ADR-0039. Supabase Realtime carries none of it: Supabase only checks who's joining (`arena_entry`) and records lives (`submit-match`).
+
+```mermaid
+flowchart LR
+  P["Page<br/>(PixiJS, prediction)"] -->|"which arena?"| D["Directory<br/>one per game"]
+  P <-->|"WebSocket: inputs up,<br/>snapshots down at 15 Hz"| A["Arena<br/>Durable Object, 30 Hz"]
+  A -->|"arena_entry<br/>(the player's token)"| SB[(Supabase)]
+  A -->|"lives, with ARENA_SECRET"| SM["submit-match"]
+  P -->|"a solo life's inputs"| SM
+  SM --> SB
+```
+
+- **The solo arena** is the same `ArenaHost` stepped in the page, against bots. For an account, each life runs on a seed the server issued, and `submit-match` replays it (Phase 9 step 9c).
+
+### Arena cost (SPEC §10.9)
+
+Measured in step 12 on the local arena Worker: 15 people in one arena, 14 from Node through the SDK's `connectArena` steering like people, and one Chrome on a phone profile. Frames were counted at the players' sockets over 2 minutes. Prices are Cloudflare's [Durable Objects pricing](https://developers.cloudflare.com/durable-objects/platform/pricing/) as of 2026-11-05.
+
+| Per full arena (15 players), an hour | Measured                                           | What it bills                                                                   |
+| ------------------------------------ | -------------------------------------------------- | ------------------------------------------------------------------------------- |
+| Messages from players                | 9.7 a second each: 524,000                         | 1 request per 20: **about 26,200 requests**                                     |
+| Joins                                | 1 WebSocket and 1 directory request each           | A few dozen requests                                                            |
+| Messages to players                  | 15.5 a second each, 1.25 KB/s each: 68 MB          | Free (sending isn't billed)                                                     |
+| Duration                             | Awake all hour (the loop runs at 30 Hz)            | 3,600 s × 128 MB: **461 GB-s**                                                  |
+| Supabase                             | `arena_entry` per join; lives reported as they end | A database call per join, a `submit-match` call per batch of lives; no Realtime |
+
+- **Workers Free** (100,000 requests and 13,000 GB-s a day): requests run out first, after **about 3.8 full-arena hours a day**. Duration alone would allow about 28. Smaller arenas cost in proportion to their people: bots cost no messages.
+- **Workers Paid** ($5/month: 1 million requests and 400,000 GB-s a month): about 38 full-arena hours a month included, then about **$0.004 for requests and $0.006 for duration per arena-hour**.
+- **Inputs are the lever:** a player sends an input whenever their heading changes, at most 10 a second, plus a ping every 2 s. A cap of 6 a second would bill about 17,500 an hour (about 5.7 hours a day on Workers Free), at the price of larger corrections (ADR-0038).
+- **A player's data:** about 4.5 MB down and 0.2 MB up per hour of play.
+- **Past the limit** arenas refuse until 00:00 UTC and the game offers the solo arena, which costs nothing.
+- **What step 1 measured live** (26 ms round trip from Bulgaria, about 17,500 requests an hour) used a stand-in client sending about 6 inputs a second; the real client sends more.
+
 ## Internationalization
 
 - **Registry:** `src/i18n/locales.ts` lists every locale with its native name, BCP 47 tag, `dir`, script and OG locale. Routing, fonts, `<html lang dir>`, hreflang and the language switcher all derive from it.
@@ -263,6 +298,5 @@ GitHub Actions `CI` runs format check → lint → contrast → translations →
 
 ## Sections to come
 
-- Realtime message budget for real-time arenas (SPEC §10.9) _(Phase 9)_
 - PWA install, audio and haptics _(Phase 16; no offline mode, ADR-0014)_
 - Consent, analytics and monitoring _(Phase 17)_

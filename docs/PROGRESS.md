@@ -15,7 +15,7 @@
 | 6     | Chess                                                      | ✅ Done (owner signed off 2026-10-25) |
 | 7     | Stats, XP, achievements, leaderboards, daily               | ✅ Done (owner signed off 2026-11-01) |
 | 8     | Social: friends, presence, chat, moderation, notifications | ✅ Done (owner signed off 2026-11-05) |
-| 9     | Real-time arena framework & Worm Rush                      | 🚧 In progress                        |
+| 9     | Real-time arena framework & Worm Rush                      | 🔍 Built, awaiting owner sign-off     |
 | 10    | Admin panel                                                | ⏳ Not started                        |
 | 11–14 | Game batches                                               | ⏳ Not started                        |
 | 15    | Translation pass & content packs                           | ⏳ Not started                        |
@@ -1973,6 +1973,33 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
         - an account knocked out at the edge sends one record, which the server replays and counts: a `solo-bots` match as out, with the card's length, in the stats with XP, and "+50 XP" on the card;
         - Play again starts a new life on a new seed; closing the player mid-life counts that life as left;
         - a visitor's lives send nothing and show no XP; no page errors.
+- [x] Step 12: verification and docs.
+  - **The DoD run** (local arena Worker and Supabase): one online arena of 15 people, so no bots (they fill only to 10).
+    - **The players:** 14 guests from Node through the SDK's `connectArena`, steering like people (the heading wanders every frame, with bursts of boost, and back after a knockout). The 15th is Chrome on a phone profile (412 × 915, DPR 2.625, drawn at 2, touch), its CPU slowed 4× and then 6×, 40 s each.
+    - **On the phone profile:**
+
+      | CPU slowdown | Frame rate | Frame time (median / p95 / worst) | Frames over 33 ms | Scene draw (median / p95) | Input to screen (median / p95 / worst) |
+      | ------------ | ---------- | --------------------------------- | ----------------- | ------------------------- | -------------------------------------- |
+      | 4×           | 165        | 6.0 / 6.4 / 9.0 ms                | 0%                | 0.6 / 0.8 ms              | 15.8 / 35.0 / 35.2 ms (27 presses)     |
+      | 6×           | 165        | 6.0 / 6.5 / 10.4 ms               | 0%                | 0.8 / 1.1 ms              | 18.9 / 31.3 / 32.0 ms (26 of 27)       |
+      - **Frame rate:** 165 is this desktop's display rate, which the page held throughout. A phone's 60 or 120 Hz leaves more time per frame.
+      - **Input to screen:** a key press until the first frame drawn with the player's worm turning, timed by a probe around the scene (a scratch build; the game is unchanged). It's at most a tick (33 ms) plus a frame, since the prediction steps with the arena's ticks. One press of 27 at 6× showed no turn within a second, most likely because it fell while the worm was out (not checked).
+      - **Worms in view:** 3 to 5. Step 6 measured the heavy case (about 400 segments and 550 orbs in view): 2.4–2.7 ms a frame at 6×.
+
+    - **The 14 from Node:** 15 snapshots a second each, gaps of 63 ms median, 99th percentile 93 ms and worst 97 ms; 1.25 KB/s down and 50 bytes/s up each; 33 lives in 2 minutes.
+    - **Not a real phone:** this is Chrome's phone emulation with a slowed CPU on a desktop GPU. The owner's phone, once this is live, is the real check.
+  - **The cost** (ARCHITECTURE, "Arena cost"), from the frames counted at the sockets over 2 minutes and Cloudflare's prices:
+    - each player sends **9.7 frames a second** (inputs at most 10, plus pings), so a full arena bills **about 26,200 requests an hour**. The Phase 9 plan assumed 6 inputs a second (step 1's stand-in client) and about 16,000–17,500;
+    - it's awake all hour, so **461 GB-s** of duration;
+    - **Workers Free** therefore allows **about 3.8 full-arena hours a day**, not 6; requests run out first. Workers Paid includes about 38 a month, then about $0.01 an arena-hour (requests and duration).
+    - Lowering the input cap to 6 a second would give about 5.7 hours a day, with larger corrections. It stays at 10 for now (ADR-0038); the owner's call if the limit is reached often.
+    - **Bandwidth:** about 68 MB an hour per full arena, which Cloudflare doesn't bill; 4.5 MB down an hour per player.
+  - **The free limit:** simulated on the local Worker rather than reached on production, which would have cut real players off until 00:00 UTC and taken about 2 million messages. That waits for the owner's word. 8/8:
+    - the directory answering Cloudflare's over-limit error (429, "error code: 1027"): the can't-be-reached screen, Play solo focused, then the solo arena;
+    - a socket dropped mid-game, with every reconnect refused (4 in the window): "Reconnecting…", then at 15.2 s the same screen, and the solo arena; no page errors.
+  - **Layout,** 24/24 on the real site in play (the solo arena): English and Arabic at 360, 768 and 1280 px, light and dark. No sideways scroll, the arena fits, the stats, board and boost button apart and inside the arena, the board at the end (left in Arabic), axe clean with the controls panel open, no errors. The setup and the page had their own checks in steps 10 and 11.
+  - **Docs:** ADR-0037 (the arena server), ADR-0038 (the netcode), ADR-0039 (PixiJS); ARCHITECTURE, "Real-time arenas" with the measured cost; RUNBOOK, "Arena server": the release order (migrations, Edge Functions, then the push) and watching usage.
+- **Phase 9 DoD:** "15 players + bots run smoothly on a mid-range phone": the phone-profile run above, on emulation (not yet a real phone). "Measured Realtime message usage documented": arenas use no Supabase Realtime; their own cost is measured in ARCHITECTURE.
 
 ## Known issues
 
@@ -1993,6 +2020,8 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
 - **Blocked terms need review:** the owner reviews the drafted Bulgarian list (`supabase/blocked-terms/bg.txt`). Native speakers review the other non-English lists in Phase 15. Russian lacks some common Cyrillic slurs. Since Phase 8 step 2, phrases match in chat too, so the lists' phrases deserve a look for everyday words.
 - **Game page prose is English in 9 locales (Phase 15):** each game's name, tagline, meta description and in-game UI strings are translated in all 11 locales. The long page sections (about, how to play, controls, tips, FAQ) are written in English and Bulgarian; the other 9 locales carry the English text until the Phase 15 translation pass (SPEC §15, §22 DoD rule).
 - **Translations need native review (Phase 15):** all strings in the 9 locales other than en/bg are my translations and haven't been reviewed by native speakers. Bulgarian should be reviewed by the owner.
+- **Arenas: a real phone and the real limit (Phase 9):** step 12 ran on Chrome's phone emulation and simulated the free plan's daily limit locally. Once Worm Rush is live, play it on a real mid-range phone, and reaching the limit on production waits for the owner's word (it stops online arenas until 00:00 UTC).
+- **Arenas: input rate and the free plan (Phase 9):** a full arena bills about 26,200 requests an hour, so Workers Free allows about 3.8 full-arena hours a day. Lowering the input cap from 10 to 6 a second, or Workers Paid ($5/month), are the levers (ADR-0038).
 
 ## Tracked TODOs
 
