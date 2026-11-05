@@ -1794,6 +1794,11 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
       - a second tab taking over;
       - a nameless guest, a suspended player and an unknown game each refused with their code;
       - a worm steered off the edge, knocked out, then respawned.
+    - **Live** (2026-11-05, after the CI deploy; the migration pushed first), 13/13 with 10 guests against the hosted project and `kefche-arena.alienguymc.workers.dev`:
+      - all 10 sent to one arena and welcomed, exactly 15 snapshots a second each, round trip 31 ms from Bulgaria;
+      - back within 5 s with the same worm, back after 5 s with a new one, a second tab taking over;
+      - a nameless guest and an unknown game refused with their code; off the edge, knocked out and respawned.
+      - Not run live: the 16th player (10 guests keep within the hosted sign-in limit) and the suspended player (it needs the service key to add a sanction). Both passed locally. The run's 11 guests are left for the stale-guest clean-up.
 
 ## Known issues
 

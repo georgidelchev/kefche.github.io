@@ -31,7 +31,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 ## Layout
 
 - `apps/web`: Astro 7 + React islands, Tailwind 4, `@astrojs/cloudflare` (Workers + static assets). Routes live under `src/pages/[locale]/`. Env vars are validated in `src/lib/env.ts` and documented in `apps/web/.env.example`.
-- `apps/arena`: the real-time arena server (Phase 9), a separate Worker (`kefche-arena`) with one Durable Object per arena. Its WebSocket protocol is in `src/wire.ts`; CI deploys it after the site.
+- `apps/arena`: the real-time arena server (Phase 9), a separate Worker (`kefche-arena`) with one Durable Object per arena and a directory per game. It speaks the SDK's arena protocol (`packages/game-sdk/src/arena-protocol.ts`) and runs the games listed in `src/games.ts`; CI deploys it after the site.
 - `packages/config`: shared `tsconfig.base.json`, ESLint preset (`eslint-preset.js`) and Prettier preset (`prettier-preset.js`). The root `eslint.config.js` and `prettier.config.js` use them.
 - `apps/web/src`:
   - `i18n/`: locale registry, `getT`, negotiation.
