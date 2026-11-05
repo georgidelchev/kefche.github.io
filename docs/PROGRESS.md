@@ -1753,6 +1753,7 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
     - **`connectArena`,** against a fake socket wired to an `ArenaHost`: inputs at most every 100 ms with the latest delivered, pings, a reconnect after a drop with a new token and a full snapshot, a fatal error stopping for good, an expired token retried, and the client closing on error frames.
   - **Also:** `engines.gen.js` regenerated; only the order of two SDK modules changed in it, so the deployed function needn't change.
 - **Order changed:** step 7 (the Worm Rush engine) comes before step 4, so the arena server hosts the real game from its first version instead of a stand-in.
+- **Order changed again (2026-11-05):** after 9b come step 11 (the manifest, art, sounds and page text), then step 10 (skins: some unlock with the game's achievements, which the manifest declares), then 9c (solo replay needs the manifest's engines bundle), then step 12.
 - [x] Step 7: the Worm Rush engine and bots (`packages/games/worm-rush/engine`). No manifest yet, so the game isn't listed; the discovery scripts (server bundles, push wording, translation check) now skip a game folder without one.
   - **The rules:**
     - a round arena of radius 3,000 holding up to 30 worms;
@@ -1892,6 +1893,10 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
       - **Deno,** the report's schema and the boards (66/66 with the others);
       - the arena server's own check (step 4) again 15/15.
     - **Production needs `ARENA_SECRET`** in Supabase and on the Worker (RUNBOOK, "Arena server"); until it's set, online lives aren't recorded.
+  - [ ] **9c: solo lives count for XP, by replay** (after step 11 and step 10: see "Order changed" below).
+    - **Measured:** replaying a solo arena (the player and 9 bots, the same `ArenaHost` from the seed) costs about 0.15 ms a tick in Node on this desktop: a 1-minute session 0.2 s, 5 minutes 1.3 s, 10 minutes 2.9 s, growing with the session. Edge Functions get about 2 s of CPU a request, on slower machines than this one, so a whole endless session can't be replayed.
+    - **So:** each solo life is its own game, on a fresh arena from a seed the server issued (`start_play`); Play again in the solo arena starts a new one. The record is the life's inputs by tick. The replay stops at 3 minutes of play (5,400 ticks, about 0.8 s here): a longer life counts with its length at that point. Solo lives count for the stats and XP, not for the longest-worm board (Q5).
+    - **It needs the manifest:** the server replays with the engines bundle (`pnpm functions:engines`), which is built from the games' manifests, and Worm Rush's comes in step 11.
 
 ## Known issues
 
