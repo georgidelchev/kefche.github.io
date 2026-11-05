@@ -113,7 +113,15 @@ class SpritePool {
   }
 }
 
-export async function createArenaScene(parent: HTMLElement): Promise<ArenaScene> {
+export interface ArenaSceneOptions {
+  /** Still orbs and glows (the player's setting); default: the system's. */
+  reducedMotion?: boolean;
+}
+
+export async function createArenaScene(
+  parent: HTMLElement,
+  options: ArenaSceneOptions = {},
+): Promise<ArenaScene> {
   const app = new Application();
   await app.init({
     width: Math.max(1, parent.clientWidth),
@@ -219,7 +227,7 @@ export async function createArenaScene(parent: HTMLElement): Promise<ArenaScene>
       world.position.set(ox, oy);
       grid.tileScale.set(zoom);
       grid.tilePosition.set(ox, oy);
-      const motion = !still.matches;
+      const motion = !(options.reducedMotion ?? still.matches);
       // What's on screen, in world units, with a margin.
       const halfW = width / 2 / zoom + 40;
       const halfH = height / 2 / zoom + 40;

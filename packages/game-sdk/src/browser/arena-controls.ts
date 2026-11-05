@@ -401,7 +401,9 @@ export function createArenaControls(options: ArenaControlsOptions): ArenaControl
   const onKeyDown = (e: KeyboardEvent) => {
     if (isField(e.target) || e.altKey || e.ctrlKey || e.metaKey) return;
     if (e.code === "Space") {
-      e.preventDefault(); // don't scroll the page or press a focused button
+      // A focused HUD button takes Space as a press (Play again); elsewhere it boosts.
+      if (e.target instanceof Element && e.target.closest(INTERACTIVE)) return;
+      e.preventDefault(); // don't scroll the page
       held.key = true;
       updateAction();
       return;

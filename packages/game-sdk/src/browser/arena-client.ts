@@ -234,12 +234,14 @@ export interface LocalArena<World, Input, Snapshot, Event, Config> extends Arena
   /** The arena itself: the solo arena reads the player's result from it. */
   readonly host: ArenaHost<World, Input, Snapshot, Event, Config>;
   readonly self: number;
+  /** Holds the arena still (the player's pause menu); it also holds while the page is hidden. */
+  pause(paused: boolean): void;
 }
 
 /**
  * The solo arena: the same ArenaHost the server runs, stepped in this page,
  * its snapshots going through the same codec as online. It stops while the
- * page is hidden, since nobody else is playing.
+ * page is hidden or paused, since nobody else is playing.
  */
 export function createLocalArena<World, Input, Snapshot, Event, Config>(
   options: LocalArenaOptions<World, Input, Snapshot, Event, Config>,
@@ -254,10 +256,11 @@ export function createLocalArena<World, Input, Snapshot, Event, Config>(
   let seq = 0;
   let last: Uint8Array | null = null;
   let due = performance.now();
+  let paused = false;
 
   const loop = setInterval(() => {
     const now = performance.now();
-    if (document.hidden) {
+    if (document.hidden || paused) {
       due = now;
       return;
     }
@@ -298,6 +301,9 @@ export function createLocalArena<World, Input, Snapshot, Event, Config>(
     },
     respawn() {
       host.respawn(self);
+    },
+    pause(next) {
+      paused = next;
     },
     latency: () => 0,
     close() {

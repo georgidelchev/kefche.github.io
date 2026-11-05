@@ -1849,6 +1849,27 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
 
     - The engine's own check (step 7) again 20/20, its bot runs unchanged by the `moveHead` refactor.
   - **Not yet:** the page that mounts the game, with its loading screen and HUD (steps 8 and 9). The ADR for PixiJS is step 12's, with the others.
+- [x] Step 8: the arena HUD, and Worm Rush mounting through the player's `GameModule` (`index.ts`, `renderer/mount.ts`). Every game is the solo arena for now; step 9 adds the online arena and the choice between them.
+  - **The client loop** (`renderer/client.ts`): the connection's snapshots feed the clock, the buffer and the prediction; the controls' steering goes to the connection; each animation frame draws the scene. What the HUD shows sits in a small store, updated with each snapshot.
+  - **The HUD** (`renderer/Hud.tsx`, React like Snake's, with scoped `gwr-` styles), 360 px first:
+    - **at the start:** the length, the place ("#8 of 10"), the round trip online (a coloured dot and the ms), a minimap of the arena with the player on it, and a controls button;
+    - **at the end:** the live top 10, the player in yellow, bots muted and marked "bot" (on phones the word is for screen readers only, to keep the board narrow); a player outside the top 10 gets their own row below it;
+    - **the feed:** the last three knockouts for 5 s ("Mila took out Teo", "You hit the edge"). Screen readers hear only the ones about the player;
+    - **joining and reconnecting** notices;
+    - **knocked out:** a card with who did it (or the edge), the life's longest length, knockouts and time, and Play again, which takes focus, so Enter or Space plays again;
+    - **controls:** the touch and keyboard hints, the left-handed switch, and "Move the boost button", which shows a banner with Reset and Done. Escape closes the panel without also pausing the game.
+    - Only its buttons and cards take pointers; touches anywhere else reach the arena. Text over the arena is light on dark glass in both themes; the cards use the site's tokens.
+  - **Strings:** 30 in `i18n/<locale>.json` "ui", in all 11 locales (keys and placeholders checked against English). Lines about a player avoid gendered forms where the language allows it (French "Hors jeu", Russian present tense, and so on). The files also carry the game's name (provisional, reviewed with step 11's page text) and an empty `achievements`, since the site imports both from every game's files.
+  - **Shared changes:**
+    - Worm Rush's arena settings (bots to 10, 15 people, the bot names) moved from `apps/arena` into the game (`engine/arena.ts`), so the arena server and the solo arena fill arenas alike; the server's behaviour is unchanged;
+    - the solo arena can be paused (the player's pause menu);
+    - a focused HUD button takes Space as a press instead of a boost.
+  - **Checks,** 62/62 in Chrome, mounted as the player mounts games, in a page laid out like it:
+    - at 360, 768 and 1280 px, light and dark, English and Arabic (RTL): no page scroll, the stats, map and controls button at the start and the board at the end without overlapping, the top 10 shown, axe (WCAG 2 A and AA) clean, no page errors;
+    - the controls panel: focus on open, left-handed moving the button, Escape closing it before the player's own Escape handler, moving the button by touch, Reset and Done;
+    - steered off the edge with the mouse: the card says why, with the life's numbers, screen readers hear it, and Space on Play again brings the worm back;
+    - pause holds the solo arena still, resume carries on, restart opens a new arena, destroy leaves nothing behind.
+    - Checked by eye: 360 px in English and Arabic, 768 px in Arabic, 1280 px, the panel and the card.
 
 ## Known issues
 

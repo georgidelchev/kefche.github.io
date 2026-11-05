@@ -5,18 +5,22 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    "./engine": "./engine/index.ts",
-    "./renderer": "./renderer/index.ts"
+    ".": "./index.ts",
+    "./engine": "./engine/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc -p engine && tsc -p renderer"
+    "typecheck": "tsc -p . && tsc -p engine"
   },
   "dependencies": {
     "@kefche/game-sdk": "workspace:*",
-    "pixi.js": "8.22.0"
+    "pixi.js": "8.22.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@kefche/config": "workspace:*",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
     "typescript": "6.0.3"
   }
 }
