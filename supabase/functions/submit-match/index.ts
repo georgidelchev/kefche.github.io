@@ -14,6 +14,10 @@
 // - Rooms (Phase 7): each account in an online casual game reports the
 //   result it saw, and the match counts when the reports agree. Each racer's
 //   moves are replayed on the room's seed (_shared/room-play.ts).
+// - Online arenas (Phase 9): the arena server ran the game, so it reports
+//   each account's life as it ends (_shared/arena-play.ts), with its own
+//   secret; each life is a match, counted for the stats and XP, and goes on
+//   the game's score boards.
 // A game that doesn't replay is stored for review and counts for nothing.
 // After a counted game, every account in it gets the achievements its stats
 // now reach (_shared/achievements.ts), and each answer below also carries
@@ -35,12 +39,16 @@
 //   → { "matchId" } once decided, or { "matchId": null } while others may still report
 //   Body: { "race": { roomId, seed, log } }: a racer's moves.
 //   → { "matchId", "status", "reason", "score", "timeMs" }
+// POST, Authorization: Bearer <ARENA_SECRET>, from the arena server
+//   Body: { "arena": { gameId, version, lives: [{ life, userId, arena, score, kills, durationMs, end }] } }
+//   → { "recorded": n } (guests' lives aren't recorded)
 // POST, Authorization: Bearer <SUBMIT_MATCH_SECRET>, from pg_cron
 //   Body: { "sweep": true }: decides rated games whose room is gone.
 import { createClient, type SupabaseClient, type User } from "@supabase/supabase-js";
 import * as z from "zod";
 
 import { rewardsFor, unlockForMatch } from "../_shared/achievements.ts";
+import { arenaBoardEntries, arenaReportSchema } from "../_shared/arena-play.ts";
 import { decide } from "../_shared/chess-rated.ts";
 import { GAMES } from "../_shared/engines.ts";
 import { rate } from "../_shared/glicko2.ts";
@@ -392,6 +400,38 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
   return json({ matchId, ...answer, rewards: rewards && { ...rewards, places } });
 }
 
+/** Lives the arena server reports: each account's is recorded once, as its own match. */
+async function submitArena(admin: SupabaseClient, body: unknown): Promise<Response> {
+  const parsed = arenaReportSchema.safeParse(body);
+  if (!parsed.success) return fail("bad_request", 400);
+  const { gameId, version, lives } = parsed.data.arena;
+  // The game's boards and achievements come from its manifest, once it has one.
+  const game = GAMES.get(gameId);
+  let recorded = 0;
+  for (const life of lives) {
+    const stored = await admin.rpc("arena_life_record", {
+      p_game: gameId,
+      p_version: version,
+      p_life: life,
+    });
+    if (stored.error) throw new Error(`arena_life_record: ${stored.error.message}`);
+    const matchId = z.uuid().nullable().parse(stored.data);
+    if (matchId === null) continue;
+    recorded++;
+    if (game) {
+      await submitToBoards(
+        admin,
+        life.userId,
+        matchId,
+        arenaBoardEntries(gameId, game.leaderboards, life),
+      );
+    }
+    await unlockForMatch(admin, matchId);
+  }
+  log("info", "arena_lives", { game: gameId, lives: lives.length, recorded });
+  return json({ recorded });
+}
+
 /** The room's current match as the reporting player sits in it, or a refusal. */
 async function loadRoom(
   admin: SupabaseClient,
@@ -523,6 +563,10 @@ Deno.serve(async (req) => {
   });
 
   try {
+    // The arena server, reporting lives.
+    const arenaSecret = Deno.env.get("ARENA_SECRET");
+    if (arenaSecret && sameSecret(token, arenaSecret)) return await submitArena(admin, body);
+
     // The scheduled job: games nobody is left to ask about.
     const secret = Deno.env.get("SUBMIT_MATCH_SECRET");
     if (secret && sameSecret(token, secret)) {

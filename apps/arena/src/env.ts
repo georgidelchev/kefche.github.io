@@ -11,4 +11,9 @@ export interface Env {
   SUPABASE_PUBLISHABLE_KEY: string;
   /** Comma-separated origins whose pages may open an arena's WebSocket. */
   SITE_ORIGINS: string;
+  /**
+   * Shared with submit-match, for reporting lives (a Worker secret; `.dev.vars`
+   * locally). Without it, lives aren't reported.
+   */
+  ARENA_SECRET?: string;
 }

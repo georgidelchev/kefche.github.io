@@ -18,7 +18,7 @@ import {
 } from "./rules";
 import { CAPACITY, SNAPSHOTS_PER_SECOND, TICKS_PER_SECOND, type World } from "./world";
 
-export { arenaHost, LOOKS } from "./arena";
+export { arenaHost, LOOKS, VERSION } from "./arena";
 export { bots } from "./bots";
 export { moveHead } from "./rules";
 export type {

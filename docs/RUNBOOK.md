@@ -365,6 +365,12 @@ Real-time arenas (Phase 9) run on their own Worker, `kefche-arena` (`apps/arena`
 - **Locally:** copy `apps/arena/.dev.vars.example` to `.dev.vars` with the local stack's values (`pnpm exec supabase status`), then `pnpm --filter arena dev` (port 8787). Set `PUBLIC_ARENA_URL=http://localhost:8787` in `apps/web/.env` so the site's arena games offer the online arena; without it they play the solo arena only.
 - **The site's side:** CI builds the site with `PUBLIC_ARENA_URL` (the repository variable, or the `workers.dev` address by default). A page that can't reach the arena, or an arena past the daily limit, offers the solo arena instead.
 - **Which pages may connect:** `SITE_ORIGINS` in `apps/arena/wrangler.jsonc`. Add the custom domain there in Phase 21.
+- **Results:** the arena reports each account's life to `submit-match` with `ARENA_SECRET`, which both sides hold. Without it the arena plays as usual but records nothing. To set it (once, then it stays across deploys):
+  1. make one: `node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"`, and keep it in the password manager;
+  2. **Supabase:** `pnpm exec supabase secrets set ARENA_SECRET=…`;
+  3. **Cloudflare:** `pnpm --filter arena exec wrangler secret put ARENA_SECRET` (signed in with `wrangler login`, or with `CLOUDFLARE_API_TOKEN` set), and paste it.
+  - **Locally:** the same value as `ARENA_SECRET` in `supabase/.env` (then restart Supabase) and in `apps/arena/.dev.vars`.
+  - **Failed reports** show in the Worker's logs as "arena: lives not reported" (after three tries); `submit-match` logs each report as `arena_lives`.
 - **Usage:** the Cloudflare dashboard, _Workers & Pages → kefche-arena → Metrics_, and _Durable Objects_ for requests and duration.
   - **Workers Free** allows 100,000 Durable Object requests and 13,000 GB-s a day, reset at 00:00 UTC. Each incoming WebSocket message bills as 1/20 of a request; sending is free. Past either limit, arenas refuse until the reset.
   - **A full arena** (15 players) costs about 17,500 requests an hour (measured live), so about 5–6 full-arena hours a day fit.

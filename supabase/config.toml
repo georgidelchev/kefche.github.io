@@ -434,6 +434,8 @@ deno_version = 2
 PURGE_ACCOUNTS_SECRET = "env(PURGE_ACCOUNTS_SECRET)"
 # kefche: shared secret between the pg_cron job and submit-match (supabase/.env).
 SUBMIT_MATCH_SECRET = "env(SUBMIT_MATCH_SECRET)"
+# kefche: the arena server's secret for reporting lives to submit-match (supabase/.env).
+ARENA_SECRET = "env(ARENA_SECRET)"
 
 # Called by pg_cron with PURGE_ACCOUNTS_SECRET, not with a user's token.
 # Every function uses the shared, pinned imports in functions/deno.json; named

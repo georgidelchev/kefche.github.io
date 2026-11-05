@@ -6,6 +6,10 @@
 // A player whose socket drops keeps their place for 5 s and gets it back by
 // joining again (SPEC §10.5); after that they leave the arena. One socket per
 // player: a second tab takes over from the first.
+//
+// When an account's life ends (knocked out, or leaving the arena while in
+// play), the arena reports it to submit-match (results.ts), which counts it.
+// Guests' lives aren't reported.
 import { DurableObject } from "cloudflare:workers";
 
 import {
@@ -20,6 +24,7 @@ import {
 
 import { arenaEntry } from "./entry";
 import { GAMES, type ArenaGame } from "./games";
+import { reportLives, type LifeReport } from "./results";
 
 import type { Env } from "./env";
 
@@ -49,6 +54,9 @@ interface Place {
   socket: WebSocket | null;
   /** When their socket dropped, while it's gone. */
   awaySince: number | null;
+  guest: boolean;
+  /** Knockouts in this life. */
+  kills: number;
 }
 
 export class Arena extends DurableObject<Env> {
@@ -58,6 +66,12 @@ export class Arena extends DurableObject<Env> {
   private host: ArenaHost<unknown, unknown, unknown, unknown, undefined> | null = null;
   private readonly connections = new Map<WebSocket, Connection>();
   private readonly places = new Map<string, Place>();
+  /** Who each person in the world is (participant id → user id). */
+  private readonly people = new Map<number, string>();
+  /** Lives ended since the last report. */
+  private lives: LifeReport[] = [];
+  /** This instance, in life keys: a restarted arena starts its ticks again. */
+  private readonly instance = crypto.randomUUID().slice(0, 8);
   private loop: ReturnType<typeof setInterval> | null = null;
   private dueAt = 0;
   private reportedPeople = -1;
@@ -150,7 +164,14 @@ export class Arena extends DurableObject<Env> {
         this.refuse(ws, "arena_full");
         return;
       }
-      this.places.set(player.userId, { person, socket: ws, awaySince: null });
+      this.places.set(player.userId, {
+        person,
+        socket: ws,
+        awaySince: null,
+        guest: player.guest,
+        kills: 0,
+      });
+      this.people.set(person, player.userId);
       connection.person = person;
     }
     const engine = this.game.engine;
@@ -191,12 +212,26 @@ export class Arena extends DurableObject<Env> {
         this.tick();
       }
       this.housekeeping(now);
+      if (this.lives.length > 0 && this.game) {
+        const lives = this.lives;
+        this.lives = [];
+        this.ctx.waitUntil(reportLives(this.env, this.gameId, this.game.version, lives));
+      }
     }, tickMs / 2);
   }
 
   private tick(): void {
     if (!this.host) return;
-    const { frames } = this.host.step();
+    const { events, frames } = this.host.step();
+    if (events.length > 0 && this.game) {
+      for (const { victim, by } of this.game.lifeEnds(events)) {
+        const killer = by === null ? undefined : this.people.get(by);
+        const credit = killer === undefined ? undefined : this.places.get(killer);
+        if (credit) credit.kills++;
+        const userId = this.people.get(victim);
+        if (userId !== undefined) this.endLife(userId, by === null ? "edge" : "knockout");
+      }
+    }
     if (frames.size === 0) return;
     for (const place of this.places.values()) {
       const frame = place.socket ? frames.get(place.person) : undefined;
@@ -211,8 +246,12 @@ export class Arena extends DurableObject<Env> {
     }
     for (const [userId, place] of this.places) {
       if (place.awaySince !== null && now - place.awaySince > AWAY_MS) {
+        if (this.host && this.game?.engine.alive(this.host.world, place.person)) {
+          this.endLife(userId, "left");
+        }
         this.host?.leave(place.person);
         this.places.delete(userId);
+        this.people.delete(place.person);
       }
     }
     if (now - this.reportedAt > REPORT_MS) this.report();
@@ -221,6 +260,25 @@ export class Arena extends DurableObject<Env> {
       this.loop = null;
       this.report();
     }
+  }
+
+  /** An account's life is over: it goes in the next report (a guest's doesn't). */
+  private endLife(userId: string, end: LifeReport["end"]): void {
+    const place = this.places.get(userId);
+    if (!place || !this.host || !this.game) return;
+    const result = this.game.engine.result(this.host.world, place.person);
+    const kills = place.kills;
+    place.kills = 0;
+    if (place.guest || !result) return;
+    this.lives.push({
+      life: `${this.name}:${this.instance}:${String(place.person)}:${String(this.host.tick)}`,
+      userId,
+      arena: this.name,
+      score: Math.round(result.score ?? 0),
+      kills,
+      durationMs: Math.round(result.timeMs ?? 0),
+      end,
+    });
   }
 
   /** Tells the game's directory how many people are here (on change, and every 30 s). */

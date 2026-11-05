@@ -1882,6 +1882,16 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
     - **Strings:** 12 more in the game's "ui" (all 11 locales), and `games:arenaCancel` for the name form.
     - **Checks,** 12/12 against the local arena Worker and local Supabase: no arena in the build starts the solo arena at once; the mode screen; online play with the round trip shown and the player on the board; a second tab taking over and Try again; a guest declining to pick a name; the arena refusing a player without a name and a suspended player; an arena server out of reach, then the solo arena. The HUD's check again 62/62.
     - **Not checked here:** the player's own part (the guest name form before the first online game) needs the game listed, so it's checked with step 12's run on the real page.
+  - [x] **9b: online lives count** (`20261105100400_arena_results.sql`).
+    - **The arena server reports** each account's life when it ends: knocked out by a worm or the edge, or leaving the arena while in play (gone past the 5 s grace). A report carries the life's longest length, its knockouts (counted from the game's events), how long it lasted and how it ended, with a key unique to the life. Reports go to `submit-match` with `ARENA_SECRET`, once per loop when lives ended, tried three times. Guests' lives aren't reported (Phase 7 Q2).
+    - **`submit-match`** has a branch for the arena's secret. Each life goes to `arena_life_record` (service role only): one counted match per life (`mode` online, the arena as its `seed`, the knockouts in `config`), its score the longest length, then `count_result` for the stats and XP. A key already recorded answers its match again, so a retry counts once. Then the game's score boards and achievements, as for any counted game.
+    - **Not yet:** Worm Rush's longest-worm board and its own achievements come from its manifest (step 11); until then, its lives count for stats, XP and the global achievements. The arena-side board code is tested with a board like the one the manifest will declare.
+    - **The version** stored with results is the engine's `VERSION` (1), which the manifest will use too.
+    - **Checks:**
+      - **end to end,** 16/16, against the local arena Worker and `submit-match`: an account and a guest knocked out; the account's life a counted online match with its longest length, how it ended, its knockouts, arena and duration, in its stats, with XP; the guest's not kept; leaving while in play counted as left; the same life reported twice one match; a guest's life reported not recorded; a wrong secret, a player's own report and a bad report refused; players can't call `arena_life_record`;
+      - **Deno,** the report's schema and the boards (66/66 with the others);
+      - the arena server's own check (step 4) again 15/15.
+    - **Production needs `ARENA_SECRET`** in Supabase and on the Worker (RUNBOOK, "Arena server"); until it's set, online lives aren't recorded.
 
 ## Known issues
 

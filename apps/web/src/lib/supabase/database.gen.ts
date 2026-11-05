@@ -486,6 +486,9 @@ isOneToOne: false
 "arena_entry":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"arena_life_record":
+{ Args: { "p_game": string,"p_life": Json,"p_version": number }; Returns: string
+                           },
 "avatar_upload_allowed":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
