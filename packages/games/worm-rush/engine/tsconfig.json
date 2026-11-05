@@ -1,0 +1,6 @@
+{
+  // Rules only: no DOM, no Node, so the engine runs on the arena server, in
+  // the browser (the solo arena), in tests and in Deno.
+  "extends": "@kefche/config/tsconfig.base.json",
+  "include": ["."]
+}

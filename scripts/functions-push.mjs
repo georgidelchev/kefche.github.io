@@ -8,7 +8,7 @@
 // push-words.gen.d.ts). CI rebuilds it and fails on any difference, so run
 // this after changing the notification strings, a game's name or an
 // achievement's name.
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -25,8 +25,12 @@ const locales = readdirSync(join(web, "locales"), { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name)
   .sort();
+// Game folders without a manifest yet are games being built.
 const games = readdirSync(join(root, "packages/games"), { withFileTypes: true })
-  .filter((entry) => entry.isDirectory())
+  .filter(
+    (entry) =>
+      entry.isDirectory() && existsSync(join(root, "packages/games", entry.name, "manifest.ts")),
+  )
   .map((entry) => entry.name)
   .sort();
 

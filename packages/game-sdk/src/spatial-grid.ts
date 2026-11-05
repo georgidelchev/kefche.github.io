@@ -37,6 +37,17 @@ export class SpatialGrid {
 
   /** Ids within `radius` of (x, y), added to `out`, which is returned. */
   query(x: number, y: number, radius: number, out: number[] = []): number[] {
+    this.forEach(x, y, radius, (id) => out.push(id));
+    return out;
+  }
+
+  /** Calls `visit` for each entry within `radius` of (x, y), with its position and squared distance. */
+  forEach(
+    x: number,
+    y: number,
+    radius: number,
+    visit: (id: number, px: number, py: number, distanceSquared: number) => void,
+  ): void {
     const r2 = radius * radius;
     const x0 = this.cell(x - radius);
     const x1 = this.cell(x + radius);
@@ -47,13 +58,13 @@ export class SpatialGrid {
         const cell = this.cells.get(this.key(cx, cy));
         if (!cell) continue;
         for (const i of cell) {
-          const dx = (this.xs[i] ?? 0) - x;
-          const dy = (this.ys[i] ?? 0) - y;
-          if (dx * dx + dy * dy <= r2) out.push(this.ids[i] ?? -1);
+          const px = this.xs[i] ?? 0;
+          const py = this.ys[i] ?? 0;
+          const d2 = (px - x) * (px - x) + (py - y) * (py - y);
+          if (d2 <= r2) visit(this.ids[i] ?? -1, px, py, d2);
         }
       }
     }
-    return out;
   }
 
   private cell(v: number): number {

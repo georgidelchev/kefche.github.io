@@ -1752,6 +1752,26 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
     - **the local arena:** 15 snapshots a second, stopping while hidden without a burst after;
     - **`connectArena`,** against a fake socket wired to an `ArenaHost`: inputs at most every 100 ms with the latest delivered, pings, a reconnect after a drop with a new token and a full snapshot, a fatal error stopping for good, an expired token retried, and the client closing on error frames.
   - **Also:** `engines.gen.js` regenerated; only the order of two SDK modules changed in it, so the deployed function needn't change.
+- **Order changed:** step 7 (the Worm Rush engine) comes before step 4, so the arena server hosts the real game from its first version instead of a stand-in.
+- [x] Step 7: the Worm Rush engine and bots (`packages/games/worm-rush/engine`). No manifest yet, so the game isn't listed; the discovery scripts (server bundles, push wording, translation check) now skip a game folder without one.
+  - **The rules:**
+    - a round arena of radius 3,000 holding up to 30 worms;
+    - worms steer toward where their player points, turning wider as they grow;
+    - they grow by eating orbs (about 1,000 scattered, growing back) and boost at almost twice the speed by spending length, which they leave behind as small orbs;
+    - a head touching another worm's body or head, or the edge, is a knockout; two heads meeting both go out;
+    - a knocked-out worm turns into orbs along its body (70% of its mass, at most 60 orbs, 2,500 orbs at most in all);
+    - a life's result is its longest length and how long it lasted, with knockouts counted.
+  - **Deterministic on every engine:** positions are kept in quarter units, and the maths uses new SDK trigonometry built from + − × ÷ only (`det-math.ts`: `detSin`, `detCos`, `detAtan2`, within 1e-11 of `Math`). `Math.sin` and friends may differ in their last bits between JavaScript engines, which a 30 Hz world would magnify, so the solo arena can be replayed on the server (step 9).
+  - **Bodies on the wire:** a body is the trail of points the head laid down on each snapshot tick, trimmed to the worm's length (`trimTrail`). A worm already in view costs only its head's move, heading and change in mass; the reader rebuilds the body exactly as the server did. A body goes whole when a worm comes into view, or whenever the rebuild wouldn't match. Orbs go only as they come into or leave view, and names once per worm (UTF-8, cut at 255 bytes; `ByteWriter.string`).
+  - **What a player sees:** the worms and orbs in their view (which widens as they grow), the top 10, knockouts since the last snapshot, and their own length, best, knockouts, place and who knocked them out.
+  - **Bots** at three difficulties head for the richest orbs and check a few headings ahead for bodies and the edge. Better ones look further, react sooner and aim truer; hard ones cut in front of much smaller worms.
+  - **Checks,** 20/20 in Node, with 15 players steering at random and 10 bots for 3 minutes through `ArenaHost`:
+    - **snapshots:** all 40,500 decode exactly to what each player sees; deltas average **107 bytes** against about 2 KB for a full snapshot, so **about 1.6 KB/s per player**;
+    - **speed:** a tick takes 0.7 ms (median) and 1.4 ms (95th percentile) in Node;
+    - **play:** 96 knockouts, some by the edge; orbs stay within their limits; worms grow; the population holds; bodies match their mass;
+    - **determinism:** the same seed and inputs make the same arena;
+    - **inputs and names:** inputs round trip and bad ones are refused; names in any script round trip, and long ones are cut at whole characters;
+    - **bots,** 10 minutes of bots only: easy ones died most (86 lives against 31 for medium), and mean best length rose with difficulty (94, 98, 107). Hard bots die more often than medium ones because they hunt: tuning for step 12's playtests.
 
 ## Known issues
 

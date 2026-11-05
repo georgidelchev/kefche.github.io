@@ -10,7 +10,7 @@
 // final state. The Deno tests (_shared/engines.test.ts) replay them and must
 // agree. A new game needs a fixture policy below.
 import { createHash } from "node:crypto";
-import { readdirSync, writeFileSync } from "node:fs";
+import { existsSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -18,8 +18,13 @@ import { build } from "esbuild";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const out = join(root, "supabase/functions/_shared");
+// A game folder without a manifest yet is a game being built (Worm Rush's
+// engine came before its page): it joins once its manifest does.
 const ids = readdirSync(join(root, "packages/games"), { withFileTypes: true })
-  .filter((entry) => entry.isDirectory())
+  .filter(
+    (entry) =>
+      entry.isDirectory() && existsSync(join(root, "packages/games", entry.name, "manifest.ts")),
+  )
   .map((entry) => entry.name)
   .sort();
 

@@ -61,8 +61,16 @@ export class ByteWriter {
     return this.varint(((v << 1) ^ (v >> 31)) >>> 0);
   }
 
+  /** A short string (a name): its UTF-8 bytes, up to 255 of them, after a length byte. */
+  string(value: string): this {
+    const bytes = utf8(value);
+    this.u8(bytes.length);
+    for (const b of bytes) this.u8(b);
+    return this;
+  }
+
   /** What was written, as a copy of just those bytes. */
-  finish(): Uint8Array {
+  finish(): Uint8Array<ArrayBuffer> {
     return this.bytes.slice(0, this.length);
   }
 
@@ -126,6 +134,48 @@ export class ByteReader {
     const v = this.varint();
     return (v >>> 1) ^ -(v & 1);
   }
+
+  string(): string {
+    const length = this.u8();
+    const bytes: number[] = [];
+    for (let i = 0; i < length; i++) bytes.push(this.u8());
+    return fromUtf8(bytes);
+  }
+}
+
+/**
+ * UTF-8 by hand: TextEncoder is everywhere at run time, but not in the
+ * isomorphic core's types. Stops before 255 bytes, never inside a character.
+ */
+function utf8(value: string): number[] {
+  const out: number[] = [];
+  for (const ch of value) {
+    const c = ch.codePointAt(0) ?? 0;
+    const bytes =
+      c < 0x80
+        ? [c]
+        : c < 0x800
+          ? [0xc0 | (c >> 6), 0x80 | (c & 63)]
+          : c < 0x10000
+            ? [0xe0 | (c >> 12), 0x80 | ((c >> 6) & 63), 0x80 | (c & 63)]
+            : [0xf0 | (c >> 18), 0x80 | ((c >> 12) & 63), 0x80 | ((c >> 6) & 63), 0x80 | (c & 63)];
+    if (out.length + bytes.length > 255) break;
+    out.push(...bytes);
+  }
+  return out;
+}
+
+function fromUtf8(bytes: readonly number[]): string {
+  let out = "";
+  for (let i = 0; i < bytes.length;) {
+    const b = bytes[i] ?? 0;
+    const extra = b >= 0xf0 ? 3 : b >= 0xe0 ? 2 : b >= 0xc0 ? 1 : 0;
+    let c = extra === 0 ? b : b & (0x3f >> extra);
+    for (let k = 1; k <= extra; k++) c = (c << 6) | ((bytes[i + k] ?? 0) & 63);
+    out += String.fromCodePoint(c);
+    i += extra + 1;
+  }
+  return out;
 }
 
 /** A heading in radians as one byte (1.4° steps). */

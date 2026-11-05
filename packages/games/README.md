@@ -1,6 +1,6 @@
 # Games
 
-One folder per game, each a workspace package named `@kefche/game-<id>`. Games are discovered automatically at build time from `packages/games/*/manifest.ts` (SPEC §9.1), so adding a game never requires editing core code.
+One folder per game, each a workspace package named `@kefche/game-<id>`. Games are discovered automatically at build time from `packages/games/*/manifest.ts` (SPEC §9.1), so adding a game never requires editing core code. A folder without a `manifest.ts` is a game still being built: the catalog, the translation check and the server bundles leave it out until its manifest arrives (Worm Rush's engine came before its page).
 
 The games so far are the worked examples: 2048, Sudoku and Snake (single player), Four in a Row, Reversi, and Dots and Boxes (turn-based, with bots), and Chess (turn-based on chess.js, with side actions such as resign and draw offers). Start a new one with `pnpm new:game <id> --kind=<turn|race>`; the realtime and simultaneous kinds arrive in Phases 9 and 11.
 

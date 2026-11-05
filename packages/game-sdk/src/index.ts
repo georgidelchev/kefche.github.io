@@ -5,6 +5,7 @@ export * from "./achievements";
 export * from "./arena-host";
 export * from "./arena-protocol";
 export * from "./bytes";
+export * from "./det-math";
 export * from "./bots";
 export * from "./engines";
 export * from "./game-text";

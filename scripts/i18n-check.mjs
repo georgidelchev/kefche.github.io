@@ -3,7 +3,7 @@
 // empty or non-string values, invalid ICU syntax, placeholder mismatches, and
 // keys that are unused in code or used in code but not defined.
 // Keys are detected in source as full "<namespace>:<key>" string literals.
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -161,7 +161,11 @@ for (const [id, file] of used) {
 // as English in every locale, and no TODO(new-game) markers left by
 // `pnpm new:game`. (Shape and lengths are validated by the registry at build.)
 const gamesDir = join(root, "packages/games");
-const gameIds = listDir(gamesDir, (d) => d.isDirectory());
+// Folders without a manifest yet are games being built: no strings to check.
+const gameIds = listDir(
+  gamesDir,
+  (d) => d.isDirectory() && existsSync(join(gamesDir, d.name, "manifest.ts")),
+);
 for (const id of gameIds) {
   const textDir = join(gamesDir, id, "i18n");
   const byLocale = new Map();
