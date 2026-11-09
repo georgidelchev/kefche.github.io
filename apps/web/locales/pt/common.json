@@ -66,5 +66,8 @@
     "gone": "Isso não pode mais ser denunciado.",
     "failed": "A denúncia não foi enviada. Tente de novo.",
     "hidden": "Oculto após denúncias, até um moderador revisar."
+  },
+  "news": {
+    "title": "Novidades"
   }
 }

@@ -66,5 +66,8 @@
     "gone": "Das kann nicht mehr gemeldet werden.",
     "failed": "Die Meldung ging nicht durch. Versuch es noch einmal.",
     "hidden": "Nach Meldungen ausgeblendet, bis die Moderation es prüft."
+  },
+  "news": {
+    "title": "Neuigkeiten"
   }
 }

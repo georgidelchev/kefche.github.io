@@ -157,3 +157,45 @@ export function shownAchievements(
     (a, b) => rank(b.tier) - rank(a.tier) || b.unlockedAt.localeCompare(a.unlockedAt),
   );
 }
+
+/** One achievement as the admin panel lists it (read-only; the manifests define them). */
+export interface CatalogAchievement {
+  key: string;
+  /** The game's name, or null for a site-wide achievement. */
+  game: string | null;
+  name: string;
+  /** Each tier's name and what it takes. */
+  tiers: { tier: string; description: string }[];
+}
+
+/** Every achievement the site defines, site-wide first, then each game's. */
+export function achievementCatalog(t: AppT, locale: Locale, bcp47: string): CatalogAchievement[] {
+  const tierNames = {
+    bronze: t("profile:tier.bronze"),
+    silver: t("profile:tier.silver"),
+    gold: t("profile:tier.gold"),
+  };
+  const list: CatalogAchievement[] = [];
+  const add = (scope: string, def: { id: string; tiers: readonly number[] }) => {
+    const text = (goal: number) =>
+      scope === "global"
+        ? globalText(t, def.id, goal)
+        : gameText(scope, def.id, locale, bcp47, goal);
+    const name = text(0)?.name;
+    if (!name) return;
+    list.push({
+      key: `${scope}.${def.id}`,
+      game: scope === "global" ? null : gameName(scope, locale),
+      name,
+      tiers: ACHIEVEMENT_TIERS.flatMap((tier, i) => {
+        const goal = def.tiers[i];
+        const description = goal === undefined ? undefined : text(goal)?.description;
+        return description === undefined ? [] : [{ tier: tierNames[tier], description }];
+      }),
+    });
+  };
+  for (const def of GLOBAL_ACHIEVEMENTS) add("global", def);
+  for (const [game, defs] of [...gameDefs].sort(([a], [b]) => a.localeCompare(b)))
+    for (const def of defs) add(game, def);
+  return list;
+}

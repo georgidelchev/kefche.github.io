@@ -1,6 +1,7 @@
 import { gameNames } from "@/features/games/game-names";
+import { achievementCatalog } from "@/features/profile/achievements";
 import type { AppT } from "@/i18n/i18n";
-import type { Locale } from "@/i18n/locales";
+import { LOCALE_INFO, type Locale } from "@/i18n/locales";
 
 import { ADMIN_LABEL_KEYS, ADMIN_SECTIONS, type AdminSectionId } from "./sections";
 
@@ -82,6 +83,14 @@ export function auditStrings(t: AppT) {
       "leaderboard.remove": t("admin:audit.actions.boardRemove"),
       "leaderboard.reset_player": t("admin:audit.actions.boardResetPlayer"),
       "rating.reset": t("admin:audit.actions.ratingReset"),
+      "announcement.create": t("admin:audit.actions.announcementCreate"),
+      "announcement.update": t("admin:audit.actions.announcementUpdate"),
+      "announcement.delete": t("admin:audit.actions.announcementDelete"),
+      "announcement.untick": t("admin:audit.actions.announcementUntick"),
+      "daily.set": t("admin:audit.actions.dailySet"),
+      "daily.clear": t("admin:audit.actions.dailyClear"),
+      "word.set": t("admin:audit.actions.wordSet"),
+      "word.clear": t("admin:audit.actions.wordClear"),
     } as Record<string, string>,
     /** What an entry can be about (`target_type`). */
     targets: {
@@ -94,6 +103,9 @@ export function auditStrings(t: AppT) {
       game: t("admin:audit.targets.game"),
       room: t("admin:audit.targets.room"),
       match: t("admin:audit.targets.match"),
+      announcement: t("admin:audit.targets.announcement"),
+      daily: t("admin:audit.targets.daily"),
+      word: t("admin:audit.targets.word"),
     } as Record<string, string>,
   };
 }
@@ -536,6 +548,90 @@ export function integrityStrings(t: AppT) {
 
 export type IntegrityStrings = ReturnType<typeof integrityStrings>;
 
+export function contentStrings(t: AppT, locale: Locale) {
+  return {
+    announcementsTitle: t("admin:content.announcementsTitle"),
+    announcementsBody: t("admin:content.announcementsBody"),
+    newAnnouncement: t("admin:content.newAnnouncement"),
+    editAnnouncement: t("admin:content.editAnnouncement"),
+    textHint: t("admin:content.textHint"),
+    preview: t("admin:content.preview"),
+    previewEmpty: t("admin:content.previewEmpty"),
+    fallback: t("admin:content.fallback"),
+    url: t("admin:content.url"),
+    urlHint: t("admin:content.urlHint"),
+    audience: t("admin:content.audience"),
+    language: t("admin:content.language"),
+    sendAt: t("admin:content.sendAt"),
+    sendAtHint: t("admin:content.sendAtHint"),
+    ticker: t("admin:content.ticker"),
+    tickerUntil: t("admin:content.tickerUntil"),
+    tickerUntilHint: t("admin:content.tickerUntilHint"),
+    send: t("admin:content.send"),
+    schedule: t("admin:content.schedule"),
+    cancelEdit: t("admin:content.cancelEdit"),
+    sendTitle: t("admin:content.sendTitle"),
+    noAnnouncements: t("admin:content.noAnnouncements"),
+    inNews: t("admin:content.inNews"),
+    edit: t("admin:content.edit"),
+    delete: t("admin:content.delete"),
+    deleteTitle: t("admin:content.deleteTitle"),
+    deleteBody: t("admin:content.deleteBody"),
+    untick: t("admin:content.untick"),
+    untickTitle: t("admin:content.untickTitle"),
+    untickBody: t("admin:content.untickBody"),
+    dailyTitle: t("admin:content.dailyTitle"),
+    dailyBody: t("admin:content.dailyBody"),
+    chosen: t("admin:content.chosen"),
+    dayLocked: t("admin:content.dayLocked"),
+    keep: t("admin:content.keep"),
+    rotation: t("admin:content.rotation"),
+    save: t("admin:content.save"),
+    wordsTitle: t("admin:content.wordsTitle"),
+    wordsBody: t("admin:content.wordsBody"),
+    day: t("admin:content.day"),
+    dayHint: t("admin:content.dayHint"),
+    word: t("admin:content.word"),
+    meaning: t("admin:content.meaning"),
+    setWord: t("admin:content.setWord"),
+    noWords: t("admin:content.noWords"),
+    removeWordBody: t("admin:content.removeWordBody"),
+    remove: t("admin:content.remove"),
+    achievementsTitle: t("admin:content.achievementsTitle"),
+    achievementsBody: t("admin:content.achievementsBody"),
+    siteWide: t("admin:content.siteWide"),
+    textIn: t("admin:content.textIn", { language: "{language}" }),
+    audienceLanguage: t("admin:content.audienceLanguage", { language: "{language}" }),
+    sendBody: t("admin:content.sendBody", { audience: "{audience}" }),
+    scheduled: t("admin:content.scheduled", { date: "{date}" }),
+    sentTo: t("admin:content.sentTo", { date: "{date}", count: "{count}" }),
+    languagesCount: t("admin:content.languagesCount", { count: "{count}" }),
+    challengeOn: t("admin:content.challengeOn", { date: "{date}" }),
+    saveDay: t("admin:content.saveDay", { date: "{date}" }),
+    removeWordLabel: t("admin:content.removeWordLabel", { word: "{word}" }),
+    removeWordTitle: t("admin:content.removeWordTitle", { word: "{word}" }),
+    audiences: {
+      everyone: t("admin:content.audiences.everyone"),
+      language: t("admin:content.audiences.language"),
+      staff: t("admin:content.audiences.staff"),
+    },
+    errors: {
+      invalid_announcement: t("admin:content.errors.invalidAnnouncement"),
+      already_sent: t("admin:content.errors.alreadySent"),
+      invalid_day: t("admin:content.errors.invalid"),
+      invalid_choice: t("admin:content.errors.invalid"),
+      invalid_word: t("admin:content.errors.invalid"),
+    } as Record<string, string>,
+    /** Every achievement the games define, read-only. */
+    achievements: achievementCatalog(t, locale, LOCALE_INFO[locale].bcp47),
+    done: t("admin:reports.done"),
+    loading: t("admin:loading"),
+    failed: t("admin:failed"),
+  };
+}
+
+export type ContentStrings = ReturnType<typeof contentStrings>;
+
 /** What the page's section shows, with the strings it needs (built on the server). */
 export function adminView(section: AdminSectionId, t: AppT, locale: Locale): AdminView {
   if (section === "audit") return { section, strings: auditStrings(t) };
@@ -548,5 +644,7 @@ export function adminView(section: AdminSectionId, t: AppT, locale: Locale): Adm
     return { section, strings: gamesStrings(t), players: playersStrings(t, locale) };
   if (section === "integrity")
     return { section, strings: integrityStrings(t), players: playersStrings(t, locale) };
+  if (section === "content")
+    return { section, strings: contentStrings(t, locale), players: playersStrings(t, locale) };
   return { section };
 }

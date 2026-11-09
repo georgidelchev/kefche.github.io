@@ -66,5 +66,8 @@
     "gone": "Ceci ne peut plus être signalé.",
     "failed": "Le signalement n’est pas passé. Réessayez.",
     "hidden": "Masqué après des signalements, en attendant un modérateur."
+  },
+  "news": {
+    "title": "Actualités"
   }
 }

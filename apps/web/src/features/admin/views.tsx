@@ -10,6 +10,7 @@ import type { AdminSectionId, StaffRole } from "./sections";
 import type {
   AuditStrings,
   ChatStrings,
+  ContentStrings,
   GamesStrings,
   IntegrityStrings,
   PlayersStrings,
@@ -54,10 +55,11 @@ export type AdminView =
   | { section: "chat"; strings: ChatStrings; players: PlayersStrings }
   | { section: "games"; strings: GamesStrings; players: PlayersStrings }
   | { section: "integrity"; strings: IntegrityStrings; players: PlayersStrings }
+  | { section: "content"; strings: ContentStrings; players: PlayersStrings }
   | {
       section: Exclude<
         AdminSectionId,
-        "audit" | "users" | "reports" | "chat" | "games" | "integrity"
+        "audit" | "users" | "reports" | "chat" | "games" | "integrity" | "content"
       >;
     };
 
@@ -75,6 +77,10 @@ const GamesAdmin = lazy(() =>
 
 const Integrity = lazy(() => import("./views/Integrity").then((m) => ({ default: m.Integrity })));
 
+const ContentAdmin = lazy(() =>
+  import("./views/ContentAdmin").then((m) => ({ default: m.ContentAdmin })),
+);
+
 /** The section's view, or null when it isn't built yet. */
 export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
   if (view.section === "audit") return <AuditLog {...props} strings={view.strings} />;
@@ -87,5 +93,7 @@ export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
     return <GamesAdmin {...props} strings={view.strings} players={view.players} />;
   if (view.section === "integrity")
     return <Integrity {...props} strings={view.strings} players={view.players} />;
+  if (view.section === "content")
+    return <ContentAdmin {...props} strings={view.strings} players={view.players} />;
   return null;
 }

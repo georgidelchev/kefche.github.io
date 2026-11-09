@@ -66,5 +66,8 @@
     "gone": "This can't be reported any more.",
     "failed": "The report didn't go through. Try again.",
     "hidden": "Hidden after reports, until a moderator reviews it."
+  },
+  "news": {
+    "title": "News"
   }
 }

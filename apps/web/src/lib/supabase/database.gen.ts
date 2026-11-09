@@ -25,6 +25,20 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"announcements": {
+                  Row: {
+                    "audience": string,"created_at": string,"created_by": string | null,"id": string,"locale": string | null,"recipients": number | null,"send_at": string,"sent_at": string | null,"texts": NonNullable<Json>,"ticker": boolean,"ticker_until": string | null,"updated_at": string,"url": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "audience": string,"created_at"?: string,"created_by"?: string | null,"id"?: string,"locale"?: string | null,"recipients"?: number | null,"send_at"?: string,"sent_at"?: string | null,"texts": NonNullable<Json>,"ticker"?: boolean,"ticker_until"?: string | null,"updated_at"?: string,"url"?: string | null
+                  }
+                  Update: {
+                    "audience"?: string,"created_at"?: string,"created_by"?: string | null,"id"?: string,"locale"?: string | null,"recipients"?: number | null,"send_at"?: string,"sent_at"?: string | null,"texts"?: NonNullable<Json>,"ticker"?: boolean,"ticker_until"?: string | null,"updated_at"?: string,"url"?: string | null
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"audit_log": {
                   Row: {
                     "action": string,"actor_id": string | null,"created_at": string,"details": NonNullable<Json>,"id": number,"ip_hash": string | null,"target_id": string | null,"target_type": string | null
@@ -888,6 +902,28 @@ isOneToOne: false
 "set_user_role":
 { Args: { "p_granted": boolean,"p_role": Database["public"]['Enums']["app_role"],"p_user_id": string }; Returns: undefined
                            },
+"staff_announcements":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "audience": string,
+"created_at": string,
+"created_by": string | null,
+"id": string,
+"locale": string | null,
+"recipients": number | null,
+"send_at": string,
+"sent_at": string | null,
+"texts": NonNullable<Json>,
+"ticker": boolean,
+"ticker_until": string | null,
+"updated_at": string,
+"url": string | null
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "announcements"
+        isOneToOne: false
+        isSetofReturn: true
+      } },
 "staff_annul_match":
 { Args: { "p_match": string }; Returns: undefined
                            },
@@ -906,6 +942,9 @@ isOneToOne: false
                            },
 "staff_close_room":
 { Args: { "p_room": string }; Returns: undefined
+                           },
+"staff_daily_schedule":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "staff_decide_match":
 { Args: { "p_accept": boolean,"p_match": string }; Returns: undefined
@@ -944,6 +983,9 @@ isOneToOne: false
               "game_id": string,"games": number,"pool": string,"rating": number,"rd": number
             }[]
                            },
+"staff_remove_announcement":
+{ Args: { "p_id": string }; Returns: undefined
+                           },
 "staff_remove_board_entry":
 { Args: { "p_board": string,"p_period": string,"p_user": string }; Returns: undefined
                            },
@@ -967,14 +1009,36 @@ isOneToOne: false
 "staff_review_matches":
 { Args: { "p_game"?: string }; Returns: Json
                            },
+"staff_save_announcement":
+{ Args: { "p_audience": string,"p_id"?: string,"p_locale"?: string,"p_send_at"?: string,"p_texts": Json,"p_ticker": boolean,"p_ticker_until"?: string,"p_url"?: string }; Returns: string
+                           },
 "staff_search_messages":
 { Args: { "p_before"?: number,"p_query"?: string,"p_room"?: unknown,"p_scope": string,"p_sender"?: string }; Returns: {
               "body": string,"created_at": string,"gif_id": string,"id": number,"kind": string,"lobby_code": string,"lobby_game": string,"lobby_id": string,"nickname": string,"room": string,"sender_id": string,"status": string
             }[]
                            },
+"staff_set_daily":
+{ Args: { "p_day": string,"p_position"?: number }; Returns: undefined
+                           },
 "staff_set_game":
 { Args: { "p_beta": boolean,"p_enabled": boolean,"p_featured": boolean,"p_game": string,"p_hot": boolean,"p_new": boolean,"p_position"?: number }; Returns: undefined
                            },
+"staff_set_word":
+{ Args: { "p_day": string,"p_locale": string,"p_meaning"?: string,"p_word"?: string }; Returns: undefined
+                           },
+"staff_words":
+{ Args: { "p_locale"?: string }; Returns: {
+              "day": string,
+"locale": string,
+"meaning": string | null,
+"word": string
+            }[]
+                          SetofOptions: {
+        from: "*"
+        to: "words_of_the_day"
+        isOneToOne: false
+        isSetofReturn: true
+      } },
 "start_daily":
 { Args: { "p_game_version": number }; Returns: Json
                            },
