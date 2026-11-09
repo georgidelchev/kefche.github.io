@@ -40,7 +40,6 @@ export function notificationStrings(t: AppT): NotificationStrings {
       sexual: t("notifications:reasons.sexual"),
       selfHarm: t("notifications:reasons.selfHarm"),
       cheating: t("notifications:reasons.cheating"),
-      filter: t("notifications:reasons.filter"),
       other: t("notifications:reasons.other"),
     },
     tiers: {

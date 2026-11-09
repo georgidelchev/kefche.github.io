@@ -24,7 +24,6 @@ export function authStrings(t: AppT) {
     nicknameLength: t("auth:errors.nicknameLength"),
     nicknameCharacters: t("auth:errors.nicknameCharacters"),
     nicknameReserved: t("auth:errors.nicknameReserved"),
-    nicknameBlocked: t("auth:errors.nicknameBlocked"),
     nicknameTaken: t("auth:errors.nicknameTaken"),
     network: t("auth:errors.network"),
     unknown: t("auth:errors.unknown"),

@@ -19,7 +19,6 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 | `pnpm new:game <id> --kind=race\|turn`   | Scaffold `packages/games/<id>/`; then replace every `TODO(new-game)`.             |
 | `pnpm art:generate`                      | Rebuild each game's `assets/thumbnail.svg` and `hero.svg` from `art.mjs`.         |
 | `pnpm db:start` / `db:stop` / `db:reset` | Local Supabase (needs Docker).                                                    |
-| `pnpm db:terms`                          | New migration from the word lists in `supabase/blocked-terms/`.                   |
 | `pnpm db:types`                          | Regenerate `apps/web/src/lib/supabase/database.gen.ts` (CI checks drift).         |
 | `pnpm functions:engines [--fixtures]`    | Bundle the game engines for the Edge Functions (CI checks drift).                 |
 | `pnpm functions:push`                    | Bundle the notification wording for `send-push` (CI checks drift).                |
@@ -55,7 +54,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
   - `components/`: BootScript, Fonts, SeoHead, Logo.
   - `middleware.ts`: security headers on Worker responses.
   - Translations: `apps/web/locales/<locale>/<ns>.json`.
-- `supabase/`: `migrations/`, `functions/` (Edge Functions, Deno), `blocked-terms/` (word lists → `pnpm db:terms`), `templates/` (auth emails). `public/avatars/` holds the preset avatars (`pnpm avatars:generate`).
+- `supabase/`: `migrations/`, `functions/` (Edge Functions, Deno), `templates/` (auth emails). `public/avatars/` holds the preset avatars (`pnpm avatars:generate`).
 - `packages/ui`: design tokens (`src/tokens.css`), the Tailwind theme mapping (`src/theme.css`), typography (`src/typography.css`), components (`src/components/*.tsx`, imported as `@kefche/ui/components/<name>`) and brand marks (`src/brand/marks.ts`).
 - `packages/game-sdk`: game SDK. The root entry is isomorphic: engines, PRNG, manifest types, seats, bots, search and timers. `browser` holds the runtime helpers, including `createTurnSession` and `runTurnGame` for turn-based games (ADR-0018), and for arenas `connectArena`, `createLocalArena` and `createArenaControls` (touch joystick, mouse and keys).
 - `packages/games/<id>`: one package per game (template in `packages/games/README.md`; the guide is `docs/ADDING_A_GAME.md`). The player, catalog and turn-game setup and HUD live in `apps/web/src/features/games/`.

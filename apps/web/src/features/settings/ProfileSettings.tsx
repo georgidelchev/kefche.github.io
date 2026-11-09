@@ -426,9 +426,7 @@ function ProfileForm({
     const { error } = await supabase.from("profiles").update(change).eq("id", user.id);
     if (error) {
       const key = error.code === "23505" ? "nicknameTaken" : authErrorKey(error);
-      if (error.message === "bio_blocked") {
-        setError("bio", { type: "server", message: "bioBlocked" });
-      } else if (key.startsWith("nickname")) {
+      if (key.startsWith("nickname")) {
         setError("nickname", { type: "server", message: key }, { shouldFocus: true });
       } else if (error.message === "nickname_cooldown") {
         setMessage({
@@ -447,12 +445,7 @@ function ProfileForm({
     setMessage({ tone: "success", text: strings.saved });
   });
 
-  const bioError =
-    errors.bio?.message === "bioBlocked"
-      ? strings.profile.bioBlocked
-      : errors.bio
-        ? auth.errors.unknown
-        : undefined;
+  const bioError = errors.bio ? auth.errors.unknown : undefined;
   const nicknameHint =
     locked && unlock
       ? fill(strings.profile.nicknameCooldown, {

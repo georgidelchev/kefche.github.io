@@ -23,7 +23,7 @@
       "push": "Notifications push (comptes, sur les appareils où vous les activez) : pour chaque appareil, l’adresse que le service push de son navigateur nous a donnée et les clés qui chiffrent les messages qui lui sont destinés. Elles sont supprimées quand vous désactivez le push sur l’appareil ou vous y déconnectez, et quand le service push indique que l’appareil n’existe plus.",
       "email": "Notifications par e-mail (comptes avec une adresse confirmée) : les notifications que vous avez choisi de recevoir par e-mail et les avis concernant votre compte attendent dans une file 7 jours au plus. La file indique de quelle notification parle chaque e-mail, jamais votre adresse.",
       "presence": "Statut en ligne (comptes uniquement) : si vous êtes en ligne, dans un salon ou une partie (et à quel jeu) ou absent, tel que vos onglets ouverts l’indiquent. Le signal de chaque onglet est supprimé 2 minutes après le dernier, donc rien n’est conservé une fois que vous partez. Qui le voit est votre choix dans les paramètres : tout le monde, vos amis seulement (par défaut) ou personne.",
-      "moderation": "Modération : nous vérifions les messages du chat pour y repérer les mots interdits, qui sont masqués. Trois masqués en 10 minutes vous rendent muet pendant 10 minutes : nous notons donc chacun pendant ces 10 minutes. Les avertissements, mises en sourdine, suspensions ou bannissements que vous recevez sont conservés avec leur motif et leur fin tant que votre compte existe, et nous vous envoyons un avis pour chacun (les avis sont supprimés après 90 jours).",
+      "moderation": "Modération : les avertissements, mises en sourdine, suspensions ou bannissements que vous recevez sont conservés avec leur motif et leur fin tant que votre compte existe, et nous vous envoyons un avis pour chacun (les avis sont supprimés après 90 jours).",
       "reports": "Signalements : quand vous signalez quelque chose, nous gardons votre signalement (le motif et les précisions ajoutées) avec une copie de ce que vous avez signalé, pour qu’un modérateur puisse l’examiner même s’il change. Seuls les modérateurs voient qui a signalé ; le joueur n’en est pas informé. Un signalement est supprimé 90 jours après qu’un modérateur l’a traité ; si votre compte est supprimé, vos signalements restent sans votre nom.",
       "security": "Données de sécurité : des limites sur la fréquence d'une action et un journal des changements importants du compte. Quand votre adresse IP est nécessaire, nous n'en gardons qu'un hachage salé, jamais l'adresse elle-même."
     },
@@ -82,8 +82,7 @@
     },
     "names": {
       "title": "Pseudos, bios et avatars",
-      "rules": "Votre pseudo, votre bio et votre avatar suivent les mêmes règles que le chat.",
-      "filter": "Un filtre masque les mots offensants courants dans le chat et les refuse dans les pseudos et les bios. Merci de ne pas chercher à le contourner."
+      "rules": "Votre pseudo, votre bio et votre avatar suivent les mêmes règles que le chat."
     },
     "report": {
       "title": "Signaler et bloquer",
@@ -95,8 +94,7 @@
     "moderators": {
       "title": "Ce que font les modérateurs",
       "actions": "Les modérateurs suppriment des messages et donnent un avertissement, une mise en sourdine du chat, une suspension du jeu en ligne ou un bannissement, selon la gravité et les antécédents.",
-      "notice": "Vous recevez un avis avec le motif et, s’il y en a une, la date de fin.",
-      "automatic": "Trois messages bloqués par le filtre en 10 minutes vous mettent automatiquement en sourdine pendant 10 minutes."
+      "notice": "Vous recevez un avis avec le motif et, s’il y en a une, la date de fin."
     },
     "appeal": {
       "title": "Si vous pensez que nous nous sommes trompés",

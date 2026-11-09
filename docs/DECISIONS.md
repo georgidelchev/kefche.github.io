@@ -707,7 +707,7 @@ Lobby chat already existed (ADR-0023).
 
 ## ADR-0035: Moderation enforced in the database
 
-**Date:** 2026-11-05 · **Status:** Accepted
+**Date:** 2026-11-05 · **Status:** Accepted; its word filter removed by ADR-0040
 
 **Context.** Phase 8 opens global chat, DMs, bios and avatars to everyone with an account. SPEC §8.3 asks for a word filter, rate limits, reports, sanctions and blocks. Moderators have no queue until the admin panel (Phase 10), and a browser can't be trusted to apply any of it.
 
@@ -844,3 +844,26 @@ Lobby chat already existed (ADR-0023).
 - **About 164 KB gzip** more for arena games, only when Play is pressed.
 - **WebGL:** the scene asks PixiJS for WebGL, so a browser without it can't draw the arena.
 - **Credits:** PixiJS is listed in the game's `CREDITS.md` and on the Credits page (Phase 17).
+
+## ADR-0040: No word filter
+
+**Date:** 2026-11-09 · **Status:** Accepted (owner decision, 2026-11-09); supersedes ADR-0035's word filter
+
+**Context.** Since Phases 5 and 8, word lists (`supabase/blocked-terms/`, adapted from LDNOOBW, plus a drafted Bulgarian list) refused matching nicknames and bios, masked chat, and muted a player for 10 minutes after three masked messages in 10 minutes. The owner asked for the feature to be removed entirely.
+
+**Decision.**
+
+- **Removed:**
+  - the word lists and `pnpm db:terms`;
+  - in the database (`20261109100000_remove_word_filter.sql`): the matching functions (`has_blocked_term`, `mask_blocked_terms`, `blocked_spans` and their helpers), `filter_chat`, and the `blocked_terms`, `allowed_terms` and `filter_strikes` tables;
+  - the `nickname_blocked` and `bio_blocked` errors and their strings;
+  - what the guidelines and the privacy notice said about the filter.
+- **Kept:** reserved nicknames (`admin`, `moderator`, `kefche` and the rest, with `private.normalize_term` catching look-alikes), rate limits, slow mode, reports with hiding at three accounts, sanctions, and blocks.
+- **Past automatic mutes** keep the reason `filter`, which the database still allows. Nothing new uses it, and their notices show no reason.
+
+**Consequences.**
+
+- **Chat, nicknames and bios are shown as written.** Reports, moderators and blocks handle abuse, so the moderation queue (Phase 10, step 4) carries more of the load.
+- **Less to maintain:** no lists to review in Phase 15, and no LDNOOBW attribution on the Credits page.
+- **Less personal data:** no strikes are recorded, and the privacy notice no longer mentions them.
+- **Release:** the migration goes to the hosted database like any other, and `send-push` is redeployed for its regenerated wording (`pnpm functions:push`).

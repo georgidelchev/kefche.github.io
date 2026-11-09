@@ -2089,6 +2089,12 @@ Until now the RUNBOOK gives SQL for all of these. Phase 10 puts screens on them 
   - Staff get a shield link in the header: the account summary keeps `staff` from the token's `app_roles` claim, and the boot script applies it before paint. It's only a hint; the panel checks again.
   - The new `admin` namespace is in all 11 locales.
   - Checked in Chrome: 43/43, covering signed out, player, moderator and admin; 1280, 1024, 768 and 390 px; both themes; Arabic; and axe.
+- [x] **The word filter removed** (owner request, 2026-11-09; ADR-0040):
+  - **Database** (`20261109100000_remove_word_filter.sql`): nicknames and bios are no longer checked against word lists, chat isn't masked, and there are no automatic mutes. The filter's functions and its three tables are dropped. Reserved nicknames, rate limits, slow mode, reports, sanctions and blocks stay.
+  - **Repository:** the word lists, `scripts/blocked-terms.mjs` and `pnpm db:terms` are gone.
+  - **App:** the `nickname_blocked` and `bio_blocked` errors and the `filter` sanction reason are gone, with their strings in 11 locales. Old automatic-mute notices show no reason.
+  - **Text:** the guidelines and the privacy notice no longer mention the filter (both dated 2026-11-09). The push wording is regenerated.
+  - **Checked locally**, in a rolled-back transaction: a nickname and a bio the filter refused now save; three messages with a formerly masked word arrive as written, with no mute; a reserved nickname is still refused; no function still refers to the filter.
 
 ## Known issues
 
@@ -2103,10 +2109,9 @@ Until now the RUNBOOK gives SQL for all of these. Phase 10 puts screens on them 
 - **Auth pages are near the JS budget:** sign-up 110 KB and settings 116 KB gzip before supabase-js. New React on these pages needs a size check (Phase 18 may split islands further).
 - **Guest identity creation moves to Phase 5:** step 9 built the upgrade (sign-up or OAuth link keeps the guest's user id) and the merge (Edge Function `merge-guest` plus a confirmation page). `ensureIdentity()` is built with its first users, the rooms, in Phase 5; guests aren't asked their age (owner decision, 2026-10-24). No other page creates guest sessions.
 - **CSP for Stockfish (Phase 17):** chess runs Stockfish as WebAssembly in a nested worker, so the full Content-Security-Policy must allow `'wasm-unsafe-eval'` in `script-src` and `worker-src 'self'`. The Credits page lists Stockfish (GPL-3.0) and the cburnett pieces (BSD 3-Clause) from `packages/games/chess/CREDITS.md`.
-- **Credits attribution (Phase 17):** the blocked-terms lists are adapted from LDNOOBW (CC BY 4.0), and the Credits page must say so (`supabase/blocked-terms/README.md`). It also lists frimousse, Emojibase and PixiJS (all MIT), and GIPHY ("Powered by GIPHY", already shown in the GIF picker).
+- **Credits attribution (Phase 17):** the Credits page lists frimousse, Emojibase and PixiJS (all MIT), and GIPHY ("Powered by GIPHY", already shown in the GIF picker).
 - **CSP for GIFs (Phase 17):** the full Content-Security-Policy must allow `https://media.giphy.com` in `img-src` (ADR-0032).
 - **The emoji picker is patched (Phase 8):** frimousse 0.4.0 numbers its grid from 0, which ARIA forbids, so `patches/frimousse@0.4.0.patch` shifts it by one. Upgrading frimousse means checking whether a release fixed it, then dropping or redoing the patch (`patches/README.md`). Worth reporting upstream.
-- **Blocked terms need review:** the owner reviews the drafted Bulgarian list (`supabase/blocked-terms/bg.txt`). Native speakers review the other non-English lists in Phase 15. Russian lacks some common Cyrillic slurs. Since Phase 8 step 2, phrases match in chat too, so the lists' phrases deserve a look for everyday words.
 - **Game page prose is English in 9 locales (Phase 15):** each game's name, tagline, meta description and in-game UI strings are translated in all 11 locales. The long page sections (about, how to play, controls, tips, FAQ) are written in English and Bulgarian; the other 9 locales carry the English text until the Phase 15 translation pass (SPEC §15, §22 DoD rule).
 - **Translations need native review (Phase 15):** all strings in the 9 locales other than en/bg are my translations and haven't been reviewed by native speakers. Bulgarian should be reviewed by the owner.
 - **Arenas: a real phone and the real limit (Phase 9):** step 12 ran on Chrome's phone emulation and simulated the free plan's daily limit locally. Once Worm Rush is live, play it on a real mid-range phone, and reaching the limit on production waits for the owner's word (it stops online arenas until 00:00 UTC).

@@ -67,7 +67,7 @@ To end one early, the same way: `select public.revoke_sanction('<sanction id>');
 
 - **Who may:** moderators warn, mute and suspend; only admins ban, sanction staff, or revoke a ban.
 - **What the player sees:** a moderation notification with the reason and the note (on `/notifications/`; it can't be turned off), and the end of the sanction wherever it refuses them (chat, joining a room, rated search). A banned player is signed out everywhere and can't sign in until the ban ends; an access token they already hold lasts up to an hour, during which chat and rooms still refuse them.
-- **Automatic mutes:** the third chat message masked by the word filter within 10 minutes mutes the sender for 10 minutes (reason `filter`, no moderator).
+- **No automatic mutes** since the word filter was removed (ADR-0040). Older sanctions with the reason `filter` were automatic 10-minute mutes.
 - **In the chat:** a moderator deletes any global or lobby chat message and mutes its sender from the chat itself (`/chat/`, a room's chat); the staff role reaches the page with the next sign-in or token refresh.
 - **Slow mode:** `select public.set_slow_mode('en', 30);` (seconds between messages per player in that global room; 0 turns it off), in the same kind of block.
 
@@ -129,8 +129,7 @@ Moderators handle everyday reports with the SQL above. An admin, the owner until
    - for an avatar, action its report and delete the file.
 4. **A spam wave or a raid in a global room:**
    - turn on slow mode (`set_slow_mode('<locale>', 30)`);
-   - mute the accounts;
-   - add the words or links to `supabase/blocked-terms/` and run `pnpm db:terms`. That makes a migration, which then has to be pushed.
+   - mute the accounts, and delete their messages;
    - New accounts already wait 2 hours before posting. A longer wait is a code change (`send_chat_message`).
 5. **A moderator misusing the role.** What a moderator did, newest first:
 
@@ -393,7 +392,6 @@ How online play works is in ARCHITECTURE.md ("Online play") and ADR-0020 to ADR-
 - **Online status:** every open tab of a signed-in account holds one connection, to its own channel `user:<id>`, which only the database writes (friends' status changes). A tab hidden for 5 minutes closes it. Tabs silent for 2 minutes are cleared every minute by the `expire-presence` job; who's online now: `select p.user_id, p.status, p.game_id, p.since from private.presence p order by since desc limit 20;`
 - **Quotas:** the dashboard's _Usage_ page shows Realtime messages and peak connections against the free plan (2 million messages a month, about 200 connections). The measured cost per game kind is in ARCHITECTURE.md ("Realtime message budget").
 - **Error codes** reach players translated: `rate_limited` (too many requests), `room_full`, `room_locked`, `not_host` and the others in `ROOM_ERROR_CODES` (`features/lobby/strings.ts`).
-- **Blocked chat terms:** edit the word lists in `supabase/blocked-terms/`, run `pnpm db:terms` to write a new migration, then push it like any migration.
 - **Trying it locally:** each browser profile or private window is a separate guest. Run `pnpm db:start` and `pnpm dev`, create a room in one window and open its link in another.
 
 ## OAuth providers (local development)

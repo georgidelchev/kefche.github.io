@@ -18,9 +18,11 @@ export const OPTIONAL_TYPES = [
 ] as const;
 export type OptionalType = (typeof OPTIONAL_TYPES)[number];
 
-type Reason =
-  "spam" | "harassment" | "hate" | "sexual" | "selfHarm" | "cheating" | "filter" | "other";
-/** A sanction's reason (the database's) to its string. */
+type Reason = "spam" | "harassment" | "hate" | "sexual" | "selfHarm" | "cheating" | "other";
+/**
+ * A sanction's reason (the database's) to its string. Notices of the word
+ * filter's old automatic mutes (reason `filter`, ADR-0040) show no reason.
+ */
 const REASONS: Record<string, Reason> = {
   spam: "spam",
   harassment: "harassment",
@@ -28,7 +30,6 @@ const REASONS: Record<string, Reason> = {
   sexual: "sexual",
   "self-harm": "selfHarm",
   cheating: "cheating",
-  filter: "filter",
   other: "other",
 };
 

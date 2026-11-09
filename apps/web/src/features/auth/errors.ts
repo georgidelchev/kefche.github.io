@@ -16,7 +16,6 @@ export const AUTH_ERROR_KEYS = [
   "nicknameLength",
   "nicknameCharacters",
   "nicknameReserved",
-  "nicknameBlocked",
   "nicknameTaken",
   "network",
   "unknown",
@@ -50,12 +49,10 @@ const SERVER_CODES = new Map<string, AuthErrorKey>([
   ["nickname_length", "nicknameLength"],
   ["nickname_characters", "nicknameCharacters"],
   ["nickname_reserved", "nicknameReserved"],
-  ["nickname_blocked", "nicknameBlocked"],
   ["nickname_taken", "nicknameTaken"],
   ["length", "nicknameLength"],
   ["characters", "nicknameCharacters"],
   ["reserved", "nicknameReserved"],
-  ["blocked", "nicknameBlocked"],
   ["taken", "nicknameTaken"],
 ]);
 

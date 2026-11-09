@@ -73,7 +73,6 @@ You are the lead engineer building **kefche**, a production-grade, multilingual,
 | Chess | **chess.js** (rules, PGN/FEN) + **Stockfish (WASM)** in a Web Worker | |
 | Audio | **Web Audio**, sounds synthesized in code (ADR-0015) | No audio files; locked until the first interaction. Howler.js only if a game ever needs recorded audio. |
 | GIFs | **GIPHY API** via an Edge Function proxy | Rating `pg-13`, attribution "Powered by GIPHY". |
-| Profanity filter | Multilingual word lists + the `obscenity` library for English | Server-side enforcement in Edge Functions/DB; client-side pre-check for UX only. |
 | PWA | Web App Manifest; no offline caching (ADR-0014) | Install to the home screen. |
 | Push | Web Push (VAPID) via Edge Function | iOS requires installed PWA (iOS 16.4+). |
 | Email | Supabase Auth with custom SMTP via **Resend** | Configured at the end when the domain exists (Phase 21). |
@@ -204,9 +203,9 @@ Define as CSS variables, with full light and dark sets. Colors must pass contras
 - Sessions: refresh tokens handled by the Supabase client, sign out everywhere option.
 
 ### 7.2 Profiles
-- **Nickname:** unique (case-insensitive), 3–20 chars, letters/digits/underscore/dot plus Unicode letters, profanity-checked, reserved words blocked (admin, moderator, kefche, etc.). Change allowed once every 30 days (admins can override).
+- **Nickname:** unique (case-insensitive), 3–20 chars, letters/digits/underscore/dot plus Unicode letters, reserved words blocked (admin, moderator, kefche, etc.). Change allowed once every 30 days (admins can override).
 - **Avatar:** default is a generated **initials avatar** (first 1–2 letters of the nickname, color derived from the user id). Users can pick from a gallery of preset avatars (license-checked, credited) or upload their own (registered users only, account age ≥ 24h): client-side crop/resize to 256×256 WebP, max 300 KB, EXIF stripped; stored in Supabase Storage with RLS; reportable; admins can reset.
-- Optional: country (flag), short bio (160 chars, profanity-checked), favorite games.
+- Optional: country (flag), short bio (160 chars), favorite games.
 - Public profile page `/[locale]/u/[nickname]`: avatar, level, badges, stats summary, ratings, recent matches, achievements, mutual friends, "Add friend", "Invite to game", "Message", "Report", "Block".
 - **Privacy settings:** who can message me (everyone/friends/nobody), who can invite me, show online status, show profile in leaderboards.
 
@@ -230,7 +229,7 @@ Language, theme, sound volume (master/music/effects), haptics on/off, reduced mo
 - **Never render user content as HTML.** Linkify only safe `https://` URLs and show them as plain text links with `rel="nofollow ugc noopener"`.
 
 ### 8.3 Moderation (required for 13+ with free text)
-- **Server-side profanity filter** (multilingual lists) applied to chat, nicknames, bios and lobby names. Default action: mask; repeated violations trigger automatic short mutes.
+- **No word filter** (owner decision, ADR-0040): chat, nicknames and bios aren't checked against word lists. Reports, sanctions, rate limits and blocks handle abuse.
 - **Rate limiting:** e.g. max 5 messages / 10 s per user per channel, slow mode configurable per global room by moderators.
 - **Reports** for messages, users, avatars and lobby names with reason categories. Auto-hide content after N distinct reports pending review.
 - **Sanctions:** warn, mute (chat only), suspend (cannot play online), ban; all with durations and reasons; users see a clear notice with expiry.
@@ -702,7 +701,7 @@ Full chess per catalog notes, Stockfish worker, clocks, rated matchmaking with G
 *DoD:* Stats visible on profile; leaderboards update; suspicious results quarantined.
 
 **Phase 8 — Social: friends, presence, chat, moderation, notifications**
-Friends, blocks, presence, invites; global chat per language, DMs, in-game chat; emoji and GIPHY (proxy Edge Function); profanity filter, rate limits, reports, sanctions; notification center, web push, email notification plumbing (provider configured in Phase 21).
+Friends, blocks, presence, invites; global chat per language, DMs, in-game chat; emoji and GIPHY (proxy Edge Function); profanity filter (removed later, ADR-0040), rate limits, reports, sanctions; notification center, web push, email notification plumbing (provider configured in Phase 21).
 *DoD:* All chat types work in realtime with moderation; blocked users are fully isolated.
 
 **Phase 9 — Real-time arena framework & Worm Rush**

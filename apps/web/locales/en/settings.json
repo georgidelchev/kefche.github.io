@@ -27,7 +27,6 @@
     "countryNone": "Don't show",
     "bio": "About you",
     "bioHint": "Up to 160 characters. Everyone can see this.",
-    "bioBlocked": "This text contains words that aren't allowed.",
     "save": "Save profile",
     "view": "View your public profile"
   },

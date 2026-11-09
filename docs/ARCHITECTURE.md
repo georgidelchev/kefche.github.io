@@ -41,7 +41,7 @@ Isomorphism is enforced by the type system: the base tsconfig has no DOM lib and
 ## Accounts and data (Phase 2)
 
 - **Sessions** live in the browser (supabase-js, PKCE, `localStorage`). The header shows a cached account summary before paint, and supabase-js loads lazily (ADR-0011).
-- **Tables:** `profiles` (public) and `user_settings` (owner-only) (ADR-0012). There are also `user_roles` (with an `app_roles` JWT claim), `consent_records`, an append-only `audit_log`, and in the `private` schema `rate_limits`, `blocked_terms`, `reserved_nicknames` and `deletion_requests`. Every table has RLS.
+- **Tables:** `profiles` (public) and `user_settings` (owner-only) (ADR-0012). There are also `user_roles` (with an `app_roles` JWT claim), `consent_records`, an append-only `audit_log`, and in the `private` schema `rate_limits`, `reserved_nicknames` and `deletion_requests`. Every table has RLS.
 - **Sign-up and onboarding:** a before-user-created hook and `complete_profile()` enforce 13+ and the nickname rules. Only the birth year is stored, and the month is stripped from auth metadata.
 - **Guests** upgrade in place; signing in to another account offers `merge-guest`.
 - **Avatars:** 24 presets in `public/avatars/`, plus uploads to the public `avatars` bucket at `<user id>/<uuid>.webp`.
@@ -176,7 +176,7 @@ flowchart LR
 
 - **Live connection and status** (ADR-0033): one connection per signed-in tab, on its player's private channel `user:<id>`, which only the database writes. Tabs report what they're doing; the database works out each player's status, tells their friends, and answers `presence_of` for everyone else allowed. A tab hidden for 5 minutes disconnects.
 - **Chat** (ADR-0034): global chat and DMs in `public.messages`, lobby and in-game chat in `room_messages`, all written through RPCs. Global and lobby chat arrive as Postgres changes, checked against the read policy for each reader; DMs as broadcasts to the two players' channels.
-- **Moderation** (ADR-0035): the word filter, rate limits, slow mode, sanctions, reports (hidden at three accounts) and blocks are enforced in SQL. Staff actions go to `audit_log`. Until the admin panel, the RUNBOOK gives the SQL.
+- **Moderation** (ADR-0035, ADR-0040): rate limits, slow mode, sanctions, reports (hidden at three accounts) and blocks are enforced in SQL. Staff actions go to `audit_log`. Until the admin panel, the RUNBOOK gives the SQL.
 - **Notifications and push** (ADR-0036): rows in `notifications`, worded by the app in the reader's language and sent live on `user:<id>`. A trigger asks `send-push` for the ones a player wants as a push; it words them with the same code (`pnpm functions:push`). Email has preferences and an outbox for Phase 21.
 - **Emoji and GIFs** (ADR-0032): a self-hosted Emojibase, and GIPHY through the `giphy` function, behind `PUBLIC_GIFS`.
 - **Pages:** `/[locale]/friends/`, `/[locale]/chat/`, `/[locale]/messages/` and `/[locale]/notifications/` (accounts builds, noindex), the community guidelines, the profile's friend actions, the bell, and settings' privacy and notification sections.

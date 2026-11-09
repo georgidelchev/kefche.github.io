@@ -23,7 +23,7 @@
       "push": "Push-Benachrichtigungen (Konten, auf den Geräten, auf denen du sie einschaltest): für jedes Gerät die Adresse, die uns der Push-Dienst seines Browsers dafür gegeben hat, und die Schlüssel, mit denen Nachrichten an es verschlüsselt werden. Sie werden gelöscht, wenn du Push auf dem Gerät ausschaltest oder dich dort abmeldest, und wenn der Push-Dienst meldet, dass es das Gerät nicht mehr gibt.",
       "email": "Benachrichtigungen per E-Mail (Konten mit bestätigter E-Mail-Adresse): die Benachrichtigungen, die du per E-Mail bekommen willst, und Mitteilungen zu deinem Konto warten höchstens 7 Tage in einer Warteschlange. Sie hält fest, um welche Benachrichtigung es in jeder E-Mail geht, nie deine Adresse.",
       "presence": "Online-Status (nur mit Konto): ob du online bist, in einer Lobby oder einem Spiel (und welchem) oder abwesend, wie es deine offenen Tabs melden. Die Meldung jedes Tabs wird 2 Minuten nach der letzten gelöscht, sobald du gehst, bleibt also nichts gespeichert. Wer ihn sieht, wählst du in den Einstellungen: alle, nur Freunde (Standard) oder niemand.",
-      "moderation": "Moderation: Chatnachrichten werden auf gesperrte Wörter geprüft, die ausgeblendet werden. Drei ausgeblendete in 10 Minuten schalten dich für 10 Minuten stumm, deshalb merken wir uns jede davon für diese 10 Minuten. Verwarnungen, Stummschaltungen, Spielsperren oder Sperren, die du erhältst, werden mit Grund und Ende gespeichert, solange dein Konto besteht, und du bekommst jeweils eine Mitteilung (Mitteilungen werden nach 90 Tagen gelöscht).",
+      "moderation": "Moderation: Verwarnungen, Stummschaltungen, Spielsperren oder Sperren, die du erhältst, werden mit Grund und Ende gespeichert, solange dein Konto besteht, und du bekommst jeweils eine Mitteilung (Mitteilungen werden nach 90 Tagen gelöscht).",
       "reports": "Meldungen: Wenn du etwas meldest, speichern wir deine Meldung (den Grund und deine Details) mit einer Kopie des Gemeldeten, damit die Moderation es prüfen kann, auch wenn es sich ändert. Nur die Moderation sieht, wer gemeldet hat; der Spieler erfährt es nicht. Eine Meldung wird 90 Tage nach ihrer Bearbeitung gelöscht; wird dein Konto gelöscht, bleiben deine Meldungen ohne deinen Namen erhalten.",
       "security": "Sicherheitsdaten: Grenzen, wie oft eine Aktion wiederholt werden darf, und ein Protokoll wichtiger Kontoänderungen. Wo dafür deine IP-Adresse nötig ist, speichern wir nur einen gesalzenen Hash davon, nie die Adresse selbst."
     },
@@ -82,8 +82,7 @@
     },
     "names": {
       "title": "Namen, Bios und Avatare",
-      "rules": "Für deinen Spitznamen, deine Bio und deinen Avatar gelten dieselben Regeln wie im Chat.",
-      "filter": "Ein Wortfilter blendet gängige beleidigende Wörter im Chat aus und lehnt sie in Spitznamen und Bios ab. Bitte versuch nicht, ihn zu umgehen."
+      "rules": "Für deinen Spitznamen, deine Bio und deinen Avatar gelten dieselben Regeln wie im Chat."
     },
     "report": {
       "title": "Melden und blockieren",
@@ -95,8 +94,7 @@
     "moderators": {
       "title": "Was die Moderation tut",
       "actions": "Die Moderation löscht Nachrichten und spricht eine Verwarnung, eine Chatsperre, eine Sperre für das Online-Spiel oder einen Bann aus, je nachdem, wie schwer es wiegt und ob es schon einmal vorkam.",
-      "notice": "Du bekommst eine Mitteilung mit dem Grund und, falls es endet, wann.",
-      "automatic": "Drei vom Wortfilter erfasste Nachrichten innerhalb von 10 Minuten schalten dich automatisch für 10 Minuten stumm."
+      "notice": "Du bekommst eine Mitteilung mit dem Grund und, falls es endet, wann."
     },
     "appeal": {
       "title": "Wenn du glaubst, dass wir falschliegen",

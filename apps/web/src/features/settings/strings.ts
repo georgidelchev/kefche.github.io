@@ -32,7 +32,6 @@ export function settingsStrings(t: AppT) {
       countryNone: t("settings:profile.countryNone"),
       bio: t("settings:profile.bio"),
       bioHint: t("settings:profile.bioHint"),
-      bioBlocked: t("settings:profile.bioBlocked"),
       save: t("settings:profile.save"),
       view: t("settings:profile.view"),
     },

@@ -44,7 +44,6 @@ const FIELD_FOR: Partial<Record<AuthErrorKey, Field>> = {
   nicknameLength: "nickname",
   nicknameCharacters: "nickname",
   nicknameReserved: "nickname",
-  nicknameBlocked: "nickname",
   nicknameTaken: "nickname",
   passwordWeak: "password",
   emailTaken: "email",

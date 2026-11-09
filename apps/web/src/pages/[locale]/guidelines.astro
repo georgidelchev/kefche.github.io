@@ -8,14 +8,14 @@ import { LOCALES, LOCALE_INFO, type Locale } from "@/i18n/locales";
 import type { GetStaticPaths } from "astro";
 
 // Community guidelines (SPEC §8.3, §17), linked from the footer, every chat,
-// the report forms and sign-up. What it says moderators and the filter do
-// must match what the system does; change the text in the same commit as the
+// the report forms and sign-up. What it says moderators do must match what
+// the system does; change the text in the same commit as the
 // behaviour. Phase 17 reviews it with the other legal pages.
 export const getStaticPaths = (() =>
   LOCALES.map((locale) => ({ params: { locale } }))) satisfies GetStaticPaths;
 
 /** When the guidelines last changed. */
-const UPDATED = new Date("2026-11-05T00:00:00Z");
+const UPDATED = new Date("2026-11-09T00:00:00Z");
 
 const locale = Astro.params.locale as Locale;
 const t = getT(locale);
@@ -56,7 +56,7 @@ const sections = [
   {
     id: "names",
     title: t("legal:guidelines.names.title"),
-    items: [t("legal:guidelines.names.rules"), t("legal:guidelines.names.filter")],
+    items: [t("legal:guidelines.names.rules")],
   },
   {
     id: "report",
@@ -71,11 +71,7 @@ const sections = [
   {
     id: "moderators",
     title: t("legal:guidelines.moderators.title"),
-    items: [
-      t("legal:guidelines.moderators.actions"),
-      t("legal:guidelines.moderators.notice"),
-      t("legal:guidelines.moderators.automatic"),
-    ],
+    items: [t("legal:guidelines.moderators.actions"), t("legal:guidelines.moderators.notice")],
   },
 ];
 ---
