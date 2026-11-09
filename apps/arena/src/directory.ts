@@ -35,6 +35,19 @@ export class Directory extends DurableObject<Env> {
     this.arenas.set(arena, { people, reportedAt: now, promised: promised.slice(arrived) });
   }
 
+  /** How many arenas are open and how many people are in them (the admin panel). */
+  summary(): { arenas: number; people: number } {
+    const now = Date.now();
+    let arenas = 0;
+    let people = 0;
+    for (const listing of this.arenas.values()) {
+      if (now - listing.reportedAt > FORGET_MS) continue;
+      arenas += 1;
+      people += listing.people;
+    }
+    return { arenas, people };
+  }
+
   /** An arena with room for one more, of at most `capacity` people. */
   assign(capacity: number): string {
     const now = Date.now();

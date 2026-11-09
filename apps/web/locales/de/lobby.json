@@ -164,7 +164,8 @@
     "accounts_only": "Gewertete Partien gibt es nur mit Konto. Melde dich an, um zu spielen.",
     "rated_guests": "Für eine gewertete Partie braucht jeder auf einem Platz ein Konto.",
     "suspended": "Du bist vom Online-Spiel ausgeschlossen.",
-    "unknown": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal."
+    "unknown": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal.",
+    "game_disabled": "Dieses Spiel ist im Moment ausgeschaltet."
   },
   "invite": {
     "title": "Freunde einladen",

@@ -1,6 +1,7 @@
 // The arena Worker:
 //   GET /games/<game>/arena     {"arena": "<name>"}: where "Play online" goes (the directory)
 //   WS  /arenas/<game>/<name>   the arena's WebSocket, held by its Durable Object
+//   GET /status                 {"games": {"<game>": {"arenas", "people"}}}: open arenas (the admin panel)
 //   GET /health                 "ok"
 // Only the site's pages may use them (SITE_ORIGINS); browsers always send
 // Origin, and other clients still need a valid token to play.
@@ -23,6 +24,21 @@ export default {
     const allowed = env.SITE_ORIGINS.split(",").map((o) => o.trim());
     if (origin !== null && !allowed.includes(origin)) {
       return new Response("forbidden", { status: 403 });
+    }
+
+    if (url.pathname === "/status") {
+      const cors = { "Access-Control-Allow-Origin": origin ?? "*", Vary: "Origin" };
+      if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
+      if (request.method !== "GET")
+        return new Response("not_found", { status: 404, headers: cors });
+      const games = Object.fromEntries(
+        await Promise.all(
+          Object.keys(GAMES).map(
+            async (id) => [id, await env.DIRECTORY.getByName(id).summary()] as const,
+          ),
+        ),
+      );
+      return Response.json({ games }, { headers: { ...cors, "Cache-Control": "no-store" } });
     }
 
     const listing = DIRECTORY_PATH.exec(url.pathname);

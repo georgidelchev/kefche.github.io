@@ -164,7 +164,8 @@
     "accounts_only": "Partidas ranqueadas são só para contas. Entre para jogar.",
     "rated_guests": "Para uma partida ranqueada, todos que ocupam um lugar precisam de uma conta.",
     "suspended": "Você não pode jogar online.",
-    "unknown": "Algo deu errado. Tente novamente."
+    "unknown": "Algo deu errado. Tente novamente.",
+    "game_disabled": "Este jogo está desligado por enquanto."
   },
   "invite": {
     "title": "Convidar amigos",

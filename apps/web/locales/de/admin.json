@@ -63,7 +63,9 @@
       "roomChatDelete": "Lobbynachricht gelöscht",
       "slowMode": "Langsamer Modus gesetzt",
       "profileReset": "Profil zurückgesetzt",
-      "dmContext": "Gemeldeter DM-Verlauf gelesen"
+      "dmContext": "Gemeldeter DM-Verlauf gelesen",
+      "gameUpdate": "Spieleinstellungen geändert",
+      "roomClose": "Raum geschlossen"
     },
     "targets": {
       "user": "Spieler",
@@ -71,7 +73,9 @@
       "message": "Chatnachricht",
       "roomMessage": "Lobbynachricht",
       "lobbyName": "Lobbyname",
-      "chatRoom": "Chatraum"
+      "chatRoom": "Chatraum",
+      "game": "Spiel",
+      "room": "Raum"
     },
     "noProfile": "Kein Profil"
   },
@@ -298,5 +302,46 @@
     "endsAt": "Endet am {date}",
     "unmute": "Stummschaltung von {name} aufheben",
     "unmuteBody": "Der Spieler kann sofort wieder schreiben, und der Widerruf wird im Audit-Log festgehalten."
+  },
+  "games": {
+    "settingsTitle": "Spiele",
+    "settingsBody": "Ein ausgeschaltetes Spiel kann nirgends starten: neue Partien, Räume, Spielersuche und Arenen. Laufende Partien werden beendet. Seiten zeigen die Änderung, sobald sie geladen sind.",
+    "settingsOf": "Einstellungen für {game}",
+    "flags": {
+      "enabled": "An"
+    },
+    "off": "Ausgeschaltet",
+    "offNote": "Beim Speichern wird das Spiel sofort für alle ausgeschaltet.",
+    "position": "Platz im Katalog",
+    "positionHint": "1 kommt zuerst. Leer: die eigene Reihenfolge des Katalogs.",
+    "save": "Speichern",
+    "saveLabel": "{game} speichern",
+    "saved": "{game} gespeichert.",
+    "matchesDay": "Partien, letzte 24 Std.",
+    "matchesWeek": "Partien, letzte 7 Tage",
+    "matchesAll": "Partien, insgesamt",
+    "playersWeek": "Spieler, letzte 7 Tage",
+    "inReview": "Zur Prüfung zurückgestellt",
+    "openRooms": "Offene Räume",
+    "arenas": "Online-Arenen",
+    "arenasValue": "{arenas} offen, {people} spielen",
+    "roomsTitle": "Offene Räume",
+    "game": "Spiel",
+    "anyGame": "Alle Spiele",
+    "noRooms": "Keine offenen Räume.",
+    "lobby": "In der Lobby",
+    "playing": "Im Spiel",
+    "public": "Öffentlich",
+    "private": "Privat",
+    "playersValue": "Spieler: {count} von {seats}",
+    "spectatorsValue": "Zuschauer: {count}",
+    "host": "Gastgeber",
+    "close": "Schließen",
+    "closeRoom": "Raum schließen",
+    "closeLabel": "Raum {code} schließen",
+    "closeTitle": "Raum {code} schließen?",
+    "closeBody": "Alle darin erfahren, dass der Raum geschlossen wurde, und er wird mit seinem Chat gelöscht. Das lässt sich nicht rückgängig machen.",
+    "closed": "Raum {code} geschlossen.",
+    "alreadyClosed": "Dieser Raum ist schon geschlossen."
   }
 }

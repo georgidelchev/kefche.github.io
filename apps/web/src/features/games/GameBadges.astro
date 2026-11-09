@@ -1,0 +1,47 @@
+---
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+// A game's badges (featured, new, hot, beta, unavailable), all hidden until
+// the admin panel's settings (`game_settings`, Phase 10 step 6) say which
+// apply. Pages are static (owner decision Q2), so the script below reads the
+// settings after the page loads and:
+// - shows the badges of each `[data-game-id]`, and marks a disabled game;
+// - orders each `[data-game-order]` list: games given a place first, then
+//   featured ones, then the rest as rendered;
+// - on a game's page (`[data-game-page]`), a disabled game shows its notice
+//   (`[data-game-unavailable]`) and hides its play area (`[data-game-play]`).
+// The server refuses a disabled game anyway. Without the settings (no
+// Supabase, offline), the page stays as rendered.
+interface Props {
+  locale: Locale;
+  class?: string;
+}
+
+const { locale, class: className = "" } = Astro.props;
+const t = getT(locale);
+const badges = [
+  ["featured", t("games:badges.featured"), "bg-brand text-on-brand"],
+  ["new", t("games:badges.new"), "bg-accent text-on-accent"],
+  ["hot", t("games:badges.hot"), "bg-danger text-on-danger"],
+  ["beta", t("games:badges.beta"), "bg-surface-2 text-text"],
+  ["unavailable", t("games:badges.unavailable"), "bg-surface-2 text-text"],
+] as const;
+const base = "rounded-full px-2 py-0.5 text-xs font-semibold";
+---
+
+<span class={`flex flex-wrap gap-1 ${className}`}>
+  {badges.map(([id, label, colors]) => (
+    <span data-badge={id} hidden class={`${base} ${colors}`}>
+      {label}
+    </span>
+  ))}
+</span>
+
+<script>
+  import { applyGameSettings, fetchGameSettings } from "./game-settings";
+
+  void fetchGameSettings().then((settings) => {
+    if (settings) applyGameSettings(document, settings);
+  });
+</script>

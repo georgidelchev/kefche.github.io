@@ -163,6 +163,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"game_settings": {
+                  Row: {
+                    "beta": boolean,"enabled": boolean,"featured": boolean,"game_id": string,"hot": boolean,"is_new": boolean,"position": number | null,"updated_at": string,"updated_by": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "beta"?: boolean,"enabled"?: boolean,"featured"?: boolean,"game_id": string,"hot"?: boolean,"is_new"?: boolean,"position"?: number | null,"updated_at"?: string,"updated_by"?: string | null
+                  }
+                  Update: {
+                    "beta"?: boolean,"enabled"?: boolean,"featured"?: boolean,"game_id"?: string,"hot"?: boolean,"is_new"?: boolean,"position"?: number | null,"updated_at"?: string,"updated_by"?: string | null
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"match_participants": {
                   Row: {
                     "assisted": boolean,"bot": string | null,"match_id": string,"outcome": number | null,"placement": number | null,"rating_after": number | null,"rating_before": number | null,"score": number | null,"seat": number,"time_ms": number | null,"user_id": string | null
@@ -877,12 +891,25 @@ isOneToOne: false
 "staff_cancel_deletion":
 { Args: { "p_user": string }; Returns: undefined
                            },
+"staff_close_room":
+{ Args: { "p_room": string }; Returns: undefined
+                           },
 "staff_delete_account":
 { Args: { "p_user": string }; Returns: string
                            },
 "staff_find_players":
 { Args: { "p_account"?: string,"p_offset"?: number,"p_query"?: string,"p_role"?: string,"p_sanction"?: string }; Returns: {
               "avatar_kind": string,"avatar_path": string,"avatar_preset": string,"created_at": string,"email": string,"guest": boolean,"id": string,"nickname": string,"roles": (string)[],"sanction": string
+            }[]
+                           },
+"staff_game_stats":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "game_id": string,"in_review": number,"matches_all": number,"matches_day": number,"matches_week": number,"open_rooms": number,"players_week": number
+            }[]
+                           },
+"staff_live_rooms":
+{ Args: { "p_game"?: string }; Returns: {
+              "code": string,"created_at": string,"game_id": string,"host_id": string,"host_nickname": string,"id": string,"last_active_at": string,"players": number,"rated": boolean,"seats": number,"spectators": number,"status": string,"visibility": string
             }[]
                            },
 "staff_muted_players":
@@ -908,6 +935,9 @@ isOneToOne: false
 { Args: { "p_before"?: number,"p_query"?: string,"p_room"?: unknown,"p_scope": string,"p_sender"?: string }; Returns: {
               "body": string,"created_at": string,"gif_id": string,"id": number,"kind": string,"lobby_code": string,"lobby_game": string,"lobby_id": string,"nickname": string,"room": string,"sender_id": string,"status": string
             }[]
+                           },
+"staff_set_game":
+{ Args: { "p_beta": boolean,"p_enabled": boolean,"p_featured": boolean,"p_game": string,"p_hot": boolean,"p_new": boolean,"p_position"?: number }; Returns: undefined
                            },
 "start_daily":
 { Args: { "p_game_version": number }; Returns: Json

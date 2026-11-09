@@ -57,6 +57,7 @@ const PROBLEMS: Partial<Record<ArenaErrorCode, Problem>> = {
   suspended: "suspended",
   version: "outdated",
   unknown_game: "outdated",
+  game_disabled: "unavailable",
   nickname_required: "nickname",
   replaced: "replaced",
 };

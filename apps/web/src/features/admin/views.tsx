@@ -7,7 +7,13 @@ import { lazy, type ReactNode } from "react";
 import type { Supabase } from "@/lib/supabase/client";
 
 import type { AdminSectionId, StaffRole } from "./sections";
-import type { AuditStrings, ChatStrings, PlayersStrings, ReportsStrings } from "./strings";
+import type {
+  AuditStrings,
+  ChatStrings,
+  GamesStrings,
+  PlayersStrings,
+  ReportsStrings,
+} from "./strings";
 
 /** Localized pages the views link to. */
 export interface AdminPaths {
@@ -21,6 +27,10 @@ export interface AdminPaths {
   reports: string;
   /** The chat tools' page; a message search goes in the query string. */
   chat: string;
+  /** The Games section's page; its room filter goes in the query string. */
+  games: string;
+  /** The arena server, or null when this build has none. */
+  arena: string | null;
 }
 
 /** What every view gets. */
@@ -39,7 +49,8 @@ export type AdminView =
   | { section: "users"; strings: PlayersStrings }
   | { section: "reports"; strings: ReportsStrings; players: PlayersStrings }
   | { section: "chat"; strings: ChatStrings; players: PlayersStrings }
-  | { section: Exclude<AdminSectionId, "audit" | "users" | "reports" | "chat"> };
+  | { section: "games"; strings: GamesStrings; players: PlayersStrings }
+  | { section: Exclude<AdminSectionId, "audit" | "users" | "reports" | "chat" | "games"> };
 
 const AuditLog = lazy(() => import("./views/AuditLog").then((m) => ({ default: m.AuditLog })));
 const Players = lazy(() => import("./views/Players").then((m) => ({ default: m.Players })));
@@ -49,6 +60,10 @@ const ReportQueue = lazy(() =>
 
 const ChatTools = lazy(() => import("./views/ChatTools").then((m) => ({ default: m.ChatTools })));
 
+const GamesAdmin = lazy(() =>
+  import("./views/GamesAdmin").then((m) => ({ default: m.GamesAdmin })),
+);
+
 /** The section's view, or null when it isn't built yet. */
 export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
   if (view.section === "audit") return <AuditLog {...props} strings={view.strings} />;
@@ -57,5 +72,7 @@ export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
     return <ReportQueue {...props} strings={view.strings} players={view.players} />;
   if (view.section === "chat")
     return <ChatTools {...props} strings={view.strings} players={view.players} />;
+  if (view.section === "games")
+    return <GamesAdmin {...props} strings={view.strings} players={view.players} />;
   return null;
 }

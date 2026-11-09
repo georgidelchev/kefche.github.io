@@ -63,7 +63,9 @@
       "roomChatDelete": "Message de salon supprimé",
       "slowMode": "Mode lent réglé",
       "profileReset": "Profil réinitialisé",
-      "dmContext": "Conversation privée signalée lue"
+      "dmContext": "Conversation privée signalée lue",
+      "gameUpdate": "Réglages d'un jeu modifiés",
+      "roomClose": "Salon fermé"
     },
     "targets": {
       "user": "Joueur",
@@ -71,7 +73,9 @@
       "message": "Message du chat",
       "roomMessage": "Message de salon",
       "lobbyName": "Nom de salon",
-      "chatRoom": "Salon de chat"
+      "chatRoom": "Salon de chat",
+      "game": "Jeu",
+      "room": "Salon"
     },
     "noProfile": "Sans profil"
   },
@@ -298,5 +302,46 @@
     "endsAt": "Prend fin le {date}",
     "unmute": "Lever le silence de {name}",
     "unmuteBody": "Le joueur peut à nouveau écrire tout de suite, et la révocation est inscrite au journal d'audit."
+  },
+  "games": {
+    "settingsTitle": "Jeux",
+    "settingsBody": "Un jeu désactivé ne peut démarrer nulle part : nouvelles parties, salons, recherche d'adversaire et arènes. Les parties en cours se terminent. Les pages affichent le changement une fois chargées.",
+    "settingsOf": "Réglages de {game}",
+    "flags": {
+      "enabled": "Activé"
+    },
+    "off": "Désactivé",
+    "offNote": "L'enregistrement désactive le jeu pour tout le monde immédiatement.",
+    "position": "Place dans le catalogue",
+    "positionHint": "1 passe en premier. Vide : l'ordre du catalogue.",
+    "save": "Enregistrer",
+    "saveLabel": "Enregistrer {game}",
+    "saved": "{game} enregistré.",
+    "matchesDay": "Parties, dernières 24 h",
+    "matchesWeek": "Parties, 7 derniers jours",
+    "matchesAll": "Parties, au total",
+    "playersWeek": "Joueurs, 7 derniers jours",
+    "inReview": "Mises de côté pour examen",
+    "openRooms": "Salons ouverts",
+    "arenas": "Arènes en ligne",
+    "arenasValue": "{arenas} ouvertes, {people} en jeu",
+    "roomsTitle": "Salons ouverts",
+    "game": "Jeu",
+    "anyGame": "Tous les jeux",
+    "noRooms": "Aucun salon ouvert.",
+    "lobby": "Dans le salon",
+    "playing": "En jeu",
+    "public": "Public",
+    "private": "Privé",
+    "playersValue": "Joueurs : {count} sur {seats}",
+    "spectatorsValue": "Spectateurs : {count}",
+    "host": "Hôte",
+    "close": "Fermer",
+    "closeRoom": "Fermer le salon",
+    "closeLabel": "Fermer le salon {code}",
+    "closeTitle": "Fermer le salon {code} ?",
+    "closeBody": "Tous ceux qui s'y trouvent apprennent que le salon a fermé, et il est supprimé avec son chat. C'est définitif.",
+    "closed": "Salon {code} fermé.",
+    "alreadyClosed": "Ce salon est déjà fermé."
   }
 }

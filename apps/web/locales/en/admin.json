@@ -63,7 +63,9 @@
       "roomChatDelete": "Lobby message deleted",
       "slowMode": "Slow mode set",
       "profileReset": "Profile reset",
-      "dmContext": "Reported DM conversation read"
+      "dmContext": "Reported DM conversation read",
+      "gameUpdate": "Game settings changed",
+      "roomClose": "Room closed"
     },
     "targets": {
       "user": "Player",
@@ -71,7 +73,9 @@
       "message": "Chat message",
       "roomMessage": "Lobby message",
       "lobbyName": "Lobby name",
-      "chatRoom": "Chat room"
+      "chatRoom": "Chat room",
+      "game": "Game",
+      "room": "Room"
     },
     "noProfile": "No profile"
   },
@@ -298,5 +302,46 @@
     "endsAt": "Ends {date}",
     "unmute": "Lift {name}'s mute",
     "unmuteBody": "They can chat again at once, and the revoke is recorded in the audit log."
+  },
+  "games": {
+    "settingsTitle": "Games",
+    "settingsBody": "Turned off, a game can't be started anywhere: new games, rooms, matchmaking and arenas. Games already under way finish. Pages show the change once they load.",
+    "settingsOf": "{game}'s settings",
+    "flags": {
+      "enabled": "On"
+    },
+    "off": "Turned off",
+    "offNote": "Saving turns the game off for everyone at once.",
+    "position": "Place in the catalog",
+    "positionHint": "1 comes first. Empty: the catalog's own order.",
+    "save": "Save",
+    "saveLabel": "Save {game}",
+    "saved": "{game} saved.",
+    "matchesDay": "Matches, last 24 h",
+    "matchesWeek": "Matches, last 7 days",
+    "matchesAll": "Matches, all time",
+    "playersWeek": "Players, last 7 days",
+    "inReview": "Set aside for review",
+    "openRooms": "Open rooms",
+    "arenas": "Online arenas",
+    "arenasValue": "{arenas} open, {people} playing",
+    "roomsTitle": "Open rooms",
+    "game": "Game",
+    "anyGame": "Every game",
+    "noRooms": "No open rooms.",
+    "lobby": "In the lobby",
+    "playing": "Playing",
+    "public": "Public",
+    "private": "Private",
+    "playersValue": "Players: {count} of {seats}",
+    "spectatorsValue": "Spectators: {count}",
+    "host": "Host",
+    "close": "Close",
+    "closeRoom": "Close room",
+    "closeLabel": "Close room {code}",
+    "closeTitle": "Close room {code}?",
+    "closeBody": "Everyone in it is told the room closed, and it's deleted with its chat. This can't be undone.",
+    "closed": "Room {code} closed.",
+    "alreadyClosed": "That room is already closed."
   }
 }

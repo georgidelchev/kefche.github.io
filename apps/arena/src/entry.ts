@@ -22,13 +22,13 @@ export interface ArenaPlayer {
   progress: PlayerProgress;
 }
 
-export type EntryError = "invalid_token" | "nickname_required" | "suspended";
+export type EntryError = "invalid_token" | "nickname_required" | "suspended" | "game_disabled";
 
 /**
  * Who a Supabase access token belongs to, as `public.arena_entry` answers
  * with that token: an account or a guest with a name, and not suspended or
  * banned, with their progress in `gameId`. PostgREST checks the token's
- * signature and expiry.
+ * signature and expiry. A game an admin turned off is refused (game_disabled).
  */
 export async function arenaEntry(
   env: Env,
@@ -54,7 +54,9 @@ export async function arenaEntry(
   const message = errorSchema.safeParse(body);
   if (
     message.success &&
-    (message.data.message === "nickname_required" || message.data.message === "suspended")
+    (message.data.message === "nickname_required" ||
+      message.data.message === "suspended" ||
+      message.data.message === "game_disabled")
   ) {
     return message.data.message;
   }

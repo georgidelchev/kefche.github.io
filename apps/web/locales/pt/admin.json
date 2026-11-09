@@ -63,7 +63,9 @@
       "roomChatDelete": "Mensagem da sala apagada",
       "slowMode": "Modo lento definido",
       "profileReset": "Perfil redefinido",
-      "dmContext": "Conversa de DM denunciada lida"
+      "dmContext": "Conversa de DM denunciada lida",
+      "gameUpdate": "Configurações de jogo alteradas",
+      "roomClose": "Sala fechada"
     },
     "targets": {
       "user": "Jogador",
@@ -71,7 +73,9 @@
       "message": "Mensagem do chat",
       "roomMessage": "Mensagem da sala",
       "lobbyName": "Nome da sala",
-      "chatRoom": "Sala de chat"
+      "chatRoom": "Sala de chat",
+      "game": "Jogo",
+      "room": "Sala"
     },
     "noProfile": "Sem perfil"
   },
@@ -298,5 +302,46 @@
     "endsAt": "Termina em {date}",
     "unmute": "Tirar o silêncio de {name}",
     "unmuteBody": "Poderá conversar de novo na hora, e a revogação fica no registro de auditoria."
+  },
+  "games": {
+    "settingsTitle": "Jogos",
+    "settingsBody": "Um jogo desligado não pode começar em lugar nenhum: partidas novas, salas, busca de partida e arenas. As partidas em andamento terminam. As páginas mostram a mudança ao carregar.",
+    "settingsOf": "Configurações de {game}",
+    "flags": {
+      "enabled": "Ligado"
+    },
+    "off": "Desligado",
+    "offNote": "Ao salvar, o jogo é desligado para todos na hora.",
+    "position": "Posição no catálogo",
+    "positionHint": "O 1 vem primeiro. Vazio: a ordem do próprio catálogo.",
+    "save": "Salvar",
+    "saveLabel": "Salvar {game}",
+    "saved": "{game} salvo.",
+    "matchesDay": "Partidas, últimas 24 h",
+    "matchesWeek": "Partidas, últimos 7 dias",
+    "matchesAll": "Partidas, no total",
+    "playersWeek": "Jogadores, últimos 7 dias",
+    "inReview": "Separadas para revisão",
+    "openRooms": "Salas abertas",
+    "arenas": "Arenas online",
+    "arenasValue": "{arenas} abertas, {people} jogando",
+    "roomsTitle": "Salas abertas",
+    "game": "Jogo",
+    "anyGame": "Todos os jogos",
+    "noRooms": "Nenhuma sala aberta.",
+    "lobby": "No saguão",
+    "playing": "Jogando",
+    "public": "Pública",
+    "private": "Privada",
+    "playersValue": "Jogadores: {count} de {seats}",
+    "spectatorsValue": "Espectadores: {count}",
+    "host": "Anfitrião",
+    "close": "Fechar",
+    "closeRoom": "Fechar a sala",
+    "closeLabel": "Fechar a sala {code}",
+    "closeTitle": "Fechar a sala {code}?",
+    "closeBody": "Todos que estão nela são avisados de que a sala fechou, e ela é excluída com o chat. Não dá para desfazer.",
+    "closed": "Sala {code} fechada.",
+    "alreadyClosed": "Essa sala já está fechada."
   }
 }

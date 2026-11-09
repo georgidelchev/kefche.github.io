@@ -164,7 +164,8 @@
     "accounts_only": "积分赛仅限账号玩家。请登录后再玩。",
     "rated_guests": "积分赛要求每位入座的玩家都有账号。",
     "suspended": "你已被禁止在线游戏。",
-    "unknown": "出了点问题，请重试。"
+    "unknown": "出了点问题，请重试。",
+    "game_disabled": "该游戏暂时关闭。"
   },
   "invite": {
     "title": "邀请好友",

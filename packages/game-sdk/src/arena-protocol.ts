@@ -36,6 +36,8 @@ export const ARENA_ERRORS = {
   /** A guest without a name yet: the page asks for one, then joins again. */
   nickname_required: { fatal: true },
   unknown_game: { fatal: true },
+  /** An admin turned the game off for now (Phase 10). */
+  game_disabled: { fatal: true },
   closing: { fatal: false },
 } as const;
 export type ArenaErrorCode = keyof typeof ARENA_ERRORS;

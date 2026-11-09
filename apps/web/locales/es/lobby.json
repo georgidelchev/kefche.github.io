@@ -164,7 +164,8 @@
     "accounts_only": "Las partidas puntuadas son solo para cuentas. Inicia sesión para jugar.",
     "rated_guests": "Para una partida puntuada, todos los que ocupan un asiento necesitan una cuenta.",
     "suspended": "No puedes jugar en línea.",
-    "unknown": "Algo salió mal. Inténtalo de nuevo."
+    "unknown": "Algo salió mal. Inténtalo de nuevo.",
+    "game_disabled": "Este juego está desactivado por ahora."
   },
   "invite": {
     "title": "Invitar amigos",

@@ -161,5 +161,16 @@
     "ivo": "Ivo",
     "zara": "Zara",
     "leo": "Léo"
+  },
+  "badges": {
+    "featured": "À la une",
+    "new": "Nouveau",
+    "hot": "Populaire",
+    "beta": "Bêta",
+    "unavailable": "Indisponible"
+  },
+  "unavailable": {
+    "title": "Momentanément indisponible",
+    "body": "Ce jeu est désactivé pour le moment. Réessayez plus tard ou choisissez un autre jeu."
   }
 }

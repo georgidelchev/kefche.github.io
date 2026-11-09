@@ -63,7 +63,9 @@
       "roomChatDelete": "ロビーのメッセージを削除",
       "slowMode": "低速モードを設定",
       "profileReset": "プロフィールのリセット",
-      "dmContext": "通報された DM の会話を閲覧"
+      "dmContext": "通報された DM の会話を閲覧",
+      "gameUpdate": "ゲーム設定の変更",
+      "roomClose": "ルームを閉じた"
     },
     "targets": {
       "user": "プレイヤー",
@@ -71,7 +73,9 @@
       "message": "チャットのメッセージ",
       "roomMessage": "ロビーのメッセージ",
       "lobbyName": "ロビー名",
-      "chatRoom": "チャットルーム"
+      "chatRoom": "チャットルーム",
+      "game": "ゲーム",
+      "room": "ルーム"
     },
     "noProfile": "プロフィールなし"
   },
@@ -298,5 +302,46 @@
     "endsAt": "{date} に終了",
     "unmute": "{name} のミュートを解除",
     "unmuteBody": "すぐにまたチャットできるようになり、取り消しは監査ログに記録されます。"
+  },
+  "games": {
+    "settingsTitle": "ゲーム",
+    "settingsBody": "オフにしたゲームはどこでも始められません：新しいゲーム、ルーム、マッチング、アリーナ。進行中のゲームは最後まで続きます。ページには読み込み後に反映されます。",
+    "settingsOf": "{game} の設定",
+    "flags": {
+      "enabled": "オン"
+    },
+    "off": "オフ",
+    "offNote": "保存すると、全員に対してすぐにゲームがオフになります。",
+    "position": "カタログでの順位",
+    "positionHint": "1 が先頭です。空欄：カタログ本来の順序。",
+    "save": "保存",
+    "saveLabel": "{game} を保存",
+    "saved": "{game} を保存しました。",
+    "matchesDay": "対戦、過去 24 時間",
+    "matchesWeek": "対戦、過去 7 日",
+    "matchesAll": "対戦、累計",
+    "playersWeek": "プレイヤー、過去 7 日",
+    "inReview": "確認待ち",
+    "openRooms": "開いているルーム",
+    "arenas": "オンラインアリーナ",
+    "arenasValue": "{arenas} 件が開いていて {people} 人がプレイ中",
+    "roomsTitle": "開いているルーム",
+    "game": "ゲーム",
+    "anyGame": "すべてのゲーム",
+    "noRooms": "開いているルームはありません。",
+    "lobby": "ロビー",
+    "playing": "プレイ中",
+    "public": "公開",
+    "private": "非公開",
+    "playersValue": "プレイヤー：{count}/{seats}",
+    "spectatorsValue": "観戦者：{count}",
+    "host": "ホスト",
+    "close": "閉じる",
+    "closeRoom": "ルームを閉じる",
+    "closeLabel": "ルーム {code} を閉じる",
+    "closeTitle": "ルーム {code} を閉じますか？",
+    "closeBody": "中にいる全員にルームが閉じられたことが伝わり、ルームはチャットごと削除されます。元に戻せません。",
+    "closed": "ルーム {code} を閉じました。",
+    "alreadyClosed": "そのルームはすでに閉じています。"
   }
 }

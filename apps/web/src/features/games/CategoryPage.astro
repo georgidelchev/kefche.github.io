@@ -84,7 +84,10 @@ const jsonLd = [
     <p class="text-sm font-semibold text-muted">
       {t("games:catalog.results", { count: games.length })}
     </p>
-    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-5">
+    <ul
+      class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4 xl:grid-cols-5"
+      data-game-order
+    >
       {games.map((game) => (
         <GameCard locale={locale} game={game} />
       ))}

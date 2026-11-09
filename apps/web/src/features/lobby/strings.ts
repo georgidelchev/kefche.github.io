@@ -336,6 +336,7 @@ export const ROOM_ERROR_CODES = [
   "accounts_only",
   "rated_guests",
   "suspended",
+  "game_disabled",
   "connection",
   "unknown",
 ] as const;
@@ -405,6 +406,7 @@ export function roomStrings(t: AppT): RoomStrings {
     errors: {
       room_not_found: t("lobby:errors.room_not_found"),
       room_closed: t("lobby:errors.room_closed"),
+      game_disabled: t("lobby:errors.game_disabled"),
       room_locked: t("lobby:errors.room_locked"),
       room_full: t("lobby:errors.room_full"),
       room_kicked: t("lobby:errors.room_kicked"),

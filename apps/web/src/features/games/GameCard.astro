@@ -6,6 +6,7 @@ import { getT } from "@/i18n/i18n";
 import type { Locale } from "@/i18n/locales";
 
 import { CATEGORY_KEYS, playablePlayers } from "./catalog";
+import GameBadges from "./GameBadges.astro";
 
 import type { RegisteredGame } from "./registry";
 
@@ -35,9 +36,9 @@ const search = [text.name, game.text.en.name, text.tagline, category]
   .toLocaleLowerCase();
 ---
 
-<li data-game data-search={search} class="relative">
+<li data-game data-game-id={manifest.id} data-search={search} class="relative">
   <article class="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-surface p-2 transition-colors focus-within:border-border-strong hover:border-border-strong motion-reduce:transition-none">
-    <div class="overflow-hidden rounded-xl">
+    <div class="relative overflow-hidden rounded-xl">
       <!-- Decorative: the name below is the card's label. -->
       <img
         src={game.art.thumbnail}
@@ -48,6 +49,7 @@ const search = [text.name, game.text.en.name, text.tagline, category]
         decoding="async"
         class="aspect-[4/3] w-full transition-transform duration-300 group-hover:scale-105 motion-reduce:transition-none"
       />
+      <GameBadges locale={locale} class="absolute start-2 top-2" />
     </div>
     <div class="grid gap-1 px-1">
       <h2 class="text-base leading-tight font-semibold md:text-lg">

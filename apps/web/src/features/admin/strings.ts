@@ -74,6 +74,8 @@ export function auditStrings(t: AppT) {
       "chat.delete": t("admin:audit.actions.chatDelete"),
       "room_chat.delete": t("admin:audit.actions.roomChatDelete"),
       "chat.slow_mode": t("admin:audit.actions.slowMode"),
+      "game.update": t("admin:audit.actions.gameUpdate"),
+      "room.close": t("admin:audit.actions.roomClose"),
     } as Record<string, string>,
     /** What an entry can be about (`target_type`). */
     targets: {
@@ -83,6 +85,8 @@ export function auditStrings(t: AppT) {
       room_message: t("admin:audit.targets.roomMessage"),
       lobby_name: t("admin:audit.targets.lobbyName"),
       chat_room: t("admin:audit.targets.chatRoom"),
+      game: t("admin:audit.targets.game"),
+      room: t("admin:audit.targets.room"),
     } as Record<string, string>,
   };
 }
@@ -377,6 +381,70 @@ export function chatStrings(t: AppT) {
 
 export type ChatStrings = ReturnType<typeof chatStrings>;
 
+export function gamesStrings(t: AppT) {
+  return {
+    settingsTitle: t("admin:games.settingsTitle"),
+    settingsBody: t("admin:games.settingsBody"),
+    /** "{game}'s settings" */
+    settingsOf: t("admin:games.settingsOf", { game: "{game}" }),
+    flags: {
+      enabled: t("admin:games.flags.enabled"),
+      featured: t("games:badges.featured"),
+      is_new: t("games:badges.new"),
+      hot: t("games:badges.hot"),
+      beta: t("games:badges.beta"),
+    },
+    off: t("admin:games.off"),
+    offNote: t("admin:games.offNote"),
+    position: t("admin:games.position"),
+    positionHint: t("admin:games.positionHint"),
+    save: t("admin:games.save"),
+    /** "Save {game}" */
+    saveLabel: t("admin:games.saveLabel", { game: "{game}" }),
+    /** "{game} saved." */
+    saved: t("admin:games.saved", { game: "{game}" }),
+    matchesDay: t("admin:games.matchesDay"),
+    matchesWeek: t("admin:games.matchesWeek"),
+    matchesAll: t("admin:games.matchesAll"),
+    playersWeek: t("admin:games.playersWeek"),
+    inReview: t("admin:games.inReview"),
+    openRooms: t("admin:games.openRooms"),
+    arenas: t("admin:games.arenas"),
+    /** "{arenas} open, {people} playing" */
+    arenasValue: t("admin:games.arenasValue", { arenas: "{arenas}", people: "{people}" }),
+    roomsTitle: t("admin:games.roomsTitle"),
+    game: t("admin:games.game"),
+    anyGame: t("admin:games.anyGame"),
+    show: t("admin:reports.apply"),
+    noRooms: t("admin:games.noRooms"),
+    lobby: t("admin:games.lobby"),
+    playing: t("admin:games.playing"),
+    public: t("admin:games.public"),
+    private: t("admin:games.private"),
+    rated: t("admin:players.rated"),
+    /** "Players: {count} of {seats}" */
+    playersValue: t("admin:games.playersValue", { count: "{count}", seats: "{seats}" }),
+    /** "Spectators: {count}" */
+    spectatorsValue: t("admin:games.spectatorsValue", { count: "{count}" }),
+    host: t("admin:games.host"),
+    close: t("admin:games.close"),
+    closeRoom: t("admin:games.closeRoom"),
+    /** "Close room {code}" */
+    closeLabel: t("admin:games.closeLabel", { code: "{code}" }),
+    /** "Close room {code}?" */
+    closeTitle: t("admin:games.closeTitle", { code: "{code}" }),
+    closeBody: t("admin:games.closeBody"),
+    /** "Room {code} closed." */
+    closed: t("admin:games.closed", { code: "{code}" }),
+    alreadyClosed: t("admin:games.alreadyClosed"),
+    loading: t("admin:loading"),
+    failed: t("admin:failed"),
+    retry: t("admin:retry"),
+  };
+}
+
+export type GamesStrings = ReturnType<typeof gamesStrings>;
+
 /** What the page's section shows, with the strings it needs (built on the server). */
 export function adminView(section: AdminSectionId, t: AppT, locale: Locale): AdminView {
   if (section === "audit") return { section, strings: auditStrings(t) };
@@ -385,5 +453,7 @@ export function adminView(section: AdminSectionId, t: AppT, locale: Locale): Adm
     return { section, strings: reportsStrings(t), players: playersStrings(t, locale) };
   if (section === "chat")
     return { section, strings: chatStrings(t), players: playersStrings(t, locale) };
+  if (section === "games")
+    return { section, strings: gamesStrings(t), players: playersStrings(t, locale) };
   return { section };
 }

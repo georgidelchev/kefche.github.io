@@ -15,6 +15,7 @@ import { LOCALE_INFO, type Locale } from "@/i18n/locales";
 import { getSupabaseEnv } from "@/lib/env";
 
 import { CATEGORY_KEYS, playablePlayers } from "./catalog";
+import GameBadges from "./GameBadges.astro";
 import { GamePlayer } from "./GamePlayer";
 import {
   arenaProps,
@@ -134,7 +135,7 @@ const crumb = "rounded-sm hover:underline";
       <span aria-current="page">{text.name}</span>
     </nav>
 
-    <header class="grid gap-4">
+    <header class="grid gap-4" data-game-page={manifest.id} data-game-id={manifest.id}>
       <!-- Decorative: the heading below names the game. -->
       <img
         src={game.art.hero}
@@ -147,6 +148,7 @@ const crumb = "rounded-sm hover:underline";
       />
       <h1 class="text-4xl md:text-5xl">{text.name}</h1>
       <p class="text-lg text-muted">{text.tagline}</p>
+      <GameBadges locale={locale} />
       <ul class="flex flex-wrap gap-2">
         {facts.map(({ Icon, label }) => (
           <li class="flex items-center gap-2 rounded-full bg-surface-2 px-3 py-1 text-sm font-semibold">
@@ -155,7 +157,16 @@ const crumb = "rounded-sm hover:underline";
           </li>
         ))}
       </ul>
-      <div>
+      <div
+        role="status"
+        hidden
+        data-game-unavailable
+        class="grid gap-1 rounded-2xl border border-warning bg-surface p-4"
+      >
+        <p class="font-semibold">{t("games:unavailable.title")}</p>
+        <p class="text-muted">{t("games:unavailable.body")}</p>
+      </div>
+      <div data-game-play>
         <GamePlayer
           client:load
           id={manifest.id}
@@ -174,6 +185,7 @@ const crumb = "rounded-sm hover:underline";
         <section
           class="grid gap-3 rounded-2xl border border-border bg-surface p-4"
           aria-labelledby="play-online"
+          data-game-play
         >
           <h2 id="play-online" class="flex items-center gap-2 text-xl">
             <Globe aria-hidden="true" className="size-5" />

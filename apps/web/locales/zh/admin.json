@@ -63,7 +63,9 @@
       "roomChatDelete": "删除房间消息",
       "slowMode": "设置慢速模式",
       "profileReset": "资料已重置",
-      "dmContext": "已查看被举报私信的对话"
+      "dmContext": "已查看被举报私信的对话",
+      "gameUpdate": "游戏设置已更改",
+      "roomClose": "房间已关闭"
     },
     "targets": {
       "user": "玩家",
@@ -71,7 +73,9 @@
       "message": "聊天消息",
       "roomMessage": "房间消息",
       "lobbyName": "房间名称",
-      "chatRoom": "聊天室"
+      "chatRoom": "聊天室",
+      "game": "游戏",
+      "room": "房间"
     },
     "noProfile": "无主页"
   },
@@ -298,5 +302,46 @@
     "endsAt": "{date} 结束",
     "unmute": "解除 {name} 的禁言",
     "unmuteBody": "对方可以立即重新聊天，撤销操作会记录在审计日志中。"
+  },
+  "games": {
+    "settingsTitle": "游戏",
+    "settingsBody": "关闭的游戏在任何地方都无法开始：新对局、房间、匹配和竞技场。进行中的对局会打完。页面加载后会显示变化。",
+    "settingsOf": "{game} 的设置",
+    "flags": {
+      "enabled": "开启"
+    },
+    "off": "已关闭",
+    "offNote": "保存后，该游戏会立即对所有人关闭。",
+    "position": "在目录中的位置",
+    "positionHint": "1 排在最前。留空：按目录自身的顺序。",
+    "save": "保存",
+    "saveLabel": "保存 {game}",
+    "saved": "{game} 已保存。",
+    "matchesDay": "对局，最近 24 小时",
+    "matchesWeek": "对局，最近 7 天",
+    "matchesAll": "对局，全部",
+    "playersWeek": "玩家，最近 7 天",
+    "inReview": "待审核",
+    "openRooms": "开放的房间",
+    "arenas": "在线竞技场",
+    "arenasValue": "{arenas} 个开放，{people} 人在玩",
+    "roomsTitle": "开放的房间",
+    "game": "游戏",
+    "anyGame": "所有游戏",
+    "noRooms": "没有开放的房间。",
+    "lobby": "在大厅",
+    "playing": "游戏中",
+    "public": "公开",
+    "private": "私密",
+    "playersValue": "玩家：{count}/{seats}",
+    "spectatorsValue": "观众：{count}",
+    "host": "房主",
+    "close": "关闭",
+    "closeRoom": "关闭房间",
+    "closeLabel": "关闭房间 {code}",
+    "closeTitle": "关闭房间 {code}？",
+    "closeBody": "房间里的每个人都会收到房间已关闭的通知，房间及其聊天会被删除。此操作无法撤销。",
+    "closed": "房间 {code} 已关闭。",
+    "alreadyClosed": "该房间已经关闭。"
   }
 }

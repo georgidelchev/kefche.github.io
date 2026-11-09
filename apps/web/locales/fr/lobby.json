@@ -164,7 +164,8 @@
     "accounts_only": "Les parties classées sont réservées aux comptes. Connectez-vous pour jouer.",
     "rated_guests": "Pour une partie classée, chaque personne assise doit avoir un compte.",
     "suspended": "Vous ne pouvez pas jouer en ligne.",
-    "unknown": "Un problème est survenu. Veuillez réessayer."
+    "unknown": "Un problème est survenu. Veuillez réessayer.",
+    "game_disabled": "Ce jeu est désactivé pour le moment."
   },
   "invite": {
     "title": "Inviter des amis",

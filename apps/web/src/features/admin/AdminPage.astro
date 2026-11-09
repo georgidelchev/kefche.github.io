@@ -5,6 +5,7 @@ import { authPaths } from "@/features/auth/paths";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+import { getArenaUrl } from "@/lib/env";
 
 import { AdminPanel } from "./AdminPanel";
 import { ADMIN_SECTIONS, type AdminSectionId } from "./sections";
@@ -31,6 +32,8 @@ const adminPaths = {
   users: links.users,
   reports: links.reports,
   chat: links.chat,
+  games: links.games,
+  arena: getArenaUrl(),
 };
 ---
 

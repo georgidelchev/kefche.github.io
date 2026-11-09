@@ -161,5 +161,16 @@
     "ivo": "Ivo",
     "zara": "Zara",
     "leo": "Leo"
+  },
+  "badges": {
+    "featured": "Destaque",
+    "new": "Novo",
+    "hot": "Em alta",
+    "beta": "Beta",
+    "unavailable": "Indisponível"
+  },
+  "unavailable": {
+    "title": "Indisponível no momento",
+    "body": "Este jogo está desligado por enquanto. Tente mais tarde ou escolha outro jogo."
   }
 }

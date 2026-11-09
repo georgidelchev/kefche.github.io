@@ -161,5 +161,16 @@
     "ivo": "伊沃",
     "zara": "扎拉",
     "leo": "里奥"
+  },
+  "badges": {
+    "featured": "精选",
+    "new": "新",
+    "hot": "热门",
+    "beta": "测试版",
+    "unavailable": "不可用"
+  },
+  "unavailable": {
+    "title": "暂时不可用",
+    "body": "该游戏暂时关闭。请稍后再试，或选择其他游戏。"
   }
 }
