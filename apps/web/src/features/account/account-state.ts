@@ -16,6 +16,7 @@ import {
 } from "./account-summary";
 import { avatarUrl } from "./avatar-url";
 import { clearUnsaved, syncPreferences } from "./preferences-sync";
+import { isStaffToken } from "./staff-claim";
 
 export function localStorageOrUndefined(): KeyValueStorage | undefined {
   try {
@@ -30,9 +31,12 @@ export function renderAccount(summary: AccountSummary | null): void {
   const root = document.documentElement;
   if (!summary) {
     delete root.dataset.account;
+    delete root.dataset.staff;
     return;
   }
   root.dataset.account = "signed-in";
+  if (summary.staff === true) root.dataset.staff = "true";
+  else delete root.dataset.staff;
   const slot = String(paletteIndexFor(summary.id));
   const initials = summary.nickname ? initialsFor(summary.nickname, root.lang) : "";
   for (const avatar of document.querySelectorAll<HTMLElement>("[data-account-avatar]")) {
@@ -97,6 +101,7 @@ export async function syncAccount(supabase: Supabase): Promise<AccountSummary | 
     avatarUrl: profile.data && supabaseConfig ? avatarUrl(profile.data, supabaseConfig.url) : null,
     level: levelForXp(profile.data?.xp ?? 0),
     frame: profile.data?.avatar_frame ?? null,
+    staff: data.session !== null && isStaffToken(data.session.access_token),
   };
   setAccount(summary);
   await syncPreferences(supabase, user.id);

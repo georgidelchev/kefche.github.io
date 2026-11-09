@@ -1,0 +1,28 @@
+{
+  "description": "kefche のモデレーターと管理者のためのツールです。",
+  "pageTitle": "{section} · 管理",
+  "menu": "管理セクション",
+  "loading": "読み込み中…",
+  "failed": "管理パネルを読み込めませんでした。接続を確認して、もう一度お試しください。",
+  "retry": "もう一度試す",
+  "staffOnly": "スタッフ専用",
+  "staffOnlyBody": "kefche のこの部分は、モデレーターと管理者専用です。",
+  "adminOnly": "このセクションを開けるのは管理者だけです。",
+  "pending": "このセクションはまだ準備中です。今後のアップデートで追加されます。",
+  "role": {
+    "admin": "管理者",
+    "moderator": "モデレーター"
+  },
+  "sections": {
+    "dashboard": "ダッシュボード",
+    "users": "プレイヤー",
+    "reports": "通報",
+    "chat": "チャット",
+    "games": "ゲーム",
+    "integrity": "ランキング",
+    "content": "コンテンツ",
+    "i18n": "翻訳",
+    "flags": "機能フラグ",
+    "audit": "監査ログ"
+  }
+}

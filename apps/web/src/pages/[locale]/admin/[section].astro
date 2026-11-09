@@ -1,0 +1,19 @@
+---
+import AdminPage from "@/features/admin/AdminPage.astro";
+import { ADMIN_SUBSECTIONS, type AdminSubsection } from "@/features/admin/sections";
+import { authStaticPaths } from "@/features/auth/page-helpers";
+import type { Locale } from "@/i18n/locales";
+
+import type { GetStaticPaths } from "astro";
+
+// The admin panel's other sections (SPEC §14); only in builds with accounts.
+export const getStaticPaths = (() =>
+  authStaticPaths().flatMap(({ params }) =>
+    ADMIN_SUBSECTIONS.map((section) => ({ params: { ...params, section } })),
+  )) satisfies GetStaticPaths;
+
+const locale = Astro.params.locale as Locale;
+const section = Astro.params.section as AdminSubsection;
+---
+
+<AdminPage locale={locale} section={section} />

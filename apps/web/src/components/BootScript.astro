@@ -22,7 +22,11 @@ import { THEME_STORAGE_KEY } from "@/features/theme/theme";
     if (theme === "light" || theme === "dark") root.dataset.theme = theme;
     if (localStorage.getItem(railKey) === "compact") root.dataset.rail = "compact";
     // Only a hint for the header; account.client.ts validates the summary.
-    if (localStorage.getItem(accountKey)) root.dataset.account = "signed-in";
+    const account = localStorage.getItem(accountKey);
+    if (account) {
+      root.dataset.account = "signed-in";
+      if (JSON.parse(account).staff === true) root.dataset.staff = "true";
+    }
   } catch {
     // Storage unavailable: defaults apply.
   }

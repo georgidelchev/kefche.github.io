@@ -1,0 +1,28 @@
+{
+  "description": "Les outils des modérateurs et administrateurs de kefche.",
+  "pageTitle": "{section} · Administration",
+  "menu": "Sections de l'administration",
+  "loading": "Chargement…",
+  "failed": "Le panneau d'administration n'a pas pu se charger. Vérifiez votre connexion et réessayez.",
+  "retry": "Réessayer",
+  "staffOnly": "Réservé à l'équipe",
+  "staffOnlyBody": "Cette partie de kefche est réservée à ses modérateurs et administrateurs.",
+  "adminOnly": "Seuls les administrateurs peuvent ouvrir cette section.",
+  "pending": "Cette section n'est pas encore prête. Elle arrivera dans une prochaine mise à jour.",
+  "role": {
+    "admin": "Administrateur",
+    "moderator": "Modérateur"
+  },
+  "sections": {
+    "dashboard": "Tableau de bord",
+    "users": "Joueurs",
+    "reports": "Signalements",
+    "chat": "Chat",
+    "games": "Jeux",
+    "integrity": "Classements",
+    "content": "Contenu",
+    "i18n": "Traductions",
+    "flags": "Fonctionnalités",
+    "audit": "Journal d'audit"
+  }
+}

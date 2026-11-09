@@ -20,6 +20,8 @@ export const accountSummarySchema = z.object({
   level: z.optional(z.int().check(z.minimum(1))),
   /** The avatar frame worn (lib/frames.ts), or none. */
   frame: z.optional(z.nullable(z.string().check(z.maxLength(40)))),
+  /** A moderator or admin: the header links to the admin panel (a hint, not a permission). */
+  staff: z.optional(z.boolean()),
 });
 export type AccountSummary = z.infer<typeof accountSummarySchema>;
 

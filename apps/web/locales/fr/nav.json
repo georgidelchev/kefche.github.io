@@ -9,5 +9,6 @@
   "search": "Rechercher",
   "searchPlaceholder": "Rechercher des jeux",
   "settings": "Paramètres",
-  "compact": "Menu compact"
+  "compact": "Menu compact",
+  "admin": "Panneau d'administration"
 }

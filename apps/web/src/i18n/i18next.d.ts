@@ -1,6 +1,7 @@
 // Typed translation keys: `t("common:theme.light")` is checked against the
 // English source files, so a typo is a type error.
 import type account from "../../locales/en/account.json";
+import type admin from "../../locales/en/admin.json";
 import type auth from "../../locales/en/auth.json";
 import type chat from "../../locales/en/chat.json";
 import type common from "../../locales/en/common.json";
@@ -35,6 +36,7 @@ declare module "i18next" {
       notifications: typeof notifications;
       chat: typeof chat;
       messages: typeof messages;
+      admin: typeof admin;
     };
   }
 }

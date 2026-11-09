@@ -9,5 +9,6 @@
   "search": "Search",
   "searchPlaceholder": "Search games",
   "settings": "Settings",
-  "compact": "Compact menu"
+  "compact": "Compact menu",
+  "admin": "Admin panel"
 }

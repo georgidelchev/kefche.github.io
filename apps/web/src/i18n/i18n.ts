@@ -20,6 +20,7 @@ export const NAMESPACES = [
   "notifications",
   "chat",
   "messages",
+  "admin",
 ] as const;
 export type Namespace = (typeof NAMESPACES)[number];
 

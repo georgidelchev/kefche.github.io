@@ -9,6 +9,7 @@ import {
   PanelLeftClose,
   Search,
   Settings,
+  ShieldCheck,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -165,6 +166,18 @@ const focusRing =
 
       {accounts && (
         <div class="ms-auto flex items-center gap-2 lg:ms-0">
+          <!-- Staff only (data-staff, set before paint): the admin panel. -->
+          <a
+            href={getRelativeLocaleUrl(locale, "/admin/")}
+            title={t("nav:admin")}
+            class:list={[
+              "hidden size-11 items-center justify-center rounded-full border border-border-strong bg-surface-2 text-text hover:bg-surface group-data-[staff=true]/root:flex",
+              focusRing,
+            ]}
+          >
+            <ShieldCheck aria-hidden="true" className="size-5" />
+            <span class="sr-only">{t("nav:admin")}</span>
+          </a>
           <!-- The bell shows for accounts (set before paint); bell.ts keeps its count. -->
           <a
             href={getRelativeLocaleUrl(locale, "/notifications/")}

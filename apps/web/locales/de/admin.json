@@ -1,0 +1,28 @@
+{
+  "description": "Werkzeuge für die Moderatoren und Admins von kefche.",
+  "pageTitle": "{section} · Admin",
+  "menu": "Bereiche der Verwaltung",
+  "loading": "Wird geladen …",
+  "failed": "Der Adminbereich konnte nicht geladen werden. Prüfe deine Verbindung und versuch es noch einmal.",
+  "retry": "Noch einmal",
+  "staffOnly": "Nur für das Team",
+  "staffOnlyBody": "Dieser Teil von kefche ist für seine Moderatoren und Admins.",
+  "adminOnly": "Nur Admins können diesen Bereich öffnen.",
+  "pending": "Dieser Bereich ist noch nicht fertig. Er kommt mit einem späteren Update.",
+  "role": {
+    "admin": "Admin",
+    "moderator": "Moderator"
+  },
+  "sections": {
+    "dashboard": "Übersicht",
+    "users": "Spieler",
+    "reports": "Meldungen",
+    "chat": "Chat",
+    "games": "Spiele",
+    "integrity": "Bestenlisten",
+    "content": "Inhalte",
+    "i18n": "Übersetzungen",
+    "flags": "Funktionen",
+    "audit": "Protokoll"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "description": "Tools for kefche's moderators and admins.",
+  "pageTitle": "{section} · Admin",
+  "menu": "Admin sections",
+  "loading": "Loading…",
+  "failed": "The admin panel couldn't load. Check your connection and try again.",
+  "retry": "Try again",
+  "staffOnly": "For staff only",
+  "staffOnlyBody": "This part of kefche is for its moderators and admins.",
+  "adminOnly": "Only admins can open this section.",
+  "pending": "This section isn't ready yet. It arrives in a later update.",
+  "role": {
+    "admin": "Admin",
+    "moderator": "Moderator"
+  },
+  "sections": {
+    "dashboard": "Dashboard",
+    "users": "Players",
+    "reports": "Reports",
+    "chat": "Chat",
+    "games": "Games",
+    "integrity": "Leaderboards",
+    "content": "Content",
+    "i18n": "Translations",
+    "flags": "Feature flags",
+    "audit": "Audit log"
+  }
+}

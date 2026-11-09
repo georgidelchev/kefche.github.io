@@ -1,0 +1,49 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+import { authPaths } from "@/features/auth/paths";
+import AppShell from "@/features/shell/AppShell.astro";
+import { getT } from "@/i18n/i18n";
+import type { Locale } from "@/i18n/locales";
+
+import { AdminPanel } from "./AdminPanel";
+import { ADMIN_SECTIONS, type AdminSectionId } from "./sections";
+import { adminStrings } from "./strings";
+
+// One admin page (src/pages/[locale]/admin/): private, noindex and the same
+// for everyone; the island fills it for staff only.
+interface Props {
+  locale: Locale;
+  section: AdminSectionId;
+}
+
+const { locale, section } = Astro.props;
+const t = getT(locale);
+const strings = adminStrings(t);
+const paths = authPaths(locale, getRelativeLocaleUrl);
+const path = ADMIN_SECTIONS.find((s) => s.id === section)?.path ?? "/admin/";
+const links = Object.fromEntries(
+  ADMIN_SECTIONS.map((s) => [s.id, getRelativeLocaleUrl(locale, s.path)]),
+) as Record<AdminSectionId, string>;
+---
+
+<AppShell
+  locale={locale}
+  path={path}
+  title={t("common:meta.sectionTitle", {
+    section: t("admin:pageTitle", { section: strings.sections[section] }),
+  })}
+  description={t("admin:description")}
+  noindex
+>
+  <div class="grid w-full gap-6 pb-6">
+    <AdminPanel
+      client:load
+      section={section}
+      strings={strings}
+      links={links}
+      signInPath={paths.signIn}
+      homePath={paths.home}
+    />
+  </div>
+</AppShell>

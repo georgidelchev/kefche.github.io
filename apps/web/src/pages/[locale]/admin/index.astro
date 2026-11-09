@@ -1,0 +1,12 @@
+---
+import AdminPage from "@/features/admin/AdminPage.astro";
+import { authStaticPaths } from "@/features/auth/page-helpers";
+import type { Locale } from "@/i18n/locales";
+
+// The admin panel's dashboard (SPEC §14); only in builds with accounts.
+export const getStaticPaths = authStaticPaths;
+
+const locale = Astro.params.locale as Locale;
+---
+
+<AdminPage locale={locale} section="dashboard" />

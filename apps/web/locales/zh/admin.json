@@ -1,0 +1,28 @@
+{
+  "description": "kefche 版主和管理员的工具。",
+  "pageTitle": "{section} · 管理",
+  "menu": "管理分区",
+  "loading": "正在加载…",
+  "failed": "管理面板加载失败。请检查网络连接后重试。",
+  "retry": "重试",
+  "staffOnly": "仅限工作人员",
+  "staffOnlyBody": "kefche 的这一部分仅供版主和管理员使用。",
+  "adminOnly": "只有管理员可以打开此分区。",
+  "pending": "此分区尚未完成，将在后续更新中推出。",
+  "role": {
+    "admin": "管理员",
+    "moderator": "版主"
+  },
+  "sections": {
+    "dashboard": "概览",
+    "users": "玩家",
+    "reports": "举报",
+    "chat": "聊天",
+    "games": "游戏",
+    "integrity": "排行榜",
+    "content": "内容",
+    "i18n": "翻译",
+    "flags": "功能开关",
+    "audit": "审计日志"
+  }
+}

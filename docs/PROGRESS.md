@@ -2082,6 +2082,13 @@ Until now the RUNBOOK gives SQL for all of these. Phase 10 puts screens on them 
 ### Status
 
 - [x] Plan written and the owner's questions answered (2026-11-09)
+- [x] **Step 1, the admin shell:**
+  - `/[locale]/admin/` and one page per section (`features/admin/`), `noindex`. The island reads the user's own rows in `user_roles`, not the token; guests and signed-out visitors go to sign in, and players see "For staff only".
+  - Moderators get Dashboard, Players, Reports and Chat; admins get all ten. An admin section opened by a moderator says so, and the database still refuses: moderators can't read `audit_log`.
+  - The menu sits at the side from 1024 px and is a bar on top below that, with the current section scrolled into view. Each section will be its own lazy chunk (`views.ts`), loaded only for staff.
+  - Staff get a shield link in the header: the account summary keeps `staff` from the token's `app_roles` claim, and the boot script applies it before paint. It's only a hint; the panel checks again.
+  - The new `admin` namespace is in all 11 locales.
+  - Checked in Chrome: 43/43, covering signed out, player, moderator and admin; 1280, 1024, 768 and 390 px; both themes; Arabic; and axe.
 
 ## Known issues
 
