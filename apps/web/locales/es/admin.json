@@ -61,7 +61,8 @@
       "reportResolve": "Denuncias resueltas",
       "chatDelete": "Mensaje del chat eliminado",
       "roomChatDelete": "Mensaje de sala eliminado",
-      "slowMode": "Modo lento ajustado"
+      "slowMode": "Modo lento ajustado",
+      "profileReset": "Perfil restablecido"
     },
     "targets": {
       "user": "Jugador",
@@ -162,6 +163,56 @@
     },
     "against": "Contra {names}",
     "rated": "Puntuada",
-    "review": "Apartada para revisión"
+    "review": "Apartada para revisión",
+    "act": {
+      "title": "Acciones",
+      "resetNickname": "Restablecer apodo",
+      "resetAvatar": "Restablecer avatar",
+      "resetBio": "Borrar bio",
+      "resetNicknameTitle": "¿Restablecer el apodo de {name}?",
+      "resetNicknameBody": "Recibe un nombre como player_123456 y puede elegir otro enseguida. Se le avisa.",
+      "resetAvatarTitle": "¿Restablecer el avatar de {name}?",
+      "resetAvatarBody": "Se muestran sus iniciales y la imagen subida no se puede volver a elegir. Se le avisa.",
+      "resetBioTitle": "¿Borrar la bio de {name}?",
+      "resetBioBody": "Su bio se elimina. Se le avisa.",
+      "sanction": "Sancionar",
+      "sanctionTitle": "Sancionar a {name}",
+      "sanctionBody": "El jugador ve la sanción, su motivo y cuándo termina.",
+      "kind": "Sanción",
+      "duration": "Duración",
+      "durations": {
+        "h1": "1 hora",
+        "h24": "24 horas",
+        "d7": "7 días",
+        "d30": "30 días",
+        "none": "Hasta revocarla"
+      },
+      "note": "Nota (opcional)",
+      "noteHint": "Para el registro, hasta 500 caracteres.",
+      "give": "Imponer sanción",
+      "revoke": "Revocar",
+      "revokeTitle": "¿Revocar esta sanción?",
+      "makeModerator": "Hacer moderador",
+      "removeModerator": "Quitar moderador",
+      "makeAdmin": "Hacer admin",
+      "removeAdmin": "Quitar admin",
+      "roleBody": "Para {name}. En el panel cambia al momento; en el resto, en hasta una hora.",
+      "deleteAccount": "Eliminar cuenta",
+      "deleteTitle": "¿Eliminar la cuenta de {name}?",
+      "deleteBody": "Para una solicitud de eliminación. Se cierra su sesión ahora y la purga habitual elimina la cuenta y sus datos en menos de una hora. Hasta entonces, puedes cancelarlo.",
+      "cancelDeletion": "Cancelar eliminación",
+      "cancelDeletionBody": "La cuenta de {name} se mantiene.",
+      "cancel": "Cancelar",
+      "close": "Cerrar",
+      "done": "Hecho.",
+      "errors": {
+        "adminOnly": "Solo un admin puede hacerlo.",
+        "rateLimited": "Demasiadas acciones. Espera unos minutos.",
+        "nothing": "No hay nada que restablecer.",
+        "staffAccount": "Quítale primero sus roles del equipo.",
+        "lastAdmin": "No se puede quitar al último admin.",
+        "failed": "No funcionó. Inténtalo de nuevo."
+      }
+    }
   }
 }

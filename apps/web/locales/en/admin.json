@@ -61,7 +61,8 @@
       "reportResolve": "Reports resolved",
       "chatDelete": "Chat message deleted",
       "roomChatDelete": "Lobby message deleted",
-      "slowMode": "Slow mode set"
+      "slowMode": "Slow mode set",
+      "profileReset": "Profile reset"
     },
     "targets": {
       "user": "Player",
@@ -162,6 +163,56 @@
     },
     "against": "Against {names}",
     "rated": "Rated",
-    "review": "Set aside for review"
+    "review": "Set aside for review",
+    "act": {
+      "title": "Actions",
+      "resetNickname": "Reset nickname",
+      "resetAvatar": "Reset avatar",
+      "resetBio": "Clear bio",
+      "resetNicknameTitle": "Reset {name}'s nickname?",
+      "resetNicknameBody": "They get a name like player_123456 and can choose a new one straight away. They're told it was reset.",
+      "resetAvatarTitle": "Reset {name}'s avatar?",
+      "resetAvatarBody": "Their initials show instead, and an uploaded picture can't be chosen again. They're told it was removed.",
+      "resetBioTitle": "Clear {name}'s bio?",
+      "resetBioBody": "Their bio is removed. They're told it was cleared.",
+      "sanction": "Sanction",
+      "sanctionTitle": "Sanction {name}",
+      "sanctionBody": "The player is told the sanction, its reason and when it ends.",
+      "kind": "Sanction",
+      "duration": "Length",
+      "durations": {
+        "h1": "1 hour",
+        "h24": "24 hours",
+        "d7": "7 days",
+        "d30": "30 days",
+        "none": "Until revoked"
+      },
+      "note": "Note (optional)",
+      "noteHint": "For the record, up to 500 characters.",
+      "give": "Give sanction",
+      "revoke": "Revoke",
+      "revokeTitle": "Revoke this sanction?",
+      "makeModerator": "Make moderator",
+      "removeModerator": "Remove moderator",
+      "makeAdmin": "Make admin",
+      "removeAdmin": "Remove admin",
+      "roleBody": "For {name}. The panel changes at once; elsewhere it takes up to an hour.",
+      "deleteAccount": "Delete account",
+      "deleteTitle": "Delete {name}'s account?",
+      "deleteBody": "For a deletion request. They're signed out now, and the usual purge deletes the account and its data within the hour. Until then, you can cancel.",
+      "cancelDeletion": "Cancel deletion",
+      "cancelDeletionBody": "{name}'s account stays.",
+      "cancel": "Cancel",
+      "close": "Close",
+      "done": "Done.",
+      "errors": {
+        "adminOnly": "Only an admin can do that.",
+        "rateLimited": "Too many actions. Wait a few minutes.",
+        "nothing": "There's nothing to reset.",
+        "staffAccount": "Remove their staff roles first.",
+        "lastAdmin": "The last admin can't be removed.",
+        "failed": "That didn't work. Try again."
+      }
+    }
   }
 }

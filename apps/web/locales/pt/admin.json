@@ -61,7 +61,8 @@
       "reportResolve": "Denúncias resolvidas",
       "chatDelete": "Mensagem do chat apagada",
       "roomChatDelete": "Mensagem da sala apagada",
-      "slowMode": "Modo lento definido"
+      "slowMode": "Modo lento definido",
+      "profileReset": "Perfil redefinido"
     },
     "targets": {
       "user": "Jogador",
@@ -162,6 +163,56 @@
     },
     "against": "Contra {names}",
     "rated": "Ranqueada",
-    "review": "Separada para revisão"
+    "review": "Separada para revisão",
+    "act": {
+      "title": "Ações",
+      "resetNickname": "Redefinir apelido",
+      "resetAvatar": "Redefinir avatar",
+      "resetBio": "Apagar bio",
+      "resetNicknameTitle": "Redefinir o apelido de {name}?",
+      "resetNicknameBody": "Recebe um nome como player_123456 e pode escolher outro na hora. É avisado.",
+      "resetAvatarTitle": "Redefinir o avatar de {name}?",
+      "resetAvatarBody": "Aparecem as iniciais, e a imagem enviada não pode ser escolhida de novo. É avisado.",
+      "resetBioTitle": "Apagar a bio de {name}?",
+      "resetBioBody": "A bio é removida. É avisado.",
+      "sanction": "Sancionar",
+      "sanctionTitle": "Sancionar {name}",
+      "sanctionBody": "O jogador vê a sanção, o motivo e quando termina.",
+      "kind": "Sanção",
+      "duration": "Duração",
+      "durations": {
+        "h1": "1 hora",
+        "h24": "24 horas",
+        "d7": "7 dias",
+        "d30": "30 dias",
+        "none": "Até ser revogada"
+      },
+      "note": "Nota (opcional)",
+      "noteHint": "Para o registro, até 500 caracteres.",
+      "give": "Aplicar sanção",
+      "revoke": "Revogar",
+      "revokeTitle": "Revogar esta sanção?",
+      "makeModerator": "Tornar moderador",
+      "removeModerator": "Remover moderador",
+      "makeAdmin": "Tornar admin",
+      "removeAdmin": "Remover admin",
+      "roleBody": "Para {name}. No painel muda na hora; no resto, em até uma hora.",
+      "deleteAccount": "Excluir conta",
+      "deleteTitle": "Excluir a conta de {name}?",
+      "deleteBody": "Para um pedido de exclusão. A sessão é encerrada agora, e a limpeza habitual exclui a conta e os dados em até uma hora. Até lá, dá para cancelar.",
+      "cancelDeletion": "Cancelar exclusão",
+      "cancelDeletionBody": "A conta de {name} continua.",
+      "cancel": "Cancelar",
+      "close": "Fechar",
+      "done": "Feito.",
+      "errors": {
+        "adminOnly": "Só um admin pode fazer isso.",
+        "rateLimited": "Ações demais. Espere alguns minutos.",
+        "nothing": "Não há nada para redefinir.",
+        "staffAccount": "Remova antes as funções de equipe.",
+        "lastAdmin": "O último admin não pode ser removido.",
+        "failed": "Não deu certo. Tente de novo."
+      }
+    }
   }
 }

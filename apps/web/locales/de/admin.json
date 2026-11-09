@@ -61,7 +61,8 @@
       "reportResolve": "Meldungen bearbeitet",
       "chatDelete": "Chatnachricht gelöscht",
       "roomChatDelete": "Lobbynachricht gelöscht",
-      "slowMode": "Langsamer Modus gesetzt"
+      "slowMode": "Langsamer Modus gesetzt",
+      "profileReset": "Profil zurückgesetzt"
     },
     "targets": {
       "user": "Spieler",
@@ -162,6 +163,56 @@
     },
     "against": "Gegen {names}",
     "rated": "Gewertet",
-    "review": "Zur Prüfung zurückgestellt"
+    "review": "Zur Prüfung zurückgestellt",
+    "act": {
+      "title": "Aktionen",
+      "resetNickname": "Nickname zurücksetzen",
+      "resetAvatar": "Avatar zurücksetzen",
+      "resetBio": "Bio löschen",
+      "resetNicknameTitle": "Nickname von {name} zurücksetzen?",
+      "resetNicknameBody": "Der Spieler bekommt einen Namen wie player_123456 und kann sofort einen neuen wählen. Er wird benachrichtigt.",
+      "resetAvatarTitle": "Avatar von {name} zurücksetzen?",
+      "resetAvatarBody": "Stattdessen erscheinen die Initialen, und das hochgeladene Bild kann nicht erneut gewählt werden. Er wird benachrichtigt.",
+      "resetBioTitle": "Bio von {name} löschen?",
+      "resetBioBody": "Die Bio wird entfernt. Er wird benachrichtigt.",
+      "sanction": "Sanktionieren",
+      "sanctionTitle": "{name} sanktionieren",
+      "sanctionBody": "Der Spieler erfährt die Sanktion, ihren Grund und ihr Ende.",
+      "kind": "Sanktion",
+      "duration": "Dauer",
+      "durations": {
+        "h1": "1 Stunde",
+        "h24": "24 Stunden",
+        "d7": "7 Tage",
+        "d30": "30 Tage",
+        "none": "Bis zur Aufhebung"
+      },
+      "note": "Notiz (optional)",
+      "noteHint": "Für die Akten, bis zu 500 Zeichen.",
+      "give": "Sanktion erteilen",
+      "revoke": "Aufheben",
+      "revokeTitle": "Diese Sanktion aufheben?",
+      "makeModerator": "Zum Moderator machen",
+      "removeModerator": "Moderator entfernen",
+      "makeAdmin": "Zum Admin machen",
+      "removeAdmin": "Admin entfernen",
+      "roleBody": "Für {name}. Im Panel sofort, anderswo innerhalb einer Stunde.",
+      "deleteAccount": "Konto löschen",
+      "deleteTitle": "Konto von {name} löschen?",
+      "deleteBody": "Für einen Löschantrag. Der Spieler wird jetzt abgemeldet, und die übliche Bereinigung löscht das Konto und seine Daten innerhalb einer Stunde. Bis dahin kannst du abbrechen.",
+      "cancelDeletion": "Löschung abbrechen",
+      "cancelDeletionBody": "Das Konto von {name} bleibt bestehen.",
+      "cancel": "Abbrechen",
+      "close": "Schließen",
+      "done": "Erledigt.",
+      "errors": {
+        "adminOnly": "Das kann nur ein Admin.",
+        "rateLimited": "Zu viele Aktionen. Warte ein paar Minuten.",
+        "nothing": "Da gibt es nichts zurückzusetzen.",
+        "staffAccount": "Entferne zuerst die Teamrollen.",
+        "lastAdmin": "Der letzte Admin kann nicht entfernt werden.",
+        "failed": "Das hat nicht geklappt. Versuch es noch einmal."
+      }
+    }
   }
 }

@@ -20,6 +20,13 @@ import { supabaseConfig } from "@/lib/supabase/config";
 import { searchFromFilter } from "./audit-data";
 import { playerPage } from "./links";
 import {
+  ActionDialog,
+  ActionsPanel,
+  performAction,
+  permissions,
+  type ActionRequest,
+} from "./PlayerActions";
+import {
   ACCOUNT_FILTERS,
   fetchPlayerPage,
   findPlayers,
@@ -331,8 +338,25 @@ const loadPage = async (supabase: Supabase, id: string): Promise<PageState> => {
   return { status: "ready", page };
 };
 
-function PlayerView({ supabase, roles, bcp47, paths, strings: s, id }: Props & { id: string }) {
+function PlayerView({
+  supabase,
+  userId,
+  roles,
+  bcp47,
+  paths,
+  strings: s,
+  id,
+}: Props & { id: string }) {
   const [state, setState] = useState<PageState>({ status: "loading" });
+  const [request, setRequest] = useState<ActionRequest | null>(null);
+  /** Remounts the dialog on each opening, so its form starts afresh. */
+  const [opened, setOpened] = useState(0);
+  const [outcome, setOutcome] = useState<{ ok: boolean; text: string } | null>(null);
+  const ask = (next: ActionRequest) => {
+    setOutcome(null);
+    setOpened((n) => n + 1);
+    setRequest(next);
+  };
 
   useEffect(() => {
     void loadPage(supabase, id).then(setState);
@@ -369,8 +393,19 @@ function PlayerView({ supabase, roles, bcp47, paths, strings: s, id }: Props & {
     avatar_preset: player.avatarPreset,
     avatar_path: player.avatarPath,
   });
-  const nameOf = (userId: string | null) =>
-    userId === null ? s.noProfile : (names.get(userId) ?? s.noProfile);
+  const nameOf = (other: string | null) =>
+    other === null ? s.noProfile : (names.get(other) ?? s.noProfile);
+  const can = permissions(player, userId, roles);
+
+  async function confirm(sanction: Parameters<typeof performAction>[3]) {
+    if (request === null) return;
+    const error = await performAction(supabase, player, request, sanction, s.act);
+    // Reloaded in place (no loading state), then the outcome, so both agree.
+    const next = await loadPage(supabase, id);
+    if (next.status === "ready" || next.status === "missing") setState(next);
+    setRequest(null);
+    setOutcome(error === null ? { ok: true, text: s.act.done } : { ok: false, text: error });
+  }
 
   return (
     <div className="grid gap-6">
@@ -417,6 +452,32 @@ function PlayerView({ supabase, roles, bcp47, paths, strings: s, id }: Props & {
         <Account player={player} strings={s} bcp47={bcp47} />
       </section>
 
+      {(can.reset || can.sanction || can.roles || can.delete) && (
+        <Section title={s.act.title}>
+          <ActionsPanel
+            player={player}
+            userId={userId}
+            roles={roles}
+            strings={s}
+            outcome={outcome}
+            onRequest={ask}
+          />
+        </Section>
+      )}
+      {request !== null && (
+        <ActionDialog
+          key={opened}
+          request={request}
+          player={player}
+          admin={can.admin}
+          strings={s}
+          onClose={() => {
+            setRequest(null);
+          }}
+          onConfirm={confirm}
+        />
+      )}
+
       <Section title={s.sanctionsTitle}>
         {sanctions.length === 0 ? (
           <p className="text-muted">{s.noSanctions}</p>
@@ -424,7 +485,18 @@ function PlayerView({ supabase, roles, bcp47, paths, strings: s, id }: Props & {
           <ul className="grid gap-3">
             {sanctions.map((sanction) => (
               <li key={sanction.id}>
-                <SanctionItem sanction={sanction} strings={s} bcp47={bcp47} nameOf={nameOf} />
+                <SanctionItem
+                  sanction={sanction}
+                  strings={s}
+                  bcp47={bcp47}
+                  nameOf={nameOf}
+                  {...(inForce(sanction) &&
+                    can.revoke(sanction) && {
+                      onRevoke: () => {
+                        ask({ type: "revoke", sanction });
+                      },
+                    })}
+                />
               </li>
             ))}
           </ul>
@@ -559,11 +631,13 @@ function SanctionItem({
   strings: s,
   bcp47,
   nameOf,
+  onRevoke,
 }: {
   sanction: Sanction;
   strings: PlayersStrings;
   bcp47: string;
   nameOf: (id: string | null) => string;
+  onRevoke?: () => void;
 }) {
   const items: [string, ReactNode][] = [
     [s.reason, s.reasons[sanction.reason] ?? sanction.reason],
@@ -583,6 +657,11 @@ function SanctionItem({
       <header className="flex flex-wrap items-center gap-2">
         <h3 className="text-base font-semibold">{s.kinds[sanction.kind] ?? sanction.kind}</h3>
         {inForce(sanction) && <Badge variant="danger">{s.inForce}</Badge>}
+        {onRevoke && (
+          <Button variant="outline" className="ms-auto" onClick={onRevoke}>
+            {s.act.revoke}
+          </Button>
+        )}
       </header>
       <Pairs items={items} />
     </article>

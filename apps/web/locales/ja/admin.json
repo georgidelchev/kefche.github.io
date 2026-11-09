@@ -61,7 +61,8 @@
       "reportResolve": "通報を処理",
       "chatDelete": "チャットのメッセージを削除",
       "roomChatDelete": "ロビーのメッセージを削除",
-      "slowMode": "低速モードを設定"
+      "slowMode": "低速モードを設定",
+      "profileReset": "プロフィールのリセット"
     },
     "targets": {
       "user": "プレイヤー",
@@ -162,6 +163,56 @@
     },
     "against": "対戦相手：{names}",
     "rated": "レート戦",
-    "review": "確認待ち"
+    "review": "確認待ち",
+    "act": {
+      "title": "操作",
+      "resetNickname": "ニックネームをリセット",
+      "resetAvatar": "アバターをリセット",
+      "resetBio": "自己紹介を消去",
+      "resetNicknameTitle": "{name} のニックネームをリセットしますか？",
+      "resetNicknameBody": "player_123456 のような名前になり、すぐに新しい名前を選べます。本人に通知されます。",
+      "resetAvatarTitle": "{name} のアバターをリセットしますか？",
+      "resetAvatarBody": "代わりにイニシャルが表示され、アップロードした画像は再び選べません。本人に通知されます。",
+      "resetBioTitle": "{name} の自己紹介を消去しますか？",
+      "resetBioBody": "自己紹介が削除されます。本人に通知されます。",
+      "sanction": "処分する",
+      "sanctionTitle": "{name} を処分",
+      "sanctionBody": "プレイヤーには処分、理由、終了日時が伝わります。",
+      "kind": "処分",
+      "duration": "期間",
+      "durations": {
+        "h1": "1 時間",
+        "h24": "24 時間",
+        "d7": "7 日",
+        "d30": "30 日",
+        "none": "取り消すまで"
+      },
+      "note": "メモ（任意）",
+      "noteHint": "記録用、500 文字まで。",
+      "give": "処分する",
+      "revoke": "取り消す",
+      "revokeTitle": "この処分を取り消しますか？",
+      "makeModerator": "モデレーターにする",
+      "removeModerator": "モデレーターを外す",
+      "makeAdmin": "管理者にする",
+      "removeAdmin": "管理者を外す",
+      "roleBody": "{name} について。パネルではすぐに、その他では 1 時間以内に反映されます。",
+      "deleteAccount": "アカウントを削除",
+      "deleteTitle": "{name} のアカウントを削除しますか？",
+      "deleteBody": "削除依頼への対応です。今すぐサインアウトされ、通常の削除処理で 1 時間以内にアカウントとデータが削除されます。それまでは取り消せます。",
+      "cancelDeletion": "削除を取り消す",
+      "cancelDeletionBody": "{name} のアカウントは残ります。",
+      "cancel": "キャンセル",
+      "close": "閉じる",
+      "done": "完了しました。",
+      "errors": {
+        "adminOnly": "管理者だけが行えます。",
+        "rateLimited": "操作が多すぎます。数分待ってください。",
+        "nothing": "リセットするものはありません。",
+        "staffAccount": "先にスタッフのロールを外してください。",
+        "lastAdmin": "最後の管理者は外せません。",
+        "failed": "うまくいきませんでした。もう一度お試しください。"
+      }
+    }
   }
 }

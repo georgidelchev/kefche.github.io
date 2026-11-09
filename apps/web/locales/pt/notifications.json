@@ -25,7 +25,12 @@
     "suspendUntil": "Você não pode jogar online até {until}.",
     "suspend": "Você não pode jogar online.",
     "ban": "Sua conta está banida.",
-    "reason": "Motivo: {reason}."
+    "reason": "Motivo: {reason}.",
+    "reset": {
+      "nickname": "Um moderador redefiniu seu apelido. Você pode escolher outro nas configurações.",
+      "avatar": "Um moderador removeu seu avatar.",
+      "bio": "Um moderador apagou sua bio."
+    }
   },
   "reasons": {
     "spam": "spam",

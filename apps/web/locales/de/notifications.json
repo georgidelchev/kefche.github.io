@@ -25,7 +25,12 @@
     "suspendUntil": "Du bist bis {until} vom Online-Spiel ausgeschlossen.",
     "suspend": "Du bist vom Online-Spiel ausgeschlossen.",
     "ban": "Dein Konto ist gesperrt.",
-    "reason": "Grund: {reason}."
+    "reason": "Grund: {reason}.",
+    "reset": {
+      "nickname": "Ein Moderator hat deinen Nickname zurückgesetzt. Du kannst in den Einstellungen einen neuen wählen.",
+      "avatar": "Ein Moderator hat deinen Avatar entfernt.",
+      "bio": "Ein Moderator hat deine Bio gelöscht."
+    }
   },
   "reasons": {
     "spam": "Spam",

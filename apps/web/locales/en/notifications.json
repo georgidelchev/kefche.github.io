@@ -25,7 +25,12 @@
     "suspendUntil": "You're suspended from online play until {until}.",
     "suspend": "You're suspended from online play.",
     "ban": "Your account is banned.",
-    "reason": "Reason: {reason}."
+    "reason": "Reason: {reason}.",
+    "reset": {
+      "nickname": "A moderator reset your nickname. You can choose a new one in settings.",
+      "avatar": "A moderator removed your avatar.",
+      "bio": "A moderator cleared your bio."
+    }
   },
   "reasons": {
     "spam": "spam",

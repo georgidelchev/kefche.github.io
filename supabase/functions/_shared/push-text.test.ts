@@ -85,6 +85,20 @@ Deno.test("a sanction leaves out its end, which the bell shows", () => {
   same(m?.url, "/en/notifications/", "url");
 });
 
+Deno.test("a profile reset says what was reset", () => {
+  same(
+    pushMessage(note("moderation", { kind: "reset", field: "nickname" }), "en")?.body,
+    "A moderator reset your nickname. You can choose a new one in settings.",
+    "nickname",
+  );
+  same(
+    pushMessage(note("moderation", { kind: "reset", field: "bio" }), "bg")?.body,
+    "Модератор изчисти описанието ти.",
+    "bio in Bulgarian",
+  );
+  same(pushMessage(note("moderation", { kind: "reset", field: "email" }), "en"), null, "unknown");
+});
+
 Deno.test("nothing for a type this version doesn't know", () => {
   same(pushMessage(note("something_new", {}), "en"), null, "unknown");
 });

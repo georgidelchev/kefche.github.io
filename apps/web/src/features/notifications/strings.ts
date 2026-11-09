@@ -32,6 +32,11 @@ export function notificationStrings(t: AppT): NotificationStrings {
       suspend: t("notifications:moderation.suspend"),
       ban: t("notifications:moderation.ban"),
       reason: t("notifications:moderation.reason", { reason: "{reason}" }),
+      reset: {
+        nickname: t("notifications:moderation.reset.nickname"),
+        avatar: t("notifications:moderation.reset.avatar"),
+        bio: t("notifications:moderation.reset.bio"),
+      },
     },
     reasons: {
       spam: t("notifications:reasons.spam"),

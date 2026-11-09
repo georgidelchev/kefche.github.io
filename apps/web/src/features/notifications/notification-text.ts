@@ -44,6 +44,8 @@ export interface NotificationStrings {
     suspend: string;
     ban: string;
     reason: string;
+    /** Staff reset part of the player's profile (no reason given). */
+    reset: Record<"nickname" | "avatar" | "bio", string>;
   };
   reasons: Record<Reason, string>;
   tiers: Record<"bronze" | "silver" | "gold", string>;
@@ -106,6 +108,11 @@ export function notificationText(
     }
     case "moderation": {
       const m = s.moderation;
+      if (d.kind === "reset") {
+        return d.field === "nickname" || d.field === "avatar" || d.field === "bio"
+          ? m.reset[d.field]
+          : null;
+      }
       const ends = typeof d.endsAt === "string" ? new Date(d.endsAt) : null;
       const until = ends
         ? ends.toLocaleString(c.bcp47, { dateStyle: "medium", timeStyle: "short" })

@@ -25,7 +25,12 @@
     "suspendUntil": "你已被禁止在线游戏，直到 {until}。",
     "suspend": "你已被禁止在线游戏。",
     "ban": "你的账号已被封禁。",
-    "reason": "原因：{reason}。"
+    "reason": "原因：{reason}。",
+    "reset": {
+      "nickname": "版主重置了你的昵称。你可以在设置中选择新的昵称。",
+      "avatar": "版主移除了你的头像。",
+      "bio": "版主清除了你的简介。"
+    }
   },
   "reasons": {
     "spam": "垃圾信息",

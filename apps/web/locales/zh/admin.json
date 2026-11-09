@@ -61,7 +61,8 @@
       "reportResolve": "处理举报",
       "chatDelete": "删除聊天消息",
       "roomChatDelete": "删除房间消息",
-      "slowMode": "设置慢速模式"
+      "slowMode": "设置慢速模式",
+      "profileReset": "资料已重置"
     },
     "targets": {
       "user": "玩家",
@@ -162,6 +163,56 @@
     },
     "against": "对手：{names}",
     "rated": "排位",
-    "review": "待审核"
+    "review": "待审核",
+    "act": {
+      "title": "操作",
+      "resetNickname": "重置昵称",
+      "resetAvatar": "重置头像",
+      "resetBio": "清除简介",
+      "resetNicknameTitle": "重置 {name} 的昵称？",
+      "resetNicknameBody": "对方会得到类似 player_123456 的名字，并可立即选择新昵称。对方会收到通知。",
+      "resetAvatarTitle": "重置 {name} 的头像？",
+      "resetAvatarBody": "改为显示姓名首字母，上传的图片不能再次选用。对方会收到通知。",
+      "resetBioTitle": "清除 {name} 的简介？",
+      "resetBioBody": "简介会被删除。对方会收到通知。",
+      "sanction": "处罚",
+      "sanctionTitle": "处罚 {name}",
+      "sanctionBody": "玩家会看到处罚、原因和结束时间。",
+      "kind": "处罚",
+      "duration": "时长",
+      "durations": {
+        "h1": "1 小时",
+        "h24": "24 小时",
+        "d7": "7 天",
+        "d30": "30 天",
+        "none": "直到撤销"
+      },
+      "note": "备注（可选）",
+      "noteHint": "用于记录，最多 500 个字符。",
+      "give": "执行处罚",
+      "revoke": "撤销",
+      "revokeTitle": "撤销这项处罚？",
+      "makeModerator": "设为版主",
+      "removeModerator": "取消版主",
+      "makeAdmin": "设为管理员",
+      "removeAdmin": "取消管理员",
+      "roleBody": "针对 {name}。面板中立即生效，其他地方最多一小时内生效。",
+      "deleteAccount": "删除账号",
+      "deleteTitle": "删除 {name} 的账号？",
+      "deleteBody": "用于处理删除请求。对方现在会被登出，常规清理会在一小时内删除账号及其数据。在此之前可以取消。",
+      "cancelDeletion": "取消删除",
+      "cancelDeletionBody": "{name} 的账号将保留。",
+      "cancel": "取消",
+      "close": "关闭",
+      "done": "已完成。",
+      "errors": {
+        "adminOnly": "只有管理员可以这样做。",
+        "rateLimited": "操作太频繁，请等几分钟。",
+        "nothing": "没有可重置的内容。",
+        "staffAccount": "请先移除其团队角色。",
+        "lastAdmin": "不能移除最后一位管理员。",
+        "failed": "操作失败，请重试。"
+      }
+    }
   }
 }

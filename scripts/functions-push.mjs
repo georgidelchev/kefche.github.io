@@ -83,7 +83,9 @@ for (const locale of locales) {
     strings: {
       someone: format(n.someone, locale),
       types: templates(n.types),
-      moderation: templates(n.moderation),
+      moderation: (({ reset, ...rest }) => ({ ...templates(rest), reset: plain(reset) }))(
+        n.moderation,
+      ),
       reasons: plain(n.reasons),
       tiers: plain(profile.tier),
       pools: plain(pools),

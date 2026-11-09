@@ -874,6 +874,12 @@ isOneToOne: false
 "set_user_role":
 { Args: { "p_granted": boolean,"p_role": Database["public"]['Enums']["app_role"],"p_user_id": string }; Returns: undefined
                            },
+"staff_cancel_deletion":
+{ Args: { "p_user": string }; Returns: undefined
+                           },
+"staff_delete_account":
+{ Args: { "p_user": string }; Returns: string
+                           },
 "staff_find_players":
 { Args: { "p_account"?: string,"p_offset"?: number,"p_query"?: string,"p_role"?: string,"p_sanction"?: string }; Returns: {
               "avatar_kind": string,"avatar_path": string,"avatar_preset": string,"created_at": string,"email": string,"guest": boolean,"id": string,"nickname": string,"roles": (string)[],"sanction": string
@@ -881,6 +887,9 @@ isOneToOne: false
                            },
 "staff_player":
 { Args: { "p_user": string }; Returns: Json
+                           },
+"staff_reset_profile":
+{ Args: { "p_field": string,"p_user": string }; Returns: undefined
                            },
 "start_daily":
 { Args: { "p_game_version": number }; Returns: Json

@@ -61,7 +61,8 @@
       "reportResolve": "Signalements traités",
       "chatDelete": "Message du chat supprimé",
       "roomChatDelete": "Message de salon supprimé",
-      "slowMode": "Mode lent réglé"
+      "slowMode": "Mode lent réglé",
+      "profileReset": "Profil réinitialisé"
     },
     "targets": {
       "user": "Joueur",
@@ -162,6 +163,56 @@
     },
     "against": "Contre {names}",
     "rated": "Classée",
-    "review": "Mise de côté pour examen"
+    "review": "Mise de côté pour examen",
+    "act": {
+      "title": "Actions",
+      "resetNickname": "Réinitialiser le pseudo",
+      "resetAvatar": "Réinitialiser l'avatar",
+      "resetBio": "Effacer la bio",
+      "resetNicknameTitle": "Réinitialiser le pseudo de {name} ?",
+      "resetNicknameBody": "Il reçoit un nom comme player_123456 et peut en choisir un autre tout de suite. Il est prévenu.",
+      "resetAvatarTitle": "Réinitialiser l'avatar de {name} ?",
+      "resetAvatarBody": "Ses initiales s'affichent à la place, et l'image envoyée ne peut plus être choisie. Il est prévenu.",
+      "resetBioTitle": "Effacer la bio de {name} ?",
+      "resetBioBody": "Sa bio est supprimée. Il est prévenu.",
+      "sanction": "Sanctionner",
+      "sanctionTitle": "Sanctionner {name}",
+      "sanctionBody": "Le joueur voit la sanction, son motif et sa fin.",
+      "kind": "Sanction",
+      "duration": "Durée",
+      "durations": {
+        "h1": "1 heure",
+        "h24": "24 heures",
+        "d7": "7 jours",
+        "d30": "30 jours",
+        "none": "Jusqu'à révocation"
+      },
+      "note": "Note (facultative)",
+      "noteHint": "Pour le dossier, 500 caractères maximum.",
+      "give": "Sanctionner",
+      "revoke": "Révoquer",
+      "revokeTitle": "Révoquer cette sanction ?",
+      "makeModerator": "Nommer modérateur",
+      "removeModerator": "Retirer modérateur",
+      "makeAdmin": "Nommer admin",
+      "removeAdmin": "Retirer admin",
+      "roleBody": "Pour {name}. Le panneau change aussitôt ; ailleurs, en une heure au plus.",
+      "deleteAccount": "Supprimer le compte",
+      "deleteTitle": "Supprimer le compte de {name} ?",
+      "deleteBody": "Pour une demande de suppression. Il est déconnecté maintenant, et la purge habituelle supprime le compte et ses données dans l'heure. D'ici là, tu peux annuler.",
+      "cancelDeletion": "Annuler la suppression",
+      "cancelDeletionBody": "Le compte de {name} est conservé.",
+      "cancel": "Annuler",
+      "close": "Fermer",
+      "done": "C'est fait.",
+      "errors": {
+        "adminOnly": "Seul un admin peut faire ça.",
+        "rateLimited": "Trop d'actions. Attends quelques minutes.",
+        "nothing": "Il n'y a rien à réinitialiser.",
+        "staffAccount": "Retire d'abord ses rôles dans l'équipe.",
+        "lastAdmin": "Le dernier admin ne peut pas être retiré.",
+        "failed": "Ça n'a pas marché. Réessaie."
+      }
+    }
   }
 }

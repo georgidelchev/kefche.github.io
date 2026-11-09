@@ -25,7 +25,12 @@
     "suspendUntil": "No puedes jugar en línea hasta {until}.",
     "suspend": "No puedes jugar en línea.",
     "ban": "Tu cuenta está bloqueada.",
-    "reason": "Motivo: {reason}."
+    "reason": "Motivo: {reason}.",
+    "reset": {
+      "nickname": "Un moderador restableció tu apodo. Puedes elegir otro en los ajustes.",
+      "avatar": "Un moderador quitó tu avatar.",
+      "bio": "Un moderador borró tu bio."
+    }
   },
   "reasons": {
     "spam": "spam",
