@@ -7,7 +7,7 @@ import { lazy, type ReactNode } from "react";
 import type { Supabase } from "@/lib/supabase/client";
 
 import type { AdminSectionId, StaffRole } from "./sections";
-import type { AuditStrings } from "./strings";
+import type { AuditStrings, PlayersStrings } from "./strings";
 
 /** Localized pages the views link to. */
 export interface AdminPaths {
@@ -15,6 +15,8 @@ export interface AdminPaths {
   profileBase: string;
   /** The audit log's page; filters go in its query string. */
   audit: string;
+  /** The Players section's page; a player's page is `?player=<id>`. */
+  users: string;
 }
 
 /** What every view gets. */
@@ -29,12 +31,16 @@ export interface AdminViewProps {
 
 /** The page's section, with the strings its view needs. */
 export type AdminView =
-  { section: "audit"; strings: AuditStrings } | { section: Exclude<AdminSectionId, "audit"> };
+  | { section: "audit"; strings: AuditStrings }
+  | { section: "users"; strings: PlayersStrings }
+  | { section: Exclude<AdminSectionId, "audit" | "users"> };
 
 const AuditLog = lazy(() => import("./views/AuditLog").then((m) => ({ default: m.AuditLog })));
+const Players = lazy(() => import("./views/Players").then((m) => ({ default: m.Players })));
 
 /** The section's view, or null when it isn't built yet. */
 export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
   if (view.section === "audit") return <AuditLog {...props} strings={view.strings} />;
+  if (view.section === "users") return <Players {...props} strings={view.strings} />;
   return null;
 }

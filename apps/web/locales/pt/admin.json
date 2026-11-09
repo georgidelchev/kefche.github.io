@@ -72,5 +72,96 @@
       "chatRoom": "Sala de chat"
     },
     "noProfile": "Sem perfil"
+  },
+  "players": {
+    "search": "Encontrar um jogador",
+    "query": "Pesquisar",
+    "queryHint": "Parte de um apelido ou um id de conta.",
+    "queryHintAdmin": "Parte de um apelido ou de um e-mail, ou um id de conta.",
+    "role": "Função",
+    "anyRole": "Qualquer função",
+    "roles": {
+      "staff": "Qualquer função da equipe",
+      "admin": "Admin",
+      "moderator": "Moderador",
+      "none": "Sem função"
+    },
+    "sanction": "Sanção",
+    "anySanction": "Com ou sem",
+    "sanctions": {
+      "any": "Qualquer sanção em vigor",
+      "mute": "Silenciados",
+      "suspend": "Suspensos",
+      "ban": "Banidos"
+    },
+    "account": "Conta",
+    "anyAccount": "Contas e convidados",
+    "accounts": {
+      "account": "Só contas",
+      "guest": "Só convidados"
+    },
+    "apply": "Pesquisar",
+    "clear": "Limpar",
+    "results": "Jogadores",
+    "empty": "Nenhum jogador corresponde.",
+    "more": "Mostrar mais",
+    "noNickname": "Sem apelido",
+    "guest": "Convidado",
+    "joined": "Entrou em {date}",
+    "notFound": "Não há conta com este id.",
+    "back": "Todos os jogadores",
+    "profile": "Perfil público",
+    "inAudit": "No registro de auditoria",
+    "id": "Id da conta",
+    "email": "E-mail",
+    "joinedAt": "Entrou em",
+    "lastSignIn": "Último login",
+    "never": "Nunca",
+    "level": "Nível",
+    "levelValue": "Nível {level} · {xp} XP",
+    "country": "País",
+    "nicknameChanged": "Apelido alterado",
+    "deletion": "Exclusão marcada para",
+    "bio": "Bio",
+    "noBio": "Sem bio.",
+    "sanctionsTitle": "Sanções",
+    "noSanctions": "Sem sanções.",
+    "kinds": {
+      "warn": "Aviso",
+      "mute": "Silenciamento",
+      "suspend": "Suspensão",
+      "ban": "Banimento"
+    },
+    "reason": "Motivo",
+    "reasonFilter": "Filtro de palavras (automático)",
+    "note": "Nota",
+    "inForce": "Em vigor",
+    "given": "Aplicada",
+    "ends": "Termina",
+    "noEnd": "Ao ser revogada",
+    "by": "Por",
+    "automatic": "Automática",
+    "revoked": "Revogada",
+    "revokedBy": "Revogada por",
+    "reportsAbout": "Denúncias sobre o jogador",
+    "reportsBy": "Denúncias que fez",
+    "noReports": "Nenhuma.",
+    "reporter": "Denunciado por",
+    "reported": "Sobre",
+    "statuses": {
+      "open": "Aberta",
+      "dismissed": "Descartada",
+      "actioned": "Com medidas"
+    },
+    "matches": "Últimas partidas",
+    "noMatches": "Ainda sem partidas.",
+    "outcomes": {
+      "win": "Vitória",
+      "loss": "Derrota",
+      "draw": "Empate"
+    },
+    "against": "Contra {names}",
+    "rated": "Ranqueada",
+    "review": "Separada para revisão"
   }
 }

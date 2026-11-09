@@ -72,5 +72,96 @@
       "chatRoom": "غرفة دردشة"
     },
     "noProfile": "بلا ملف شخصي"
+  },
+  "players": {
+    "search": "البحث عن لاعب",
+    "query": "بحث",
+    "queryHint": "جزء من اسم مستعار أو معرّف حساب.",
+    "queryHintAdmin": "جزء من اسم مستعار أو عنوان بريد، أو معرّف حساب.",
+    "role": "الدور",
+    "anyRole": "أي دور",
+    "roles": {
+      "staff": "أي دور في الفريق",
+      "admin": "مشرف عام",
+      "moderator": "مشرف",
+      "none": "بلا دور"
+    },
+    "sanction": "العقوبة",
+    "anySanction": "مع عقوبة أو بدونها",
+    "sanctions": {
+      "any": "أي عقوبة سارية",
+      "mute": "مكتومون",
+      "suspend": "موقوفون",
+      "ban": "محظورون"
+    },
+    "account": "الحساب",
+    "anyAccount": "الحسابات والضيوف",
+    "accounts": {
+      "account": "الحسابات فقط",
+      "guest": "الضيوف فقط"
+    },
+    "apply": "بحث",
+    "clear": "مسح",
+    "results": "اللاعبون",
+    "empty": "لا يوجد لاعبون مطابقون.",
+    "more": "عرض المزيد",
+    "noNickname": "بلا اسم مستعار",
+    "guest": "ضيف",
+    "joined": "انضم في {date}",
+    "notFound": "لا يوجد حساب بهذا المعرّف.",
+    "back": "كل اللاعبين",
+    "profile": "الملف العام",
+    "inAudit": "في سجل التدقيق",
+    "id": "معرّف الحساب",
+    "email": "البريد الإلكتروني",
+    "joinedAt": "تاريخ الانضمام",
+    "lastSignIn": "آخر تسجيل دخول",
+    "never": "أبدًا",
+    "level": "المستوى",
+    "levelValue": "المستوى {level} · {xp} XP",
+    "country": "البلد",
+    "nicknameChanged": "آخر تغيير للاسم المستعار",
+    "deletion": "الحذف مقرر في",
+    "bio": "النبذة",
+    "noBio": "لا توجد نبذة.",
+    "sanctionsTitle": "العقوبات",
+    "noSanctions": "لا توجد عقوبات.",
+    "kinds": {
+      "warn": "تحذير",
+      "mute": "كتم",
+      "suspend": "إيقاف",
+      "ban": "حظر"
+    },
+    "reason": "السبب",
+    "reasonFilter": "مرشّح الكلمات (تلقائي)",
+    "note": "ملاحظة",
+    "inForce": "سارية",
+    "given": "تاريخ الفرض",
+    "ends": "تنتهي",
+    "noEnd": "عند الإلغاء",
+    "by": "بواسطة",
+    "automatic": "تلقائية",
+    "revoked": "أُلغيت",
+    "revokedBy": "ألغاها",
+    "reportsAbout": "بلاغات عنه",
+    "reportsBy": "بلاغات قدّمها",
+    "noReports": "لا شيء.",
+    "reporter": "المُبلِّغ",
+    "reported": "عن",
+    "statuses": {
+      "open": "مفتوح",
+      "dismissed": "مرفوض",
+      "actioned": "اتُّخذ إجراء"
+    },
+    "matches": "آخر المباريات",
+    "noMatches": "لا مباريات بعد.",
+    "outcomes": {
+      "win": "فوز",
+      "loss": "خسارة",
+      "draw": "تعادل"
+    },
+    "against": "ضد {names}",
+    "rated": "مصنّفة",
+    "review": "مُنحّاة للمراجعة"
   }
 }

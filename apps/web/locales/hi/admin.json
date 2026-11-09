@@ -72,5 +72,96 @@
       "chatRoom": "चैट रूम"
     },
     "noProfile": "कोई प्रोफ़ाइल नहीं"
+  },
+  "players": {
+    "search": "खिलाड़ी खोजें",
+    "query": "खोज",
+    "queryHint": "निकनेम का कोई हिस्सा, या अकाउंट आईडी।",
+    "queryHintAdmin": "निकनेम या ईमेल पते का कोई हिस्सा, या अकाउंट आईडी।",
+    "role": "भूमिका",
+    "anyRole": "कोई भी भूमिका",
+    "roles": {
+      "staff": "टीम की कोई भी भूमिका",
+      "admin": "एडमिन",
+      "moderator": "मॉडरेटर",
+      "none": "कोई भूमिका नहीं"
+    },
+    "sanction": "दंड",
+    "anySanction": "दंड हो या न हो",
+    "sanctions": {
+      "any": "कोई भी लागू दंड",
+      "mute": "म्यूट",
+      "suspend": "निलंबित",
+      "ban": "प्रतिबंधित"
+    },
+    "account": "अकाउंट",
+    "anyAccount": "अकाउंट और मेहमान",
+    "accounts": {
+      "account": "सिर्फ़ अकाउंट",
+      "guest": "सिर्फ़ मेहमान"
+    },
+    "apply": "खोजें",
+    "clear": "हटाएँ",
+    "results": "खिलाड़ी",
+    "empty": "कोई खिलाड़ी मेल नहीं खाता।",
+    "more": "और दिखाएँ",
+    "noNickname": "कोई निकनेम नहीं",
+    "guest": "मेहमान",
+    "joined": "{date} को जुड़े",
+    "notFound": "इस आईडी का कोई अकाउंट नहीं है।",
+    "back": "सभी खिलाड़ी",
+    "profile": "सार्वजनिक प्रोफ़ाइल",
+    "inAudit": "ऑडिट लॉग में",
+    "id": "अकाउंट आईडी",
+    "email": "ईमेल",
+    "joinedAt": "जुड़े",
+    "lastSignIn": "आख़िरी साइन-इन",
+    "never": "कभी नहीं",
+    "level": "लेवल",
+    "levelValue": "लेवल {level} · {xp} XP",
+    "country": "देश",
+    "nicknameChanged": "निकनेम आख़िरी बार बदला",
+    "deletion": "हटाना तय है",
+    "bio": "परिचय",
+    "noBio": "कोई परिचय नहीं।",
+    "sanctionsTitle": "दंड",
+    "noSanctions": "कोई दंड नहीं।",
+    "kinds": {
+      "warn": "चेतावनी",
+      "mute": "म्यूट",
+      "suspend": "निलंबन",
+      "ban": "प्रतिबंध"
+    },
+    "reason": "कारण",
+    "reasonFilter": "शब्द फ़िल्टर (अपने-आप)",
+    "note": "नोट",
+    "inForce": "लागू",
+    "given": "दिया गया",
+    "ends": "ख़त्म",
+    "noEnd": "हटाए जाने पर",
+    "by": "किसने",
+    "automatic": "अपने-आप",
+    "revoked": "हटाया गया",
+    "revokedBy": "किसने हटाया",
+    "reportsAbout": "इनके बारे में रिपोर्टें",
+    "reportsBy": "इनकी की गई रिपोर्टें",
+    "noReports": "कोई नहीं।",
+    "reporter": "रिपोर्ट करने वाले",
+    "reported": "किसके बारे में",
+    "statuses": {
+      "open": "खुली",
+      "dismissed": "ख़ारिज",
+      "actioned": "कार्रवाई हुई"
+    },
+    "matches": "हाल के मैच",
+    "noMatches": "अभी कोई मैच नहीं।",
+    "outcomes": {
+      "win": "जीत",
+      "loss": "हार",
+      "draw": "ड्रॉ"
+    },
+    "against": "{names} के ख़िलाफ़",
+    "rated": "रेटेड",
+    "review": "जाँच के लिए अलग रखा गया"
   }
 }

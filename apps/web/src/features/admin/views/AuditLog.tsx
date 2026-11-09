@@ -3,7 +3,7 @@
 // the form submits to this page, and each entry's actor and target link to
 // the log filtered by them, so the back button works as usual.
 import { ScrollText } from "lucide-react";
-import { useEffect, useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useState } from "react";
 
 import { Button, buttonVariants } from "@kefche/ui/components/button";
 import { Input } from "@kefche/ui/components/input";
@@ -24,6 +24,8 @@ import {
   type AuditFilter,
   type ResolvedFilter,
 } from "./audit-data";
+import { playerPage } from "./links";
+import { byLabel, dateTime, Field, linkClass, selectClass } from "./ui";
 
 import type { AuditStrings } from "../strings";
 import type { AdminViewProps } from "../views";
@@ -40,11 +42,6 @@ type State =
       more: boolean;
       names: Names;
     };
-
-const selectClass =
-  "min-h-11 w-full min-w-0 cursor-pointer rounded-xl border border-border-strong bg-surface-2 px-3 text-base text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
-const linkClass =
-  "rounded font-semibold text-text underline decoration-border-strong underline-offset-4 hover:decoration-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
 
 /** The newest entries for `filter`, with the names they mention. */
 async function firstPage(supabase: Supabase, filter: AuditFilter): Promise<State> {
@@ -96,8 +93,6 @@ export function AuditLog({
   }
 
   const href = (f: AuditFilter) => `${paths.audit}${searchFromFilter(f)}`;
-  const byLabel = (labels: Record<string, string>) =>
-    Object.entries(labels).sort(([, a], [, b]) => a.localeCompare(b, bcp47));
   const filtered = Object.keys(filter).length > 0;
 
   return (
@@ -130,7 +125,7 @@ export function AuditLog({
               className={selectClass}
             >
               <option value="">{s.anyAction}</option>
-              {byLabel(s.actions).map(([value, label]) => (
+              {byLabel(s.actions, bcp47).map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}
                 </option>
@@ -145,7 +140,7 @@ export function AuditLog({
               className={selectClass}
             >
               <option value="">{s.anyTarget}</option>
-              {byLabel(s.targets).map(([value, label]) => (
+              {byLabel(s.targets, bcp47).map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}
                 </option>
@@ -218,7 +213,7 @@ export function AuditLog({
                     names={state.names}
                     strings={s}
                     bcp47={bcp47}
-                    profileBase={paths.profileBase}
+                    playerPage={playerPage(paths)}
                     href={href}
                   />
                 </li>
@@ -240,58 +235,29 @@ export function AuditLog({
   );
 }
 
-function Field({
-  id,
-  label,
-  hint,
-  children,
-}: {
-  id: string;
-  label: string;
-  hint?: string;
-  children: ReactNode;
-}) {
-  return (
-    <div className="grid content-start gap-1.5">
-      <label htmlFor={id} className="text-sm font-semibold">
-        {label}
-      </label>
-      {children}
-      {hint !== undefined && (
-        <p id={`${id}-hint`} className="text-sm text-muted">
-          {hint}
-        </p>
-      )}
-    </div>
-  );
-}
-
 function Entry({
   entry,
   names,
   strings: s,
   bcp47,
-  profileBase,
+  playerPage,
   href,
 }: {
   entry: AuditEntry;
   names: Names;
   strings: AuditStrings;
   bcp47: string;
-  profileBase: string;
+  playerPage: (id: string) => string;
   href: (filter: AuditFilter) => string;
 }) {
   /** A player's nickname, or "No profile" (deleted, or never finished signing up). */
   const player = (id: string) => names.get(id) ?? s.noProfile;
-  const profile = (id: string) => {
-    const nickname = names.get(id);
-    return nickname ? (
-      <a href={`${profileBase}${encodeURIComponent(nickname)}/`} className="text-sm text-muted">
-        {s.profile}
-      </a>
-    ) : null;
-  };
-  const when = new Date(entry.createdAt);
+  /** The player's page in the panel (it works for accounts without a nickname too). */
+  const profile = (id: string) => (
+    <a href={playerPage(id)} className="text-sm text-muted">
+      {s.profile}
+    </a>
+  );
   const { targetType: type, targetId: target } = entry;
   const playerTarget = type !== null && PLAYER_TARGETS.includes(type);
   const targetName = target === null ? null : playerTarget ? player(target) : target;
@@ -302,7 +268,7 @@ function Entry({
       <header className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h2 className="text-base font-semibold">{s.actions[entry.action] ?? entry.action}</h2>
         <time dateTime={entry.createdAt} className="text-sm text-muted tabular-nums">
-          {new Intl.DateTimeFormat(bcp47, { dateStyle: "medium", timeStyle: "short" }).format(when)}
+          {dateTime(entry.createdAt, bcp47)}
         </time>
       </header>
       <dl className="grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-1">

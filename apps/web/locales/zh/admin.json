@@ -72,5 +72,96 @@
       "chatRoom": "聊天室"
     },
     "noProfile": "无主页"
+  },
+  "players": {
+    "search": "查找玩家",
+    "query": "搜索",
+    "queryHint": "昵称的一部分，或账号 ID。",
+    "queryHintAdmin": "昵称或邮箱地址的一部分，或账号 ID。",
+    "role": "角色",
+    "anyRole": "任意角色",
+    "roles": {
+      "staff": "任意团队角色",
+      "admin": "管理员",
+      "moderator": "版主",
+      "none": "无角色"
+    },
+    "sanction": "处罚",
+    "anySanction": "有无均可",
+    "sanctions": {
+      "any": "任意生效中的处罚",
+      "mute": "已禁言",
+      "suspend": "已暂停",
+      "ban": "已封禁"
+    },
+    "account": "账号",
+    "anyAccount": "账号和游客",
+    "accounts": {
+      "account": "仅账号",
+      "guest": "仅游客"
+    },
+    "apply": "搜索",
+    "clear": "清除",
+    "results": "玩家",
+    "empty": "没有符合的玩家。",
+    "more": "显示更多",
+    "noNickname": "无昵称",
+    "guest": "游客",
+    "joined": "{date} 加入",
+    "notFound": "没有此 ID 的账号。",
+    "back": "全部玩家",
+    "profile": "公开资料",
+    "inAudit": "在审计日志中",
+    "id": "账号 ID",
+    "email": "邮箱",
+    "joinedAt": "加入时间",
+    "lastSignIn": "上次登录",
+    "never": "从未",
+    "level": "等级",
+    "levelValue": "等级 {level} · {xp} XP",
+    "country": "国家/地区",
+    "nicknameChanged": "上次改昵称",
+    "deletion": "计划删除时间",
+    "bio": "简介",
+    "noBio": "没有简介。",
+    "sanctionsTitle": "处罚",
+    "noSanctions": "没有处罚。",
+    "kinds": {
+      "warn": "警告",
+      "mute": "禁言",
+      "suspend": "暂停",
+      "ban": "封禁"
+    },
+    "reason": "原因",
+    "reasonFilter": "词语过滤（自动）",
+    "note": "备注",
+    "inForce": "生效中",
+    "given": "处罚时间",
+    "ends": "结束",
+    "noEnd": "撤销时",
+    "by": "处理人",
+    "automatic": "自动",
+    "revoked": "撤销时间",
+    "revokedBy": "撤销人",
+    "reportsAbout": "关于该玩家的举报",
+    "reportsBy": "该玩家的举报",
+    "noReports": "无。",
+    "reporter": "举报人",
+    "reported": "被举报人",
+    "statuses": {
+      "open": "待处理",
+      "dismissed": "已驳回",
+      "actioned": "已处理"
+    },
+    "matches": "最近的对局",
+    "noMatches": "还没有对局。",
+    "outcomes": {
+      "win": "胜",
+      "loss": "负",
+      "draw": "平"
+    },
+    "against": "对手：{names}",
+    "rated": "排位",
+    "review": "待审核"
   }
 }

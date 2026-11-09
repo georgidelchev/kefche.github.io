@@ -72,5 +72,96 @@
       "chatRoom": "Chat room"
     },
     "noProfile": "No profile"
+  },
+  "players": {
+    "search": "Find a player",
+    "query": "Search",
+    "queryHint": "Part of a nickname, or an account id.",
+    "queryHintAdmin": "Part of a nickname or an email address, or an account id.",
+    "role": "Role",
+    "anyRole": "Any role",
+    "roles": {
+      "staff": "Any staff role",
+      "admin": "Admin",
+      "moderator": "Moderator",
+      "none": "No role"
+    },
+    "sanction": "Sanction",
+    "anySanction": "Any or none",
+    "sanctions": {
+      "any": "Any sanction in force",
+      "mute": "Muted",
+      "suspend": "Suspended",
+      "ban": "Banned"
+    },
+    "account": "Account",
+    "anyAccount": "Accounts and guests",
+    "accounts": {
+      "account": "Accounts only",
+      "guest": "Guests only"
+    },
+    "apply": "Search",
+    "clear": "Clear",
+    "results": "Players",
+    "empty": "No players match.",
+    "more": "Show more",
+    "noNickname": "No nickname",
+    "guest": "Guest",
+    "joined": "Joined {date}",
+    "notFound": "There's no account with this id.",
+    "back": "All players",
+    "profile": "Public profile",
+    "inAudit": "In the audit log",
+    "id": "Account id",
+    "email": "Email",
+    "joinedAt": "Joined",
+    "lastSignIn": "Last signed in",
+    "never": "Never",
+    "level": "Level",
+    "levelValue": "Level {level} · {xp} XP",
+    "country": "Country",
+    "nicknameChanged": "Nickname last changed",
+    "deletion": "Deletion scheduled for",
+    "bio": "Bio",
+    "noBio": "No bio.",
+    "sanctionsTitle": "Sanctions",
+    "noSanctions": "No sanctions.",
+    "kinds": {
+      "warn": "Warning",
+      "mute": "Mute",
+      "suspend": "Suspension",
+      "ban": "Ban"
+    },
+    "reason": "Reason",
+    "reasonFilter": "Word filter (automatic)",
+    "note": "Note",
+    "inForce": "In force",
+    "given": "Given",
+    "ends": "Ends",
+    "noEnd": "When revoked",
+    "by": "By",
+    "automatic": "Automatic",
+    "revoked": "Revoked",
+    "revokedBy": "Revoked by",
+    "reportsAbout": "Reports about them",
+    "reportsBy": "Reports they made",
+    "noReports": "None.",
+    "reporter": "Reported by",
+    "reported": "About",
+    "statuses": {
+      "open": "Open",
+      "dismissed": "Dismissed",
+      "actioned": "Actioned"
+    },
+    "matches": "Latest matches",
+    "noMatches": "No matches yet.",
+    "outcomes": {
+      "win": "Win",
+      "loss": "Loss",
+      "draw": "Draw"
+    },
+    "against": "Against {names}",
+    "rated": "Rated",
+    "review": "Set aside for review"
   }
 }

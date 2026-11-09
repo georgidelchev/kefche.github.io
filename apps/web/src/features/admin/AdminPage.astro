@@ -28,6 +28,7 @@ const links = Object.fromEntries(
 const adminPaths = {
   profileBase: getRelativeLocaleUrl(locale, "/u/"),
   audit: links.audit,
+  users: links.users,
 };
 ---
 
@@ -43,7 +44,7 @@ const adminPaths = {
   <div class="grid w-full gap-6 pb-6">
     <AdminPanel
       client:load
-      view={adminView(section, t)}
+      view={adminView(section, t, locale)}
       strings={strings}
       bcp47={LOCALE_INFO[locale].bcp47}
       paths={adminPaths}

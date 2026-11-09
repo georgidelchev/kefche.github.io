@@ -874,6 +874,14 @@ isOneToOne: false
 "set_user_role":
 { Args: { "p_granted": boolean,"p_role": Database["public"]['Enums']["app_role"],"p_user_id": string }; Returns: undefined
                            },
+"staff_find_players":
+{ Args: { "p_account"?: string,"p_offset"?: number,"p_query"?: string,"p_role"?: string,"p_sanction"?: string }; Returns: {
+              "avatar_kind": string,"avatar_path": string,"avatar_preset": string,"created_at": string,"email": string,"guest": boolean,"id": string,"nickname": string,"roles": (string)[],"sanction": string
+            }[]
+                           },
+"staff_player":
+{ Args: { "p_user": string }; Returns: Json
+                           },
 "start_daily":
 { Args: { "p_game_version": number }; Returns: Json
                            },
