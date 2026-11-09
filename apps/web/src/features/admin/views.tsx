@@ -12,6 +12,7 @@ import type {
   ChatStrings,
   ContentStrings,
   GamesStrings,
+  I18nStrings,
   IntegrityStrings,
   PlayersStrings,
   ReportsStrings,
@@ -33,6 +34,10 @@ export interface AdminPaths {
   games: string;
   /** The integrity section's page; a match, board or player goes in the query string. */
   integrity: string;
+  /** The i18n section's page; `?locale=` picks a language. */
+  i18n: string;
+  /** The translation report's static JSON file. */
+  i18nReport: string;
   /** The arena server, or null when this build has none. */
   arena: string | null;
 }
@@ -56,10 +61,11 @@ export type AdminView =
   | { section: "games"; strings: GamesStrings; players: PlayersStrings }
   | { section: "integrity"; strings: IntegrityStrings; players: PlayersStrings }
   | { section: "content"; strings: ContentStrings; players: PlayersStrings }
+  | { section: "i18n"; strings: I18nStrings }
   | {
       section: Exclude<
         AdminSectionId,
-        "audit" | "users" | "reports" | "chat" | "games" | "integrity" | "content"
+        "audit" | "users" | "reports" | "chat" | "games" | "integrity" | "content" | "i18n"
       >;
     };
 
@@ -81,6 +87,10 @@ const ContentAdmin = lazy(() =>
   import("./views/ContentAdmin").then((m) => ({ default: m.ContentAdmin })),
 );
 
+const I18nReport = lazy(() =>
+  import("./views/I18nReport").then((m) => ({ default: m.I18nReport })),
+);
+
 /** The section's view, or null when it isn't built yet. */
 export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
   if (view.section === "audit") return <AuditLog {...props} strings={view.strings} />;
@@ -95,5 +105,6 @@ export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
     return <Integrity {...props} strings={view.strings} players={view.players} />;
   if (view.section === "content")
     return <ContentAdmin {...props} strings={view.strings} players={view.players} />;
+  if (view.section === "i18n") return <I18nReport {...props} strings={view.strings} />;
   return null;
 }

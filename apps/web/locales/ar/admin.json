@@ -503,5 +503,18 @@
     "saveDay": "حفظ {date}",
     "removeWordLabel": "إزالة {word}",
     "removeWordTitle": "إزالة «{word}»؟"
+  },
+  "i18n": {
+    "summaryTitle": "اللغات",
+    "summaryBody": "من ملفات اللغات كما كانت عند بناء الموقع. تتغير الترجمات في المستودع، لا هنا.",
+    "missing": "الناقصة: {count}",
+    "same": "مثل الإنجليزية: {count} ({percent})",
+    "missingTitle": "المفاتيح الناقصة",
+    "noMissing": "لا مفاتيح ناقصة.",
+    "sameTitle": "مثل الإنجليزية",
+    "sameBody": "غالبًا لم تُترجم بعد؛ وأحيانًا هي نفسها عن حق، كاسم أو «GIF».",
+    "filter": "تصفية",
+    "filterHint": "جزء من مفتاح أو نص.",
+    "shown": "المعروض: {count}"
   }
 }

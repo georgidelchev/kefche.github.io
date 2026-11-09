@@ -503,5 +503,18 @@
     "saveDay": "Save {date}",
     "removeWordLabel": "Remove {word}",
     "removeWordTitle": "Remove “{word}”?"
+  },
+  "i18n": {
+    "summaryTitle": "Languages",
+    "summaryBody": "From the locale files as they were when the site was built. Translations change in the repository, not here.",
+    "missing": "Missing: {count}",
+    "same": "Same as English: {count} ({percent})",
+    "missingTitle": "Missing keys",
+    "noMissing": "No keys are missing.",
+    "sameTitle": "Same as English",
+    "sameBody": "Often not translated yet; sometimes rightly the same, like a name or “GIF”.",
+    "filter": "Filter",
+    "filterHint": "Part of a key or a text.",
+    "shown": "Shown: {count}"
   }
 }

@@ -632,6 +632,29 @@ export function contentStrings(t: AppT, locale: Locale) {
 
 export type ContentStrings = ReturnType<typeof contentStrings>;
 
+export function i18nStrings(t: AppT) {
+  return {
+    summaryTitle: t("admin:i18n.summaryTitle"),
+    summaryBody: t("admin:i18n.summaryBody"),
+    /** "Missing: {count}" */
+    missing: t("admin:i18n.missing", { count: "{count}" }),
+    /** "Same as English: {count} ({percent})" */
+    same: t("admin:i18n.same", { count: "{count}", percent: "{percent}" }),
+    missingTitle: t("admin:i18n.missingTitle"),
+    noMissing: t("admin:i18n.noMissing"),
+    sameTitle: t("admin:i18n.sameTitle"),
+    sameBody: t("admin:i18n.sameBody"),
+    filter: t("admin:i18n.filter"),
+    filterHint: t("admin:i18n.filterHint"),
+    /** "Shown: {count}" */
+    shown: t("admin:i18n.shown", { count: "{count}" }),
+    loading: t("admin:loading"),
+    failed: t("admin:failed"),
+  };
+}
+
+export type I18nStrings = ReturnType<typeof i18nStrings>;
+
 /** What the page's section shows, with the strings it needs (built on the server). */
 export function adminView(section: AdminSectionId, t: AppT, locale: Locale): AdminView {
   if (section === "audit") return { section, strings: auditStrings(t) };
@@ -646,5 +669,6 @@ export function adminView(section: AdminSectionId, t: AppT, locale: Locale): Adm
     return { section, strings: integrityStrings(t), players: playersStrings(t, locale) };
   if (section === "content")
     return { section, strings: contentStrings(t, locale), players: playersStrings(t, locale) };
+  if (section === "i18n") return { section, strings: i18nStrings(t) };
   return { section };
 }

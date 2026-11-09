@@ -503,5 +503,18 @@
     "saveDay": "{date} सहेजें",
     "removeWordLabel": "{word} हटाएँ",
     "removeWordTitle": "“{word}” हटाएँ?"
+  },
+  "i18n": {
+    "summaryTitle": "भाषाएँ",
+    "summaryBody": "साइट बनाते समय की भाषा फ़ाइलों से। अनुवाद रिपॉज़िटरी में बदलते हैं, यहाँ नहीं।",
+    "missing": "गायब: {count}",
+    "same": "अंग्रेज़ी जैसे: {count} ({percent})",
+    "missingTitle": "गायब कुंजियाँ",
+    "noMissing": "कोई कुंजी गायब नहीं है।",
+    "sameTitle": "अंग्रेज़ी जैसे",
+    "sameBody": "अक्सर अभी अनूदित नहीं; कभी-कभी सही में वही, जैसे कोई नाम या “GIF”।",
+    "filter": "फ़िल्टर",
+    "filterHint": "किसी कुंजी या टेक्स्ट का हिस्सा।",
+    "shown": "दिखाए गए: {count}"
   }
 }

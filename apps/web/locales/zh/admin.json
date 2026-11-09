@@ -503,5 +503,18 @@
     "saveDay": "保存 {date}",
     "removeWordLabel": "移除 {word}",
     "removeWordTitle": "移除“{word}”？"
+  },
+  "i18n": {
+    "summaryTitle": "语言",
+    "summaryBody": "来自构建网站时的语言文件。翻译在代码仓库中修改，而不是在这里。",
+    "missing": "缺少：{count}",
+    "same": "与英文相同：{count}（{percent}）",
+    "missingTitle": "缺少的键",
+    "noMissing": "没有缺少的键。",
+    "sameTitle": "与英文相同",
+    "sameBody": "常常是尚未翻译；有时理应相同，比如名称或“GIF”。",
+    "filter": "筛选",
+    "filterHint": "键或文本的一部分。",
+    "shown": "显示：{count}"
   }
 }

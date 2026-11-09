@@ -503,5 +503,18 @@
     "saveDay": "{date} を保存",
     "removeWordLabel": "{word} を削除",
     "removeWordTitle": "「{word}」を削除しますか？"
+  },
+  "i18n": {
+    "summaryTitle": "言語",
+    "summaryBody": "サイトのビルド時点の言語ファイルから作成。翻訳はここではなくリポジトリで変更します。",
+    "missing": "不足：{count}",
+    "same": "英語と同じ：{count}（{percent}）",
+    "missingTitle": "不足しているキー",
+    "noMissing": "不足しているキーはありません。",
+    "sameTitle": "英語と同じ",
+    "sameBody": "多くは未翻訳です。名前や「GIF」のように同じで正しい場合もあります。",
+    "filter": "絞り込み",
+    "filterHint": "キーまたはテキストの一部。",
+    "shown": "表示：{count}"
   }
 }

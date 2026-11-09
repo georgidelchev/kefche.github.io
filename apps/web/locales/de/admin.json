@@ -503,5 +503,18 @@
     "saveDay": "{date} speichern",
     "removeWordLabel": "{word} entfernen",
     "removeWordTitle": "„{word}“ entfernen?"
+  },
+  "i18n": {
+    "summaryTitle": "Sprachen",
+    "summaryBody": "Aus den Sprachdateien, wie sie beim Bau der Website waren. Übersetzungen ändern sich im Repository, nicht hier.",
+    "missing": "Fehlend: {count}",
+    "same": "Wie auf Englisch: {count} ({percent})",
+    "missingTitle": "Fehlende Schlüssel",
+    "noMissing": "Es fehlen keine Schlüssel.",
+    "sameTitle": "Wie auf Englisch",
+    "sameBody": "Oft noch nicht übersetzt; manchmal zu Recht gleich, etwa ein Name oder „GIF“.",
+    "filter": "Filtern",
+    "filterHint": "Ein Teil eines Schlüssels oder Texts.",
+    "shown": "Angezeigt: {count}"
   }
 }

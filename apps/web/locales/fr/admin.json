@@ -503,5 +503,18 @@
     "saveDay": "Enregistrer le {date}",
     "removeWordLabel": "Retirer {word}",
     "removeWordTitle": "Retirer « {word} » ?"
+  },
+  "i18n": {
+    "summaryTitle": "Langues",
+    "summaryBody": "D'après les fichiers de langue au moment de la construction du site. Les traductions se modifient dans le dépôt, pas ici.",
+    "missing": "Manquantes : {count}",
+    "same": "Comme en anglais : {count} ({percent})",
+    "missingTitle": "Clés manquantes",
+    "noMissing": "Aucune clé ne manque.",
+    "sameTitle": "Comme en anglais",
+    "sameBody": "Souvent pas encore traduites ; parfois identiques à juste titre, comme un nom ou « GIF ».",
+    "filter": "Filtrer",
+    "filterHint": "Une partie d'une clé ou d'un texte.",
+    "shown": "Affichées : {count}"
   }
 }

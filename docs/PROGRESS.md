@@ -2137,6 +2137,12 @@ Until now the RUNBOOK gives SQL for all of these. Phase 10 puts screens on them 
   - **Word of the Day** (`staff_words`, `staff_set_word`): a word and meaning per language and day, from today.
   - **Achievements**, read-only from the manifests (`achievementCatalog`); content packs stay with Phase 15.
   - Checked in Chrome: 42/42, covering a moderator refused, an announcement with no English, a link off the site or an unknown language refused, the preview and its fallback, sending to staff with the notification received, scheduling, editing and deleting, the home page's news in Bulgarian and in English for French, taking it out, the minute job, a daily override and its undo with today locked, a word shown on the home page and removed, every audit entry, 1280, 1024, 768 and 390 px, both themes, Arabic and axe. The link field's `pattern` attribute was dropped: it isn't valid under the browser's `v`-flag rules, and the server checks links anyway.
+- [x] **Step 9, the i18n report** (`/admin/i18n/`, admins; read-only):
+  - **Built at build time** (`features/admin/i18n-report.ts`) from the site's locale files and every game's, served as one static file (`/en/admin/i18n-report.json`, about 270 KB, holding only what the public locale files say).
+  - **Per language:** the keys English has that it lacks (none while `pnpm i18n:check` passes) and the strings still the same as English, as a count and a share. Placeholders and punctuation alone don't count.
+  - **One language's detail** (`?locale=`): its missing keys, and its same-as-English strings grouped by namespace or game, with a filter.
+  - Today: no keys missing. Bulgarian has 9 same-as-English strings ("GIF" and the like). Each of the other 9 languages has about 200–280, mostly the game prose (Phase 15).
+  - Checked in Chrome: 15/15, covering a moderator turned away, the summary, a language's detail and the filter, 1280, 768 and 390 px, both themes, Arabic and axe.
 - [x] **The word filter removed** (owner request, 2026-11-09; ADR-0040):
   - **Database** (`20261109100000_remove_word_filter.sql`): nicknames and bios are no longer checked against word lists, chat isn't masked, and there are no automatic mutes. The filter's functions and its three tables are dropped. Reserved nicknames, rate limits, slow mode, reports, sanctions and blocks stay.
   - **Repository:** the word lists, `scripts/blocked-terms.mjs` and `pnpm db:terms` are gone.
