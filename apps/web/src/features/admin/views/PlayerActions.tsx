@@ -62,8 +62,26 @@ const DURATIONS = [
   ["none", null],
 ] as const;
 
+/** A sanction as the dialog's form gives it. */
+export interface SanctionInput {
+  kind: string;
+  reason: string;
+  minutes: number | null;
+  note: string;
+}
+
+/** The sanction_player arguments for the form's sanction, linked to a report when given. */
+export const sanctionArgs = (userId: string, input: SanctionInput, report?: string) => ({
+  p_user: userId,
+  p_kind: input.kind,
+  p_reason: input.reason,
+  ...(input.kind !== "warn" && input.minutes !== null && { p_minutes: input.minutes }),
+  ...(input.note.trim() !== "" && { p_note: input.note.trim() }),
+  ...(report !== undefined && { p_report: report }),
+});
+
 /** The error's message for the staff member. */
-function errorText(code: string, s: PlayersStrings["act"]): string {
+export function errorText(code: string, s: PlayersStrings["act"]): string {
   if (code === "admin_only") return s.errors.adminOnly;
   if (code === "rate_limited") return s.errors.rateLimited;
   if (code === "nothing_to_reset") return s.errors.nothing;
@@ -77,21 +95,14 @@ export async function performAction(
   supabase: Supabase,
   player: Player,
   request: ActionRequest,
-  sanction: { kind: string; reason: string; minutes: number | null; note: string },
+  sanction: SanctionInput,
   s: PlayersStrings["act"],
 ): Promise<string | null> {
   const { error } =
     request.type === "reset"
       ? await supabase.rpc("staff_reset_profile", { p_user: player.id, p_field: request.field })
       : request.type === "sanction"
-        ? await supabase.rpc("sanction_player", {
-            p_user: player.id,
-            p_kind: sanction.kind,
-            p_reason: sanction.reason,
-            ...(sanction.kind !== "warn" &&
-              sanction.minutes !== null && { p_minutes: sanction.minutes }),
-            ...(sanction.note.trim() !== "" && { p_note: sanction.note.trim() }),
-          })
+        ? await supabase.rpc("sanction_player", sanctionArgs(player.id, sanction))
         : request.type === "revoke"
           ? await supabase.rpc("revoke_sanction", { p_sanction: request.sanction.id })
           : request.type === "role"
@@ -210,32 +221,35 @@ function roleLabel(role: StaffRole, granted: boolean, a: PlayersStrings["act"]):
 /** Confirms the requested action (with the sanction's form), then runs it. */
 export function ActionDialog({
   request,
-  player,
+  name,
   admin,
   strings: s,
+  reason: initialReason = "spam",
+  sanctionBody,
   onClose,
   onConfirm,
 }: {
   request: ActionRequest | null;
-  player: Player;
+  /** The player's nickname, or what stands for it. */
+  name: string;
   admin: boolean;
   strings: PlayersStrings;
+  /** The sanction's reason to start with. */
+  reason?: string;
+  /** What the sanction dialog says, when not the usual. */
+  sanctionBody?: string;
   onClose: () => void;
-  onConfirm: (sanction: {
-    kind: string;
-    reason: string;
-    minutes: number | null;
-    note: string;
-  }) => Promise<void>;
+  onConfirm: (sanction: SanctionInput) => Promise<void>;
 }) {
   const id = useId();
   const a = s.act;
   const [busy, setBusy] = useState(false);
   const [kind, setKind] = useState<string>("warn");
-  const [reason, setReason] = useState<string>("spam");
+  const [reason, setReason] = useState<string>(
+    SANCTION_REASONS.includes(initialReason) ? initialReason : "spam",
+  );
   const [minutes, setMinutes] = useState<number | null>(1440);
   const [note, setNote] = useState("");
-  const name = player.nickname ?? s.noNickname;
 
   if (request === null) return null;
   const text: { title: string; body: string; confirm: string; danger: boolean } =
@@ -263,7 +277,7 @@ export function ActionDialog({
       : request.type === "sanction"
         ? {
             title: fill(a.sanctionTitle, { name }),
-            body: a.sanctionBody,
+            body: sanctionBody ?? a.sanctionBody,
             confirm: a.give,
             danger: true,
           }

@@ -62,7 +62,8 @@
       "chatDelete": "チャットのメッセージを削除",
       "roomChatDelete": "ロビーのメッセージを削除",
       "slowMode": "低速モードを設定",
-      "profileReset": "プロフィールのリセット"
+      "profileReset": "プロフィールのリセット",
+      "dmContext": "通報された DM の会話を閲覧"
     },
     "targets": {
       "user": "プレイヤー",
@@ -214,5 +215,55 @@
         "failed": "うまくいきませんでした。もう一度お試しください。"
       }
     }
+  },
+  "reports": {
+    "type": "種類",
+    "anyType": "すべての種類",
+    "types": {
+      "message": "チャットと DM",
+      "roomMessage": "ロビーのメッセージ",
+      "user": "ニックネームと自己紹介",
+      "avatar": "アバター"
+    },
+    "apply": "表示",
+    "empty": "未対応の通報はありません。すべて対応済みです。",
+    "count": "通報：{count}",
+    "firstReported": "最初の通報：{ago}",
+    "late": "1 日以上待機中",
+    "veryLate": "3 日以上待機中",
+    "held": "確認まで非表示",
+    "dm": "DM",
+    "globalRoom": "全体チャット · {room}",
+    "lobby": "ロビー {code} · {game}",
+    "nickname": "ニックネーム",
+    "deleted": "削除済み",
+    "hidden": "非表示",
+    "gif": "GIF",
+    "avatarAlt": "通報されたアバター",
+    "reportedBy": "通報者",
+    "showContext": "会話を表示",
+    "contextTitle": "前後の会話",
+    "contextEmpty": "会話はもうありません。",
+    "contextDm": "DM の会話を読むと監査ログに記録されます。",
+    "reportedMessage": "通報対象",
+    "dismiss": "却下",
+    "remove": "削除",
+    "removeAndSanction": "削除して処分",
+    "dismissTitle": "これらの通報を却下しますか？",
+    "dismissBody": "非表示になったものは戻り、通報は閉じられます。",
+    "removeTitle": "削除しますか？",
+    "removeBody": {
+      "message": "メッセージは全員に対して削除され、通報は閉じられます。",
+      "user": "自己紹介は消去されて戻らず、通報は閉じられます。ニックネームはプレイヤーのページからリセットしてください。",
+      "avatar": "アバターは戻らず、通報は閉じられます。"
+    },
+    "sanctionBody": "通報された内容も削除され、プレイヤーには処分、理由、終了日時が伝わります。",
+    "select": "{item} を選択",
+    "selected": "選択中：{count}",
+    "dismissSelected": "選択したものを却下",
+    "removeSelected": "選択したものを削除",
+    "bulkBody": "選択したすべての項目（{count}）に適用されます。",
+    "done": "完了しました。",
+    "partial": "一部がうまくいきませんでした。もう一度お試しください。"
   }
 }

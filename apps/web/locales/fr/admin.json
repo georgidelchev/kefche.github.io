@@ -62,7 +62,8 @@
       "chatDelete": "Message du chat supprimé",
       "roomChatDelete": "Message de salon supprimé",
       "slowMode": "Mode lent réglé",
-      "profileReset": "Profil réinitialisé"
+      "profileReset": "Profil réinitialisé",
+      "dmContext": "Conversation privée signalée lue"
     },
     "targets": {
       "user": "Joueur",
@@ -214,5 +215,55 @@
         "failed": "Ça n'a pas marché. Réessaie."
       }
     }
+  },
+  "reports": {
+    "type": "Type",
+    "anyType": "Tous les types",
+    "types": {
+      "message": "Chat et messages privés",
+      "roomMessage": "Messages de salon",
+      "user": "Pseudos et bios",
+      "avatar": "Avatars"
+    },
+    "apply": "Afficher",
+    "empty": "Aucun signalement ouvert. Tout est traité.",
+    "count": "Signalements : {count}",
+    "firstReported": "Premier signalement {ago}",
+    "late": "En attente depuis plus d'un jour",
+    "veryLate": "En attente depuis plus de 3 jours",
+    "held": "Masqué jusqu'à l'examen",
+    "dm": "Message privé",
+    "globalRoom": "Chat global · {room}",
+    "lobby": "Salon {code} · {game}",
+    "nickname": "Pseudo",
+    "deleted": "Supprimé",
+    "hidden": "Masqué",
+    "gif": "GIF",
+    "avatarAlt": "L'avatar signalé",
+    "reportedBy": "Signalé par",
+    "showContext": "Voir la conversation",
+    "contextTitle": "La conversation autour",
+    "contextEmpty": "La conversation n'existe plus.",
+    "contextDm": "Lire la conversation d'un message privé est noté dans le journal d'audit.",
+    "reportedMessage": "Signalé",
+    "dismiss": "Rejeter",
+    "remove": "Retirer",
+    "removeAndSanction": "Retirer et sanctionner",
+    "dismissTitle": "Rejeter ces signalements ?",
+    "dismissBody": "Ce qui était masqué revient, et les signalements sont clos.",
+    "removeTitle": "Le retirer ?",
+    "removeBody": {
+      "message": "Le message est supprimé pour tous, et les signalements sont clos.",
+      "user": "Sa bio est effacée et ne revient pas, et les signalements sont clos. Pour changer un pseudo, réinitialise-le depuis la page du joueur.",
+      "avatar": "L'avatar ne revient pas, et les signalements sont clos."
+    },
+    "sanctionBody": "Ce qui a été signalé est retiré aussi, et le joueur voit la sanction, son motif et sa fin.",
+    "select": "Sélectionner {item}",
+    "selected": "Sélection : {count}",
+    "dismissSelected": "Rejeter la sélection",
+    "removeSelected": "Retirer la sélection",
+    "bulkBody": "S'applique à tous les éléments sélectionnés ({count}).",
+    "done": "C'est fait.",
+    "partial": "Certains n'ont pas abouti. Réessaie."
   }
 }

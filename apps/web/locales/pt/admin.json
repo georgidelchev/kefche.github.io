@@ -62,7 +62,8 @@
       "chatDelete": "Mensagem do chat apagada",
       "roomChatDelete": "Mensagem da sala apagada",
       "slowMode": "Modo lento definido",
-      "profileReset": "Perfil redefinido"
+      "profileReset": "Perfil redefinido",
+      "dmContext": "Conversa de DM denunciada lida"
     },
     "targets": {
       "user": "Jogador",
@@ -214,5 +215,55 @@
         "failed": "Não deu certo. Tente de novo."
       }
     }
+  },
+  "reports": {
+    "type": "Tipo",
+    "anyType": "Todos os tipos",
+    "types": {
+      "message": "Chat e mensagens diretas",
+      "roomMessage": "Mensagens de sala",
+      "user": "Apelidos e bios",
+      "avatar": "Avatares"
+    },
+    "apply": "Mostrar",
+    "empty": "Nenhuma denúncia aberta. Tudo em dia.",
+    "count": "Denúncias: {count}",
+    "firstReported": "Primeira denúncia {ago}",
+    "late": "Esperando há mais de um dia",
+    "veryLate": "Esperando há mais de 3 dias",
+    "held": "Oculto até a revisão",
+    "dm": "Mensagem direta",
+    "globalRoom": "Chat global · {room}",
+    "lobby": "Sala {code} · {game}",
+    "nickname": "Apelido",
+    "deleted": "Excluída",
+    "hidden": "Oculta",
+    "gif": "GIF",
+    "avatarAlt": "O avatar denunciado",
+    "reportedBy": "Denunciado por",
+    "showContext": "Ver a conversa",
+    "contextTitle": "A conversa ao redor",
+    "contextEmpty": "A conversa não existe mais.",
+    "contextDm": "Ler a conversa de uma mensagem direta fica no registro de auditoria.",
+    "reportedMessage": "Denunciada",
+    "dismiss": "Descartar",
+    "remove": "Remover",
+    "removeAndSanction": "Remover e sancionar",
+    "dismissTitle": "Descartar estas denúncias?",
+    "dismissBody": "O que estava oculto volta, e as denúncias são fechadas.",
+    "removeTitle": "Remover?",
+    "removeBody": {
+      "message": "A mensagem é excluída para todos, e as denúncias são fechadas.",
+      "user": "A bio é apagada e não volta, e as denúncias são fechadas. Para mudar um apelido, redefina-o na página do jogador.",
+      "avatar": "O avatar não volta, e as denúncias são fechadas."
+    },
+    "sanctionBody": "O que foi denunciado também é removido, e o jogador vê a sanção, o motivo e quando termina.",
+    "select": "Selecionar {item}",
+    "selected": "Selecionados: {count}",
+    "dismissSelected": "Descartar selecionados",
+    "removeSelected": "Remover selecionados",
+    "bulkBody": "Vale para todos os selecionados ({count}).",
+    "done": "Feito.",
+    "partial": "Alguns não deram certo. Tente de novo."
   }
 }

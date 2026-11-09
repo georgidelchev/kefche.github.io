@@ -70,6 +70,7 @@ export function auditStrings(t: AppT) {
       "sanction.create": t("admin:audit.actions.sanctionCreate"),
       "sanction.revoke": t("admin:audit.actions.sanctionRevoke"),
       "report.resolve": t("admin:audit.actions.reportResolve"),
+      "report.dm_context": t("admin:audit.actions.dmContext"),
       "chat.delete": t("admin:audit.actions.chatDelete"),
       "room_chat.delete": t("admin:audit.actions.roomChatDelete"),
       "chat.slow_mode": t("admin:audit.actions.slowMode"),
@@ -260,9 +261,77 @@ export function playersStrings(t: AppT, locale: Locale) {
 
 export type PlayersStrings = ReturnType<typeof playersStrings>;
 
+export function reportsStrings(t: AppT) {
+  return {
+    type: t("admin:reports.type"),
+    anyType: t("admin:reports.anyType"),
+    types: {
+      message: t("admin:reports.types.message"),
+      room_message: t("admin:reports.types.roomMessage"),
+      user: t("admin:reports.types.user"),
+      avatar: t("admin:reports.types.avatar"),
+    } as Record<string, string>,
+    apply: t("admin:reports.apply"),
+    empty: t("admin:reports.empty"),
+    /** "Reports: {count}" */
+    count: t("admin:reports.count", { count: "{count}" }),
+    /** "First reported {ago}" */
+    firstReported: t("admin:reports.firstReported", { ago: "{ago}" }),
+    late: t("admin:reports.late"),
+    veryLate: t("admin:reports.veryLate"),
+    held: t("admin:reports.held"),
+    dm: t("admin:reports.dm"),
+    /** "Global chat · {room}" */
+    globalRoom: t("admin:reports.globalRoom", { room: "{room}" }),
+    /** "Lobby {code} · {game}" */
+    lobby: t("admin:reports.lobby", { code: "{code}", game: "{game}" }),
+    nickname: t("admin:reports.nickname"),
+    deleted: t("admin:reports.deleted"),
+    hidden: t("admin:reports.hidden"),
+    gif: t("admin:reports.gif"),
+    avatarAlt: t("admin:reports.avatarAlt"),
+    reportedBy: t("admin:reports.reportedBy"),
+    showContext: t("admin:reports.showContext"),
+    contextTitle: t("admin:reports.contextTitle"),
+    contextEmpty: t("admin:reports.contextEmpty"),
+    contextDm: t("admin:reports.contextDm"),
+    reportedMessage: t("admin:reports.reportedMessage"),
+    dismiss: t("admin:reports.dismiss"),
+    remove: t("admin:reports.remove"),
+    removeAndSanction: t("admin:reports.removeAndSanction"),
+    dismissTitle: t("admin:reports.dismissTitle"),
+    dismissBody: t("admin:reports.dismissBody"),
+    removeTitle: t("admin:reports.removeTitle"),
+    removeBody: {
+      message: t("admin:reports.removeBody.message"),
+      room_message: t("admin:reports.removeBody.message"),
+      user: t("admin:reports.removeBody.user"),
+      avatar: t("admin:reports.removeBody.avatar"),
+    } as Record<string, string>,
+    sanctionBody: t("admin:reports.sanctionBody"),
+    /** "Select {item}" */
+    select: t("admin:reports.select", { item: "{item}" }),
+    /** "Selected: {count}" */
+    selected: t("admin:reports.selected", { count: "{count}" }),
+    dismissSelected: t("admin:reports.dismissSelected"),
+    removeSelected: t("admin:reports.removeSelected"),
+    /** "Applies to the {count} selected." */
+    bulkBody: t("admin:reports.bulkBody", { count: "{count}" }),
+    done: t("admin:reports.done"),
+    partial: t("admin:reports.partial"),
+    loading: t("admin:loading"),
+    failed: t("admin:failed"),
+    retry: t("admin:retry"),
+  };
+}
+
+export type ReportsStrings = ReturnType<typeof reportsStrings>;
+
 /** What the page's section shows, with the strings it needs (built on the server). */
 export function adminView(section: AdminSectionId, t: AppT, locale: Locale): AdminView {
   if (section === "audit") return { section, strings: auditStrings(t) };
   if (section === "users") return { section, strings: playersStrings(t, locale) };
+  if (section === "reports")
+    return { section, strings: reportsStrings(t), players: playersStrings(t, locale) };
   return { section };
 }

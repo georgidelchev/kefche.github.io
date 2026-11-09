@@ -468,7 +468,7 @@ function PlayerView({
         <ActionDialog
           key={opened}
           request={request}
-          player={player}
+          name={name}
           admin={can.admin}
           strings={s}
           onClose={() => {

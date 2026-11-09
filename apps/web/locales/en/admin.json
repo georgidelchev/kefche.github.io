@@ -62,7 +62,8 @@
       "chatDelete": "Chat message deleted",
       "roomChatDelete": "Lobby message deleted",
       "slowMode": "Slow mode set",
-      "profileReset": "Profile reset"
+      "profileReset": "Profile reset",
+      "dmContext": "Reported DM conversation read"
     },
     "targets": {
       "user": "Player",
@@ -214,5 +215,55 @@
         "failed": "That didn't work. Try again."
       }
     }
+  },
+  "reports": {
+    "type": "Type",
+    "anyType": "Every type",
+    "types": {
+      "message": "Chat and direct messages",
+      "roomMessage": "Lobby messages",
+      "user": "Nicknames and bios",
+      "avatar": "Avatars"
+    },
+    "apply": "Show",
+    "empty": "No open reports. All caught up.",
+    "count": "Reports: {count}",
+    "firstReported": "First reported {ago}",
+    "late": "Waiting over a day",
+    "veryLate": "Waiting over 3 days",
+    "held": "Hidden until reviewed",
+    "dm": "Direct message",
+    "globalRoom": "Global chat · {room}",
+    "lobby": "Lobby {code} · {game}",
+    "nickname": "Nickname",
+    "deleted": "Deleted",
+    "hidden": "Hidden",
+    "gif": "GIF",
+    "avatarAlt": "The reported avatar",
+    "reportedBy": "Reported by",
+    "showContext": "Show the conversation",
+    "contextTitle": "The conversation around it",
+    "contextEmpty": "The conversation is no longer there.",
+    "contextDm": "Reading a direct message's conversation is recorded in the audit log.",
+    "reportedMessage": "Reported",
+    "dismiss": "Dismiss",
+    "remove": "Remove",
+    "removeAndSanction": "Remove and sanction",
+    "dismissTitle": "Dismiss these reports?",
+    "dismissBody": "Anything hidden comes back, and the reports close.",
+    "removeTitle": "Remove it?",
+    "removeBody": {
+      "message": "The message is deleted for everyone, and the reports close.",
+      "user": "Their bio is cleared and stays off, and the reports close. To change a nickname, reset it from the player's page.",
+      "avatar": "The avatar stays off, and the reports close."
+    },
+    "sanctionBody": "What was reported is removed too, and the player is told the sanction, its reason and when it ends.",
+    "select": "Select {item}",
+    "selected": "Selected: {count}",
+    "dismissSelected": "Dismiss selected",
+    "removeSelected": "Remove selected",
+    "bulkBody": "This applies to every selected item ({count}).",
+    "done": "Done.",
+    "partial": "Some of them didn't go through. Try again."
   }
 }

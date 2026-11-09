@@ -62,7 +62,8 @@
       "chatDelete": "删除聊天消息",
       "roomChatDelete": "删除房间消息",
       "slowMode": "设置慢速模式",
-      "profileReset": "资料已重置"
+      "profileReset": "资料已重置",
+      "dmContext": "已查看被举报私信的对话"
     },
     "targets": {
       "user": "玩家",
@@ -214,5 +215,55 @@
         "failed": "操作失败，请重试。"
       }
     }
+  },
+  "reports": {
+    "type": "类型",
+    "anyType": "全部类型",
+    "types": {
+      "message": "聊天与私信",
+      "roomMessage": "房间消息",
+      "user": "昵称与简介",
+      "avatar": "头像"
+    },
+    "apply": "显示",
+    "empty": "没有待处理的举报，全部处理完了。",
+    "count": "举报：{count}",
+    "firstReported": "首次举报于{ago}",
+    "late": "已等待超过一天",
+    "veryLate": "已等待超过 3 天",
+    "held": "审核前已隐藏",
+    "dm": "私信",
+    "globalRoom": "公共聊天 · {room}",
+    "lobby": "房间 {code} · {game}",
+    "nickname": "昵称",
+    "deleted": "已删除",
+    "hidden": "已隐藏",
+    "gif": "GIF",
+    "avatarAlt": "被举报的头像",
+    "reportedBy": "举报人",
+    "showContext": "查看对话",
+    "contextTitle": "前后的对话",
+    "contextEmpty": "对话已不存在。",
+    "contextDm": "查看私信对话会记入审计日志。",
+    "reportedMessage": "被举报",
+    "dismiss": "驳回",
+    "remove": "移除",
+    "removeAndSanction": "移除并处罚",
+    "dismissTitle": "驳回这些举报？",
+    "dismissBody": "被隐藏的内容会恢复，举报随之关闭。",
+    "removeTitle": "移除？",
+    "removeBody": {
+      "message": "消息会对所有人删除，举报随之关闭。",
+      "user": "简介会被清除且不会恢复，举报随之关闭。要更改昵称，请在玩家页面重置。",
+      "avatar": "头像不会恢复，举报随之关闭。"
+    },
+    "sanctionBody": "被举报的内容也会移除，玩家会看到处罚、原因和结束时间。",
+    "select": "选择 {item}",
+    "selected": "已选：{count}",
+    "dismissSelected": "驳回所选",
+    "removeSelected": "移除所选",
+    "bulkBody": "将应用于所有所选项（{count}）。",
+    "done": "已完成。",
+    "partial": "部分操作未成功，请重试。"
   }
 }

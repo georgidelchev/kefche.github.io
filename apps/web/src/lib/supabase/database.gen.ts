@@ -888,6 +888,14 @@ isOneToOne: false
 "staff_player":
 { Args: { "p_user": string }; Returns: Json
                            },
+"staff_report_context":
+{ Args: { "p_target": string,"p_type": string }; Returns: Json
+                           },
+"staff_report_queue":
+{ Args: { "p_type"?: string }; Returns: {
+              "first_at": string,"held": boolean,"last_at": string,"reports": Json,"snapshot": Json,"target_id": string,"target_nickname": string,"target_type": string,"target_user_id": string
+            }[]
+                           },
 "staff_reset_profile":
 { Args: { "p_field": string,"p_user": string }; Returns: undefined
                            },

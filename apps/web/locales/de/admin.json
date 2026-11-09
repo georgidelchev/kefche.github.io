@@ -62,7 +62,8 @@
       "chatDelete": "Chatnachricht gelöscht",
       "roomChatDelete": "Lobbynachricht gelöscht",
       "slowMode": "Langsamer Modus gesetzt",
-      "profileReset": "Profil zurückgesetzt"
+      "profileReset": "Profil zurückgesetzt",
+      "dmContext": "Gemeldeter DM-Verlauf gelesen"
     },
     "targets": {
       "user": "Spieler",
@@ -214,5 +215,55 @@
         "failed": "Das hat nicht geklappt. Versuch es noch einmal."
       }
     }
+  },
+  "reports": {
+    "type": "Art",
+    "anyType": "Alle Arten",
+    "types": {
+      "message": "Chat und Direktnachrichten",
+      "roomMessage": "Lobby-Nachrichten",
+      "user": "Nicknames und Bios",
+      "avatar": "Avatare"
+    },
+    "apply": "Anzeigen",
+    "empty": "Keine offenen Meldungen. Alles erledigt.",
+    "count": "Meldungen: {count}",
+    "firstReported": "Zuerst gemeldet {ago}",
+    "late": "Wartet über einen Tag",
+    "veryLate": "Wartet über 3 Tage",
+    "held": "Bis zur Prüfung ausgeblendet",
+    "dm": "Direktnachricht",
+    "globalRoom": "Globaler Chat · {room}",
+    "lobby": "Lobby {code} · {game}",
+    "nickname": "Nickname",
+    "deleted": "Gelöscht",
+    "hidden": "Ausgeblendet",
+    "gif": "GIF",
+    "avatarAlt": "Der gemeldete Avatar",
+    "reportedBy": "Gemeldet von",
+    "showContext": "Verlauf zeigen",
+    "contextTitle": "Der Verlauf drumherum",
+    "contextEmpty": "Den Verlauf gibt es nicht mehr.",
+    "contextDm": "Das Lesen des Verlaufs einer Direktnachricht wird im Audit-Log festgehalten.",
+    "reportedMessage": "Gemeldet",
+    "dismiss": "Abweisen",
+    "remove": "Entfernen",
+    "removeAndSanction": "Entfernen und sanktionieren",
+    "dismissTitle": "Diese Meldungen abweisen?",
+    "dismissBody": "Ausgeblendetes kommt zurück, und die Meldungen werden geschlossen.",
+    "removeTitle": "Entfernen?",
+    "removeBody": {
+      "message": "Die Nachricht wird für alle gelöscht, und die Meldungen werden geschlossen.",
+      "user": "Die Bio wird gelöscht und bleibt weg, und die Meldungen werden geschlossen. Einen Nickname setzt du auf der Spielerseite zurück.",
+      "avatar": "Der Avatar bleibt weg, und die Meldungen werden geschlossen."
+    },
+    "sanctionBody": "Das Gemeldete wird ebenfalls entfernt, und der Spieler erfährt die Sanktion, ihren Grund und ihr Ende.",
+    "select": "{item} auswählen",
+    "selected": "Ausgewählt: {count}",
+    "dismissSelected": "Auswahl abweisen",
+    "removeSelected": "Auswahl entfernen",
+    "bulkBody": "Gilt für alle ausgewählten Einträge ({count}).",
+    "done": "Erledigt.",
+    "partial": "Einige haben nicht geklappt. Versuch es noch einmal."
   }
 }
