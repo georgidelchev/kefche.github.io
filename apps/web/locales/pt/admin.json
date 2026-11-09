@@ -265,5 +265,38 @@
     "bulkBody": "Vale para todos os selecionados ({count}).",
     "done": "Feito.",
     "partial": "Alguns não deram certo. Tente de novo."
+  },
+  "chat": {
+    "searchTitle": "Pesquisar mensagens",
+    "scope": "Onde",
+    "scopes": {
+      "global": "Chat global",
+      "lobby": "Chat das salas"
+    },
+    "room": "Sala",
+    "anyRoom": "Todas as salas",
+    "query": "Texto",
+    "queryHint": "Parte de uma mensagem, como foi escrita. Mensagens diretas não podem ser pesquisadas.",
+    "sender": "Remetente",
+    "senderHint": "Um apelido ou um id de conta.",
+    "search": "Pesquisar",
+    "results": "Mensagens",
+    "empty": "Nenhuma mensagem corresponde.",
+    "more": "Ver anteriores",
+    "delete": "Excluir",
+    "deleteTitle": "Excluir esta mensagem?",
+    "deleteBody": "O texto é apagado para todos. A exclusão fica no registro de auditoria.",
+    "slowTitle": "Modo lento",
+    "slowBody": "Quanto cada jogador espera entre mensagens numa sala global.",
+    "slowOff": "Desligado",
+    "save": "Salvar",
+    "slowSave": "Salvar o modo lento de {room}",
+    "slowSaved": "Modo lento em {room}: {value}.",
+    "mutedTitle": "Jogadores silenciados",
+    "mutedEmpty": "Ninguém está silenciado.",
+    "noEnd": "Até ser revogado",
+    "endsAt": "Termina em {date}",
+    "unmute": "Tirar o silêncio de {name}",
+    "unmuteBody": "Poderá conversar de novo na hora, e a revogação fica no registro de auditoria."
   }
 }

@@ -265,5 +265,38 @@
     "bulkBody": "Gilt für alle ausgewählten Einträge ({count}).",
     "done": "Erledigt.",
     "partial": "Einige haben nicht geklappt. Versuch es noch einmal."
+  },
+  "chat": {
+    "searchTitle": "Nachrichten suchen",
+    "scope": "Wo",
+    "scopes": {
+      "global": "Globaler Chat",
+      "lobby": "Lobby-Chat"
+    },
+    "room": "Raum",
+    "anyRoom": "Alle Räume",
+    "query": "Text",
+    "queryHint": "Ein Teil einer Nachricht, wie geschrieben. Direktnachrichten lassen sich nicht durchsuchen.",
+    "sender": "Absender",
+    "senderHint": "Ein Spitzname oder eine Konto-ID.",
+    "search": "Suchen",
+    "results": "Nachrichten",
+    "empty": "Keine Nachricht passt.",
+    "more": "Ältere anzeigen",
+    "delete": "Löschen",
+    "deleteTitle": "Diese Nachricht löschen?",
+    "deleteBody": "Ihr Text wird für alle gelöscht. Das Löschen wird im Audit-Log festgehalten.",
+    "slowTitle": "Langsamer Modus",
+    "slowBody": "Wie lange jeder Spieler in einem globalen Raum zwischen zwei Nachrichten wartet.",
+    "slowOff": "Aus",
+    "save": "Speichern",
+    "slowSave": "Langsamen Modus für {room} speichern",
+    "slowSaved": "Langsamer Modus in {room}: {value}.",
+    "mutedTitle": "Stummgeschaltete Spieler",
+    "mutedEmpty": "Niemand ist stummgeschaltet.",
+    "noEnd": "Bis zum Widerruf",
+    "endsAt": "Endet am {date}",
+    "unmute": "Stummschaltung von {name} aufheben",
+    "unmuteBody": "Der Spieler kann sofort wieder schreiben, und der Widerruf wird im Audit-Log festgehalten."
   }
 }

@@ -7,7 +7,7 @@ import { lazy, type ReactNode } from "react";
 import type { Supabase } from "@/lib/supabase/client";
 
 import type { AdminSectionId, StaffRole } from "./sections";
-import type { AuditStrings, PlayersStrings, ReportsStrings } from "./strings";
+import type { AuditStrings, ChatStrings, PlayersStrings, ReportsStrings } from "./strings";
 
 /** Localized pages the views link to. */
 export interface AdminPaths {
@@ -19,6 +19,8 @@ export interface AdminPaths {
   users: string;
   /** The moderation queue's page; its type filter goes in the query string. */
   reports: string;
+  /** The chat tools' page; a message search goes in the query string. */
+  chat: string;
 }
 
 /** What every view gets. */
@@ -36,7 +38,8 @@ export type AdminView =
   | { section: "audit"; strings: AuditStrings }
   | { section: "users"; strings: PlayersStrings }
   | { section: "reports"; strings: ReportsStrings; players: PlayersStrings }
-  | { section: Exclude<AdminSectionId, "audit" | "users" | "reports"> };
+  | { section: "chat"; strings: ChatStrings; players: PlayersStrings }
+  | { section: Exclude<AdminSectionId, "audit" | "users" | "reports" | "chat"> };
 
 const AuditLog = lazy(() => import("./views/AuditLog").then((m) => ({ default: m.AuditLog })));
 const Players = lazy(() => import("./views/Players").then((m) => ({ default: m.Players })));
@@ -44,11 +47,15 @@ const ReportQueue = lazy(() =>
   import("./views/ReportQueue").then((m) => ({ default: m.ReportQueue })),
 );
 
+const ChatTools = lazy(() => import("./views/ChatTools").then((m) => ({ default: m.ChatTools })));
+
 /** The section's view, or null when it isn't built yet. */
 export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
   if (view.section === "audit") return <AuditLog {...props} strings={view.strings} />;
   if (view.section === "users") return <Players {...props} strings={view.strings} />;
   if (view.section === "reports")
     return <ReportQueue {...props} strings={view.strings} players={view.players} />;
+  if (view.section === "chat")
+    return <ChatTools {...props} strings={view.strings} players={view.players} />;
   return null;
 }

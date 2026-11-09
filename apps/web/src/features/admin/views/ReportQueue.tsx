@@ -9,14 +9,6 @@ import { useEffect, useId, useState } from "react";
 
 import { Badge } from "@kefche/ui/components/badge";
 import { Button } from "@kefche/ui/components/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@kefche/ui/components/dialog";
 import { EmptyState } from "@kefche/ui/components/states";
 
 import { avatarUrl } from "@/features/account/avatar-url";
@@ -25,6 +17,7 @@ import { MessageBody } from "@/features/chat/MessageBody";
 import type { Supabase } from "@/lib/supabase/client";
 import { supabaseConfig } from "@/lib/supabase/config";
 
+import { ConfirmDialog } from "./ConfirmDialog";
 import { playerPage } from "./links";
 import { ActionDialog, errorText, type SanctionInput } from "./PlayerActions";
 import {
@@ -579,57 +572,5 @@ function Context({
         </ol>
       )}
     </section>
-  );
-}
-
-function ConfirmDialog({
-  title,
-  body,
-  confirm,
-  danger,
-  strings: a,
-  onClose,
-  onConfirm,
-}: {
-  title: string;
-  body: string;
-  confirm: string;
-  danger: boolean;
-  strings: PlayersStrings["act"];
-  onClose: () => void;
-  onConfirm: () => Promise<void>;
-}) {
-  const [busy, setBusy] = useState(false);
-  return (
-    <Dialog
-      open
-      onOpenChange={(open) => {
-        if (!open && !busy) onClose();
-      }}
-    >
-      <DialogContent closeLabel={a.close}>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{body}</DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <Button variant="outline" disabled={busy} onClick={onClose}>
-            {a.cancel}
-          </Button>
-          <Button
-            variant={danger ? "danger" : "primary"}
-            disabled={busy}
-            onClick={() => {
-              setBusy(true);
-              void onConfirm().finally(() => {
-                setBusy(false);
-              });
-            }}
-          >
-            {confirm}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   );
 }

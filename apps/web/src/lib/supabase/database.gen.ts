@@ -885,6 +885,11 @@ isOneToOne: false
               "avatar_kind": string,"avatar_path": string,"avatar_preset": string,"created_at": string,"email": string,"guest": boolean,"id": string,"nickname": string,"roles": (string)[],"sanction": string
             }[]
                            },
+"staff_muted_players":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "created_by": string,"created_by_nickname": string,"ends_at": string,"nickname": string,"note": string,"reason": string,"sanction_id": string,"starts_at": string,"user_id": string
+            }[]
+                           },
 "staff_player":
 { Args: { "p_user": string }; Returns: Json
                            },
@@ -898,6 +903,11 @@ isOneToOne: false
                            },
 "staff_reset_profile":
 { Args: { "p_field": string,"p_user": string }; Returns: undefined
+                           },
+"staff_search_messages":
+{ Args: { "p_before"?: number,"p_query"?: string,"p_room"?: unknown,"p_scope": string,"p_sender"?: string }; Returns: {
+              "body": string,"created_at": string,"gif_id": string,"id": number,"kind": string,"lobby_code": string,"lobby_game": string,"lobby_id": string,"nickname": string,"room": string,"sender_id": string,"status": string
+            }[]
                            },
 "start_daily":
 { Args: { "p_game_version": number }; Returns: Json

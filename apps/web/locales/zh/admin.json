@@ -265,5 +265,38 @@
     "bulkBody": "将应用于所有所选项（{count}）。",
     "done": "已完成。",
     "partial": "部分操作未成功，请重试。"
+  },
+  "chat": {
+    "searchTitle": "搜索消息",
+    "scope": "范围",
+    "scopes": {
+      "global": "全球聊天",
+      "lobby": "房间聊天"
+    },
+    "room": "聊天室",
+    "anyRoom": "所有聊天室",
+    "query": "文字",
+    "queryHint": "消息的一部分，按原文输入。私信无法搜索。",
+    "sender": "发送者",
+    "senderHint": "昵称或账号 ID。",
+    "search": "搜索",
+    "results": "消息",
+    "empty": "没有匹配的消息。",
+    "more": "显示更早的",
+    "delete": "删除",
+    "deleteTitle": "删除这条消息？",
+    "deleteBody": "其文字将对所有人清除。删除操作会记录在审计日志中。",
+    "slowTitle": "慢速模式",
+    "slowBody": "在全球聊天室中，每位玩家两条消息之间需要等待的时间。",
+    "slowOff": "关闭",
+    "save": "保存",
+    "slowSave": "保存 {room} 的慢速模式",
+    "slowSaved": "{room} 的慢速模式：{value}。",
+    "mutedTitle": "被禁言的玩家",
+    "mutedEmpty": "没有人被禁言。",
+    "noEnd": "直到撤销",
+    "endsAt": "{date} 结束",
+    "unmute": "解除 {name} 的禁言",
+    "unmuteBody": "对方可以立即重新聊天，撤销操作会记录在审计日志中。"
   }
 }

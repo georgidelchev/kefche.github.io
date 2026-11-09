@@ -327,11 +327,63 @@ export function reportsStrings(t: AppT) {
 
 export type ReportsStrings = ReturnType<typeof reportsStrings>;
 
+export function chatStrings(t: AppT) {
+  return {
+    searchTitle: t("admin:chat.searchTitle"),
+    scope: t("admin:chat.scope"),
+    scopes: { global: t("admin:chat.scopes.global"), lobby: t("admin:chat.scopes.lobby") },
+    room: t("admin:chat.room"),
+    anyRoom: t("admin:chat.anyRoom"),
+    query: t("admin:chat.query"),
+    queryHint: t("admin:chat.queryHint"),
+    sender: t("admin:chat.sender"),
+    senderHint: t("admin:chat.senderHint"),
+    search: t("admin:chat.search"),
+    clear: t("admin:players.clear"),
+    results: t("admin:chat.results"),
+    empty: t("admin:chat.empty"),
+    more: t("admin:chat.more"),
+    /** "Global chat · {room}" */
+    globalRoom: t("admin:reports.globalRoom", { room: "{room}" }),
+    /** "Lobby {code} · {game}" */
+    lobby: t("admin:reports.lobby", { code: "{code}", game: "{game}" }),
+    hidden: t("admin:reports.held"),
+    gif: t("admin:reports.gif"),
+    delete: t("admin:chat.delete"),
+    deleteTitle: t("admin:chat.deleteTitle"),
+    deleteBody: t("admin:chat.deleteBody"),
+    slowTitle: t("admin:chat.slowTitle"),
+    slowBody: t("admin:chat.slowBody"),
+    slowOff: t("admin:chat.slowOff"),
+    save: t("admin:chat.save"),
+    /** "Save slow mode for {room}" */
+    slowSave: t("admin:chat.slowSave", { room: "{room}" }),
+    /** "Slow mode in {room}: {value}." */
+    slowSaved: t("admin:chat.slowSaved", { room: "{room}", value: "{value}" }),
+    mutedTitle: t("admin:chat.mutedTitle"),
+    mutedEmpty: t("admin:chat.mutedEmpty"),
+    noEnd: t("admin:chat.noEnd"),
+    /** "Ends {date}" */
+    endsAt: t("admin:chat.endsAt", { date: "{date}" }),
+    /** "Lift {name}'s mute" */
+    unmute: t("admin:chat.unmute", { name: "{name}" }),
+    unmuteBody: t("admin:chat.unmuteBody"),
+    done: t("admin:reports.done"),
+    loading: t("admin:loading"),
+    failed: t("admin:failed"),
+    retry: t("admin:retry"),
+  };
+}
+
+export type ChatStrings = ReturnType<typeof chatStrings>;
+
 /** What the page's section shows, with the strings it needs (built on the server). */
 export function adminView(section: AdminSectionId, t: AppT, locale: Locale): AdminView {
   if (section === "audit") return { section, strings: auditStrings(t) };
   if (section === "users") return { section, strings: playersStrings(t, locale) };
   if (section === "reports")
     return { section, strings: reportsStrings(t), players: playersStrings(t, locale) };
+  if (section === "chat")
+    return { section, strings: chatStrings(t), players: playersStrings(t, locale) };
   return { section };
 }

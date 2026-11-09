@@ -265,5 +265,38 @@
     "bulkBody": "This applies to every selected item ({count}).",
     "done": "Done.",
     "partial": "Some of them didn't go through. Try again."
+  },
+  "chat": {
+    "searchTitle": "Search messages",
+    "scope": "Where",
+    "scopes": {
+      "global": "Global chat",
+      "lobby": "Lobby chat"
+    },
+    "room": "Room",
+    "anyRoom": "Every room",
+    "query": "Text",
+    "queryHint": "Part of a message, as typed. Direct messages can't be searched.",
+    "sender": "Sender",
+    "senderHint": "A nickname or an account id.",
+    "search": "Search",
+    "results": "Messages",
+    "empty": "No messages match.",
+    "more": "Show older",
+    "delete": "Delete",
+    "deleteTitle": "Delete this message?",
+    "deleteBody": "Its text is erased for everyone. The deletion is recorded in the audit log.",
+    "slowTitle": "Slow mode",
+    "slowBody": "How long each player waits between messages in a global room.",
+    "slowOff": "Off",
+    "save": "Save",
+    "slowSave": "Save slow mode for {room}",
+    "slowSaved": "Slow mode in {room}: {value}.",
+    "mutedTitle": "Muted players",
+    "mutedEmpty": "Nobody is muted.",
+    "noEnd": "Until revoked",
+    "endsAt": "Ends {date}",
+    "unmute": "Lift {name}'s mute",
+    "unmuteBody": "They can chat again at once, and the revoke is recorded in the audit log."
   }
 }

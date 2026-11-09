@@ -265,5 +265,38 @@
     "bulkBody": "S'applique à tous les éléments sélectionnés ({count}).",
     "done": "C'est fait.",
     "partial": "Certains n'ont pas abouti. Réessaie."
+  },
+  "chat": {
+    "searchTitle": "Rechercher des messages",
+    "scope": "Où",
+    "scopes": {
+      "global": "Chat global",
+      "lobby": "Chat des salons"
+    },
+    "room": "Salon",
+    "anyRoom": "Tous les salons",
+    "query": "Texte",
+    "queryHint": "Une partie d'un message, telle qu'écrite. Les messages privés ne peuvent pas être recherchés.",
+    "sender": "Auteur",
+    "senderHint": "Un pseudo ou un identifiant de compte.",
+    "search": "Rechercher",
+    "results": "Messages",
+    "empty": "Aucun message ne correspond.",
+    "more": "Plus anciens",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer ce message ?",
+    "deleteBody": "Son texte est effacé pour tout le monde. La suppression est inscrite au journal d'audit.",
+    "slowTitle": "Mode lent",
+    "slowBody": "Le temps d'attente de chaque joueur entre deux messages dans un salon global.",
+    "slowOff": "Désactivé",
+    "save": "Enregistrer",
+    "slowSave": "Enregistrer le mode lent de {room}",
+    "slowSaved": "Mode lent dans {room} : {value}.",
+    "mutedTitle": "Joueurs réduits au silence",
+    "mutedEmpty": "Personne n'est réduit au silence.",
+    "noEnd": "Jusqu'à révocation",
+    "endsAt": "Prend fin le {date}",
+    "unmute": "Lever le silence de {name}",
+    "unmuteBody": "Le joueur peut à nouveau écrire tout de suite, et la révocation est inscrite au journal d'audit."
   }
 }

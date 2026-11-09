@@ -265,5 +265,38 @@
     "bulkBody": "Se aplica a todos los seleccionados ({count}).",
     "done": "Hecho.",
     "partial": "Algunos no se completaron. Inténtalo de nuevo."
+  },
+  "chat": {
+    "searchTitle": "Buscar mensajes",
+    "scope": "Dónde",
+    "scopes": {
+      "global": "Chat global",
+      "lobby": "Chat de salas"
+    },
+    "room": "Sala",
+    "anyRoom": "Todas las salas",
+    "query": "Texto",
+    "queryHint": "Parte de un mensaje, tal como se escribió. Los mensajes directos no se pueden buscar.",
+    "sender": "Remitente",
+    "senderHint": "Un apodo o un id de cuenta.",
+    "search": "Buscar",
+    "results": "Mensajes",
+    "empty": "Ningún mensaje coincide.",
+    "more": "Ver anteriores",
+    "delete": "Eliminar",
+    "deleteTitle": "¿Eliminar este mensaje?",
+    "deleteBody": "Su texto se borra para todos. La eliminación queda en el registro de auditoría.",
+    "slowTitle": "Modo lento",
+    "slowBody": "Cuánto espera cada jugador entre mensajes en una sala global.",
+    "slowOff": "Desactivado",
+    "save": "Guardar",
+    "slowSave": "Guardar el modo lento de {room}",
+    "slowSaved": "Modo lento en {room}: {value}.",
+    "mutedTitle": "Jugadores silenciados",
+    "mutedEmpty": "No hay nadie silenciado.",
+    "noEnd": "Hasta que se revoque",
+    "endsAt": "Termina el {date}",
+    "unmute": "Quitar el silencio a {name}",
+    "unmuteBody": "Podrá chatear de nuevo al instante, y la revocación queda en el registro de auditoría."
   }
 }
