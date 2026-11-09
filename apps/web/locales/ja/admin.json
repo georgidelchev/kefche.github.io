@@ -24,5 +24,53 @@
     "i18n": "翻訳",
     "flags": "機能フラグ",
     "audit": "監査ログ"
+  },
+  "audit": {
+    "filters": "絞り込み",
+    "actor": "実行者",
+    "actorHint": "ニックネームまたはアカウント ID。",
+    "action": "操作",
+    "anyAction": "すべての操作",
+    "targetType": "対象",
+    "anyTarget": "すべて",
+    "target": "ニックネームまたは ID",
+    "from": "開始日",
+    "to": "終了日",
+    "apply": "表示",
+    "clear": "絞り込みを解除",
+    "unknownActor": "そのニックネームのプレイヤーはいません。",
+    "unknownTarget": "そのニックネームのプレイヤーはいません。",
+    "empty": "条件に合う記録はありません。",
+    "more": "古い記録を表示",
+    "system": "システム",
+    "by": "実行者",
+    "about": "対象",
+    "details": "詳細",
+    "profile": "プロフィール",
+    "onlyActor": "{name} の操作だけ",
+    "onlyTarget": "{name} に関する記録だけ",
+    "actions": {
+      "roleGrant": "役割を付与",
+      "roleRevoke": "役割を削除",
+      "mergeGuest": "ゲストの進行状況を統合",
+      "deletionRequested": "アカウント削除を申請",
+      "deletionCancelled": "アカウント削除を取り消し",
+      "purged": "アカウントを削除",
+      "sanctionCreate": "処分を実施",
+      "sanctionRevoke": "処分を取り消し",
+      "reportResolve": "通報を処理",
+      "chatDelete": "チャットのメッセージを削除",
+      "roomChatDelete": "ロビーのメッセージを削除",
+      "slowMode": "低速モードを設定"
+    },
+    "targets": {
+      "user": "プレイヤー",
+      "avatar": "アバター",
+      "message": "チャットのメッセージ",
+      "roomMessage": "ロビーのメッセージ",
+      "lobbyName": "ロビー名",
+      "chatRoom": "チャットルーム"
+    },
+    "noProfile": "プロフィールなし"
   }
 }

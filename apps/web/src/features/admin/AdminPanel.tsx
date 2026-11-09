@@ -25,7 +25,7 @@ import { useAccount } from "@/features/settings/use-account";
 import type { Supabase } from "@/lib/supabase/client";
 
 import { ADMIN_SECTIONS, canOpen, type AdminSectionId, type StaffRole } from "./sections";
-import { ADMIN_VIEWS } from "./views";
+import { renderView, type AdminPaths, type AdminView } from "./views";
 
 import type { AdminStrings } from "./strings";
 
@@ -46,8 +46,11 @@ const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
 
 interface Props {
-  section: AdminSectionId;
+  /** The page's section, with its view's strings. */
+  view: AdminView;
   strings: AdminStrings;
+  bcp47: string;
+  paths: AdminPaths;
   /** Each section's page, already localized. */
   links: Record<AdminSectionId, string>;
   signInPath: string;
@@ -60,7 +63,8 @@ async function fetchRoles(supabase: Supabase, userId: string): Promise<StaffRole
   return error ? null : data.map((row) => row.role);
 }
 
-export function AdminPanel({ section, strings: s, links, signInPath, homePath }: Props) {
+export function AdminPanel({ view, strings: s, bcp47, paths, links, signInPath, homePath }: Props) {
+  const { section } = view;
   const account = useAccount(signInPath);
   const [roles, setRoles] = useState<StaffRole[] | null | undefined>(undefined);
 
@@ -117,8 +121,14 @@ export function AdminPanel({ section, strings: s, links, signInPath, homePath }:
     );
   }
 
-  const View = ADMIN_VIEWS[section];
   const allowed = canOpen(section, roles);
+  const content = renderView(view, {
+    supabase: account.supabase,
+    userId: account.user.id,
+    roles,
+    bcp47,
+    paths,
+  });
   return (
     <div className="grid gap-6 lg:grid-cols-[13rem_minmax(0,1fr)] lg:items-start">
       <Menu section={section} roles={roles} strings={s} links={links} />
@@ -126,9 +136,15 @@ export function AdminPanel({ section, strings: s, links, signInPath, homePath }:
         {title}
         {!allowed ? (
           <p role="alert">{s.adminOnly}</p>
-        ) : View ? (
-          <Suspense fallback={<p className="text-muted">{s.loading}</p>}>
-            <View supabase={account.supabase} userId={account.user.id} roles={roles} />
+        ) : content ? (
+          <Suspense
+            fallback={
+              <p className="text-muted" aria-busy="true">
+                {s.loading}
+              </p>
+            }
+          >
+            {content}
           </Suspense>
         ) : (
           <p className="text-muted">{s.pending}</p>

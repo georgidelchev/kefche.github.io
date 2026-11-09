@@ -24,5 +24,53 @@
     "i18n": "अनुवाद",
     "flags": "फ़ीचर",
     "audit": "ऑडिट लॉग"
+  },
+  "audit": {
+    "filters": "फ़िल्टर",
+    "actor": "किसने",
+    "actorHint": "कोई निकनेम या खाते की ID।",
+    "action": "कार्रवाई",
+    "anyAction": "कोई भी कार्रवाई",
+    "targetType": "किसके बारे में",
+    "anyTarget": "कुछ भी",
+    "target": "निकनेम या ID",
+    "from": "से",
+    "to": "तक",
+    "apply": "दिखाएँ",
+    "clear": "फ़िल्टर हटाएँ",
+    "unknownActor": "इस निकनेम का कोई खिलाड़ी नहीं है।",
+    "unknownTarget": "इस निकनेम का कोई खिलाड़ी नहीं है।",
+    "empty": "इन फ़िल्टर से कोई प्रविष्टि नहीं मिली।",
+    "more": "पुरानी दिखाएँ",
+    "system": "सिस्टम",
+    "by": "किसने",
+    "about": "किसके बारे में",
+    "details": "विवरण",
+    "profile": "प्रोफ़ाइल",
+    "onlyActor": "सिर्फ़ {name} की कार्रवाइयाँ",
+    "onlyTarget": "सिर्फ़ {name} से जुड़ी प्रविष्टियाँ",
+    "actions": {
+      "roleGrant": "भूमिका दी गई",
+      "roleRevoke": "भूमिका हटाई गई",
+      "mergeGuest": "मेहमान की प्रगति जोड़ी गई",
+      "deletionRequested": "खाता हटाने का अनुरोध",
+      "deletionCancelled": "खाता हटाना रद्द",
+      "purged": "खाता हटाया गया",
+      "sanctionCreate": "सज़ा दी गई",
+      "sanctionRevoke": "सज़ा वापस ली गई",
+      "reportResolve": "रिपोर्ट निपटाई गईं",
+      "chatDelete": "चैट संदेश हटाया गया",
+      "roomChatDelete": "लॉबी संदेश हटाया गया",
+      "slowMode": "धीमा मोड सेट"
+    },
+    "targets": {
+      "user": "खिलाड़ी",
+      "avatar": "अवतार",
+      "message": "चैट संदेश",
+      "roomMessage": "लॉबी संदेश",
+      "lobbyName": "लॉबी का नाम",
+      "chatRoom": "चैट रूम"
+    },
+    "noProfile": "कोई प्रोफ़ाइल नहीं"
   }
 }

@@ -24,5 +24,53 @@
     "i18n": "Traducciones",
     "flags": "Funciones",
     "audit": "Registro de auditoría"
+  },
+  "audit": {
+    "filters": "Filtros",
+    "actor": "Quién",
+    "actorHint": "Un apodo o un id de cuenta.",
+    "action": "Acción",
+    "anyAction": "Cualquier acción",
+    "targetType": "Sobre",
+    "anyTarget": "Cualquier cosa",
+    "target": "Apodo o id",
+    "from": "Desde",
+    "to": "Hasta",
+    "apply": "Mostrar",
+    "clear": "Quitar filtros",
+    "unknownActor": "Ningún jugador tiene ese apodo.",
+    "unknownTarget": "Ningún jugador tiene ese apodo.",
+    "empty": "Ninguna entrada coincide con estos filtros.",
+    "more": "Ver anteriores",
+    "system": "Sistema",
+    "by": "Por",
+    "about": "Sobre",
+    "details": "Detalles",
+    "profile": "Perfil",
+    "onlyActor": "Solo las acciones de {name}",
+    "onlyTarget": "Solo las entradas sobre {name}",
+    "actions": {
+      "roleGrant": "Rol asignado",
+      "roleRevoke": "Rol retirado",
+      "mergeGuest": "Progreso de invitado combinado",
+      "deletionRequested": "Eliminación de cuenta solicitada",
+      "deletionCancelled": "Eliminación de cuenta cancelada",
+      "purged": "Cuenta eliminada",
+      "sanctionCreate": "Sanción impuesta",
+      "sanctionRevoke": "Sanción revocada",
+      "reportResolve": "Denuncias resueltas",
+      "chatDelete": "Mensaje del chat eliminado",
+      "roomChatDelete": "Mensaje de sala eliminado",
+      "slowMode": "Modo lento ajustado"
+    },
+    "targets": {
+      "user": "Jugador",
+      "avatar": "Avatar",
+      "message": "Mensaje del chat",
+      "roomMessage": "Mensaje de sala",
+      "lobbyName": "Nombre de sala",
+      "chatRoom": "Sala de chat"
+    },
+    "noProfile": "Sin perfil"
   }
 }

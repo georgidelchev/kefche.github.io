@@ -4,11 +4,11 @@ import { getRelativeLocaleUrl } from "astro:i18n";
 import { authPaths } from "@/features/auth/paths";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
-import type { Locale } from "@/i18n/locales";
+import { LOCALE_INFO, type Locale } from "@/i18n/locales";
 
 import { AdminPanel } from "./AdminPanel";
 import { ADMIN_SECTIONS, type AdminSectionId } from "./sections";
-import { adminStrings } from "./strings";
+import { adminStrings, adminView } from "./strings";
 
 // One admin page (src/pages/[locale]/admin/): private, noindex and the same
 // for everyone; the island fills it for staff only.
@@ -25,6 +25,10 @@ const path = ADMIN_SECTIONS.find((s) => s.id === section)?.path ?? "/admin/";
 const links = Object.fromEntries(
   ADMIN_SECTIONS.map((s) => [s.id, getRelativeLocaleUrl(locale, s.path)]),
 ) as Record<AdminSectionId, string>;
+const adminPaths = {
+  profileBase: getRelativeLocaleUrl(locale, "/u/"),
+  audit: links.audit,
+};
 ---
 
 <AppShell
@@ -39,8 +43,10 @@ const links = Object.fromEntries(
   <div class="grid w-full gap-6 pb-6">
     <AdminPanel
       client:load
-      section={section}
+      view={adminView(section, t)}
       strings={strings}
+      bcp47={LOCALE_INFO[locale].bcp47}
+      paths={adminPaths}
       links={links}
       signInPath={paths.signIn}
       homePath={paths.home}

@@ -24,5 +24,53 @@
     "i18n": "Traduções",
     "flags": "Recursos",
     "audit": "Registro de auditoria"
+  },
+  "audit": {
+    "filters": "Filtros",
+    "actor": "Quem",
+    "actorHint": "Um apelido ou um id de conta.",
+    "action": "Ação",
+    "anyAction": "Qualquer ação",
+    "targetType": "Sobre",
+    "anyTarget": "Qualquer coisa",
+    "target": "Apelido ou id",
+    "from": "De",
+    "to": "Até",
+    "apply": "Mostrar",
+    "clear": "Limpar filtros",
+    "unknownActor": "Nenhum jogador tem esse apelido.",
+    "unknownTarget": "Nenhum jogador tem esse apelido.",
+    "empty": "Nenhuma entrada corresponde a esses filtros.",
+    "more": "Ver anteriores",
+    "system": "Sistema",
+    "by": "Por",
+    "about": "Sobre",
+    "details": "Detalhes",
+    "profile": "Perfil",
+    "onlyActor": "Só as ações de {name}",
+    "onlyTarget": "Só as entradas sobre {name}",
+    "actions": {
+      "roleGrant": "Função atribuída",
+      "roleRevoke": "Função removida",
+      "mergeGuest": "Progresso de convidado mesclado",
+      "deletionRequested": "Exclusão de conta solicitada",
+      "deletionCancelled": "Exclusão de conta cancelada",
+      "purged": "Conta excluída",
+      "sanctionCreate": "Sanção aplicada",
+      "sanctionRevoke": "Sanção revogada",
+      "reportResolve": "Denúncias resolvidas",
+      "chatDelete": "Mensagem do chat apagada",
+      "roomChatDelete": "Mensagem da sala apagada",
+      "slowMode": "Modo lento definido"
+    },
+    "targets": {
+      "user": "Jogador",
+      "avatar": "Avatar",
+      "message": "Mensagem do chat",
+      "roomMessage": "Mensagem da sala",
+      "lobbyName": "Nome da sala",
+      "chatRoom": "Sala de chat"
+    },
+    "noProfile": "Sem perfil"
   }
 }

@@ -24,5 +24,53 @@
     "i18n": "翻译",
     "flags": "功能开关",
     "audit": "审计日志"
+  },
+  "audit": {
+    "filters": "筛选",
+    "actor": "操作者",
+    "actorHint": "昵称或账号 ID。",
+    "action": "操作",
+    "anyAction": "所有操作",
+    "targetType": "对象",
+    "anyTarget": "全部",
+    "target": "昵称或 ID",
+    "from": "从",
+    "to": "到",
+    "apply": "显示",
+    "clear": "清除筛选",
+    "unknownActor": "没有玩家使用这个昵称。",
+    "unknownTarget": "没有玩家使用这个昵称。",
+    "empty": "没有符合这些条件的记录。",
+    "more": "显示更早的记录",
+    "system": "系统",
+    "by": "操作者",
+    "about": "对象",
+    "details": "详情",
+    "profile": "主页",
+    "onlyActor": "只看 {name} 的操作",
+    "onlyTarget": "只看关于 {name} 的记录",
+    "actions": {
+      "roleGrant": "授予角色",
+      "roleRevoke": "移除角色",
+      "mergeGuest": "合并游客进度",
+      "deletionRequested": "申请删除账号",
+      "deletionCancelled": "取消删除账号",
+      "purged": "账号已删除",
+      "sanctionCreate": "施加处罚",
+      "sanctionRevoke": "撤销处罚",
+      "reportResolve": "处理举报",
+      "chatDelete": "删除聊天消息",
+      "roomChatDelete": "删除房间消息",
+      "slowMode": "设置慢速模式"
+    },
+    "targets": {
+      "user": "玩家",
+      "avatar": "头像",
+      "message": "聊天消息",
+      "roomMessage": "房间消息",
+      "lobbyName": "房间名称",
+      "chatRoom": "聊天室"
+    },
+    "noProfile": "无主页"
   }
 }

@@ -24,5 +24,53 @@
     "i18n": "الترجمات",
     "flags": "الميزات",
     "audit": "سجل التدقيق"
+  },
+  "audit": {
+    "filters": "عوامل التصفية",
+    "actor": "مَن",
+    "actorHint": "اسم مستعار أو معرّف حساب.",
+    "action": "الإجراء",
+    "anyAction": "أي إجراء",
+    "targetType": "بخصوص",
+    "anyTarget": "أي شيء",
+    "target": "الاسم المستعار أو المعرّف",
+    "from": "من",
+    "to": "إلى",
+    "apply": "عرض",
+    "clear": "مسح عوامل التصفية",
+    "unknownActor": "لا يوجد لاعب بهذا الاسم المستعار.",
+    "unknownTarget": "لا يوجد لاعب بهذا الاسم المستعار.",
+    "empty": "لا توجد إدخالات تطابق عوامل التصفية هذه.",
+    "more": "عرض الأقدم",
+    "system": "النظام",
+    "by": "بواسطة",
+    "about": "بخصوص",
+    "details": "التفاصيل",
+    "profile": "الملف الشخصي",
+    "onlyActor": "إجراءات {name} فقط",
+    "onlyTarget": "الإدخالات المتعلقة بـ {name} فقط",
+    "actions": {
+      "roleGrant": "منح دور",
+      "roleRevoke": "سحب دور",
+      "mergeGuest": "دمج تقدّم الضيف",
+      "deletionRequested": "طلب حذف الحساب",
+      "deletionCancelled": "إلغاء حذف الحساب",
+      "purged": "حذف الحساب",
+      "sanctionCreate": "فرض عقوبة",
+      "sanctionRevoke": "إلغاء عقوبة",
+      "reportResolve": "معالجة البلاغات",
+      "chatDelete": "حذف رسالة دردشة",
+      "roomChatDelete": "حذف رسالة غرفة",
+      "slowMode": "ضبط الوضع البطيء"
+    },
+    "targets": {
+      "user": "لاعب",
+      "avatar": "صورة رمزية",
+      "message": "رسالة دردشة",
+      "roomMessage": "رسالة غرفة",
+      "lobbyName": "اسم غرفة",
+      "chatRoom": "غرفة دردشة"
+    },
+    "noProfile": "بلا ملف شخصي"
   }
 }

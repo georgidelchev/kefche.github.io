@@ -24,5 +24,53 @@
     "i18n": "Übersetzungen",
     "flags": "Funktionen",
     "audit": "Protokoll"
+  },
+  "audit": {
+    "filters": "Filter",
+    "actor": "Wer",
+    "actorHint": "Ein Spitzname oder eine Konto-ID.",
+    "action": "Aktion",
+    "anyAction": "Jede Aktion",
+    "targetType": "Betrifft",
+    "anyTarget": "Alles",
+    "target": "Spitzname oder ID",
+    "from": "Von",
+    "to": "Bis",
+    "apply": "Anzeigen",
+    "clear": "Filter löschen",
+    "unknownActor": "Kein Spieler hat diesen Spitznamen.",
+    "unknownTarget": "Kein Spieler hat diesen Spitznamen.",
+    "empty": "Keine Einträge passen zu diesen Filtern.",
+    "more": "Ältere anzeigen",
+    "system": "System",
+    "by": "Von",
+    "about": "Betrifft",
+    "details": "Details",
+    "profile": "Profil",
+    "onlyActor": "Nur Aktionen von {name}",
+    "onlyTarget": "Nur Einträge zu {name}",
+    "actions": {
+      "roleGrant": "Rolle vergeben",
+      "roleRevoke": "Rolle entzogen",
+      "mergeGuest": "Gastfortschritt übernommen",
+      "deletionRequested": "Kontolöschung beantragt",
+      "deletionCancelled": "Kontolöschung abgebrochen",
+      "purged": "Konto gelöscht",
+      "sanctionCreate": "Sanktion verhängt",
+      "sanctionRevoke": "Sanktion aufgehoben",
+      "reportResolve": "Meldungen bearbeitet",
+      "chatDelete": "Chatnachricht gelöscht",
+      "roomChatDelete": "Lobbynachricht gelöscht",
+      "slowMode": "Langsamer Modus gesetzt"
+    },
+    "targets": {
+      "user": "Spieler",
+      "avatar": "Avatar",
+      "message": "Chatnachricht",
+      "roomMessage": "Lobbynachricht",
+      "lobbyName": "Lobbyname",
+      "chatRoom": "Chatraum"
+    },
+    "noProfile": "Kein Profil"
   }
 }

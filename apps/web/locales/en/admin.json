@@ -24,5 +24,53 @@
     "i18n": "Translations",
     "flags": "Feature flags",
     "audit": "Audit log"
+  },
+  "audit": {
+    "filters": "Filters",
+    "actor": "Who",
+    "actorHint": "A nickname or an account id.",
+    "action": "Action",
+    "anyAction": "Any action",
+    "targetType": "About",
+    "anyTarget": "Anything",
+    "target": "Nickname or id",
+    "from": "From",
+    "to": "To",
+    "apply": "Show",
+    "clear": "Clear filters",
+    "unknownActor": "No player has that nickname.",
+    "unknownTarget": "No player has that nickname.",
+    "empty": "No entries match these filters.",
+    "more": "Show older",
+    "system": "System",
+    "by": "By",
+    "about": "About",
+    "details": "Details",
+    "profile": "Profile",
+    "onlyActor": "Only {name}'s actions",
+    "onlyTarget": "Only entries about {name}",
+    "actions": {
+      "roleGrant": "Role given",
+      "roleRevoke": "Role removed",
+      "mergeGuest": "Guest progress merged",
+      "deletionRequested": "Account deletion requested",
+      "deletionCancelled": "Account deletion cancelled",
+      "purged": "Account deleted",
+      "sanctionCreate": "Sanction given",
+      "sanctionRevoke": "Sanction revoked",
+      "reportResolve": "Reports resolved",
+      "chatDelete": "Chat message deleted",
+      "roomChatDelete": "Lobby message deleted",
+      "slowMode": "Slow mode set"
+    },
+    "targets": {
+      "user": "Player",
+      "avatar": "Avatar",
+      "message": "Chat message",
+      "roomMessage": "Lobby message",
+      "lobbyName": "Lobby name",
+      "chatRoom": "Chat room"
+    },
+    "noProfile": "No profile"
   }
 }

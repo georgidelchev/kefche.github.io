@@ -24,5 +24,53 @@
     "i18n": "Traductions",
     "flags": "Fonctionnalités",
     "audit": "Journal d'audit"
+  },
+  "audit": {
+    "filters": "Filtres",
+    "actor": "Qui",
+    "actorHint": "Un pseudo ou un identifiant de compte.",
+    "action": "Action",
+    "anyAction": "Toutes les actions",
+    "targetType": "Concerne",
+    "anyTarget": "Tout",
+    "target": "Pseudo ou identifiant",
+    "from": "Du",
+    "to": "Au",
+    "apply": "Afficher",
+    "clear": "Effacer les filtres",
+    "unknownActor": "Aucun joueur n'a ce pseudo.",
+    "unknownTarget": "Aucun joueur n'a ce pseudo.",
+    "empty": "Aucune entrée ne correspond à ces filtres.",
+    "more": "Voir les plus anciennes",
+    "system": "Système",
+    "by": "Par",
+    "about": "Concerne",
+    "details": "Détails",
+    "profile": "Profil",
+    "onlyActor": "Seulement les actions de {name}",
+    "onlyTarget": "Seulement les entrées sur {name}",
+    "actions": {
+      "roleGrant": "Rôle attribué",
+      "roleRevoke": "Rôle retiré",
+      "mergeGuest": "Progression d'invité fusionnée",
+      "deletionRequested": "Suppression de compte demandée",
+      "deletionCancelled": "Suppression de compte annulée",
+      "purged": "Compte supprimé",
+      "sanctionCreate": "Sanction donnée",
+      "sanctionRevoke": "Sanction levée",
+      "reportResolve": "Signalements traités",
+      "chatDelete": "Message du chat supprimé",
+      "roomChatDelete": "Message de salon supprimé",
+      "slowMode": "Mode lent réglé"
+    },
+    "targets": {
+      "user": "Joueur",
+      "avatar": "Avatar",
+      "message": "Message du chat",
+      "roomMessage": "Message de salon",
+      "lobbyName": "Nom de salon",
+      "chatRoom": "Salon de chat"
+    },
+    "noProfile": "Sans profil"
   }
 }

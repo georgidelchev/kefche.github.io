@@ -2089,6 +2089,11 @@ Until now the RUNBOOK gives SQL for all of these. Phase 10 puts screens on them 
   - Staff get a shield link in the header: the account summary keeps `staff` from the token's `app_roles` claim, and the boot script applies it before paint. It's only a hint; the panel checks again.
   - The new `admin` namespace is in all 11 locales.
   - Checked in Chrome: 43/43, covering signed out, player, moderator and admin; 1280, 1024, 768 and 390 px; both themes; Arabic; and axe.
+- [x] **Step 2, the audit log** (`/admin/audit/`, admins only, read-only):
+  - **Filters:** who (a nickname or an account id), the action, what it's about (type, and a nickname or an id), and a date range in the admin's time zone. They live in the URL, so a filtered view can be linked to. Bad parameters are ignored one by one.
+  - **Entries:** newest first, 50 at a time with "Show older". Each shows the action in the admin's language, its time, who did it, what it was about and its details, with account ids in the details shown as nicknames. Actors and targets link to the log filtered by them, and players also to their profile. An account without a readable profile (deleted, or never given a nickname) shows as "No profile".
+  - **Reads** go straight to `audit_log`, whose policy admits admins only; a moderator's API read returns nothing. Each section's view is now chosen by a typed `AdminView` (the section with its strings), and a section's loading text is marked busy.
+  - Checked in Chrome: 28/28, against 53 real audited actions (roles, sanctions, slow mode), covering paging, each filter, target links, an unknown nickname, empty and bad ranges, 1280, 1024, 768 and 390 px, both themes, Arabic and axe. The step 1 check still passes (43/43). The run's audit rows were then deleted locally, with the trigger set aside for that one statement.
 - [x] **The word filter removed** (owner request, 2026-11-09; ADR-0040):
   - **Database** (`20261109100000_remove_word_filter.sql`): nicknames and bios are no longer checked against word lists, chat isn't masked, and there are no automatic mutes. The filter's functions and its three tables are dropped. Reserved nicknames, rate limits, slow mode, reports, sanctions and blocks stay.
   - **Repository:** the word lists, `scripts/blocked-terms.mjs` and `pnpm db:terms` are gone.
