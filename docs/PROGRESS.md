@@ -15,8 +15,8 @@
 | 6     | Chess                                                      | ✅ Done (owner signed off 2026-10-25) |
 | 7     | Stats, XP, achievements, leaderboards, daily               | ✅ Done (owner signed off 2026-11-01) |
 | 8     | Social: friends, presence, chat, moderation, notifications | ✅ Done (owner signed off 2026-11-05) |
-| 9     | Real-time arena framework & Worm Rush                      | 🔍 Built, awaiting owner sign-off     |
-| 10    | Admin panel                                                | ⏳ Not started                        |
+| 9     | Real-time arena framework & Worm Rush                      | ✅ Done (owner signed off 2026-11-09) |
+| 10    | Admin panel                                                | 🚧 In progress                        |
 | 11–14 | Game batches                                               | ⏳ Not started                        |
 | 15    | Translation pass & content packs                           | ⏳ Not started                        |
 | 16    | PWA, audio & haptics polish                                | ⏳ Not started                        |
@@ -2000,6 +2000,88 @@ The owner left the choices to me ("you decide"), so each takes the recommendatio
   - **Layout,** 24/24 on the real site in play (the solo arena): English and Arabic at 360, 768 and 1280 px, light and dark. No sideways scroll, the arena fits, the stats, board and boost button apart and inside the arena, the board at the end (left in Arabic), axe clean with the controls panel open, no errors. The setup and the page had their own checks in steps 10 and 11.
   - **Docs:** ADR-0037 (the arena server), ADR-0038 (the netcode), ADR-0039 (PixiJS); ARCHITECTURE, "Real-time arenas" with the measured cost; RUNBOOK, "Arena server": the release order (migrations, Edge Functions, then the push) and watching usage.
 - **Phase 9 DoD:** "15 players + bots run smoothly on a mid-range phone": the phone-profile run above, on emulation (not yet a real phone). "Measured Realtime message usage documented": arenas use no Supabase Realtime; their own cost is measured in ARCHITECTURE.
+
+## Phase 10 — Admin panel
+
+**Goal (SPEC §14, §22):** `/[locale]/admin` for moderators and admins: a dashboard, users, the moderation queue, chat tools, games, leaderboards and integrity, content, the i18n report, feature flags and settings, and the audit log. Responsive, usable on tablets.
+
+**DoD:** moderators and admins can do every listed action, and every action appears in the audit log. Plus the standing DoD.
+
+**Already in place (Phases 2–8):**
+
+- **Roles:** `user_roles`, `has_role`, `is_staff`, `set_user_role` (admin only, audited).
+- **Audit:** `audit_log`, insert-only (`private.audit`; a trigger refuses updates and deletes).
+- **Sanctions:** `sanction_player` and `revoke_sanction` (moderators warn, mute and suspend; only admins ban), with notices to the player.
+- **Reports:** `reports`, hidden at the third account, `resolve_reports` (dismiss or action, audited).
+- **Chat:** staff delete any message (audited); `set_slow_mode` per global room.
+- **Content:** announcements as notifications (written by SQL until now), `daily_challenges` with `private.daily_rotation`, `words_of_the_day`.
+- **Results:** matches set aside for review (status "review"), boards in `private.leaderboards`, ratings.
+- **Accounts:** deletion with its purge job, and the export.
+
+Until now the RUNBOOK gives SQL for all of these. Phase 10 puts screens on them and adds what's missing.
+
+### Steps (one Conventional Commit each)
+
+1. **The admin shell:** `/[locale]/admin` with one page per section, rendered for everyone but filled only for staff. Data comes through RLS and staff-only RPCs, never from the page alone. `noindex`, outside the sitemap, one lazy React island per section, and a side menu that becomes a top bar on tablets. Moderators see only the moderation sections.
+2. **Audit log:** filter by actor, action, target and date, newest first, read-only, each entry linking to its target.
+3. **Users:**
+   - search by nickname (and by email for admins), filter by role, sanction, and guest or account;
+   - a player's page: profile, matches, reports by and about them, sanction history;
+   - reset nickname, avatar or bio; roles (admins); sanctions with duration, reason and note; revoking;
+   - account deletion for a GDPR request, through the existing purge.
+   - Every action is an audited RPC.
+4. **The moderation queue:** open reports grouped by what was reported, with context (the messages around it, the avatar, the room's name). Dismiss, hide, or action and sanction in one step; bulk actions; how long each has waited (amber after 24 h, red after 72 h).
+5. **Chat tools:** search messages in global rooms and lobbies (DMs as Q4 decides); delete; slow mode per room; muted players with their mute's end.
+6. **Games:** a `game_settings` table (enabled, featured, new, hot, beta, sort order), applied as Q2 decides. The server refuses a disabled game too (`start_play`, rooms, the arena directory). Per-game stats; live rooms and arenas, and closing a room.
+7. **Leaderboards and integrity:** results set aside for review (accept or reject), removing a board entry, and recomputing a player's or a game's boards and ratings.
+8. **Content:**
+   - announcements and a news ticker: a multilingual editor with a preview per language, a schedule and an audience, sent as today's notifications are;
+   - the daily challenge schedule (override a day's game and settings);
+   - Word of the Day overrides;
+   - achievements and content packs, read-only: the manifests define achievements, and content packs come in Phase 15.
+9. **i18n report:** per locale, missing keys (none while `i18n:check` passes) and strings still the same as English, built from the locale files at build time.
+10. **Feature flags and settings** (Q3): GIFs, global chat, quick match, DMs, online arenas and guest sign-in, changed without a deploy. Each is enforced by the database or function that serves it, as well as hidden in the page.
+11. **Dashboard:**
+    - DAU, WAU and MAU (Q5), new registrations, matches per game, live rooms and arenas, players online now, open reports;
+    - usage against the free plans (Q1);
+    - errors: a link to Sentry once Phase 17 adds it.
+12. **Verification and docs:**
+    - every action by both roles, each found in the audit log;
+    - players and moderators can't reach admin actions (RLS and RPC checks);
+    - 768, 1024 and 1280 px, both themes, RTL;
+    - the RUNBOOK's SQL replaced by the panel, and ADRs for anything new.
+
+### Decisions (proposed)
+
+- **Every change is a `security definer` RPC** that checks the role and writes `audit_log` in the same transaction (SPEC §14). Edge Functions only where the database can't act alone; deleting accounts already has one.
+- **Reads go through RLS** (staff policies) or staff-only RPCs. The page never decides what a role may see.
+- **The admin UI is translated like the rest of the site:** all 11 locales, in an `admin` namespace, since staff may not read English. That's many strings; Phase 15 reviews them.
+
+### Risks
+
+- **Size:** the largest UI phase so far. Each section is its own lazy island, so players never load admin code.
+- **Privacy:** reading DMs and storing who was active on which day affect user data (Working Agreement 8), so Q4 and Q5 are the owner's.
+- **Search:** searching messages and players needs trigram indexes, sized for the free plan's 500 MB database.
+
+### Open questions for the owner
+
+- **Q1 — Usage against the free plans:** show what SQL can measure (database and storage size, accounts, rows) and link to the Supabase and Cloudflare dashboards for the rest (recommended)? Or call the Supabase Management API from an Edge Function, with a personal access token stored as a secret?
+- **Q2 — Games without a deploy:** the catalog and game pages are static. Apply `game_settings` in the browser: badges, order and "temporarily unavailable" appear after the page loads, and the server refuses a disabled game at once (recommended). Or rebuild the site whenever settings change: a CI run of a few minutes, triggered by the panel with a GitHub token stored as a secret.
+- **Q3 — Feature flags:** move GIFs, global chat, quick match, DMs, online arenas and guest sign-in to a runtime `feature_flags` table, read by pages and enforced by the database, with today's build variables kept as a hard off-switch (recommended)? Or keep them build-time only?
+- **Q4 — Reading DMs:** no searching of DMs; a reported DM's thread is seen from its report, as now (recommended). Or admins may search DMs, giving a reason that's audited.
+- **Q5 — Active players (DAU/WAU/MAU):** one row per player per day they're active (accounts and guests), deleted after 35 days, plus daily totals with no ids kept; the privacy notice says so (recommended). Or count only from what's already kept (sign-ins and matches), which misses players who only browse or chat.
+
+### Owner answers (2026-11-09)
+
+- **Q1 — Usage:** what SQL can measure, with links to the Supabase and Cloudflare dashboards for the rest (the recommended default; the owner didn't object).
+- **Q2 — Games:** applied in the browser, with the server refusing a disabled game.
+- **Q3 — Feature flags:** a runtime `feature_flags` table, enforced by the database; the build variables stay as a hard off-switch.
+- **Q4 — DMs:** no searching; a reported DM's thread is seen from its report.
+- **Q5 — Active players:** one row per player per active day, deleted after 35 days, plus daily totals with no ids; the privacy notice says so.
+
+### Status
+
+- [x] Plan written and the owner's questions answered (2026-11-09)
 
 ## Known issues
 
