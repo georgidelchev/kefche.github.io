@@ -1,7 +1,7 @@
 // One lazy chunk per admin section, loaded only once the panel knows its
 // user is staff, so nobody else downloads admin code. The page passes the
-// section with its strings (`AdminView`); a section without a view here
-// isn't built yet. Import paths are literal so Vite can split them.
+// section with its strings (`AdminView`). Import paths are literal so Vite
+// can split them.
 import { lazy, type ReactNode } from "react";
 
 import type { Supabase } from "@/lib/supabase/client";
@@ -11,6 +11,7 @@ import type {
   AuditStrings,
   ChatStrings,
   ContentStrings,
+  DashboardStrings,
   FlagsStrings,
   GamesStrings,
   I18nStrings,
@@ -64,7 +65,7 @@ export type AdminView =
   | { section: "content"; strings: ContentStrings; players: PlayersStrings }
   | { section: "i18n"; strings: I18nStrings }
   | { section: "flags"; strings: FlagsStrings; players: PlayersStrings }
-  | { section: "dashboard" };
+  | { section: "dashboard"; strings: DashboardStrings; players: PlayersStrings };
 
 const AuditLog = lazy(() => import("./views/AuditLog").then((m) => ({ default: m.AuditLog })));
 const Players = lazy(() => import("./views/Players").then((m) => ({ default: m.Players })));
@@ -92,7 +93,11 @@ const FlagsAdmin = lazy(() =>
   import("./views/FlagsAdmin").then((m) => ({ default: m.FlagsAdmin })),
 );
 
-/** The section's view, or null when it isn't built yet. */
+const DashboardView = lazy(() =>
+  import("./views/DashboardView").then((m) => ({ default: m.DashboardView })),
+);
+
+/** The section's view. */
 export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
   if (view.section === "audit") return <AuditLog {...props} strings={view.strings} />;
   if (view.section === "users") return <Players {...props} strings={view.strings} />;
@@ -109,5 +114,5 @@ export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
   if (view.section === "i18n") return <I18nReport {...props} strings={view.strings} />;
   if (view.section === "flags")
     return <FlagsAdmin {...props} strings={view.strings} players={view.players} />;
-  return null;
+  return <DashboardView {...props} strings={view.strings} players={view.players} />;
 }

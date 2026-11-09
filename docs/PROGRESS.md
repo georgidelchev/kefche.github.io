@@ -2150,6 +2150,16 @@ Until now the RUNBOOK gives SQL for all of these. Phase 10 puts screens on them 
   - **The build variables stay a hard off-switch** (Q3): the flags page says when this build leaves a feature out (`PUBLIC_GIFS`, `PUBLIC_ARENA_URL`).
   - **Not graceful yet:** a signed-out visitor starting online play while guest play is off gets the room's general error, not a "sign in to play" prompt.
   - Checked in Chrome: 34/34, covering a moderator refused and no direct writes, all six turned off from the page and audited, the database refusing each (GIF, global chat, DM, quick match, rated search, arena entry, a new guest), the chat, messages and game pages hiding them with notices and the stored list applied before paint, all six back on with the list cleared, a DM and a guest sign-in working again, 1280, 768 and 390 px, both themes, Arabic and axe. Deno checks pass for `giphy` (76/76).
+- [x] **Step 11, the dashboard** (`/admin/`, staff; usage for admins):
+  - **Active players (Q5):** a browser notes its player once per UTC day (`note_activity`), from the live connection for accounts and from `ensureIdentity` for guests, into `private.activity_days` (day, player, guest). A job after midnight UTC (`roll-activity`) turns finished days into `private.activity_totals` (counts only, no ids) and deletes rows past 35 days. DAU is today so far; WAU and MAU count distinct players over 7 and 30 days. The privacy notice says so.
+  - **`staff_dashboard`:**
+    - **Right now:** players online (tabs reporting in the last 2 minutes), open rooms, players in online arenas (the arena server's `/status`), and open reports with the oldest one's age, linked to the queue.
+    - **Active players:** today, 7 days and 30 days, with the last 30 days as a bar chart that has a table view.
+    - **Sign-ups:** in the last 24 hours, 7 days and 30 days, and new guests in the last 7 days.
+    - **Matches per game** in the last 7 days.
+  - **Usage, for admins (Q1, `staff_usage`):** the database's size against 500 MB, Storage against 1 GB with its file count, accounts and guests, and the 8 largest tables. Links go to the Supabase project's dashboard and to Cloudflare's for the rest. Error tracking waits for Sentry (Phase 17).
+  - Every section now has its view, so the panel's "not built yet" state and its string are gone.
+  - Checked in Chrome: 29/29, covering a player and a moderator refused, a guest noted once as a guest, the daily roll keeping no ids and forgetting rows past 35 days, a visit noted, the moderator's dashboard without usage, the admin's usage and links, the privacy notice, 1280, 1024, 768 and 390 px, both themes, Arabic and axe.
 - [x] **The word filter removed** (owner request, 2026-11-09; ADR-0040):
   - **Database** (`20261109100000_remove_word_filter.sql`): nicknames and bios are no longer checked against word lists, chat isn't masked, and there are no automatic mutes. The filter's functions and its three tables are dropped. Reserved nicknames, rate limits, slow mode, reports, sanctions and blocks stay.
   - **Repository:** the word lists, `scripts/blocked-terms.mjs` and `pnpm db:terms` are gone.

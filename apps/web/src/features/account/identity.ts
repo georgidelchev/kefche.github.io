@@ -1,6 +1,7 @@
 // Who the player is in online rooms (SPEC §7.1). A signed-in account is used
 // as it is. Otherwise a guest (anonymous) identity is created the first time
 // it's needed, when joining or creating a room, never on page load.
+import { noteActivity } from "@/features/live/activity";
 import type { Supabase } from "@/lib/supabase/client";
 
 export interface Identity {
@@ -59,5 +60,7 @@ export async function ensureIdentity(supabase: Supabase): Promise<Identity> {
     session = created.session;
   }
   if (!session) throw new Error("no_session");
+  // Guests open no live connection, so they're noted as active here.
+  void noteActivity(supabase, session.user.id);
   return identityOf(supabase, session.user.id, session.user.is_anonymous === true);
 }

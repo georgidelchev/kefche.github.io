@@ -21,7 +21,6 @@ export function adminStrings(t: AppT) {
     staffOnlyBody: t("admin:staffOnlyBody"),
     home: t("common:comingSoon.back"),
     adminOnly: t("admin:adminOnly"),
-    pending: t("admin:pending"),
     role: { admin: t("admin:role.admin"), moderator: t("admin:role.moderator") },
     sections: Object.fromEntries(
       ADMIN_SECTIONS.map(({ id }) => [id, t(ADMIN_LABEL_KEYS[id])]),
@@ -701,6 +700,52 @@ export function flagsStrings(t: AppT, buildOff: readonly FlagKey[]) {
 
 export type FlagsStrings = ReturnType<typeof flagsStrings>;
 
+export function dashboardStrings(t: AppT) {
+  return {
+    nowTitle: t("admin:dashboard.nowTitle"),
+    online: t("admin:dashboard.online"),
+    onlineNote: t("admin:dashboard.onlineNote"),
+    rooms: t("admin:dashboard.rooms"),
+    arenas: t("admin:dashboard.arenas"),
+    reports: t("admin:dashboard.reports"),
+    openQueue: t("admin:dashboard.openQueue"),
+    activeTitle: t("admin:dashboard.activeTitle"),
+    activeNote: t("admin:dashboard.activeNote"),
+    dau: t("admin:dashboard.dau"),
+    wau: t("admin:dashboard.wau"),
+    mau: t("admin:dashboard.mau"),
+    chartTitle: t("admin:dashboard.chartTitle"),
+    asTable: t("admin:dashboard.asTable"),
+    dayCol: t("admin:dashboard.dayCol"),
+    activeCol: t("admin:dashboard.activeCol"),
+    signupsTitle: t("admin:dashboard.signupsTitle"),
+    signupsDay: t("admin:dashboard.signupsDay"),
+    signupsWeek: t("admin:dashboard.signupsWeek"),
+    signupsMonth: t("admin:dashboard.signupsMonth"),
+    guestsWeek: t("admin:dashboard.guestsWeek"),
+    matchesTitle: t("admin:dashboard.matchesTitle"),
+    noMatches: t("admin:dashboard.noMatches"),
+    usageTitle: t("admin:dashboard.usageTitle"),
+    usageBody: t("admin:dashboard.usageBody"),
+    database: t("admin:dashboard.database"),
+    storage: t("admin:dashboard.storage"),
+    accounts: t("admin:dashboard.accounts"),
+    largest: t("admin:dashboard.largest"),
+    supabaseLink: t("admin:dashboard.supabaseLink"),
+    cloudflareLink: t("admin:dashboard.cloudflareLink"),
+    errorsNote: t("admin:dashboard.errorsNote"),
+    oldest: t("admin:dashboard.oldest", { ago: "{ago}" }),
+    ofLimit: t("admin:dashboard.ofLimit", { limit: "{limit}" }),
+    files: t("admin:dashboard.files", { count: "{count}" }),
+    guests: t("admin:dashboard.guests", { count: "{count}" }),
+    rows: t("admin:dashboard.rows", { count: "{count}" }),
+    loading: t("admin:loading"),
+    failed: t("admin:failed"),
+  };
+}
+
+export type DashboardStrings = ReturnType<typeof dashboardStrings>;
+
 /** What the page's section shows, with the strings it needs (built on the server). */
 export function adminView(section: AdminSectionId, t: AppT, locale: Locale): AdminView {
   if (section === "audit") return { section, strings: auditStrings(t) };
@@ -725,5 +770,5 @@ export function adminView(section: AdminSectionId, t: AppT, locale: Locale): Adm
       ]),
       players: playersStrings(t, locale),
     };
-  return { section };
+  return { section, strings: dashboardStrings(t), players: playersStrings(t, locale) };
 }

@@ -18,6 +18,7 @@ import { startBell } from "@/features/notifications/bell";
 import { getSupabase, hasStoredSession, type Supabase } from "@/lib/supabase/client";
 import { supabaseConfig } from "@/lib/supabase/config";
 
+import { noteActivity } from "./activity";
 import {
   LIVE_EVENT,
   LIVE_RESUME_EVENT,
@@ -35,6 +36,7 @@ const EVENTS = ["presence", "notification", "dm", "dm_deleted", "dm_read", "typi
 
 function start(supabase: Supabase, userId: string) {
   const tab = crypto.randomUUID();
+  void noteActivity(supabase, userId);
   let channel: RealtimeChannel | null = null;
   let away = false;
   let awayTimer: ReturnType<typeof setTimeout> | undefined;

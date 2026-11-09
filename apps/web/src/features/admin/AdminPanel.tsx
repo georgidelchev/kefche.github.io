@@ -136,7 +136,7 @@ export function AdminPanel({ view, strings: s, bcp47, paths, links, signInPath, 
         {title}
         {!allowed ? (
           <p role="alert">{s.adminOnly}</p>
-        ) : content ? (
+        ) : (
           <Suspense
             fallback={
               <p className="text-muted" aria-busy="true">
@@ -146,8 +146,6 @@ export function AdminPanel({ view, strings: s, bcp47, paths, links, signInPath, 
           >
             {content}
           </Suspense>
-        ) : (
-          <p className="text-muted">{s.pending}</p>
         )}
       </div>
     </div>

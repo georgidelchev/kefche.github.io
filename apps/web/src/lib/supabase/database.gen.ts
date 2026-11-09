@@ -725,6 +725,9 @@ isOneToOne: false
 "my_notifications":
 { Args: { "p_before"?: number,"p_limit"?: number }; Returns: Json
                            },
+"note_activity":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
 "note_gifs":
 { Args: { "p_ids": (string)[] }; Returns: undefined
                            },
@@ -960,6 +963,9 @@ isOneToOne: false
 "staff_daily_schedule":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"staff_dashboard":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "staff_decide_match":
 { Args: { "p_accept": boolean,"p_match": string }; Returns: undefined
                            },
@@ -1042,6 +1048,9 @@ isOneToOne: false
                            },
 "staff_set_word":
 { Args: { "p_day": string,"p_locale": string,"p_meaning"?: string,"p_word"?: string }; Returns: undefined
+                           },
+"staff_usage":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "staff_words":
 { Args: { "p_locale"?: string }; Returns: {
