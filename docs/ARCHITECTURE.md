@@ -176,7 +176,7 @@ flowchart LR
 
 - **Live connection and status** (ADR-0033): one connection per signed-in tab, on its player's private channel `user:<id>`, which only the database writes. Tabs report what they're doing; the database works out each player's status, tells their friends, and answers `presence_of` for everyone else allowed. A tab hidden for 5 minutes disconnects.
 - **Chat** (ADR-0034): global chat and DMs in `public.messages`, lobby and in-game chat in `room_messages`, all written through RPCs. Global and lobby chat arrive as Postgres changes, checked against the read policy for each reader; DMs as broadcasts to the two players' channels.
-- **Moderation** (ADR-0035, ADR-0040): rate limits, slow mode, sanctions, reports (hidden at three accounts) and blocks are enforced in SQL. Staff actions go to `audit_log`. Until the admin panel, the RUNBOOK gives the SQL.
+- **Moderation** (ADR-0035, ADR-0040): rate limits, slow mode, sanctions, reports (hidden at three accounts) and blocks are enforced in SQL. Staff actions go to `audit_log`, through the admin panel (Phase 10).
 - **Notifications and push** (ADR-0036): rows in `notifications`, worded by the app in the reader's language and sent live on `user:<id>`. A trigger asks `send-push` for the ones a player wants as a push; it words them with the same code (`pnpm functions:push`). Email has preferences and an outbox for Phase 21.
 - **Emoji and GIFs** (ADR-0032): a self-hosted Emojibase, and GIPHY through the `giphy` function, behind `PUBLIC_GIFS`.
 - **Pages:** `/[locale]/friends/`, `/[locale]/chat/`, `/[locale]/messages/` and `/[locale]/notifications/` (accounts builds, noindex), the community guidelines, the profile's friend actions, the bell, and settings' privacy and notification sections.
@@ -236,6 +236,17 @@ Measured in step 12 on the local arena Worker: 15 people in one arena, 14 from N
 - **A player's data:** about 4.5 MB down and 0.2 MB up per hour of play.
 - **Past the limit** arenas refuse until 00:00 UTC and the game offers the solo arena, which costs nothing.
 - **What step 1 measured live** (26 ms round trip from Bulgaria, about 17,500 requests an hour) used a stand-in client sending about 6 inputs a second; the real client sends more.
+
+## Admin panel (Phase 10)
+
+`/[locale]/admin/` for moderators and admins (ADR-0041): the dashboard, players, the moderation queue, chat tools, games, leaderboards and integrity, content, the i18n report, feature flags and the audit log.
+
+- **Server-side checks:** every read and change is a staff-only `security definer` RPC or a staff policy, and every change is audited. The page is the same for everyone, and each section's view is a lazy chunk, loaded only for staff.
+- **Game settings** (ADR-0042) and **feature flags** (ADR-0043) change without a deploy. Pages apply them after loading, and the server refuses what's off.
+- **Active players** (ADR-0044): one row per player per active day, kept 35 days, rolled into id-free daily totals.
+- **Results** (ADR-0045): review, annul, remove board places, reset ratings; nothing is replayed.
+- **Content:** announcements as notifications (sent by `send-announcements`) and in the home page's news, daily challenge overrides from the rotation, and Words of the Day.
+- **The i18n report** is built with the site into a static JSON file.
 
 ## Internationalization
 

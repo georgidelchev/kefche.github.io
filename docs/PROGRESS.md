@@ -16,7 +16,7 @@
 | 7     | Stats, XP, achievements, leaderboards, daily               | ✅ Done (owner signed off 2026-11-01) |
 | 8     | Social: friends, presence, chat, moderation, notifications | ✅ Done (owner signed off 2026-11-05) |
 | 9     | Real-time arena framework & Worm Rush                      | ✅ Done (owner signed off 2026-11-09) |
-| 10    | Admin panel                                                | 🚧 In progress                        |
+| 10    | Admin panel                                                | 🔎 Built; awaiting owner sign-off     |
 | 11–14 | Game batches                                               | ⏳ Not started                        |
 | 15    | Translation pass & content packs                           | ⏳ Not started                        |
 | 16    | PWA, audio & haptics polish                                | ⏳ Not started                        |
@@ -2160,6 +2160,37 @@ Until now the RUNBOOK gives SQL for all of these. Phase 10 puts screens on them 
   - **Usage, for admins (Q1, `staff_usage`):** the database's size against 500 MB, Storage against 1 GB with its file count, accounts and guests, and the 8 largest tables. Links go to the Supabase project's dashboard and to Cloudflare's for the rest. Error tracking waits for Sentry (Phase 17).
   - Every section now has its view, so the panel's "not built yet" state and its string are gone.
   - Checked in Chrome: 29/29, covering a player and a moderator refused, a guest noted once as a guest, the daily roll keeping no ids and forgetting rows past 35 days, a visit noted, the moderator's dashboard without usage, the admin's usage and links, the privacy notice, 1280, 1024, 768 and 390 px, both themes, Arabic and axe.
+- [x] **Step 12, verification and docs** (Phase 10 built; awaiting the owner's sign-off):
+  - **Every step's check, run again on the final code:** 453/453, with each run's test accounts, rows and audit entries cleaned up afterwards.
+
+    | Check     | Result | Check      | Result |
+    | --------- | ------ | ---------- | ------ |
+    | Shell     | 43/43  | Chat tools | 41/41  |
+    | Audit log | 28/28  | Games      | 41/41  |
+    | Players   | 52/52  | Integrity  | 42/42  |
+    | Actions   | 45/45  | Content    | 42/42  |
+    | Queue     | 41/41  | i18n       | 15/15  |
+    | Dashboard | 29/29  | Flags      | 34/34  |
+
+    Together they cover:
+    - every action by both roles, each found in the audit log;
+    - 1280, 1024, 768 and 390 px, both themes, Arabic, and axe.
+
+    The shell check now waits for real views: the "not built yet" state is gone.
+
+  - **Role matrix, in the database:** every staff RPC (`staff_*`, `set_slow_mode`, `set_user_role`, `resolve_reports`) was called with empty arguments, in a rolled-back transaction, as a plain account and then as a moderator.
+    - **A player** was refused by all 36 (`not_staff` or `admin_only`).
+    - **A moderator** was refused by every admin one. Their own tools failed only on input validation, since the arguments were empty.
+  - **Docs:**
+    - **RUNBOOK:** the panel replaces its SQL for sanctions, reports, escalation, announcements, results under review, voiding results and board entries. A new "Admin panel" section covers its sections, flags, activity data and jobs, and one SQL fallback stays for when the panel is down.
+    - **ARCHITECTURE:** a new "Admin panel" section.
+    - **ADRs:** ADR-0041 (the panel), ADR-0042 (game settings), ADR-0043 (feature flags), ADR-0044 (active players) and ADR-0045 (correcting results without replaying them).
+    - **CLAUDE.md:** the new feature folders.
+  - **Release, waiting for the owner's word:**
+    - push the commits;
+    - apply 10 migrations to the hosted database, each with a dry run first: `20261109100000` to `20261109100900`;
+    - redeploy `send-push`, `submit-match` and `giphy`;
+    - deploy the arena Worker, which CI does with the site.
 - [x] **The word filter removed** (owner request, 2026-11-09; ADR-0040):
   - **Database** (`20261109100000_remove_word_filter.sql`): nicknames and bios are no longer checked against word lists, chat isn't masked, and there are no automatic mutes. The filter's functions and its three tables are dropped. Reserved nicknames, rate limits, slow mode, reports, sanctions and blocks stay.
   - **Repository:** the word lists, `scripts/blocked-terms.mjs` and `pnpm db:terms` are gone.

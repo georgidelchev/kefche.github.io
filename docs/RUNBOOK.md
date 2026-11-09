@@ -35,7 +35,7 @@ Deploys run from GitHub Actions (ADR-0003). The `deploy` job is skipped until th
 
 ## Staff roles
 
-Admins and moderators are rows in `public.user_roles`. Admins change roles in the admin panel (Phase 10), which calls `public.set_user_role()`. Every change is audited, and the last admin can't be removed.
+Admins and moderators are rows in `public.user_roles`. Admins change roles from a player's page in the admin panel (`/admin/users/?player=<id>`), which calls `public.set_user_role()`. Every change is audited, and the last admin can't be removed.
 
 **First admin.** Run this once in the SQL editor: locally, Studio at http://127.0.0.1:54323 → _SQL Editor_.
 
@@ -48,74 +48,45 @@ Roles travel in the access token (`app_roles` claim), so a change applies at the
 
 ## Sanctions
 
-Until the admin panel (Phase 10), staff sanction players from the SQL editor, acting as themselves so the database checks their role and the audit log names them. Run each block as a whole: the first line lasts for that transaction only.
-
-```sql
-begin;
-select set_config('request.jwt.claims', json_build_object('sub', '<your user id>')::text, true);
--- Kind: warn, mute (no chat), suspend (no online play) or ban (no sign-in; admins only).
--- Reason: spam, harassment, hate, sexual, self-harm, cheating or other.
--- Minutes: null for until revoked (a warning takes null). The note is shown to the player.
-select public.sanction_player(
-  (select id from public.profiles where nickname = 'TheirNickname'),
-  'mute', 'harassment', 60, 'Please keep the chat friendly.'
-);
-commit;
-```
-
-To end one early, the same way: `select public.revoke_sanction('<sanction id>');`. The player's sanctions: `select * from public.sanctions where user_id = '<id>' order by created_at desc;`.
+Staff sanction players from the admin panel: a player's page (`/admin/users/?player=<id>`, Actions → Sanction), or "Remove and sanction" on a report in the queue (`/admin/reports/`). Each takes a kind, a length, a reason and a note, and revoking one in force is a button beside it. The muted players, with when each mute ends, are listed in `/admin/chat/`.
 
 - **Who may:** moderators warn, mute and suspend; only admins ban, sanction staff, or revoke a ban.
 - **What the player sees:** a moderation notification with the reason and the note (on `/notifications/`; it can't be turned off), and the end of the sanction wherever it refuses them (chat, joining a room, rated search). A banned player is signed out everywhere and can't sign in until the ban ends; an access token they already hold lasts up to an hour, during which chat and rooms still refuse them.
 - **No automatic mutes** since the word filter was removed (ADR-0040). Older sanctions with the reason `filter` were automatic 10-minute mutes.
-- **In the chat:** a moderator deletes any global or lobby chat message and mutes its sender from the chat itself (`/chat/`, a room's chat); the staff role reaches the page with the next sign-in or token refresh.
-- **Slow mode:** `select public.set_slow_mode('en', 30);` (seconds between messages per player in that global room; 0 turns it off), in the same kind of block.
+- **In the chat:** a moderator deletes any global or lobby chat message and mutes its sender from the chat itself (`/chat/`, a room's chat), or finds messages in `/admin/chat/`; the staff role reaches the page with the next sign-in or token refresh.
+- **Slow mode:** per global room in `/admin/chat/` (off to 10 minutes between messages per player).
+- **Without the panel** (it's down, say), every action is an RPC that can be called from the SQL editor acting as yourself, so the database checks your role and the audit log names you:
+
+  ```sql
+  begin;
+  select set_config('request.jwt.claims', json_build_object('sub', '<your user id>')::text, true);
+  select public.sanction_player(
+    (select id from public.profiles where nickname = 'TheirNickname'),
+    'mute', 'harassment', 60, 'Please keep the chat friendly.'
+  );
+  commit;
+  ```
 
 ## Reports
 
-Players report global chat messages, DMs sent to them, lobby chat messages, players (nickname or bio) and uploaded avatars, each with a reason and optional details. Until the admin panel's queue (Phase 10), staff review them from the SQL editor, acting as themselves as for sanctions.
+Players report global chat messages, DMs sent to them, lobby chat messages, players (nickname or bio) and uploaded avatars, each with a reason and optional details. Staff review them in the moderation queue (`/admin/reports/`): one item per reported thing, the longest waiting first, amber after a day and red after 3 days.
 
-- **Hidden pending review:** once 3 different accounts have open reports on the same thing, it's hidden: a chat message disappears for everyone but its sender, a bio is cleared, an avatar goes back to initials (and that file can't be set again). Guests' reports reach the list but don't count toward hiding. A DM has one possible reporter, so it's never hidden this way.
+- **Each item** shows the reported copy, every report with its reason and details, and for a message the conversation around it. Reading a reported DM's conversation is recorded in the audit log (owner decision Q4); DMs can't be searched.
+- **Dismiss** puts back what was hidden; **Remove** deletes the message (a DM for both players) or keeps the bio or avatar off; **Remove and sanction** does both, the sanction linked to the report. Several items can be dismissed or removed at once. Every resolution is audited (`report.resolve`), and a resolved report is deleted 90 days later.
+- **Hidden pending review:** once 3 different accounts have open reports on the same thing, it's hidden: a chat message disappears for everyone but its sender, a bio is cleared, an avatar goes back to initials (and that file can't be set again). Guests' reports reach the queue but don't count toward hiding. A DM has one possible reporter, so it's never hidden this way.
 - **Lobby names:** lobbies have no names of their own. The public lobby list shows the host's nickname, which is reported from the host's profile.
-
-The open reports, one row per thing, most reported first:
-
-```sql
-select target_type, target_id, count(*) as reports,
-       count(distinct reporter_id) filter (where u.is_anonymous is not true) as from_accounts,
-       (array_agg(reason order by r.created_at desc))[1] as latest_reason,
-       (array_agg(snapshot order by r.created_at desc))[1] as copy,
-       (select nickname from public.profiles where id = (array_agg(target_user_id))[1]) as player,
-       min(r.created_at) as first_reported
-from public.reports r left join auth.users u on u.id = r.reporter_id
-where r.status = 'open'
-group by target_type, target_id
-order by reports desc, first_reported;
-```
-
-`copy` is the thing as it was when last reported (the message's text, the bio, the avatar's storage path), and `details` on each report row holds what the reporter added. Resolve every open report on one thing in the same kind of block as a sanction:
-
-```sql
-begin;
-select set_config('request.jwt.claims', json_build_object('sub', '<your user id>')::text, true);
--- 'dismissed' puts back what was hidden; 'actioned' deletes the message (a DM
--- too, both players told) or keeps the bio or avatar off.
-select public.resolve_reports('message', '<target_id>', 'actioned');
-commit;
-```
-
-Then sanction the player if it's warranted, passing one of the reports' ids as `p_report` to `sanction_player`. Resolutions are audited (`report.resolve`). A resolved report is deleted 90 days later. An actioned avatar's file stays in Storage until the player replaces it; delete it from Studio's Storage browser (`avatars/<user id>/…`) if it must go at once.
+- **Avatars:** an actioned avatar's file stays in Storage until the player replaces it; delete it from Studio's Storage browser (`avatars/<user id>/…`) if it must go at once.
 
 ## Moderation escalation
 
-Moderators handle everyday reports with the SQL above. An admin, the owner until there are others, takes over in the cases below. Act first on anything that is still visible, then record and follow up. The evidence keeps:
+Moderators handle everyday reports in the queue. An admin, the owner until there are others, takes over in the cases below. Act first on anything that is still visible, then record and follow up. The evidence keeps:
 
 - reports keep a copy of what was reported until 90 days after they're resolved;
 - sanctions stay while the account exists;
 - `audit_log` can't be edited.
 
 1. **Someone may be in danger** (threats of violence, self-harm).
-   - Action the report, or delete the message (global chat: `select public.delete_chat_message(<id>);`; a lobby: `public.delete_room_message`), in the staff block above.
+   - Remove it from the queue, or find and delete the message in `/admin/chat/`.
    - The site holds no names, addresses or locations. If a message describes an immediate threat to someone's life, contact the police where you are with what you have: the copy, the nickname, the time and the account id. They can ask for account data through legal channels; the data export (`export-data`) shows what exists.
 2. **Sexual content involving a minor, or any illegal image.**
    - Don't download, copy or forward it, even to report it.
@@ -128,48 +99,22 @@ Moderators handle everyday reports with the SQL above. An admin, the owner until
    - mute or suspend the sender;
    - for an avatar, action its report and delete the file.
 4. **A spam wave or a raid in a global room:**
-   - turn on slow mode (`set_slow_mode('<locale>', 30)`);
+   - turn on slow mode for the room in `/admin/chat/`;
    - mute the accounts, and delete their messages;
    - New accounts already wait 2 hours before posting. A longer wait is a code change (`send_chat_message`).
-5. **A moderator misusing the role.** What a moderator did, newest first:
-
-   ```sql
-   select created_at, action, target_type, target_id, details
-   from public.audit_log where actor_id = '<their user id>' order by created_at desc limit 100;
-   ```
-
-   An admin removes the role with `select public.set_user_role('<their user id>', 'moderator', false);`, in the staff block above, and revokes the sanctions that shouldn't stand.
+5. **A moderator misusing the role.** The audit log filtered by them (`/admin/audit/`, "Who") shows what they did, newest first. An admin removes the role from their page in the panel and revokes the sanctions that shouldn't stand.
 
 6. **An appeal** (players ask through the contact on the guidelines page):
    - an admin who didn't make the decision looks again, at the sanction, its report and the copy;
-   - `revoke_sanction` ends it, and the player is told.
+   - revoking it on the player's page ends it, and the player is told.
 
-A player's record (their sanctions, and the open and resolved reports against them):
-
-```sql
-select 'sanction' as kind, kind::text as what, reason, created_at, ends_at as until
-from public.sanctions where user_id = '<id>'
-union all
-select 'report', target_type, reason, created_at, resolved_at
-from public.reports where target_user_id = '<id>'
-order by created_at desc;
-```
+A player's record (their sanctions, the reports about them and by them, and their latest matches) is their page in the panel.
 
 ## Announcements
 
-Until the admin panel (Phase 10) writes them, an announcement is a notification inserted from the SQL editor, one per player. It reaches everyone, whatever their settings, and arrives live for those online. Write the text in every language you can; a player whose language is missing sees English. `url` is optional and must be a path on the site.
+Admins write them in `/admin/content/`: the text per language (English required; a player whose language is missing reads English), an optional link on the site, an audience (every account, the players of one language, or staff as a test) and a time. One due now is sent at once; a later one by the `send-announcements` job, every minute. Each becomes an `announcement` notification, which reaches its audience whatever their settings and arrives live for those online. One can also show in the home page's news until a set time or until taken out.
 
-```sql
-insert into public.notifications (user_id, type, data)
-select p.id, 'announcement', jsonb_build_object(
-  'text', jsonb_build_object('en', 'New game: Reversi!', 'bg', 'Нова игра: Реверси!'),
-  'url', '/en/games/reversi/'
-)
-from public.profiles p
-where not p.is_guest and p.nickname is not null;
-```
-
-Each one sends a Realtime message to a player who is online, so on the free plan send at most a few thousand at a time.
+Each notification sends a Realtime message to a player who is online, so on the free plan an announcement to everyone suits up to a few thousand accounts; past that, send it per language.
 
 ## Account deletion job
 
@@ -213,7 +158,7 @@ A new Edge Function, or a change to `config.toml`, needs that restart locally to
 
 - an online casual game whose players reported different results (`reports-differ`). Each account in a seat reports what it saw (`private.room_reports`, kept 2 days). The match is decided once every account has reported, or by `pg_cron` (`decide-room-matches`, every minute) two minutes after the first report. To see reports still waiting: `select seed, game_id, count(*), min(created_at) from private.room_reports where match_id is null group by seed, game_id;`.
 
-The admin panel lists them in Phase 14; until then, `select id, game_id, reason, ended_at from public.matches where status = 'review' order by ended_at desc;`, and the moves are in `private.match_logs` for 90 days.
+Admins accept or reject them in `/admin/integrity/` (accepted, a result counts in stats, XP and streaks; rejected, it's kept as `rejected` and counts for nothing). The moves are in `private.match_logs` for 90 days.
 
 **Rated matchmaking:** `private.match_queue` holds who is searching which clock. `pg_cron` (`forget-match-queue`, every 10 minutes) drops searches nobody has asked about for a minute, and pairings after an hour, which feed the estimated wait. To see the queue: `select game_id, timer, pool, round(rating), now() - created_at as waiting, room_id is not null as paired from private.match_queue order by created_at;`. A new rated clock goes into a game's manifest (`rated.pools`) and into `private.rated_clocks` through a new migration: the server only pairs clocks listed there.
 
@@ -225,7 +170,7 @@ from private.rated_moves m join private.rated_games g on g.id = m.game_id
 where g.match_id = '<match id>' order by m.n;
 ```
 
-White's clock starts 3 s after `rated_games.started_at`, and a flag falls 2 s after a clock reaches zero. The same move recorded twice, or a move from the wrong seat, sends a game to review instead of rating it. There's no tool yet to void a rated game or correct a rating: that comes with the admin panel (Phase 14).
+White's clock starts 3 s after `rated_games.started_at`, and a flag falls 2 s after a clock reaches zero. The same move recorded twice, or a move from the wrong seat, sends a game to review instead of rating it. To void a counted game, annul it in `/admin/integrity/` (by its id, linked from a player's page): its XP and board places go, its ratings stay. A rating built on cheating starts again from the same page (a player → Reset).
 
 **Stockfish** (ADR-0025) is vendored in `packages/games/chess/vendor/stockfish/`, and its README says how to update it. Under its licence (GPL-3.0), the credit lines that link its source and licence, and its entry in `packages/games/chess/CREDITS.md`, must stay whenever it's served.
 
@@ -262,17 +207,12 @@ The function's logs are in the dashboard: _Edge Functions → submit-match → L
 
 Check either with `select status, start_time from cron.job_run_details where jobid = (select jobid from cron.job where jobname = '<name>') order by start_time desc limit 5;`.
 
-**Removing a leaderboard entry** (a result that slipped through), until the admin panel arrives in Phase 14:
-
-1. Set the match aside: `update public.matches set status = 'review', reason = 'staff' where id = '<match id>';`.
-2. Delete its entries: `delete from private.leaderboard_entries where match_id = '<match id>';`.
-
-The player's next game on that board puts them back; no earlier best is restored. Stats and XP aren't recalculated: XP can only be added (`xp_events.amount > 0`), and corrections come with the admin panel.
+**Removing a leaderboard entry** (a result that slipped through): in `/admin/integrity/`, remove the entry from its board, remove a player from a game's boards, or annul the match that set it. The player's next game on that board puts them back; no earlier best is restored, since boards keep only bests.
 
 **The daily challenge:**
 
 - **Today's and recent days:** `select day, game_id, config from public.daily_challenges order by day desc limit 7;`.
-- **How a day is made:** the first time anyone asks for it, from `private.daily_rotation`.
+- **How a day is made:** the first time anyone asks for it, from `private.daily_rotation`, unless an admin set that day to another rotation entry in `/admin/content/` (future days only).
 - **A broken day** (its game can't be played): delete that day's row. The next request makes it again with a new seed. Anyone who already played it keeps their result on the old day's board.
 - **A new game in the rotation:** goes in through a migration (`docs/ADDING_A_GAME.md`).
 
@@ -283,6 +223,16 @@ insert into public.words_of_the_day (locale, day, word, meaning) values ('en', '
 ```
 
 **Locally, `submit-match` answers 503:** the edge runtime container has stopped (it doesn't always come back after Docker restarts). Run `docker start supabase_edge_runtime_kefche`, or `pnpm db:stop && pnpm db:start`.
+
+## Admin panel
+
+`/[locale]/admin/` (ARCHITECTURE.md, "Admin panel"; ADR-0041 to ADR-0045). Moderators get the dashboard, players, the moderation queue and chat tools; admins get everything. The page is the same for everyone; every read and change is a staff-only RPC or a staff policy, and every change is audited.
+
+- **Games** (`/admin/games/`): on or off, badges and catalog place, applied by pages after they load. A game turned off is refused by the server at once (new plays, rooms, joins, starts, rated searches, arena entry); games under way finish.
+- **Feature flags** (`/admin/flags/`): GIFs, global chat, DMs, quick match, online arenas and guest play. The database (and the arena server and the `giphy` function) refuses what's off; pages hide it. `PUBLIC_GIFS` and `PUBLIC_ARENA_URL` stay a hard off-switch.
+- **The dashboard's active players** come from `private.activity_days` (one row per player per active UTC day, kept 35 days) and `private.activity_totals` (daily counts, no ids), rolled by the `roll-activity` job at 00:15 UTC.
+- **The i18n report** is built with the site (`/en/admin/i18n-report.json`), so it shows the locale files as deployed.
+- **Jobs:** `send-announcements` (every minute) and `roll-activity` (daily). Check them as any other: `select status, start_time from cron.job_run_details where jobid = (select jobid from cron.job where jobname = '<name>') order by start_time desc limit 5;`.
 
 ## Hosted Supabase
 
@@ -443,6 +393,5 @@ Copy `supabase/.env.example` to `supabase/.env` and paste each client ID and sec
 ## Sections to come
 
 - Migrations through CI with manual approval, backups _(Phase 21)_
-- The moderation queue and the admin panel's tools _(Phase 10)_
 - Custom domain, DNS, email (Resend), production OAuth apps _(Phase 21)_
 - Incident response and smoke-test checklist _(Phase 21)_

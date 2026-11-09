@@ -867,3 +867,109 @@ Lobby chat already existed (ADR-0023).
 - **Less to maintain:** no lists to review in Phase 15, and no LDNOOBW attribution on the Credits page.
 - **Less personal data:** no strikes are recorded, and the privacy notice no longer mentions them.
 - **Release:** the migration goes to the hosted database like any other, and `send-push` is redeployed for its regenerated wording (`pnpm functions:push`).
+
+---
+
+## ADR-0041: The admin panel: staff RPCs, audited, one lazy island per section
+
+**Date:** 2026-11-09 · **Status:** Accepted
+
+**Context.** SPEC §14 asks for an admin panel for moderators and admins, usable on tablets, with every action in the audit log. The site is static, and anyone can load any page or call any RPC with their own token.
+
+**Decision.**
+
+- **The page decides nothing:** `/[locale]/admin/<section>/` is the same for everyone. Every read and change is a `security definer` RPC that checks the role (`private.is_staff_now`, `private.require_admin`), or a staff RLS policy. Every change writes `audit_log` in the same transaction.
+- **Roles:** moderators get the dashboard, players, the moderation queue and chat tools; admins get everything. A role check fails with a stable code (`not_staff`, `admin_only`).
+- **One lazy chunk per section,** loaded only after the panel has read the user's own roles, so players never download admin code. Each view gets its strings from the page (`AdminView`).
+- **Translated like the rest of the site,** in an `admin` namespace in all 11 locales.
+- **DMs** are read only from a report, and that reading is audited (owner decision Q4).
+
+**Consequences.**
+
+- **No client can skip a check,** and the RUNBOOK's SQL fallback calls the same functions.
+- **A role change takes effect at once in the database,** even before the token's `app_roles` claim refreshes; the header's shield link may lag up to an hour.
+- **The `admin` namespace is large** (about 520 strings); Phase 15 reviews the translations.
+
+---
+
+## ADR-0042: Game settings applied in the browser, enforced by the server
+
+**Date:** 2026-11-09 · **Status:** Accepted (owner decision Q2)
+
+**Context.** Admins need to turn a game off, feature it, or reorder the catalog without a deploy, but the catalog and game pages are static.
+
+**Decision.**
+
+- **`public.game_settings`** (public to read), changed through `staff_set_game`.
+- **Pages apply it after they load** (`GameBadges.astro`, a plain REST read): badges, the catalog's order, and "temporarily unavailable" with the play area hidden.
+- **The server refuses a disabled game at once** (`game_disabled`), through triggers on new plays, rooms, joins, a room's start and the rated queue, and in `arena_entry`; the arena server passes it on.
+- **The arena server lists open arenas** (`GET /status`) for the panel.
+
+**Consequences.**
+
+- **A brief flash:** a page shows its built state until the settings arrive. A rebuild per change (the alternative) would avoid that, but costs a CI run and a stored GitHub token.
+- **Games under way finish and count;** only new starts are refused.
+
+---
+
+## ADR-0043: Runtime feature flags, enforced where each feature is served
+
+**Date:** 2026-11-09 · **Status:** Accepted (owner decision Q3)
+
+**Context.** GIFs, global chat, DMs, quick match, online arenas and guest play may need to stop quickly (abuse, cost, an outage), without a deploy.
+
+**Decision.**
+
+- **`public.feature_flags`** (key and state public), changed through `staff_set_flag`.
+- **Each flag is enforced where the feature is served:**
+  - triggers on `messages` (GIFs, global chat, DMs) and on the rated queue;
+  - a guard in front of `quick_match` (the old function moved to `private`);
+  - `arena_entry`;
+  - a trigger on `auth.users` refusing new anonymous users;
+  - the `giphy` function.
+- **Pages hide what's off:** `flags.client.ts` sets `<html data-flags-off>`, and CSS hides `[data-flag]` and shows `[data-flag-notice]`. The list is kept in localStorage, so the boot script applies it before the next paint.
+- **Build variables stay a hard off-switch:** `PUBLIC_GIFS` and `PUBLIC_ARENA_URL`.
+
+**Consequences.**
+
+- **One more small read per page,** and a page opened before a change may still show what's off until reload; the server refuses it either way.
+- **Errors aren't all graceful yet:** a visitor starting online play while guest play is off gets the room's general error.
+
+---
+
+## ADR-0044: Active players from one row per player per day
+
+**Date:** 2026-11-09 · **Status:** Accepted (owner decision Q5)
+
+**Context.** The dashboard needs daily, weekly and monthly active players. What's already kept (sign-ins, matches) misses players who only browse or chat, and recording activity is personal data.
+
+**Decision.**
+
+- **Each browser notes its player once per UTC day** (`note_activity`), from the live connection for accounts and from `ensureIdentity` for guests.
+- **Storage:** one row per player per day in `private.activity_days`, deleted after 35 days. A daily job (`roll-activity`) keeps `private.activity_totals`, daily counts with no ids.
+- **The privacy notice says so.**
+
+**Consequences.**
+
+- **WAU and MAU are exact for the last 35 days;** older history is daily totals only, so a past month's distinct players can't be recounted.
+- **A browser that blocks storage notes its player on each page,** which the primary key absorbs.
+
+---
+
+## ADR-0045: Correcting results without replaying them
+
+**Date:** 2026-11-09 · **Status:** Accepted
+
+**Context.** SPEC §14 lists recomputing a player's or a game's boards and ratings. Boards keep only each player's best per period, the boards a game counts for are in its manifest (read by `submit-match`), and a rating moves with each rated game, so none of it can be rebuilt from the database alone.
+
+**Decision.**
+
+- **Results under review:** accept (it counts in stats, XP and streaks through `private.count_result`) or reject. A rejected result is kept with a new status, `rejected`, which no read policy shows.
+- **Annul a counted result:** its XP is taken back and the board places it set are removed. Play counts, best scores and ratings stay.
+- **Boards:** remove one entry, or a player's places on a game's boards.
+- **Ratings:** start a player's rating in a pool again (1500 ± 350) rather than rebuild it.
+
+**Consequences.**
+
+- **Corrections are rough but honest:** an accepted result adds no board place or rating change, and a removed place is replaced by the player's next result.
+- **A full rebuild** would need an Edge Function that replays matches with the engines; not planned.

@@ -49,6 +49,9 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
     - `notifications/`: the header bell (`bell.ts`, counting from `kefche:unread`), the notifications page, how each type reads and where it leads (`notification-text.ts`, also bundled for push), and push on this device (`push.ts`, with the push-only `public/push-sw.js`).
     - `messages/`: direct messages (`dm-data.ts`: conversations, threads, and the live `dm`, `dm_deleted`, `dm_read` and `typing` events on the player's own channel).
     - `moderation/`: sanction notices (the database refuses a sanctioned player with `muted` or `suspended`, with the sanction's end as the error's `details`), reporting (`report.ts`, `ReportDialog.tsx`; the profile has its own plain-script dialog) and the moderator's mute dialog, shared by every chat.
+    - `admin/`: the admin panel (Phase 10, ADR-0041): `AdminPage.astro`, the shell island, and one lazy view per section in `views/` with its data module. Every read and change is a staff-only RPC (`staff_*`), audited. `i18n-report.ts` builds the translation report at build time.
+    - `flags/`: feature flags (ADR-0043): `flags.client.ts` marks what's off on `<html data-flags-off>`, and CSS hides `[data-flag=<key>]`. Mark any new UI for a flagged feature the same way; the database enforces it.
+    - `news/`: the home page's news ticker (announcements an admin marked for it).
     - `errors/`
   - `lib/supabase/`: lazy client, config, generated DB types.
   - `components/`: BootScript, Fonts, SeoHead, Logo.
