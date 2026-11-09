@@ -69,5 +69,9 @@
   },
   "news": {
     "title": "新闻"
+  },
+  "flags": {
+    "globalChatOff": "全球聊天暂时关闭。",
+    "directMessagesOff": "私信暂时关闭。"
   }
 }

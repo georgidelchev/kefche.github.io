@@ -165,7 +165,8 @@
     "rated_guests": "Pour une partie classée, chaque personne assise doit avoir un compte.",
     "suspended": "Vous ne pouvez pas jouer en ligne.",
     "unknown": "Un problème est survenu. Veuillez réessayer.",
-    "game_disabled": "Ce jeu est désactivé pour le moment."
+    "game_disabled": "Ce jeu est désactivé pour le moment.",
+    "feature_off": "C'est désactivé pour le moment. Réessayez plus tard."
   },
   "invite": {
     "title": "Inviter des amis",

@@ -55,6 +55,8 @@ export function ModeScreen({
               type="button"
               className="gwr-mode"
               data-main=""
+              // The site hides it while an admin has online arenas off (Phase 10).
+              data-flag="online_arenas"
               onClick={() => {
                 onPick("online");
               }}

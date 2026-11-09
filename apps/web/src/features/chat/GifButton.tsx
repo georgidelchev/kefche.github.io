@@ -31,7 +31,7 @@ export function GifButton({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button type="button" variant="ghost" size="icon" aria-label={s.gif}>
+        <Button type="button" variant="ghost" size="icon" aria-label={s.gif} data-flag="gifs">
           <span aria-hidden="true" className="text-xs font-bold">
             {s.gif}
           </span>

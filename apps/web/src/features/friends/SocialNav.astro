@@ -27,6 +27,9 @@ const links = [
   {links.map((link) => (
     <a
       href={link.href}
+      data-flag={
+        link.id === "chat" ? "global_chat" : link.id === "messages" ? "direct_messages" : undefined
+      }
       aria-current={link.id === current ? "page" : undefined}
       class="flex min-h-11 shrink-0 items-center rounded-lg px-3 font-semibold text-muted hover:text-text focus-visible:outline-2 focus-visible:outline-focus aria-[current=page]:bg-surface aria-[current=page]:text-text aria-[current=page]:shadow-sm"
     >

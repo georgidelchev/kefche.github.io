@@ -12,7 +12,7 @@
 // accepts only noted ids. Answers are cached in this instance for 10
 // minutes (trending) or an hour (a search); take_gif_search limits each
 // player and keeps the site under GIPHY's free 100 calls an hour.
-// Without GIPHY_API_KEY it answers 503 gifs_off.
+// Without GIPHY_API_KEY, or while an admin has GIFs off, it answers 503 gifs_off.
 import { createClient } from "@supabase/supabase-js";
 import * as z from "zod";
 
@@ -84,6 +84,14 @@ Deno.serve(async (req) => {
   });
   const { data: who, error: authError } = await admin.auth.getUser(token);
   if (authError || who.user.is_anonymous) return fail("unauthorized", 401);
+
+  // An admin can turn GIFs off without a deploy (feature_flags, Phase 10).
+  const { data: flag } = await admin
+    .from("feature_flags")
+    .select("enabled")
+    .eq("key", "gifs")
+    .maybeSingle();
+  if (flag?.enabled === false) return fail("gifs_off", 503);
 
   const { q, offset, lang } = body.data;
   const search = q && q.length > 0 ? q.toLowerCase() : null;

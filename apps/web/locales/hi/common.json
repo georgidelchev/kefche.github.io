@@ -69,5 +69,9 @@
   },
   "news": {
     "title": "ख़बरें"
+  },
+  "flags": {
+    "globalChatOff": "ग्लोबल चैट अभी बंद है।",
+    "directMessagesOff": "डायरेक्ट मैसेज अभी बंद हैं।"
   }
 }

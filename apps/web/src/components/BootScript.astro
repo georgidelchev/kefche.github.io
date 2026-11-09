@@ -1,5 +1,6 @@
 ---
 import { ACCOUNT_STORAGE_KEY } from "@/features/account/account-summary";
+import { FLAGS_STORAGE_KEY } from "@/features/flags/flags";
 import { RAIL_STORAGE_KEY } from "@/features/shell/rail";
 import { THEME_STORAGE_KEY } from "@/features/theme/theme";
 
@@ -14,6 +15,7 @@ import { THEME_STORAGE_KEY } from "@/features/theme/theme";
     themeKey: THEME_STORAGE_KEY,
     railKey: RAIL_STORAGE_KEY,
     accountKey: ACCOUNT_STORAGE_KEY,
+    flagsKey: FLAGS_STORAGE_KEY,
   }}
 >
   try {
@@ -27,6 +29,9 @@ import { THEME_STORAGE_KEY } from "@/features/theme/theme";
       root.dataset.account = "signed-in";
       if (JSON.parse(account).staff === true) root.dataset.staff = "true";
     }
+    // Features an admin turned off, as last seen (flags.client.ts checks again).
+    const flagsOff = localStorage.getItem(flagsKey);
+    if (flagsOff && /^[a-z_]+( [a-z_]+)*$/.test(flagsOff)) root.dataset.flagsOff = flagsOff;
   } catch {
     // Storage unavailable: defaults apply.
   }

@@ -52,6 +52,8 @@ export async function arenaEntry(
     return { userId: id, name, guest, progress: { level, tiers } };
   }
   const message = errorSchema.safeParse(body);
+  // Online arenas turned off by an admin read as unavailable, like a game turned off.
+  if (message.success && message.data.message === "arenas_off") return "game_disabled";
   if (
     message.success &&
     (message.data.message === "nickname_required" ||

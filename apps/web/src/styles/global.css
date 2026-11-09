@@ -11,3 +11,26 @@
     color: var(--text);
   }
 }
+
+/* Feature flags (features/flags): an admin turned these off. What a flag
+   gates is marked data-flag="<key>" and hidden; its notice,
+   data-flag-notice="<key>", shows only then. */
+[data-flag-notice] {
+  display: none;
+}
+html[data-flags-off~="gifs"] [data-flag="gifs"],
+html[data-flags-off~="global_chat"] [data-flag="global_chat"],
+html[data-flags-off~="direct_messages"] [data-flag="direct_messages"],
+html[data-flags-off~="quick_match"] [data-flag="quick_match"],
+html[data-flags-off~="online_arenas"] [data-flag="online_arenas"],
+html[data-flags-off~="guest_sign_in"] [data-flag="guest_sign_in"] {
+  display: none !important;
+}
+html[data-flags-off~="gifs"] [data-flag-notice="gifs"],
+html[data-flags-off~="global_chat"] [data-flag-notice="global_chat"],
+html[data-flags-off~="direct_messages"] [data-flag-notice="direct_messages"],
+html[data-flags-off~="quick_match"] [data-flag-notice="quick_match"],
+html[data-flags-off~="online_arenas"] [data-flag-notice="online_arenas"],
+html[data-flags-off~="guest_sign_in"] [data-flag-notice="guest_sign_in"] {
+  display: block;
+}

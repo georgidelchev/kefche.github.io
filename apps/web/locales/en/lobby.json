@@ -165,7 +165,8 @@
     "rated_guests": "Everyone in a seat needs an account for a rated game.",
     "suspended": "You're suspended from online play.",
     "unknown": "Something went wrong. Please try again.",
-    "game_disabled": "This game is turned off for now."
+    "game_disabled": "This game is turned off for now.",
+    "feature_off": "This is turned off for now. Try again later."
   },
   "invite": {
     "title": "Invite friends",

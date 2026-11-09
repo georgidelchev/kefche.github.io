@@ -79,7 +79,8 @@
       "dailySet": "Tägliche Herausforderung festgelegt",
       "dailyClear": "Tägliche Herausforderung zurück zur Rotation",
       "wordSet": "Wort des Tages festgelegt",
-      "wordClear": "Wort des Tages entfernt"
+      "wordClear": "Wort des Tages entfernt",
+      "flagSet": "Funktion ein- oder ausgeschaltet"
     },
     "targets": {
       "user": "Spieler",
@@ -93,7 +94,8 @@
       "match": "Partie",
       "announcement": "Ankündigung",
       "daily": "Tägliche Herausforderung",
-      "word": "Wort des Tages"
+      "word": "Wort des Tages",
+      "flag": "Funktion"
     },
     "noProfile": "Kein Profil"
   },
@@ -516,5 +518,35 @@
     "filter": "Filtern",
     "filterHint": "Ein Teil eines Schlüssels oder Texts.",
     "shown": "Angezeigt: {count}"
+  },
+  "flags": {
+    "body": "Schalte Funktionen ohne Deployment aus und ein. Der Server lehnt Ausgeschaltetes sofort ab, und die Seiten blenden es aus.",
+    "names": {
+      "gifs": "GIFs",
+      "globalChat": "Globaler Chat",
+      "directMessages": "Direktnachrichten",
+      "quickMatch": "Schnelles Spiel",
+      "onlineArenas": "Online-Arenen",
+      "guestSignIn": "Spielen als Gast"
+    },
+    "hints": {
+      "gifs": "Der GIF-Knopf in Chats, die GIF-Suche und das Senden von GIFs.",
+      "globalChat": "Schreiben in den globalen Chaträumen. Frühere Nachrichten bleiben lesbar.",
+      "directMessages": "Direktnachrichten senden. Unterhaltungen bleiben lesbar.",
+      "quickMatch": "Schnelles Spiel und gewertete Spielersuche. Räume per Code funktionieren weiter.",
+      "onlineArenas": "Eine Online-Arena betreten. Wer schon drin ist, spielt zu Ende; die Solo-Arena bleibt.",
+      "guestSignIn": "Neue Gastkonten zum Online-Spielen ohne Anmeldung. Bestehende Gäste behalten ihres."
+    },
+    "on": "An",
+    "off": "Aus",
+    "turnOff": "{name} ausschalten",
+    "turnOn": "{name} einschalten",
+    "turnOffTitle": "{name} ausschalten?",
+    "turnOnTitle": "{name} einschalten?",
+    "offBody": "Es stoppt sofort für alle. Laufendes wird beendet.",
+    "onBody": "Es ist sofort für alle zurück.",
+    "nowOn": "{name} ist an.",
+    "nowOff": "{name} ist aus.",
+    "buildOff": "Dieser Build lässt es weg (seine Build-Variable), daher ändert Einschalten hier nichts bis zu einem Deployment."
   }
 }

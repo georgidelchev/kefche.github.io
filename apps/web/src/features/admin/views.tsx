@@ -6,11 +6,12 @@ import { lazy, type ReactNode } from "react";
 
 import type { Supabase } from "@/lib/supabase/client";
 
-import type { AdminSectionId, StaffRole } from "./sections";
+import type { StaffRole } from "./sections";
 import type {
   AuditStrings,
   ChatStrings,
   ContentStrings,
+  FlagsStrings,
   GamesStrings,
   I18nStrings,
   IntegrityStrings,
@@ -62,12 +63,8 @@ export type AdminView =
   | { section: "integrity"; strings: IntegrityStrings; players: PlayersStrings }
   | { section: "content"; strings: ContentStrings; players: PlayersStrings }
   | { section: "i18n"; strings: I18nStrings }
-  | {
-      section: Exclude<
-        AdminSectionId,
-        "audit" | "users" | "reports" | "chat" | "games" | "integrity" | "content" | "i18n"
-      >;
-    };
+  | { section: "flags"; strings: FlagsStrings; players: PlayersStrings }
+  | { section: "dashboard" };
 
 const AuditLog = lazy(() => import("./views/AuditLog").then((m) => ({ default: m.AuditLog })));
 const Players = lazy(() => import("./views/Players").then((m) => ({ default: m.Players })));
@@ -91,6 +88,10 @@ const I18nReport = lazy(() =>
   import("./views/I18nReport").then((m) => ({ default: m.I18nReport })),
 );
 
+const FlagsAdmin = lazy(() =>
+  import("./views/FlagsAdmin").then((m) => ({ default: m.FlagsAdmin })),
+);
+
 /** The section's view, or null when it isn't built yet. */
 export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
   if (view.section === "audit") return <AuditLog {...props} strings={view.strings} />;
@@ -106,5 +107,7 @@ export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
   if (view.section === "content")
     return <ContentAdmin {...props} strings={view.strings} players={view.players} />;
   if (view.section === "i18n") return <I18nReport {...props} strings={view.strings} />;
+  if (view.section === "flags")
+    return <FlagsAdmin {...props} strings={view.strings} players={view.players} />;
   return null;
 }

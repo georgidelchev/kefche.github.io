@@ -1,7 +1,10 @@
+import type { FlagKey } from "@/features/flags/flags";
 import { gameNames } from "@/features/games/game-names";
 import { achievementCatalog } from "@/features/profile/achievements";
 import type { AppT } from "@/i18n/i18n";
 import { LOCALE_INFO, type Locale } from "@/i18n/locales";
+import { getArenaUrl } from "@/lib/env";
+import { GIFS_ENABLED } from "@/lib/gifs";
 
 import { ADMIN_LABEL_KEYS, ADMIN_SECTIONS, type AdminSectionId } from "./sections";
 
@@ -91,6 +94,7 @@ export function auditStrings(t: AppT) {
       "daily.clear": t("admin:audit.actions.dailyClear"),
       "word.set": t("admin:audit.actions.wordSet"),
       "word.clear": t("admin:audit.actions.wordClear"),
+      "flag.set": t("admin:audit.actions.flagSet"),
     } as Record<string, string>,
     /** What an entry can be about (`target_type`). */
     targets: {
@@ -106,6 +110,7 @@ export function auditStrings(t: AppT) {
       announcement: t("admin:audit.targets.announcement"),
       daily: t("admin:audit.targets.daily"),
       word: t("admin:audit.targets.word"),
+      flag: t("admin:audit.targets.flag"),
     } as Record<string, string>,
   };
 }
@@ -655,6 +660,47 @@ export function i18nStrings(t: AppT) {
 
 export type I18nStrings = ReturnType<typeof i18nStrings>;
 
+export function flagsStrings(t: AppT, buildOff: readonly FlagKey[]) {
+  return {
+    body: t("admin:flags.body"),
+    names: {
+      gifs: t("admin:flags.names.gifs"),
+      global_chat: t("admin:flags.names.globalChat"),
+      direct_messages: t("admin:flags.names.directMessages"),
+      quick_match: t("admin:flags.names.quickMatch"),
+      online_arenas: t("admin:flags.names.onlineArenas"),
+      guest_sign_in: t("admin:flags.names.guestSignIn"),
+    } satisfies Record<FlagKey, string>,
+    hints: {
+      gifs: t("admin:flags.hints.gifs"),
+      global_chat: t("admin:flags.hints.globalChat"),
+      direct_messages: t("admin:flags.hints.directMessages"),
+      quick_match: t("admin:flags.hints.quickMatch"),
+      online_arenas: t("admin:flags.hints.onlineArenas"),
+      guest_sign_in: t("admin:flags.hints.guestSignIn"),
+    } satisfies Record<FlagKey, string>,
+    on: t("admin:flags.on"),
+    off: t("admin:flags.off"),
+    /** "Turn {name} off" */
+    turnOff: t("admin:flags.turnOff", { name: "{name}" }),
+    /** "Turn {name} on" */
+    turnOn: t("admin:flags.turnOn", { name: "{name}" }),
+    turnOffTitle: t("admin:flags.turnOffTitle", { name: "{name}" }),
+    turnOnTitle: t("admin:flags.turnOnTitle", { name: "{name}" }),
+    offBody: t("admin:flags.offBody"),
+    onBody: t("admin:flags.onBody"),
+    nowOn: t("admin:flags.nowOn", { name: "{name}" }),
+    nowOff: t("admin:flags.nowOff", { name: "{name}" }),
+    buildOffNote: t("admin:flags.buildOff"),
+    /** The flags this build leaves out (its build variables). */
+    buildOff,
+    loading: t("admin:loading"),
+    failed: t("admin:failed"),
+  };
+}
+
+export type FlagsStrings = ReturnType<typeof flagsStrings>;
+
 /** What the page's section shows, with the strings it needs (built on the server). */
 export function adminView(section: AdminSectionId, t: AppT, locale: Locale): AdminView {
   if (section === "audit") return { section, strings: auditStrings(t) };
@@ -670,5 +716,14 @@ export function adminView(section: AdminSectionId, t: AppT, locale: Locale): Adm
   if (section === "content")
     return { section, strings: contentStrings(t, locale), players: playersStrings(t, locale) };
   if (section === "i18n") return { section, strings: i18nStrings(t) };
+  if (section === "flags")
+    return {
+      section,
+      strings: flagsStrings(t, [
+        ...(GIFS_ENABLED ? [] : (["gifs"] as const)),
+        ...(getArenaUrl() ? [] : (["online_arenas"] as const)),
+      ]),
+      players: playersStrings(t, locale),
+    };
   return { section };
 }

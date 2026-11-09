@@ -69,5 +69,9 @@
   },
   "news": {
     "title": "Neuigkeiten"
+  },
+  "flags": {
+    "globalChatOff": "Der globale Chat ist im Moment ausgeschaltet.",
+    "directMessagesOff": "Direktnachrichten sind im Moment ausgeschaltet."
   }
 }

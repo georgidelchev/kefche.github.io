@@ -79,7 +79,8 @@
       "dailySet": "设置每日挑战",
       "dailyClear": "每日挑战恢复轮换",
       "wordSet": "设置每日一词",
-      "wordClear": "移除每日一词"
+      "wordClear": "移除每日一词",
+      "flagSet": "开启或关闭功能"
     },
     "targets": {
       "user": "玩家",
@@ -93,7 +94,8 @@
       "match": "对局",
       "announcement": "公告",
       "daily": "每日挑战",
-      "word": "每日一词"
+      "word": "每日一词",
+      "flag": "功能"
     },
     "noProfile": "无主页"
   },
@@ -516,5 +518,35 @@
     "filter": "筛选",
     "filterHint": "键或文本的一部分。",
     "shown": "显示：{count}"
+  },
+  "flags": {
+    "body": "无需部署即可关闭或开启功能。服务器会立即拒绝已关闭的功能，页面也会隐藏它。",
+    "names": {
+      "gifs": "GIF",
+      "globalChat": "全球聊天",
+      "directMessages": "私信",
+      "quickMatch": "快速匹配",
+      "onlineArenas": "在线竞技场",
+      "guestSignIn": "游客游玩"
+    },
+    "hints": {
+      "gifs": "聊天中的 GIF 按钮、GIF 搜索和发送。",
+      "globalChat": "在全球聊天室发言。以往的消息仍可查看。",
+      "directMessages": "发送私信。对话仍可查看。",
+      "quickMatch": "快速匹配和排位匹配。通过代码进入房间仍然可用。",
+      "onlineArenas": "进入在线竞技场。已经在里面的玩家会玩完；单人竞技场保留。",
+      "guestSignIn": "无需注册即可在线游玩的新游客账号。现有游客保留其账号。"
+    },
+    "on": "开启",
+    "off": "关闭",
+    "turnOff": "关闭{name}",
+    "turnOn": "开启{name}",
+    "turnOffTitle": "关闭{name}？",
+    "turnOnTitle": "开启{name}？",
+    "offBody": "立即对所有人停止。进行中的会结束。",
+    "onBody": "立即对所有人恢复。",
+    "nowOn": "{name}已开启。",
+    "nowOff": "{name}已关闭。",
+    "buildOff": "此版本未包含它（构建变量），所以在这里开启在重新部署前不会有任何变化。"
   }
 }

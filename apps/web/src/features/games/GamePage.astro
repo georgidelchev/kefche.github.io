@@ -197,6 +197,7 @@ const crumb = "rounded-sm hover:underline";
                 {modes.quick && (
                   <a
                     href={`${online}?quick`}
+                    data-flag="quick_match"
                     class={buttonVariants({ variant: "primary" })}
                     rel="nofollow"
                   >
@@ -206,6 +207,7 @@ const crumb = "rounded-sm hover:underline";
                 {rated && (
                   <a
                     href={`${online}?rated`}
+                    data-flag="quick_match"
                     class={buttonVariants({ variant: "primary" })}
                     rel="nofollow"
                   >

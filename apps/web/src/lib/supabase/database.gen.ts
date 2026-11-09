@@ -143,6 +143,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"feature_flags": {
+                  Row: {
+                    "enabled": boolean,"key": string,"updated_at": string,"updated_by": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "enabled"?: boolean,"key": string,"updated_at"?: string,"updated_by"?: string | null
+                  }
+                  Update: {
+                    "enabled"?: boolean,"key"?: string,"updated_at"?: string,"updated_by"?: string | null
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"frame_unlocks": {
                   Row: {
                     "frame": string,"match_id": string | null,"unlocked_at": string,"user_id": string
@@ -1019,6 +1033,9 @@ isOneToOne: false
                            },
 "staff_set_daily":
 { Args: { "p_day": string,"p_position"?: number }; Returns: undefined
+                           },
+"staff_set_flag":
+{ Args: { "p_enabled": boolean,"p_key": string }; Returns: undefined
                            },
 "staff_set_game":
 { Args: { "p_beta": boolean,"p_enabled": boolean,"p_featured": boolean,"p_game": string,"p_hot": boolean,"p_new": boolean,"p_position"?: number }; Returns: undefined

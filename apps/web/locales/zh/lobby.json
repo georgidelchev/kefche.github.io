@@ -165,7 +165,8 @@
     "rated_guests": "积分赛要求每位入座的玩家都有账号。",
     "suspended": "你已被禁止在线游戏。",
     "unknown": "出了点问题，请重试。",
-    "game_disabled": "该游戏暂时关闭。"
+    "game_disabled": "该游戏暂时关闭。",
+    "feature_off": "此功能暂时关闭。请稍后再试。"
   },
   "invite": {
     "title": "邀请好友",

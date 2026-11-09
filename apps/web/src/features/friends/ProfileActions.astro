@@ -111,7 +111,13 @@ const ghost = buttonVariants({ variant: "ghost" });
     <button hidden type="button" data-action="cancel" class={outline}>
       {s.actions.cancel}
     </button>
-    <a hidden data-message href={`${messagesPath}?with=${userId}`} class={outline}>
+    <a
+      hidden
+      data-message
+      data-flag="direct_messages"
+      href={`${messagesPath}?with=${userId}`}
+      class={outline}
+    >
       {s.actions.message}
     </a>
     {games.length > 0 && (

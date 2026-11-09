@@ -79,7 +79,8 @@
       "dailySet": "Défi du jour fixé",
       "dailyClear": "Défi du jour remis sur la rotation",
       "wordSet": "Mot du jour fixé",
-      "wordClear": "Mot du jour retiré"
+      "wordClear": "Mot du jour retiré",
+      "flagSet": "Fonction activée ou désactivée"
     },
     "targets": {
       "user": "Joueur",
@@ -93,7 +94,8 @@
       "match": "Partie",
       "announcement": "Annonce",
       "daily": "Défi du jour",
-      "word": "Mot du jour"
+      "word": "Mot du jour",
+      "flag": "Fonction"
     },
     "noProfile": "Sans profil"
   },
@@ -516,5 +518,35 @@
     "filter": "Filtrer",
     "filterHint": "Une partie d'une clé ou d'un texte.",
     "shown": "Affichées : {count}"
+  },
+  "flags": {
+    "body": "Désactivez et réactivez des fonctions sans déploiement. Le serveur refuse aussitôt ce qui est désactivé, et les pages le masquent.",
+    "names": {
+      "gifs": "GIF",
+      "globalChat": "Chat global",
+      "directMessages": "Messages privés",
+      "quickMatch": "Partie rapide",
+      "onlineArenas": "Arènes en ligne",
+      "guestSignIn": "Jeu en invité"
+    },
+    "hints": {
+      "gifs": "Le bouton GIF des chats, la recherche et l'envoi de GIF.",
+      "globalChat": "Écrire dans les salons du chat global. Les anciens messages restent lisibles.",
+      "directMessages": "Envoyer des messages privés. Les conversations restent lisibles.",
+      "quickMatch": "Partie rapide et recherche classée. Les salons par code fonctionnent toujours.",
+      "onlineArenas": "Entrer dans une arène en ligne. Ceux qui y sont terminent ; l'arène en solo reste.",
+      "guestSignIn": "Nouveaux comptes invités pour jouer en ligne sans s'inscrire. Les invités actuels gardent le leur."
+    },
+    "on": "Activé",
+    "off": "Désactivé",
+    "turnOff": "Désactiver {name}",
+    "turnOn": "Activer {name}",
+    "turnOffTitle": "Désactiver {name} ?",
+    "turnOnTitle": "Activer {name} ?",
+    "offBody": "Cela s'arrête aussitôt pour tout le monde. Ce qui est en cours se termine.",
+    "onBody": "Cela revient aussitôt pour tout le monde.",
+    "nowOn": "{name} est activé.",
+    "nowOff": "{name} est désactivé.",
+    "buildOff": "Cette version le laisse de côté (sa variable de build) : l'activer ici ne change rien avant un déploiement."
   }
 }

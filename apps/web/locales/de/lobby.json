@@ -165,7 +165,8 @@
     "rated_guests": "Für eine gewertete Partie braucht jeder auf einem Platz ein Konto.",
     "suspended": "Du bist vom Online-Spiel ausgeschlossen.",
     "unknown": "Etwas ist schiefgelaufen. Bitte versuche es noch einmal.",
-    "game_disabled": "Dieses Spiel ist im Moment ausgeschaltet."
+    "game_disabled": "Dieses Spiel ist im Moment ausgeschaltet.",
+    "feature_off": "Das ist im Moment ausgeschaltet. Versuch es später noch einmal."
   },
   "invite": {
     "title": "Freunde einladen",

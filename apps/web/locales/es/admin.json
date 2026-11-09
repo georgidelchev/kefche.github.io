@@ -79,7 +79,8 @@
       "dailySet": "Reto diario fijado",
       "dailyClear": "Reto diario devuelto a la rotación",
       "wordSet": "Palabra del día fijada",
-      "wordClear": "Palabra del día quitada"
+      "wordClear": "Palabra del día quitada",
+      "flagSet": "Función activada o desactivada"
     },
     "targets": {
       "user": "Jugador",
@@ -93,7 +94,8 @@
       "match": "Partida",
       "announcement": "Anuncio",
       "daily": "Reto diario",
-      "word": "Palabra del día"
+      "word": "Palabra del día",
+      "flag": "Función"
     },
     "noProfile": "Sin perfil"
   },
@@ -516,5 +518,35 @@
     "filter": "Filtrar",
     "filterHint": "Parte de una clave o de un texto.",
     "shown": "Mostrados: {count}"
+  },
+  "flags": {
+    "body": "Activa y desactiva funciones sin desplegar. El servidor rechaza al instante lo desactivado y las páginas lo ocultan.",
+    "names": {
+      "gifs": "GIF",
+      "globalChat": "Chat global",
+      "directMessages": "Mensajes directos",
+      "quickMatch": "Partida rápida",
+      "onlineArenas": "Arenas en línea",
+      "guestSignIn": "Juego como invitado"
+    },
+    "hints": {
+      "gifs": "El botón de GIF en los chats, la búsqueda y el envío de GIF.",
+      "globalChat": "Escribir en las salas del chat global. Los mensajes anteriores siguen visibles.",
+      "directMessages": "Enviar mensajes directos. Las conversaciones siguen visibles.",
+      "quickMatch": "Partida rápida y emparejamiento clasificatorio. Las salas con código siguen funcionando.",
+      "onlineArenas": "Entrar en una arena en línea. Quien ya está dentro termina; la arena en solitario sigue.",
+      "guestSignIn": "Cuentas de invitado nuevas para jugar en línea sin registrarse. Los invitados actuales las conservan."
+    },
+    "on": "Activado",
+    "off": "Desactivado",
+    "turnOff": "Desactivar {name}",
+    "turnOn": "Activar {name}",
+    "turnOffTitle": "¿Desactivar {name}?",
+    "turnOnTitle": "¿Activar {name}?",
+    "offBody": "Se detiene al instante para todos. Lo que está en curso termina.",
+    "onBody": "Vuelve al instante para todos.",
+    "nowOn": "{name} está activado.",
+    "nowOff": "{name} está desactivado.",
+    "buildOff": "Esta compilación lo deja fuera (su variable de compilación), así que activarlo aquí no cambia nada hasta un despliegue."
   }
 }

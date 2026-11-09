@@ -253,6 +253,7 @@ export function FriendsPage({
                   >
                     <a
                       href={`${messagesPath}?with=${p.id}`}
+                      data-flag="direct_messages"
                       className={buttonVariants({ variant: "outline" })}
                     >
                       {s.actions.message}

@@ -34,16 +34,21 @@ const title = t("messages:title");
   <div class="mx-auto grid w-full max-w-4xl gap-6 pb-6">
     <SocialNav locale={locale} current="messages" />
     <h1 class="text-3xl md:text-4xl">{title}</h1>
-    <MessagesPage
-      client:load
-      strings={messagesPageStrings(t)}
-      bcp47={bcp47}
-      signInPath={paths.signIn}
-      profileBase={getRelativeLocaleUrl(locale, "/u/")}
-      guidelinesPath={getRelativeLocaleUrl(locale, "/guidelines/")}
-      tools={chatToolsStrings(t, locale)}
-      gifs={GIFS_ENABLED}
-      dir={dir}
-    />
+    <p data-flag-notice="direct_messages" class="rounded-2xl border border-warning bg-surface p-4">
+      {t("common:flags.directMessagesOff")}
+    </p>
+    <div data-flag="direct_messages">
+      <MessagesPage
+        client:load
+        strings={messagesPageStrings(t)}
+        bcp47={bcp47}
+        signInPath={paths.signIn}
+        profileBase={getRelativeLocaleUrl(locale, "/u/")}
+        guidelinesPath={getRelativeLocaleUrl(locale, "/guidelines/")}
+        tools={chatToolsStrings(t, locale)}
+        gifs={GIFS_ENABLED}
+        dir={dir}
+      />
+    </div>
   </div>
 </AppShell>

@@ -69,5 +69,9 @@
   },
   "news": {
     "title": "ニュース"
+  },
+  "flags": {
+    "globalChatOff": "グローバルチャットは現在オフです。",
+    "directMessagesOff": "ダイレクトメッセージは現在オフです。"
   }
 }

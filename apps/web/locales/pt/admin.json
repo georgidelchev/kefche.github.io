@@ -79,7 +79,8 @@
       "dailySet": "Desafio diário definido",
       "dailyClear": "Desafio diário de volta à rotação",
       "wordSet": "Palavra do dia definida",
-      "wordClear": "Palavra do dia removida"
+      "wordClear": "Palavra do dia removida",
+      "flagSet": "Recurso ligado ou desligado"
     },
     "targets": {
       "user": "Jogador",
@@ -93,7 +94,8 @@
       "match": "Partida",
       "announcement": "Aviso",
       "daily": "Desafio diário",
-      "word": "Palavra do dia"
+      "word": "Palavra do dia",
+      "flag": "Recurso"
     },
     "noProfile": "Sem perfil"
   },
@@ -516,5 +518,35 @@
     "filter": "Filtrar",
     "filterHint": "Parte de uma chave ou de um texto.",
     "shown": "Exibidos: {count}"
+  },
+  "flags": {
+    "body": "Ligue e desligue recursos sem publicar. O servidor recusa na hora o que está desligado, e as páginas escondem.",
+    "names": {
+      "gifs": "GIFs",
+      "globalChat": "Chat global",
+      "directMessages": "Mensagens diretas",
+      "quickMatch": "Partida rápida",
+      "onlineArenas": "Arenas online",
+      "guestSignIn": "Jogar como convidado"
+    },
+    "hints": {
+      "gifs": "O botão de GIF nos chats, a busca e o envio de GIFs.",
+      "globalChat": "Escrever nas salas do chat global. As mensagens antigas continuam visíveis.",
+      "directMessages": "Enviar mensagens diretas. As conversas continuam visíveis.",
+      "quickMatch": "Partida rápida e busca ranqueada. Salas por código continuam funcionando.",
+      "onlineArenas": "Entrar numa arena online. Quem já está dentro termina; a arena solo continua.",
+      "guestSignIn": "Novas contas de convidado para jogar online sem cadastro. Os convidados atuais mantêm as suas."
+    },
+    "on": "Ligado",
+    "off": "Desligado",
+    "turnOff": "Desligar {name}",
+    "turnOn": "Ligar {name}",
+    "turnOffTitle": "Desligar {name}?",
+    "turnOnTitle": "Ligar {name}?",
+    "offBody": "Para na hora para todos. O que está em andamento termina.",
+    "onBody": "Volta na hora para todos.",
+    "nowOn": "{name} está ligado.",
+    "nowOff": "{name} está desligado.",
+    "buildOff": "Esta versão deixa isso de fora (pela variável de build), então ligar aqui não muda nada até uma publicação."
   }
 }

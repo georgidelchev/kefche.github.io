@@ -79,7 +79,8 @@
       "dailySet": "Daily challenge set",
       "dailyClear": "Daily challenge back to the rotation",
       "wordSet": "Word of the Day set",
-      "wordClear": "Word of the Day removed"
+      "wordClear": "Word of the Day removed",
+      "flagSet": "Feature turned on or off"
     },
     "targets": {
       "user": "Player",
@@ -93,7 +94,8 @@
       "match": "Match",
       "announcement": "Announcement",
       "daily": "Daily challenge",
-      "word": "Word of the Day"
+      "word": "Word of the Day",
+      "flag": "Feature"
     },
     "noProfile": "No profile"
   },
@@ -516,5 +518,35 @@
     "filter": "Filter",
     "filterHint": "Part of a key or a text.",
     "shown": "Shown: {count}"
+  },
+  "flags": {
+    "body": "Turn a feature off and on without a deploy. The server refuses what's off at once, and pages hide it.",
+    "names": {
+      "gifs": "GIFs",
+      "globalChat": "Global chat",
+      "directMessages": "Direct messages",
+      "quickMatch": "Quick match",
+      "onlineArenas": "Online arenas",
+      "guestSignIn": "Guest play"
+    },
+    "hints": {
+      "gifs": "The GIF button in chats, GIF search, and sending GIFs.",
+      "globalChat": "Sending in the global chat rooms. Past messages stay readable.",
+      "directMessages": "Sending direct messages. Conversations stay readable.",
+      "quickMatch": "Quick match and rated matchmaking. Rooms by code still work.",
+      "onlineArenas": "Entering an online arena. Players already in one finish; the solo arena stays.",
+      "guestSignIn": "New guest accounts for online play without signing up. Existing guests keep theirs."
+    },
+    "on": "On",
+    "off": "Off",
+    "turnOff": "Turn {name} off",
+    "turnOn": "Turn {name} on",
+    "turnOffTitle": "Turn {name} off?",
+    "turnOnTitle": "Turn {name} on?",
+    "offBody": "It stops at once for everyone. What's under way finishes.",
+    "onBody": "It's back at once for everyone.",
+    "nowOn": "{name} is on.",
+    "nowOff": "{name} is off.",
+    "buildOff": "This build leaves it out (its build variable), so turning it on here changes nothing until a deploy."
   }
 }

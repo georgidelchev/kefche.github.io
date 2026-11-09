@@ -69,5 +69,9 @@
   },
   "news": {
     "title": "Actualités"
+  },
+  "flags": {
+    "globalChatOff": "Le chat global est désactivé pour le moment.",
+    "directMessagesOff": "Les messages privés sont désactivés pour le moment."
   }
 }
