@@ -529,7 +529,14 @@ function PlayerView({
       </div>
 
       <Section title={s.matches}>
-        <Matches matches={player.matches} strings={s} bcp47={bcp47} />
+        <Matches
+          matches={player.matches}
+          strings={s}
+          bcp47={bcp47}
+          {...(roles.includes("admin")
+            ? { matchHref: (id: string) => `${paths.integrity}?match=${encodeURIComponent(id)}` }
+            : {})}
+        />
       </Section>
     </div>
   );
@@ -730,10 +737,13 @@ function Matches({
   matches,
   strings: s,
   bcp47,
+  matchHref,
 }: {
   matches: Player["matches"];
   strings: PlayersStrings;
   bcp47: string;
+  /** For admins: the match in the integrity section. */
+  matchHref?: (id: string) => string;
 }) {
   if (matches.length === 0) return <p className="text-muted">{s.noMatches}</p>;
   const outcome = (value: number) =>
@@ -745,10 +755,16 @@ function Matches({
           key={match.id}
           className="flex flex-wrap items-center gap-x-4 gap-y-1 rounded-2xl border border-border bg-surface p-3"
         >
-          <span className="font-semibold">{s.games[match.gameId] ?? match.gameId}</span>
+          {matchHref ? (
+            <a href={matchHref(match.id)} className={linkClass}>
+              {s.games[match.gameId] ?? match.gameId}
+            </a>
+          ) : (
+            <span className="font-semibold">{s.games[match.gameId] ?? match.gameId}</span>
+          )}
           {match.others.length > 0 && (
             <>
-              <span>{outcome(match.outcome)}</span>
+              {match.outcome !== null && <span>{outcome(match.outcome)}</span>}
               <span className="min-w-0 text-sm break-words text-muted">
                 {fill(s.against, {
                   names: match.others.map((n) => (n === "" ? s.noProfile : n)).join(", "),
@@ -758,6 +774,7 @@ function Matches({
           )}
           {match.rated && <Badge>{s.rated}</Badge>}
           {match.status === "review" && <Badge variant="accent">{s.review}</Badge>}
+          {match.status === "rejected" && <Badge variant="accent">{s.rejected}</Badge>}
           <time dateTime={match.endedAt} className="ms-auto text-sm text-muted tabular-nums">
             {dateTime(match.endedAt, bcp47)}
           </time>

@@ -76,6 +76,12 @@ export function auditStrings(t: AppT) {
       "chat.slow_mode": t("admin:audit.actions.slowMode"),
       "game.update": t("admin:audit.actions.gameUpdate"),
       "room.close": t("admin:audit.actions.roomClose"),
+      "match.accept": t("admin:audit.actions.matchAccept"),
+      "match.reject": t("admin:audit.actions.matchReject"),
+      "match.annul": t("admin:audit.actions.matchAnnul"),
+      "leaderboard.remove": t("admin:audit.actions.boardRemove"),
+      "leaderboard.reset_player": t("admin:audit.actions.boardResetPlayer"),
+      "rating.reset": t("admin:audit.actions.ratingReset"),
     } as Record<string, string>,
     /** What an entry can be about (`target_type`). */
     targets: {
@@ -87,6 +93,7 @@ export function auditStrings(t: AppT) {
       chat_room: t("admin:audit.targets.chatRoom"),
       game: t("admin:audit.targets.game"),
       room: t("admin:audit.targets.room"),
+      match: t("admin:audit.targets.match"),
     } as Record<string, string>,
   };
 }
@@ -199,6 +206,7 @@ export function playersStrings(t: AppT, locale: Locale) {
     against: t("admin:players.against", { names: "{names}" }),
     rated: t("admin:players.rated"),
     review: t("admin:players.review"),
+    rejected: t("admin:integrity.statuses.rejected"),
     noProfile: t("admin:audit.noProfile"),
     staffRoles: { admin: t("admin:role.admin"), moderator: t("admin:role.moderator") } as Record<
       string,
@@ -445,6 +453,89 @@ export function gamesStrings(t: AppT) {
 
 export type GamesStrings = ReturnType<typeof gamesStrings>;
 
+export function integrityStrings(t: AppT) {
+  return {
+    reviewTitle: t("admin:integrity.reviewTitle"),
+    reviewBody: t("admin:integrity.reviewBody"),
+    reviewEmpty: t("admin:integrity.reviewEmpty"),
+    matchTitle: t("admin:integrity.matchTitle"),
+    matchBody: t("admin:integrity.matchBody"),
+    matchId: t("admin:integrity.matchId"),
+    matchIdHint: t("admin:integrity.matchIdHint"),
+    find: t("admin:integrity.find"),
+    matchNotFound: t("admin:integrity.matchNotFound"),
+    boardsTitle: t("admin:integrity.boardsTitle"),
+    boardsBody: t("admin:integrity.boardsBody"),
+    board: t("admin:integrity.board"),
+    chooseBoard: t("admin:integrity.chooseBoard"),
+    period: t("admin:integrity.period"),
+    allTime: t("admin:integrity.allTime"),
+    thisWeek: t("admin:integrity.thisWeek"),
+    boardEmpty: t("admin:integrity.boardEmpty"),
+    notShown: t("admin:integrity.notShown"),
+    removeEntryBody: t("admin:integrity.removeEntryBody"),
+    remove: t("admin:integrity.remove"),
+    xpBoard: t("admin:integrity.xpBoard"),
+    playerTitle: t("admin:integrity.playerTitle"),
+    playerBody: t("admin:integrity.playerBody"),
+    player: t("admin:integrity.player"),
+    playerHint: t("admin:integrity.playerHint"),
+    playerNotFound: t("admin:integrity.playerNotFound"),
+    ratings: t("admin:integrity.ratings"),
+    noRatings: t("admin:integrity.noRatings"),
+    resetRatingBody: t("admin:integrity.resetRatingBody"),
+    reset: t("admin:integrity.reset"),
+    places: t("admin:integrity.places"),
+    noPlaces: t("admin:integrity.noPlaces"),
+    resetBoards: t("admin:integrity.resetBoards"),
+    resetBoardsBody: t("admin:integrity.resetBoardsBody"),
+    assisted: t("admin:integrity.assisted"),
+    accept: t("admin:integrity.accept"),
+    acceptBody: t("admin:integrity.acceptBody"),
+    reject: t("admin:integrity.reject"),
+    rejectBody: t("admin:integrity.rejectBody"),
+    annul: t("admin:integrity.annul"),
+    annulBody: t("admin:integrity.annulBody"),
+    annulRated: t("admin:integrity.annulRated"),
+    removeEntryLabel: t("admin:integrity.removeEntryLabel", { name: "{name}" }),
+    removeEntryTitle: t("admin:integrity.removeEntryTitle", { name: "{name}" }),
+    ratingValue: t("admin:integrity.ratingValue", {
+      rating: "{rating}",
+      rd: "{rd}",
+      games: "{games}",
+    }),
+    resetRatingLabel: t("admin:integrity.resetRatingLabel", { rating: "{rating}" }),
+    resetRatingTitle: t("admin:integrity.resetRatingTitle", { name: "{name}", rating: "{rating}" }),
+    resetBoardsLabel: t("admin:integrity.resetBoardsLabel", { game: "{game}" }),
+    resetBoardsTitle: t("admin:integrity.resetBoardsTitle", { name: "{name}", game: "{game}" }),
+    reason: t("admin:integrity.reason", { reason: "{reason}" }),
+    score: t("admin:integrity.score", { score: "{score}" }),
+    time: t("admin:integrity.time", { time: "{time}" }),
+    acceptTitle: t("admin:integrity.acceptTitle", { game: "{game}" }),
+    rejectTitle: t("admin:integrity.rejectTitle", { game: "{game}" }),
+    annulTitle: t("admin:integrity.annulTitle", { game: "{game}" }),
+    show: t("admin:reports.apply"),
+    statuses: {
+      counted: t("admin:integrity.statuses.counted"),
+      review: t("admin:integrity.statuses.review"),
+      rejected: t("admin:integrity.statuses.rejected"),
+    } as Record<string, string>,
+    modes: {
+      solo: t("admin:integrity.modes.solo"),
+      "solo-bots": t("admin:integrity.modes.soloBots"),
+      hotseat: t("admin:integrity.modes.hotseat"),
+      race: t("admin:integrity.modes.race"),
+      online: t("admin:integrity.modes.online"),
+      daily: t("admin:integrity.modes.daily"),
+    } as Record<string, string>,
+    done: t("admin:reports.done"),
+    loading: t("admin:loading"),
+    failed: t("admin:failed"),
+  };
+}
+
+export type IntegrityStrings = ReturnType<typeof integrityStrings>;
+
 /** What the page's section shows, with the strings it needs (built on the server). */
 export function adminView(section: AdminSectionId, t: AppT, locale: Locale): AdminView {
   if (section === "audit") return { section, strings: auditStrings(t) };
@@ -455,5 +546,7 @@ export function adminView(section: AdminSectionId, t: AppT, locale: Locale): Adm
     return { section, strings: chatStrings(t), players: playersStrings(t, locale) };
   if (section === "games")
     return { section, strings: gamesStrings(t), players: playersStrings(t, locale) };
+  if (section === "integrity")
+    return { section, strings: integrityStrings(t), players: playersStrings(t, locale) };
   return { section };
 }

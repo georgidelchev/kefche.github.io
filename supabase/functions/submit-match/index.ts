@@ -180,7 +180,8 @@ async function stored(admin: SupabaseClient, matchId: string): Promise<Settled> 
   const rows = players.data;
   return {
     matchId,
-    status: match.data.status === "review" ? "review" : "counted",
+    // A result an admin rejected or annulled (Phase 10) counts as little as one in review.
+    status: match.data.status === "counted" ? "counted" : "review",
     reason: match.data.reason,
     outcome: [Number(rows[0]?.outcome ?? 0), Number(rows[1]?.outcome ?? 0)],
     ratings: rows.map((r) => ({ before: r.rating_before ?? 1500, after: r.rating_after })),
@@ -270,7 +271,7 @@ async function storedAnswer(
   const own = data.match_participants.find((p) => p.user_id === user.id);
   return {
     matchId,
-    status: data.status,
+    status: data.status === "counted" ? "counted" : "review",
     reason: data.reason,
     score: own?.score ?? null,
     timeMs: own?.time_ms ?? null,

@@ -89,7 +89,8 @@ const Match = z.object({
   rated: z.boolean(),
   status: z.string(),
   reason: z.string(),
-  outcome: z.number(),
+  /** Null for a game played alone. */
+  outcome: z.nullable(z.number()),
   endedAt: z.string(),
   /** The other players' nicknames ("" for one without). */
   others: z.array(z.string()),

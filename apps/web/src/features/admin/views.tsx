@@ -11,6 +11,7 @@ import type {
   AuditStrings,
   ChatStrings,
   GamesStrings,
+  IntegrityStrings,
   PlayersStrings,
   ReportsStrings,
 } from "./strings";
@@ -29,6 +30,8 @@ export interface AdminPaths {
   chat: string;
   /** The Games section's page; its room filter goes in the query string. */
   games: string;
+  /** The integrity section's page; a match, board or player goes in the query string. */
+  integrity: string;
   /** The arena server, or null when this build has none. */
   arena: string | null;
 }
@@ -50,7 +53,13 @@ export type AdminView =
   | { section: "reports"; strings: ReportsStrings; players: PlayersStrings }
   | { section: "chat"; strings: ChatStrings; players: PlayersStrings }
   | { section: "games"; strings: GamesStrings; players: PlayersStrings }
-  | { section: Exclude<AdminSectionId, "audit" | "users" | "reports" | "chat" | "games"> };
+  | { section: "integrity"; strings: IntegrityStrings; players: PlayersStrings }
+  | {
+      section: Exclude<
+        AdminSectionId,
+        "audit" | "users" | "reports" | "chat" | "games" | "integrity"
+      >;
+    };
 
 const AuditLog = lazy(() => import("./views/AuditLog").then((m) => ({ default: m.AuditLog })));
 const Players = lazy(() => import("./views/Players").then((m) => ({ default: m.Players })));
@@ -64,6 +73,8 @@ const GamesAdmin = lazy(() =>
   import("./views/GamesAdmin").then((m) => ({ default: m.GamesAdmin })),
 );
 
+const Integrity = lazy(() => import("./views/Integrity").then((m) => ({ default: m.Integrity })));
+
 /** The section's view, or null when it isn't built yet. */
 export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
   if (view.section === "audit") return <AuditLog {...props} strings={view.strings} />;
@@ -74,5 +85,7 @@ export function renderView(view: AdminView, props: AdminViewProps): ReactNode {
     return <ChatTools {...props} strings={view.strings} players={view.players} />;
   if (view.section === "games")
     return <GamesAdmin {...props} strings={view.strings} players={view.players} />;
+  if (view.section === "integrity")
+    return <Integrity {...props} strings={view.strings} players={view.players} />;
   return null;
 }

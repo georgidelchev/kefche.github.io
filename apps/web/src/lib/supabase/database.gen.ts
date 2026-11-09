@@ -888,11 +888,27 @@ isOneToOne: false
 "set_user_role":
 { Args: { "p_granted": boolean,"p_role": Database["public"]['Enums']["app_role"],"p_user_id": string }; Returns: undefined
                            },
+"staff_annul_match":
+{ Args: { "p_match": string }; Returns: undefined
+                           },
+"staff_board":
+{ Args: { "p_board": string,"p_period"?: string,"p_user"?: string }; Returns: {
+              "achieved_at": string,"match_id": string,"nickname": string,"shown": boolean,"user_id": string,"value": number
+            }[]
+                           },
+"staff_boards":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "game_id": string,"id": string,"lower_is_better": boolean
+            }[]
+                           },
 "staff_cancel_deletion":
 { Args: { "p_user": string }; Returns: undefined
                            },
 "staff_close_room":
 { Args: { "p_room": string }; Returns: undefined
+                           },
+"staff_decide_match":
+{ Args: { "p_accept": boolean,"p_match": string }; Returns: undefined
                            },
 "staff_delete_account":
 { Args: { "p_user": string }; Returns: string
@@ -912,6 +928,9 @@ isOneToOne: false
               "code": string,"created_at": string,"game_id": string,"host_id": string,"host_nickname": string,"id": string,"last_active_at": string,"players": number,"rated": boolean,"seats": number,"spectators": number,"status": string,"visibility": string
             }[]
                            },
+"staff_match":
+{ Args: { "p_match": string }; Returns: Json
+                           },
 "staff_muted_players":
 { Args: Record<PropertyKey, never>; Returns: {
               "created_by": string,"created_by_nickname": string,"ends_at": string,"nickname": string,"note": string,"reason": string,"sanction_id": string,"starts_at": string,"user_id": string
@@ -919,6 +938,14 @@ isOneToOne: false
                            },
 "staff_player":
 { Args: { "p_user": string }; Returns: Json
+                           },
+"staff_ratings":
+{ Args: { "p_user": string }; Returns: {
+              "game_id": string,"games": number,"pool": string,"rating": number,"rd": number
+            }[]
+                           },
+"staff_remove_board_entry":
+{ Args: { "p_board": string,"p_period": string,"p_user": string }; Returns: undefined
                            },
 "staff_report_context":
 { Args: { "p_target": string,"p_type": string }; Returns: Json
@@ -928,8 +955,17 @@ isOneToOne: false
               "first_at": string,"held": boolean,"last_at": string,"reports": Json,"snapshot": Json,"target_id": string,"target_nickname": string,"target_type": string,"target_user_id": string
             }[]
                            },
+"staff_reset_player_boards":
+{ Args: { "p_game": string,"p_user": string }; Returns: number
+                           },
 "staff_reset_profile":
 { Args: { "p_field": string,"p_user": string }; Returns: undefined
+                           },
+"staff_reset_rating":
+{ Args: { "p_game": string,"p_pool": string,"p_user": string }; Returns: undefined
+                           },
+"staff_review_matches":
+{ Args: { "p_game"?: string }; Returns: Json
                            },
 "staff_search_messages":
 { Args: { "p_before"?: number,"p_query"?: string,"p_room"?: unknown,"p_scope": string,"p_sender"?: string }; Returns: {
