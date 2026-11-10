@@ -1,0 +1,85 @@
+{
+  "name": "数织",
+  "tagline": "根据数字提示涂满格子，揭开隐藏的图画。",
+  "description": "在浏览器中免费玩数织：依照行列数字提示涂格子，揭开图画，5 × 5 到 15 × 15，都能靠逻辑解出。",
+  "about": [
+    "A nonogram is a picture puzzle solved by logic. Each row and each column has a clue: the lengths of the runs of filled cells in that line, in order. A clue of 3 1 means a run of three filled cells, then at least one empty cell, then a single filled cell. Work out which cells are filled, and a picture appears.",
+    "Every puzzle here is generated for you and checked so that it has exactly one answer, reachable by logic alone, one line at a time. You never need to guess. The sizes go from a quick 5 × 5 to a long 15 × 15.",
+    "Mark cells you know are empty with a cross; crosses are only notes and don't count. Play alone to beat your best time, or race friends online on the same puzzle."
+  ],
+  "howToPlay": [
+    "Choose a size. The clock starts with the puzzle.",
+    "Read the clues: the numbers beside each row and above each column are the runs of filled cells in that line, in order, separated by at least one empty cell.",
+    "Fill the cells that must be filled. Switch to Cross to mark cells that must be empty.",
+    "A clue dims when its line matches it.",
+    "The puzzle is solved when the filled cells match the picture exactly."
+  ],
+  "controls": [
+    "Phones and tablets: tap a cell to fill it, or switch to Cross first; tap again to clear.",
+    "Mouse: click to fill, or switch to Cross.",
+    "Keyboard: move with the arrow keys, press Enter or Space to fill, and X to cross.",
+    "Pause or start a new puzzle from the bar above the game."
+  ],
+  "tips": [
+    "Start with big runs: in a line of 10, a run of 7 must cover the middle four cells wherever it sits.",
+    "A clue of 0 means the whole line is empty: cross it out.",
+    "When the runs plus their gaps fill a line exactly, the whole line is known.",
+    "Cross cells you've ruled out. Crosses at the edges often fix where a run can start.",
+    "Switch between rows and columns: each new cell gives the crossing line more to work with."
+  ],
+  "faq": [
+    {
+      "question": "Is Nonogram free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Do I ever have to guess?",
+      "answer": "No. Every puzzle is checked to be solvable one line at a time, by logic alone."
+    },
+    {
+      "question": "Do crosses count?",
+      "answer": "No. Crosses are notes for cells you know are empty. Only the filled cells have to match the picture."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same puzzle at the same moment, and the first to finish the picture wins."
+    }
+  ],
+  "ui": {
+    "best": "最佳：{time}",
+    "time": "时间",
+    "moves": "步数",
+    "newBest": "新的最佳时间！",
+    "changeSize": "更换大小",
+    "boardLabel": "数织",
+    "chooseSize": "选择大小",
+    "sizeLabel": "{size} × {size}",
+    "fill": "涂色",
+    "cross": "打叉",
+    "colClue": "第 {col} 列：{clue}",
+    "rowClue": "第 {row} 行：{clue}",
+    "cellEmpty": "第 {row} 行第 {col} 列，空",
+    "cellFilled": "第 {row} 行第 {col} 列，已涂",
+    "cellCrossed": "第 {row} 行第 {col} 列，打叉",
+    "solved": "图画完成！",
+    "size5": "5 × 5",
+    "size10": "10 × 10",
+    "size15": "15 × 15",
+    "size": "大小"
+  },
+  "achievements": {
+    "solver": {
+      "name": "解谜高手",
+      "description": "解开 {count, number} 道谜题"
+    },
+    "speed": {
+      "name": "快速解题",
+      "description": "在 {time} 内解开一道谜题"
+    }
+  },
+  "leaderboards": {
+    "best-time-5": "最佳用时・简单 · 5 × 5",
+    "best-time-10": "最佳用时・简单 · 10 × 10",
+    "best-time-15": "最佳用时・简单 · 15 × 15"
+  }
+}

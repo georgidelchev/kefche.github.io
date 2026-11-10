@@ -2410,6 +2410,10 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Play:** tap to reveal, a long press, right-click, F or Flag mode to flag, a tap on a satisfied number to chord.
   - Checked in Chrome: 38/38, covering the levels, a safe first reveal, flags by right-click, Flag mode, F and a long press, Expert's clearing, 360, 768 and 1280 px, both themes, Arabic, and axe.
   - **Also fixed on every board:** grid tracks are `minmax(0, 1fr)`, so a row with text can't grow taller than the rest (Minesweeper's numbered rows did). Checkers, Go and Gomoku rechecked: 40/40, 43/43, 37/37.
+- [x] **Step 14, Nonogram:**
+  - **Puzzles:** 5 × 5, 10 × 10 (the default) or 15 × 15: random blobs from the seed, kept only when a line solver (a dynamic program per row or column, repeated) finishes them, so each has one solution reachable by logic. Generation takes about a millisecond.
+  - **Play:** clues as row and column headers, Fill and Cross modes (Enter and X on the keyboard), a clue struck through once its line matches, guide lines every five cells.
+  - Checked in Chrome: 36/36, covering the sizes, the clues, fill, clear and cross, keyboard, solving a 5 × 5 from its clues to the finish, 360, 768 and 1280 px, both themes, Arabic, and axe (a finished clue was too faint; it's struck through now instead).
 
 ## Known issues
 
@@ -2430,7 +2434,7 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
 - **Game page prose is English in 9 locales (Phase 15):** each game's name, tagline, meta description and in-game UI strings are translated in all 11 locales. The long page sections (about, how to play, controls, tips, FAQ) are written in English and Bulgarian; the other 9 locales carry the English text until the Phase 15 translation pass (SPEC §15, §22 DoD rule).
 - **Translations need native review (Phase 15):** all strings in the 9 locales other than en/bg are my translations and haven't been reviewed by native speakers. Bulgarian should be reviewed by the owner.
 - **Arenas: a real phone and the real limit (Phase 9):** step 12 ran on Chrome's phone emulation and simulated the free plan's daily limit locally. Once Worm Rush is live, play it on a real mid-range phone, and reaching the limit on production waits for the owner's word (it stops online arenas until 00:00 UTC).
-- **Small cells on phones (Phase 11):** on a 360 px screen, Hex cells are about 19 px, Gomoku's and Five Colors' points 20–22 px, and Shape Claim's 20 × 20 board 16 px, under the 24 px target size. A touch screen aims first and places on a second tap, so a miss can be corrected; a zoomable board would fix it properly.
+- **Small cells on phones (Phase 11):** on a 360 px screen, Hex cells are about 19 px, Gomoku's and Five Colors' points 20–22 px, Shape Claim's 20 × 20 board and Minesweeper's Expert about 16 px, and Nonogram's 15 × 15 about 19 px, under the 24 px target size. A touch screen aims first and places on a second tap, so a miss can be corrected; a zoomable board would fix it properly.
 - **Guest play off and online play (Phase 10):** with the `guest_play` flag off, a signed-out visitor who starts online play gets the room's general error, not a "sign in to play" prompt.
 - **Arenas: input rate and the free plan (Phase 9):** a full arena bills about 26,200 requests an hour, so Workers Free allows about 3.8 full-arena hours a day. Lowering the input cap from 10 to 6 a second, or Workers Paid ($5/month), are the levers (ADR-0038).
 

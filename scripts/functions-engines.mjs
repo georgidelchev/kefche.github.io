@@ -230,6 +230,18 @@ if (process.argv.includes("--fixtures")) {
         };
       },
     },
+    // The picture's cells in a random order, with a cross now and then.
+    nonogram: {
+      config: { size: 5 },
+      next: (state, random) => {
+        const todo = state.solution.flatMap((v, i) => (v === 1 && state.marks[i] !== 1 ? [i] : []));
+        const blanks = state.solution.flatMap((v, i) =>
+          v === 0 && state.marks[i] === 0 ? [i] : [],
+        );
+        if (blanks.length > 0 && random() < 0.2) return { cell: pick(random, blanks), mark: 2 };
+        return { cell: pick(random, todo), mark: 1 };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },

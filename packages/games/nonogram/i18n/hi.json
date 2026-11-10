@@ -1,0 +1,85 @@
+{
+  "name": "नोनोग्राम",
+  "tagline": "अंकों के सुरागों से ग्रिड भरें और छिपी तस्वीर खोलें।",
+  "description": "ब्राउज़र में नोनोग्राम मुफ़्त खेलें: पंक्ति और स्तंभ के सुरागों से खाने भरें, 5 × 5 से 15 × 15 तक, सब तर्क से हल होने वाले।",
+  "about": [
+    "A nonogram is a picture puzzle solved by logic. Each row and each column has a clue: the lengths of the runs of filled cells in that line, in order. A clue of 3 1 means a run of three filled cells, then at least one empty cell, then a single filled cell. Work out which cells are filled, and a picture appears.",
+    "Every puzzle here is generated for you and checked so that it has exactly one answer, reachable by logic alone, one line at a time. You never need to guess. The sizes go from a quick 5 × 5 to a long 15 × 15.",
+    "Mark cells you know are empty with a cross; crosses are only notes and don't count. Play alone to beat your best time, or race friends online on the same puzzle."
+  ],
+  "howToPlay": [
+    "Choose a size. The clock starts with the puzzle.",
+    "Read the clues: the numbers beside each row and above each column are the runs of filled cells in that line, in order, separated by at least one empty cell.",
+    "Fill the cells that must be filled. Switch to Cross to mark cells that must be empty.",
+    "A clue dims when its line matches it.",
+    "The puzzle is solved when the filled cells match the picture exactly."
+  ],
+  "controls": [
+    "Phones and tablets: tap a cell to fill it, or switch to Cross first; tap again to clear.",
+    "Mouse: click to fill, or switch to Cross.",
+    "Keyboard: move with the arrow keys, press Enter or Space to fill, and X to cross.",
+    "Pause or start a new puzzle from the bar above the game."
+  ],
+  "tips": [
+    "Start with big runs: in a line of 10, a run of 7 must cover the middle four cells wherever it sits.",
+    "A clue of 0 means the whole line is empty: cross it out.",
+    "When the runs plus their gaps fill a line exactly, the whole line is known.",
+    "Cross cells you've ruled out. Crosses at the edges often fix where a run can start.",
+    "Switch between rows and columns: each new cell gives the crossing line more to work with."
+  ],
+  "faq": [
+    {
+      "question": "Is Nonogram free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Do I ever have to guess?",
+      "answer": "No. Every puzzle is checked to be solvable one line at a time, by logic alone."
+    },
+    {
+      "question": "Do crosses count?",
+      "answer": "No. Crosses are notes for cells you know are empty. Only the filled cells have to match the picture."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same puzzle at the same moment, and the first to finish the picture wins."
+    }
+  ],
+  "ui": {
+    "best": "सबसे अच्छा: {time}",
+    "time": "समय",
+    "moves": "चालें",
+    "newBest": "नया सबसे अच्छा समय!",
+    "changeSize": "आकार बदलें",
+    "boardLabel": "नोनोग्राम",
+    "chooseSize": "आकार चुनें",
+    "sizeLabel": "{size} × {size}",
+    "fill": "भरें",
+    "cross": "क्रॉस",
+    "colClue": "स्तंभ {col}: {clue}",
+    "rowClue": "पंक्ति {row}: {clue}",
+    "cellEmpty": "पंक्ति {row}, स्तंभ {col}, खाली",
+    "cellFilled": "पंक्ति {row}, स्तंभ {col}, भरा",
+    "cellCrossed": "पंक्ति {row}, स्तंभ {col}, क्रॉस",
+    "solved": "तस्वीर पूरी!",
+    "size5": "5 × 5",
+    "size10": "10 × 10",
+    "size15": "15 × 15",
+    "size": "आकार"
+  },
+  "achievements": {
+    "solver": {
+      "name": "पहेली उस्ताद",
+      "description": "{count, plural, one {# पहेली} other {# पहेलियाँ}} सुलझाएँ"
+    },
+    "speed": {
+      "name": "फुर्तीला",
+      "description": "{time} या उससे कम में एक पहेली सुलझाएँ"
+    }
+  },
+  "leaderboards": {
+    "best-time-5": "सर्वश्रेष्ठ समय · 5 × 5",
+    "best-time-10": "सर्वश्रेष्ठ समय · 10 × 10",
+    "best-time-15": "सर्वश्रेष्ठ समय · 15 × 15"
+  }
+}
