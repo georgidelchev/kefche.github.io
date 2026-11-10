@@ -2360,6 +2360,10 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Touch:** a point on a 15 × 15 board is about 22 px on a phone, so with a touch screen the first tap shows the stone and the second places it; a mouse click or Enter places at once.
   - **Bots:** each scores the points near the stones by the lines they make and break (stones in a row, open ends). All take a win and block one; easy picks loosely among the good points, medium plays the best, hard also weighs the next player's best reply. Hard beat easy 10 of 10.
   - Checked in Chrome: 37/37, covering the rule option, a click and the bot's reply, undo, five in a row on one device, keyboard play, two taps on a touch screen, 360, 768 and 1280 px, both themes, Arabic, and axe. Also fixed: Go's stone icons beside the players' names didn't show.
+- [x] **Step 8, Five Colors** (done after step 5, while the line game was fresh):
+  - **Rules:** Gomoku's line game for 2–5 players (3 by default), each seat in its own colour and shape. **Changed from the plan:** five in a row for two players only, and four in a row from three players on (15 × 15 for three, 17 × 17 for four or five). With five needed and two or more opponents blocking, an open line can be stopped at both ends: in self-play every three-player game was drawn. With four, games end with a winner.
+  - **Bots:** Gomoku's. Easy now misses a block half the time (the checklist asks only medium and hard to always block), in Gomoku too. Hard beat easy 6 of 6 with two players, and 4 or 5 of 6 with three to five.
+  - Checked in Chrome: 36/36, covering three players by default and the board for 2, 3 and 5, both bots replying, a shape per seat, 360, 768 and 1280 px, both themes, Arabic, and axe.
 
 ## Known issues
 

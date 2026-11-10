@@ -198,6 +198,7 @@ if (process.argv.includes("--fixtures")) {
     checkers: { variant: "russian" },
     chess: { takebacks: false },
     "dots-and-boxes": undefined,
+    "five-colors": undefined,
     "four-in-a-row": undefined,
     go: { size: 9 },
     gomoku: { exactFive: false },

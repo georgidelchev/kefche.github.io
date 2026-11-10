@@ -216,6 +216,7 @@ const CSS = `
 .gln-stone[data-aim] { opacity: 0.5; }
 .gln-stone[data-last]::after { content: ""; position: absolute; inset: 34%; border-radius: 50%; border: 2px solid #e69f00; }
 .gln-stone[data-colour="1"][data-last]::after { border-color: #c0392b; }
+.gln-stone[data-seat][data-last]::after { inset: 18%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgb(0 0 0 / 0.45); }
 .gln-stone[data-win] { box-shadow: 0 0 0 3px #c0392b; }
 .gln-hint { margin: 0; font-weight: 600; }
 [data-motion="on"] .gln-stone[data-last] { animation: gln-place 160ms ease-out; }

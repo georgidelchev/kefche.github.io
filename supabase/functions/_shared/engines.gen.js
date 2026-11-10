@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine13, bots2, options) {
-    this.engine = engine13;
+  constructor(engine14, bots2, options) {
+    this.engine = engine14;
     this.bots = bots2;
     this.options = options;
-    this.world = engine13.createWorld(options.config, options.seed);
+    this.world = engine14.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine13.ticksPerSecond / engine13.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine14.ticksPerSecond / engine14.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -479,7 +479,7 @@ function canonicalJson(value) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest13) => manifest13;
+var defineManifest = (manifest14) => manifest14;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -4731,6 +4731,133 @@ var manifest4 = defineManifest({
   tags: ["classic", "pencil-and-paper", "multiplayer", "strategy"]
 });
 
+// packages/games/gomoku/engine/lines.ts
+var EMPTY3 = -1;
+var DIRECTIONS = [
+  [0, 1],
+  [1, 0],
+  [1, 1],
+  [1, -1]
+];
+function runThrough(state, point, seat, dr, dc) {
+  const { board, size } = state;
+  const r0 = Math.floor(point / size);
+  const c0 = point % size;
+  const run = [point];
+  for (const sign of [-1, 1]) {
+    let r = r0 + sign * dr;
+    let c = c0 + sign * dc;
+    while (r >= 0 && r < size && c >= 0 && c < size && board[r * size + c] === seat) {
+      if (sign < 0) run.unshift(r * size + c);
+      else run.push(r * size + c);
+      r += sign * dr;
+      c += sign * dc;
+    }
+  }
+  return run;
+}
+function winningLine(state, point, seat) {
+  for (const [dr, dc] of DIRECTIONS) {
+    const run = runThrough(state, point, seat, dr, dc);
+    if (state.exact ? run.length === state.line : run.length >= state.line) return run;
+  }
+  return null;
+}
+function lineEngine(rulesFor3) {
+  return {
+    initialState(config, seats) {
+      const rules = rulesFor3(config, seats);
+      return {
+        ...rules,
+        seats,
+        board: Array.from({ length: rules.size * rules.size }, () => EMPTY3),
+        turn: 0,
+        moves: 0,
+        last: null,
+        over: false,
+        winner: null,
+        winLine: []
+      };
+    },
+    legalActions(state, seat) {
+      if (state.over || seat !== state.turn) return [];
+      return state.board.flatMap((v, point) => v === EMPTY3 ? [{ point }] : []);
+    },
+    applyAction(state, seat, { point }) {
+      if (state.over || seat !== state.turn || !Number.isInteger(point) || state.board[point] !== EMPTY3) {
+        return state;
+      }
+      const board = state.board.slice();
+      board[point] = seat;
+      const placed = { ...state, board, moves: state.moves + 1, last: point };
+      const won = winningLine(placed, point, seat);
+      if (won) return { ...placed, over: true, winner: seat, winLine: won };
+      if (placed.moves === board.length) return { ...placed, over: true };
+      return { ...placed, turn: (seat + 1) % state.seats };
+    },
+    currentSeats: (state) => state.over ? [] : [state.turn],
+    // Online, an away player's turn passes to the next seat.
+    skipTurn(state, seat) {
+      if (state.over || seat !== state.turn) return state;
+      return { ...state, turn: (seat + 1) % state.seats, last: null };
+    },
+    result(state) {
+      if (!state.over) return null;
+      const outcome = Array.from(
+        { length: state.seats },
+        (_, s) => state.winner === null ? 1 / state.seats : s === state.winner ? 1 : 0
+      );
+      return { completed: true, outcome: state.winner === null ? outcome.map(() => 0.5) : outcome };
+    }
+  };
+}
+
+// packages/games/gomoku/engine/index.ts
+var configFrom2 = (raw) => ({
+  exactFive: raw?.exactFive === true
+});
+var rulesFor = (raw) => ({
+  size: 15,
+  line: 5,
+  exact: configFrom2(raw).exactFive
+});
+var engine5 = lineEngine(rulesFor);
+
+// packages/games/five-colors/engine/index.ts
+var rulesFor2 = (_config, seats) => seats === 2 ? { size: 15, line: 5, exact: false } : { size: seats === 3 ? 15 : 17, line: 4, exact: false };
+var engine6 = lineEngine(rulesFor2);
+
+// packages/games/five-colors/manifest.ts
+var manifest5 = defineManifest({
+  id: "five-colors",
+  version: 1,
+  category: "strategy",
+  kind: "turn",
+  players: { min: 2, max: 5, default: 3 },
+  modes: ["solo-bots", "hotseat", "online-private", "online-public", "quick-match"],
+  bots: { supported: true, difficulties: ["easy", "medium", "hard"], canFillSeats: true },
+  timers: [
+    { kind: "none" },
+    { kind: "per-move", seconds: 15, onExpiry: "random-move" },
+    { kind: "per-move", seconds: 30, onExpiry: "random-move" },
+    { kind: "per-move", seconds: 60, onExpiry: "random-move" }
+  ],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard"],
+  renderer: "dom",
+  estimatedMinutes: [5, 15],
+  leaderboards: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] }
+  ],
+  // Every move is a point, so a match replays exactly.
+  scoreValidation: { kind: "replay" },
+  tags: ["multiplayer", "strategy", "party"]
+});
+
 // packages/games/four-in-a-row/engine/index.ts
 var WIN_LENGTH = 4;
 var SIZES2 = {
@@ -4739,7 +4866,7 @@ var SIZES2 = {
   4: [10, 8]
 };
 var sizeFor2 = (seats) => SIZES2[seats] ?? [7, 6];
-var DIRECTIONS = [
+var DIRECTIONS2 = [
   [1, 0],
   [0, 1],
   [1, 1],
@@ -4747,7 +4874,7 @@ var DIRECTIONS = [
 ];
 function lineThrough(state, col, row, seat) {
   const { cols, rows, cells } = state;
-  for (const [dc, dr] of DIRECTIONS) {
+  for (const [dc, dr] of DIRECTIONS2) {
     const line = [col * rows + row];
     for (const sign of [1, -1]) {
       let c = col + dc * sign;
@@ -4763,7 +4890,7 @@ function lineThrough(state, col, row, seat) {
   return null;
 }
 var isOver2 = (state) => state.winner !== null || state.moves === state.cols * state.rows;
-var engine5 = {
+var engine7 = {
   initialState(_config, seats) {
     const [cols, rows] = sizeFor2(seats);
     return {
@@ -4819,7 +4946,7 @@ var engine5 = {
 };
 
 // packages/games/four-in-a-row/manifest.ts
-var manifest5 = defineManifest({
+var manifest6 = defineManifest({
   id: "four-in-a-row",
   version: 1,
   category: "board",
@@ -4850,7 +4977,7 @@ var manifest5 = defineManifest({
 });
 
 // packages/games/go/engine/board.ts
-var EMPTY3 = -1;
+var EMPTY4 = -1;
 var FastBoard = class _FastBoard {
   size;
   cells;
@@ -4865,8 +4992,8 @@ var FastBoard = class _FastBoard {
   constructor(size, cells) {
     this.size = size;
     const n = size * size;
-    this.cells = new Int8Array(n).fill(EMPTY3);
-    if (cells) for (let i = 0; i < n; i++) this.cells[i] = cells[i] ?? EMPTY3;
+    this.cells = new Int8Array(n).fill(EMPTY4);
+    if (cells) for (let i = 0; i < n; i++) this.cells[i] = cells[i] ?? EMPTY4;
     this.neighbours = neighbourTable(size);
     this.mark = new Int32Array(n);
     this.stack = new Int16Array(n);
@@ -4892,7 +5019,7 @@ var FastBoard = class _FastBoard {
       const p = this.stack[--top] ?? 0;
       for (const q of this.around(p)) {
         const c = this.cells[q];
-        if (c === EMPTY3) return true;
+        if (c === EMPTY4) return true;
         if (c === colour && this.mark[q] !== id) {
           this.mark[q] = id;
           this.stack[top++] = q;
@@ -4907,13 +5034,13 @@ var FastBoard = class _FastBoard {
     let top = 0;
     let removed = 0;
     this.stack[top++] = point;
-    this.cells[point] = EMPTY3;
+    this.cells[point] = EMPTY4;
     while (top > 0) {
       const p = this.stack[--top] ?? 0;
       removed++;
       for (const q of this.around(p)) {
         if (this.cells[q] === colour) {
-          this.cells[q] = EMPTY3;
+          this.cells[q] = EMPTY4;
           this.stack[top++] = q;
         }
       }
@@ -4926,7 +5053,7 @@ var FastBoard = class _FastBoard {
    * when the move is illegal.
    */
   play(point, colour) {
-    if (this.cells[point] !== EMPTY3 || point === this.ko) return false;
+    if (this.cells[point] !== EMPTY4 || point === this.ko) return false;
     const other2 = 1 - colour;
     this.cells[point] = colour;
     let taken = 0;
@@ -4939,7 +5066,7 @@ var FastBoard = class _FastBoard {
       }
     }
     if (taken === 0 && !this.hasLiberty(point)) {
-      this.cells[point] = EMPTY3;
+      this.cells[point] = EMPTY4;
       return false;
     }
     this.captures[colour] = (this.captures[colour] ?? 0) + taken;
@@ -4950,7 +5077,7 @@ var FastBoard = class _FastBoard {
       for (const q of this.around(point)) {
         const c = this.cells[q];
         if (c === colour) alone = false;
-        else if (c === EMPTY3) liberties++;
+        else if (c === EMPTY4) liberties++;
       }
       if (alone && liberties === 1) this.ko = takenAt;
     }
@@ -4958,8 +5085,8 @@ var FastBoard = class _FastBoard {
   }
   /** Whether playing `point` is legal for `colour`, without playing it. */
   isLegal(point, colour) {
-    if (this.cells[point] !== EMPTY3 || point === this.ko) return false;
-    for (const q of this.around(point)) if (this.cells[q] === EMPTY3) return true;
+    if (this.cells[point] !== EMPTY4 || point === this.ko) return false;
+    for (const q of this.around(point)) if (this.cells[q] === EMPTY4) return true;
     const copy = this.clone();
     return copy.play(point, colour);
   }
@@ -4968,7 +5095,7 @@ var FastBoard = class _FastBoard {
    * and the diagonals not the other colour's (one is allowed in the middle).
    */
   isEye(point, colour) {
-    if (this.cells[point] !== EMPTY3) return false;
+    if (this.cells[point] !== EMPTY4) return false;
     for (const q of this.around(point)) if (this.cells[q] !== colour) return false;
     const size = this.size;
     const r = Math.floor(point / size);
@@ -4998,7 +5125,7 @@ var FastBoard = class _FastBoard {
     let turn = colour;
     for (let move2 = 0; move2 < maxMoves && passes < 2; move2++) {
       let count2 = 0;
-      for (let p = 0; p < n; p++) if (this.cells[p] === EMPTY3) order[count2++] = p;
+      for (let p = 0; p < n; p++) if (this.cells[p] === EMPTY4) order[count2++] = p;
       let played = false;
       while (count2 > 0) {
         const i = Math.floor(random() * count2);
@@ -5027,8 +5154,8 @@ var FastBoard = class _FastBoard {
       }
       let owner = -2;
       for (const q of this.around(p)) {
-        const d = this.cells[q] ?? EMPTY3;
-        if (d === EMPTY3) continue;
+        const d = this.cells[q] ?? EMPTY4;
+        if (d === EMPTY4) continue;
         if (owner === -2) owner = d;
         else if (owner !== d) owner = -1;
       }
@@ -5066,7 +5193,7 @@ function groups(cells, size) {
   const out = [];
   for (let p = 0; p < size * size; p++) {
     const colour = cells[p];
-    if (colour === EMPTY3 || colour === void 0 || seen[p]) continue;
+    if (colour === EMPTY4 || colour === void 0 || seen[p]) continue;
     const group = [];
     const stack = [p];
     seen[p] = 1;
@@ -5087,12 +5214,12 @@ function groups(cells, size) {
 function territory(cells, size, dead) {
   const n = size * size;
   const live = new Int8Array(n);
-  for (let p = 0; p < n; p++) live[p] = dead.has(p) ? EMPTY3 : cells[p] ?? EMPTY3;
+  for (let p = 0; p < n; p++) live[p] = dead.has(p) ? EMPTY4 : cells[p] ?? EMPTY4;
   const owner = new Int8Array(n).fill(-1);
   const seen = new Uint8Array(n);
   const table = neighbourTable(size);
   for (let p = 0; p < n; p++) {
-    if (live[p] !== EMPTY3) {
+    if (live[p] !== EMPTY4) {
       owner[p] = live[p] ?? -1;
       continue;
     }
@@ -5105,8 +5232,8 @@ function territory(cells, size, dead) {
       const q = stack.pop() ?? 0;
       region.push(q);
       for (const r of table[q] ?? []) {
-        const c = live[r] ?? EMPTY3;
-        if (c === EMPTY3) {
+        const c = live[r] ?? EMPTY4;
+        if (c === EMPTY4) {
           if (!seen[r]) {
             seen[r] = 1;
             stack.push(r);
@@ -5124,7 +5251,7 @@ function territory(cells, size, dead) {
 // packages/games/go/engine/index.ts
 var SIZES3 = [9, 13];
 var KOMI = 6.5;
-function configFrom2(raw) {
+function configFrom3(raw) {
   const size = raw?.size;
   return { size: SIZES3.find((s) => s === size) ?? 9 };
 }
@@ -5180,7 +5307,7 @@ function scoreOf(state, dead) {
   const area = [0, 0];
   for (let p = 0; p < owner.length; p++) {
     const o = owner[p];
-    if (state.board[p] === EMPTY3 || deadSet.has(p)) {
+    if (state.board[p] === EMPTY4 || deadSet.has(p)) {
       if (o === 0 || o === 1) area[o]++;
     }
   }
@@ -5197,13 +5324,13 @@ function scoreOf(state, dead) {
   };
 }
 var groupAt = (state, point) => groups(state.board, state.size).find((g) => g.includes(point)) ?? [];
-var engine6 = {
+var engine8 = {
   initialState(config, _seats, seed) {
-    const { size } = configFrom2(config);
+    const { size } = configFrom3(config);
     return {
       size,
       seed,
-      board: Array.from({ length: size * size }, () => EMPTY3),
+      board: Array.from({ length: size * size }, () => EMPTY4),
       turn: 0,
       moves: 0,
       ko: -1,
@@ -5220,7 +5347,7 @@ var engine6 = {
   legalActions(state, seat) {
     if (state.phase === "over" || seat !== state.turn) return [];
     if (state.phase === "scoring") {
-      const stones = state.board.flatMap((v, point) => v === EMPTY3 ? [] : [point]);
+      const stones = state.board.flatMap((v, point) => v === EMPTY4 ? [] : [point]);
       return [
         { type: "accept" },
         { type: "resume" },
@@ -5258,7 +5385,7 @@ var engine6 = {
         };
       }
       if (action.type === "toggle" && Number.isInteger(action.point)) {
-        if (state.board[action.point] === EMPTY3 || state.board[action.point] === void 0) {
+        if (state.board[action.point] === EMPTY4 || state.board[action.point] === void 0) {
           return state;
         }
         const group = groupAt(state, action.point);
@@ -5309,7 +5436,7 @@ var engine6 = {
   // Online, an away player passes (or, while scoring, accepts the count).
   skipTurn(state, seat) {
     if (state.phase === "over" || seat !== state.turn) return state;
-    return engine6.applyAction(state, seat, { type: state.phase === "scoring" ? "accept" : "pass" });
+    return engine8.applyAction(state, seat, { type: state.phase === "scoring" ? "accept" : "pass" });
   },
   result(state) {
     if (state.phase !== "over") return null;
@@ -5322,7 +5449,7 @@ var engine6 = {
 };
 
 // packages/games/go/manifest.ts
-var manifest6 = defineManifest({
+var manifest7 = defineManifest({
   id: "go",
   version: 1,
   category: "board",
@@ -5370,100 +5497,8 @@ var manifest6 = defineManifest({
   tags: ["classic", "two-player", "strategy"]
 });
 
-// packages/games/gomoku/engine/lines.ts
-var EMPTY4 = -1;
-var DIRECTIONS2 = [
-  [0, 1],
-  [1, 0],
-  [1, 1],
-  [1, -1]
-];
-function runThrough(state, point, seat, dr, dc) {
-  const { board, size } = state;
-  const r0 = Math.floor(point / size);
-  const c0 = point % size;
-  const run = [point];
-  for (const sign of [-1, 1]) {
-    let r = r0 + sign * dr;
-    let c = c0 + sign * dc;
-    while (r >= 0 && r < size && c >= 0 && c < size && board[r * size + c] === seat) {
-      if (sign < 0) run.unshift(r * size + c);
-      else run.push(r * size + c);
-      r += sign * dr;
-      c += sign * dc;
-    }
-  }
-  return run;
-}
-function winningLine(state, point, seat) {
-  for (const [dr, dc] of DIRECTIONS2) {
-    const run = runThrough(state, point, seat, dr, dc);
-    if (state.exact ? run.length === state.line : run.length >= state.line) return run;
-  }
-  return null;
-}
-function lineEngine(rulesFor2) {
-  return {
-    initialState(config, seats) {
-      const rules = rulesFor2(config, seats);
-      return {
-        ...rules,
-        seats,
-        board: Array.from({ length: rules.size * rules.size }, () => EMPTY4),
-        turn: 0,
-        moves: 0,
-        last: null,
-        over: false,
-        winner: null,
-        winLine: []
-      };
-    },
-    legalActions(state, seat) {
-      if (state.over || seat !== state.turn) return [];
-      return state.board.flatMap((v, point) => v === EMPTY4 ? [{ point }] : []);
-    },
-    applyAction(state, seat, { point }) {
-      if (state.over || seat !== state.turn || !Number.isInteger(point) || state.board[point] !== EMPTY4) {
-        return state;
-      }
-      const board = state.board.slice();
-      board[point] = seat;
-      const placed = { ...state, board, moves: state.moves + 1, last: point };
-      const won = winningLine(placed, point, seat);
-      if (won) return { ...placed, over: true, winner: seat, winLine: won };
-      if (placed.moves === board.length) return { ...placed, over: true };
-      return { ...placed, turn: (seat + 1) % state.seats };
-    },
-    currentSeats: (state) => state.over ? [] : [state.turn],
-    // Online, an away player's turn passes to the next seat.
-    skipTurn(state, seat) {
-      if (state.over || seat !== state.turn) return state;
-      return { ...state, turn: (seat + 1) % state.seats, last: null };
-    },
-    result(state) {
-      if (!state.over) return null;
-      const outcome = Array.from(
-        { length: state.seats },
-        (_, s) => state.winner === null ? 1 / state.seats : s === state.winner ? 1 : 0
-      );
-      return { completed: true, outcome: state.winner === null ? outcome.map(() => 0.5) : outcome };
-    }
-  };
-}
-
-// packages/games/gomoku/engine/index.ts
-var configFrom3 = (raw) => ({
-  exactFive: raw?.exactFive === true
-});
-var rulesFor = (raw) => ({
-  size: 15,
-  line: 5,
-  exact: configFrom3(raw).exactFive
-});
-var engine7 = lineEngine(rulesFor);
-
 // packages/games/gomoku/manifest.ts
-var manifest7 = defineManifest({
+var manifest8 = defineManifest({
   id: "gomoku",
   version: 1,
   category: "board",
@@ -5602,7 +5637,7 @@ function movesFor2(state, seat) {
   return out;
 }
 var key = (state) => `${String(state.turn)}${state.inHand.join("")}:${state.board.map((v) => String(v + 1)).join("")}`;
-var engine8 = {
+var engine9 = {
   initialState(config) {
     const { flying } = configFrom4(config);
     const board = Array.from({ length: POINTS }, () => EMPTY5);
@@ -5674,7 +5709,7 @@ var engine8 = {
 };
 
 // packages/games/nine-mens-morris/manifest.ts
-var manifest8 = defineManifest({
+var manifest9 = defineManifest({
   id: "nine-mens-morris",
   version: 1,
   category: "board",
@@ -5759,7 +5794,7 @@ function movesFor3(board, seat) {
   return moves;
 }
 var countDiscs = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-var engine9 = {
+var engine10 = {
   initialState() {
     const board = Array.from({ length: SIZE2 * SIZE2 }, () => -1);
     board[3 * SIZE2 + 3] = 1;
@@ -5802,7 +5837,7 @@ var engine9 = {
 };
 
 // packages/games/reversi/manifest.ts
-var manifest9 = defineManifest({
+var manifest10 = defineManifest({
   id: "reversi",
   version: 1,
   category: "board",
@@ -5873,7 +5908,7 @@ function neighbor(cell, direction, walls) {
   c = (c + COLS) % COLS;
   return r * COLS + c;
 }
-var engine10 = {
+var engine11 = {
   initialState(config, seed) {
     const middle = Math.floor(ROWS / 2) * COLS + Math.floor(COLS / 2) - 3;
     const snake = [middle, middle - 1, middle - 2];
@@ -5940,7 +5975,7 @@ var engine10 = {
 var stepMs = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
 
 // packages/games/snake/manifest.ts
-var manifest10 = defineManifest({
+var manifest11 = defineManifest({
   id: "snake",
   version: 1,
   category: "arcade",
@@ -6349,7 +6384,7 @@ function commit(state, next, extra = {}) {
     ]
   };
 }
-var engine11 = {
+var engine12 = {
   initialState(config, seed) {
     return fromPuzzle(generate(seed, config.difficulty));
   },
@@ -6406,7 +6441,7 @@ var engine11 = {
 };
 
 // packages/games/sudoku/manifest.ts
-var manifest11 = defineManifest({
+var manifest12 = defineManifest({
   id: "sudoku",
   version: 1,
   category: "logic",
@@ -7100,7 +7135,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine12 = {
+var engine13 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -7117,7 +7152,7 @@ var engine12 = {
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest12 = defineManifest({
+var manifest13 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -7153,14 +7188,15 @@ var GAMES = {
   "checkers": { manifest: manifest2, engine: engine2 },
   "chess": { manifest: manifest3, engine: engine3 },
   "dots-and-boxes": { manifest: manifest4, engine: engine4 },
-  "four-in-a-row": { manifest: manifest5, engine: engine5 },
-  "go": { manifest: manifest6, engine: engine6 },
-  "gomoku": { manifest: manifest7, engine: engine7 },
-  "nine-mens-morris": { manifest: manifest8, engine: engine8 },
-  "reversi": { manifest: manifest9, engine: engine9 },
-  "snake": { manifest: manifest10, engine: engine10 },
-  "sudoku": { manifest: manifest11, engine: engine11 },
-  "worm-rush": { manifest: manifest12, engine: engine12, bots, host: arenaHost }
+  "five-colors": { manifest: manifest5, engine: engine6 },
+  "four-in-a-row": { manifest: manifest6, engine: engine7 },
+  "go": { manifest: manifest7, engine: engine8 },
+  "gomoku": { manifest: manifest8, engine: engine5 },
+  "nine-mens-morris": { manifest: manifest9, engine: engine9 },
+  "reversi": { manifest: manifest10, engine: engine10 },
+  "snake": { manifest: manifest11, engine: engine11 },
+  "sudoku": { manifest: manifest12, engine: engine12 },
+  "worm-rush": { manifest: manifest13, engine: engine13, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

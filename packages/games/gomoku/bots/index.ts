@@ -111,8 +111,11 @@ function choose(
   now: () => number,
 ): Action {
   const list = ranked(state, seat);
+  const win = list.find((c) => c.attack >= WIN);
+  if (win) return { point: win.point };
+  // Easy misses a block half the time; medium and hard always block.
   const must = forced(list);
-  if (must !== null) return { point: must };
+  if (must !== null && (level !== "easy" || rng.next() < 0.5)) return { point: must };
   const first = list[0];
   if (!first) return { point: state.board.indexOf(EMPTY) };
   if (level === "easy") {

@@ -1,0 +1,75 @@
+{
+  "name": "五色棋",
+  "tagline": "最多五名玩家比拼谁先连成一线。",
+  "description": "在浏览器中免费玩五色棋：两人五子连线，三人及以上四子连线。可与机器人、同一设备多人或在线对战。",
+  "about": [
+    "Five Colors is a line game for two to five players. Everyone has stones of their own colour and shape, and takes turns placing one on an empty point of a large grid. The first to make an unbroken line, across, down or diagonally, wins.",
+    "Two players need five in a row on a 15 × 15 board, as in Gomoku. From three players on, four in a row is enough, because with more than one opponent to block it, a line is much harder to keep open; with four or five players the board grows to 17 × 17. Blocking matters as much as building: if you don't stop a rival's line, the next player might not either.",
+    "You can fill any seat with a bot on one of three levels, play with friends on one device, or play online. A per-move timer keeps games moving when there are several players."
+  ],
+  "howToPlay": [
+    "Choose the number of players and who sits where, then start. The first seat moves first and turns go round in order.",
+    "On your turn, place one stone on any empty point.",
+    "With two players, five stones in an unbroken line win. With three or more players, four in a line win.",
+    "Lines count across, down and diagonally.",
+    "If the board fills up with no winning line, the game is a draw for everyone."
+  ],
+  "controls": [
+    "Phones and tablets: tap a point to see where your stone would go, then tap it again to place it.",
+    "Mouse: click a point to place a stone there.",
+    "Keyboard: move around the board with the arrow keys and press Enter or Space to place a stone.",
+    "Against bots, Undo takes back your last move and the bots' replies."
+  ],
+  "tips": [
+    "Watch every player, not just the one after you. A line can grow while two others play.",
+    "Block an open line one short of winning at once; you can't count on someone else to do it.",
+    "Build where your stones help two lines at once, so one block can't stop both.",
+    "With three or more players, threes are already dangerous: four wins.",
+    "Stay near the action. Stones far from the others rarely become part of a line."
+  ],
+  "faq": [
+    {
+      "question": "Is Five Colors free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How long a line do I need?",
+      "answer": "Five in a row with two players, and four in a row with three or more, since there's more than one opponent to block you."
+    },
+    {
+      "question": "Can bots fill the empty seats?",
+      "answer": "Yes. Any seat can be a bot on easy, medium or hard, alone or mixed with people on one device."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "Every bot takes a win and blocks one it sees. Easy picks loosely among good points, medium plays the strongest point, and hard also weighs the next player's best reply."
+    }
+  ],
+  "ui": {
+    "boardLabel": "五色棋棋盘",
+    "pointEmpty": "{point}，空",
+    "pointStone": "{point}，{name}",
+    "inLine": "在获胜连线中",
+    "black": "黑方",
+    "white": "白方",
+    "goal": "连成 {count} 子获胜",
+    "placed": "{name} 下在 {point}。",
+    "fiveInRow": "{name} 连成一线，获胜。",
+    "tapAgain": "再点一次落在这里。",
+    "undo": "悔棋",
+    "rule": "规则",
+    "fiveOrMore": "五子或更多",
+    "exactlyFive": "恰好五子"
+  },
+  "achievements": {
+    "winner": {
+      "name": "胜利者",
+      "description": "赢得 {count, number} 局"
+    },
+    "streak": {
+      "name": "连胜",
+      "description": "连续赢得 {count, number} 局"
+    }
+  },
+  "leaderboards": {}
+}
