@@ -2634,6 +2634,21 @@ A second kind of Durable Object on the arena Worker that already runs Worm Rush 
 - **Q5: Card design.** Should every card game use one original deck in SVG with large indices for phones, plus a four-colour option in settings (recommended)? Or do you have a design in mind?
 - **Q6: Anything to change** in the proposed games, rules and decisions above?
 
+### Owner answers (2026-11-10)
+
+The owner answered "you decide", so the recommended answers stand:
+
+- **Q1 — Secrets:** a table on the arena Worker holds hands, dice and choices (ADR in step 2).
+- **Q2 — Ratings:** none in this batch.
+- **Q3 — Content:** original English and Bulgarian packs for Who's the Spy and Associations; the games are hidden in other languages until Phase 15.
+- **Q4 — Absent players:** a marked easy stand-in bot after 15 s, handing back on return.
+- **Q5 — Cards:** one original SVG deck with large indices, and a four-colour option.
+- **Q6 — Decisions:** no changes.
+
+### Status
+
+- [x] Plan written; the recommended answers stand (2026-11-10)
+
 ## Known issues
 
 - **A continued Sudoku isn't recorded (Phase 7):** a saved puzzle finished on a later visit has no log from its start, so the server can't replay it, and it counts for nothing beyond the device's own best times. Saving the log with the game would fix it.
