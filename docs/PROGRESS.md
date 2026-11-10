@@ -17,8 +17,9 @@
 | 8     | Social: friends, presence, chat, moderation, notifications | ✅ Done (owner signed off 2026-11-05) |
 | 9     | Real-time arena framework & Worm Rush                      | ✅ Done (owner signed off 2026-11-09) |
 | 10    | Admin panel                                                | ✅ Done (owner signed off 2026-11-10) |
-| 11    | Game batch 1: board, strategy, puzzles                     | 🔎 Built; awaiting owner sign-off     |
-| 12–14 | Game batches 2–4                                           | ⏳ Not started                        |
+| 11    | Game batch 1: board, strategy, puzzles                     | ✅ Done (owner signed off 2026-11-10) |
+| 12    | Game batch 2: cards, dice and secrets                      | 📝 Planned; awaiting owner's answers  |
+| 13–14 | Game batches 3–4                                           | ⏳ Not started                        |
 | 15    | Translation pass & content packs                           | ⏳ Not started                        |
 | 16    | PWA, audio & haptics polish                                | ⏳ Not started                        |
 | 17    | Consent, legal, analytics, monitoring                      | ⏳ Not started                        |
@@ -2444,6 +2445,194 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
     - push the commits;
     - apply 3 migrations to the hosted database, each with a dry run first: `20261110100000` to `20261110100200` (with Phase 10's 10 if they're still waiting: `20261109100000` to `20261109100900`);
     - redeploy `submit-match` (the new engines and rated turn games), and `send-push` and `giphy` if Phase 10's release hasn't happened.
+
+- [x] Owner sign-off (2026-11-10, "continue"; the release still waits for the owner's word)
+
+## Phase 12 — Game batch 2: cards, dice and secrets
+
+**Goal (SPEC §10.6, §20, §22):** 22 games whose fairness depends on what players can't see: 10 card games, 5 dice and secrets games, and 7 games of hidden simultaneous choices. Memory Match gets its online turns (TODO #5). The catalog goes from 27 games to 49.
+
+**DoD (per batch):** every game is complete per the `ADDING_A_GAME.md` checklist and playable in all its declared modes. Plus the standing DoD.
+
+### What's new in this batch
+
+Until now, every online game had its host's browser run the match from a seed every player knows. That's fine for chess and puzzles, but not for this batch:
+
+- **Hands:** anyone holding the seed can work out every hand, and the host's browser holds them all.
+- **Dice:** dice drawn from a known seed can be predicted, so you'd know which attacks will win before making them.
+- **Choices:** what a player chose has to stay hidden until everyone has chosen.
+- **Bots in online rooms:** they play from someone's browser, and that player could read the bots' cards.
+
+SPEC §10.6 asks for secrets that only their owner can read, so the plan adds a server that holds them (Q1).
+
+### The table server (proposed, Q1)
+
+A second kind of Durable Object on the arena Worker that already runs Worm Rush (ADR-0037): one **table** per room.
+
+- **The lobby stays as it is:** rooms, seats, ready, invites, chat and the lobby browser stay in Supabase. When the room starts, each player's page opens a WebSocket to the room's table. Its first message carries the player's access token, which `table_entry` checks against the room's seats, as `arena_entry` does for arenas.
+- **The table holds the whole game:**
+  - it deals from a secret seed it draws itself;
+  - it checks each action with the engine's `legalActions`;
+  - it plays the bots and keeps the timers;
+  - it sends each seat only its own view of the game, and spectators the public view.
+- **Fairness can be checked:** the table publishes a hash of its seed at the start and the seed itself at the end, so players can confirm the deal was fixed in advance.
+- **Results:** the table reports the seed and every action to `submit-match` with `ARENA_SECRET`, and `submit-match` replays them, as it does for arena lives. These games' online results stop being taken on the players' word (see Known issues).
+- **Cost:** turn games send a few messages a minute, and an idle table hibernates. This is to be measured in step 2, against the arenas' share of Workers Free.
+
+### Shared pieces
+
+- **Views:** a game with hidden information gets `view(state, seat)` in its engine: the state with whatever that seat can't see blanked out. Renderers and bots get only views. Card bots guess the unseen cards by sampling the deals that fit what they've seen.
+- **Card kit:**
+  - one original deck drawn in SVG, with large corner indices for phones and a four-colour option (Q5);
+  - French suits, with the 24-, 32-, 36- and 52-card subsets;
+  - a hand that fans out and plays by tap or drag, sorted by suit and rank;
+  - trick and pile areas, dealing and play animations that respect reduced motion, and sounds from the existing palette.
+- **Dice kit:** SVG dice, a roll animation, and dice drawn on the table for online play.
+- **Rounds:** a runtime for `RoundEngine` (hidden choices, a reveal, best of N), for solo against bots, hotseat and the table.
+- **Passing the device:** for hotseat play with hidden hands or choices, a "Pass to Maria, tap when ready" screen between turns, so the last player's cards are never left on screen.
+
+### Proposed games
+
+- **Cards:**
+  - **Belote:** Bulgarian rules, 4 players in teams of two, to 151.
+    - **Bidding:** clubs to spades, No Trumps and All Trumps, with double and redouble.
+    - **Declarations:** tierce, quarte, quinte, belote and carré.
+  - **Santase:** Bulgarian 66 with 24 cards, marriages of 20 and 40, closing the deck, and a game to 11.
+  - **Gin Rummy:**
+    - **Ending a hand:** knock with 10 or less, gin and undercut bonuses.
+    - **Melds:** laid off automatically when a hand ends.
+    - **The game:** to 100.
+  - **Spades:** 4 players in teams, nil and blind nil, bags, to 500.
+  - **Crazy Colors:** 2–8 players, an original shedding game in the Crazy Eights family. Its colours, its action cards and its name are kefche's own, designed in its step and kept clear of any trademarked deck.
+  - **War:** two players, with an option to play itself out.
+  - **Hearts:**
+    - **Passing:** left, right, across, then none.
+    - **Points:** shooting the moon, and the queen of spades counts.
+    - **The game:** to 100.
+  - **Durak:** Podkidnoy for 2–6 players (36 cards, trumps, adding cards to an attack), with transfers as an option.
+  - **Klondike:** a race game. Draw 1 or 3, undo and auto-complete, with an option for deals that are always winnable, picked from a bank a solver proved, as Pipe Link's were.
+  - **Spider:** a race game with 1, 2 or 4 suits.
+- **Dice and secrets:**
+  - **Backgammon:** a single game or a match to 3, 5 or 7, with an optional doubling cube (for points only).
+  - **Ludo:** 2–4 players.
+  - **Liar's Dice:** 2–6 players, 5 hidden dice each, with an option for calling an exact bid. Points only.
+  - **Sea Battle:** a 10 × 10 grid and a fleet of 5, 4, 3, 3 and 2.
+    - **Placing:** drag ships and rotate them on touch screens, or place them at random.
+    - **Fleets:** hidden on the table.
+  - **Conquest:** an original map of about 30 territories in 6 regions, for 2–6 players.
+    - **Turns:** reinforce, attack and fortify.
+    - **Dice:** rolled on the table.
+- **Hidden choices:**
+  - **Rock Paper Scissors Tournament:** a bracket of 2–16, best of three.
+  - **Lowest Unique Number:** rounds where the lowest number no one else picked scores.
+  - **Split or Steal:** points only. A short negotiation in chat, then a hidden choice.
+  - **Penalty Shootout:** the shooter picks a corner and the keeper a dive, five each, then sudden death.
+  - **Who's the Spy:**
+    - **Roles:** everyone but the spy sees the location.
+    - **Play:** questions in the room's chat (or aloud when sharing one device), then a vote.
+    - **The spy's chance:** naming the location wins.
+  - **Associations:**
+    - **The round:** a prompt word, and everyone writes the word they think the others will write.
+    - **Scoring:** points for each matching answer, compared after normalising case, accents and spacing.
+  - **Mafia:** 5–12 players: Mafia, Doctor, Detective and Villagers.
+    - **Night:** hidden actions.
+    - **Day:** talk in the room's chat on a timer, then a vote, with an automatic narrator.
+    - **Bots:** they vote from what's been revealed and never talk.
+
+### Steps (one Conventional Commit each)
+
+1. **Hidden information in the SDK:**
+   - `view` on the turn and round engines, with the bot harness working from views;
+   - the card and dice kits;
+   - the round runtime;
+   - the pass-the-device screen;
+   - the manifest marking games whose online play runs on the table.
+2. **The table server:**
+   - the `Table` Durable Object and `table_entry` (a migration);
+   - the seed and its hash, views, timers, bots and the stand-in for absent players (Q4);
+   - results to `submit-match`;
+   - the browser's `connectTable`, used in place of the host's session when a game asks for the table;
+   - an ADR, and costs measured.
+3. **War:** the smallest card game, to carry the table from deal to result.
+4. **Crazy Colors.**
+5. **Hearts.**
+6. **Spades.**
+7. **Belote.**
+8. **Santase.**
+9. **Gin Rummy.**
+10. **Durak.**
+11. **Klondike** (with the bank of winnable deals).
+12. **Spider.**
+13. **Backgammon.**
+14. **Ludo.**
+15. **Liar's Dice.**
+16. **Sea Battle.**
+17. **Conquest.**
+18. **Memory Match online:** turns on the table, which flips cards as they're chosen (TODO #5).
+19. **Rock Paper Scissors Tournament.**
+20. **Lowest Unique Number.**
+21. **Split or Steal.**
+22. **Penalty Shootout.**
+23. **Who's the Spy** (with its location packs, Q3).
+24. **Associations** (with its prompt packs, Q3).
+25. **Mafia.**
+26. **The daily challenge and the catalog:**
+    - the daily challenge adds Klondike (a winnable deal) and Spider (one suit);
+    - the catalog is checked at 49 games.
+27. **Verification and docs:**
+    - **Bots:** timing on a throttled CPU, self-play strength, every player count.
+    - **The table:** two to twelve browsers, a player leaving and coming back, checks that no message carries another seat's secrets, and the cost measured.
+    - **Accessibility:** 360, 768 and 1280 px, both themes, Arabic and axe.
+    - **Docs:** ADDING_A_GAME for hidden information, cards and rounds; ARCHITECTURE; and ADRs.
+
+**Every game step includes:**
+
+- the engine (with `view`), bots, renderer and controls (touch and keyboard);
+- the manifest's modes and timers, and replay validation;
+- achievements, and for Klondike and Spider, best-time boards;
+- art and credits;
+- names and UI in all 11 locales;
+- SEO text in English and Bulgarian.
+
+### Decisions (proposed)
+
+- **Modes:**
+  - **Card, dice and choice games:** solo against bots, hotseat (with the pass screen), private and public rooms, and quick match.
+  - **Klondike and Spider:** solo and race.
+  - **Who's the Spy:** has no bots (it's free talk), so it's hotseat and rooms only.
+- **Solo against bots** runs in the browser, as now: free, quick, and it works offline. Someone could read the bots' cards with developer tools, so solo results count for stats, XP and achievements, like any game against bots, but no leaderboard ranks them. Klondike and Spider are races with best-time boards, which already accept that risk, like Minesweeper.
+- **Online play of every game in this batch runs on the table,** except Klondike and Spider races, which stay on the race runtime: everyone already has the same deal.
+- **Ratings (Q2):** none in this batch. Results decided on the table make it easy to rate Backgammon or Santase later (the pools of ADR-0046, and a migration).
+- **Timers:**
+  - **Turn games:** per move, none, 15, 30 or 60 s online. When it runs out, the move is random (a card must be played).
+  - **Round games:** each round has its own countdown.
+  - **Klondike and Spider:** they count up.
+- **Renderers:** React with SVG. No new libraries; the card faces are drawn in code (`art.mjs`, like the thumbnails).
+
+### Risks
+
+- **Size:**
+  - the largest batch so far: 22 games and a new server, with Belote, Conquest and Mafia each nearly a game's worth of rules;
+  - every step is its own commit, so the batch can stop between games, and it could split into 12a (the table, cards and dice) and 12b (choices and party games).
+- **The table is a new path to results:** it gets its own security pass in step 27 (tokens, seats, message sizes, nothing secret leaking into views), ahead of Phase 19.
+- **Workers Free is shared with the arenas:** card tables are cheap, but a busy day of arenas could use up the daily requests, after which tables refuse too, until 00:00 UTC. Solo play is unaffected.
+- **One region per table:** a Durable Object lives near whoever opened it first, as arenas do.
+- **Bots in talking games:** Mafia's bots can vote but not argue, and Who's the Spy has none. Both are at their best with people.
+- **Content packs:** Who's the Spy and Associations need words in each language (Q3).
+
+### Open questions for the owner
+
+- **Q1: Where secrets live.** Should hidden hands, dice and choices be held by a table on the arena Worker (recommended)? Or follow SPEC §10.6 as written: an Edge Function deals into `room_secrets` rows that only their owner can read, and every play goes through an Edge Function call?
+  - **The cost of SPEC §10.6 as written:**
+    - each card played is an Edge Function call, roughly 200–400 ms, counted against Supabase's monthly invocations;
+    - online bots and dice would still run in a host's browser.
+  - **The table server:** it reuses a server we already run, is within Workers Free, and keeps every secret, bots and dice included, off players' devices.
+  - **Either way:** the stack stays the same (Cloudflare and Supabase).
+- **Q2: Ratings.** Should nothing be rated in this batch (recommended)? Or rate Backgammon (one pool, matches to 5) and Santase?
+- **Q3: Content for Who's the Spy and Associations.** Should I write original English and Bulgarian packs now, with the games hidden in other languages until Phase 15's packs (recommended)? Or move both games to Phase 13 with the word games?
+- **Q4: Players who drop out of an online table.** SPEC §10.5 skips an absent player's turns, but in a card game someone must play a card. Should a marked stand-in bot (easy) play for them after 15 s, handing back when they return (recommended)? Or only the move timer's random move?
+- **Q5: Card design.** Should every card game use one original deck in SVG with large indices for phones, plus a four-colour option in settings (recommended)? Or do you have a design in mind?
+- **Q6: Anything to change** in the proposed games, rules and decisions above?
 
 ## Known issues
 
