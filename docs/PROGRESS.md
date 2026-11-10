@@ -2351,6 +2351,10 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Bots:** Monte Carlo tree search over a fast board (`engine/board.ts`). Easy plays a random point a third of the time; medium and hard think 400 and 900 ms. Each passes when the other side has passed and the count favours it. Hard beat easy 4 of 4 on 9 × 9.
   - **Rated** (migration `20261110100100_go_rated.sql`): one pool, 9 × 9, on 5 + 3, 10 + 5 and 20 + 10. A 13 × 13 lobby can't be rated. New rooms now write out every option, defaults included, so a rated lobby always finds its pool.
   - Checked in Chrome: 43/43, covering the board option, a move and the bot's reply, undo, resigning in two taps, 13 × 13, two passes, the count with a group marked dead and alive again, both accepting, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe. Rated on the local database: 4/4.
+- [x] **Step 4, Nine Men's Morris:**
+  - **Rules:** placing nine pieces each, then moving along the lines; a mill removes one of the other player's pieces (never one in a mill unless all are); flying with three pieces, an option on by default. Two pieces or no move loses; a draw at the third repetition or after 50 moves without a removal. A turn is one action: where the piece goes and what it removes.
+  - **Bots:** easy takes mills when it sees them; medium searches three plies; hard searches deeper on pieces, near-mills, mobility and blocked pieces. Hard beat easy 6 of 6 with flying on and off.
+  - Checked in Chrome: 41/41, covering the flying option, placing and the bot's reply, the pieces left to place, undo, a mill and its removal on one device, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe.
 
 ## Known issues
 

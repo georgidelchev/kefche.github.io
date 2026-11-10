@@ -200,6 +200,7 @@ if (process.argv.includes("--fixtures")) {
     "dots-and-boxes": undefined,
     "four-in-a-row": undefined,
     go: { size: 9 },
+    "nine-mens-morris": { flying: true },
     reversi: undefined,
   };
   const MAX_ACTIONS = 400;

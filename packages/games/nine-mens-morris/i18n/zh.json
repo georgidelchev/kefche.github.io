@@ -1,0 +1,81 @@
+{
+  "name": "九子棋",
+  "tagline": "三子连成一线，就能吃掉对手一子。",
+  "description": "在浏览器中免费玩九子棋：落子、走子、飞子，连成三子吃掉对方。可对战机器人、同一设备双人或在线对战。",
+  "about": [
+    "Nine Men's Morris is a strategy game for two players that goes back to the Roman Empire. The board is three squares, one inside the other, joined at the middle of each side, for 24 points in all. Each player has nine pieces, and the aim is to line up three of them along a line of the board, a mill.",
+    "Every mill you close lets you remove one of your opponent's pieces. The game has three phases: first you take turns placing your nine pieces on empty points; then you move them, one step along a line at a time; and when a player is down to three pieces, they may fly a piece to any empty point. That last phase is an option you can turn off.",
+    "You win when your opponent has only two pieces left, or can't make a move. Here you can play against a bot on three levels, with a friend on one device, or online, with an optional timer or a chess-style clock."
+  ],
+  "howToPlay": [
+    "Choose whether flying is on, then Play vs bots or Play on this device. The first player starts.",
+    "Placing: take turns putting a piece on any empty point until both players have placed all nine.",
+    "Moving: on your turn, move one of your pieces along a line to the next empty point.",
+    "When you line up three of your pieces, remove one of your opponent's. Pieces in a mill are safe unless every piece they have is in one.",
+    "With flying on, a player with three pieces may move one to any empty point. A player with two pieces, or with no legal move, loses. The game is drawn if the same position appears three times, or after 50 moves without a capture."
+  ],
+  "controls": [
+    "Phones and tablets: tap an empty point to place a piece. Later, tap one of your pieces, then the point it should move to.",
+    "When a move closes a mill, the pieces you may take are outlined in red: tap one to remove it.",
+    "Keyboard: move between points with the arrow keys and press Enter or Space to choose.",
+    "Against bots, Undo takes back your last move and the bot's reply."
+  ],
+  "tips": [
+    "Don't rush to make mills while placing. Points where several lines meet, like the middle of each side, give you more choices later.",
+    "A double mill, where moving one piece back and forth opens and closes a mill every turn, usually wins the game.",
+    "Keep your pieces mobile. A player whose pieces are all blocked loses.",
+    "Watch for two of your opponent's pieces on a line with an empty third point, and block it.",
+    "When your opponent is down to three pieces and flying, they can close a mill anywhere: block every line they're one piece away from."
+  ],
+  "faq": [
+    {
+      "question": "Is Nine Men's Morris free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can I remove a piece that's in a mill?",
+      "answer": "Only if all of your opponent's pieces are in mills. Otherwise you must take one that isn't."
+    },
+    {
+      "question": "What is flying?",
+      "answer": "When a player has only three pieces left, they may move a piece to any empty point instead of along a line. You can turn this rule off before you start."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "Easy takes mills when it sees them but often plays carelessly. Medium looks a few moves ahead. Hard looks as far ahead as its time allows and also values mobility and blocking."
+    }
+  ],
+  "ui": {
+    "boardLabel": "九子棋棋盘",
+    "pointEmpty": "{point}，空",
+    "pointPiece": "{point}，{name}",
+    "selected": "已选中",
+    "target": "移到这里",
+    "canMove": "可以移动",
+    "canRemove": "可以吃掉",
+    "placed": "{name} 在 {point} 落子。",
+    "moved": "{name} 从 {from} 走到 {to}。",
+    "removed": "{name} 连成一线，吃掉 {point} 的棋子。",
+    "promptPlace": "请落子。",
+    "promptMove": "请走子。",
+    "promptRemove": "成三！吃掉 {name} 的一颗棋子。",
+    "onBoard": "棋盘上",
+    "inHand": "待落子",
+    "cancel": "取消",
+    "undo": "悔棋",
+    "flying": "飞子",
+    "flyingOn": "开",
+    "flyingOff": "关"
+  },
+  "achievements": {
+    "winner": {
+      "name": "胜利者",
+      "description": "赢得 {count, number} 局"
+    },
+    "streak": {
+      "name": "连胜",
+      "description": "连续赢得 {count, number} 局"
+    }
+  },
+  "leaderboards": {}
+}

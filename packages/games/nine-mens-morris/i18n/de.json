@@ -1,0 +1,81 @@
+{
+  "name": "Mühle",
+  "tagline": "Bilde eine Reihe aus drei Steinen und nimm dem Gegner einen weg.",
+  "description": "Spiele Mühle kostenlos im Browser: Steine setzen, ziehen und springen, um Mühlen zu bilden. Gegen einen Bot, zu zweit oder online.",
+  "about": [
+    "Nine Men's Morris is a strategy game for two players that goes back to the Roman Empire. The board is three squares, one inside the other, joined at the middle of each side, for 24 points in all. Each player has nine pieces, and the aim is to line up three of them along a line of the board, a mill.",
+    "Every mill you close lets you remove one of your opponent's pieces. The game has three phases: first you take turns placing your nine pieces on empty points; then you move them, one step along a line at a time; and when a player is down to three pieces, they may fly a piece to any empty point. That last phase is an option you can turn off.",
+    "You win when your opponent has only two pieces left, or can't make a move. Here you can play against a bot on three levels, with a friend on one device, or online, with an optional timer or a chess-style clock."
+  ],
+  "howToPlay": [
+    "Choose whether flying is on, then Play vs bots or Play on this device. The first player starts.",
+    "Placing: take turns putting a piece on any empty point until both players have placed all nine.",
+    "Moving: on your turn, move one of your pieces along a line to the next empty point.",
+    "When you line up three of your pieces, remove one of your opponent's. Pieces in a mill are safe unless every piece they have is in one.",
+    "With flying on, a player with three pieces may move one to any empty point. A player with two pieces, or with no legal move, loses. The game is drawn if the same position appears three times, or after 50 moves without a capture."
+  ],
+  "controls": [
+    "Phones and tablets: tap an empty point to place a piece. Later, tap one of your pieces, then the point it should move to.",
+    "When a move closes a mill, the pieces you may take are outlined in red: tap one to remove it.",
+    "Keyboard: move between points with the arrow keys and press Enter or Space to choose.",
+    "Against bots, Undo takes back your last move and the bot's reply."
+  ],
+  "tips": [
+    "Don't rush to make mills while placing. Points where several lines meet, like the middle of each side, give you more choices later.",
+    "A double mill, where moving one piece back and forth opens and closes a mill every turn, usually wins the game.",
+    "Keep your pieces mobile. A player whose pieces are all blocked loses.",
+    "Watch for two of your opponent's pieces on a line with an empty third point, and block it.",
+    "When your opponent is down to three pieces and flying, they can close a mill anywhere: block every line they're one piece away from."
+  ],
+  "faq": [
+    {
+      "question": "Is Nine Men's Morris free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can I remove a piece that's in a mill?",
+      "answer": "Only if all of your opponent's pieces are in mills. Otherwise you must take one that isn't."
+    },
+    {
+      "question": "What is flying?",
+      "answer": "When a player has only three pieces left, they may move a piece to any empty point instead of along a line. You can turn this rule off before you start."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "Easy takes mills when it sees them but often plays carelessly. Medium looks a few moves ahead. Hard looks as far ahead as its time allows and also values mobility and blocking."
+    }
+  ],
+  "ui": {
+    "boardLabel": "Mühlebrett",
+    "pointEmpty": "{point}, leer",
+    "pointPiece": "{point}, {name}",
+    "selected": "ausgewählt",
+    "target": "hierhin ziehen",
+    "canMove": "kann ziehen",
+    "canRemove": "kann geschlagen werden",
+    "placed": "{name} setzt einen Stein auf {point}.",
+    "moved": "{name} zieht von {from} nach {to}.",
+    "removed": "{name} schließt eine Mühle und nimmt den Stein auf {point}.",
+    "promptPlace": "Setze einen Stein.",
+    "promptMove": "Ziehe einen Stein.",
+    "promptRemove": "Mühle! Nimm einen Stein von {name}.",
+    "onBoard": "Auf dem Brett",
+    "inHand": "Zu setzen",
+    "cancel": "Abbrechen",
+    "undo": "Rückgängig",
+    "flying": "Springen",
+    "flyingOn": "An",
+    "flyingOff": "Aus"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Partie} other {# Partien}}"
+    },
+    "streak": {
+      "name": "Siegesserie",
+      "description": "Gewinne {count, plural, one {# Partie} other {# Partien}} in Folge"
+    }
+  },
+  "leaderboards": {}
+}
