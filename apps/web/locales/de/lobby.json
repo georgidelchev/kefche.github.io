@@ -109,7 +109,9 @@
       "bullet": "Bullet",
       "blitz": "Blitz",
       "rapid": "Schnellschach",
-      "classical": "Klassisch"
+      "classical": "Klassisch",
+      "russian": "Russisch",
+      "international": "International"
     },
     "checking": "Das Ergebnis wird ermittelt…",
     "change": "Deine Wertung: {before} → {after} ({change})",

@@ -33,7 +33,7 @@ import { OnlineMatch, RATED_COUNTDOWN_MS } from "./OnlineMatch";
 import { RaceMatch } from "./RaceMatch";
 import { RatedSearch } from "./RatedSearch";
 import { onlineTimer, roomMatch, type RoomMatch } from "./room-match";
-import { parseRated, parseRoomSettings, settingsJson } from "./room-settings";
+import { parseRated, parseRoomSettings, ratedQuery, settingsJson } from "./room-settings";
 import {
   roomErrorCode,
   roomErrorText,
@@ -94,7 +94,7 @@ type Intent =
   | { kind: "join"; code: string }
   | { kind: "quick" }
   | { kind: "pickRated" }
-  | { kind: "rated"; timer: number };
+  | { kind: "rated"; clock: RatedClock };
 
 type Stage =
   | { kind: "choose" }
@@ -102,8 +102,8 @@ type Stage =
   | { kind: "working"; intent: Intent }
   | { kind: "profile"; identity: Identity; intent: Intent }
   | { kind: "onboarding" }
-  | { kind: "accountsOnly"; timer: number }
-  | { kind: "searching"; supabase: Supabase; identity: Identity; timer: number }
+  | { kind: "accountsOnly"; clock: RatedClock }
+  | { kind: "searching"; supabase: Supabase; identity: Identity; clock: RatedClock }
   | {
       kind: "room";
       supabase: Supabase;
@@ -122,9 +122,15 @@ function intentFromUrl({ modes, rated }: OnlineGame): Intent | null {
   const room = params.get("room");
   if (room !== null) return { kind: "join", code: normalizeCode(room) };
   if (params.has("quick") && modes.quick) return { kind: "quick" };
-  // ?rated=<clock> searches at once; a bare ?rated offers the clocks first.
+  // ?rated=<clock>&pool=<pool> searches at once; a bare ?rated offers the
+  // clocks first. A clock in one pool only (chess) may leave the pool out.
   const timer = Number(params.get("rated") ?? "-");
-  if (rated.some((clock) => clock.timer === timer)) return { kind: "rated", timer };
+  const pool = params.get("pool");
+  const matching = rated.filter(
+    (clock) => clock.timer === timer && (pool === null || clock.pool === pool),
+  );
+  const [clock] = matching;
+  if (clock && matching.length === 1) return { kind: "rated", clock };
   if (params.has("rated") && rated.length > 0) return { kind: "pickRated" };
   // ?new=public (from the lobby browser) lists the new room there.
   if (!params.has("new")) return null;
@@ -161,10 +167,11 @@ export function OnlineRoom({
   const clockLabel = (timer: number) =>
     timerLabel(game.config.timers[timer] ?? { kind: "none" }, turn, locale);
   /** "5 + 3 · Blitz" */
-  const ratedLabel = (timer: number) => {
-    const pool = game.rated.find((clock) => clock.timer === timer)?.pool ?? "";
-    return fill(s.rated.clock, { clock: clockLabel(timer), pool: s.rated.pools[pool] ?? pool });
-  };
+  const ratedLabel = (clock: RatedClock) =>
+    fill(s.rated.clock, {
+      clock: clockLabel(clock.timer),
+      pool: s.rated.pools[clock.pool] ?? clock.pool,
+    });
 
   function begin(intent: Intent) {
     setError(null);
@@ -186,16 +193,16 @@ export function OnlineRoom({
       if (intent.kind === "rated") {
         // Accounts only: a guest identity is never created for it.
         const account = await accountIdentity(supabase);
-        if (!account) setStage({ kind: "accountsOnly", timer: intent.timer });
+        if (!account) setStage({ kind: "accountsOnly", clock: intent.clock });
         else if (account.nickname === null) setStage({ kind: "onboarding" });
         else {
           // A reload goes on searching.
           history.replaceState(
             history.state,
             "",
-            `${location.pathname}?rated=${String(intent.timer)}`,
+            `${location.pathname}${ratedQuery(intent.clock)}`,
           );
-          setStage({ kind: "searching", supabase, identity: account, timer: intent.timer });
+          setStage({ kind: "searching", supabase, identity: account, clock: intent.clock });
         }
         return;
       }
@@ -306,7 +313,7 @@ export function OnlineRoom({
       );
     case "accountsOnly": {
       // Back to this search once signed in.
-      const next = `${location.pathname}?rated=${String(stage.timer)}`;
+      const next = `${location.pathname}${ratedQuery(stage.clock)}`;
       return (
         <div className="grid justify-items-start gap-3">
           <p>{s.rated.accountsOnly}</p>
@@ -324,8 +331,8 @@ export function OnlineRoom({
         <RatedSearch
           supabase={stage.supabase}
           game={{ id: game.id, version: game.version }}
-          timer={stage.timer}
-          label={ratedLabel(stage.timer)}
+          clock={stage.clock}
+          label={ratedLabel(stage.clock)}
           strings={s.rated}
           locale={locale}
           onPaired={(room) => {
@@ -510,7 +517,7 @@ function RatedClocks({
 }: {
   clocks: readonly RatedClock[];
   clockLabel: (timer: number) => string;
-  label: (timer: number) => string;
+  label: (clock: RatedClock) => string;
   strings: RatedStrings;
   onRun: (intent: Intent) => void;
 }) {
@@ -532,10 +539,10 @@ function RatedClocks({
                   <Button
                     key={clock.timer}
                     variant="outline"
-                    aria-label={label(clock.timer)}
+                    aria-label={label(clock)}
                     className="tabular-nums"
                     onClick={() => {
-                      onRun({ kind: "rated", timer: clock.timer });
+                      onRun({ kind: "rated", clock });
                     }}
                   >
                     {clockLabel(clock.timer)}
@@ -930,7 +937,9 @@ function Room({
         matchHref={(id) => `${matchesPath}${id}/`}
         onNewOpponent={() => {
           void call(() => supabase.rpc("leave_room", { p_room: roomId })).then(() => {
-            location.assign(`${location.pathname}?rated=${String(settings.timer)}`);
+            location.assign(
+              `${location.pathname}${ratedQuery({ timer: settings.timer, pool: rated?.pool ?? "" })}`,
+            );
           });
         }}
         away={match.seatMembers.map(

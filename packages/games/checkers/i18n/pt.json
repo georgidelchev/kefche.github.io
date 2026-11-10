@@ -69,6 +69,10 @@
     "streak": {
       "name": "Embalado",
       "description": "Vença {count, plural, one {# partida} other {# partidas}} seguidas"
+    },
+    "rated": {
+      "name": "Jogador ranqueado",
+      "description": "Alcance um rating de {count, number} após 10 partidas ranqueadas"
     }
   },
   "leaderboards": {}

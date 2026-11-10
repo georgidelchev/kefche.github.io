@@ -109,7 +109,9 @@
       "bullet": "बुलेट",
       "blitz": "ब्लिट्ज़",
       "rapid": "रैपिड",
-      "classical": "क्लासिकल"
+      "classical": "क्लासिकल",
+      "russian": "रूसी",
+      "international": "अंतरराष्ट्रीय"
     },
     "checking": "नतीजा निकाला जा रहा है…",
     "change": "आपकी रेटिंग: {before} → {after} ({change})",

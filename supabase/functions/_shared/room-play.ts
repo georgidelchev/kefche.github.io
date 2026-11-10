@@ -75,7 +75,7 @@ export function roomTimer(game: ServerGame, index: number): TimerPreset | null {
 export const raceLimitMs = (timer: TimerPreset | null): number =>
   timer?.kind === "countdown" ? timer.seconds * 1000 : DEFAULT_RACE_MS;
 
-/** The engine config: each option's chosen value, or its default (race-standings.ts raceConfig). */
+/** The engine config: each option's chosen value, or its default (features/games/options.ts optionsConfig). */
 export function raceConfig(
   options: readonly GameOption[],
   values: Record<string, unknown>,

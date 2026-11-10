@@ -109,7 +109,9 @@
       "bullet": "Бълиц",
       "blitz": "Блиц",
       "rapid": "Ускорен",
-      "classical": "Класически"
+      "classical": "Класически",
+      "russian": "Руска",
+      "international": "Международна"
     },
     "checking": "Изчисляваме резултата…",
     "change": "Твоят рейтинг: {before} → {after} ({change})",

@@ -109,7 +109,9 @@
       "bullet": "バレット",
       "blitz": "ブリッツ",
       "rapid": "ラピッド",
-      "classical": "クラシカル"
+      "classical": "クラシカル",
+      "russian": "ロシア式",
+      "international": "国際式"
     },
     "checking": "結果を計算しています…",
     "change": "あなたのレーティング：{before} → {after}（{change}）",

@@ -10,6 +10,7 @@ import * as z from "zod/mini";
 
 import { Button } from "@kefche/ui/components/button";
 
+import type { RatedClock } from "@/features/games/page-props";
 import { fill } from "@/features/games/turn/labels";
 import { send, type Supabase } from "@/lib/supabase/client";
 
@@ -31,8 +32,8 @@ type PairedRoom = z.infer<typeof roomSchema>;
 interface Props {
   supabase: Supabase;
   game: { id: string; version: number };
-  /** The clock: an index into the manifest's timers. */
-  timer: number;
+  /** The clock, in its pool. */
+  clock: RatedClock;
   /** "5 + 3 · Blitz" */
   label: string;
   strings: RatedStrings;
@@ -57,7 +58,7 @@ function waitTime(seconds: number, locale: string): string {
 export function RatedSearch({
   supabase,
   game,
-  timer,
+  clock,
   label,
   strings: s,
   locale,
@@ -81,7 +82,8 @@ export function RatedSearch({
       const { data, error } = await supabase.rpc("rated_search", {
         p_game_id: game.id,
         p_game_version: game.version,
-        p_timer: timer,
+        p_timer: clock.timer,
+        p_pool: clock.pool,
       });
       if (error?.code) {
         // The database said no (a guest, a suspension, too many tries): final.
@@ -118,7 +120,7 @@ export function RatedSearch({
         if (!found) send(supabase.rpc("cancel_rated_search"));
       });
     };
-  }, [supabase, game.id, game.version, timer]);
+  }, [supabase, game.id, game.version, clock.timer, clock.pool]);
 
   async function cancel() {
     setCancelling(true);

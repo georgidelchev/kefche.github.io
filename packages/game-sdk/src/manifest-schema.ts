@@ -77,6 +77,9 @@ export const gameManifestSchema = z
             z.object({
               id: z.string().regex(kebab),
               timers: z.array(z.int().nonnegative()).min(1),
+              config: z
+                .record(z.string(), z.union([z.string(), z.number(), z.boolean()]))
+                .optional(),
             }),
           )
           .min(1),
@@ -158,15 +161,22 @@ export const gameManifestSchema = z
   .refine(
     (m) => {
       if (!m.rated) return true;
+      // A clock is in one pool per set of options (Checkers: one per variant).
+      const keys = m.rated.pools.flatMap((p) =>
+        p.timers.map(
+          (i) => `${String(i)}:${JSON.stringify(Object.entries(p.config ?? {}).sort())}`,
+        ),
+      );
       const timers = m.rated.pools.flatMap((p) => p.timers);
       return (
-        new Set(timers).size === timers.length &&
+        new Set(keys).size === keys.length &&
         timers.every((i) => m.timers[i]?.kind === "clock") &&
         new Set(m.rated.pools.map((p) => p.id)).size === m.rated.pools.length
       );
     },
     {
-      message: "rated: each pool needs its own id and clocks, and a clock is in one pool only",
+      message:
+        "rated: each pool needs its own id and clocks, and a clock is in one pool per set of options",
       path: ["rated"],
     },
   );

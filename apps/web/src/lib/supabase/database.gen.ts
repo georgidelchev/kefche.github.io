@@ -795,7 +795,7 @@ isOneToOne: false
 { Args: { "p_game": string,"p_result": Json }; Returns: string
                            },
 "rated_search":
-{ Args: { "p_game_id": string,"p_game_version": number,"p_timer": number }; Returns: Json
+{ Args: { "p_game_id": string,"p_game_version": number,"p_pool"?: string,"p_timer": number }; Returns: Json
                            },
 "read_direct_messages":
 { Args: { "p_user": string }; Returns: number

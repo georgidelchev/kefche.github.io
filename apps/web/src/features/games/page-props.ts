@@ -202,7 +202,7 @@ export const onlineModes = (manifest: GameManifest): { public: boolean; quick: b
   quick: manifest.modes.includes("quick-match"),
 });
 
-/** A rated clock (an index into the manifest's timers) and its pool. */
+/** A rated clock (an index into the manifest's timers) in its pool. */
 export interface RatedClock {
   timer: number;
   pool: string;

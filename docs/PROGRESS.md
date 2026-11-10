@@ -2332,6 +2332,19 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
 ### Status
 
 - [x] Plan written; the recommended answers stand (2026-11-10)
+- [x] **Step 1, shared pieces:**
+  - **Options for turn games** (ADR-0046): the manifest's `raceOptions` becomes `options`, offered in the setup sheet and a room's settings, and passed to the game as `context.match.config`. `submit-match` sets aside a solo or hotseat match with options its game doesn't offer.
+  - **`@kefche/game-sdk/react`:** seat colours and shapes, roving focus on a board (`useGridFocus`, boards that aren't rectangles too), move and result feedback (`useTurnFeedback`), and the puzzle flow (`usePuzzle`, `PuzzleMenu`, `mountPuzzle`: menu, clock, log, best times, finish), with shared styles (`KIT_CSS`). The existing games keep their own code.
+  - **Moved:** the manifest letting Memory Match be both a turn game and a race comes with Memory Match (step 20).
+- [x] **Step 2, Checkers:**
+  - **Rules:** Russian 8 × 8 (the default) and International 10 × 10. Captures are mandatory, and in International they must take the most pieces. Men capture backwards, kings fly, and a capture goes on while it can; captured pieces leave the board at the end of the move. A man is crowned mid-capture in Russian only. A draw at the third repetition or after 25 king-only moves each without a capture.
+  - **Play:** tap a piece, then each landing of a capture; the board turns round for the second player. Bots: easy (often careless), medium (four plies on material), hard (deep search on material, kings, the centre and the back row). Hard beat easy 6 of 6 in self-play, within its budget.
+  - Checked in Chrome: 40/40, covering the setup's variant, a move and the bot's reply, undo, keyboard focus over the dark squares, hotseat, 360, 768 and 1280 px, both themes, Arabic (the board stays left to right), and axe.
+- [x] **Step 2b, rated Checkers** (ADR-0046; migration `20261110100000_rated_turn_games.sql`):
+  - **Pools:** Russian and International, each on 3 + 2, 5 + 0 and 10 + 0. A pool may carry options, and a clock is named by game, pool and timer. Searches pair within a pool, and a rated lobby's pool follows its variant.
+  - **The server** decides a rated game other than chess with the game's own engine (`_shared/turn-rated.ts`), with chess's clock rules. Deno: 83/83.
+  - **Pool names** (Russian, International) in all 11 locales, shared by the lobby, notifications, push and the profile.
+  - Checked on the local stack: 15/15 (chess still searching without a pool, pools kept apart, the room's and game's options, a flag falling decided by `submit-match` and rated in the International pool, a rated lobby switching pools), and in Chrome: 9/9 (the pool picker, the sign-in link keeping the pool, chess's pools and old links).
 
 ## Known issues
 

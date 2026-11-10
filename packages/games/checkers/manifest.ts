@@ -30,7 +30,15 @@ export const manifest = defineManifest({
       ],
     },
   ],
-  rated: false,
+  // One pool per variant, on the clocks 3 + 2, 5 + 0 and 10 + 0 (Phase 11 Q2;
+  // private.rated_clocks, migration 20261110100000).
+  rated: {
+    system: "glicko2",
+    pools: [
+      { id: "russian", timers: [4, 5, 6] },
+      { id: "international", timers: [4, 5, 6], config: { variant: "international" } },
+    ],
+  },
   hiddenInformation: false,
   orientation: "any",
   controls: ["tap", "keyboard"],
@@ -40,6 +48,7 @@ export const manifest = defineManifest({
   achievements: [
     { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
     { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] },
+    { id: "rated", icon: "medal", metric: "rating", tiers: [1600, 1800, 2000] },
   ],
   // Every move is its path of squares, so a match replays exactly (Phase 7 validation).
   scoreValidation: { kind: "replay" },

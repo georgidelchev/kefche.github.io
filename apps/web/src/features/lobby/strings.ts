@@ -1,6 +1,7 @@
 // Text for online play (Phase 5), translated on the page and passed to islands.
 import type { AuthErrorKey } from "@/features/auth/errors";
 import { chatToolsStrings, type ChatToolsStrings } from "@/features/chat/strings";
+import { poolNames } from "@/features/games/pool-names";
 import type { PresenceStrings } from "@/features/live/presence";
 import {
   muteStrings,
@@ -427,12 +428,7 @@ export function roomStrings(t: AppT): RoomStrings {
     },
     rated: {
       badge: t("lobby:rated.badge", { pool: "{pool}" }),
-      pools: {
-        bullet: t("lobby:rated.pools.bullet"),
-        blitz: t("lobby:rated.pools.blitz"),
-        rapid: t("lobby:rated.pools.rapid"),
-        classical: t("lobby:rated.pools.classical"),
-      },
+      pools: poolNames(t),
       checking: t("lobby:rated.checking"),
       change: t("lobby:rated.change", { before: "{before}", after: "{after}", change: "{change}" }),
       review: t("lobby:rated.review"),

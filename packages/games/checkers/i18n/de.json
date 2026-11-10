@@ -69,6 +69,10 @@
     "streak": {
       "name": "Siegesserie",
       "description": "Gewinne {count, plural, one {# Partie} other {# Partien}} in Folge"
+    },
+    "rated": {
+      "name": "Gewertet",
+      "description": "Erreiche eine Wertung von {count, number} nach 10 gewerteten Partien"
     }
   },
   "leaderboards": {}

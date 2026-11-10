@@ -973,3 +973,25 @@ Lobby chat already existed (ADR-0023).
 
 - **Corrections are rough but honest:** an accepted result adds no board place or rating change, and a removed place is replaced by the player's next result.
 - **A full rebuild** would need an Edge Function that replays matches with the engines; not planned.
+
+---
+
+## ADR-0046: Options for turn games, and rated pools that carry them
+
+**Date:** 2026-11-10 · **Status:** Accepted (Phase 11, owner decision Q2)
+
+**Context.** Checkers has two variants and Go two board sizes. Until now a turn game's engine config was fixed in its `mount()`, and rated play was chess's alone: the database named a rated clock by (game, timer), and `submit-match` judged rated games with chess.js. Checkers is to be rated in one pool per variant, on the same clocks.
+
+**Decision.**
+
+- **Options for every kind:** the manifest's `raceOptions` becomes `options`. A turn game's options are picked in the setup sheet or by a room's host (rooms already stored `settings.options`), and reach the game as `context.match.config`. `submit-match` sets aside a solo or hotseat match played with options its game doesn't offer.
+- **A rated pool may carry options** (`RatedPool.config`, and `private.rated_clocks.config` in the database), only where they differ from the game's defaults. A clock is named by (game, pool, timer).
+  - `rated_search` takes the pool, pairs only searchers of the same pool, and gives the room the pool's options, which then can't change.
+  - A rated lobby's pool follows its options: the pool whose config they contain, the most particular one when several do.
+- **Each rated game keeps its options and seed** (`rated_games.config`). `submit-match` decides a rated game other than chess with the game's own engine (`_shared/turn-rated.ts`), with chess's rules for clocks, out-of-turn moves and refused moves.
+
+**Consequences.**
+
+- **A new rated turn game** needs its pools in the manifest and the same rows in `private.rated_clocks` (a migration); no server code.
+- **Chess is unchanged:** its clocks are each in one pool, so a search or a link may leave the pool out.
+- **Rated games other than chess store no record of their moves** with the match (chess keeps its PGN); their moves stay in `private.rated_moves` for a day after the result, as chess's do.

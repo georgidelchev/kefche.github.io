@@ -1,3 +1,4 @@
+import { poolNames } from "@/features/games/pool-names";
 import type { AppT } from "@/i18n/i18n";
 
 import type { NotificationStrings, OptionalType } from "./notification-text";
@@ -52,12 +53,7 @@ export function notificationStrings(t: AppT): NotificationStrings {
       silver: t("profile:tier.silver"),
       gold: t("profile:tier.gold"),
     },
-    pools: {
-      bullet: t("lobby:rated.pools.bullet"),
-      blitz: t("lobby:rated.pools.blitz"),
-      rapid: t("lobby:rated.pools.rapid"),
-      classical: t("lobby:rated.pools.classical"),
-    },
+    pools: poolNames(t),
   };
 }
 

@@ -109,7 +109,9 @@
       "bullet": "Bala",
       "blitz": "Blitz",
       "rapid": "Rápida",
-      "classical": "Clásica"
+      "classical": "Clásica",
+      "russian": "Rusas",
+      "international": "Internacionales"
     },
     "checking": "Calculando el resultado…",
     "change": "Tu puntuación: {before} → {after} ({change})",

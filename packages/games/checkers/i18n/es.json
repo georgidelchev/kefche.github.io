@@ -69,6 +69,10 @@
     "streak": {
       "name": "En racha",
       "description": "Gana {count, plural, one {# partida} other {# partidas}} seguidas"
+    },
+    "rated": {
+      "name": "Jugador puntuado",
+      "description": "Alcanza una puntuación de {count, number} tras 10 partidas puntuadas"
     }
   },
   "leaderboards": {}

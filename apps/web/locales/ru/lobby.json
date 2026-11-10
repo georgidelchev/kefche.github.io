@@ -109,7 +109,9 @@
       "bullet": "Пуля",
       "blitz": "Блиц",
       "rapid": "Рапид",
-      "classical": "Классика"
+      "classical": "Классика",
+      "russian": "Русские",
+      "international": "Международные"
     },
     "checking": "Подсчитываем результат…",
     "change": "Ваш рейтинг: {before} → {after} ({change})",

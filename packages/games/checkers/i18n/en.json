@@ -69,6 +69,10 @@
     "streak": {
       "name": "On a roll",
       "description": "Win {count, plural, one {# game} other {# games}} in a row"
+    },
+    "rated": {
+      "name": "Rated player",
+      "description": "Reach a rating of {count, number} after 10 rated games"
     }
   },
   "leaderboards": {}

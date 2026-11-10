@@ -1,11 +1,12 @@
 // submit-match: the server's result for every game that counts (SPEC §12.5).
 // No client says who won or what it scored.
 //
-// - Rated games (Phase 6, chess): the function replays the actions the
-//   players recorded (rated_action: their own seat, the server's time) with
-//   chess.js, runs both clocks from those times and works the result out
-//   itself (_shared/chess-rated.ts). It stores the match and both players'
-//   new Glicko-2 ratings once (_shared/glicko2.ts).
+// - Rated games (Phase 6, chess; Phase 11, other turn games): the function
+//   replays the actions the players recorded (rated_action: their own seat,
+//   the server's time) with chess.js or the game's own engine, runs both
+//   clocks from those times and works the result out itself
+//   (_shared/chess-rated.ts, _shared/turn-rated.ts). It stores the match and
+//   both players' new Glicko-2 ratings once (_shared/glicko2.ts).
 // - An account's own games (Phase 7): the player sends the record of a game
 //   played on a seed the server issued (start_play). The function replays it
 //   with the game's own engine (_shared/engines.ts), checks the result and
@@ -52,9 +53,10 @@ import * as z from "zod";
 import { rewardsFor, unlockForMatch } from "../_shared/achievements.ts";
 import { arenaBoardEntries, arenaReportSchema } from "../_shared/arena-play.ts";
 import { arenaLifeRecordSchema, judgeArena } from "../_shared/arena-solo.ts";
-import { decide } from "../_shared/chess-rated.ts";
+import { decide, type Verdict } from "../_shared/chess-rated.ts";
 import { GAMES } from "../_shared/engines.ts";
 import { rate } from "../_shared/glicko2.ts";
+import { decideTurn } from "../_shared/turn-rated.ts";
 import { bearer, env, fail, json, log } from "../_shared/http.ts";
 import {
   judgeRace,
@@ -119,6 +121,9 @@ const loadedSchema = z.object({
   id: z.uuid(),
   gameId: z.string(),
   pool: z.string(),
+  seed: z.string(),
+  /** The room's options: the engine config, for games other than chess. */
+  config: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).catch({}),
   timer: z.object({ kind: z.literal("clock"), base: z.number(), increment: z.number() }),
   players: z.array(z.uuid()).length(2),
   names: z.array(z.string()).length(2),
@@ -191,16 +196,21 @@ async function stored(admin: SupabaseClient, matchId: string): Promise<Settled> 
 /** Decides the game and, once it's over, stores the result (retrying if a rating moved meanwhile). */
 async function settle(admin: SupabaseClient, game: Loaded, attempt = 0): Promise<Settled> {
   if (game.matchId) return stored(admin, game.matchId);
-  const verdict = decide(
-    {
-      clock: { base: game.timer.base, increment: game.timer.increment },
-      startedAt: new Date(game.startedAt),
-      names: [game.names[0] ?? "?", game.names[1] ?? "?"],
-      pool: game.pool,
-    },
-    game.moves.map((m) => ({ seat: m.seat, action: m.action, at: new Date(m.at) })),
-    new Date(game.now),
-  );
+  const rated = {
+    clock: { base: game.timer.base, increment: game.timer.increment },
+    startedAt: new Date(game.startedAt),
+    names: [game.names[0] ?? "?", game.names[1] ?? "?"] as const,
+    pool: game.pool,
+  };
+  const recorded = game.moves.map((m) => ({ seat: m.seat, action: m.action, at: new Date(m.at) }));
+  const now = new Date(game.now);
+  const engine = GAMES.get(game.gameId);
+  let verdict: Verdict;
+  if (game.gameId === "chess") verdict = decide(rated, recorded, now);
+  else if (engine?.kind === "turn") {
+    const config = raceConfig(engine.options, game.config);
+    verdict = decideTurn(engine.engine, config ?? undefined, game.seed, rated, recorded, now);
+  } else throw new Error(`rated game of ${game.gameId}, which has no turn engine`);
   if (!verdict.over) {
     return {
       pending: true,

@@ -109,7 +109,9 @@
       "bullet": "رصاصي",
       "blitz": "خاطف",
       "rapid": "سريع",
-      "classical": "كلاسيكي"
+      "classical": "كلاسيكي",
+      "russian": "الروسية",
+      "international": "الدولية"
     },
     "checking": "جارٍ احتساب النتيجة…",
     "change": "تصنيفك: {before} ← {after} ({change})",

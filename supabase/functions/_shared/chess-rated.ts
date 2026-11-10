@@ -39,7 +39,8 @@ export type Verdict =
       outcome: [number, number];
       reason: string;
       endedAt: Date;
-      pgn: string;
+      /** The game as PGN (chess); null for other games. */
+      pgn: string | null;
       /** Recorded moves that weren't legal when they arrived, and junk: a game with any is reviewed. */
       refused: number;
     };

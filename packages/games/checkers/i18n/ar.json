@@ -69,6 +69,10 @@
     "streak": {
       "name": "سلسلة انتصارات",
       "description": "اربح مباريات متتالية عددها {count, number}"
+    },
+    "rated": {
+      "name": "لاعب مصنّف",
+      "description": "بلغ تصنيفًا قدره {count, number} بعد 10 مباريات مصنّفة"
     }
   },
   "leaderboards": {}

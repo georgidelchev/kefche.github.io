@@ -69,6 +69,10 @@
     "streak": {
       "name": "Серия побед",
       "description": "Выиграйте {count, plural, one {# партию} few {# партии} many {# партий} other {# партии}} подряд"
+    },
+    "rated": {
+      "name": "Рейтинговый игрок",
+      "description": "Достигните рейтинга {count, number} после 10 рейтинговых партий"
     }
   },
   "leaderboards": {}

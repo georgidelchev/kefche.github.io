@@ -46,6 +46,12 @@ export interface RatedPool {
   id: string;
   /** Indexes into the manifest's `timers`, each a clock. */
   timers: number[];
+  /**
+   * The options the pool plays with, where they differ from the game's
+   * defaults (Checkers' International pool: `{ variant: "international" }`).
+   * The database lists the same (private.rated_clocks.config).
+   */
+  config?: Record<string, string | number | boolean>;
 }
 
 /**

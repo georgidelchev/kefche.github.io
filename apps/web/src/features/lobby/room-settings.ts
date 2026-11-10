@@ -53,6 +53,10 @@ export const settingsJson = ({
  * A rated room's pool and clock (rooms.rated), or null. Rated matchmaking's
  * rooms play one game; a rated lobby (`lobby`) stays one, with rematches.
  */
+/** A rated clock's address on the room page: `?rated=<timer>&pool=<pool>`. */
+export const ratedQuery = (clock: { timer: number; pool: string }) =>
+  `?rated=${String(clock.timer)}&pool=${encodeURIComponent(clock.pool)}`;
+
 export interface RatedRoom {
   pool: string;
   clock: { base: number; increment: number };

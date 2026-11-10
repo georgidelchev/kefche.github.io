@@ -36,7 +36,8 @@ Deno.test("fool's mate: black wins by checkmate", () => {
   if (!v.over) throw new Error("should be over");
   equal(v.outcome, [0, 1], "outcome");
   equal(v.reason, "checkmate", "reason");
-  if (!v.pgn.includes('[Result "0-1"]') || !v.pgn.includes("Qh4#")) throw new Error(v.pgn);
+  if (!v.pgn?.includes('[Result "0-1"]') || !v.pgn?.includes("Qh4#"))
+    throw new Error(v.pgn ?? "no PGN");
   equal(v.endedAt.getTime(), start.getTime() + 4000, "ended at the last move");
 });
 
@@ -120,7 +121,7 @@ Deno.test("crossed records: a reply recorded before the move it answers waits it
   );
   if (!resigned.over) throw new Error("over");
   equal(resigned.refused, 0, "refused");
-  if (!resigned.pgn.includes("1. e4 e5")) throw new Error(resigned.pgn);
+  if (!resigned.pgn?.includes("1. e4 e5")) throw new Error(resigned.pgn ?? "no PGN");
 });
 
 Deno.test("forged claims: a result, a time or a draw nobody offered change nothing", () => {
@@ -167,5 +168,5 @@ Deno.test("refused: an illegal move, junk, a move that never got its turn", () =
   );
   if (!resigned.over) throw new Error("over");
   equal(resigned.refused, 3, "refused");
-  if (!resigned.pgn.includes("1. e4")) throw new Error(resigned.pgn);
+  if (!resigned.pgn?.includes("1. e4")) throw new Error(resigned.pgn ?? "no PGN");
 });

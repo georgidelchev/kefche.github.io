@@ -109,7 +109,9 @@
       "bullet": "Bullet",
       "blitz": "Blitz",
       "rapid": "Rapid",
-      "classical": "Classical"
+      "classical": "Classical",
+      "russian": "Russian",
+      "international": "International"
     },
     "checking": "Working out the result…",
     "change": "Your rating: {before} → {after} ({change})",

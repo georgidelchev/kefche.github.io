@@ -2,19 +2,14 @@
 // profile and a game's own page).
 import type { TimerPreset } from "@kefche/game-sdk";
 
+import { poolNames } from "@/features/games/pool-names";
 import type { AppT } from "@/i18n/i18n";
 
 import type { MatchPlayer } from "./history";
 
 /** A rating pool's name ("Blitz"); an unknown pool shows its id. */
 export function poolName(t: AppT, pool: string): string {
-  const names: Record<string, string> = {
-    bullet: t("lobby:rated.pools.bullet"),
-    blitz: t("lobby:rated.pools.blitz"),
-    rapid: t("lobby:rated.pools.rapid"),
-    classical: t("lobby:rated.pools.classical"),
-  };
-  return names[pool] ?? pool;
+  return poolNames(t)[pool] ?? pool;
 }
 
 /** "5 min + 3 s · Blitz" for a rated clock, or what there is of it. */

@@ -69,6 +69,10 @@
     "streak": {
       "name": "En série",
       "description": "Gagnez {count, plural, one {# partie} other {# parties}} d’affilée"
+    },
+    "rated": {
+      "name": "Joueur classé",
+      "description": "Atteignez un classement de {count, number} après 10 parties classées"
     }
   },
   "leaderboards": {}
