@@ -2395,6 +2395,10 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Board:** pick a piece, turn or flip it (buttons, R and F, 1–4 to pick), and the preview follows the pointer or focus, in your colour where it fits and outlined in red where it doesn't; touch screens tap twice.
   - **Bots:** greedy on size, room to grow and blocking the others' room, weights tuned in self-play (hard beat easy 14 of 16 with two players, 5 of 6 with three and four).
   - Checked in Chrome: 39/39, covering 2 and 4 players, the preview at the corner and a misfit in red, the bots placing, Turn, keyboard placing, 360, 768 and 1280 px, both themes, Arabic, and axe.
+- [x] **Step 15, 15 Puzzle** (the first puzzle on the kit's puzzle flow, `usePuzzle`):
+  - **Rules:** 3 × 3, 4 × 4 (the default) or 5 × 5; tapping a tile in the gap's row or column slides the line. The shuffle is random slides from the solved position, from the seed, so it can always be solved.
+  - **Play:** a menu of sizes with best times, the clock and moves, tiles already home highlighted; races start on the room's size. Best-time boards per size and the solver and speed achievements.
+  - Checked in Chrome: 32/32, covering the menu, a slide, keyboard sliding, 360, 768 and 1280 px, both themes, Arabic, and axe.
 
 ## Known issues
 

@@ -182,6 +182,21 @@ if (process.argv.includes("--fixtures")) {
           : { type: "tick" };
       },
     },
+    // Random slides next to the gap.
+    fifteen: {
+      config: { size: 3 },
+      next: (state, random) => {
+        const n = state.size;
+        const gap = state.tiles.indexOf(0);
+        const near = [gap - n, gap + n, gap % n > 0 ? gap - 1 : -1, gap % n < n - 1 ? gap + 1 : -1];
+        return {
+          cell: pick(
+            random,
+            near.filter((c) => c >= 0 && c < n * n),
+          ),
+        };
+      },
+    },
     sudoku: {
       config: { difficulty: "easy" },
       // A wrong digit now and then, corrected by the next action.

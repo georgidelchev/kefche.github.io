@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine20, bots2, options) {
-    this.engine = engine20;
+  constructor(engine21, bots2, options) {
+    this.engine = engine21;
     this.bots = bots2;
     this.options = options;
-    this.world = engine20.createWorld(options.config, options.seed);
+    this.world = engine21.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine20.ticksPerSecond / engine20.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine21.ticksPerSecond / engine21.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -479,7 +479,7 @@ function canonicalJson(value) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest20) => manifest20;
+var defineManifest = (manifest21) => manifest21;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -4901,6 +4901,107 @@ var manifest5 = defineManifest({
   tags: ["classic", "pencil-and-paper", "multiplayer", "strategy"]
 });
 
+// packages/games/fifteen/engine/index.ts
+var SIZES2 = [4, 3, 5];
+var configFrom2 = (raw) => {
+  const size = raw?.size;
+  return { size: SIZES2.find((s) => s === size) ?? 4 };
+};
+var isSolved = (tiles) => tiles.every((t, i) => i === tiles.length - 1 ? t === 0 : t === i + 1);
+function slide2(tiles, size, cell) {
+  const gap = tiles.indexOf(0);
+  if (cell === gap || cell < 0 || cell >= tiles.length) return null;
+  const [gr, gc] = [Math.floor(gap / size), gap % size];
+  const [r, c] = [Math.floor(cell / size), cell % size];
+  if (r !== gr && c !== gc) return null;
+  const step3 = r === gr ? c < gc ? -1 : 1 : c === gc ? r < gr ? -size : size : 0;
+  const out = tiles.slice();
+  let at = gap;
+  while (at !== cell) {
+    out[at] = out[at + step3] ?? 0;
+    at += step3;
+  }
+  out[cell] = 0;
+  return out;
+}
+var engine6 = {
+  initialState(config, seed) {
+    const { size } = configFrom2(config);
+    const n = size * size;
+    let tiles = Array.from({ length: n }, (_, i) => i === n - 1 ? 0 : i + 1);
+    const rng = Rng.fromSeed(`${seed}:fifteen:${String(size)}`);
+    let previous = -1;
+    for (let i = 0; i < n * 30 || isSolved(tiles); i++) {
+      const gap = tiles.indexOf(0);
+      const near = [
+        gap - size,
+        gap + size,
+        gap % size > 0 ? gap - 1 : -1,
+        gap % size < size - 1 ? gap + 1 : -1
+      ].filter((c) => c >= 0 && c < n && c !== previous);
+      const cell = rng.pick(near);
+      tiles = slide2(tiles, size, cell) ?? tiles;
+      previous = gap;
+    }
+    return { size, tiles, moves: 0 };
+  },
+  apply(state, action) {
+    if (isSolved(state.tiles) || !Number.isInteger(action.cell)) return state;
+    const tiles = slide2(state.tiles, state.size, action.cell);
+    return tiles ? { ...state, tiles, moves: state.moves + 1 } : state;
+  },
+  progress: (state) => state.tiles.filter((t, i) => t !== 0 && t === i + 1).length / (state.tiles.length - 1),
+  result: (state) => isSolved(state.tiles) ? { completed: true, score: state.moves } : null,
+  score: (state) => state.moves
+};
+
+// packages/games/fifteen/manifest.ts
+var manifest6 = defineManifest({
+  id: "fifteen",
+  version: 1,
+  category: "logic",
+  kind: "race",
+  players: { min: 1, max: 8, default: 1 },
+  modes: ["solo", "race", "online-private", "online-public", "quick-match"],
+  bots: { supported: false, difficulties: [], canFillSeats: false },
+  // A race's time limit (the first is the default).
+  timers: [
+    { kind: "countdown", seconds: 300 },
+    { kind: "countdown", seconds: 180 },
+    { kind: "countdown", seconds: 600 }
+  ],
+  options: [
+    {
+      key: "size",
+      label: "size",
+      values: [
+        { value: 4, label: "size4" },
+        { value: 3, label: "size3" },
+        { value: 5, label: "size5" }
+      ]
+    }
+  ],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard"],
+  renderer: "dom",
+  estimatedMinutes: [1, 10],
+  leaderboards: [
+    { id: "best-time-3", metric: "time", order: "asc", when: { size: 3 } },
+    { id: "best-time-4", metric: "time", order: "asc", when: { size: 4 } },
+    { id: "best-time-5", metric: "time", order: "asc", when: { size: 5 } }
+  ],
+  achievements: [
+    { id: "solver", icon: "target", metric: "wins", tiers: [1, 25, 100] },
+    // Best times in milliseconds: 3 minutes, 1 minute, 30 seconds.
+    { id: "speed", icon: "timer", metric: "bestTime", tiers: [18e4, 6e4, 3e4] }
+  ],
+  // The start comes from the seed and every slide is logged.
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 15 },
+  tags: ["puzzle", "classic", "single-player"]
+});
+
 // packages/games/gomoku/engine/lines.ts
 var EMPTY4 = -1;
 var DIRECTIONS2 = [
@@ -4983,22 +5084,22 @@ function lineEngine(rulesFor3) {
 }
 
 // packages/games/gomoku/engine/index.ts
-var configFrom2 = (raw) => ({
+var configFrom3 = (raw) => ({
   exactFive: raw?.exactFive === true
 });
 var rulesFor = (raw) => ({
   size: 15,
   line: 5,
-  exact: configFrom2(raw).exactFive
+  exact: configFrom3(raw).exactFive
 });
-var engine6 = lineEngine(rulesFor);
+var engine7 = lineEngine(rulesFor);
 
 // packages/games/five-colors/engine/index.ts
 var rulesFor2 = (_config, seats) => seats === 2 ? { size: 15, line: 5, exact: false } : { size: seats === 3 ? 15 : 17, line: 4, exact: false };
-var engine7 = lineEngine(rulesFor2);
+var engine8 = lineEngine(rulesFor2);
 
 // packages/games/five-colors/manifest.ts
-var manifest6 = defineManifest({
+var manifest7 = defineManifest({
   id: "five-colors",
   version: 1,
   category: "strategy",
@@ -5030,12 +5131,12 @@ var manifest6 = defineManifest({
 
 // packages/games/four-in-a-row/engine/index.ts
 var WIN_LENGTH = 4;
-var SIZES2 = {
+var SIZES3 = {
   2: [7, 6],
   3: [9, 7],
   4: [10, 8]
 };
-var sizeFor2 = (seats) => SIZES2[seats] ?? [7, 6];
+var sizeFor2 = (seats) => SIZES3[seats] ?? [7, 6];
 var DIRECTIONS3 = [
   [1, 0],
   [0, 1],
@@ -5060,7 +5161,7 @@ function lineThrough(state, col, row, seat) {
   return null;
 }
 var isOver2 = (state) => state.winner !== null || state.moves === state.cols * state.rows;
-var engine8 = {
+var engine9 = {
   initialState(_config, seats) {
     const [cols, rows] = sizeFor2(seats);
     return {
@@ -5116,7 +5217,7 @@ var engine8 = {
 };
 
 // packages/games/four-in-a-row/manifest.ts
-var manifest7 = defineManifest({
+var manifest8 = defineManifest({
   id: "four-in-a-row",
   version: 1,
   category: "board",
@@ -5419,11 +5520,11 @@ function territory(cells, size, dead) {
 }
 
 // packages/games/go/engine/index.ts
-var SIZES3 = [9, 13];
+var SIZES4 = [9, 13];
 var KOMI = 6.5;
-function configFrom3(raw) {
+function configFrom4(raw) {
   const size = raw?.size;
-  return { size: SIZES3.find((s) => s === size) ?? 9 };
+  return { size: SIZES4.find((s) => s === size) ?? 9 };
 }
 var boardOf2 = (state) => {
   const b = new FastBoard(state.size, state.board);
@@ -5494,9 +5595,9 @@ function scoreOf(state, dead) {
   };
 }
 var groupAt = (state, point) => groups(state.board, state.size).find((g) => g.includes(point)) ?? [];
-var engine9 = {
+var engine10 = {
   initialState(config, _seats, seed) {
-    const { size } = configFrom3(config);
+    const { size } = configFrom4(config);
     return {
       size,
       seed,
@@ -5606,7 +5707,7 @@ var engine9 = {
   // Online, an away player passes (or, while scoring, accepts the count).
   skipTurn(state, seat) {
     if (state.phase === "over" || seat !== state.turn) return state;
-    return engine9.applyAction(state, seat, { type: state.phase === "scoring" ? "accept" : "pass" });
+    return engine10.applyAction(state, seat, { type: state.phase === "scoring" ? "accept" : "pass" });
   },
   result(state) {
     if (state.phase !== "over") return null;
@@ -5619,7 +5720,7 @@ var engine9 = {
 };
 
 // packages/games/go/manifest.ts
-var manifest8 = defineManifest({
+var manifest9 = defineManifest({
   id: "go",
   version: 1,
   category: "board",
@@ -5668,7 +5769,7 @@ var manifest8 = defineManifest({
 });
 
 // packages/games/gomoku/manifest.ts
-var manifest9 = defineManifest({
+var manifest10 = defineManifest({
   id: "gomoku",
   version: 1,
   category: "board",
@@ -5713,7 +5814,7 @@ var manifest9 = defineManifest({
 // packages/games/hex/engine/index.ts
 var SIZE2 = 11;
 var EMPTY6 = -1;
-var configFrom4 = (raw) => ({
+var configFrom5 = (raw) => ({
   swap: raw?.swap === true
 });
 var neighbourCache = /* @__PURE__ */ new Map();
@@ -5774,14 +5875,14 @@ function winningChain(board, size, seat) {
   return null;
 }
 var mirror = (cell, size) => cell % size * size + Math.floor(cell / size);
-var engine10 = {
+var engine11 = {
   initialState(config) {
     return {
       size: SIZE2,
       board: Array.from({ length: SIZE2 * SIZE2 }, () => EMPTY6),
       turn: 0,
       moves: 0,
-      swapRule: configFrom4(config).swap,
+      swapRule: configFrom5(config).swap,
       swapped: false,
       last: null,
       winner: null,
@@ -5828,7 +5929,7 @@ var engine10 = {
 };
 
 // packages/games/hex/manifest.ts
-var manifest10 = defineManifest({
+var manifest11 = defineManifest({
   id: "hex",
   version: 1,
   category: "board",
@@ -5874,7 +5975,7 @@ var manifest10 = defineManifest({
 var PITS = 6;
 var STORE = [6, 13];
 var SEEDS = [4, 3, 5, 6];
-var configFrom5 = (raw) => {
+var configFrom6 = (raw) => {
   const seeds = raw?.seeds;
   return { seeds: SEEDS.find((s) => s === seeds) ?? 4 };
 };
@@ -5886,9 +5987,9 @@ function movesFor3(state, seat) {
 }
 var sideTotal = (holes, seat) => pitsOf(seat).reduce((n, p) => n + (holes[p] ?? 0), 0);
 var score2 = (state, seat) => state.holes[STORE[seat === 0 ? 0 : 1]] ?? 0;
-var engine11 = {
+var engine12 = {
   initialState(config) {
-    const { seeds } = configFrom5(config);
+    const { seeds } = configFrom6(config);
     const holes = Array.from({ length: 14 }, (_, i) => i === 6 || i === 13 ? 0 : seeds);
     return { holes, turn: 0, moves: 0, last: null, over: false };
   },
@@ -5947,7 +6048,7 @@ var engine11 = {
 };
 
 // packages/games/mancala/manifest.ts
-var manifest11 = defineManifest({
+var manifest12 = defineManifest({
   id: "mancala",
   version: 1,
   category: "board",
@@ -5992,7 +6093,7 @@ var manifest11 = defineManifest({
 
 // packages/games/nim/engine/index.ts
 var CLASSIC = [1, 3, 5, 7];
-var configFrom6 = (raw) => {
+var configFrom7 = (raw) => {
   const c = raw ?? {};
   return { piles: c.piles === "random" ? "random" : "classic", misere: c.misere === true };
 };
@@ -6002,9 +6103,9 @@ function startingPiles(config, seed) {
   return Array.from({ length: rng.int(3, 5) }, () => rng.int(1, 7));
 }
 var total = (piles) => piles.reduce((n, p) => n + p, 0);
-var engine12 = {
+var engine13 = {
   initialState(config, seats, seed) {
-    const c = configFrom6(config);
+    const c = configFrom7(config);
     return {
       piles: startingPiles(c, seed),
       seats,
@@ -6049,7 +6150,7 @@ var engine12 = {
 };
 
 // packages/games/nim/manifest.ts
-var manifest12 = defineManifest({
+var manifest13 = defineManifest({
   id: "nim",
   version: 1,
   category: "strategy",
@@ -6153,7 +6254,7 @@ var inMill = (board, point) => {
   return seat !== EMPTY7 && (MILLS_AT[point] ?? []).some((m) => m.every((q) => board[q] === seat));
 };
 var countOf = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-function configFrom7(raw) {
+function configFrom8(raw) {
   const flying = raw?.flying;
   return { flying: flying !== false };
 }
@@ -6193,9 +6294,9 @@ function movesFor4(state, seat) {
   return out;
 }
 var key = (state) => `${String(state.turn)}${state.inHand.join("")}:${state.board.map((v) => String(v + 1)).join("")}`;
-var engine13 = {
+var engine14 = {
   initialState(config) {
-    const { flying } = configFrom7(config);
+    const { flying } = configFrom8(config);
     const board = Array.from({ length: POINTS }, () => EMPTY7);
     const state = {
       board,
@@ -6265,7 +6366,7 @@ var engine13 = {
 };
 
 // packages/games/nine-mens-morris/manifest.ts
-var manifest13 = defineManifest({
+var manifest14 = defineManifest({
   id: "nine-mens-morris",
   version: 1,
   category: "board",
@@ -6350,7 +6451,7 @@ function movesFor5(board, seat) {
   return moves;
 }
 var countDiscs = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-var engine14 = {
+var engine15 = {
   initialState() {
     const board = Array.from({ length: SIZE3 * SIZE3 }, () => -1);
     board[3 * SIZE3 + 3] = 1;
@@ -6393,7 +6494,7 @@ var engine14 = {
 };
 
 // packages/games/reversi/manifest.ts
-var manifest14 = defineManifest({
+var manifest15 = defineManifest({
   id: "reversi",
   version: 1,
   category: "board",
@@ -6674,7 +6775,7 @@ function isShape(state, slot, cells) {
   const rc = cells.map((cell) => [Math.floor(cell / size), cell % size]);
   return SHAPE_KEYS[shape]?.has(keyOf(rc)) ?? false;
 }
-var engine15 = {
+var engine16 = {
   initialState(_config, seats, seed) {
     const size = sizeFor3(seats);
     const rng = Rng.fromSeed(`${seed}:bag`);
@@ -6759,7 +6860,7 @@ var engine15 = {
 };
 
 // packages/games/shape-claim/manifest.ts
-var manifest15 = defineManifest({
+var manifest16 = defineManifest({
   id: "shape-claim",
   version: 1,
   category: "strategy",
@@ -6827,7 +6928,7 @@ function neighbor(cell, direction, walls) {
   c = (c + COLS) % COLS;
   return r * COLS + c;
 }
-var engine16 = {
+var engine17 = {
   initialState(config, seed) {
     const middle = Math.floor(ROWS / 2) * COLS + Math.floor(COLS / 2) - 3;
     const snake = [middle, middle - 1, middle - 2];
@@ -6894,7 +6995,7 @@ var engine16 = {
 var stepMs = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
 
 // packages/games/snake/manifest.ts
-var manifest16 = defineManifest({
+var manifest17 = defineManifest({
   id: "snake",
   version: 1,
   category: "arcade",
@@ -7280,7 +7381,7 @@ function fromPuzzle(puzzle) {
     history: []
   };
 }
-var isSolved = (state) => state.values.every((v, c) => v === state.solution[c]);
+var isSolved2 = (state) => state.values.every((v, c) => v === state.solution[c]);
 var inBoard = (cell) => Number.isInteger(cell) && cell >= 0 && cell < CELLS2;
 var isDigit2 = (digit) => Number.isInteger(digit) && digit >= 1 && digit <= 9;
 function place(state, cell, digit) {
@@ -7303,7 +7404,7 @@ function commit(state, next, extra = {}) {
     ]
   };
 }
-var engine17 = {
+var engine18 = {
   initialState(config, seed) {
     return fromPuzzle(generate(seed, config.difficulty));
   },
@@ -7313,7 +7414,7 @@ var engine17 = {
       if (!previous) return state;
       return { ...state, ...previous, moves: state.moves + 1, history: state.history.slice(0, -1) };
     }
-    if (isSolved(state)) return state;
+    if (isSolved2(state)) return state;
     if (action.type === "hint") {
       const correct = state.values.map((v, c) => v === state.solution[c] ? v : 0);
       const chosen = action.cell !== void 0 && inBoard(action.cell) && state.values[action.cell] !== state.solution[action.cell] ? action.cell : nextSingle(correct)?.cell ?? correct.indexOf(0);
@@ -7353,14 +7454,14 @@ var engine17 = {
     return open ? done / open : 1;
   },
   result(state) {
-    return isSolved(state) ? { completed: true } : null;
+    return isSolved2(state) ? { completed: true } : null;
   },
   // Everyone solves on their own in a race.
   allowedInRace: (action) => action.type !== "hint"
 };
 
 // packages/games/sudoku/manifest.ts
-var manifest17 = defineManifest({
+var manifest18 = defineManifest({
   id: "sudoku",
   version: 1,
   category: "logic",
@@ -7422,7 +7523,7 @@ var LINES = [
   [0, 4, 8],
   [2, 4, 6]
 ];
-var configFrom8 = (raw) => ({
+var configFrom9 = (raw) => ({
   mode: raw?.mode === "classic" ? "classic" : "ultimate"
 });
 function lineOf(marks, seat) {
@@ -7439,9 +7540,9 @@ function movesFor6(state) {
     (b) => smallBoard(state.cells, b).flatMap((v, c) => v === EMPTY9 ? [b * 9 + c] : [])
   );
 }
-var engine18 = {
+var engine19 = {
   initialState(config) {
-    const { mode } = configFrom8(config);
+    const { mode } = configFrom9(config);
     return {
       mode,
       cells: Array.from({ length: mode === "classic" ? 9 : 81 }, () => EMPTY9),
@@ -7496,7 +7597,7 @@ var engine18 = {
 };
 
 // packages/games/ultimate-ttt/manifest.ts
-var manifest18 = defineManifest({
+var manifest19 = defineManifest({
   id: "ultimate-ttt",
   version: 1,
   category: "strategy",
@@ -8180,7 +8281,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine19 = {
+var engine20 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -8197,7 +8298,7 @@ var engine19 = {
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest19 = defineManifest({
+var manifest20 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -8234,20 +8335,21 @@ var GAMES = {
   "chess": { manifest: manifest3, engine: engine3 },
   "chinese-checkers": { manifest: manifest4, engine: engine4 },
   "dots-and-boxes": { manifest: manifest5, engine: engine5 },
-  "five-colors": { manifest: manifest6, engine: engine7 },
-  "four-in-a-row": { manifest: manifest7, engine: engine8 },
-  "go": { manifest: manifest8, engine: engine9 },
-  "gomoku": { manifest: manifest9, engine: engine6 },
-  "hex": { manifest: manifest10, engine: engine10 },
-  "mancala": { manifest: manifest11, engine: engine11 },
-  "nim": { manifest: manifest12, engine: engine12 },
-  "nine-mens-morris": { manifest: manifest13, engine: engine13 },
-  "reversi": { manifest: manifest14, engine: engine14 },
-  "shape-claim": { manifest: manifest15, engine: engine15 },
-  "snake": { manifest: manifest16, engine: engine16 },
-  "sudoku": { manifest: manifest17, engine: engine17 },
-  "ultimate-ttt": { manifest: manifest18, engine: engine18 },
-  "worm-rush": { manifest: manifest19, engine: engine19, bots, host: arenaHost }
+  "fifteen": { manifest: manifest6, engine: engine6 },
+  "five-colors": { manifest: manifest7, engine: engine8 },
+  "four-in-a-row": { manifest: manifest8, engine: engine9 },
+  "go": { manifest: manifest9, engine: engine10 },
+  "gomoku": { manifest: manifest10, engine: engine7 },
+  "hex": { manifest: manifest11, engine: engine11 },
+  "mancala": { manifest: manifest12, engine: engine12 },
+  "nim": { manifest: manifest13, engine: engine13 },
+  "nine-mens-morris": { manifest: manifest14, engine: engine14 },
+  "reversi": { manifest: manifest15, engine: engine15 },
+  "shape-claim": { manifest: manifest16, engine: engine16 },
+  "snake": { manifest: manifest17, engine: engine17 },
+  "sudoku": { manifest: manifest18, engine: engine18 },
+  "ultimate-ttt": { manifest: manifest19, engine: engine19 },
+  "worm-rush": { manifest: manifest20, engine: engine20, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

@@ -1,0 +1,82 @@
+{
+  "name": "数字华容道",
+  "tagline": "借着一个空位，把方块滑回顺序。",
+  "description": "在浏览器中免费玩数字华容道：在 3 × 3、4 × 4 或 5 × 5 上把数字方块排好。刷新最佳时间，或与朋友在线比赛。",
+  "about": [
+    "The 15 Puzzle is the classic sliding puzzle: fifteen numbered tiles in a 4 × 4 frame, with one empty space. Slide tiles into the gap until they read 1 to 15 in order, row by row, with the gap in the bottom-right corner. It became a craze in the 1880s and has been on desks and in pockets ever since.",
+    "Here you can also play the quicker 3 × 3 version, with eight tiles, or the much harder 5 × 5, with twenty-four. Every shuffle is made by sliding tiles at random from the solved position, so every puzzle can be solved. The clock and the move counter run from your first slide.",
+    "Play alone to beat your best time for each size, or race friends online: everyone gets the same shuffle, and the first to finish wins."
+  ],
+  "howToPlay": [
+    "Choose a size to start. The clock starts with the puzzle.",
+    "Tap a tile next to the gap to slide it in. Tap a tile further along the same row or column to slide the whole line at once.",
+    "Tiles already in their final place are highlighted.",
+    "Put the tiles in order from 1, left to right and top to bottom, with the gap last.",
+    "Your time and moves are shown when you finish, and your best time for each size is kept."
+  ],
+  "controls": [
+    "Phones and tablets: tap a tile in the gap's row or column.",
+    "Mouse: click a tile in the gap's row or column.",
+    "Keyboard: move between tiles with the arrow keys and press Enter or Space to slide the focused one.",
+    "Pause or start a new puzzle from the bar above the game."
+  ],
+  "tips": [
+    "Solve the top row first, then the left column. What's left is a smaller puzzle of the same kind.",
+    "Place the last two tiles of a row together: bring them into position as a pair rather than one by one.",
+    "Don't undo finished rows. You can almost always work in the rest of the frame.",
+    "On 5 × 5, the same plan works: two rows and two columns, and you're left with a 3 × 3.",
+    "Speed comes from planning a few slides ahead, not from tapping fast."
+  ],
+  "faq": [
+    {
+      "question": "Is the 15 Puzzle free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can every puzzle be solved?",
+      "answer": "Yes. Each start is made by sliding tiles at random from the finished picture, so a way back always exists."
+    },
+    {
+      "question": "Can I slide more than one tile?",
+      "answer": "Yes. Tap any tile in the gap's row or column, and every tile between it and the gap moves with it."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same shuffle at the same moment, and the first to finish wins."
+    }
+  ],
+  "ui": {
+    "best": "最佳：{time}",
+    "time": "时间",
+    "moves": "步数",
+    "newBest": "新的最佳时间！",
+    "changeSize": "更换大小",
+    "boardLabel": "数字华容道",
+    "chooseSize": "选择大小",
+    "sizeLabel": "{size} × {size}",
+    "cellName": "第 {row} 行第 {col} 列",
+    "tile": "{cell}，方块 {number}",
+    "tileMovable": "{cell}，方块 {number}，可滑动",
+    "gap": "{cell}，空位",
+    "solved": "用 {moves} 步完成。",
+    "size": "大小",
+    "size3": "3 × 3",
+    "size4": "4 × 4",
+    "size5": "5 × 5"
+  },
+  "achievements": {
+    "solver": {
+      "name": "解谜高手",
+      "description": "解开 {count, number} 道谜题"
+    },
+    "speed": {
+      "name": "快速解题",
+      "description": "在 {time} 内解开一道谜题"
+    }
+  },
+  "leaderboards": {
+    "best-time-3": "最佳用时・简单 · 3 × 3",
+    "best-time-4": "最佳用时・简单 · 4 × 4",
+    "best-time-5": "最佳用时・简单 · 5 × 5"
+  }
+}

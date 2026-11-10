@@ -1,0 +1,82 @@
+{
+  "name": "لغز 15",
+  "tagline": "حرّك البلاطات عبر الفراغ حتى تعود إلى ترتيبها.",
+  "description": "العب لغز 15 مجانًا في المتصفح: رتّب البلاطات المرقّمة على 3 × 3 أو 4 × 4 أو 5 × 5. حطّم أفضل وقت لك أو تسابق مع أصدقائك.",
+  "about": [
+    "The 15 Puzzle is the classic sliding puzzle: fifteen numbered tiles in a 4 × 4 frame, with one empty space. Slide tiles into the gap until they read 1 to 15 in order, row by row, with the gap in the bottom-right corner. It became a craze in the 1880s and has been on desks and in pockets ever since.",
+    "Here you can also play the quicker 3 × 3 version, with eight tiles, or the much harder 5 × 5, with twenty-four. Every shuffle is made by sliding tiles at random from the solved position, so every puzzle can be solved. The clock and the move counter run from your first slide.",
+    "Play alone to beat your best time for each size, or race friends online: everyone gets the same shuffle, and the first to finish wins."
+  ],
+  "howToPlay": [
+    "Choose a size to start. The clock starts with the puzzle.",
+    "Tap a tile next to the gap to slide it in. Tap a tile further along the same row or column to slide the whole line at once.",
+    "Tiles already in their final place are highlighted.",
+    "Put the tiles in order from 1, left to right and top to bottom, with the gap last.",
+    "Your time and moves are shown when you finish, and your best time for each size is kept."
+  ],
+  "controls": [
+    "Phones and tablets: tap a tile in the gap's row or column.",
+    "Mouse: click a tile in the gap's row or column.",
+    "Keyboard: move between tiles with the arrow keys and press Enter or Space to slide the focused one.",
+    "Pause or start a new puzzle from the bar above the game."
+  ],
+  "tips": [
+    "Solve the top row first, then the left column. What's left is a smaller puzzle of the same kind.",
+    "Place the last two tiles of a row together: bring them into position as a pair rather than one by one.",
+    "Don't undo finished rows. You can almost always work in the rest of the frame.",
+    "On 5 × 5, the same plan works: two rows and two columns, and you're left with a 3 × 3.",
+    "Speed comes from planning a few slides ahead, not from tapping fast."
+  ],
+  "faq": [
+    {
+      "question": "Is the 15 Puzzle free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can every puzzle be solved?",
+      "answer": "Yes. Each start is made by sliding tiles at random from the finished picture, so a way back always exists."
+    },
+    {
+      "question": "Can I slide more than one tile?",
+      "answer": "Yes. Tap any tile in the gap's row or column, and every tile between it and the gap moves with it."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same shuffle at the same moment, and the first to finish wins."
+    }
+  ],
+  "ui": {
+    "best": "الأفضل: {time}",
+    "time": "الوقت",
+    "moves": "الحركات",
+    "newBest": "أفضل وقت جديد!",
+    "changeSize": "تغيير الحجم",
+    "boardLabel": "لغز 15",
+    "chooseSize": "اختر الحجم",
+    "sizeLabel": "{size} × {size}",
+    "cellName": "الصف {row}، العمود {col}",
+    "tile": "{cell}، البلاطة {number}",
+    "tileMovable": "{cell}، البلاطة {number}، يمكن تحريكها",
+    "gap": "{cell}، الفراغ",
+    "solved": "حُلّ في {moves} حركة.",
+    "size": "الحجم",
+    "size3": "3 × 3",
+    "size4": "4 × 4",
+    "size5": "5 × 5"
+  },
+  "achievements": {
+    "solver": {
+      "name": "حلّال الألغاز",
+      "description": "حُلّ ألغازًا عددها {count, number}"
+    },
+    "speed": {
+      "name": "الحل السريع",
+      "description": "حُلّ لغزًا في {time} أو أقل"
+    }
+  },
+  "leaderboards": {
+    "best-time-3": "أفضل وقت · 3 × 3",
+    "best-time-4": "أفضل وقت · 4 × 4",
+    "best-time-5": "أفضل وقت · 5 × 5"
+  }
+}

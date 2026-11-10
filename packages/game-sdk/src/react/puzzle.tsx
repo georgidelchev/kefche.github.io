@@ -96,11 +96,11 @@ export interface Puzzle<State, Action, Config> {
   elapsedMs: number;
   /** The finish beat this device's best time for its choice. */
   newBest: boolean;
-  start(config: Config): void;
+  start: (config: Config) => void;
   /** Applies a player action: the new state, or null when nothing changed. */
-  dispatch(action: Action): State | null;
+  dispatch: (action: Action) => State | null;
   /** Back to the menu (not in a race). */
-  menu(): void;
+  menu: () => void;
 }
 
 export function usePuzzle<State, Action, Config>({
