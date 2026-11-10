@@ -17,7 +17,7 @@
 | 8     | Social: friends, presence, chat, moderation, notifications | ✅ Done (owner signed off 2026-11-05) |
 | 9     | Real-time arena framework & Worm Rush                      | ✅ Done (owner signed off 2026-11-09) |
 | 10    | Admin panel                                                | ✅ Done (owner signed off 2026-11-10) |
-| 11    | Game batch 1: board, strategy, puzzles                     | 📝 Planned; awaiting owner's answers  |
+| 11    | Game batch 1: board, strategy, puzzles                     | 🔎 Built; awaiting owner sign-off     |
 | 12–14 | Game batches 2–4                                           | ⏳ Not started                        |
 | 15    | Translation pass & content packs                           | ⏳ Not started                        |
 | 16    | PWA, audio & haptics polish                                | ⏳ Not started                        |
@@ -2433,6 +2433,17 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
 - [x] **Step 21, the daily challenge and the catalog:**
   - **Daily challenge:** a migration adds the 8 puzzles to `private.daily_rotation`, each with every option set at a middle setting: Minesweeper Intermediate, Nonogram 10 × 10, Pipe Link 7 × 7, 15 Puzzle 4 × 4, a fresh Medium Box Pusher level, Lights Off 5 × 5, Memory Match with 20 cards and Hanoi with 5 discs. The rotation now has 11 games; days already made keep theirs.
   - **Catalog at 27 games:** checked in Chrome, 45/45: every card with its art and name, each category page against its chip's count (they add up to 27), search, an empty search, 360, 768 and 1280 px, both themes, Arabic and Bulgarian, axe, and every new game's page in English and Bulgarian.
+- [x] **Step 22, verification and docs:**
+  - **Bots on a slow phone:** every bot of the 11 turn games was given a quarter of its budget from positions along random games, at the largest boards and most seats. Four times its slowest move is what a phone 4× slower waits: all within budget (Checkers' hard about 940 ms of 900) except Go's easy on 13 × 13, about 240 ms of 150, which keeps a floor of 300 playouts on purpose so a slow phone still plays sensibly.
+  - **Self-play:** hard beat easy in each game's step (Checkers 6 of 6, Go, Gomoku, Hex and the rest as recorded above).
+  - **Every player count:** 20 random games at each count each turn game allows (Chinese Checkers 2–6, Five Colors 2–5, Nim 2–5, Shape Claim 2–4) all end with a result for every seat. Go's only end when its scoring is accepted: random play there keeps choosing Resume, as people don't.
+  - **Server replay:** all 27 games have fixtures (`engines.fixtures.json`); Deno 101/101. `engines.gen.js` grew from 170 KB to 300 KB.
+  - **Layout and accessibility:** each game's step checked 360, 768 and 1280 px, both themes, Arabic and axe. A last pass on the final tree: Pipe Link 37/37, Box Pusher 44/44, Memory Match 43/43, and a 9 × 9 Pipe Link, where axe found three dot colours too dark for their numbers (fixed).
+  - **Docs:** ADDING_A_GAME (Phase 11's worked examples, the React kit, puzzles, options and `rooms: false`, where generators belong), ARCHITECTURE ("The first catalog batch"), ADR-0046's amendment, and TODO #5.
+  - **Release, waiting for the owner's word:**
+    - push the commits;
+    - apply 3 migrations to the hosted database, each with a dry run first: `20261110100000` to `20261110100200` (with Phase 10's 10 if they're still waiting: `20261109100000` to `20261109100900`);
+    - redeploy `submit-match` (the new engines and rated turn games), and `send-push` and `giphy` if Phase 10's release hasn't happened.
 
 ## Known issues
 

@@ -12,6 +12,14 @@ The games built so far are worked examples. Copy from the one closest to yours:
 | [`four-in-a-row`](../packages/games/four-in-a-row/)   | A turn game for 2–4 players: the board grows with players, search bots, column buttons with roving focus |
 | [`reversi`](../packages/games/reversi/)               | Automatic passes, a move-hints toggle, chess-style clocks, a bot with an exact endgame                   |
 | [`dots-and-boxes`](../packages/games/dots-and-boxes/) | Extra turns, 2–5 players, rule-based bots with a chain endgame, wide tap areas on thin lines             |
+| [`checkers`](../packages/games/checkers/)             | A turn game with options (two variants), rated in one pool per variant (ADR-0046)                        |
+| [`go`](../packages/games/go/)                         | Monte Carlo bots, a scoring phase both players accept, rated on 9 × 9                                    |
+| [`hex`](../packages/games/hex/)                       | An SVG board with roving focus, a swap rule option, first tap previews and second tap places             |
+| [`gomoku`](../packages/games/gomoku/)                 | A line engine and board shared with another game (`five-colors` imports it)                              |
+| [`minesweeper`](../packages/games/minesweeper/)       | The puzzle kit, a generator checked by a solver, a marked start for races and the daily challenge        |
+| [`pipe-link`](../packages/games/pipe-link/)           | A pre-generated bank of puzzles (too slow to make while someone waits), drag to draw                     |
+| [`box-pusher`](../packages/games/box-pusher/)         | Fixed levels picked in the game's own menu (an option with `rooms: false`) beside fresh ones             |
+| [`memory-match`](../packages/games/memory-match/)     | A race alone and online, plus a local mode for 2–4 players with bots                                     |
 
 ## Steps
 
@@ -29,6 +37,10 @@ The games built so far are worked examples. Copy from the one closest to yours:
    - Use `context.t` for every string, `context.storage` for best scores and saved games, and `context.report()` for `start`, `score` and `finish`.
    - Use the SDK helpers from `@kefche/game-sdk/browser`: `createLoop`, `createCanvasStage`, `onDirectionKeys`, `onSwipe`, `createStopwatch`, `runInWorker`, `vibrate`.
    - `destroy()` removes every listener, timer, worker and React root.
+   - **React kit** (`@kefche/game-sdk/react`): `useGridFocus` gives a board roving focus and arrow keys (HTML or SVG cells, with a custom `step` for boards that aren't grids), `useTurnFeedback` plays sounds and haptics for each move and the result, `seatStyle` colours a seat, and `KIT_CSS` styles the HUD, chips and buttons.
+   - **Puzzles** (kind `race`): `mountPuzzle` and `usePuzzle` give the menu, the clock that follows pause, the log for the server's replay, best times and the finish; a race starts at once on the room's choice. `PuzzleMenu` lists the sizes or difficulties with their best times.
+   - **Options** (manifest `options`, any kind): each one's values form the engine config, and the first is the default. A race or a room offers them to its host; a turn game's setup sheet offers them too, and they reach the game as `context.match.config`. Mark an option `rooms: false` when only the game's own menu picks it (rooms then play its first value). The server refuses a game played with settings the manifest doesn't offer.
+   - **Generators:** the server replays every game from its seed and config, so making the puzzle must be deterministic and quick (tens of milliseconds). When proving a puzzle takes longer (Pipe Link's solver at 9 × 9), generate a bank in advance with a script (`scripts/<id>-bank.mjs`, into `engine/bank.gen.ts`, which Prettier skips) and let the seed pick and transform one.
 5. **Turn-based games and bots.** `--kind=turn` scaffolds a working two-player game, with bots and a worker, to replace piece by piece.
    - **Manifest:** list `modes: ["solo-bots", "hotseat"]`, the bot difficulties and the timer presets. The first preset is the default; per-move presets say what happens on expiry (`random-move`, `pass` or `loss`). The site's setup screen offers them.
    - **Engine:** `currentSeats()` decides who moves next, which covers extra turns, passes and skipped seats.
@@ -75,7 +87,7 @@ Tick every item before the game ships (SPEC §20). Items marked _(later)_ apply 
 
 - [ ] Board fits the screen at 360, 768 and 1280 px, in portrait and landscape, with no page scroll
 - [ ] Light and dark themes, colours from tokens (`var(--surface)`, `var(--text)`)
-- [ ] Arabic: the page is right-to-left, the board and direction pads stay left-to-right
+- [ ] Arabic: the page is right-to-left, the board and direction pads stay left-to-right (`direction: ltr` on both)
 - [ ] Keyboard: focus visible, every action reachable; screen-reader labels on the board and controls
 - [ ] Colour is never the only signal; motion respects `context.settings.reducedMotion`
 - [ ] axe (WCAG 2.2 AA) clean on the game page and in the open player

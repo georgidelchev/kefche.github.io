@@ -248,6 +248,17 @@ Measured in step 12 on the local arena Worker: 15 people in one arena, 14 from N
 - **Content:** announcements as notifications (sent by `send-announcements`) and in the home page's news, daily challenge overrides from the rotation, and Words of the Day.
 - **The i18n report** is built with the site into a static JSON file.
 
+## The first catalog batch (Phase 11)
+
+19 games, from 8 to 27: 11 board and strategy games and 8 logic puzzles, none with hidden information or randomness on the server.
+
+- **Options for every kind** (ADR-0046): the manifest's `options` form the engine config of races and turn games alike. A turn game's setup sheet and a room offer them, and the server checks them. An option marked `rooms: false` is picked only in the game's own menu (Box Pusher's fixed levels).
+- **Rated turn games beyond chess:** Checkers (a pool per variant) and Go 9 × 9. `submit-match` decides them by replaying with the game's own engine (`_shared/turn-rated.ts`), with chess's rules for clocks and refused moves.
+- **The board kit** (`@kefche/game-sdk/react`): roving focus over HTML or SVG cells, move feedback, seat colours and shapes, shared HUD styles. Puzzles share `mountPuzzle` and `usePuzzle`: the menu, a clock that follows pause, the log for the replay, best times and the finish.
+- **Puzzles the server can replay:** each is made from the seed and config in milliseconds, so the server's replay makes the same one. Generators prove their puzzles with a solver (Minesweeper's fields, Nonogram's lines, Box Pusher's backward search). Where proving takes seconds (Pipe Link's single solution), a script makes a bank in advance (`engine/bank.gen.ts`), and the seed picks and transforms a puzzle from it.
+- **The daily challenge** rotates through 11 games.
+- **The server bundle** (`_shared/engines.gen.js`) holds every engine and manifest: 300 KB for 27 games (170 KB for 8 before).
+
 ## Internationalization
 
 - **Registry:** `src/i18n/locales.ts` lists every locale with its native name, BCP 47 tag, `dir`, script and OG locale. Routing, fonts, `<html lang dir>`, hreflang and the language switcher all derive from it.
