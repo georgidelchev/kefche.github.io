@@ -36,6 +36,9 @@ const COLOURS = [
   "#44aa99",
   "#332288",
 ];
+/** The number on each dot: white where dark ink would fall under 4.5:1. */
+const INK = new Set(["#0072b2", "#882255", "#332288"]);
+const inkOn = (colour: string | undefined) => (colour && INK.has(colour) ? "#ffffff" : "#141826");
 
 interface Draft {
   colour: number;
@@ -245,7 +248,12 @@ function Game({
                   {dot >= 0 && (
                     <span
                       className="gpl-dot"
-                      style={{ "--c": COLOURS[dot % COLOURS.length] } as CSSProperties}
+                      style={
+                        {
+                          "--c": COLOURS[dot % COLOURS.length],
+                          "--ink": inkOn(COLOURS[dot % COLOURS.length]),
+                        } as CSSProperties
+                      }
                       aria-hidden="true"
                     >
                       {dot + 1}
@@ -293,6 +301,6 @@ const CSS = `
 .gpl-cell:focus-visible { outline: 3px solid #fff; outline-offset: -3px; z-index: 2; }
 .gpl-pipes { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
 .gpl-pipes polyline { fill: none; stroke-width: 0.34; stroke-linecap: round; stroke-linejoin: round; }
-.gpl-dot { position: relative; z-index: 2; display: grid; place-items: center; width: 72%; aspect-ratio: 1; border-radius: 50%; background: var(--c); color: #141826; font-weight: 800; font-size: clamp(0.7rem, 3.5vw, 1.2rem); box-shadow: 0 0 0 2px #141826; pointer-events: none; }
+.gpl-dot { position: relative; z-index: 2; display: grid; place-items: center; width: 72%; aspect-ratio: 1; border-radius: 50%; background: var(--c); color: var(--ink); font-weight: 800; font-size: clamp(0.7rem, 3.5vw, 1.2rem); box-shadow: 0 0 0 2px #141826; pointer-events: none; }
 .gpl-hint, .gpl-done { margin: 0; font-weight: 600; text-align: center; }
 `;
