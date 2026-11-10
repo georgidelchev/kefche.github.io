@@ -1,0 +1,74 @@
+{
+  "name": "Mancala",
+  "tagline": "Semez les graines autour du plateau et remplissez votre grenier.",
+  "description": "Jouez au mancala gratuitement avec les règles du Kalah : semez, rejouez et capturez. Contre un bot, à deux sur un appareil ou en ligne.",
+  "about": [
+    "Mancala is one of the oldest families of board games, played across Africa and Asia for centuries. This version uses Kalah rules, the most common in Europe and America. The board has two rows of six pits, one row for each player, and a large store at each end. Every pit starts with the same number of seeds.",
+    "On your turn you scoop up all the seeds from one of your pits and sow them one at a time into the following holes, counter-clockwise, including your own store but skipping your opponent's. If your last seed lands in your store, you play again. If it lands in an empty pit on your side, you capture it along with every seed in the pit opposite.",
+    "When one player's pits are all empty, the game ends, and the other player adds the seeds left on their side to their store. Whoever has more seeds in their store wins. Here you can choose 3 to 6 seeds a pit, and play against a bot on three levels, with a friend on one device, or online."
+  ],
+  "howToPlay": [
+    "Choose how many seeds go in each pit, then Play vs bots or Play on this device. The first player starts.",
+    "Tap one of your pits that has seeds. They are sown one by one counter-clockwise, into your store but never your opponent's.",
+    "If the last seed lands in your store, take another turn.",
+    "If the last seed lands in an empty pit on your side and the pit opposite has seeds, you capture both into your store.",
+    "When either side is empty, the remaining seeds go to the player whose side they're on. The player with more seeds in their store wins; equal stores are a draw."
+  ],
+  "controls": [
+    "Phones and tablets: tap one of your pits to sow it. Your pits are along the bottom; your store is on the right.",
+    "Mouse: click one of your pits.",
+    "Keyboard: move between your pits with the arrow keys and press Enter or Space to sow.",
+    "Against bots, Undo takes back your last move and the bot's reply."
+  ],
+  "tips": [
+    "Count before you sow: a pit whose seeds end exactly in your store gives you another turn.",
+    "Chain extra turns. Sowing a pit close to your store first often sets up another one.",
+    "Keep an empty pit on your side opposite a full one of your opponent's: it's a capture waiting to happen.",
+    "Watch your opponent's empty pits. Leaving seeds opposite them invites a capture.",
+    "Near the end, keeping seeds on your side can be worth more than sowing them across."
+  ],
+  "faq": [
+    {
+      "question": "Is Mancala free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Which rules does this Mancala use?",
+      "answer": "Kalah rules: six pits a side, extra turns for a last seed in your store, and captures from an empty pit of your own when the pit opposite has seeds."
+    },
+    {
+      "question": "Do I sow into my opponent's store?",
+      "answer": "No. Seeds go into your own store as they pass it, but your opponent's store is skipped."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "Easy likes extra turns and captures but often plays carelessly. Medium looks a few moves ahead. Hard looks as far ahead as its time allows, extra turns included."
+    }
+  ],
+  "ui": {
+    "pitLabel": "Trou {number} de {name}, {count} graines",
+    "storeLabel": "Grenier de {name}, {count} graines",
+    "sideOf": "Trous de {name}",
+    "sowed": "{name} sème le trou {number}.",
+    "captured": "{name} capture {count} graines.",
+    "again": "{name} rejoue.",
+    "yourAgain": "Votre dernière graine est tombée dans votre grenier : rejouez.",
+    "undo": "Annuler",
+    "seeds": "Graines par trou",
+    "seeds3": "3",
+    "seeds4": "4",
+    "seeds5": "5",
+    "seeds6": "6"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Vainqueur",
+      "description": "Gagnez {count, plural, one {# partie} other {# parties}}"
+    },
+    "streak": {
+      "name": "En série",
+      "description": "Gagnez {count, plural, one {# partie} other {# parties}} d’affilée"
+    }
+  },
+  "leaderboards": {}
+}

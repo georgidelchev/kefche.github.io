@@ -2369,6 +2369,11 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Board:** SVG hexagons, with each player's edges in their colour (the kit's roving focus now takes SVG cells). Touch screens aim first and place on a second tap, as in Gomoku.
   - **Bots:** Monte Carlo with "all moves as first": random fills of the board, each won cell counting for the winner. All take a win; medium and hard always block one, easy about two times in three, and easy plays a random cell a third of the time. As the second player they swap a first stone near the centre. Hard beat easy 6 of 6 with swap on and off.
   - Checked in Chrome: 36/36, covering the swap option, a move and the bot's reply, a swap on one device, a winning chain, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe.
+- [x] **Step 7, Mancala:**
+  - **Rules (Kalah):** six pits a side and a store at each end, 3 to 6 seeds a pit (4 by default). Seeds are sown counter-clockwise into your own store but not the other's. A last seed in your store plays again; in an empty pit of yours with seeds opposite, it captures both. When a side is empty, each player banks what's left on their side.
+  - **Board:** your pits along the bottom and your store on the right (turned round for the second seat), seeds drawn as dots with the count, the pits the last sowing reached marked.
+  - **Bots:** easy likes extra turns and captures; medium searches four plies on the stores; hard searches deeper, extra turns included. Hard beat easy 6 of 6 with 4 and 6 seeds.
+  - Checked in Chrome: 36/36, covering the seeds option, an extra turn, the bot's sowing, undo, six seeds on one device, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe.
 
 ## Known issues
 

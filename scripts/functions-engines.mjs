@@ -203,6 +203,7 @@ if (process.argv.includes("--fixtures")) {
     go: { size: 9 },
     gomoku: { exactFive: false },
     hex: { swap: true },
+    mancala: { seeds: 4 },
     "nine-mens-morris": { flying: true },
     reversi: undefined,
   };
