@@ -1,0 +1,92 @@
+{
+  "name": "हनोई की मीनार",
+  "tagline": "एक-एक डिस्क करके पूरी मीनार दाईं खूँटी पर ले जाएँ।",
+  "description": "ब्राउज़र में हनोई की मीनार मुफ़्त खेलें: 3 से 8 डिस्क दाईं खूँटी पर ले जाएँ, बड़ी कभी छोटी पर नहीं। समय सुधारें या दौड़ें।",
+  "about": [
+    "The Tower of Hanoi is a classic puzzle from 1883. A tower of discs, each smaller than the one below, sits on the left of three pegs. Move the whole tower to the right peg. You may move only one disc at a time, always the top disc of a peg, and you may never put a disc on top of a smaller one.",
+    "The puzzle has a famous answer: a tower of n discs takes at least 2ⁿ − 1 moves, so three discs take seven moves, eight discs take 255. The game shows the fewest possible next to your own count, so you can see how close you came.",
+    "Choose from 3 to 8 discs. Play alone to beat your best time, or race friends online: everyone starts at the same moment, and the first to finish wins."
+  ],
+  "howToPlay": [
+    "Choose how many discs to play with. The clock starts with the puzzle.",
+    "Tap a peg to lift its top disc, then tap another peg to put it down there.",
+    "You can't put a disc on a smaller one; the game won't let you.",
+    "Tap the same peg again to put a lifted disc back.",
+    "Move the whole tower to the right peg to finish. Your time and moves are shown, with the fewest moves possible."
+  ],
+  "controls": [
+    "Phones and tablets: tap a peg to lift, then another to drop.",
+    "Mouse: click a peg to lift, then another to drop.",
+    "Keyboard: move between pegs with the arrow keys and press Enter or Space to lift or drop.",
+    "Pause or start a new puzzle from the bar above the game."
+  ],
+  "tips": [
+    "The smallest disc moves every other turn, always in the same direction around the pegs.",
+    "With an odd number of discs, move the smallest disc to the right peg first; with an even number, to the middle one.",
+    "Between moves of the smallest disc there is only ever one legal move. Make it.",
+    "Think of a tower of n discs as a tower of n − 1 moved aside, the biggest disc moved, then the smaller tower moved back on top.",
+    "Speed comes from rhythm: once you see the pattern, you hardly need to think."
+  ],
+  "faq": [
+    {
+      "question": "Is the Tower of Hanoi free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is the fewest number of moves?",
+      "answer": "2ⁿ − 1 for n discs: 7 for three, 15 for four, up to 255 for eight."
+    },
+    {
+      "question": "Can I put a disc on the middle peg?",
+      "answer": "Yes. Any peg is fine, as long as the disc below is bigger."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room starts the same tower at the same moment, and the first to finish wins."
+    }
+  ],
+  "ui": {
+    "best": "सबसे अच्छा: {time}",
+    "time": "समय",
+    "moves": "चालें",
+    "newBest": "नया सबसे अच्छा समय!",
+    "changeSize": "आकार बदलें",
+    "boardLabel": "खूँटियाँ",
+    "chooseDiscs": "डिस्कों की संख्या चुनें",
+    "discsLabel": "{count} डिस्क",
+    "minimum": "सबसे कम चालें: {moves}",
+    "fewestLabel": "सबसे कम",
+    "pegLeft": "बाईं खूँटी",
+    "pegMiddle": "बीच की खूँटी",
+    "pegRight": "दाईं खूँटी",
+    "pegEmpty": "{peg}, खाली",
+    "pegDiscs": "{peg}, {count} डिस्क, सबसे ऊपर {top}",
+    "lifted": "डिस्क उठाई गई",
+    "canDrop": "आप इसे यहाँ रख सकते हैं",
+    "solved": "{moves} चालों में हुआ (सबसे कम संभव: {fewest})।",
+    "changeDiscs": "डिस्क बदलें",
+    "discs": "डिस्क",
+    "discs3": "3",
+    "discs4": "4",
+    "discs5": "5",
+    "discs6": "6",
+    "discs7": "7",
+    "discs8": "8"
+  },
+  "achievements": {
+    "solver": {
+      "name": "पहेली उस्ताद",
+      "description": "{count, plural, one {# पहेली} other {# पहेलियाँ}} सुलझाएँ"
+    },
+    "speed": {
+      "name": "फुर्तीला",
+      "description": "{time} या उससे कम में एक पहेली सुलझाएँ"
+    }
+  },
+  "leaderboards": {
+    "best-time-5": "सर्वश्रेष्ठ समय · 5 डिस्क",
+    "best-time-6": "सर्वश्रेष्ठ समय · 6 डिस्क",
+    "best-time-7": "सर्वश्रेष्ठ समय · 7 डिस्क",
+    "best-time-8": "सर्वश्रेष्ठ समय · 8 डिस्क"
+  }
+}

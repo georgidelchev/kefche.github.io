@@ -1,0 +1,92 @@
+{
+  "name": "汉诺塔",
+  "tagline": "一次一个圆盘，把整座塔移到右边的柱子。",
+  "description": "在浏览器中免费玩汉诺塔：把 3 到 8 个圆盘移到右柱，大盘不能压小盘。刷新最佳时间，或与朋友在线比赛。",
+  "about": [
+    "The Tower of Hanoi is a classic puzzle from 1883. A tower of discs, each smaller than the one below, sits on the left of three pegs. Move the whole tower to the right peg. You may move only one disc at a time, always the top disc of a peg, and you may never put a disc on top of a smaller one.",
+    "The puzzle has a famous answer: a tower of n discs takes at least 2ⁿ − 1 moves, so three discs take seven moves, eight discs take 255. The game shows the fewest possible next to your own count, so you can see how close you came.",
+    "Choose from 3 to 8 discs. Play alone to beat your best time, or race friends online: everyone starts at the same moment, and the first to finish wins."
+  ],
+  "howToPlay": [
+    "Choose how many discs to play with. The clock starts with the puzzle.",
+    "Tap a peg to lift its top disc, then tap another peg to put it down there.",
+    "You can't put a disc on a smaller one; the game won't let you.",
+    "Tap the same peg again to put a lifted disc back.",
+    "Move the whole tower to the right peg to finish. Your time and moves are shown, with the fewest moves possible."
+  ],
+  "controls": [
+    "Phones and tablets: tap a peg to lift, then another to drop.",
+    "Mouse: click a peg to lift, then another to drop.",
+    "Keyboard: move between pegs with the arrow keys and press Enter or Space to lift or drop.",
+    "Pause or start a new puzzle from the bar above the game."
+  ],
+  "tips": [
+    "The smallest disc moves every other turn, always in the same direction around the pegs.",
+    "With an odd number of discs, move the smallest disc to the right peg first; with an even number, to the middle one.",
+    "Between moves of the smallest disc there is only ever one legal move. Make it.",
+    "Think of a tower of n discs as a tower of n − 1 moved aside, the biggest disc moved, then the smaller tower moved back on top.",
+    "Speed comes from rhythm: once you see the pattern, you hardly need to think."
+  ],
+  "faq": [
+    {
+      "question": "Is the Tower of Hanoi free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is the fewest number of moves?",
+      "answer": "2ⁿ − 1 for n discs: 7 for three, 15 for four, up to 255 for eight."
+    },
+    {
+      "question": "Can I put a disc on the middle peg?",
+      "answer": "Yes. Any peg is fine, as long as the disc below is bigger."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room starts the same tower at the same moment, and the first to finish wins."
+    }
+  ],
+  "ui": {
+    "best": "最佳：{time}",
+    "time": "时间",
+    "moves": "步数",
+    "newBest": "新的最佳时间！",
+    "changeSize": "更换大小",
+    "boardLabel": "柱子",
+    "chooseDiscs": "选择圆盘数量",
+    "discsLabel": "{count} 个圆盘",
+    "minimum": "最少步数：{moves}",
+    "fewestLabel": "最少",
+    "pegLeft": "左柱",
+    "pegMiddle": "中柱",
+    "pegRight": "右柱",
+    "pegEmpty": "{peg}，空",
+    "pegDiscs": "{peg}，{count} 个圆盘，最上面是 {top}",
+    "lifted": "已拿起圆盘",
+    "canDrop": "可以放在这里",
+    "solved": "用 {moves} 步完成（最少 {fewest} 步）。",
+    "changeDiscs": "更换圆盘数",
+    "discs": "圆盘",
+    "discs3": "3",
+    "discs4": "4",
+    "discs5": "5",
+    "discs6": "6",
+    "discs7": "7",
+    "discs8": "8"
+  },
+  "achievements": {
+    "solver": {
+      "name": "解谜高手",
+      "description": "解开 {count, number} 道谜题"
+    },
+    "speed": {
+      "name": "快速解题",
+      "description": "在 {time} 内解开一道谜题"
+    }
+  },
+  "leaderboards": {
+    "best-time-5": "最佳用时・简单 · 5 个圆盘",
+    "best-time-6": "最佳用时・简单 · 6 个圆盘",
+    "best-time-7": "最佳用时・简单 · 7 个圆盘",
+    "best-time-8": "最佳用时・简单 · 8 个圆盘"
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "name": "Lights Off",
+  "tagline": "Each press flips a light and its neighbours. Turn them all off.",
+  "description": "Play Lights Off free in your browser: every press switches a light and its neighbours. Turn the whole grid dark, alone or racing friends online.",
+  "about": [
+    "Lights Off is a small grid of lights with one simple rule: pressing a light switches it, and also switches the lights directly above, below, left and right of it. Some lights start on. Your job is to turn every one of them off.",
+    "It sounds easy until you try. Every press changes up to five lights, so fixing one corner tends to undo another. There's a pattern to it, though: the order of presses doesn't matter, and pressing the same light twice does nothing at all, so every solution is really just a set of lights to press once.",
+    "Each puzzle is made by pressing random lights on a dark board, so there is always a way back. When you finish, the game tells you the fewest presses that would have done it. Play 4 × 4 up to 7 × 7, alone or racing friends online."
+  ],
+  "howToPlay": [
+    "Choose a size to start. The clock starts with the puzzle.",
+    "Tap a light to press it. It switches on or off, and so do its neighbours above, below, left and right.",
+    "Lights on the edge have fewer neighbours, and corner lights fewer still.",
+    "Turn every light off to finish.",
+    "Your time and presses are shown at the end, along with the fewest presses possible."
+  ],
+  "controls": [
+    "Phones and tablets: tap a light.",
+    "Mouse: click a light.",
+    "Keyboard: move with the arrow keys and press Enter or Space to press a light.",
+    "Pause or start a new puzzle from the bar above the game."
+  ],
+  "tips": [
+    "Work row by row: for each light still on, press the one directly below it. At the end, only the bottom row is left.",
+    "The bottom row's pattern tells you which lights in the top row to press first; then sweep down again.",
+    "Pressing a light twice undoes it, so never press the same light twice in a row.",
+    "The order doesn't matter: you can press the lights of a solution in any order.",
+    "On larger grids, the row-by-row method is reliable even when you can't see the shortcut."
+  ],
+  "faq": [
+    {
+      "question": "Is Lights Off free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can every puzzle be solved?",
+      "answer": "Yes. Each puzzle is made by pressing random lights on a dark board, so pressing the same lights again would always clear it."
+    },
+    {
+      "question": "What is the 'fewest presses' at the end?",
+      "answer": "The smallest number of presses that solves that starting position, worked out by the game. Matching it is a good challenge."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same lights at the same moment, and the first to turn them all off wins."
+    }
+  ],
+  "ui": {
+    "best": "Best: {time}",
+    "time": "Time",
+    "moves": "Moves",
+    "newBest": "New best time!",
+    "changeSize": "Change size",
+    "boardLabel": "Lights",
+    "chooseSize": "Choose a size",
+    "sizeLabel": "{size} × {size}",
+    "presses": "Presses",
+    "lit": "Lit",
+    "lightOn": "row {row}, light {col}, on",
+    "lightOff": "row {row}, light {col}, off",
+    "solved": "All off in {presses} presses. Fewest possible: {fewest}.",
+    "size": "Size",
+    "size4": "4 × 4",
+    "size5": "5 × 5",
+    "size6": "6 × 6",
+    "size7": "7 × 7"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Solver",
+      "description": "Solve {count, plural, one {# puzzle} other {# puzzles}}"
+    },
+    "speed": {
+      "name": "Speed solver",
+      "description": "Solve a puzzle in {time} or less"
+    }
+  },
+  "leaderboards": {
+    "best-time-4": "Best time · 4 × 4",
+    "best-time-5": "Best time · 5 × 5",
+    "best-time-6": "Best time · 6 × 6",
+    "best-time-7": "Best time · 7 × 7"
+  }
+}

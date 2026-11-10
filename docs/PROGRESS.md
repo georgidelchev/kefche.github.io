@@ -2399,6 +2399,11 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Rules:** 3 × 3, 4 × 4 (the default) or 5 × 5; tapping a tile in the gap's row or column slides the line. The shuffle is random slides from the solved position, from the seed, so it can always be solved.
   - **Play:** a menu of sizes with best times, the clock and moves, tiles already home highlighted; races start on the room's size. Best-time boards per size and the solver and speed achievements.
   - Checked in Chrome: 32/32, covering the menu, a slide, keyboard sliding, 360, 768 and 1280 px, both themes, Arabic, and axe.
+- [x] **Steps 16 and 17, Lights Off and the Tower of Hanoi** (one commit: they share the regenerated server bundle):
+  - **Lights Off:** 5 × 5 by default, 4 × 4 to 7 × 7. Pressing a light switches it and its four neighbours; the start is random presses on a dark board, from the seed. The fewest presses that solve it are worked out over GF(2) and shown at the end.
+  - **Tower of Hanoi:** 3–8 discs (4 by default); tap a peg to lift its top disc and another to put it down. A larger disc on a smaller one is refused and the disc stays lifted. Moves are shown against the fewest, 2ⁿ − 1.
+  - Both: best-time boards per size, the solver and speed achievements, races, and server replay fixtures.
+  - Checked in Chrome: 62/62, covering the menus, presses switching and undoing, a refused drop, solving three discs in seven moves to the finish, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe.
 
 ## Known issues
 

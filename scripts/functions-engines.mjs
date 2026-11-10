@@ -197,6 +197,27 @@ if (process.argv.includes("--fixtures")) {
         };
       },
     },
+    // Random legal moves between pegs.
+    hanoi: {
+      config: { discs: 3 },
+      next: (state, random) => {
+        const moves = [];
+        for (let from = 0; from < 3; from++) {
+          for (let to = 0; to < 3; to++) {
+            const a = state.pegs[from].at(-1);
+            const b = state.pegs[to].at(-1);
+            if (from !== to && a !== undefined && (b === undefined || b > a))
+              moves.push({ from, to });
+          }
+        }
+        return pick(random, moves);
+      },
+    },
+    // Presses at random.
+    "lights-off": {
+      config: { size: 4 },
+      next: (state, random) => ({ cell: Math.floor(random() * state.lights.length) }),
+    },
     sudoku: {
       config: { difficulty: "easy" },
       // A wrong digit now and then, corrected by the next action.
