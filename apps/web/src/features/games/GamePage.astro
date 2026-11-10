@@ -21,6 +21,7 @@ import {
   arenaProps,
   onlineModes,
   playerStrings,
+  playerUi,
   playsOnline,
   turnConfig,
   turnStrings,
@@ -175,7 +176,7 @@ const crumb = "rounded-sm hover:underline";
           locale={bcp47}
           dir={dir}
           strings={playerStrings(t, locale, { manifest, text })}
-          ui={text.ui}
+          ui={playerUi(manifest, text.ui, t)}
           {...(turn ? { turn } : {})}
           realtime={manifest.kind === "realtime"}
           {...(arena ? { arena } : {})}

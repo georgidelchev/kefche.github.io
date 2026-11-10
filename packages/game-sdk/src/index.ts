@@ -6,6 +6,7 @@ export * from "./arena-host";
 export * from "./arena-log";
 export * from "./arena-protocol";
 export * from "./bytes";
+export * from "./cards";
 export * from "./det-math";
 export * from "./bots";
 export * from "./engines";

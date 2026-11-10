@@ -214,6 +214,32 @@ export const ratedClocks = (manifest: GameManifest): RatedClock[] =>
     ? manifest.rated.pools.flatMap((pool) => pool.timers.map((timer) => ({ timer, pool: pool.id })))
     : [];
 
+/**
+ * A game's UI strings as its player gets them: its own, plus the kit's
+ * shared ones it uses (keys "kit.…"), so every card game names cards the
+ * same way without carrying the words itself (Phase 12).
+ */
+export function playerUi(manifest: GameManifest, ui: Record<string, string>, t: AppT) {
+  return manifest.tags.includes("cards") ? { ...cardKitUi(t), ...ui } : ui;
+}
+
+/** The card kit's strings (@kefche/game-sdk/react cardText), keyed as games ask for them. */
+export function cardKitUi(t: AppT): Record<string, string> {
+  return {
+    "kit.card.clubs": t("games:cards.clubs"),
+    "kit.card.diamonds": t("games:cards.diamonds"),
+    "kit.card.hearts": t("games:cards.hearts"),
+    "kit.card.spades": t("games:cards.spades"),
+    "kit.card.jack": t("games:cards.jack"),
+    "kit.card.queen": t("games:cards.queen"),
+    "kit.card.king": t("games:cards.king"),
+    "kit.card.ace": t("games:cards.ace"),
+    "kit.card.name": t("games:cards.name", { rank: "{rank}", suit: "{suit}" }),
+    "kit.card.faceDown": t("games:cards.faceDown"),
+    "kit.card.fourColour": t("games:cards.fourColour"),
+  };
+}
+
 export function turnStrings(t: AppT): TurnStrings {
   return {
     start: { "solo-bots": t("games:turn.start.soloBots"), hotseat: t("games:turn.start.hotseat") },
@@ -250,6 +276,9 @@ export function turnStrings(t: AppT): TurnStrings {
     youLose: t("games:turn.youLose"),
     draw: t("games:turn.draw"),
     outOfTime: t("games:turn.outOfTime", { name: "{name}" }),
+    handoffTitle: t("games:turn.handoffTitle", { name: "{name}" }),
+    handoffBody: t("games:turn.handoffBody", { name: "{name}" }),
+    handoffReady: t("games:turn.handoffReady", { name: "{name}" }),
     botNames: Object.fromEntries(
       Object.entries(BOT_NAME_KEYS).map(([id, key]) => [id, t(key)]),
     ) as TurnStrings["botNames"],

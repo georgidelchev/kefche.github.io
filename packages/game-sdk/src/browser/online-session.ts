@@ -15,7 +15,7 @@
 // - Rejoining: a member asks the host for the latest state on connecting. A
 //   host that reloads carries on from the snapshot its device saved.
 
-import { canonicalJson, isSideAction, sameAction, type GameResult } from "../engines";
+import { canonicalJson, isSideAction, sameAction, viewFor, type GameResult } from "../engines";
 import { stateHash, createMessenger, type Message, type Payload } from "../protocol";
 import { elapse, isLowTime, timeLeft } from "../timers";
 import {
@@ -176,18 +176,21 @@ export function createOnlineTurnSession<State, Action, Config>(
     }
     const seatsToMove = toMove();
     const mover = seatsToMove[0];
+    const over = result();
+    const viewer = localSeats[0] ?? null;
     const view: TurnView<State, Action> = {
-      state: snapshot.state,
+      state: over ? snapshot.state : viewFor(engine, snapshot.state, viewer),
+      viewer: over ? null : viewer,
+      handoff: null,
       toMove: seatsToMove,
       humanSeat: mover !== undefined && localSeats.includes(mover) ? mover : null,
       thinking: mover !== undefined && seats[mover]?.kind === "bot",
       lastMove: snapshot.last,
-      result: result(),
+      result: over,
       canUndo: false,
     };
     options.onChange(view);
     reportTurn();
-    const over = result();
     if (over && !finished) {
       finished = true;
       context.report({ type: "finish", result: over });
@@ -342,6 +345,9 @@ export function createOnlineTurnSession<State, Action, Config>(
     },
     refresh() {
       hosted?.refresh();
+    },
+    reveal() {
+      // Each player has their own device online.
     },
     destroy() {
       destroyed = true;

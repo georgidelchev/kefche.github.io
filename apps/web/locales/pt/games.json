@@ -146,7 +146,10 @@
     "youWin": "Você venceu!",
     "youLose": "Você perdeu",
     "draw": "Empate",
-    "outOfTime": "O tempo de {name} acabou"
+    "outOfTime": "O tempo de {name} acabou",
+    "handoffTitle": "Passe o aparelho para {name}",
+    "handoffBody": "Os outros não olhem: o que vem agora é só para {name}.",
+    "handoffReady": "Sou {name}, mostrar"
   },
   "bots": {
     "mila": "Mila",
@@ -172,5 +175,18 @@
   "unavailable": {
     "title": "Indisponível no momento",
     "body": "Este jogo está desligado por enquanto. Tente mais tarde ou escolha outro jogo."
+  },
+  "cards": {
+    "clubs": "paus",
+    "diamonds": "ouros",
+    "hearts": "copas",
+    "spades": "espadas",
+    "jack": "Valete",
+    "queen": "Dama",
+    "king": "Rei",
+    "ace": "Ás",
+    "name": "{rank} de {suit}",
+    "faceDown": "Carta virada para baixo",
+    "fourColour": "Baralho de quatro cores"
   }
 }

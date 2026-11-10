@@ -146,7 +146,10 @@
     "youWin": "Du gewinnst!",
     "youLose": "Du hast verloren",
     "draw": "Unentschieden",
-    "outOfTime": "{name} hat keine Zeit mehr"
+    "outOfTime": "{name} hat keine Zeit mehr",
+    "handoffTitle": "Gib das Gerät an {name}",
+    "handoffBody": "Alle anderen schauen weg: Was jetzt kommt, ist nur für {name}.",
+    "handoffReady": "Ich bin {name}, zeig es mir"
   },
   "bots": {
     "mila": "Mila",
@@ -172,5 +175,18 @@
   "unavailable": {
     "title": "Vorübergehend nicht verfügbar",
     "body": "Dieses Spiel ist im Moment ausgeschaltet. Versuch es später noch einmal oder wähle ein anderes Spiel."
+  },
+  "cards": {
+    "clubs": "Kreuz",
+    "diamonds": "Karo",
+    "hearts": "Herz",
+    "spades": "Pik",
+    "jack": "Bube",
+    "queen": "Dame",
+    "king": "König",
+    "ace": "Ass",
+    "name": "{suit}-{rank}",
+    "faceDown": "Verdeckte Karte",
+    "fourColour": "Vierfarbiges Blatt"
   }
 }

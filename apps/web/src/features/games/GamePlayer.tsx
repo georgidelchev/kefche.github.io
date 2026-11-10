@@ -434,6 +434,9 @@ export function GamePlayer({
     result && match && losesOnTime
       ? match.seats.find((_, i) => report?.clocks[i] === 0)
       : undefined;
+  /** One device, hidden information: who the device goes to next. */
+  const handoffSeat = report?.handoff === undefined ? undefined : match?.seats[report.handoff];
+  const handoffName = handoffSeat && turn ? seatName(handoffSeat, turn.strings) : null;
   const showHud =
     match && turn && (phase === "playing" || phase === "paused" || phase === "finished");
 
@@ -600,6 +603,19 @@ export function GamePlayer({
                 }}
               >
                 {strings.retry}
+              </Button>
+            </Overlay>
+          )}
+          {phase === "playing" && handoffName !== null && turn && (
+            <Overlay key={report?.handoff}>
+              <p className="text-2xl font-semibold">
+                {fill(turn.strings.handoffTitle, { name: handoffName })}
+              </p>
+              <p className="max-w-sm text-muted">
+                {fill(turn.strings.handoffBody, { name: handoffName })}
+              </p>
+              <Button ref={focusOnMount} onClick={() => instanceRef.current?.reveal?.()}>
+                {fill(turn.strings.handoffReady, { name: handoffName })}
               </Button>
             </Overlay>
           )}

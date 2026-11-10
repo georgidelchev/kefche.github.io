@@ -73,6 +73,9 @@ export function runTurnGame<State, Action, Config>(
     resume() {
       session?.resume();
     },
+    reveal() {
+      session?.reveal();
+    },
     restart(seed) {
       start(seed);
     },

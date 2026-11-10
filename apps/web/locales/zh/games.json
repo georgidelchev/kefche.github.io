@@ -146,7 +146,10 @@
     "youWin": "你赢了！",
     "youLose": "你输了",
     "draw": "平局",
-    "outOfTime": "{name} 用完了时间"
+    "outOfTime": "{name} 用完了时间",
+    "handoffTitle": "请把设备交给 {name}",
+    "handoffBody": "其他人请回避：接下来的内容只给 {name} 看。",
+    "handoffReady": "我是 {name}，显示"
   },
   "bots": {
     "mila": "米拉",
@@ -172,5 +175,18 @@
   "unavailable": {
     "title": "暂时不可用",
     "body": "该游戏暂时关闭。请稍后再试，或选择其他游戏。"
+  },
+  "cards": {
+    "clubs": "梅花",
+    "diamonds": "方块",
+    "hearts": "红桃",
+    "spades": "黑桃",
+    "jack": "J",
+    "queen": "Q",
+    "king": "K",
+    "ace": "A",
+    "name": "{suit}{rank}",
+    "faceDown": "背面朝上的牌",
+    "fourColour": "四色牌"
   }
 }

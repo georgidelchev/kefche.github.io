@@ -120,6 +120,12 @@ export interface TurnReport {
   lowTime: readonly boolean[];
   /** A bot is choosing its move. */
   thinking: boolean;
+  /**
+   * One device, hidden information: the seat to hand the device to. The
+   * player covers the screen until that person says they have it, then
+   * calls the instance's `reveal()`.
+   */
+  handoff?: number;
 }
 
 export type GameEvent =
@@ -202,6 +208,8 @@ export interface GameContext {
 export interface GameInstance {
   pause(): void;
   resume(): void;
+  /** The person the device was handed to has it (TurnReport `handoff`). */
+  reveal?(): void;
   /** Starts a new game in the same container. */
   restart(seed: string): void;
   destroy(): void;

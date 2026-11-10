@@ -64,6 +64,8 @@ const pairs = [
   ...uiOn("border-strong"),
   ...uiOn("focus"),
   ...uiOn("accent-strong", ["bg", "surface"]),
+  // Card faces: the indices and pips in every suit colour (Phase 12).
+  ...["card-ink", "card-red", "card-blue", "card-green"].map((fg) => [fg, "card-face", TEXT]),
 ];
 
 // Player, category and achievement tier colors are theme-independent fills with a paired ink

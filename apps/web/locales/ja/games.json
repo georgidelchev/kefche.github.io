@@ -146,7 +146,10 @@
     "youWin": "あなたの勝ち！",
     "youLose": "あなたの負け",
     "draw": "引き分け",
-    "outOfTime": "{name} の時間切れ"
+    "outOfTime": "{name} の時間切れ",
+    "handoffTitle": "端末を{name}に渡してください",
+    "handoffBody": "ほかの人は見ないでください。ここからは{name}だけが見る画面です。",
+    "handoffReady": "{name}です、表示する"
   },
   "bots": {
     "mila": "ミラ",
@@ -172,5 +175,18 @@
   "unavailable": {
     "title": "一時的に利用できません",
     "body": "このゲームは現在オフになっています。後でもう一度試すか、別のゲームを選んでください。"
+  },
+  "cards": {
+    "clubs": "クラブ",
+    "diamonds": "ダイヤ",
+    "hearts": "ハート",
+    "spades": "スペード",
+    "jack": "ジャック",
+    "queen": "クイーン",
+    "king": "キング",
+    "ace": "エース",
+    "name": "{suit}の{rank}",
+    "faceDown": "裏向きのカード",
+    "fourColour": "4色デッキ"
   }
 }

@@ -146,7 +146,10 @@
     "youWin": "You win!",
     "youLose": "You lose",
     "draw": "It's a draw",
-    "outOfTime": "{name} ran out of time"
+    "outOfTime": "{name} ran out of time",
+    "handoffTitle": "Pass the device to {name}",
+    "handoffBody": "Everyone else, look away: what comes next is for {name} only.",
+    "handoffReady": "I'm {name}, show me"
   },
   "bots": {
     "mila": "Mila",
@@ -172,5 +175,18 @@
   "unavailable": {
     "title": "Temporarily unavailable",
     "body": "This game is turned off for now. Try again later, or pick another game."
+  },
+  "cards": {
+    "clubs": "clubs",
+    "diamonds": "diamonds",
+    "hearts": "hearts",
+    "spades": "spades",
+    "jack": "Jack",
+    "queen": "Queen",
+    "king": "King",
+    "ace": "Ace",
+    "name": "{rank} of {suit}",
+    "faceDown": "Face-down card",
+    "fourColour": "Four-colour deck"
   }
 }

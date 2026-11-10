@@ -45,6 +45,12 @@ export interface TurnStrings {
   draw: string;
   /** "{name} ran out of time" */
   outOfTime: string;
+  /** "Pass the device to {name}": hidden information on one device. */
+  handoffTitle: string;
+  /** "Everyone else, look away…" */
+  handoffBody: string;
+  /** "I'm {name}, show me" */
+  handoffReady: string;
   botNames: BotNames;
 }
 

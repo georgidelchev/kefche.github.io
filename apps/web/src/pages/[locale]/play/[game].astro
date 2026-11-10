@@ -6,6 +6,7 @@ import { gameNames } from "@/features/games/game-names";
 import {
   onlineModes,
   playerStrings,
+  playerUi,
   playsOnline,
   raceSetup,
   ratedClocks,
@@ -90,7 +91,7 @@ const strings = roomStrings(t);
               version: manifest.version,
               name: text.name,
               config,
-              ui: text.ui,
+              ui: playerUi(manifest, text.ui, t),
               modes: onlineModes(manifest),
               race: raceSetup(manifest, text.ui),
               rated: ratedClocks(manifest),

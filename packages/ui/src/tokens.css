@@ -92,6 +92,16 @@
   --tier-silver-ink: #141826;
   --tier-gold: #f2c94c;
   --tier-gold-ink: #141826;
+
+  /* Playing cards (Phase 12): a light face in both themes, inks checked against it. */
+  --card-face: #ffffff;
+  --card-ink: #141826;
+  --card-red: #c81e1e;
+  --card-blue: #1d4ed8;
+  --card-green: #15803d;
+  --card-edge: #7f889c;
+  --card-back: #1e3a8a;
+  --card-back-ink: #93c5fd;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -123,6 +133,16 @@
     --success: #4ade80;
     --on-success: #0e1220;
     --info: #38bdf8;
+
+    /* Playing cards (Phase 12). */
+    --card-face: #e3e6ee;
+    --card-ink: #141826;
+    --card-red: #b31b1b;
+    --card-blue: #1d44c0;
+    --card-green: #146c35;
+    --card-edge: #0b0e17;
+    --card-back: #1e3a8a;
+    --card-back-ink: #60a5fa;
   }
 }
 
@@ -154,4 +174,14 @@
   --success: #4ade80;
   --on-success: #0e1220;
   --info: #38bdf8;
+
+  /* Playing cards (Phase 12). */
+  --card-face: #e3e6ee;
+  --card-ink: #141826;
+  --card-red: #b31b1b;
+  --card-blue: #1d44c0;
+  --card-green: #146c35;
+  --card-edge: #0b0e17;
+  --card-back: #1e3a8a;
+  --card-back-ink: #60a5fa;
 }

@@ -19,7 +19,9 @@ import { Skeleton } from "@kefche/ui/components/skeleton";
 import { EmptyState, ErrorState } from "@kefche/ui/components/states";
 
 import Logo from "@/components/Logo.astro";
+import { DevCards } from "@/features/dev/DevCards";
 import { DevInteractive } from "@/features/dev/DevInteractive";
+import { cardKitUi } from "@/features/games/page-props";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALE_INFO, LOCALES, type Locale } from "@/i18n/locales";
@@ -282,6 +284,13 @@ const h2Class = "text-2xl";
         closeLabel={t("common:actions.close")}
         notificationsLabel={t("common:notifications.label")}
       />
+    </section>
+
+    <section class={sectionClass} aria-labelledby="cards">
+      <h2 id="cards" class={h2Class}>
+        Playing cards
+      </h2>
+      <DevCards client:load ui={cardKitUi(t)} />
     </section>
   </div>
 </AppShell>

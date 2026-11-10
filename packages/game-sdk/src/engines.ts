@@ -68,6 +68,25 @@ export interface TurnEngine<State, Action, Config = undefined> {
   sideActions?(state: State, seat: number): Action[];
   /** What running out of time means for `seat`; by default it loses and everyone else wins. */
   timeoutResult?(state: State, seat: number): GameResult;
+  /**
+   * Games with hidden information (manifest `hiddenInformation`): the state
+   * as `seat` may see it, or as everyone may (null: spectators, and the
+   * screen between two players on one device). Other seats' secrets and the
+   * randomness still to come (the Rng, the undealt cards) are blanked out,
+   * in the same shape. Renderers and bots only ever get views, so a view
+   * must answer `legalActions` for its own seat exactly as the state does,
+   * and `currentSeats` and `result` for everyone.
+   */
+  view?(state: State, seat: number | null): State;
+}
+
+/** The state `seat` may see: the engine's view, or the whole state for a game with no secrets. */
+export function viewFor<State, Action, Config>(
+  engine: TurnEngine<State, Action, Config>,
+  state: State,
+  seat: number | null,
+): State {
+  return engine.view ? engine.view(state, seat) : state;
 }
 
 /**

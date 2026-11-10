@@ -11,6 +11,7 @@ import {
   type GameResult,
   type TurnEngine,
   type TurnMove,
+  viewFor,
 } from "../engines";
 import { Rng } from "../prng";
 import {
@@ -28,7 +29,19 @@ import type { BotDifficulty } from "../manifest";
 import type { GameContext } from "./game-module";
 
 export interface TurnView<State, Action> {
+  /**
+   * What to draw: the whole state, or for a game with hidden information
+   * (`engine.view`) the viewer's view of it, and the whole state once the
+   * match is over.
+   */
   state: State;
+  /** Whose view `state` is: null for everyone's (between players on one device, or spectating). */
+  viewer: number | null;
+  /**
+   * On one device, with hidden information: the person to hand the device
+   * to. Nothing secret is shown until they call `session.reveal()`.
+   */
+  handoff: number | null;
   /** Seats to move now; empty once the match is over. */
   toMove: readonly number[];
   /** The person who may act now, or null (a bot's turn, paused or over). */
@@ -86,6 +99,8 @@ export interface TurnSession<Action> {
   resume(): void;
   /** Look again at who is away (online presence changed). */
   refresh(): void;
+  /** The person in `handoff` has the device: show them their view. */
+  reveal(): void;
   destroy(): void;
 }
 
@@ -196,6 +211,25 @@ export function createTurnSession<State, Action, Config>(
   if (!match) throw new Error("createTurnSession needs context.match");
   const { seats, timer } = match;
 
+  /**
+   * Hidden information on one device with two or more people: the screen
+   * shows only what everyone may see until the person to move says they
+   * have the device (SPEC §10.6, Phase 12).
+   */
+  const handsOff =
+    engine.view !== undefined &&
+    match.mode === "hotseat" &&
+    seats.filter((s) => s.kind === "human").length > 1;
+  const firstHuman = seats.findIndex((s) => s.kind === "human");
+  /** Whose view is on screen. */
+  let viewer: number | null =
+    match.mode === "online"
+      ? (options.localSeats?.[0] ?? null)
+      : handsOff || firstHuman < 0
+        ? null
+        : firstHuman;
+  let handoff: number | null = null;
+
   const resumed = options.from;
   let state = resumed ? resumed.state : engine.initialState(config, seats.length, seed);
   /** This session's own moves, for undo (none of a match it took over). */
@@ -228,10 +262,20 @@ export function createTurnSession<State, Action, Config>(
     !result() &&
     moves.some((m) => seats[m.seat]?.kind === "human");
 
+  /** Covers the screen when the next person to move isn't the one looking. */
+  const checkHandoff = () => {
+    if (!handsOff || result()) return;
+    const next = mover();
+    if (next === undefined || seats[next]?.kind !== "human" || next === viewer) return;
+    viewer = null;
+    handoff = next;
+  };
+
   const report = () => {
     const seatsToMove = toMove();
     context.report({
       type: "turn",
+      ...(handoff === null ? {} : { handoff }),
       toMove: seatsToMove,
       clocks: seats.map((_, i) => timeLeft(timer, timers, i)),
       lowTime: seats.map((_, i) => seatsToMove.includes(i) && isLowTime(timer, timers, i)),
@@ -241,15 +285,22 @@ export function createTurnSession<State, Action, Config>(
   const plays = (seat: number) =>
     seats[seat]?.kind === "human" && (options.localSeats?.includes(seat) ?? true);
   const emit = () => {
+    checkHandoff();
     const seatsToMove = toMove();
     const next = seatsToMove[0];
+    const over = result();
     options.onChange({
-      state,
+      state: over ? state : viewFor(engine, state, viewer),
+      viewer: over ? null : viewer,
+      handoff,
       toMove: seatsToMove,
-      humanSeat: next !== undefined && plays(next) && !paused && !destroyed ? next : null,
+      humanSeat:
+        next !== undefined && plays(next) && handoff === null && !paused && !destroyed
+          ? next
+          : null,
       thinking,
       lastMove,
-      result: result(),
+      result: over,
       canUndo: canUndo(),
     });
     options.onSnapshot?.({
@@ -260,7 +311,6 @@ export function createTurnSession<State, Action, Config>(
       timeout,
     });
     report();
-    const over = result();
     if (over && !finished) {
       finished = true;
       context.report({
@@ -351,7 +401,8 @@ export function createTurnSession<State, Action, Config>(
     emit();
     void bots
       .choose({
-        state,
+        // A bot sees only what its seat may see.
+        state: viewFor(engine, state, seat),
         seat,
         difficulty: player.difficulty,
         ...(player.level === undefined ? {} : { level: player.level }),
@@ -421,7 +472,8 @@ export function createTurnSession<State, Action, Config>(
           const now = performance.now();
           const passed = Math.round(now - last);
           last = now;
-          if (paused || destroyed || result()) return;
+          // No one's time runs while the device changes hands.
+          if (paused || destroyed || handoff !== null || result()) return;
           const seat = mover();
           if (seat === undefined) return;
           timers = elapse(timer, timers, seat, passed);
@@ -442,7 +494,7 @@ export function createTurnSession<State, Action, Config>(
 
   return {
     act(seat, action) {
-      if (paused || destroyed || result()) return false;
+      if (paused || destroyed || handoff !== null || result()) return false;
       if (seats[seat]?.kind !== "human") return false;
       if (isSideAction(engine, state, seat, action)) return applySide(seat, action);
       if (!toMove().includes(seat)) return false;
@@ -477,6 +529,13 @@ export function createTurnSession<State, Action, Config>(
     },
     refresh() {
       if (!thinking) schedule();
+    },
+    reveal() {
+      if (handoff === null || paused || destroyed) return;
+      viewer = handoff;
+      handoff = null;
+      last = performance.now();
+      emit();
     },
     destroy() {
       destroyed = true;

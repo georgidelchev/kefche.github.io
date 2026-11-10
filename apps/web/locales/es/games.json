@@ -146,7 +146,10 @@
     "youWin": "¡Has ganado!",
     "youLose": "Has perdido",
     "draw": "Empate",
-    "outOfTime": "A {name} se le acabó el tiempo"
+    "outOfTime": "A {name} se le acabó el tiempo",
+    "handoffTitle": "Pasa el dispositivo a {name}",
+    "handoffBody": "Los demás, no miréis: lo que viene es solo para {name}.",
+    "handoffReady": "Soy {name}, muéstramelo"
   },
   "bots": {
     "mila": "Mila",
@@ -172,5 +175,18 @@
   "unavailable": {
     "title": "No disponible por ahora",
     "body": "Este juego está desactivado por ahora. Vuelve a intentarlo más tarde o elige otro juego."
+  },
+  "cards": {
+    "clubs": "tréboles",
+    "diamonds": "diamantes",
+    "hearts": "corazones",
+    "spades": "picas",
+    "jack": "Jota",
+    "queen": "Reina",
+    "king": "Rey",
+    "ace": "As",
+    "name": "{rank} de {suit}",
+    "faceDown": "Carta boca abajo",
+    "fourColour": "Baraja de cuatro colores"
   }
 }
