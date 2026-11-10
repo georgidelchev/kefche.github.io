@@ -1,0 +1,91 @@
+{
+  "name": "Minesweeper",
+  "tagline": "Clear the field without touching a mine, one clue at a time.",
+  "description": "Play Minesweeper free in your browser: safe first click, flags by long press, chording, three levels. Beat your best time or race friends online.",
+  "about": [
+    "Minesweeper is a logic puzzle on a grid of hidden cells, some of which hide mines. Reveal a cell without a mine and it shows how many of its eight neighbours do. Use those numbers to work out where the mines are, and reveal every safe cell to win. Reveal a mine and the game is over.",
+    "Three levels are on offer: Beginner, 9 × 9 with 10 mines; Intermediate, 16 × 16 with 40; and Expert, 16 × 30 with 99, set upright to fit a phone. The mines are laid only after your first reveal, never on it or next to it, and the field is checked so that it can almost always be cleared by logic alone, without guessing.",
+    "Play alone to beat your best time on each level, or race friends online. In a race everyone starts on the same marked cell, so everyone gets the same field."
+  ],
+  "howToPlay": [
+    "Choose a level. The clock starts with the field.",
+    "Reveal a cell. A number tells you how many mines touch it; a blank opens its neighbours for you.",
+    "Mark a cell you know hides a mine with a flag.",
+    "When a number already has all its mines flagged, tap it to reveal its other neighbours at once (chording).",
+    "Reveal every cell without a mine to win. Revealing a mine ends the game."
+  ],
+  "controls": [
+    "Phones and tablets: tap to reveal; press and hold to place or remove a flag, or turn on Flag mode so taps flag.",
+    "Mouse: click to reveal, right-click to flag, click a number to chord.",
+    "Keyboard: move with the arrow keys, press Enter or Space to reveal (or chord a number), and F to flag.",
+    "Pause or start a new field from the bar above the game."
+  ],
+  "tips": [
+    "A 1 with only one hidden neighbour means that neighbour is a mine.",
+    "A number whose mines are all found makes every other neighbour safe.",
+    "Look for patterns along a wall of numbers: 1-2-1 and 1-2-2-1 show exactly where the mines are.",
+    "Flag only what you need. Chording with correct flags is the fastest way to clear ground.",
+    "On Expert, open the easy areas first; the numbers there often solve the hard spots."
+  ],
+  "faq": [
+    {
+      "question": "Is Minesweeper free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can my first click hit a mine?",
+      "answer": "No. Mines are laid after your first reveal and never on that cell or its neighbours."
+    },
+    {
+      "question": "Will I ever have to guess?",
+      "answer": "Rarely. Each field is checked to be clearable by logic from the start; if the check can't find one in time, the field may need a guess."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone starts on the same marked cell, so everyone gets the same field, and the first to clear it wins."
+    }
+  ],
+  "ui": {
+    "best": "Best: {time}",
+    "time": "Time",
+    "moves": "Moves",
+    "newBest": "New best time!",
+    "changeSize": "Change size",
+    "boardLabel": "Minefield",
+    "chooseLevel": "Choose a level",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "expert": "Expert",
+    "levelDetail": "{cols} × {rows}, {mines} mines",
+    "level": "Level",
+    "minesLeft": "Mines",
+    "flagMode": "Flag mode",
+    "cellName": "row {row}, column {col}",
+    "cellHidden": "{cell}, hidden",
+    "cellStart": "{cell}, hidden, start here",
+    "cellFlag": "{cell}, flagged",
+    "cellClear": "{cell}, clear",
+    "cellNumber": "{cell}, {count}",
+    "cellMine": "{cell}, mine",
+    "startHint": "Your first reveal is always safe. The marked cell opens up a clearing.",
+    "startRace": "Start on the marked cell: everyone gets the same field.",
+    "cleared": "Field cleared!",
+    "exploded": "Boom! You hit a mine.",
+    "changeLevel": "Change level"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Solver",
+      "description": "Solve {count, plural, one {# puzzle} other {# puzzles}}"
+    },
+    "speed": {
+      "name": "Speed solver",
+      "description": "Solve a puzzle in {time} or less"
+    }
+  },
+  "leaderboards": {
+    "best-time-beginner": "Best time · Beginner",
+    "best-time-intermediate": "Best time · Intermediate",
+    "best-time-expert": "Best time · Expert"
+  }
+}

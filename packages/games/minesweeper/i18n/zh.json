@@ -1,0 +1,91 @@
+{
+  "name": "扫雷",
+  "tagline": "根据数字线索，避开地雷清空雷区。",
+  "description": "在浏览器中免费玩扫雷：首次点击必定安全，长按插旗，三种难度。刷新最佳时间，或与朋友在线比赛。",
+  "about": [
+    "Minesweeper is a logic puzzle on a grid of hidden cells, some of which hide mines. Reveal a cell without a mine and it shows how many of its eight neighbours do. Use those numbers to work out where the mines are, and reveal every safe cell to win. Reveal a mine and the game is over.",
+    "Three levels are on offer: Beginner, 9 × 9 with 10 mines; Intermediate, 16 × 16 with 40; and Expert, 16 × 30 with 99, set upright to fit a phone. The mines are laid only after your first reveal, never on it or next to it, and the field is checked so that it can almost always be cleared by logic alone, without guessing.",
+    "Play alone to beat your best time on each level, or race friends online. In a race everyone starts on the same marked cell, so everyone gets the same field."
+  ],
+  "howToPlay": [
+    "Choose a level. The clock starts with the field.",
+    "Reveal a cell. A number tells you how many mines touch it; a blank opens its neighbours for you.",
+    "Mark a cell you know hides a mine with a flag.",
+    "When a number already has all its mines flagged, tap it to reveal its other neighbours at once (chording).",
+    "Reveal every cell without a mine to win. Revealing a mine ends the game."
+  ],
+  "controls": [
+    "Phones and tablets: tap to reveal; press and hold to place or remove a flag, or turn on Flag mode so taps flag.",
+    "Mouse: click to reveal, right-click to flag, click a number to chord.",
+    "Keyboard: move with the arrow keys, press Enter or Space to reveal (or chord a number), and F to flag.",
+    "Pause or start a new field from the bar above the game."
+  ],
+  "tips": [
+    "A 1 with only one hidden neighbour means that neighbour is a mine.",
+    "A number whose mines are all found makes every other neighbour safe.",
+    "Look for patterns along a wall of numbers: 1-2-1 and 1-2-2-1 show exactly where the mines are.",
+    "Flag only what you need. Chording with correct flags is the fastest way to clear ground.",
+    "On Expert, open the easy areas first; the numbers there often solve the hard spots."
+  ],
+  "faq": [
+    {
+      "question": "Is Minesweeper free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can my first click hit a mine?",
+      "answer": "No. Mines are laid after your first reveal and never on that cell or its neighbours."
+    },
+    {
+      "question": "Will I ever have to guess?",
+      "answer": "Rarely. Each field is checked to be clearable by logic from the start; if the check can't find one in time, the field may need a guess."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone starts on the same marked cell, so everyone gets the same field, and the first to clear it wins."
+    }
+  ],
+  "ui": {
+    "best": "最佳：{time}",
+    "time": "时间",
+    "moves": "步数",
+    "newBest": "新的最佳时间！",
+    "changeSize": "更换大小",
+    "boardLabel": "雷区",
+    "chooseLevel": "选择难度",
+    "beginner": "初级",
+    "intermediate": "中级",
+    "expert": "高级",
+    "levelDetail": "{cols} × {rows}，{mines} 颗雷",
+    "level": "难度",
+    "minesLeft": "雷",
+    "flagMode": "插旗模式",
+    "cellName": "第 {row} 行第 {col} 列",
+    "cellHidden": "{cell}，未翻开",
+    "cellStart": "{cell}，未翻开，从这里开始",
+    "cellFlag": "{cell}，已插旗",
+    "cellClear": "{cell}，空白",
+    "cellNumber": "{cell}，{count}",
+    "cellMine": "{cell}，地雷",
+    "startHint": "第一次翻开总是安全的。标记的格子会打开一片空地。",
+    "startRace": "从标记的格子开始：大家的雷区都一样。",
+    "cleared": "扫雷成功！",
+    "exploded": "砰！踩到雷了。",
+    "changeLevel": "更换难度"
+  },
+  "achievements": {
+    "solver": {
+      "name": "解谜高手",
+      "description": "解开 {count, number} 道谜题"
+    },
+    "speed": {
+      "name": "快速解题",
+      "description": "在 {time} 内解开一道谜题"
+    }
+  },
+  "leaderboards": {
+    "best-time-beginner": "最佳用时・简单 · 初级",
+    "best-time-intermediate": "最佳用时・简单 · 中级",
+    "best-time-expert": "最佳用时・简单 · 高级"
+  }
+}

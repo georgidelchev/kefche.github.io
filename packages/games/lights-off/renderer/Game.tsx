@@ -145,8 +145,8 @@ export function mount(container: HTMLElement, context: GameContext) {
 }
 
 const CSS = `
-.glo-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--n), 1fr); gap: 3%; width: min(100%, 28rem, calc(100dvh - 16rem)); aspect-ratio: 1; padding: 3%; border-radius: 1rem; background: #1d2333; box-sizing: border-box; touch-action: manipulation; }
-.glo-row { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 3%; }
+.glo-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--n), minmax(0, 1fr)); gap: 3%; width: min(100%, 28rem, calc(100dvh - 16rem)); aspect-ratio: 1; padding: 3%; border-radius: 1rem; background: #1d2333; box-sizing: border-box; touch-action: manipulation; }
+.glo-row { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 3%; }
 .glo-light { border-radius: 22%; background: #39415a; box-shadow: inset 0 -3px 0 rgb(0 0 0 / 0.35); cursor: pointer; }
 .glo-light[data-on] { background: radial-gradient(circle at 40% 35%, #fff8d6, #ffd84a 55%, #e0a800); box-shadow: 0 0 14px #ffd84a88, inset 0 -3px 0 rgb(0 0 0 / 0.2); }
 .glo-light:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }

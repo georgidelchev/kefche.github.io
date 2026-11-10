@@ -183,7 +183,7 @@ const CSS = `
 .gnim { display: grid; justify-items: center; gap: 0.85rem; width: 100%; user-select: none; -webkit-user-select: none; }
 .gnim-rule { margin: 0; color: var(--muted); }
 .gnim-piles { direction: ltr; display: grid; gap: 0.6rem; width: min(100%, 34rem); padding: 1rem; border-radius: 1rem; background: #2f5d46; box-shadow: inset 0 0 0 3px #1f3f2f; box-sizing: border-box; }
-.gnim-row { display: grid; grid-template-columns: repeat(var(--n), 1fr) 2rem; align-items: center; gap: 4%; min-height: 3.25rem; }
+.gnim-row { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)) 2rem; align-items: center; gap: 4%; min-height: 3.25rem; }
 .gnim-stick { position: relative; height: 3rem; min-width: 1.5rem; border-radius: 0.4rem; cursor: default; }
 .gnim-stick::before { content: ""; position: absolute; inset: 0 30%; border-radius: 999px; background: linear-gradient(#f3d08a, #c99a45); box-shadow: 0 2px 0 rgb(0 0 0 / 0.35); }
 .gnim-stick::after { content: ""; position: absolute; top: -4%; left: 26%; right: 26%; height: 18%; border-radius: 50%; background: #c0392b; }

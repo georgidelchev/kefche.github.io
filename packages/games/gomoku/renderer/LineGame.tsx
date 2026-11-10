@@ -196,8 +196,8 @@ const CSS = `
 .gln-seats li[data-turn] { box-shadow: 0 0 0 2px var(--border-strong); }
 .gln-goal { color: var(--muted); font-size: 0.875rem; }
 .gln-stone.gln-chip { flex: none; width: 1.15rem; }
-.gln-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--n), 1fr); width: var(--gln-size); aspect-ratio: 1; padding: 1.2%; border-radius: 0.5rem; background: #dcb36b; box-shadow: inset 0 0 0 2px #a0783a; box-sizing: border-box; touch-action: manipulation; }
-.gln-row { display: grid; grid-template-columns: repeat(var(--n), 1fr); }
+.gln-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--n), minmax(0, 1fr)); width: var(--gln-size); aspect-ratio: 1; padding: 1.2%; border-radius: 0.5rem; background: #dcb36b; box-shadow: inset 0 0 0 2px #a0783a; box-sizing: border-box; touch-action: manipulation; }
+.gln-row { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
 .gln-point { position: relative; display: grid; place-items: center; }
 .gln-point::before, .gln-point::after { content: ""; position: absolute; background: #5a4220; pointer-events: none; }
 .gln-point::before { left: 0; right: 0; top: calc(50% - 0.5px); height: 1px; }

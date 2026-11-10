@@ -155,8 +155,8 @@ export function mount(container: HTMLElement, context: GameContext) {
 }
 
 const CSS = `
-.gft-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--n), 1fr); gap: 2%; width: min(100%, 28rem, calc(100dvh - 16rem)); aspect-ratio: 1; padding: 2.5%; border-radius: 1rem; background: #3b4a6b; box-sizing: border-box; touch-action: manipulation; }
-.gft-row { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 2%; }
+.gft-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--n), minmax(0, 1fr)); gap: 2%; width: min(100%, 28rem, calc(100dvh - 16rem)); aspect-ratio: 1; padding: 2.5%; border-radius: 1rem; background: #3b4a6b; box-sizing: border-box; touch-action: manipulation; }
+.gft-row { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 2%; }
 .gft-cell { display: grid; place-items: center; border-radius: 0.6rem; background: #f3e2c4; color: #3b2414; font-weight: 800; font-size: clamp(1rem, 6vw, 2rem); font-variant-numeric: tabular-nums; box-shadow: inset 0 -4px 0 rgb(0 0 0 / 0.18); }
 .gft-cell[data-gap] { background: transparent; box-shadow: none; }
 .gft-cell[data-home] { background: #ffd58a; }

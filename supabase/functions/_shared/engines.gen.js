@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine23, bots2, options) {
-    this.engine = engine23;
+  constructor(engine24, bots2, options) {
+    this.engine = engine24;
     this.bots = bots2;
     this.options = options;
-    this.world = engine23.createWorld(options.config, options.seed);
+    this.world = engine24.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine23.ticksPerSecond / engine23.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine24.ticksPerSecond / engine24.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -479,7 +479,7 @@ function canonicalJson(value) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest23) => manifest23;
+var defineManifest = (manifest24) => manifest24;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -5819,8 +5819,9 @@ var configFrom5 = (raw) => {
 };
 var top = (peg) => peg.at(-1);
 function canMove2(state, from, to) {
-  const a = state.pegs[from];
-  const b = state.pegs[to];
+  const peg = (i) => i === 0 || i === 1 || i === 2 ? state.pegs[i] : null;
+  const a = peg(from);
+  const b = peg(to);
   if (from === to || !a || !b) return false;
   const disc = top(a);
   if (disc === void 0) return false;
@@ -6324,9 +6325,222 @@ var manifest14 = defineManifest({
   tags: ["classic", "two-player", "strategy"]
 });
 
+// packages/games/minesweeper/engine/index.ts
+var LEVELS = {
+  beginner: { cols: 9, rows: 9, mines: 10 },
+  intermediate: { cols: 16, rows: 16, mines: 40 },
+  expert: { cols: 16, rows: 30, mines: 99 }
+};
+var LEVEL_ORDER = ["beginner", "intermediate", "expert"];
+var configFrom9 = (raw) => {
+  const level = raw?.level;
+  return { level: LEVEL_ORDER.find((l) => l === level) ?? "beginner" };
+};
+function around(cell, cols, rows) {
+  const r = Math.floor(cell / cols);
+  const c = cell % cols;
+  const out = [];
+  for (let dr = -1; dr <= 1; dr++) {
+    for (let dc = -1; dc <= 1; dc++) {
+      if (dr === 0 && dc === 0) continue;
+      const rr = r + dr;
+      const cc = c + dc;
+      if (rr >= 0 && rr < rows && cc >= 0 && cc < cols) out.push(rr * cols + cc);
+    }
+  }
+  return out;
+}
+var countAround = (mines, cell, cols, rows) => around(cell, cols, rows).reduce((n, a) => n + (mines[a] ?? 0), 0);
+function flood(mines, open, flags, cell, cols, rows) {
+  const out = open.slice();
+  const stack = [cell];
+  while (stack.length > 0) {
+    const at = stack.pop() ?? 0;
+    if (out[at] || flags[at]) continue;
+    out[at] = 1;
+    if (mines[at]) continue;
+    if (countAround(mines, at, cols, rows) === 0) {
+      for (const n of around(at, cols, rows)) if (!out[n]) stack.push(n);
+    }
+  }
+  return out;
+}
+function solvable(mines, first2, cols, rows) {
+  const n = cols * rows;
+  let open = flood(mines, new Array(n).fill(0), [], first2, cols, rows);
+  const known = new Array(n).fill(0);
+  const safeTotal = n - mines.reduce((s, v) => s + v, 0);
+  for (let pass = 0; pass < n; pass++) {
+    let changed = false;
+    const info = [];
+    for (let cell = 0; cell < n; cell++) {
+      if (!open[cell] || mines[cell]) continue;
+      const hidden = around(cell, cols, rows).filter((a) => !open[a] && !known[a]);
+      if (hidden.length === 0) continue;
+      const flagged = around(cell, cols, rows).filter((a) => known[a]).length;
+      const left = countAround(mines, cell, cols, rows) - flagged;
+      if (left === hidden.length) {
+        for (const h of hidden) known[h] = 1;
+        changed = true;
+      } else if (left === 0) {
+        for (const h of hidden) open = flood(mines, open, known, h, cols, rows);
+        changed = true;
+      } else info.push({ hidden, left });
+    }
+    if (!changed) {
+      outer: for (const a of info) {
+        for (const b of info) {
+          if (a === b || !a.hidden.every((h) => b.hidden.includes(h))) continue;
+          const rest = b.hidden.filter((h) => !a.hidden.includes(h));
+          if (rest.length === 0) continue;
+          if (b.left - a.left === 0) {
+            for (const h of rest) open = flood(mines, open, known, h, cols, rows);
+            changed = true;
+            break outer;
+          }
+          if (b.left - a.left === rest.length) {
+            for (const h of rest) known[h] = 1;
+            changed = true;
+            break outer;
+          }
+        }
+      }
+    }
+    if (!changed) break;
+  }
+  return open.reduce((s, v, i) => s + (v && !mines[i] ? 1 : 0), 0) === safeTotal;
+}
+var ATTEMPTS = 60;
+function layMines(seed, level, first2) {
+  const { cols, rows, mines: count2 } = LEVELS[level];
+  const n = cols * rows;
+  const clear = /* @__PURE__ */ new Set([first2, ...around(first2, cols, rows)]);
+  const spots = Array.from({ length: n }, (_, i) => i).filter((i) => !clear.has(i));
+  let board = [];
+  for (let attempt = 0; attempt < ATTEMPTS; attempt++) {
+    const rng = Rng.fromSeed(`${seed}:mines:${level}:${String(first2)}:${String(attempt)}`);
+    const chosen = new Set(rng.shuffle(spots).slice(0, count2));
+    board = Array.from({ length: n }, (_, i) => chosen.has(i) ? 1 : 0);
+    if (solvable(board, first2, cols, rows)) return board;
+  }
+  return board;
+}
+var safeLeft = (s) => s.open.reduce((n, v, i) => n + (v || s.mines[i] ? 0 : 1), 0);
+var done = (s) => s.exploded !== null || s.won;
+var engine15 = {
+  initialState(config, seed) {
+    const { level } = configFrom9(config);
+    const { cols, rows, mines: count2 } = LEVELS[level];
+    const rng = Rng.fromSeed(`${seed}:start:${level}`);
+    const start = rng.int(2, rows - 3) * cols + rng.int(2, cols - 3);
+    const n = cols * rows;
+    return {
+      level,
+      cols,
+      rows,
+      count: count2,
+      seed,
+      start,
+      mines: [],
+      open: new Array(n).fill(0),
+      flags: new Array(n).fill(0),
+      moves: 0,
+      exploded: null,
+      won: false
+    };
+  },
+  apply(state, action) {
+    const { cols, rows } = state;
+    const cell = action.cell;
+    if (done(state) || !Number.isInteger(cell) || cell < 0 || cell >= cols * rows) return state;
+    if (action.type === "flag") {
+      if (state.open[cell] || state.mines.length === 0) return state;
+      const flags = state.flags.slice();
+      flags[cell] = flags[cell] ? 0 : 1;
+      return { ...state, flags, moves: state.moves + 1 };
+    }
+    let mines = state.mines;
+    let targets;
+    if (action.type === "reveal") {
+      if (state.open[cell] || state.flags[cell]) return state;
+      if (mines.length === 0) mines = layMines(state.seed, state.level, cell);
+      targets = [cell];
+    } else {
+      if (!state.open[cell] || mines.length === 0) return state;
+      const near = around(cell, cols, rows);
+      const flagged = near.filter((a) => state.flags[a]).length;
+      if (flagged !== countAround(mines, cell, cols, rows)) return state;
+      targets = near.filter((a) => !state.open[a] && !state.flags[a]);
+      if (targets.length === 0) return state;
+    }
+    let open = state.open;
+    let exploded = null;
+    for (const t of targets) {
+      open = flood(mines, open, state.flags, t, cols, rows);
+      if (mines[t]) exploded ??= t;
+    }
+    const next = { ...state, mines, open, exploded, moves: state.moves + 1 };
+    return { ...next, won: exploded === null && safeLeft(next) === 0 };
+  },
+  progress(state) {
+    const safe = state.cols * state.rows - state.count;
+    return state.mines.length === 0 ? 0 : (safe - safeLeft(state)) / safe;
+  },
+  result(state) {
+    if (state.won) return { completed: true };
+    if (state.exploded !== null) return { completed: false };
+    return null;
+  }
+};
+
+// packages/games/minesweeper/manifest.ts
+var manifest15 = defineManifest({
+  id: "minesweeper",
+  version: 1,
+  category: "logic",
+  kind: "race",
+  players: { min: 1, max: 8, default: 1 },
+  modes: ["solo", "race", "online-private", "online-public", "quick-match"],
+  bots: { supported: false, difficulties: [], canFillSeats: false },
+  timers: [
+    { kind: "countdown", seconds: 300 },
+    { kind: "countdown", seconds: 180 },
+    { kind: "countdown", seconds: 900 }
+  ],
+  options: [
+    {
+      key: "level",
+      label: "level",
+      values: [
+        { value: "beginner", label: "beginner" },
+        { value: "intermediate", label: "intermediate" },
+        { value: "expert", label: "expert" }
+      ]
+    }
+  ],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard", "mouse"],
+  renderer: "dom",
+  estimatedMinutes: [1, 15],
+  leaderboards: [
+    { id: "best-time-beginner", metric: "time", order: "asc", when: { level: "beginner" } },
+    { id: "best-time-intermediate", metric: "time", order: "asc", when: { level: "intermediate" } },
+    { id: "best-time-expert", metric: "time", order: "asc", when: { level: "expert" } }
+  ],
+  achievements: [
+    { id: "solver", icon: "target", metric: "wins", tiers: [1, 25, 100] },
+    { id: "speed", icon: "timer", metric: "bestTime", tiers: [12e4, 4e4, 15e3] }
+  ],
+  // The mines come from the seed and the first reveal; every action is logged.
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 15 },
+  tags: ["puzzle", "classic", "single-player"]
+});
+
 // packages/games/nim/engine/index.ts
 var CLASSIC = [1, 3, 5, 7];
-var configFrom9 = (raw) => {
+var configFrom10 = (raw) => {
   const c = raw ?? {};
   return { piles: c.piles === "random" ? "random" : "classic", misere: c.misere === true };
 };
@@ -6336,9 +6550,9 @@ function startingPiles(config, seed) {
   return Array.from({ length: rng.int(3, 5) }, () => rng.int(1, 7));
 }
 var total = (piles) => piles.reduce((n, p) => n + p, 0);
-var engine15 = {
+var engine16 = {
   initialState(config, seats, seed) {
-    const c = configFrom9(config);
+    const c = configFrom10(config);
     return {
       piles: startingPiles(c, seed),
       seats,
@@ -6383,7 +6597,7 @@ var engine15 = {
 };
 
 // packages/games/nim/manifest.ts
-var manifest15 = defineManifest({
+var manifest16 = defineManifest({
   id: "nim",
   version: 1,
   category: "strategy",
@@ -6487,7 +6701,7 @@ var inMill = (board, point) => {
   return seat !== EMPTY7 && (MILLS_AT[point] ?? []).some((m) => m.every((q) => board[q] === seat));
 };
 var countOf = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-function configFrom10(raw) {
+function configFrom11(raw) {
   const flying = raw?.flying;
   return { flying: flying !== false };
 }
@@ -6527,9 +6741,9 @@ function movesFor4(state, seat) {
   return out;
 }
 var key = (state) => `${String(state.turn)}${state.inHand.join("")}:${state.board.map((v) => String(v + 1)).join("")}`;
-var engine16 = {
+var engine17 = {
   initialState(config) {
-    const { flying } = configFrom10(config);
+    const { flying } = configFrom11(config);
     const board = Array.from({ length: POINTS }, () => EMPTY7);
     const state = {
       board,
@@ -6575,14 +6789,14 @@ var engine16 = {
     };
     const k = key(next);
     const seen = move2.remove !== null || move2.from === null ? [k] : [...state.seen, k];
-    const done = { ...next, seen };
+    const done2 = { ...next, seen };
     if (inHand[other2] === 0 && countOf(board, other2) < 3)
-      return { ...done, over: true, winner: seat };
-    if (movesFor4(done, other2).length === 0) return { ...done, over: true, winner: seat };
+      return { ...done2, over: true, winner: seat };
+    if (movesFor4(done2, other2).length === 0) return { ...done2, over: true, winner: seat };
     if (seen.filter((s) => s === k).length >= 3 || quiet >= QUIET_LIMIT2) {
-      return { ...done, over: true, winner: null };
+      return { ...done2, over: true, winner: null };
     }
-    return done;
+    return done2;
   },
   currentSeats: (state) => state.over ? [] : [state.turn],
   // Online, an away player's turn passes, if the other player can move.
@@ -6599,7 +6813,7 @@ var engine16 = {
 };
 
 // packages/games/nine-mens-morris/manifest.ts
-var manifest16 = defineManifest({
+var manifest17 = defineManifest({
   id: "nine-mens-morris",
   version: 1,
   category: "board",
@@ -6684,7 +6898,7 @@ function movesFor5(board, seat) {
   return moves;
 }
 var countDiscs = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-var engine17 = {
+var engine18 = {
   initialState() {
     const board = Array.from({ length: SIZE3 * SIZE3 }, () => -1);
     board[3 * SIZE3 + 3] = 1;
@@ -6727,7 +6941,7 @@ var engine17 = {
 };
 
 // packages/games/reversi/manifest.ts
-var manifest17 = defineManifest({
+var manifest18 = defineManifest({
   id: "reversi",
   version: 1,
   category: "board",
@@ -7008,7 +7222,7 @@ function isShape(state, slot, cells) {
   const rc = cells.map((cell) => [Math.floor(cell / size), cell % size]);
   return SHAPE_KEYS[shape]?.has(keyOf(rc)) ?? false;
 }
-var engine18 = {
+var engine19 = {
   initialState(_config, seats, seed) {
     const size = sizeFor3(seats);
     const rng = Rng.fromSeed(`${seed}:bag`);
@@ -7093,7 +7307,7 @@ var engine18 = {
 };
 
 // packages/games/shape-claim/manifest.ts
-var manifest18 = defineManifest({
+var manifest19 = defineManifest({
   id: "shape-claim",
   version: 1,
   category: "strategy",
@@ -7161,7 +7375,7 @@ function neighbor(cell, direction, walls) {
   c = (c + COLS) % COLS;
   return r * COLS + c;
 }
-var engine19 = {
+var engine20 = {
   initialState(config, seed) {
     const middle = Math.floor(ROWS / 2) * COLS + Math.floor(COLS / 2) - 3;
     const snake = [middle, middle - 1, middle - 2];
@@ -7228,7 +7442,7 @@ var engine19 = {
 var stepMs = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
 
 // packages/games/snake/manifest.ts
-var manifest19 = defineManifest({
+var manifest20 = defineManifest({
   id: "snake",
   version: 1,
   category: "arcade",
@@ -7637,7 +7851,7 @@ function commit(state, next, extra = {}) {
     ]
   };
 }
-var engine20 = {
+var engine21 = {
   initialState(config, seed) {
     return fromPuzzle(generate(seed, config.difficulty));
   },
@@ -7683,8 +7897,8 @@ var engine20 = {
   },
   progress(state) {
     const open = state.givens.filter((v) => !v).length;
-    const done = state.values.filter((v, c) => !state.givens[c] && v === state.solution[c]).length;
-    return open ? done / open : 1;
+    const done2 = state.values.filter((v, c) => !state.givens[c] && v === state.solution[c]).length;
+    return open ? done2 / open : 1;
   },
   result(state) {
     return isSolved2(state) ? { completed: true } : null;
@@ -7694,7 +7908,7 @@ var engine20 = {
 };
 
 // packages/games/sudoku/manifest.ts
-var manifest20 = defineManifest({
+var manifest21 = defineManifest({
   id: "sudoku",
   version: 1,
   category: "logic",
@@ -7756,7 +7970,7 @@ var LINES = [
   [0, 4, 8],
   [2, 4, 6]
 ];
-var configFrom11 = (raw) => ({
+var configFrom12 = (raw) => ({
   mode: raw?.mode === "classic" ? "classic" : "ultimate"
 });
 function lineOf(marks, seat) {
@@ -7773,9 +7987,9 @@ function movesFor6(state) {
     (b) => smallBoard(state.cells, b).flatMap((v, c) => v === EMPTY9 ? [b * 9 + c] : [])
   );
 }
-var engine21 = {
+var engine22 = {
   initialState(config) {
-    const { mode } = configFrom11(config);
+    const { mode } = configFrom12(config);
     return {
       mode,
       cells: Array.from({ length: mode === "classic" ? 9 : 81 }, () => EMPTY9),
@@ -7830,7 +8044,7 @@ var engine21 = {
 };
 
 // packages/games/ultimate-ttt/manifest.ts
-var manifest21 = defineManifest({
+var manifest22 = defineManifest({
   id: "ultimate-ttt",
   version: 1,
   category: "strategy",
@@ -8514,7 +8728,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine22 = {
+var engine23 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -8531,7 +8745,7 @@ var engine22 = {
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest22 = defineManifest({
+var manifest23 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -8577,14 +8791,15 @@ var GAMES = {
   "hex": { manifest: manifest12, engine: engine12 },
   "lights-off": { manifest: manifest13, engine: engine13 },
   "mancala": { manifest: manifest14, engine: engine14 },
-  "nim": { manifest: manifest15, engine: engine15 },
-  "nine-mens-morris": { manifest: manifest16, engine: engine16 },
-  "reversi": { manifest: manifest17, engine: engine17 },
-  "shape-claim": { manifest: manifest18, engine: engine18 },
-  "snake": { manifest: manifest19, engine: engine19 },
-  "sudoku": { manifest: manifest20, engine: engine20 },
-  "ultimate-ttt": { manifest: manifest21, engine: engine21 },
-  "worm-rush": { manifest: manifest22, engine: engine22, bots, host: arenaHost }
+  "minesweeper": { manifest: manifest15, engine: engine15 },
+  "nim": { manifest: manifest16, engine: engine16 },
+  "nine-mens-morris": { manifest: manifest17, engine: engine17 },
+  "reversi": { manifest: manifest18, engine: engine18 },
+  "shape-claim": { manifest: manifest19, engine: engine19 },
+  "snake": { manifest: manifest20, engine: engine20 },
+  "sudoku": { manifest: manifest21, engine: engine21 },
+  "ultimate-ttt": { manifest: manifest22, engine: engine22 },
+  "worm-rush": { manifest: manifest23, engine: engine23, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

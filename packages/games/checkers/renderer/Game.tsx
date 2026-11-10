@@ -241,8 +241,8 @@ const CSS = `
 .gck-counts li { display: flex; align-items: center; gap: 0.4rem; font-size: 1.25rem; font-variant-numeric: tabular-nums; }
 .gck-chip { display: grid; place-items: center; width: 1.75rem; height: 1.75rem; border-radius: 50%; background: var(--fill); }
 .gck-chip svg { width: 60%; height: 60%; fill: var(--ink); }
-.gck-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--n), 1fr); width: var(--gck-size); aspect-ratio: 1; padding: 1.2%; border-radius: 0.6rem; background: #6b4426; box-sizing: border-box; touch-action: manipulation; }
-.gck-row { display: grid; grid-template-columns: repeat(var(--n), 1fr); }
+.gck-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--n), minmax(0, 1fr)); width: var(--gck-size); aspect-ratio: 1; padding: 1.2%; border-radius: 0.6rem; background: #6b4426; box-sizing: border-box; touch-action: manipulation; }
+.gck-row { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
 .gck-light { background: #ecd3a8; }
 .gck-cell { position: relative; display: grid; place-items: center; background: #a8703f; cursor: default; }
 .gck-cell[data-movable], .gck-cell[data-target], .gck-cell[data-picked] { cursor: pointer; }

@@ -213,6 +213,23 @@ if (process.argv.includes("--fixtures")) {
         return pick(random, moves);
       },
     },
+    // The marked start, then safe cells, a flag now and then.
+    minesweeper: {
+      config: { level: "beginner" },
+      next: (state, random) => {
+        if (state.mines.length === 0) return { type: "reveal", cell: state.start };
+        const hidden = state.open.flatMap((v, i) => (v || state.flags[i] ? [] : [i]));
+        const mines = hidden.filter((i) => state.mines[i]);
+        if (mines.length > 0 && random() < 0.1) return { type: "flag", cell: pick(random, mines) };
+        return {
+          type: "reveal",
+          cell: pick(
+            random,
+            hidden.filter((i) => !state.mines[i]),
+          ),
+        };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },

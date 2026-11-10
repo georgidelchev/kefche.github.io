@@ -1,0 +1,91 @@
+{
+  "name": "Сапёр",
+  "tagline": "Разминируйте поле, не задев мину, подсказка за подсказкой.",
+  "description": "Играйте в сапёра бесплатно: безопасный первый ход, флажки долгим нажатием, три уровня. Побейте свой рекорд или соревнуйтесь онлайн.",
+  "about": [
+    "Minesweeper is a logic puzzle on a grid of hidden cells, some of which hide mines. Reveal a cell without a mine and it shows how many of its eight neighbours do. Use those numbers to work out where the mines are, and reveal every safe cell to win. Reveal a mine and the game is over.",
+    "Three levels are on offer: Beginner, 9 × 9 with 10 mines; Intermediate, 16 × 16 with 40; and Expert, 16 × 30 with 99, set upright to fit a phone. The mines are laid only after your first reveal, never on it or next to it, and the field is checked so that it can almost always be cleared by logic alone, without guessing.",
+    "Play alone to beat your best time on each level, or race friends online. In a race everyone starts on the same marked cell, so everyone gets the same field."
+  ],
+  "howToPlay": [
+    "Choose a level. The clock starts with the field.",
+    "Reveal a cell. A number tells you how many mines touch it; a blank opens its neighbours for you.",
+    "Mark a cell you know hides a mine with a flag.",
+    "When a number already has all its mines flagged, tap it to reveal its other neighbours at once (chording).",
+    "Reveal every cell without a mine to win. Revealing a mine ends the game."
+  ],
+  "controls": [
+    "Phones and tablets: tap to reveal; press and hold to place or remove a flag, or turn on Flag mode so taps flag.",
+    "Mouse: click to reveal, right-click to flag, click a number to chord.",
+    "Keyboard: move with the arrow keys, press Enter or Space to reveal (or chord a number), and F to flag.",
+    "Pause or start a new field from the bar above the game."
+  ],
+  "tips": [
+    "A 1 with only one hidden neighbour means that neighbour is a mine.",
+    "A number whose mines are all found makes every other neighbour safe.",
+    "Look for patterns along a wall of numbers: 1-2-1 and 1-2-2-1 show exactly where the mines are.",
+    "Flag only what you need. Chording with correct flags is the fastest way to clear ground.",
+    "On Expert, open the easy areas first; the numbers there often solve the hard spots."
+  ],
+  "faq": [
+    {
+      "question": "Is Minesweeper free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can my first click hit a mine?",
+      "answer": "No. Mines are laid after your first reveal and never on that cell or its neighbours."
+    },
+    {
+      "question": "Will I ever have to guess?",
+      "answer": "Rarely. Each field is checked to be clearable by logic from the start; if the check can't find one in time, the field may need a guess."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone starts on the same marked cell, so everyone gets the same field, and the first to clear it wins."
+    }
+  ],
+  "ui": {
+    "best": "Лучшее: {time}",
+    "time": "Время",
+    "moves": "Ходы",
+    "newBest": "Новый рекорд!",
+    "changeSize": "Сменить размер",
+    "boardLabel": "Минное поле",
+    "chooseLevel": "Выберите уровень",
+    "beginner": "Новичок",
+    "intermediate": "Любитель",
+    "expert": "Эксперт",
+    "levelDetail": "{cols} × {rows}, мин: {mines}",
+    "level": "Уровень",
+    "minesLeft": "Мины",
+    "flagMode": "Режим флажков",
+    "cellName": "ряд {row}, столбец {col}",
+    "cellHidden": "{cell}, закрыта",
+    "cellStart": "{cell}, закрыта, начните здесь",
+    "cellFlag": "{cell}, флажок",
+    "cellClear": "{cell}, пусто",
+    "cellNumber": "{cell}, {count}",
+    "cellMine": "{cell}, мина",
+    "startHint": "Первое открытие всегда безопасно. Отмеченная клетка открывает поляну.",
+    "startRace": "Начните с отмеченной клетки: у всех одно и то же поле.",
+    "cleared": "Поле разминировано!",
+    "exploded": "Бум! Вы наткнулись на мину.",
+    "changeLevel": "Сменить уровень"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Решатель",
+      "description": "Решите {count, plural, one {# головоломку} few {# головоломки} many {# головоломок} other {# головоломки}}"
+    },
+    "speed": {
+      "name": "Молния",
+      "description": "Решите головоломку за {time} или быстрее"
+    }
+  },
+  "leaderboards": {
+    "best-time-beginner": "Лучшее время · Новичок",
+    "best-time-intermediate": "Лучшее время · Любитель",
+    "best-time-expert": "Лучшее время · Эксперт"
+  }
+}

@@ -2404,6 +2404,12 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Tower of Hanoi:** 3–8 discs (4 by default); tap a peg to lift its top disc and another to put it down. A larger disc on a smaller one is refused and the disc stays lifted. Moves are shown against the fewest, 2ⁿ − 1.
   - Both: best-time boards per size, the solver and speed achievements, races, and server replay fixtures.
   - Checked in Chrome: 62/62, covering the menus, presses switching and undoing, a refused drop, solving three discs in seven moves to the finish, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe.
+- [x] **Step 13, Minesweeper:**
+  - **Levels:** Beginner 9 × 9 with 10 mines, Intermediate 16 × 16 with 40, Expert 16 × 30 with 99 (upright on every screen, so it suits a phone and fits a desktop without scrolling).
+  - **Fields:** mines are laid on the first reveal, away from it and its neighbours, from the seed and that cell. A field that logic (single numbers and pairs) can't clear from there is laid again, up to 60 times; in testing every field was clear by logic, in 1–7 ms. A race and the daily challenge start on a marked cell, so everyone gets the same field.
+  - **Play:** tap to reveal, a long press, right-click, F or Flag mode to flag, a tap on a satisfied number to chord.
+  - Checked in Chrome: 38/38, covering the levels, a safe first reveal, flags by right-click, Flag mode, F and a long press, Expert's clearing, 360, 768 and 1280 px, both themes, Arabic, and axe.
+  - **Also fixed on every board:** grid tracks are `minmax(0, 1fr)`, so a row with text can't grow taller than the rest (Minesweeper's numbered rows did). Checkers, Go and Gomoku rechecked: 40/40, 43/43, 37/37.
 
 ## Known issues
 

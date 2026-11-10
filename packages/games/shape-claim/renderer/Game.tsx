@@ -349,8 +349,8 @@ const CSS = `
 .gsc-seats li[data-turn] { box-shadow: 0 0 0 2px var(--fill); }
 .gsc-chip { display: grid; place-items: center; width: 1.3rem; height: 1.3rem; border-radius: 50%; background: var(--fill); }
 .gsc-chip svg { width: 60%; height: 60%; fill: var(--ink); }
-.gsc-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--n), 1fr); width: min(100%, 32rem, calc(100dvh - 21rem)); aspect-ratio: 1; padding: 0.4rem; gap: 1px; border-radius: 0.6rem; background: var(--border-strong); box-sizing: border-box; touch-action: manipulation; }
-.gsc-row { display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 1px; }
+.gsc-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--n), minmax(0, 1fr)); width: min(100%, 32rem, calc(100dvh - 21rem)); aspect-ratio: 1; padding: 0.4rem; gap: 1px; border-radius: 0.6rem; background: var(--border-strong); box-sizing: border-box; touch-action: manipulation; }
+.gsc-row { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 1px; }
 .gsc-cell { background: var(--surface); cursor: pointer; }
 .gsc-cell[data-owned] { background: var(--fill); box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.25); }
 .gsc-cell[data-start] { background: color-mix(in srgb, var(--fill) 35%, var(--surface)); }

@@ -305,8 +305,8 @@ const CSS = `
 .ggo-caps { color: var(--muted); font-size: 0.875rem; }
 .ggo-caps strong { color: var(--text); }
 .ggo-komi { color: var(--muted); font-size: 0.875rem; }
-.ggo-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--n), 1fr); width: var(--ggo-size); aspect-ratio: 1; padding: 2%; border-radius: 0.5rem; background: #dcb36b; box-shadow: inset 0 0 0 2px #a0783a; box-sizing: border-box; touch-action: manipulation; }
-.ggo-row { display: grid; grid-template-columns: repeat(var(--n), 1fr); }
+.ggo-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--n), minmax(0, 1fr)); width: var(--ggo-size); aspect-ratio: 1; padding: 2%; border-radius: 0.5rem; background: #dcb36b; box-shadow: inset 0 0 0 2px #a0783a; box-sizing: border-box; touch-action: manipulation; }
+.ggo-row { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
 .ggo-point { position: relative; display: grid; place-items: center; cursor: default; }
 .ggo-point::before, .ggo-point::after { content: ""; position: absolute; background: #3d2b12; pointer-events: none; }
 .ggo-point::before { left: 0; right: 0; top: calc(50% - 0.5px); height: 1px; }
