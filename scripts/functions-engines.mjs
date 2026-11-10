@@ -199,6 +199,7 @@ if (process.argv.includes("--fixtures")) {
     chess: { takebacks: false },
     "dots-and-boxes": undefined,
     "four-in-a-row": undefined,
+    go: { size: 9 },
     reversi: undefined,
   };
   const MAX_ACTIONS = 400;

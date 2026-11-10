@@ -1,6 +1,6 @@
 // Rating pools' names, by pool id (the manifests' `rated.pools`): chess's
-// clock pools, and Checkers' variants (Phase 11). Literal keys, so the i18n
-// check sees each one.
+// clock pools, Checkers' variants and Go's board (Phase 11). Literal keys, so
+// the i18n check sees each one.
 import type { AppT } from "@/i18n/i18n";
 
 const POOL_KEYS = {
@@ -10,6 +10,7 @@ const POOL_KEYS = {
   classical: "lobby:rated.pools.classical",
   russian: "lobby:rated.pools.russian",
   international: "lobby:rated.pools.international",
+  board9: "lobby:rated.pools.board9",
 } as const;
 
 /** Every pool's name in the page's language; an unknown pool isn't listed (show its id). */

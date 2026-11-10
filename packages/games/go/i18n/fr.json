@@ -1,0 +1,96 @@
+{
+  "name": "Go",
+  "tagline": "Entourez plus de plateau que votre adversaire, pierre après pierre.",
+  "description": "Jouez au go gratuitement dans le navigateur : 9 × 9 ou 13 × 13, décompte japonais et komi. Contre un bot, à deux ou en ligne.",
+  "about": [
+    "Go is a strategy game for two players that has been played for thousands of years. Black and White take turns placing stones on the intersections of a grid, and stones never move once placed. The aim is to surround more of the board than your opponent: empty points you enclose become your territory, and stones that are completely surrounded are captured.",
+    "The rules are few, but the game is deep. A group of stones stays on the board while it has at least one empty point next to it, called a liberty. Fill a group's last liberty and it's captured. You may not play a stone that would have no liberties unless it captures something, and the ko rule stops both players from taking back the same single stone forever.",
+    "The game ends when both players pass. The board then shows the count: each side's territory and the stones that can't escape capture. You can mark groups dead or alive before accepting. Here you play on 9 × 9, the size most games online use, or on the larger 13 × 13 board, against a bot on three levels, with a friend on one device, or online."
+  ],
+  "howToPlay": [
+    "Choose the board size, then Play vs bots or Play on this device. Black moves first.",
+    "On your turn, place a stone on any empty intersection, or pass.",
+    "A stone or a group of connected stones is captured when the other player fills every empty point next to it. Captured stones are prisoners.",
+    "You can't play a stone that would have no liberties, unless it captures. When one stone has just captured a single stone, the other player can't take it back at once (ko): play elsewhere first.",
+    "When both players pass, the count starts. Mark any group that can't live as dead, then accept. Each side scores its territory and prisoners, White adds 6.5 points of komi, and the higher score wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap an intersection to play there. Use Pass when you have nothing useful left to play.",
+    "During the count, tap a group to mark it dead or alive, then Accept count or Resume play.",
+    "Keyboard: move around the board with the arrow keys, and press Enter or Space to play or to mark a group.",
+    "Against bots, Undo takes back your last move and the bot's reply. Resign asks you to tap again to be sure."
+  ],
+  "tips": [
+    "Start in the corners, then the sides, then the centre: territory is easiest to enclose near the edge.",
+    "Keep your stones connected, or close enough to connect. Separate weak groups are easy to attack.",
+    "A group needs two separate eyes, two enclosed empty points, to live for good.",
+    "Count your opponent's liberties before you attack. The group with more liberties usually wins a fight.",
+    "Don't pass too early: check that every border between your territory and your opponent's is closed."
+  ],
+  "faq": [
+    {
+      "question": "Is Go free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How is the score counted?",
+      "answer": "With Japanese counting: each side scores the empty points it surrounds plus the stones it captured, including the other side's dead stones at the end. White gets 6.5 points of komi for moving second, so there are no draws."
+    },
+    {
+      "question": "What if we disagree about which stones are dead?",
+      "answer": "During the count, either player can mark a group dead or alive; the other then reviews it. If you can't agree, Resume play and settle it on the board."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "They use Monte Carlo search, playing out many random games to choose a move. On 9 × 9 the hard bot is a fair test for a beginner; on 13 × 13 it's weaker."
+    }
+  ],
+  "ui": {
+    "boardLabel": "Goban",
+    "pointEmpty": "{point}, vide",
+    "pointBlack": "{point}, pierre noire",
+    "pointWhite": "{point}, pierre blanche",
+    "dead": "morte",
+    "territoryBlack": "territoire de Noir",
+    "territoryWhite": "territoire de Blanc",
+    "ko": "ko, impossible de jouer ici maintenant",
+    "black": "Noir",
+    "white": "Blanc",
+    "captures": "Prises",
+    "komi": "Komi {komi}",
+    "pass": "Passer",
+    "resign": "Abandonner",
+    "confirmResign": "Touchez encore pour abandonner",
+    "undo": "Annuler",
+    "played": "{name} joue en {point}.",
+    "capturedStones": "{name} joue en {point} et prend {count}.",
+    "passed": "{name} passe.",
+    "passedTwice": "Les deux joueurs ont passé : le décompte.",
+    "scoringTitle": "Le décompte",
+    "scoringHelp": "Touchez un groupe pour le marquer mort ou vivant, puis acceptez le décompte.",
+    "accept": "Accepter le décompte",
+    "resume": "Reprendre la partie",
+    "waiting": "En attente de {name}.",
+    "scoreLine": "{name} : {total} ({territory} de territoire + {prisoners} prisonniers)",
+    "scoreLineKomi": "{name} : {total} ({territory} de territoire + {prisoners} prisonniers + {komi} de komi)",
+    "resigned": "{name} abandonne.",
+    "size": "Goban",
+    "size9": "9 × 9",
+    "size13": "13 × 13"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Vainqueur",
+      "description": "Gagnez {count, plural, one {# partie} other {# parties}}"
+    },
+    "streak": {
+      "name": "En série",
+      "description": "Gagnez {count, plural, one {# partie} other {# parties}} d’affilée"
+    },
+    "rated": {
+      "name": "Joueur classé",
+      "description": "Atteignez un classement de {count, number} après 10 parties classées"
+    }
+  },
+  "leaderboards": {}
+}

@@ -18,6 +18,7 @@ import { Button } from "@kefche/ui/components/button";
 import { accountIdentity, ensureIdentity, type Identity } from "@/features/account/identity";
 import { FormMessage, TextField } from "@/features/auth/components/fields";
 import type { PlayerStrings } from "@/features/games/GamePlayer";
+import { optionsConfig } from "@/features/games/options";
 import type { RaceSetup, RatedClock } from "@/features/games/page-props";
 import { fill, timerLabel, type TurnStrings } from "@/features/games/turn/labels";
 import type { TurnConfig } from "@/features/games/turn/match-setup";
@@ -213,13 +214,16 @@ export function OnlineRoom({
       }
       let code = intent.kind === "join" ? intent.code : null;
       const players = Math.max(game.config.players.default, 2, game.config.players.min);
+      // Every option written out, defaults included: a rated lobby's pool is
+      // found from them (rated_clock_for).
+      const options = optionsConfig(game.config.options, {}) ?? {};
       if (intent.kind === "quick") {
         // A seat in an open public lobby, or a new one (no bots fill seats).
         const { data, error: rpcError } = await supabase.rpc("quick_match", {
           p_game_id: game.id,
           p_game_version: game.version,
           p_players: players,
-          p_settings: settingsJson({ timer: game.config.onlineTimers[0] ?? 0, bots: {} }),
+          p_settings: settingsJson({ timer: game.config.onlineTimers[0] ?? 0, bots: {}, options }),
         });
         if (rpcError) throw rpcError;
         code = data.code;
@@ -230,7 +234,7 @@ export function OnlineRoom({
           p_game_version: game.version,
           p_players: players,
           p_visibility: intent.public ? "public" : "private",
-          p_settings: settingsJson({ timer: game.config.onlineTimers[0] ?? 0, bots: {} }),
+          p_settings: settingsJson({ timer: game.config.onlineTimers[0] ?? 0, bots: {}, options }),
         });
         if (rpcError) throw rpcError;
         code = data.code;

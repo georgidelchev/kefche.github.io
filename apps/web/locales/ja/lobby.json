@@ -111,7 +111,8 @@
       "rapid": "ラピッド",
       "classical": "クラシカル",
       "russian": "ロシア式",
-      "international": "国際式"
+      "international": "国際式",
+      "board9": "9 路"
     },
     "checking": "結果を計算しています…",
     "change": "あなたのレーティング：{before} → {after}（{change}）",

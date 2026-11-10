@@ -111,7 +111,8 @@
       "rapid": "سريع",
       "classical": "كلاسيكي",
       "russian": "الروسية",
-      "international": "الدولية"
+      "international": "الدولية",
+      "board9": "9 × 9"
     },
     "checking": "جارٍ احتساب النتيجة…",
     "change": "تصنيفك: {before} ← {after} ({change})",

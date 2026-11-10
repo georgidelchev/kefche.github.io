@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine10, bots2, options) {
-    this.engine = engine10;
+  constructor(engine11, bots2, options) {
+    this.engine = engine11;
     this.bots = bots2;
     this.options = options;
-    this.world = engine10.createWorld(options.config, options.seed);
+    this.world = engine11.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine10.ticksPerSecond / engine10.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine11.ticksPerSecond / engine11.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -479,7 +479,7 @@ function canonicalJson(value) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest10) => manifest10;
+var defineManifest = (manifest11) => manifest11;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -4849,6 +4849,527 @@ var manifest5 = defineManifest({
   tags: ["classic", "two-player", "multiplayer", "strategy"]
 });
 
+// packages/games/go/engine/board.ts
+var EMPTY3 = -1;
+var FastBoard = class _FastBoard {
+  size;
+  cells;
+  /** The point where a stone can't be played next (simple ko), or -1. */
+  ko = -1;
+  /** Stones each colour has captured. */
+  captures = [0, 0];
+  neighbours;
+  mark;
+  stamp = 0;
+  stack;
+  constructor(size, cells) {
+    this.size = size;
+    const n = size * size;
+    this.cells = new Int8Array(n).fill(EMPTY3);
+    if (cells) for (let i = 0; i < n; i++) this.cells[i] = cells[i] ?? EMPTY3;
+    this.neighbours = neighbourTable(size);
+    this.mark = new Int32Array(n);
+    this.stack = new Int16Array(n);
+  }
+  clone() {
+    const copy = new _FastBoard(this.size, this.cells);
+    copy.ko = this.ko;
+    copy.captures[0] = this.captures[0] ?? 0;
+    copy.captures[1] = this.captures[1] ?? 0;
+    return copy;
+  }
+  around(point) {
+    return this.neighbours[point] ?? new Int16Array();
+  }
+  /** Whether the group on `point` has a liberty (stops at the first). */
+  hasLiberty(point) {
+    const colour = this.cells[point];
+    const id = ++this.stamp;
+    let top = 0;
+    this.stack[top++] = point;
+    this.mark[point] = id;
+    while (top > 0) {
+      const p = this.stack[--top] ?? 0;
+      for (const q of this.around(p)) {
+        const c = this.cells[q];
+        if (c === EMPTY3) return true;
+        if (c === colour && this.mark[q] !== id) {
+          this.mark[q] = id;
+          this.stack[top++] = q;
+        }
+      }
+    }
+    return false;
+  }
+  /** Removes the group on `point`; returns how many stones it had. */
+  removeGroup(point) {
+    const colour = this.cells[point];
+    let top = 0;
+    let removed = 0;
+    this.stack[top++] = point;
+    this.cells[point] = EMPTY3;
+    while (top > 0) {
+      const p = this.stack[--top] ?? 0;
+      removed++;
+      for (const q of this.around(p)) {
+        if (this.cells[q] === colour) {
+          this.cells[q] = EMPTY3;
+          this.stack[top++] = q;
+        }
+      }
+    }
+    return removed;
+  }
+  /**
+   * Plays `colour` on `point` if legal (empty, not the ko point, not
+   * suicide), capturing what it surrounds. Returns false and changes nothing
+   * when the move is illegal.
+   */
+  play(point, colour) {
+    if (this.cells[point] !== EMPTY3 || point === this.ko) return false;
+    const other2 = 1 - colour;
+    this.cells[point] = colour;
+    let taken = 0;
+    let takenAt = -1;
+    for (const q of this.around(point)) {
+      if (this.cells[q] === other2 && !this.hasLiberty(q)) {
+        const n = this.removeGroup(q);
+        taken += n;
+        takenAt = q;
+      }
+    }
+    if (taken === 0 && !this.hasLiberty(point)) {
+      this.cells[point] = EMPTY3;
+      return false;
+    }
+    this.captures[colour] = (this.captures[colour] ?? 0) + taken;
+    this.ko = -1;
+    if (taken === 1) {
+      let alone = true;
+      let liberties = 0;
+      for (const q of this.around(point)) {
+        const c = this.cells[q];
+        if (c === colour) alone = false;
+        else if (c === EMPTY3) liberties++;
+      }
+      if (alone && liberties === 1) this.ko = takenAt;
+    }
+    return true;
+  }
+  /** Whether playing `point` is legal for `colour`, without playing it. */
+  isLegal(point, colour) {
+    if (this.cells[point] !== EMPTY3 || point === this.ko) return false;
+    for (const q of this.around(point)) if (this.cells[q] === EMPTY3) return true;
+    const copy = this.clone();
+    return copy.play(point, colour);
+  }
+  /**
+   * A point `colour` shouldn't fill in a playout: every neighbour its own,
+   * and the diagonals not the other colour's (one is allowed in the middle).
+   */
+  isEye(point, colour) {
+    if (this.cells[point] !== EMPTY3) return false;
+    for (const q of this.around(point)) if (this.cells[q] !== colour) return false;
+    const size = this.size;
+    const r = Math.floor(point / size);
+    const c = point % size;
+    let bad = 0;
+    let edge = false;
+    for (const [dr, dc] of DIAGONALS2) {
+      const rr = r + dr;
+      const cc = c + dc;
+      if (rr < 0 || rr >= size || cc < 0 || cc >= size) {
+        edge = true;
+        continue;
+      }
+      if (this.cells[rr * size + cc] === 1 - colour) bad++;
+    }
+    return edge ? bad === 0 : bad <= 1;
+  }
+  /**
+   * Plays at random from here until both sides pass, never filling one's
+   * own eyes. `random()` gives numbers in [0, 1). Returns the area each
+   * colour holds at the end (stones and the empty points only it surrounds).
+   */
+  playout(colour, random, maxMoves) {
+    const n = this.size * this.size;
+    const order = new Int16Array(n);
+    let passes = 0;
+    let turn = colour;
+    for (let move2 = 0; move2 < maxMoves && passes < 2; move2++) {
+      let count2 = 0;
+      for (let p = 0; p < n; p++) if (this.cells[p] === EMPTY3) order[count2++] = p;
+      let played = false;
+      while (count2 > 0) {
+        const i = Math.floor(random() * count2);
+        const p = order[i] ?? 0;
+        order[i] = order[--count2] ?? 0;
+        if (!this.isEye(p, turn) && this.play(p, turn)) {
+          played = true;
+          break;
+        }
+      }
+      passes = played ? 0 : passes + 1;
+      if (!played) this.ko = -1;
+      turn = 1 - turn;
+    }
+    return this.area();
+  }
+  /** Stones on the board and the empty points next only to one colour's stones. */
+  area() {
+    const totals = [0, 0];
+    const n = this.size * this.size;
+    for (let p = 0; p < n; p++) {
+      const c = this.cells[p];
+      if (c === 0 || c === 1) {
+        totals[c]++;
+        continue;
+      }
+      let owner = -2;
+      for (const q of this.around(p)) {
+        const d = this.cells[q] ?? EMPTY3;
+        if (d === EMPTY3) continue;
+        if (owner === -2) owner = d;
+        else if (owner !== d) owner = -1;
+      }
+      if (owner === 0 || owner === 1) totals[owner]++;
+    }
+    return totals;
+  }
+};
+var DIAGONALS2 = [
+  [-1, -1],
+  [-1, 1],
+  [1, -1],
+  [1, 1]
+];
+var tables = /* @__PURE__ */ new Map();
+function neighbourTable(size) {
+  const known = tables.get(size);
+  if (known) return known;
+  const table = Array.from({ length: size * size }, (_, p) => {
+    const r = Math.floor(p / size);
+    const c = p % size;
+    const list = [];
+    if (r > 0) list.push(p - size);
+    if (r < size - 1) list.push(p + size);
+    if (c > 0) list.push(p - 1);
+    if (c < size - 1) list.push(p + 1);
+    return Int16Array.from(list);
+  });
+  tables.set(size, table);
+  return table;
+}
+function groups(cells, size) {
+  const seen = new Uint8Array(size * size);
+  const table = neighbourTable(size);
+  const out = [];
+  for (let p = 0; p < size * size; p++) {
+    const colour = cells[p];
+    if (colour === EMPTY3 || colour === void 0 || seen[p]) continue;
+    const group = [];
+    const stack = [p];
+    seen[p] = 1;
+    while (stack.length > 0) {
+      const q = stack.pop() ?? 0;
+      group.push(q);
+      for (const r of table[q] ?? []) {
+        if (!seen[r] && cells[r] === colour) {
+          seen[r] = 1;
+          stack.push(r);
+        }
+      }
+    }
+    out.push(group);
+  }
+  return out;
+}
+function territory(cells, size, dead) {
+  const n = size * size;
+  const live = new Int8Array(n);
+  for (let p = 0; p < n; p++) live[p] = dead.has(p) ? EMPTY3 : cells[p] ?? EMPTY3;
+  const owner = new Int8Array(n).fill(-1);
+  const seen = new Uint8Array(n);
+  const table = neighbourTable(size);
+  for (let p = 0; p < n; p++) {
+    if (live[p] !== EMPTY3) {
+      owner[p] = live[p] ?? -1;
+      continue;
+    }
+    if (seen[p]) continue;
+    const region = [];
+    const stack = [p];
+    seen[p] = 1;
+    let border = -2;
+    while (stack.length > 0) {
+      const q = stack.pop() ?? 0;
+      region.push(q);
+      for (const r of table[q] ?? []) {
+        const c = live[r] ?? EMPTY3;
+        if (c === EMPTY3) {
+          if (!seen[r]) {
+            seen[r] = 1;
+            stack.push(r);
+          }
+        } else if (border === -2) border = c;
+        else if (border !== c) border = -1;
+      }
+    }
+    const who = border === 0 || border === 1 ? border : -1;
+    for (const q of region) owner[q] = who;
+  }
+  return owner;
+}
+
+// packages/games/go/engine/index.ts
+var SIZES3 = [9, 13];
+var KOMI = 6.5;
+function configFrom2(raw) {
+  const size = raw?.size;
+  return { size: SIZES3.find((s) => s === size) ?? 9 };
+}
+var boardOf2 = (state) => {
+  const b = new FastBoard(state.size, state.board);
+  b.ko = state.ko;
+  return b;
+};
+function legalPoints(state, seat) {
+  const b = boardOf2(state);
+  const out = [];
+  for (let p = 0; p < state.size * state.size; p++) if (b.isLegal(p, seat)) out.push(p);
+  return out;
+}
+var ESTIMATE_PLAYOUTS = { 9: 160, 13: 80 };
+function ownership(state, playouts = ESTIMATE_PLAYOUTS[state.size]) {
+  const n = state.size * state.size;
+  const total = new Float32Array(n);
+  const rng = Rng.fromSeed(`${state.seed}:own:${String(state.moves)}`);
+  const random = () => rng.next();
+  for (let i = 0; i < playouts; i++) {
+    const b = boardOf2(state);
+    b.ko = -1;
+    b.playout(state.turn, random, n * 3);
+    for (let p = 0; p < n; p++) {
+      const c = b.cells[p];
+      let owner = c === 0 || c === 1 ? c : -1;
+      if (owner === -1) {
+        const q = b.around(p)[0];
+        owner = q === void 0 ? -1 : b.cells[q] ?? -1;
+      }
+      if (owner === 0) total[p] = (total[p] ?? 0) + 1;
+      else if (owner === 1) total[p] = (total[p] ?? 0) - 1;
+    }
+  }
+  for (let p = 0; p < n; p++) total[p] = (total[p] ?? 0) / playouts;
+  return total;
+}
+function estimateDead(state) {
+  const own = ownership(state);
+  const dead = [];
+  for (const group of groups(state.board, state.size)) {
+    const first2 = group[0] ?? 0;
+    const colour = state.board[first2];
+    const mean = group.reduce((s, p) => s + (own[p] ?? 0), 0) / group.length;
+    if (colour === 0 && mean < -0.4 || colour === 1 && mean > 0.4) dead.push(...group);
+  }
+  return dead.sort((a, b) => a - b);
+}
+function scoreOf(state, dead) {
+  const deadSet = new Set(dead);
+  const owner = territory(state.board, state.size, deadSet);
+  const area = [0, 0];
+  for (let p = 0; p < owner.length; p++) {
+    const o = owner[p];
+    if (state.board[p] === EMPTY3 || deadSet.has(p)) {
+      if (o === 0 || o === 1) area[o]++;
+    }
+  }
+  const prisoners = [state.captures[0], state.captures[1]];
+  for (const p of deadSet) {
+    const c = state.board[p];
+    if (c === 0) prisoners[1]++;
+    else if (c === 1) prisoners[0]++;
+  }
+  return {
+    territory: area,
+    prisoners,
+    total: [area[0] + prisoners[0], area[1] + prisoners[1] + KOMI]
+  };
+}
+var groupAt = (state, point) => groups(state.board, state.size).find((g) => g.includes(point)) ?? [];
+var engine6 = {
+  initialState(config, _seats, seed) {
+    const { size } = configFrom2(config);
+    return {
+      size,
+      seed,
+      board: Array.from({ length: size * size }, () => EMPTY3),
+      turn: 0,
+      moves: 0,
+      ko: -1,
+      captures: [0, 0],
+      passes: 0,
+      phase: "play",
+      dead: [],
+      accepted: [false, false],
+      resumeTurn: 0,
+      last: null,
+      resigned: null
+    };
+  },
+  legalActions(state, seat) {
+    if (state.phase === "over" || seat !== state.turn) return [];
+    if (state.phase === "scoring") {
+      const stones = state.board.flatMap((v, point) => v === EMPTY3 ? [] : [point]);
+      return [
+        { type: "accept" },
+        { type: "resume" },
+        ...stones.map((point) => ({ type: "toggle", point }))
+      ];
+    }
+    return [
+      ...legalPoints(state, seat).map((point) => ({ type: "play", point })),
+      { type: "pass" }
+    ];
+  },
+  sideActions(state, seat) {
+    return state.phase === "over" || seat !== 0 && seat !== 1 ? [] : [{ type: "resign" }];
+  },
+  applyAction(state, seat, action) {
+    if (state.phase === "over" || seat !== 0 && seat !== 1) return state;
+    if (action.type === "resign") return { ...state, phase: "over", resigned: seat };
+    if (seat !== state.turn) return state;
+    const other2 = 1 - seat;
+    if (state.phase === "scoring") {
+      if (action.type === "accept") {
+        const accepted = [state.accepted[0], state.accepted[1]];
+        accepted[seat] = true;
+        if (accepted[0] && accepted[1]) return { ...state, accepted, phase: "over" };
+        return { ...state, accepted, turn: other2 };
+      }
+      if (action.type === "resume") {
+        return {
+          ...state,
+          phase: "play",
+          passes: 0,
+          dead: [],
+          accepted: [false, false],
+          turn: state.resumeTurn
+        };
+      }
+      if (action.type === "toggle" && Number.isInteger(action.point)) {
+        if (state.board[action.point] === EMPTY3 || state.board[action.point] === void 0) {
+          return state;
+        }
+        const group = groupAt(state, action.point);
+        const isDead = state.dead.includes(action.point);
+        const dead = isDead ? state.dead.filter((p) => !group.includes(p)) : [...state.dead, ...group].sort((a, b2) => a - b2);
+        return { ...state, dead, accepted: [false, false], turn: other2 };
+      }
+      return state;
+    }
+    if (action.type === "pass") {
+      const passes = state.passes + 1;
+      const base = {
+        ...state,
+        turn: other2,
+        moves: state.moves + 1,
+        ko: -1,
+        passes,
+        last: { seat, point: null, captured: 0 }
+      };
+      if (passes < 2) return base;
+      return {
+        ...base,
+        phase: "scoring",
+        dead: estimateDead(base),
+        accepted: [false, false],
+        resumeTurn: other2
+      };
+    }
+    if (action.type !== "play" || !Number.isInteger(action.point)) return state;
+    const b = boardOf2(state);
+    if (action.point < 0 || action.point >= state.size * state.size || !b.play(action.point, seat)) {
+      return state;
+    }
+    const captures2 = [state.captures[0], state.captures[1]];
+    captures2[seat] += b.captures[seat] ?? 0;
+    return {
+      ...state,
+      board: Array.from(b.cells),
+      turn: other2,
+      moves: state.moves + 1,
+      ko: b.ko,
+      captures: captures2,
+      passes: 0,
+      last: { seat, point: action.point, captured: b.captures[seat] ?? 0 }
+    };
+  },
+  currentSeats: (state) => state.phase === "over" ? [] : [state.turn],
+  // Online, an away player passes (or, while scoring, accepts the count).
+  skipTurn(state, seat) {
+    if (state.phase === "over" || seat !== state.turn) return state;
+    return engine6.applyAction(state, seat, { type: state.phase === "scoring" ? "accept" : "pass" });
+  },
+  result(state) {
+    if (state.phase !== "over") return null;
+    if (state.resigned !== null) {
+      return { completed: true, outcome: state.resigned === 0 ? [0, 1] : [1, 0] };
+    }
+    const { total } = scoreOf(state, state.dead);
+    return { completed: true, outcome: total[0] > total[1] ? [1, 0] : [0, 1] };
+  }
+};
+
+// packages/games/go/manifest.ts
+var manifest6 = defineManifest({
+  id: "go",
+  version: 1,
+  category: "board",
+  kind: "turn",
+  players: { min: 2, max: 2, default: 2 },
+  modes: ["solo-bots", "hotseat", "online-private", "online-public", "quick-match"],
+  bots: { supported: true, difficulties: ["easy", "medium", "hard"], canFillSeats: true },
+  timers: [
+    { kind: "none" },
+    { kind: "per-move", seconds: 30, onExpiry: "pass" },
+    { kind: "per-move", seconds: 60, onExpiry: "pass" },
+    { kind: "clock", base: 300, increment: 3 },
+    { kind: "clock", base: 600, increment: 5 },
+    { kind: "clock", base: 1200, increment: 10 }
+  ],
+  options: [
+    {
+      key: "size",
+      label: "size",
+      values: [
+        { value: 9, label: "size9" },
+        { value: 13, label: "size13" }
+      ]
+    }
+  ],
+  // One pool, 9 × 9, on the three clocks (private.rated_clocks, migration
+  // 20261110100100).
+  rated: {
+    system: "glicko2",
+    pools: [{ id: "board9", timers: [3, 4, 5], config: { size: 9 } }]
+  },
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard"],
+  renderer: "dom",
+  estimatedMinutes: [10, 40],
+  leaderboards: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] },
+    { id: "rated", icon: "medal", metric: "rating", tiers: [1600, 1800, 2e3] }
+  ],
+  // Every move, pass and count is an action, so a match replays exactly (Phase 7 validation).
+  scoreValidation: { kind: "replay" },
+  tags: ["classic", "two-player", "strategy"]
+});
+
 // packages/games/reversi/engine/index.ts
 var SIZE2 = 8;
 var DIRECTIONS2 = [
@@ -4892,7 +5413,7 @@ function movesFor2(board, seat) {
   return moves;
 }
 var countDiscs = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-var engine6 = {
+var engine7 = {
   initialState() {
     const board = Array.from({ length: SIZE2 * SIZE2 }, () => -1);
     board[3 * SIZE2 + 3] = 1;
@@ -4935,7 +5456,7 @@ var engine6 = {
 };
 
 // packages/games/reversi/manifest.ts
-var manifest6 = defineManifest({
+var manifest7 = defineManifest({
   id: "reversi",
   version: 1,
   category: "board",
@@ -5006,7 +5527,7 @@ function neighbor(cell, direction, walls) {
   c = (c + COLS) % COLS;
   return r * COLS + c;
 }
-var engine7 = {
+var engine8 = {
   initialState(config, seed) {
     const middle = Math.floor(ROWS / 2) * COLS + Math.floor(COLS / 2) - 3;
     const snake = [middle, middle - 1, middle - 2];
@@ -5073,7 +5594,7 @@ var engine7 = {
 var stepMs = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
 
 // packages/games/snake/manifest.ts
-var manifest7 = defineManifest({
+var manifest8 = defineManifest({
   id: "snake",
   version: 1,
   category: "arcade",
@@ -5482,7 +6003,7 @@ function commit(state, next, extra = {}) {
     ]
   };
 }
-var engine8 = {
+var engine9 = {
   initialState(config, seed) {
     return fromPuzzle(generate(seed, config.difficulty));
   },
@@ -5539,7 +6060,7 @@ var engine8 = {
 };
 
 // packages/games/sudoku/manifest.ts
-var manifest8 = defineManifest({
+var manifest9 = defineManifest({
   id: "sudoku",
   version: 1,
   category: "logic",
@@ -6233,7 +6754,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine9 = {
+var engine10 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -6250,7 +6771,7 @@ var engine9 = {
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest9 = defineManifest({
+var manifest10 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -6287,10 +6808,11 @@ var GAMES = {
   "chess": { manifest: manifest3, engine: engine3 },
   "dots-and-boxes": { manifest: manifest4, engine: engine4 },
   "four-in-a-row": { manifest: manifest5, engine: engine5 },
-  "reversi": { manifest: manifest6, engine: engine6 },
-  "snake": { manifest: manifest7, engine: engine7 },
-  "sudoku": { manifest: manifest8, engine: engine8 },
-  "worm-rush": { manifest: manifest9, engine: engine9, bots, host: arenaHost }
+  "go": { manifest: manifest6, engine: engine6 },
+  "reversi": { manifest: manifest7, engine: engine7 },
+  "snake": { manifest: manifest8, engine: engine8 },
+  "sudoku": { manifest: manifest9, engine: engine9 },
+  "worm-rush": { manifest: manifest10, engine: engine10, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

@@ -2345,6 +2345,12 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **The server** decides a rated game other than chess with the game's own engine (`_shared/turn-rated.ts`), with chess's clock rules. Deno: 83/83.
   - **Pool names** (Russian, International) in all 11 locales, shared by the lobby, notifications, push and the profile.
   - Checked on the local stack: 15/15 (chess still searching without a pool, pools kept apart, the room's and game's options, a flag falling decided by `submit-match` and rated in the International pool, a rated lobby switching pools), and in Chrome: 9/9 (the pool picker, the sign-in link keeping the pool, chess's pools and old links).
+- [x] **Step 3, Go:**
+  - **Rules:** 9 × 9 (the default) or 13 × 13, captures, no suicide, simple ko, Japanese counting (territory and prisoners) with 6.5 komi, and resigning at any time.
+  - **The count:** after two passes, the engine marks the stones it judges dead from seeded random playouts. The player to move accepts, marks a group dead or alive (the other then reviews it), or resumes play, so the count works with bots, timers and the server's replay. A per-move timer running out passes, or accepts while counting.
+  - **Bots:** Monte Carlo tree search over a fast board (`engine/board.ts`). Easy plays a random point a third of the time; medium and hard think 400 and 900 ms. Each passes when the other side has passed and the count favours it. Hard beat easy 4 of 4 on 9 × 9.
+  - **Rated** (migration `20261110100100_go_rated.sql`): one pool, 9 × 9, on 5 + 3, 10 + 5 and 20 + 10. A 13 × 13 lobby can't be rated. New rooms now write out every option, defaults included, so a rated lobby always finds its pool.
+  - Checked in Chrome: 43/43, covering the board option, a move and the bot's reply, undo, resigning in two taps, 13 × 13, two passes, the count with a group marked dead and alive again, both accepting, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe. Rated on the local database: 4/4.
 
 ## Known issues
 

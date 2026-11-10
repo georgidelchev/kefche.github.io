@@ -1,0 +1,96 @@
+{
+  "name": "围棋",
+  "tagline": "一子一子落下，围出比对手更多的地盘。",
+  "description": "在浏览器中免费下围棋：9 路或 13 路，日本规则数目并贴目。可对战机器人、同一设备双人或在线对战。",
+  "about": [
+    "Go is a strategy game for two players that has been played for thousands of years. Black and White take turns placing stones on the intersections of a grid, and stones never move once placed. The aim is to surround more of the board than your opponent: empty points you enclose become your territory, and stones that are completely surrounded are captured.",
+    "The rules are few, but the game is deep. A group of stones stays on the board while it has at least one empty point next to it, called a liberty. Fill a group's last liberty and it's captured. You may not play a stone that would have no liberties unless it captures something, and the ko rule stops both players from taking back the same single stone forever.",
+    "The game ends when both players pass. The board then shows the count: each side's territory and the stones that can't escape capture. You can mark groups dead or alive before accepting. Here you play on 9 × 9, the size most games online use, or on the larger 13 × 13 board, against a bot on three levels, with a friend on one device, or online."
+  ],
+  "howToPlay": [
+    "Choose the board size, then Play vs bots or Play on this device. Black moves first.",
+    "On your turn, place a stone on any empty intersection, or pass.",
+    "A stone or a group of connected stones is captured when the other player fills every empty point next to it. Captured stones are prisoners.",
+    "You can't play a stone that would have no liberties, unless it captures. When one stone has just captured a single stone, the other player can't take it back at once (ko): play elsewhere first.",
+    "When both players pass, the count starts. Mark any group that can't live as dead, then accept. Each side scores its territory and prisoners, White adds 6.5 points of komi, and the higher score wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap an intersection to play there. Use Pass when you have nothing useful left to play.",
+    "During the count, tap a group to mark it dead or alive, then Accept count or Resume play.",
+    "Keyboard: move around the board with the arrow keys, and press Enter or Space to play or to mark a group.",
+    "Against bots, Undo takes back your last move and the bot's reply. Resign asks you to tap again to be sure."
+  ],
+  "tips": [
+    "Start in the corners, then the sides, then the centre: territory is easiest to enclose near the edge.",
+    "Keep your stones connected, or close enough to connect. Separate weak groups are easy to attack.",
+    "A group needs two separate eyes, two enclosed empty points, to live for good.",
+    "Count your opponent's liberties before you attack. The group with more liberties usually wins a fight.",
+    "Don't pass too early: check that every border between your territory and your opponent's is closed."
+  ],
+  "faq": [
+    {
+      "question": "Is Go free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How is the score counted?",
+      "answer": "With Japanese counting: each side scores the empty points it surrounds plus the stones it captured, including the other side's dead stones at the end. White gets 6.5 points of komi for moving second, so there are no draws."
+    },
+    {
+      "question": "What if we disagree about which stones are dead?",
+      "answer": "During the count, either player can mark a group dead or alive; the other then reviews it. If you can't agree, Resume play and settle it on the board."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "They use Monte Carlo search, playing out many random games to choose a move. On 9 × 9 the hard bot is a fair test for a beginner; on 13 × 13 it's weaker."
+    }
+  ],
+  "ui": {
+    "boardLabel": "围棋棋盘",
+    "pointEmpty": "{point}，空",
+    "pointBlack": "{point}，黑子",
+    "pointWhite": "{point}，白子",
+    "dead": "死子",
+    "territoryBlack": "黑方地域",
+    "territoryWhite": "白方地域",
+    "ko": "劫，现在不能下这里",
+    "black": "黑方",
+    "white": "白方",
+    "captures": "提子",
+    "komi": "贴目 {komi}",
+    "pass": "停一手",
+    "resign": "认输",
+    "confirmResign": "再点一次确认认输",
+    "undo": "悔棋",
+    "played": "{name} 下在 {point}。",
+    "capturedStones": "{name} 下在 {point}，提掉 {count} 子。",
+    "passed": "{name} 停一手。",
+    "passedTwice": "双方都停一手：开始点目。",
+    "scoringTitle": "点目",
+    "scoringHelp": "点击一块棋标记死活，然后接受点目结果。",
+    "accept": "接受点目",
+    "resume": "继续对局",
+    "waiting": "等待 {name}。",
+    "scoreLine": "{name}：{total}（地域 {territory} + 提子 {prisoners}）",
+    "scoreLineKomi": "{name}：{total}（地域 {territory} + 提子 {prisoners} + 贴目 {komi}）",
+    "resigned": "{name} 认输。",
+    "size": "棋盘",
+    "size9": "9 × 9",
+    "size13": "13 × 13"
+  },
+  "achievements": {
+    "winner": {
+      "name": "胜利者",
+      "description": "赢得 {count, number} 局"
+    },
+    "streak": {
+      "name": "连胜",
+      "description": "连续赢得 {count, number} 局"
+    },
+    "rated": {
+      "name": "积分玩家",
+      "description": "在 10 局积分赛后积分达到 {count, number}"
+    }
+  },
+  "leaderboards": {}
+}

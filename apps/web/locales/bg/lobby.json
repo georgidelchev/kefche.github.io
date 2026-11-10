@@ -111,7 +111,8 @@
       "rapid": "Ускорен",
       "classical": "Класически",
       "russian": "Руска",
-      "international": "Международна"
+      "international": "Международна",
+      "board9": "9 × 9"
     },
     "checking": "Изчисляваме резултата…",
     "change": "Твоят рейтинг: {before} → {after} ({change})",

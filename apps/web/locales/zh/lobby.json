@@ -111,7 +111,8 @@
       "rapid": "快棋",
       "classical": "慢棋",
       "russian": "俄式",
-      "international": "国际"
+      "international": "国际",
+      "board9": "9 路"
     },
     "checking": "正在计算结果…",
     "change": "你的积分：{before} → {after}（{change}）",

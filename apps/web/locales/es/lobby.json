@@ -111,7 +111,8 @@
       "rapid": "Rápida",
       "classical": "Clásica",
       "russian": "Rusas",
-      "international": "Internacionales"
+      "international": "Internacionales",
+      "board9": "9 × 9"
     },
     "checking": "Calculando el resultado…",
     "change": "Tu puntuación: {before} → {after} ({change})",

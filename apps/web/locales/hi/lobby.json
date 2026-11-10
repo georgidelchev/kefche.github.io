@@ -111,7 +111,8 @@
       "rapid": "रैपिड",
       "classical": "क्लासिकल",
       "russian": "रूसी",
-      "international": "अंतरराष्ट्रीय"
+      "international": "अंतरराष्ट्रीय",
+      "board9": "9 × 9"
     },
     "checking": "नतीजा निकाला जा रहा है…",
     "change": "आपकी रेटिंग: {before} → {after} ({change})",
