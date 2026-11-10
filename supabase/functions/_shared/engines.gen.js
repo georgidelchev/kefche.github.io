@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine19, bots2, options) {
-    this.engine = engine19;
+  constructor(engine20, bots2, options) {
+    this.engine = engine20;
     this.bots = bots2;
     this.options = options;
-    this.world = engine19.createWorld(options.config, options.seed);
+    this.world = engine20.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine19.ticksPerSecond / engine19.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine20.ticksPerSecond / engine20.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -479,7 +479,7 @@ function canonicalJson(value) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest19) => manifest19;
+var defineManifest = (manifest20) => manifest20;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -4959,11 +4959,11 @@ function lineEngine(rulesFor3) {
       }
       const board = state.board.slice();
       board[point] = seat;
-      const placed = { ...state, board, moves: state.moves + 1, last: point };
-      const won = winningLine(placed, point, seat);
-      if (won) return { ...placed, over: true, winner: seat, winLine: won };
-      if (placed.moves === board.length) return { ...placed, over: true };
-      return { ...placed, turn: (seat + 1) % state.seats };
+      const placed2 = { ...state, board, moves: state.moves + 1, last: point };
+      const won = winningLine(placed2, point, seat);
+      if (won) return { ...placed2, over: true, winner: seat, winLine: won };
+      if (placed2.moves === board.length) return { ...placed2, over: true };
+      return { ...placed2, turn: (seat + 1) % state.seats };
     },
     currentSeats: (state) => state.over ? [] : [state.turn],
     // Online, an away player's turn passes to the next seat.
@@ -6425,6 +6425,369 @@ var manifest14 = defineManifest({
   tags: ["classic", "two-player", "strategy"]
 });
 
+// packages/games/shape-claim/engine/index.ts
+var EMPTY8 = -1;
+var ROW = 4;
+var SHAPES = [
+  [[0, 0]],
+  [
+    [0, 0],
+    [0, 1]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [0, 2]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [1, 0]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [0, 3]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [1, 1]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [1, 0]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [1, 1],
+    [1, 2]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    [0, 4]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    [1, 0]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [1, 2],
+    [1, 3]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [1, 0],
+    [1, 1]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [1, 0],
+    [2, 0]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    [1, 1]
+  ],
+  [
+    [0, 0],
+    [0, 1],
+    [0, 2],
+    [1, 1],
+    [2, 1]
+  ],
+  [
+    [0, 0],
+    [0, 2],
+    [1, 0],
+    [1, 1],
+    [1, 2]
+  ],
+  [
+    [0, 0],
+    [1, 0],
+    [1, 1],
+    [2, 1],
+    [2, 2]
+  ],
+  [
+    [0, 0],
+    [1, 0],
+    [1, 1],
+    [1, 2],
+    [2, 2]
+  ],
+  [
+    [0, 0],
+    [1, 0],
+    [1, 1],
+    [1, 2],
+    [2, 1]
+  ],
+  [
+    [0, 1],
+    [1, 0],
+    [1, 1],
+    [1, 2],
+    [2, 1]
+  ]
+];
+var sizeFor3 = (seats) => seats <= 2 ? 14 : seats === 3 ? 17 : 20;
+var normalize = (cells) => {
+  const minR = Math.min(...cells.map(([r]) => r));
+  const minC = Math.min(...cells.map(([, c]) => c));
+  return cells.map(([r, c]) => [r - minR, c - minC]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+};
+var keyOf = (cells) => normalize(cells).map(([r, c]) => `${String(r)},${String(c)}`).join(" ");
+function orientations(shape) {
+  const base = SHAPES[shape] ?? [];
+  const out = /* @__PURE__ */ new Map();
+  let cells = base.map(([r, c]) => [r, c]);
+  for (let flip = 0; flip < 2; flip++) {
+    for (let turn = 0; turn < 4; turn++) {
+      const n = normalize(cells);
+      out.set(keyOf(n), n);
+      cells = cells.map(([r, c]) => [c, -r]);
+    }
+    cells = cells.map(([r, c]) => [r, -c]);
+  }
+  return [...out.values()];
+}
+var ORIENTATIONS = SHAPES.map((_, i) => orientations(i));
+var SHAPE_KEYS = ORIENTATIONS.map((list) => new Set(list.map((o) => keyOf(o))));
+function cornerOf(size, seats, seat) {
+  const last = size - 1;
+  const corners = seats <= 2 ? [0, last * size + last] : [0, last, last * size + last, last * size];
+  return corners[seat] ?? 0;
+}
+var scoreOf2 = (state, seat) => state.board.reduce((n, v) => v === seat ? n + 1 : n, 0);
+function fits(state, seat, cells) {
+  const { board, size } = state;
+  let corner = false;
+  for (const cell of cells) {
+    if (cell < 0 || cell >= board.length || board[cell] !== EMPTY8) return false;
+    const r = Math.floor(cell / size);
+    const c = cell % size;
+    for (const [dr, dc] of [
+      [-1, 0],
+      [1, 0],
+      [0, -1],
+      [0, 1]
+    ]) {
+      const rr = r + dr;
+      const cc = c + dc;
+      if (rr >= 0 && rr < size && cc >= 0 && cc < size && board[rr * size + cc] === seat)
+        return false;
+    }
+    for (const [dr, dc] of [
+      [-1, -1],
+      [-1, 1],
+      [1, -1],
+      [1, 1]
+    ]) {
+      const rr = r + dr;
+      const cc = c + dc;
+      if (rr >= 0 && rr < size && cc >= 0 && cc < size && board[rr * size + cc] === seat)
+        corner = true;
+    }
+  }
+  if (!state.started[seat]) return cells.includes(cornerOf(size, state.seats, seat));
+  return corner;
+}
+function placed(o, r, c, size) {
+  const out = [];
+  for (const [dr, dc] of o) {
+    const rr = r + dr;
+    const cc = c + dc;
+    if (rr < 0 || rr >= size || cc < 0 || cc >= size) return null;
+    out.push(rr * size + cc);
+  }
+  return out;
+}
+function anchors(state, seat) {
+  const { board, size } = state;
+  if (!state.started[seat]) return [cornerOf(size, state.seats, seat)];
+  const out = [];
+  board.forEach((v, cell) => {
+    if (v !== EMPTY8) return;
+    if (fits(state, seat, [cell])) out.push(cell);
+  });
+  return out;
+}
+function placements(state, seat, slot) {
+  const shape = state.row[slot];
+  if (shape === void 0) return [];
+  const { size } = state;
+  const seen = /* @__PURE__ */ new Set();
+  const out = [];
+  for (const anchor of anchors(state, seat)) {
+    const ar = Math.floor(anchor / size);
+    const ac = anchor % size;
+    for (const o of ORIENTATIONS[shape] ?? []) {
+      for (const [pr, pc] of o) {
+        const cells = placed(o, ar - pr, ac - pc, size);
+        if (!cells) continue;
+        const sorted = cells.toSorted((a, b) => a - b);
+        const key2 = sorted.join(",");
+        if (seen.has(key2) || !fits(state, seat, sorted)) continue;
+        seen.add(key2);
+        out.push(sorted);
+      }
+    }
+  }
+  return out;
+}
+function canPlace(state, seat) {
+  return state.row.some((_, slot) => placements(state, seat, slot).length > 0);
+}
+function isShape(state, slot, cells) {
+  const shape = state.row[slot];
+  if (shape === void 0 || cells.length !== (SHAPES[shape]?.length ?? -1)) return false;
+  const { size } = state;
+  const rc = cells.map((cell) => [Math.floor(cell / size), cell % size]);
+  return SHAPE_KEYS[shape]?.has(keyOf(rc)) ?? false;
+}
+var engine15 = {
+  initialState(_config, seats, seed) {
+    const size = sizeFor3(seats);
+    const rng = Rng.fromSeed(`${seed}:bag`);
+    const bag = rng.shuffle(
+      Array.from({ length: seats * SHAPES.length }, (_, i) => i % SHAPES.length)
+    );
+    return {
+      size,
+      seats,
+      board: Array.from({ length: size * size }, () => EMPTY8),
+      row: bag.slice(0, ROW),
+      bag: bag.slice(ROW),
+      turn: 0,
+      moves: 0,
+      passes: 0,
+      started: Array.from({ length: seats }, () => false),
+      last: null,
+      over: false
+    };
+  },
+  legalActions(state, seat) {
+    if (state.over || seat !== state.turn) return [];
+    const out = [];
+    state.row.forEach((_, slot) => {
+      for (const cells of placements(state, seat, slot)) out.push({ type: "place", slot, cells });
+    });
+    return out.length > 0 ? out : [{ type: "pass" }];
+  },
+  applyAction(state, seat, action) {
+    if (state.over || seat !== state.turn) return state;
+    const next = (seat + 1) % state.seats;
+    if (action.type === "pass") {
+      if (canPlace(state, seat)) return state;
+      const row2 = state.row.slice(1);
+      const bag2 = state.bag.slice();
+      const refill2 = bag2.shift();
+      if (refill2 !== void 0) row2.push(refill2);
+      const passes = state.passes + 1;
+      const over = row2.length === 0 || passes >= state.seats && bag2.length === 0 && refill2 === void 0;
+      return { ...state, row: row2, bag: bag2, turn: next, moves: state.moves + 1, passes, last: null, over };
+    }
+    const cells = Array.isArray(action.cells) ? action.cells.toSorted((a, b) => a - b) : [];
+    if (!isShape(state, action.slot, cells) || !fits(state, seat, cells)) return state;
+    const board = state.board.slice();
+    for (const cell of cells) board[cell] = seat;
+    const row = state.row.slice();
+    const bag = state.bag.slice();
+    const refill = bag.shift();
+    if (refill === void 0) row.splice(action.slot, 1);
+    else row[action.slot] = refill;
+    const started = state.started.slice();
+    started[seat] = true;
+    return {
+      ...state,
+      board,
+      row,
+      bag,
+      started,
+      turn: next,
+      moves: state.moves + 1,
+      passes: 0,
+      last: { seat, cells },
+      over: row.length === 0
+    };
+  },
+  currentSeats: (state) => state.over ? [] : [state.turn],
+  // Online, an away player's turn passes to the next seat.
+  skipTurn(state, seat) {
+    if (state.over || seat !== state.turn) return state;
+    return { ...state, turn: (seat + 1) % state.seats, last: null };
+  },
+  result(state) {
+    if (!state.over) return null;
+    const scores = Array.from({ length: state.seats }, (_, s) => scoreOf2(state, s));
+    const best = Math.max(...scores);
+    const winners = scores.filter((s) => s === best).length;
+    return {
+      completed: true,
+      outcome: scores.map((s) => s === best ? winners > 1 ? 0.5 : 1 : 0)
+    };
+  }
+};
+
+// packages/games/shape-claim/manifest.ts
+var manifest15 = defineManifest({
+  id: "shape-claim",
+  version: 1,
+  category: "strategy",
+  kind: "turn",
+  players: { min: 2, max: 4, default: 4 },
+  modes: ["solo-bots", "hotseat", "online-private", "online-public", "quick-match"],
+  bots: { supported: true, difficulties: ["easy", "medium", "hard"], canFillSeats: true },
+  timers: [
+    { kind: "none" },
+    { kind: "per-move", seconds: 30, onExpiry: "random-move" },
+    { kind: "per-move", seconds: 60, onExpiry: "random-move" }
+  ],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard"],
+  renderer: "dom",
+  estimatedMinutes: [10, 25],
+  leaderboards: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] }
+  ],
+  // Every move is the cells a piece covers; the bag comes from the seed.
+  scoreValidation: { kind: "replay" },
+  tags: ["multiplayer", "strategy", "original"]
+});
+
 // packages/games/snake/engine/index.ts
 var COLS = 20;
 var ROWS = 20;
@@ -6464,7 +6827,7 @@ function neighbor(cell, direction, walls) {
   c = (c + COLS) % COLS;
   return r * COLS + c;
 }
-var engine15 = {
+var engine16 = {
   initialState(config, seed) {
     const middle = Math.floor(ROWS / 2) * COLS + Math.floor(COLS / 2) - 3;
     const snake = [middle, middle - 1, middle - 2];
@@ -6505,15 +6868,15 @@ var engine15 = {
     }
     const snake = [next, ...body];
     if (!eats) return { ...state, snake, direction, queue, ticks };
-    const placed = placeFood(snake, state.rng);
-    const won = placed.food === -1;
+    const placed2 = placeFood(snake, state.rng);
+    const won = placed2.food === -1;
     return {
       ...state,
       snake,
       direction,
       queue,
       ticks,
-      ...placed,
+      ...placed2,
       score: state.score + POINTS2[state.config.speed],
       eaten: state.eaten + 1,
       over: won,
@@ -6531,7 +6894,7 @@ var engine15 = {
 var stepMs = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
 
 // packages/games/snake/manifest.ts
-var manifest15 = defineManifest({
+var manifest16 = defineManifest({
   id: "snake",
   version: 1,
   category: "arcade",
@@ -6940,7 +7303,7 @@ function commit(state, next, extra = {}) {
     ]
   };
 }
-var engine16 = {
+var engine17 = {
   initialState(config, seed) {
     return fromPuzzle(generate(seed, config.difficulty));
   },
@@ -6997,7 +7360,7 @@ var engine16 = {
 };
 
 // packages/games/sudoku/manifest.ts
-var manifest16 = defineManifest({
+var manifest17 = defineManifest({
   id: "sudoku",
   version: 1,
   category: "logic",
@@ -7048,7 +7411,7 @@ var manifest16 = defineManifest({
 });
 
 // packages/games/ultimate-ttt/engine/index.ts
-var EMPTY8 = -1;
+var EMPTY9 = -1;
 var LINES = [
   [0, 1, 2],
   [3, 4, 5],
@@ -7069,20 +7432,20 @@ function lineOf(marks, seat) {
 var smallBoard = (cells, b) => cells.slice(b * 9, b * 9 + 9);
 function movesFor6(state) {
   if (state.over) return [];
-  if (state.mode === "classic") return state.cells.flatMap((v, i) => v === EMPTY8 ? [i] : []);
-  const open = (b) => state.boards[b] === EMPTY8;
+  if (state.mode === "classic") return state.cells.flatMap((v, i) => v === EMPTY9 ? [i] : []);
+  const open = (b) => state.boards[b] === EMPTY9;
   const allowed = state.next !== null && open(state.next) ? [state.next] : [0, 1, 2, 3, 4, 5, 6, 7, 8].filter(open);
   return allowed.flatMap(
-    (b) => smallBoard(state.cells, b).flatMap((v, c) => v === EMPTY8 ? [b * 9 + c] : [])
+    (b) => smallBoard(state.cells, b).flatMap((v, c) => v === EMPTY9 ? [b * 9 + c] : [])
   );
 }
-var engine17 = {
+var engine18 = {
   initialState(config) {
     const { mode } = configFrom8(config);
     return {
       mode,
-      cells: Array.from({ length: mode === "classic" ? 9 : 81 }, () => EMPTY8),
-      boards: Array.from({ length: 9 }, () => EMPTY8),
+      cells: Array.from({ length: mode === "classic" ? 9 : 81 }, () => EMPTY9),
+      boards: Array.from({ length: 9 }, () => EMPTY9),
       next: null,
       turn: 0,
       moves: 0,
@@ -7104,19 +7467,19 @@ var engine17 = {
     if (state.mode === "classic") {
       const line2 = lineOf(cells, seat);
       if (line2) return { ...base, turn: seat, winner: seat, over: true, line: line2 };
-      if (cells.every((v) => v !== EMPTY8)) return { ...base, turn: seat, over: true };
+      if (cells.every((v) => v !== EMPTY9)) return { ...base, turn: seat, over: true };
       return base;
     }
     const board = Math.floor(cell / 9);
     const boards2 = state.boards.slice();
     const small = smallBoard(cells, board);
     if (lineOf(small, seat)) boards2[board] = seat;
-    else if (small.every((v) => v !== EMPTY8)) boards2[board] = 2;
+    else if (small.every((v) => v !== EMPTY9)) boards2[board] = 2;
     const next = cell % 9;
     const after = { ...base, boards: boards2, next };
     const line = lineOf(boards2, seat);
     if (line) return { ...after, turn: seat, winner: seat, over: true, line };
-    if (boards2.every((b) => b !== EMPTY8)) return { ...after, turn: seat, over: true };
+    if (boards2.every((b) => b !== EMPTY9)) return { ...after, turn: seat, over: true };
     return after;
   },
   currentSeats: (state) => state.over ? [] : [state.turn],
@@ -7133,7 +7496,7 @@ var engine17 = {
 };
 
 // packages/games/ultimate-ttt/manifest.ts
-var manifest17 = defineManifest({
+var manifest18 = defineManifest({
   id: "ultimate-ttt",
   version: 1,
   category: "strategy",
@@ -7817,7 +8180,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine18 = {
+var engine19 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -7834,7 +8197,7 @@ var engine18 = {
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest18 = defineManifest({
+var manifest19 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -7880,10 +8243,11 @@ var GAMES = {
   "nim": { manifest: manifest12, engine: engine12 },
   "nine-mens-morris": { manifest: manifest13, engine: engine13 },
   "reversi": { manifest: manifest14, engine: engine14 },
-  "snake": { manifest: manifest15, engine: engine15 },
-  "sudoku": { manifest: manifest16, engine: engine16 },
-  "ultimate-ttt": { manifest: manifest17, engine: engine17 },
-  "worm-rush": { manifest: manifest18, engine: engine18, bots, host: arenaHost }
+  "shape-claim": { manifest: manifest15, engine: engine15 },
+  "snake": { manifest: manifest16, engine: engine16 },
+  "sudoku": { manifest: manifest17, engine: engine17 },
+  "ultimate-ttt": { manifest: manifest18, engine: engine18 },
+  "worm-rush": { manifest: manifest19, engine: engine19, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

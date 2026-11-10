@@ -208,6 +208,7 @@ if (process.argv.includes("--fixtures")) {
     nim: { piles: "random", misere: false },
     "nine-mens-morris": { flying: true },
     reversi: undefined,
+    "shape-claim": undefined,
     "ultimate-ttt": { mode: "ultimate" },
   };
   const MAX_ACTIONS = 400;

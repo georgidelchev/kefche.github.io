@@ -2390,6 +2390,11 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Keyboard:** the star's rows are offset by half a hole, so up and down go to the nearest hole in the next row (the kit's roving focus takes a custom step); a straight column would skip every other row.
   - **Bots:** distances to the goal's far tip: easy wanders forward, medium takes the longest step, hard adds its own next move and brings stragglers along. Hard beat easy 6 of 6 with 2, 3 and 6 players; bot games finish in 85–200 moves.
   - Checked in Chrome: 39/39, covering 2, 3 and 6 players, a move and both bots, the traced path, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe.
+- [x] **Step 10, Shape Claim** (Q3's variant):
+  - **Rules:** 2–4 players (4 by default) on 14 × 14, 17 × 17 or 20 × 20; a shared row of four pieces from a seeded bag of one set of the 21 shapes of 1–5 cells per player. The first piece covers your corner; later pieces touch your colour only at corners. **Added in play-testing:** a pass sets the row's oldest piece aside and draws another, since with a fixed row everyone soon passed with pieces left in the bag. The game ends when the pieces run out or everyone passes with the bag empty; most cells covered wins.
+  - **Board:** pick a piece, turn or flip it (buttons, R and F, 1–4 to pick), and the preview follows the pointer or focus, in your colour where it fits and outlined in red where it doesn't; touch screens tap twice.
+  - **Bots:** greedy on size, room to grow and blocking the others' room, weights tuned in self-play (hard beat easy 14 of 16 with two players, 5 of 6 with three and four).
+  - Checked in Chrome: 39/39, covering 2 and 4 players, the preview at the corner and a misfit in red, the bots placing, Turn, keyboard placing, 360, 768 and 1280 px, both themes, Arabic, and axe.
 
 ## Known issues
 
@@ -2410,7 +2415,7 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
 - **Game page prose is English in 9 locales (Phase 15):** each game's name, tagline, meta description and in-game UI strings are translated in all 11 locales. The long page sections (about, how to play, controls, tips, FAQ) are written in English and Bulgarian; the other 9 locales carry the English text until the Phase 15 translation pass (SPEC §15, §22 DoD rule).
 - **Translations need native review (Phase 15):** all strings in the 9 locales other than en/bg are my translations and haven't been reviewed by native speakers. Bulgarian should be reviewed by the owner.
 - **Arenas: a real phone and the real limit (Phase 9):** step 12 ran on Chrome's phone emulation and simulated the free plan's daily limit locally. Once Worm Rush is live, play it on a real mid-range phone, and reaching the limit on production waits for the owner's word (it stops online arenas until 00:00 UTC).
-- **Small cells on phones (Phase 11):** on a 360 px screen, Hex cells are about 19 px and Gomoku's and Five Colors' points 20–22 px, under the 24 px target size. A touch screen aims first and places on a second tap, so a miss can be corrected; a zoomable board would fix it properly.
+- **Small cells on phones (Phase 11):** on a 360 px screen, Hex cells are about 19 px, Gomoku's and Five Colors' points 20–22 px, and Shape Claim's 20 × 20 board 16 px, under the 24 px target size. A touch screen aims first and places on a second tap, so a miss can be corrected; a zoomable board would fix it properly.
 - **Guest play off and online play (Phase 10):** with the `guest_play` flag off, a signed-out visitor who starts online play gets the room's general error, not a "sign in to play" prompt.
 - **Arenas: input rate and the free plan (Phase 9):** a full arena bills about 26,200 requests an hour, so Workers Free allows about 3.8 full-arena hours a day. Lowering the input cap from 10 to 6 a second, or Workers Paid ($5/month), are the levers (ADR-0038).
 

@@ -1,0 +1,76 @@
+{
+  "name": "Conquête de formes",
+  "tagline": "Prenez des formes dans une rangée commune et conquérez le plateau coin à coin.",
+  "description": "Jouez à Conquête de formes : de 2 à 4 joueurs posent des formes d'une rangée commune, qui ne se touchent que par les coins. Avec des bots ou en ligne.",
+  "about": [
+    "Shape Claim is a territory game for two to four players, made for kefche. Everyone builds outwards from their own corner of a square board with pieces of one to five squares, and whoever covers the most squares at the end wins.",
+    "Two rules make it tense. First, your pieces may touch each other only at the corners, never along an edge, so you grow in diagonal chains that are easy to cut. Second, there are no personal sets: everyone takes from the same row of four pieces, refilled from a bag after each turn, so taking the big piece you need can also be about keeping it from someone else.",
+    "The board is 14 × 14 for two players, 17 × 17 for three and 20 × 20 for four. If none of the pieces on offer fit, you pass and the row changes. Here you can play against bots on three levels, with friends on one device, or online."
+  ],
+  "howToPlay": [
+    "Choose the number of players and who sits where, then start. Turns go round in order.",
+    "On your turn, take any piece from the row of four. Turn or flip it as you like.",
+    "Your first piece must cover your starting corner, which is tinted in your colour.",
+    "Every later piece must touch one of your pieces at a corner and must not touch any of yours along an edge. It may touch other players' pieces any way.",
+    "If no piece in the row fits, pass: the oldest piece is set aside and a new one drawn. When the pieces run out, or everyone passes with the bag empty, the most squares covered wins."
+  ],
+  "controls": [
+    "Pick a piece from the row under the board. Turn and Flip change how it lies.",
+    "Phones and tablets: tap the board to preview the piece there (green where it fits, red where it doesn't), and tap again to place it.",
+    "Mouse: point at the board to preview the piece and click to place it.",
+    "Keyboard: arrow keys move over the board, Enter places, R turns, F flips, and 1 to 4 pick from the row."
+  ],
+  "tips": [
+    "Race towards the middle early: open space there gives you the most corners to grow from.",
+    "Place big pieces while there's room. Late in the game only small ones still fit.",
+    "Every piece of yours should leave new free corners for your next one.",
+    "Block an opponent's free corners with your own pieces: their colour can't use a corner you've covered.",
+    "Watch the row. Sometimes the best move is taking the piece another player is waiting for."
+  ],
+  "faq": [
+    {
+      "question": "Is Shape Claim free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can my pieces touch other players' pieces?",
+      "answer": "Yes, any way you like. Only your own pieces must meet at corners and never along an edge."
+    },
+    {
+      "question": "What happens when nothing fits?",
+      "answer": "You pass. The oldest piece in the row is set aside and a new one comes from the bag, so the next player may find something that fits."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "Easy places a large piece wherever it can. Medium also keeps room to grow. Hard adds blocking the other players' room."
+    }
+  ],
+  "ui": {
+    "boardLabel": "Plateau de Conquête de formes",
+    "cellName": "rangée {row}, colonne {col}",
+    "cellEmpty": "{cell}, vide",
+    "cellOwned": "{cell}, {name}",
+    "placed": "{name} pose une pièce de {count} cases.",
+    "passed": "Aucune pièce ne rentrait : le tour passe et la rangée change.",
+    "previewFits": "La pièce rentre ici.",
+    "previewNo": "La pièce ne rentre pas ici.",
+    "rowLabel": "Pièces proposées",
+    "pieceLabel": "Pièce {number}, {count} cases",
+    "rotate": "Tourner",
+    "flip": "Retourner",
+    "pass": "Passer",
+    "undo": "Annuler",
+    "tapAgain": "Touchez encore pour la poser ici."
+  },
+  "achievements": {
+    "winner": {
+      "name": "Vainqueur",
+      "description": "Gagnez {count, plural, one {# partie} other {# parties}}"
+    },
+    "streak": {
+      "name": "En série",
+      "description": "Gagnez {count, plural, one {# partie} other {# parties}} d’affilée"
+    }
+  },
+  "leaderboards": {}
+}
