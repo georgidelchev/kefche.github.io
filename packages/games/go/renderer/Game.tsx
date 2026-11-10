@@ -324,7 +324,7 @@ const CSS = `
 .ggo-stone[data-dead] { opacity: 0.4; }
 .ggo-stone[data-dead]::after { content: ""; position: absolute; inset: 30%; background: linear-gradient(45deg, transparent 42%, #c0392b 42% 58%, transparent 58%), linear-gradient(-45deg, transparent 42%, #c0392b 42% 58%, transparent 58%); }
 .ggo-stone[data-last]::after { content: ""; position: absolute; inset: 32%; border-radius: 50%; border: 2px solid #e69f00; }
-.ggo-chip { width: 1.1rem; }
+.ggo-stone.ggo-chip { flex: none; width: 1.1rem; }
 .ggo-area { position: absolute; z-index: 2; width: 30%; aspect-ratio: 1; border-radius: 2px; }
 .ggo-area[data-colour="0"] { background: #101010; }
 .ggo-area[data-colour="1"] { background: #fff; box-shadow: 0 0 0 1px #3d2b12; }

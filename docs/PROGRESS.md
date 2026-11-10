@@ -2355,6 +2355,11 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Rules:** placing nine pieces each, then moving along the lines; a mill removes one of the other player's pieces (never one in a mill unless all are); flying with three pieces, an option on by default. Two pieces or no move loses; a draw at the third repetition or after 50 moves without a removal. A turn is one action: where the piece goes and what it removes.
   - **Bots:** easy takes mills when it sees them; medium searches three plies; hard searches deeper on pieces, near-mills, mobility and blocked pieces. Hard beat easy 6 of 6 with flying on and off.
   - Checked in Chrome: 41/41, covering the flying option, placing and the bot's reply, the pieces left to place, undo, a mill and its removal on one device, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe.
+- [x] **Step 5, Gomoku:**
+  - **Rules:** 15 × 15, Black first; five or more in a row wins, or exactly five with the option. A full board is a draw. The line game (`engine/lines.ts`), its bots and its board (`renderer/LineGame.tsx`) are shared with Five Colors (step 8).
+  - **Touch:** a point on a 15 × 15 board is about 22 px on a phone, so with a touch screen the first tap shows the stone and the second places it; a mouse click or Enter places at once.
+  - **Bots:** each scores the points near the stones by the lines they make and break (stones in a row, open ends). All take a win and block one; easy picks loosely among the good points, medium plays the best, hard also weighs the next player's best reply. Hard beat easy 10 of 10.
+  - Checked in Chrome: 37/37, covering the rule option, a click and the bot's reply, undo, five in a row on one device, keyboard play, two taps on a touch screen, 360, 768 and 1280 px, both themes, Arabic, and axe. Also fixed: Go's stone icons beside the players' names didn't show.
 
 ## Known issues
 

@@ -1,0 +1,75 @@
+{
+  "name": "Gomoku",
+  "tagline": "Pon cinco piedras en línea antes que tu rival.",
+  "description": "Juega al gomoku gratis en el navegador: cinco en línea en un tablero de 15 × 15, con la opción de exactamente cinco. Contra un bot o en línea.",
+  "about": [
+    "Gomoku, also called five in a row, is a strategy game for two players on a 15 × 15 grid. Black and White take turns placing a stone on an empty point, and the first to make an unbroken line of five stones, across, down or diagonally, wins. Stones are never moved or removed.",
+    "The rules take a minute to learn, but good play means thinking several moves ahead. A line of four with both ends open can't be stopped, and an open three soon becomes one, so much of the game is making threats your opponent must answer while building a second threat they can't. The first player has an advantage, which is why experienced players care so much about the opening.",
+    "By default five or more in a row wins. With the exactly-five option, a line of six or more doesn't count. Here you can play against a bot on three levels, with a friend on one device, or online, with an optional timer or a chess-style clock."
+  ],
+  "howToPlay": [
+    "Choose the rule, then Play vs bots or Play on this device. Black moves first.",
+    "On your turn, place one stone on any empty point.",
+    "The first player with five stones in an unbroken line, across, down or diagonally, wins.",
+    "With the exactly-five option, a line of six or more doesn't win.",
+    "If the board fills up with no line of five, the game is a draw."
+  ],
+  "controls": [
+    "Phones and tablets: tap a point to see where your stone would go, then tap it again to place it.",
+    "Mouse: click a point to place a stone there.",
+    "Keyboard: move around the board with the arrow keys and press Enter or Space to place a stone.",
+    "Against bots, Undo takes back your last move and the bot's reply."
+  ],
+  "tips": [
+    "Block an open three at once: with both ends free it becomes an open four, which wins.",
+    "Make two threats with one stone, such as two open threes, and your opponent can only stop one.",
+    "Play near the centre early on. Stones there can join lines in every direction.",
+    "When you attack, make each move a threat. Your opponent has to answer, so they never get to build their own line.",
+    "Look along all four directions through every new stone, yours and your opponent's."
+  ],
+  "faq": [
+    {
+      "question": "Is Gomoku free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Does a line of six count?",
+      "answer": "By default, yes: five or more in a row wins. Choose the exactly-five rule before you start if you want only five to count."
+    },
+    {
+      "question": "Why do I need two taps on my phone?",
+      "answer": "The board's points are close together on a small screen, so the first tap shows where your stone would go and the second places it. With a mouse or the keyboard, one action is enough."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "Every bot takes a win and blocks yours when it sees one. Easy picks loosely among good points, medium plays the strongest point, and hard also weighs your best reply."
+    }
+  ],
+  "ui": {
+    "boardLabel": "Tablero de gomoku",
+    "pointEmpty": "{point}, vacío",
+    "pointStone": "{point}, {name}",
+    "inLine": "en la línea ganadora",
+    "black": "Negras",
+    "white": "Blancas",
+    "goal": "Gana una línea de {count}",
+    "placed": "{name} jugó en {point}.",
+    "fiveInRow": "{name} hizo una línea y gana.",
+    "tapAgain": "Toca otra vez para colocarla ahí.",
+    "undo": "Deshacer",
+    "rule": "Regla",
+    "fiveOrMore": "Cinco o más",
+    "exactlyFive": "Exactamente cinco"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Ganador",
+      "description": "Gana {count, plural, one {# partida} other {# partidas}}"
+    },
+    "streak": {
+      "name": "En racha",
+      "description": "Gana {count, plural, one {# partida} other {# partidas}} seguidas"
+    }
+  },
+  "leaderboards": {}
+}
