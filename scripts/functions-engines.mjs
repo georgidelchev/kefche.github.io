@@ -204,6 +204,7 @@ if (process.argv.includes("--fixtures")) {
     gomoku: { exactFive: false },
     hex: { swap: true },
     mancala: { seeds: 4 },
+    nim: { piles: "random", misere: false },
     "nine-mens-morris": { flying: true },
     reversi: undefined,
   };

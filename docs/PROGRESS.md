@@ -2374,6 +2374,11 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Board:** your pits along the bottom and your store on the right (turned round for the second seat), seeds drawn as dots with the count, the pits the last sowing reached marked.
   - **Bots:** easy likes extra turns and captures; medium searches four plies on the stores; hard searches deeper, extra turns included. Hard beat easy 6 of 6 with 4 and 6 seeds.
   - Checked in Chrome: 36/36, covering the seeds option, an extra turn, the bot's sowing, undo, six seeds on one device, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe.
+- [x] **Step 9, Nim:**
+  - **Rules:** 2–5 players take one or more sticks from one pile; the classic 1, 3, 5, 7 or 3–5 seeded piles of 1–7. Normal play (the last stick wins) or misère (the last stick loses, everyone else wins).
+  - **Board:** a row of sticks per pile; tapping a stick takes it and the ones after it, which light up first under the pointer or focus.
+  - **Bots:** two players: hard plays the nim-sum strategy perfectly (misère's endgame too), medium most of the time, easy at random but takes an obvious win. Three or more: search. Hard beat easy 10 of 10 with two players.
+  - Checked in Chrome: 36/36, covering both options, a take and the bot's, misère, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe (an empty pile keeps one cell, so its row isn't empty).
 
 ## Known issues
 

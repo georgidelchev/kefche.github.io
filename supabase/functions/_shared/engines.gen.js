@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine16, bots2, options) {
-    this.engine = engine16;
+  constructor(engine17, bots2, options) {
+    this.engine = engine17;
     this.bots = bots2;
     this.options = options;
-    this.world = engine16.createWorld(options.config, options.seed);
+    this.world = engine17.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine16.ticksPerSecond / engine16.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine17.ticksPerSecond / engine17.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -479,7 +479,7 @@ function canonicalJson(value) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest16) => manifest16;
+var defineManifest = (manifest17) => manifest17;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -569,16 +569,16 @@ function xpForLevel(level) {
   return LEVEL_STEP_XP / 2 * l * (l - 1);
 }
 function levelForXp(xp) {
-  const total = whole(xp, 0);
-  let level = Math.max(1, Math.floor((1 + Math.sqrt(1 + 8 * total / LEVEL_STEP_XP)) / 2));
-  while (xpForLevel(level + 1) <= total) level += 1;
-  while (level > 1 && xpForLevel(level) > total) level -= 1;
+  const total2 = whole(xp, 0);
+  let level = Math.max(1, Math.floor((1 + Math.sqrt(1 + 8 * total2 / LEVEL_STEP_XP)) / 2));
+  while (xpForLevel(level + 1) <= total2) level += 1;
+  while (level > 1 && xpForLevel(level) > total2) level -= 1;
   return level;
 }
 function levelProgress(xp) {
-  const total = whole(xp, 0);
-  const level = levelForXp(total);
-  const into = total - xpForLevel(level);
+  const total2 = whole(xp, 0);
+  const level = levelForXp(total2);
+  const into = total2 - xpForLevel(level);
   const span = xpForLevel(level + 1) - xpForLevel(level);
   return { level, into, span, fraction: into / span };
 }
@@ -5269,7 +5269,7 @@ function legalPoints(state, seat) {
 var ESTIMATE_PLAYOUTS = { 9: 160, 13: 80 };
 function ownership(state, playouts = ESTIMATE_PLAYOUTS[state.size]) {
   const n = state.size * state.size;
-  const total = new Float32Array(n);
+  const total2 = new Float32Array(n);
   const rng = Rng.fromSeed(`${state.seed}:own:${String(state.moves)}`);
   const random = () => rng.next();
   for (let i = 0; i < playouts; i++) {
@@ -5283,12 +5283,12 @@ function ownership(state, playouts = ESTIMATE_PLAYOUTS[state.size]) {
         const q = b.around(p)[0];
         owner = q === void 0 ? -1 : b.cells[q] ?? -1;
       }
-      if (owner === 0) total[p] = (total[p] ?? 0) + 1;
-      else if (owner === 1) total[p] = (total[p] ?? 0) - 1;
+      if (owner === 0) total2[p] = (total2[p] ?? 0) + 1;
+      else if (owner === 1) total2[p] = (total2[p] ?? 0) - 1;
     }
   }
-  for (let p = 0; p < n; p++) total[p] = (total[p] ?? 0) / playouts;
-  return total;
+  for (let p = 0; p < n; p++) total2[p] = (total2[p] ?? 0) / playouts;
+  return total2;
 }
 function estimateDead(state) {
   const own = ownership(state);
@@ -5443,8 +5443,8 @@ var engine8 = {
     if (state.resigned !== null) {
       return { completed: true, outcome: state.resigned === 0 ? [0, 1] : [1, 0] };
     }
-    const { total } = scoreOf(state, state.dead);
-    return { completed: true, outcome: total[0] > total[1] ? [1, 0] : [0, 1] };
+    const { total: total2 } = scoreOf(state, state.dead);
+    return { completed: true, outcome: total2[0] > total2[1] ? [1, 0] : [0, 1] };
   }
 };
 
@@ -5820,6 +5820,112 @@ var manifest10 = defineManifest({
   tags: ["classic", "two-player", "strategy"]
 });
 
+// packages/games/nim/engine/index.ts
+var CLASSIC = [1, 3, 5, 7];
+var configFrom6 = (raw) => {
+  const c = raw ?? {};
+  return { piles: c.piles === "random" ? "random" : "classic", misere: c.misere === true };
+};
+function startingPiles(config, seed) {
+  if (config.piles === "classic") return [...CLASSIC];
+  const rng = Rng.fromSeed(`${seed}:piles`);
+  return Array.from({ length: rng.int(3, 5) }, () => rng.int(1, 7));
+}
+var total = (piles) => piles.reduce((n, p) => n + p, 0);
+var engine11 = {
+  initialState(config, seats, seed) {
+    const c = configFrom6(config);
+    return {
+      piles: startingPiles(c, seed),
+      seats,
+      misere: c.misere,
+      turn: 0,
+      moves: 0,
+      last: null,
+      lastTaker: null
+    };
+  },
+  legalActions(state, seat) {
+    if (state.lastTaker !== null || seat !== state.turn) return [];
+    return state.piles.flatMap(
+      (size, pile) => Array.from({ length: size }, (_, i) => ({ pile, take: i + 1 }))
+    );
+  },
+  applyAction(state, seat, { pile, take }) {
+    if (state.lastTaker !== null || seat !== state.turn) return state;
+    const size = state.piles[pile];
+    if (size === void 0 || !Number.isInteger(take) || take < 1 || take > size) return state;
+    const piles = state.piles.slice();
+    piles[pile] = size - take;
+    const base = { ...state, piles, moves: state.moves + 1, last: { seat, pile, take } };
+    if (total(piles) === 0) return { ...base, lastTaker: seat };
+    return { ...base, turn: (seat + 1) % state.seats };
+  },
+  currentSeats: (state) => state.lastTaker === null ? [state.turn] : [],
+  // Online, an away player's turn passes to the next seat.
+  skipTurn(state, seat) {
+    if (state.lastTaker !== null || seat !== state.turn) return state;
+    return { ...state, turn: (seat + 1) % state.seats, last: null };
+  },
+  result(state) {
+    if (state.lastTaker === null) return null;
+    const taker = state.lastTaker;
+    const outcome = Array.from(
+      { length: state.seats },
+      (_, s) => state.misere ? s === taker ? 0 : 1 : s === taker ? 1 : 0
+    );
+    return { completed: true, outcome };
+  }
+};
+
+// packages/games/nim/manifest.ts
+var manifest11 = defineManifest({
+  id: "nim",
+  version: 1,
+  category: "strategy",
+  kind: "turn",
+  players: { min: 2, max: 5, default: 2 },
+  modes: ["solo-bots", "hotseat", "online-private", "online-public", "quick-match"],
+  bots: { supported: true, difficulties: ["easy", "medium", "hard"], canFillSeats: true },
+  timers: [
+    { kind: "none" },
+    { kind: "per-move", seconds: 15, onExpiry: "random-move" },
+    { kind: "per-move", seconds: 30, onExpiry: "random-move" }
+  ],
+  options: [
+    {
+      key: "piles",
+      label: "piles",
+      values: [
+        { value: "classic", label: "pilesClassic" },
+        { value: "random", label: "pilesRandom" }
+      ]
+    },
+    {
+      key: "misere",
+      label: "lastStick",
+      values: [
+        { value: false, label: "lastWins" },
+        { value: true, label: "lastLoses" }
+      ]
+    }
+  ],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard"],
+  renderer: "dom",
+  estimatedMinutes: [1, 5],
+  leaderboards: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] }
+  ],
+  // Every move is a pile and a count, and the piles come from the seed.
+  scoreValidation: { kind: "replay" },
+  tags: ["classic", "math", "quick"]
+});
+
 // packages/games/nine-mens-morris/engine/index.ts
 var POINTS = 24;
 var EMPTY6 = -1;
@@ -5877,7 +5983,7 @@ var inMill = (board, point) => {
   return seat !== EMPTY6 && (MILLS_AT[point] ?? []).some((m) => m.every((q) => board[q] === seat));
 };
 var countOf = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-function configFrom6(raw) {
+function configFrom7(raw) {
   const flying = raw?.flying;
   return { flying: flying !== false };
 }
@@ -5917,9 +6023,9 @@ function movesFor3(state, seat) {
   return out;
 }
 var key = (state) => `${String(state.turn)}${state.inHand.join("")}:${state.board.map((v) => String(v + 1)).join("")}`;
-var engine11 = {
+var engine12 = {
   initialState(config) {
-    const { flying } = configFrom6(config);
+    const { flying } = configFrom7(config);
     const board = Array.from({ length: POINTS }, () => EMPTY6);
     const state = {
       board,
@@ -5989,7 +6095,7 @@ var engine11 = {
 };
 
 // packages/games/nine-mens-morris/manifest.ts
-var manifest11 = defineManifest({
+var manifest12 = defineManifest({
   id: "nine-mens-morris",
   version: 1,
   category: "board",
@@ -6074,7 +6180,7 @@ function movesFor4(board, seat) {
   return moves;
 }
 var countDiscs = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-var engine12 = {
+var engine13 = {
   initialState() {
     const board = Array.from({ length: SIZE3 * SIZE3 }, () => -1);
     board[3 * SIZE3 + 3] = 1;
@@ -6117,7 +6223,7 @@ var engine12 = {
 };
 
 // packages/games/reversi/manifest.ts
-var manifest12 = defineManifest({
+var manifest13 = defineManifest({
   id: "reversi",
   version: 1,
   category: "board",
@@ -6188,7 +6294,7 @@ function neighbor(cell, direction, walls) {
   c = (c + COLS) % COLS;
   return r * COLS + c;
 }
-var engine13 = {
+var engine14 = {
   initialState(config, seed) {
     const middle = Math.floor(ROWS / 2) * COLS + Math.floor(COLS / 2) - 3;
     const snake = [middle, middle - 1, middle - 2];
@@ -6255,7 +6361,7 @@ var engine13 = {
 var stepMs = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
 
 // packages/games/snake/manifest.ts
-var manifest13 = defineManifest({
+var manifest14 = defineManifest({
   id: "snake",
   version: 1,
   category: "arcade",
@@ -6664,7 +6770,7 @@ function commit(state, next, extra = {}) {
     ]
   };
 }
-var engine14 = {
+var engine15 = {
   initialState(config, seed) {
     return fromPuzzle(generate(seed, config.difficulty));
   },
@@ -6721,7 +6827,7 @@ var engine14 = {
 };
 
 // packages/games/sudoku/manifest.ts
-var manifest14 = defineManifest({
+var manifest15 = defineManifest({
   id: "sudoku",
   version: 1,
   category: "logic",
@@ -7415,7 +7521,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine15 = {
+var engine16 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -7432,7 +7538,7 @@ var engine15 = {
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest15 = defineManifest({
+var manifest16 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -7474,11 +7580,12 @@ var GAMES = {
   "gomoku": { manifest: manifest8, engine: engine5 },
   "hex": { manifest: manifest9, engine: engine9 },
   "mancala": { manifest: manifest10, engine: engine10 },
-  "nine-mens-morris": { manifest: manifest11, engine: engine11 },
-  "reversi": { manifest: manifest12, engine: engine12 },
-  "snake": { manifest: manifest13, engine: engine13 },
-  "sudoku": { manifest: manifest14, engine: engine14 },
-  "worm-rush": { manifest: manifest15, engine: engine15, bots, host: arenaHost }
+  "nim": { manifest: manifest11, engine: engine11 },
+  "nine-mens-morris": { manifest: manifest12, engine: engine12 },
+  "reversi": { manifest: manifest13, engine: engine13 },
+  "snake": { manifest: manifest14, engine: engine14 },
+  "sudoku": { manifest: manifest15, engine: engine15 },
+  "worm-rush": { manifest: manifest16, engine: engine16, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

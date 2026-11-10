@@ -1,0 +1,74 @@
+{
+  "name": "Nim",
+  "tagline": "Nimm Hölzchen von jeweils einem Haufen und nimm das letzte.",
+  "description": "Spiele Nim kostenlos im Browser: 2 bis 5 Spieler nehmen Hölzchen von Haufen, mit Misère-Option. Gegen Bots, zu mehreren oder online.",
+  "about": [
+    "Nim is one of the oldest strategy games: a few piles of sticks, and players taking turns to remove as many sticks as they like from one pile. In the usual game, whoever takes the last stick wins. It was the first game ever completely solved by mathematics, in 1901, which makes it a favourite puzzle for anyone who likes to find the trick.",
+    "You can start from the classic piles of 1, 3, 5 and 7 sticks, or from a random set of three to five piles. In misère Nim the rule is turned round: whoever is left with the last stick loses. With two players there is a perfect strategy to find; with three or more, alliances and timing come into it, since you can't control everyone else's moves.",
+    "Games take a minute or two, so it's easy to play several in a row. Here two to five players can play, against bots on three levels, with friends on one device, or online."
+  ],
+  "howToPlay": [
+    "Choose the piles and whether the last stick wins or loses, then pick the players and start.",
+    "On your turn, take one or more sticks from a single pile. You can take a whole pile.",
+    "Turns go round the players in order.",
+    "Normal play: the player who takes the last stick wins.",
+    "Misère: the player who takes the last stick loses, and everyone else wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap a stick to take it and every stick after it in that row.",
+    "Mouse: point at a stick to see which sticks you'd take, then click.",
+    "Keyboard: move between sticks with the arrow keys; the sticks you'd take light up. Press Enter or Space to take them.",
+    "Against bots, Undo takes back your last move and the bots' replies."
+  ],
+  "tips": [
+    "Write each pile size in binary and add the columns without carrying (the nim-sum). Leave your opponent a nim-sum of zero and you can't lose a two-player game.",
+    "From the classic 1, 3, 5, 7, the nim-sum is already zero: the first player is the one under pressure.",
+    "In misère, play exactly as in normal Nim until only piles of one are left (or one bigger pile), then leave an odd number of single sticks.",
+    "With three or more players, perfect play isn't possible alone. Watch who would win if nobody stops them.",
+    "Two equal piles are a mirror: whatever your opponent takes from one, take the same from the other."
+  ],
+  "faq": [
+    {
+      "question": "Is Nim free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is misère?",
+      "answer": "A version where taking the last stick loses instead of wins. It changes the endgame, not the rest of the strategy."
+    },
+    {
+      "question": "Is there a way to always win?",
+      "answer": "With two players, yes, if the position allows it: leave your opponent piles whose nim-sum is zero. The hard bot plays this way."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "Easy plays at random but takes an obvious win. With two players, medium usually plays perfectly and hard always does. With more players, they search the possible moves."
+    }
+  ],
+  "ui": {
+    "boardLabel": "Nim-Haufen",
+    "pileLabel": "Haufen {pile}, {count} Hölzchen",
+    "stickLabel": "Haufen {pile}: {count} nehmen",
+    "took": "{name} nimmt {count} von Haufen {pile}; noch {left}.",
+    "ruleNormal": "Wer das letzte Hölzchen nimmt, gewinnt.",
+    "ruleMisere": "Wer das letzte Hölzchen nimmt, verliert.",
+    "undo": "Rückgängig",
+    "piles": "Haufen",
+    "pilesClassic": "1, 3, 5, 7",
+    "pilesRandom": "Zufällig",
+    "lastStick": "Letztes Hölzchen",
+    "lastWins": "Gewinnt",
+    "lastLoses": "Verliert"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Partie} other {# Partien}}"
+    },
+    "streak": {
+      "name": "Siegesserie",
+      "description": "Gewinne {count, plural, one {# Partie} other {# Partien}} in Folge"
+    }
+  },
+  "leaderboards": {}
+}
