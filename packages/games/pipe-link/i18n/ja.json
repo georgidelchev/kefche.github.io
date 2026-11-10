@@ -1,0 +1,89 @@
+{
+  "name": "パイプつなぎ",
+  "tagline": "同じ色の点をつなぎ、盤のマスをすべて埋めよう。",
+  "description": "ブラウザで無料のパイプつなぎ：交差しないパイプで同じ色の点をつなぎ、盤全体を埋めよう。5 × 5〜9 × 9、答えはひとつ。",
+  "about": [
+    "Pipe Link is a path puzzle. The board holds pairs of numbered, coloured dots. Join each pair with a pipe that runs through neighbouring cells, up, down, left or right, so that every cell of the board ends up in some pipe. Pipes can't cross, branch or share a cell.",
+    "Every puzzle has exactly one solution: a solver checks each one before it reaches you. The sizes go from a quick 5 × 5 to a twisty 9 × 9.",
+    "Play alone to beat your best time, or race friends online on the same puzzle."
+  ],
+  "howToPlay": [
+    "Choose a size. The clock starts with the puzzle.",
+    "Draw a pipe from a dot through neighbouring cells to the other dot with the same number and colour.",
+    "Drawing through another pipe cuts it where they meet; drawing back over your own pipe shortens it.",
+    "You can stop a pipe partway and carry on later from its open end.",
+    "The puzzle is solved when every pair is joined and no cell is left empty."
+  ],
+  "controls": [
+    "Phones and tablets: drag from a dot or a pipe's open end. Lift your finger to lay the pipe.",
+    "Mouse: press on a dot and drag.",
+    "Keyboard: move with the arrow keys, press Enter on a dot to start a pipe, extend it with the arrows, and press Enter to lay it. Escape cancels.",
+    "Pause or start a new puzzle from the bar above the game."
+  ],
+  "tips": [
+    "Start in the corners and along the edges: a dot there has few ways out.",
+    "Pairs that sit close together usually take the short way; long pipes fill the gaps.",
+    "If a cell can only be reached by one colour, that pipe must pass through it.",
+    "An empty pocket no pipe can reach means something earlier went wrong.",
+    "Pipes don't double back beside themselves: a U-turn alongside your own pipe leaves cells nobody else can fill."
+  ],
+  "faq": [
+    {
+      "question": "Is Pipe Link free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Does every puzzle have one answer?",
+      "answer": "Yes. Each puzzle is checked by a solver to have exactly one way to join every pair and fill the board."
+    },
+    {
+      "question": "Do I have to fill every cell?",
+      "answer": "Yes. Joining all the pairs isn't enough: the puzzle is solved only when no cell is empty."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same puzzle at the same moment, and the first to join every pair and fill the board wins."
+    }
+  ],
+  "ui": {
+    "best": "ベスト：{time}",
+    "time": "タイム",
+    "moves": "手数",
+    "newBest": "ベストタイム更新！",
+    "changeSize": "サイズを変える",
+    "boardLabel": "パイプつなぎの盤",
+    "chooseSize": "サイズを選ぶ",
+    "sizeLabel": "{size} × {size}",
+    "joined": "接続",
+    "joinedCount": "{joined} / {total}",
+    "cellName": "{row} 行 {col} 列",
+    "cellDot": "{cell}、点 {number}",
+    "cellEmpty": "{cell}、空き",
+    "cellPipe": "{cell}、パイプ {number}",
+    "drawing": "パイプ {number} を描画中：矢印キーで進み、Enter で終了。",
+    "solved": "全部つながった！",
+    "size5": "5 × 5",
+    "size6": "6 × 6",
+    "size7": "7 × 7",
+    "size8": "8 × 8",
+    "size9": "9 × 9",
+    "size": "サイズ"
+  },
+  "achievements": {
+    "solver": {
+      "name": "パズル名人",
+      "description": "パズルを{count, number}問解く"
+    },
+    "speed": {
+      "name": "スピード解答",
+      "description": "{time}以内にパズルを解く"
+    }
+  },
+  "leaderboards": {
+    "best-time-5": "ベストタイム・やさしい · 5 × 5",
+    "best-time-6": "ベストタイム・やさしい · 6 × 6",
+    "best-time-7": "ベストタイム・やさしい · 7 × 7",
+    "best-time-8": "ベストタイム・やさしい · 8 × 8",
+    "best-time-9": "ベストタイム・やさしい · 9 × 9"
+  }
+}

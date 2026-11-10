@@ -2421,6 +2421,10 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Options:** `difficulty` and `level` (0 is fresh). `level` is the first option marked `rooms: false` (ADR-0046's amendment): picked only in the game's menu, so rooms always race on a fresh level. The best-time boards count fresh levels only.
   - **Play:** arrow keys or WASD, a swipe, an arrow pad, or a tap to walk there or push the box beside you. Z undoes and R restarts.
   - Checked in Chrome: 44/44, covering the menu, a tap walk, restart, the pad, undo, a swipe, solving Easy level 1 by keyboard, the solved mark, a fresh Hard level, 360, 768 and 1280 px, both themes, Arabic, and axe. Fixed on the way: the level list was taller than the screen and centring cut off its top (it scrolls now), and the arrow pad mirrored in Arabic.
+- [x] **Step 19, Pipe Link:**
+  - **Puzzles:** 5 × 5 to 9 × 9 (6 × 6 by default). A random path through every cell is cut into pipes of three cells or more, and a solver keeps the puzzle only if it has exactly one solution. That takes minutes at 9 × 9, far too slow while someone waits or for the server's replay, so the puzzles are made in advance (`scripts/pipe-link-bank.mjs`, into `engine/bank.gen.ts`): 60, 60, 50, 30 and 20 puzzles from 5 × 5 to 9 × 9, the last with shorter pipes (12 pairs), since one solution is rare with long ones. The seed picks one, turns or flips it, and shuffles its colours.
+  - **Play:** drag from a dot, or from a pipe's open end, through neighbouring cells; the pipe is sent as one move when the finger lifts. Drawing over another pipe cuts it, and going back over your own shortens it. On the keyboard, Enter on a dot starts a pipe, the arrows extend it, Enter lays it and Escape drops it (without pausing the game). Dots carry numbers as well as colours.
+  - Checked in Chrome: 37/37, covering the sizes, a keyboard pipe, a drag continued from a pipe's end, Escape, cutting, solving a 5 × 5 to the finish, 360, 768 and 1280 px, both themes, Arabic, and axe. Two bugs found and fixed: quick moves between renders lost cells (the drag now builds on a ref), and Escape also paused the game.
 
 ## Known issues
 

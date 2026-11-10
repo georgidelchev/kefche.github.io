@@ -176,6 +176,46 @@ if (process.argv.includes("--fixtures")) {
     }
     return null;
   };
+  /** Pipe Link: the pipes that join every pair and fill the board (small boards only). */
+  const pipeSolutions = new Map();
+  const pipeSolution = (size, ends) => {
+    const key = JSON.stringify(ends);
+    if (pipeSolutions.has(key)) return pipeSolutions.get(key);
+    const owner = new Array(size * size).fill(-1);
+    ends.forEach(([a, b], k) => {
+      owner[a] = k;
+      owner[b] = k;
+    });
+    const near = (x) =>
+      [x - size, x + size, x % size > 0 ? x - 1 : -1, x % size < size - 1 ? x + 1 : -1].filter(
+        (y) => y >= 0 && y < size * size,
+      );
+    const paths = [];
+    const grow = (k, path) => {
+      if (k === ends.length) return owner.every((o) => o >= 0);
+      const at = path.at(-1);
+      for (const y of near(at)) {
+        if (y === ends[k][1]) {
+          paths[k] = [...path, y];
+          if (
+            grow(
+              k + 1,
+              [ends[k + 1]?.[0]].filter((c) => c !== undefined),
+            )
+          )
+            return true;
+        } else if (owner[y] === -1) {
+          owner[y] = k;
+          if (grow(k, [...path, y])) return true;
+          owner[y] = -1;
+        }
+      }
+      return false;
+    };
+    if (!grow(0, [ends[0][0]])) throw new Error("pipe-link: no solution for the fixture");
+    pipeSolutions.set(key, paths);
+    return paths;
+  };
   const DIRECTIONS = ["up", "down", "left", "right"];
 
   /** Race games: the config and the next action of a plausible player. */
@@ -273,6 +313,21 @@ if (process.argv.includes("--fixtures")) {
         );
         if (blanks.length > 0 && random() < 0.2) return { cell: pick(random, blanks), mark: 2 };
         return { cell: pick(random, todo), mark: 1 };
+      },
+    },
+    // The solution's pipes one at a time (found by a small search), with a
+    // stray half-pipe now and then.
+    "pipe-link": {
+      config: { size: 5 },
+      next: (state, random) => {
+        const solution = pipeSolution(state.size, state.ends);
+        const todo = solution.flatMap((path, colour) =>
+          state.paths[colour].join() === path.join() ? [] : [colour],
+        );
+        const colour = pick(random, todo);
+        const path = solution[colour];
+        if (random() < 0.2) return { colour, cells: path.slice(0, 2) };
+        return { colour, cells: path };
       },
     },
     // The shortest solution (a breadth-first search over steps), with an
