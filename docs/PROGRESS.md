@@ -2430,6 +2430,9 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Together:** 2–4 players on one device, friends taking turns or bots that remember what they've seen (easy keeps a card in mind 35% of the time, medium 70%, hard 95%). A pair goes again, a miss passes the turn, and the most pairs wins.
   - **Changed from the plan:** together is a mode in the game's own menu, not a turn game, so it isn't recorded and has no online rooms. Taking turns online would let any player read the layout from the seed, which SPEC §10.6 rules out until the server deals hidden cards (Phase 12). Then Memory Match becomes a turn game as well (TODO #5).
   - Checked in Chrome: 43/43, covering the menu, flipping every card, a missed pair turning back, keyboard flips, clearing the table, two friends passing the turn, a game against three hard bots to its end, 360, 768 and 1280 px, both themes, Arabic, and axe.
+- [x] **Step 21, the daily challenge and the catalog:**
+  - **Daily challenge:** a migration adds the 8 puzzles to `private.daily_rotation`, each with every option set at a middle setting: Minesweeper Intermediate, Nonogram 10 × 10, Pipe Link 7 × 7, 15 Puzzle 4 × 4, a fresh Medium Box Pusher level, Lights Off 5 × 5, Memory Match with 20 cards and Hanoi with 5 discs. The rotation now has 11 games; days already made keep theirs.
+  - **Catalog at 27 games:** checked in Chrome, 45/45: every card with its art and name, each category page against its chip's count (they add up to 27), search, an empty search, 360, 768 and 1280 px, both themes, Arabic and Bulgarian, axe, and every new game's page in English and Bulgarian.
 
 ## Known issues
 
