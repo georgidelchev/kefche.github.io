@@ -195,6 +195,7 @@ if (process.argv.includes("--fixtures")) {
   };
   /** Turn games: their config (a random legal move each turn, two seats). */
   const turnConfigs = {
+    checkers: { variant: "russian" },
     chess: { takebacks: false },
     "dots-and-boxes": undefined,
     "four-in-a-row": undefined,

@@ -1,0 +1,75 @@
+{
+  "name": "Damas",
+  "tagline": "Salte as peças do adversário, coroe as suas e limpe o tabuleiro.",
+  "description": "Jogue Damas grátis no navegador: russas 8 × 8 ou internacionais 10 × 10, com captura obrigatória. Contra um bot, com um amigo ou online.",
+  "about": [
+    "Checkers is one of the oldest board games in the world: two players, a chequered board, and pieces that move diagonally on the dark squares. Each side tries to capture all of the other's pieces, or to leave them with no move at all. The rules fit on a page, but the game rewards planning many moves ahead.",
+    "You can play two of the best-known variants. Russian checkers is played on an 8 × 8 board with 12 pieces each, and suits a phone screen well. International checkers uses a 10 × 10 board with 20 pieces each, and adds one strict rule: when you capture, you must take the most pieces possible. In both, men capture backwards as well as forwards, kings fly along whole diagonals, and capturing is never optional.",
+    "A man that reaches the far side of the board is crowned and becomes a king. In Russian checkers this can even happen in the middle of a capture, and the new king carries on capturing straight away. Here you can play against a bot on three levels, with a friend on one device, or online, with an optional timer or a chess-style clock."
+  ],
+  "howToPlay": [
+    "Choose the variant, then Play vs bots or Play on this device. Light pieces move first.",
+    "Men move one square diagonally forward onto an empty dark square.",
+    "To capture, jump diagonally over an opponent's piece onto the empty square behind it. If you can jump again from there, you must, so one move can take several pieces. Captures are mandatory, and in International checkers you must choose the capture that takes the most.",
+    "A man that ends its move on the far row becomes a king. Kings move and capture any distance along a diagonal.",
+    "You win when your opponent has no pieces left or can't move. The game is drawn if the same position appears three times, or after 25 moves each with only kings moving and nothing captured."
+  ],
+  "controls": [
+    "Phones and tablets: tap a piece, then tap where it should go. Pieces that can move are outlined.",
+    "For a capture of several pieces, tap each landing square in turn; the move plays as soon as it's complete.",
+    "Keyboard: move around the dark squares with the arrow keys, and press Enter or Space to pick a piece and its destination.",
+    "Against bots, Undo takes back your last move and the bot's reply."
+  ],
+  "tips": [
+    "Keep your back row covered for as long as you can: it stops your opponent's men from being crowned.",
+    "Control the centre. Pieces there have more moves and support each other.",
+    "Because captures are mandatory, you can force your opponent to jump into a position where you take back more.",
+    "Move in groups. A lone man on the side of the board is easy to trap.",
+    "A king is worth about three men in these variants, so a race to be crowned is often worth a sacrifice."
+  ],
+  "faq": [
+    {
+      "question": "Is Checkers free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Which variant should I choose?",
+      "answer": "Russian checkers on 8 × 8 is quicker and fits a small screen. International checkers on 10 × 10 is longer and more strategic, and you must always take the most pieces you can."
+    },
+    {
+      "question": "Do I have to capture?",
+      "answer": "Yes. If a capture is possible, you must make one, and keep jumping while you can. The game only lets you pick pieces that can capture."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "Easy often plays carelessly. Medium looks a few moves ahead and counts pieces. Hard looks as far ahead as its time allows and also weighs kings, the centre and the back row."
+    }
+  ],
+  "ui": {
+    "boardLabel": "Tabuleiro de damas",
+    "cellEmpty": "{cell}, vazia",
+    "cellMan": "{cell}, {name}, pedra",
+    "cellKing": "{cell}, {name}, dama",
+    "selected": "selecionada",
+    "target": "mover para cá",
+    "canMove": "pode mover",
+    "moved": "{name} moveu de {from} para {to}.",
+    "captured": "{name} moveu de {from} para {to} e capturou {count}.",
+    "mustCapture": "A captura é obrigatória.",
+    "undo": "Desfazer",
+    "variant": "Variante",
+    "russian": "Russas 8 × 8",
+    "international": "Internacionais 10 × 10"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Vencedor",
+      "description": "Vença {count, plural, one {# partida} other {# partidas}}"
+    },
+    "streak": {
+      "name": "Embalado",
+      "description": "Vença {count, plural, one {# partida} other {# partidas}} seguidas"
+    }
+  },
+  "leaderboards": {}
+}
