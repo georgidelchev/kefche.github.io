@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine14, bots2, options) {
-    this.engine = engine14;
+  constructor(engine15, bots2, options) {
+    this.engine = engine15;
     this.bots = bots2;
     this.options = options;
-    this.world = engine14.createWorld(options.config, options.seed);
+    this.world = engine15.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine14.ticksPerSecond / engine14.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine15.ticksPerSecond / engine15.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -479,7 +479,7 @@ function canonicalJson(value) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest14) => manifest14;
+var defineManifest = (manifest15) => manifest15;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -5540,9 +5540,169 @@ var manifest8 = defineManifest({
   tags: ["classic", "two-player", "strategy"]
 });
 
+// packages/games/hex/engine/index.ts
+var SIZE2 = 11;
+var EMPTY5 = -1;
+var configFrom4 = (raw) => ({
+  swap: raw?.swap === true
+});
+var neighbourCache = /* @__PURE__ */ new Map();
+function neighbours(size) {
+  const known = neighbourCache.get(size);
+  if (known) return known;
+  const steps3 = [
+    [-1, 0],
+    [-1, 1],
+    [0, -1],
+    [0, 1],
+    [1, -1],
+    [1, 0]
+  ];
+  const table = Array.from({ length: size * size }, (_, cell) => {
+    const r = Math.floor(cell / size);
+    const c = cell % size;
+    return steps3.flatMap(([dr, dc]) => {
+      const rr = r + dr;
+      const cc = c + dc;
+      return rr >= 0 && rr < size && cc >= 0 && cc < size ? [rr * size + cc] : [];
+    });
+  });
+  neighbourCache.set(size, table);
+  return table;
+}
+function winningChain(board, size, seat) {
+  const table = neighbours(size);
+  const from = new Int16Array(size * size).fill(-2);
+  const queue = [];
+  for (let i = 0; i < size; i++) {
+    const cell = seat === 0 ? i : i * size;
+    if (board[cell] === seat) {
+      from[cell] = -1;
+      queue.push(cell);
+    }
+  }
+  while (queue.length > 0) {
+    const cell = queue.shift() ?? 0;
+    const r = Math.floor(cell / size);
+    const c = cell % size;
+    if (seat === 0 && r === size - 1 || seat === 1 && c === size - 1) {
+      const chain = [cell];
+      let at = from[cell] ?? -1;
+      while (at >= 0) {
+        chain.push(at);
+        at = from[at] ?? -1;
+      }
+      return chain;
+    }
+    for (const n of table[cell] ?? []) {
+      if (board[n] === seat && from[n] === -2) {
+        from[n] = cell;
+        queue.push(n);
+      }
+    }
+  }
+  return null;
+}
+var mirror = (cell, size) => cell % size * size + Math.floor(cell / size);
+var engine9 = {
+  initialState(config) {
+    return {
+      size: SIZE2,
+      board: Array.from({ length: SIZE2 * SIZE2 }, () => EMPTY5),
+      turn: 0,
+      moves: 0,
+      swapRule: configFrom4(config).swap,
+      swapped: false,
+      last: null,
+      winner: null,
+      chain: []
+    };
+  },
+  legalActions(state, seat) {
+    if (state.winner !== null || seat !== state.turn) return [];
+    const plays = state.board.flatMap(
+      (v, cell) => v === EMPTY5 ? [{ type: "play", cell }] : []
+    );
+    return state.swapRule && state.moves === 1 && seat === 1 ? [{ type: "swap" }, ...plays] : plays;
+  },
+  applyAction(state, seat, action) {
+    if (state.winner !== null || seat !== state.turn) return state;
+    const other2 = 1 - seat;
+    if (action.type === "swap") {
+      if (!state.swapRule || state.moves !== 1 || seat !== 1 || state.last === null) return state;
+      const board2 = state.board.map(() => EMPTY5);
+      const cell = mirror(state.last, state.size);
+      board2[cell] = 1;
+      return { ...state, board: board2, turn: other2, moves: state.moves + 1, swapped: true, last: cell };
+    }
+    if (action.type !== "play" || !Number.isInteger(action.cell) || state.board[action.cell] !== EMPTY5) {
+      return state;
+    }
+    const board = state.board.slice();
+    board[action.cell] = seat;
+    const chain = winningChain(board, state.size, seat);
+    const base = { ...state, board, moves: state.moves + 1, last: action.cell };
+    if (chain) return { ...base, winner: seat, chain };
+    return { ...base, turn: other2 };
+  },
+  currentSeats: (state) => state.winner === null ? [state.turn] : [],
+  // Online, an away player's turn passes to the other.
+  skipTurn(state, seat) {
+    if (state.winner !== null || seat !== state.turn) return state;
+    return { ...state, turn: 1 - seat, last: null };
+  },
+  result(state) {
+    if (state.winner === null) return null;
+    return { completed: true, outcome: state.winner === 0 ? [1, 0] : [0, 1] };
+  }
+};
+
+// packages/games/hex/manifest.ts
+var manifest9 = defineManifest({
+  id: "hex",
+  version: 1,
+  category: "board",
+  kind: "turn",
+  players: { min: 2, max: 2, default: 2 },
+  modes: ["solo-bots", "hotseat", "online-private", "online-public", "quick-match"],
+  bots: { supported: true, difficulties: ["easy", "medium", "hard"], canFillSeats: true },
+  timers: [
+    { kind: "none" },
+    { kind: "per-move", seconds: 15, onExpiry: "random-move" },
+    { kind: "per-move", seconds: 30, onExpiry: "random-move" },
+    { kind: "per-move", seconds: 60, onExpiry: "random-move" },
+    { kind: "clock", base: 180, increment: 2 },
+    { kind: "clock", base: 300, increment: 0 }
+  ],
+  options: [
+    {
+      key: "swap",
+      label: "swapRule",
+      values: [
+        { value: false, label: "swapOff" },
+        { value: true, label: "swapOn" }
+      ]
+    }
+  ],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard"],
+  renderer: "dom",
+  estimatedMinutes: [5, 15],
+  leaderboards: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] }
+  ],
+  // Every move is a cell (or the swap), so a match replays exactly.
+  scoreValidation: { kind: "replay" },
+  tags: ["classic", "two-player", "strategy"]
+});
+
 // packages/games/nine-mens-morris/engine/index.ts
 var POINTS = 24;
-var EMPTY5 = -1;
+var EMPTY6 = -1;
 var QUIET_LIMIT2 = 50;
 var ADJACENT = [
   [1, 9],
@@ -5594,10 +5754,10 @@ var MILLS_AT = Array.from(
 );
 var inMill = (board, point) => {
   const seat = board[point];
-  return seat !== EMPTY5 && (MILLS_AT[point] ?? []).some((m) => m.every((q) => board[q] === seat));
+  return seat !== EMPTY6 && (MILLS_AT[point] ?? []).some((m) => m.every((q) => board[q] === seat));
 };
 var countOf = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-function configFrom4(raw) {
+function configFrom5(raw) {
   const flying = raw?.flying;
   return { flying: flying !== false };
 }
@@ -5613,13 +5773,13 @@ var canFly = (state, seat) => state.flying && state.inHand[seat] === 0 && countO
 function steps2(state, seat) {
   const { board } = state;
   if ((state.inHand[seat] ?? 0) > 0) {
-    return board.flatMap((v, p) => v === EMPTY5 ? [[null, p]] : []);
+    return board.flatMap((v, p) => v === EMPTY6 ? [[null, p]] : []);
   }
   const out = [];
   const fly = canFly(state, seat);
   board.forEach((v, p) => {
     if (v !== seat) return;
-    const targets = fly ? board.flatMap((w, q) => w === EMPTY5 ? [q] : []) : (ADJACENT[p] ?? []).filter((q) => board[q] === EMPTY5);
+    const targets = fly ? board.flatMap((w, q) => w === EMPTY6 ? [q] : []) : (ADJACENT[p] ?? []).filter((q) => board[q] === EMPTY6);
     for (const q of targets) out.push([p, q]);
   });
   return out;
@@ -5628,7 +5788,7 @@ function movesFor2(state, seat) {
   const out = [];
   for (const [from, to] of steps2(state, seat)) {
     const board = state.board.slice();
-    if (from !== null) board[from] = EMPTY5;
+    if (from !== null) board[from] = EMPTY6;
     board[to] = seat;
     if (inMill(board, to)) {
       for (const remove of removable(board, seat)) out.push({ from, to, remove });
@@ -5637,10 +5797,10 @@ function movesFor2(state, seat) {
   return out;
 }
 var key = (state) => `${String(state.turn)}${state.inHand.join("")}:${state.board.map((v) => String(v + 1)).join("")}`;
-var engine9 = {
+var engine10 = {
   initialState(config) {
-    const { flying } = configFrom4(config);
-    const board = Array.from({ length: POINTS }, () => EMPTY5);
+    const { flying } = configFrom5(config);
+    const board = Array.from({ length: POINTS }, () => EMPTY6);
     const state = {
       board,
       turn: 0,
@@ -5666,9 +5826,9 @@ var engine9 = {
     );
     if (!move2) return state;
     const board = state.board.slice();
-    if (move2.from !== null) board[move2.from] = EMPTY5;
+    if (move2.from !== null) board[move2.from] = EMPTY6;
     board[move2.to] = seat;
-    if (move2.remove !== null) board[move2.remove] = EMPTY5;
+    if (move2.remove !== null) board[move2.remove] = EMPTY6;
     const inHand = [state.inHand[0], state.inHand[1]];
     if (move2.from === null) inHand[seat === 0 ? 0 : 1] -= 1;
     const other2 = 1 - seat;
@@ -5709,7 +5869,7 @@ var engine9 = {
 };
 
 // packages/games/nine-mens-morris/manifest.ts
-var manifest9 = defineManifest({
+var manifest10 = defineManifest({
   id: "nine-mens-morris",
   version: 1,
   category: "board",
@@ -5752,7 +5912,7 @@ var manifest9 = defineManifest({
 });
 
 // packages/games/reversi/engine/index.ts
-var SIZE2 = 8;
+var SIZE3 = 8;
 var DIRECTIONS3 = [
   [-1, -1],
   [-1, 0],
@@ -5765,21 +5925,21 @@ var DIRECTIONS3 = [
 ];
 function flipsFor(board, square, seat) {
   if (board[square] !== -1) return [];
-  const row = Math.floor(square / SIZE2);
-  const col = square % SIZE2;
+  const row = Math.floor(square / SIZE3);
+  const col = square % SIZE3;
   const flips = [];
   for (const [dr, dc] of DIRECTIONS3) {
     const line = [];
     let r = row + dr;
     let c = col + dc;
-    while (r >= 0 && r < SIZE2 && c >= 0 && c < SIZE2) {
-      const v = board[r * SIZE2 + c];
+    while (r >= 0 && r < SIZE3 && c >= 0 && c < SIZE3) {
+      const v = board[r * SIZE3 + c];
       if (v === -1) break;
       if (v === seat) {
         flips.push(...line);
         break;
       }
-      line.push(r * SIZE2 + c);
+      line.push(r * SIZE3 + c);
       r += dr;
       c += dc;
     }
@@ -5788,19 +5948,19 @@ function flipsFor(board, square, seat) {
 }
 function movesFor3(board, seat) {
   const moves = [];
-  for (let square = 0; square < SIZE2 * SIZE2; square++) {
+  for (let square = 0; square < SIZE3 * SIZE3; square++) {
     if (board[square] === -1 && flipsFor(board, square, seat).length > 0) moves.push(square);
   }
   return moves;
 }
 var countDiscs = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-var engine10 = {
+var engine11 = {
   initialState() {
-    const board = Array.from({ length: SIZE2 * SIZE2 }, () => -1);
-    board[3 * SIZE2 + 3] = 1;
-    board[3 * SIZE2 + 4] = 0;
-    board[4 * SIZE2 + 3] = 0;
-    board[4 * SIZE2 + 4] = 1;
+    const board = Array.from({ length: SIZE3 * SIZE3 }, () => -1);
+    board[3 * SIZE3 + 3] = 1;
+    board[3 * SIZE3 + 4] = 0;
+    board[4 * SIZE3 + 3] = 0;
+    board[4 * SIZE3 + 4] = 1;
     return { board, turn: 0, moves: 0, last: null, flipped: [], passed: null, over: false };
   },
   legalActions(state, seat) {
@@ -5837,7 +5997,7 @@ var engine10 = {
 };
 
 // packages/games/reversi/manifest.ts
-var manifest10 = defineManifest({
+var manifest11 = defineManifest({
   id: "reversi",
   version: 1,
   category: "board",
@@ -5908,7 +6068,7 @@ function neighbor(cell, direction, walls) {
   c = (c + COLS) % COLS;
   return r * COLS + c;
 }
-var engine11 = {
+var engine12 = {
   initialState(config, seed) {
     const middle = Math.floor(ROWS / 2) * COLS + Math.floor(COLS / 2) - 3;
     const snake = [middle, middle - 1, middle - 2];
@@ -5975,7 +6135,7 @@ var engine11 = {
 var stepMs = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
 
 // packages/games/snake/manifest.ts
-var manifest11 = defineManifest({
+var manifest12 = defineManifest({
   id: "snake",
   version: 1,
   category: "arcade",
@@ -6384,7 +6544,7 @@ function commit(state, next, extra = {}) {
     ]
   };
 }
-var engine12 = {
+var engine13 = {
   initialState(config, seed) {
     return fromPuzzle(generate(seed, config.difficulty));
   },
@@ -6441,7 +6601,7 @@ var engine12 = {
 };
 
 // packages/games/sudoku/manifest.ts
-var manifest12 = defineManifest({
+var manifest13 = defineManifest({
   id: "sudoku",
   version: 1,
   category: "logic",
@@ -7135,7 +7295,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine13 = {
+var engine14 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -7152,7 +7312,7 @@ var engine13 = {
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest13 = defineManifest({
+var manifest14 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -7192,11 +7352,12 @@ var GAMES = {
   "four-in-a-row": { manifest: manifest6, engine: engine7 },
   "go": { manifest: manifest7, engine: engine8 },
   "gomoku": { manifest: manifest8, engine: engine5 },
-  "nine-mens-morris": { manifest: manifest9, engine: engine9 },
-  "reversi": { manifest: manifest10, engine: engine10 },
-  "snake": { manifest: manifest11, engine: engine11 },
-  "sudoku": { manifest: manifest12, engine: engine12 },
-  "worm-rush": { manifest: manifest13, engine: engine13, bots, host: arenaHost }
+  "hex": { manifest: manifest9, engine: engine9 },
+  "nine-mens-morris": { manifest: manifest10, engine: engine10 },
+  "reversi": { manifest: manifest11, engine: engine11 },
+  "snake": { manifest: manifest12, engine: engine12 },
+  "sudoku": { manifest: manifest13, engine: engine13 },
+  "worm-rush": { manifest: manifest14, engine: engine14, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

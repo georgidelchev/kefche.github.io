@@ -1,0 +1,76 @@
+{
+  "name": "हेक्स",
+  "tagline": "विरोधी से पहले बोर्ड के अपने दोनों किनारे जोड़ें।",
+  "description": "ब्राउज़र में हेक्स मुफ़्त खेलें: 11 × 11 षट्भुज बोर्ड पर अपने किनारे जोड़ें, अदला-बदली नियम वैकल्पिक। बॉट, दोस्त या ऑनलाइन।",
+  "about": [
+    "Hex is a connection game for two players, invented in the 1940s and loved by mathematicians. The board is a rhombus of hexagons, 11 on each side. Each player owns two opposite edges: the first player joins top and bottom, the second left and right. Players take turns placing a stone on any empty cell, and the first to link their two edges with an unbroken chain wins.",
+    "Hex can never end in a draw: when the board is full, exactly one player has a chain. Stones never move and nothing is ever captured, so every move counts. Because blocking your opponent and building your own path are the same thing, the game is simple to learn but rich to play.",
+    "Moving first is a real advantage, so serious players use the swap rule: after the first stone, the second player may take it over instead of playing. Turn it on and the first player has to open with a fair move. Here you can play against a bot on three levels, with a friend on one device, or online."
+  ],
+  "howToPlay": [
+    "Choose whether the swap rule is on, then Play vs bots or Play on this device. The first player starts.",
+    "On your turn, place a stone on any empty cell.",
+    "The first player connects the top and bottom edges; the second player connects the left and right edges. The coloured borders show whose edges are whose.",
+    "With the swap rule, the second player may answer the first stone with Swap: the stone is mirrored across the board and becomes theirs, and the first player moves again.",
+    "The first to join their two edges with an unbroken chain of their stones wins. A draw is impossible."
+  ],
+  "controls": [
+    "Phones and tablets: tap a cell to see where your stone would go, then tap it again to place it.",
+    "Mouse: click a cell to place a stone there.",
+    "Keyboard: move with the arrow keys and press Enter or Space to place a stone.",
+    "Against bots, Undo takes back your last move and the bot's reply."
+  ],
+  "tips": [
+    "Two of your stones with two empty cells between them form a bridge: if your opponent takes one cell, take the other and they stay connected.",
+    "Play towards the centre early. A central stone can reach either of your edges.",
+    "Block from a distance. A stone placed right next to your opponent's is easy to go around.",
+    "Every stone both builds your chain and blocks theirs, so look for cells that do both.",
+    "With the swap rule on, open away from the centre: a strong first stone will simply be taken."
+  ],
+  "faq": [
+    {
+      "question": "Is Hex free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can Hex end in a draw?",
+      "answer": "No. On a full board exactly one player has a connecting chain, so every game has a winner."
+    },
+    {
+      "question": "What does Swap do?",
+      "answer": "With the swap rule on, the second player's first move may be Swap: the first stone, mirrored across the long diagonal, becomes theirs. It keeps the first player from taking the best cell for free."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "They play thousands of random games from the position and choose the cell that wins most. Easy also plays a random cell now and then; medium and hard think for longer."
+    }
+  ],
+  "ui": {
+    "boardLabel": "हेक्स बोर्ड",
+    "cellEmpty": "{cell}, खाली",
+    "cellStone": "{cell}, {name}",
+    "inChain": "जीतने वाली कड़ी में",
+    "goalTopBottom": "{name}: ऊपर से नीचे",
+    "goalLeftRight": "{name}: बाएँ से दाएँ",
+    "placed": "{name} ने {cell} पर खेला।",
+    "connected": "{name} ने जोड़ा और जीते।",
+    "swapped": "{name} ने अदला-बदली की और पहला पत्थर ले लिया।",
+    "tapAgain": "वहाँ रखने के लिए फिर से टैप करें।",
+    "swap": "अदला-बदली",
+    "undo": "वापस लें",
+    "swapRule": "अदला-बदली नियम",
+    "swapOff": "बंद",
+    "swapOn": "चालू"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, number} गेम जीतें"
+    },
+    "streak": {
+      "name": "जीत की लय",
+      "description": "लगातार {count, number} गेम जीतें"
+    }
+  },
+  "leaderboards": {}
+}

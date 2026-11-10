@@ -1,6 +1,7 @@
 // Roving focus on a board (WAI-ARIA grid pattern): one cell is in the tab
 // order, the arrow keys move it, Enter or Space acts. Boards are never
-// mirrored, so left is left in every language.
+// mirrored, so left is left in every language. Cells may be HTML or SVG
+// elements (Hex draws its board in SVG).
 import { useRef, useState, type KeyboardEvent } from "react";
 
 const STEPS: Readonly<Record<string, readonly [number, number]>> = {
@@ -49,7 +50,7 @@ export interface GridFocus {
   setFocus: (index: number) => void;
   /** Spread onto a cell: its tab stop, ref and key handling. */
   cellProps: (index: number) => {
-    ref: (el: HTMLElement | null) => void;
+    ref: (el: HTMLElement | SVGElement | null) => void;
     tabIndex: 0 | -1;
     onFocus: () => void;
     onKeyDown: (e: KeyboardEvent) => void;
@@ -71,7 +72,7 @@ export function useGridFocus({
   onActivate: (index: number) => void;
 }): GridFocus {
   const [focus, setFocus] = useState(initial);
-  const cells = useRef(new Map<number, HTMLElement>());
+  const cells = useRef(new Map<number, HTMLElement | SVGElement>());
   const moveTo = (index: number) => {
     setFocus(index);
     cells.current.get(index)?.focus();

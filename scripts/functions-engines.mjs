@@ -202,6 +202,7 @@ if (process.argv.includes("--fixtures")) {
     "four-in-a-row": undefined,
     go: { size: 9 },
     gomoku: { exactFive: false },
+    hex: { swap: true },
     "nine-mens-morris": { flying: true },
     reversi: undefined,
   };

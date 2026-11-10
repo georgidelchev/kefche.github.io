@@ -1,0 +1,76 @@
+{
+  "name": "六贯棋",
+  "tagline": "抢在对手之前连通你的两条边。",
+  "description": "在浏览器中免费玩六贯棋：在 11 × 11 的六边形棋盘上连通你的两边，可选交换规则。对战机器人、双人或在线对战。",
+  "about": [
+    "Hex is a connection game for two players, invented in the 1940s and loved by mathematicians. The board is a rhombus of hexagons, 11 on each side. Each player owns two opposite edges: the first player joins top and bottom, the second left and right. Players take turns placing a stone on any empty cell, and the first to link their two edges with an unbroken chain wins.",
+    "Hex can never end in a draw: when the board is full, exactly one player has a chain. Stones never move and nothing is ever captured, so every move counts. Because blocking your opponent and building your own path are the same thing, the game is simple to learn but rich to play.",
+    "Moving first is a real advantage, so serious players use the swap rule: after the first stone, the second player may take it over instead of playing. Turn it on and the first player has to open with a fair move. Here you can play against a bot on three levels, with a friend on one device, or online."
+  ],
+  "howToPlay": [
+    "Choose whether the swap rule is on, then Play vs bots or Play on this device. The first player starts.",
+    "On your turn, place a stone on any empty cell.",
+    "The first player connects the top and bottom edges; the second player connects the left and right edges. The coloured borders show whose edges are whose.",
+    "With the swap rule, the second player may answer the first stone with Swap: the stone is mirrored across the board and becomes theirs, and the first player moves again.",
+    "The first to join their two edges with an unbroken chain of their stones wins. A draw is impossible."
+  ],
+  "controls": [
+    "Phones and tablets: tap a cell to see where your stone would go, then tap it again to place it.",
+    "Mouse: click a cell to place a stone there.",
+    "Keyboard: move with the arrow keys and press Enter or Space to place a stone.",
+    "Against bots, Undo takes back your last move and the bot's reply."
+  ],
+  "tips": [
+    "Two of your stones with two empty cells between them form a bridge: if your opponent takes one cell, take the other and they stay connected.",
+    "Play towards the centre early. A central stone can reach either of your edges.",
+    "Block from a distance. A stone placed right next to your opponent's is easy to go around.",
+    "Every stone both builds your chain and blocks theirs, so look for cells that do both.",
+    "With the swap rule on, open away from the centre: a strong first stone will simply be taken."
+  ],
+  "faq": [
+    {
+      "question": "Is Hex free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can Hex end in a draw?",
+      "answer": "No. On a full board exactly one player has a connecting chain, so every game has a winner."
+    },
+    {
+      "question": "What does Swap do?",
+      "answer": "With the swap rule on, the second player's first move may be Swap: the first stone, mirrored across the long diagonal, becomes theirs. It keeps the first player from taking the best cell for free."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "They play thousands of random games from the position and choose the cell that wins most. Easy also plays a random cell now and then; medium and hard think for longer."
+    }
+  ],
+  "ui": {
+    "boardLabel": "六贯棋棋盘",
+    "cellEmpty": "{cell}，空",
+    "cellStone": "{cell}，{name}",
+    "inChain": "在获胜连线中",
+    "goalTopBottom": "{name}：从上到下",
+    "goalLeftRight": "{name}：从左到右",
+    "placed": "{name} 下在 {cell}。",
+    "connected": "{name} 连通并获胜。",
+    "swapped": "{name} 选择交换，拿下第一颗棋子。",
+    "tapAgain": "再点一次落在这里。",
+    "swap": "交换",
+    "undo": "悔棋",
+    "swapRule": "交换规则",
+    "swapOff": "关",
+    "swapOn": "开"
+  },
+  "achievements": {
+    "winner": {
+      "name": "胜利者",
+      "description": "赢得 {count, number} 局"
+    },
+    "streak": {
+      "name": "连胜",
+      "description": "连续赢得 {count, number} 局"
+    }
+  },
+  "leaderboards": {}
+}

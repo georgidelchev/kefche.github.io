@@ -2364,6 +2364,11 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Rules:** Gomoku's line game for 2–5 players (3 by default), each seat in its own colour and shape. **Changed from the plan:** five in a row for two players only, and four in a row from three players on (15 × 15 for three, 17 × 17 for four or five). With five needed and two or more opponents blocking, an open line can be stopped at both ends: in self-play every three-player game was drawn. With four, games end with a winner.
   - **Bots:** Gomoku's. Easy now misses a block half the time (the checklist asks only medium and hard to always block), in Gomoku too. Hard beat easy 6 of 6 with two players, and 4 or 5 of 6 with three to five.
   - Checked in Chrome: 36/36, covering three players by default and the board for 2, 3 and 5, both bots replying, a shape per seat, 360, 768 and 1280 px, both themes, Arabic, and axe.
+- [x] **Step 6, Hex:**
+  - **Rules:** 11 × 11; the first player joins top and bottom, the second left and right; no draws. The swap rule is an option (off by default): the second player may take over the first stone, mirrored across the long diagonal.
+  - **Board:** SVG hexagons, with each player's edges in their colour (the kit's roving focus now takes SVG cells). Touch screens aim first and place on a second tap, as in Gomoku.
+  - **Bots:** Monte Carlo with "all moves as first": random fills of the board, each won cell counting for the winner. All take a win; medium and hard always block one, easy about two times in three, and easy plays a random cell a third of the time. As the second player they swap a first stone near the centre. Hard beat easy 6 of 6 with swap on and off.
+  - Checked in Chrome: 36/36, covering the swap option, a move and the bot's reply, a swap on one device, a winning chain, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe.
 
 ## Known issues
 
@@ -2384,6 +2389,7 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
 - **Game page prose is English in 9 locales (Phase 15):** each game's name, tagline, meta description and in-game UI strings are translated in all 11 locales. The long page sections (about, how to play, controls, tips, FAQ) are written in English and Bulgarian; the other 9 locales carry the English text until the Phase 15 translation pass (SPEC §15, §22 DoD rule).
 - **Translations need native review (Phase 15):** all strings in the 9 locales other than en/bg are my translations and haven't been reviewed by native speakers. Bulgarian should be reviewed by the owner.
 - **Arenas: a real phone and the real limit (Phase 9):** step 12 ran on Chrome's phone emulation and simulated the free plan's daily limit locally. Once Worm Rush is live, play it on a real mid-range phone, and reaching the limit on production waits for the owner's word (it stops online arenas until 00:00 UTC).
+- **Small cells on phones (Phase 11):** on a 360 px screen, Hex cells are about 19 px and Gomoku's and Five Colors' points 20–22 px, under the 24 px target size. A touch screen aims first and places on a second tap, so a miss can be corrected; a zoomable board would fix it properly.
 - **Guest play off and online play (Phase 10):** with the `guest_play` flag off, a signed-out visitor who starts online play gets the room's general error, not a "sign in to play" prompt.
 - **Arenas: input rate and the free plan (Phase 9):** a full arena bills about 26,200 requests an hour, so Workers Free allows about 3.8 full-arena hours a day. Lowering the input cap from 10 to 6 a second, or Workers Paid ($5/month), are the levers (ADR-0038).
 
