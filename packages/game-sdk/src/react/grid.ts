@@ -63,12 +63,15 @@ export function useGridFocus({
   rows,
   initial = 0,
   isCell,
+  step,
   onActivate,
 }: {
   cols: number;
   rows: number;
   initial?: number;
   isCell?: (index: number) => boolean;
+  /** Where a key moves focus, for boards whose rows are offset (Chinese Checkers); by default gridStep. */
+  step?: (key: string, index: number) => number | null;
   onActivate: (index: number) => void;
 }): GridFocus {
   const [focus, setFocus] = useState(initial);
@@ -92,7 +95,7 @@ export function useGridFocus({
       onKeyDown: (e) => {
         if (e.key === "Enter" || e.key === " ") onActivate(index);
         else {
-          const to = gridStep(e.key, index, cols, rows, isCell);
+          const to = step ? step(e.key, index) : gridStep(e.key, index, cols, rows, isCell);
           if (to === null) return;
           moveTo(to);
         }

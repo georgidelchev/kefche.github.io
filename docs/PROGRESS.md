@@ -2384,6 +2384,12 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Board:** one 9 × 9 grid of cells (for focus and screen readers) with gaps between the boards, the boards you may play in highlighted, won boards covered by their winner's mark.
   - **Bots:** Ultimate: Monte Carlo tree search, easy also playing at random a third of the time. Classic: hard searches to the end and never loses; medium and hard always block. Hard beat easy 6 of 6 in both modes.
   - Checked in Chrome: 35/35, covering the mode option, a move sending the bot to its board, three in a row in Classic, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe.
+- [x] **Step 11, Chinese Checkers:**
+  - **Rules:** the 121-hole star for 2–6 players (3 by default; with five, one point stays empty), 10 pieces each, steps and jump chains over anyone's pieces, and no move ending in a third player's point. Fill the opposite point to win; a rival's piece left there counts once the rest is yours. **Added to the plan:** if nobody finishes in 100 turns each, the most pieces home wins, so a stalled game still ends.
+  - **Board:** SVG holes in cube coordinates, each player's point tinted, the last move's path traced. Seat 0 starts at the bottom.
+  - **Keyboard:** the star's rows are offset by half a hole, so up and down go to the nearest hole in the next row (the kit's roving focus takes a custom step); a straight column would skip every other row.
+  - **Bots:** distances to the goal's far tip: easy wanders forward, medium takes the longest step, hard adds its own next move and brings stragglers along. Hard beat easy 6 of 6 with 2, 3 and 6 players; bot games finish in 85–200 moves.
+  - Checked in Chrome: 39/39, covering 2, 3 and 6 players, a move and both bots, the traced path, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe.
 
 ## Known issues
 

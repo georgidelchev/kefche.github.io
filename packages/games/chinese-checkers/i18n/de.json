@@ -1,0 +1,73 @@
+{
+  "name": "Halma-Stern",
+  "tagline": "Springe mit deinen Figuren über den Stern in die gegenüberliegende Spitze.",
+  "description": "Spiele Halma auf dem Stern kostenlos: 2 bis 6 Spieler ziehen mit Sprungketten über den Stern. Mit Bots, zu mehreren auf einem Gerät oder online.",
+  "about": [
+    "Chinese Checkers is a race across a six-pointed star. Each player starts with ten pieces in one point of the star, and the first to move all of them into the point directly opposite wins. Despite its name, the game was invented in Germany in the 1890s; the star-shaped board and the name came later.",
+    "Pieces move one hole at a time, or jump. A jump goes over a single neighbouring piece, yours or anyone's, into the empty hole straight behind it, and you can keep jumping from hole to hole as long as there are pieces to jump. Long chains of jumps are the heart of the game: a good ladder can carry a piece right across the board in one turn.",
+    "Two to six people can play. With two, three, four or six players everyone starts opposite someone or an empty point; with five, one point stays empty. Here you can fill any seat with a bot on three levels, play with friends on one device, or play online."
+  ],
+  "howToPlay": [
+    "Choose the number of players and who sits where, then start. Turns go round in order.",
+    "On your turn, move one piece: a step into a neighbouring empty hole, or a jump over one neighbouring piece into the empty hole behind it.",
+    "After a jump you may jump again from where you landed, as many times as you can, and stop wherever you like.",
+    "A move can't end in a point of the star that is neither your own nor your goal, though you may jump through one.",
+    "The first player to fill the point opposite their start wins. If a rival's piece is left in your goal, the point counts as filled once the rest of it is yours. If nobody has finished after 100 turns each, the most pieces home wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap one of your pieces, then one of the outlined holes it can reach.",
+    "Mouse: click a piece, then a hole it can reach.",
+    "Keyboard: move between holes with the arrow keys and press Enter or Space to pick a piece and where it goes.",
+    "Against bots, Undo takes back your last move and the bots' replies."
+  ],
+  "tips": [
+    "Build ladders: pieces spaced one hole apart make chains you can jump along for many holes at once.",
+    "Don't leave pieces behind. The game is only won when every piece is home, and a lone straggler takes many turns.",
+    "Use your opponents' pieces as stepping stones; jumps over anyone's pieces count.",
+    "Avoid giving others an easy ladder. A piece left in the middle can carry a rival across.",
+    "Near the end, fill your goal from the far tip first, so later pieces have room to land."
+  ],
+  "faq": [
+    {
+      "question": "Is Chinese Checkers free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can I jump over other players' pieces?",
+      "answer": "Yes. A jump can go over any single piece, yours or anyone's, and nothing is ever captured."
+    },
+    {
+      "question": "What if someone's piece blocks my goal?",
+      "answer": "Once every hole in your goal is taken and the rest are yours, the point counts as filled and you win."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "They move pieces towards the far tip of their goal. Easy often wanders, medium always takes the longest move forward, and hard also plans its next move and brings its stragglers along."
+    }
+  ],
+  "ui": {
+    "boardLabel": "Halma-Sternbrett",
+    "holeName": "Reihe {row}, Loch {col}",
+    "holeEmpty": "{hole}, leer",
+    "holePiece": "{hole}, {name}",
+    "selected": "ausgewählt",
+    "target": "hierhin ziehen",
+    "canMove": "kann ziehen",
+    "stepped": "{name} zieht ein Loch weiter.",
+    "jumped": "{name} springt {count}-mal.",
+    "home": "{count}/10 im Ziel",
+    "cancel": "Abbrechen",
+    "undo": "Rückgängig"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Partie} other {# Partien}}"
+    },
+    "streak": {
+      "name": "Siegesserie",
+      "description": "Gewinne {count, plural, one {# Partie} other {# Partien}} in Folge"
+    }
+  },
+  "leaderboards": {}
+}
