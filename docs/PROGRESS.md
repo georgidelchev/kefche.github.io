@@ -2379,6 +2379,11 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Board:** a row of sticks per pile; tapping a stick takes it and the ones after it, which light up first under the pointer or focus.
   - **Bots:** two players: hard plays the nim-sum strategy perfectly (misère's endgame too), medium most of the time, easy at random but takes an obvious win. Three or more: search. Hard beat easy 10 of 10 with two players.
   - Checked in Chrome: 36/36, covering both options, a take and the bot's, misère, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe (an empty pile keeps one cell, so its row isn't empty).
+- [x] **Step 12, Ultimate Tic-Tac-Toe** (done before steps 10 and 11):
+  - **Rules:** nine small boards; the cell you play sends the other player to the matching board, or anywhere open if that one is won or full. Three boards in a row win; a full board counts for nobody. Classic tic-tac-toe is a mode.
+  - **Board:** one 9 × 9 grid of cells (for focus and screen readers) with gaps between the boards, the boards you may play in highlighted, won boards covered by their winner's mark.
+  - **Bots:** Ultimate: Monte Carlo tree search, easy also playing at random a third of the time. Classic: hard searches to the end and never loses; medium and hard always block. Hard beat easy 6 of 6 in both modes.
+  - Checked in Chrome: 35/35, covering the mode option, a move sending the bot to its board, three in a row in Classic, keyboard play, 360, 768 and 1280 px, both themes, Arabic, and axe.
 
 ## Known issues
 

@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine17, bots2, options) {
-    this.engine = engine17;
+  constructor(engine18, bots2, options) {
+    this.engine = engine18;
     this.bots = bots2;
     this.options = options;
-    this.world = engine17.createWorld(options.config, options.seed);
+    this.world = engine18.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine17.ticksPerSecond / engine17.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine18.ticksPerSecond / engine18.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -479,7 +479,7 @@ function canonicalJson(value) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest17) => manifest17;
+var defineManifest = (manifest18) => manifest18;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -6877,6 +6877,132 @@ var manifest15 = defineManifest({
   tags: ["puzzle", "numbers", "single-player"]
 });
 
+// packages/games/ultimate-ttt/engine/index.ts
+var EMPTY7 = -1;
+var LINES = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6]
+];
+var configFrom8 = (raw) => ({
+  mode: raw?.mode === "classic" ? "classic" : "ultimate"
+});
+function lineOf(marks, seat) {
+  for (const line of LINES) if (line.every((i) => marks[i] === seat)) return [...line];
+  return null;
+}
+var smallBoard = (cells, b) => cells.slice(b * 9, b * 9 + 9);
+function movesFor5(state) {
+  if (state.over) return [];
+  if (state.mode === "classic") return state.cells.flatMap((v, i) => v === EMPTY7 ? [i] : []);
+  const open = (b) => state.boards[b] === EMPTY7;
+  const allowed = state.next !== null && open(state.next) ? [state.next] : [0, 1, 2, 3, 4, 5, 6, 7, 8].filter(open);
+  return allowed.flatMap(
+    (b) => smallBoard(state.cells, b).flatMap((v, c) => v === EMPTY7 ? [b * 9 + c] : [])
+  );
+}
+var engine16 = {
+  initialState(config) {
+    const { mode } = configFrom8(config);
+    return {
+      mode,
+      cells: Array.from({ length: mode === "classic" ? 9 : 81 }, () => EMPTY7),
+      boards: Array.from({ length: 9 }, () => EMPTY7),
+      next: null,
+      turn: 0,
+      moves: 0,
+      last: null,
+      winner: null,
+      over: false,
+      line: []
+    };
+  },
+  legalActions(state, seat) {
+    if (seat !== state.turn) return [];
+    return movesFor5(state).map((cell) => ({ cell }));
+  },
+  applyAction(state, seat, { cell }) {
+    if (seat !== state.turn || !movesFor5(state).includes(cell)) return state;
+    const cells = state.cells.slice();
+    cells[cell] = seat;
+    const base = { ...state, cells, moves: state.moves + 1, last: cell, turn: 1 - seat };
+    if (state.mode === "classic") {
+      const line2 = lineOf(cells, seat);
+      if (line2) return { ...base, turn: seat, winner: seat, over: true, line: line2 };
+      if (cells.every((v) => v !== EMPTY7)) return { ...base, turn: seat, over: true };
+      return base;
+    }
+    const board = Math.floor(cell / 9);
+    const boards2 = state.boards.slice();
+    const small = smallBoard(cells, board);
+    if (lineOf(small, seat)) boards2[board] = seat;
+    else if (small.every((v) => v !== EMPTY7)) boards2[board] = 2;
+    const next = cell % 9;
+    const after = { ...base, boards: boards2, next };
+    const line = lineOf(boards2, seat);
+    if (line) return { ...after, turn: seat, winner: seat, over: true, line };
+    if (boards2.every((b) => b !== EMPTY7)) return { ...after, turn: seat, over: true };
+    return after;
+  },
+  currentSeats: (state) => state.over ? [] : [state.turn],
+  // Online, an away player's turn passes.
+  skipTurn(state, seat) {
+    if (state.over || seat !== state.turn) return state;
+    return { ...state, turn: 1 - seat, last: null };
+  },
+  result(state) {
+    if (!state.over) return null;
+    const outcome = state.winner === null ? [0.5, 0.5] : state.winner === 0 ? [1, 0] : [0, 1];
+    return { completed: true, outcome };
+  }
+};
+
+// packages/games/ultimate-ttt/manifest.ts
+var manifest16 = defineManifest({
+  id: "ultimate-ttt",
+  version: 1,
+  category: "strategy",
+  kind: "turn",
+  players: { min: 2, max: 2, default: 2 },
+  modes: ["solo-bots", "hotseat", "online-private", "online-public", "quick-match"],
+  bots: { supported: true, difficulties: ["easy", "medium", "hard"], canFillSeats: true },
+  timers: [
+    { kind: "none" },
+    { kind: "per-move", seconds: 15, onExpiry: "random-move" },
+    { kind: "per-move", seconds: 30, onExpiry: "random-move" },
+    { kind: "clock", base: 180, increment: 2 }
+  ],
+  options: [
+    {
+      key: "mode",
+      label: "mode",
+      values: [
+        { value: "ultimate", label: "modeUltimate" },
+        { value: "classic", label: "modeClassic" }
+      ]
+    }
+  ],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard"],
+  renderer: "dom",
+  estimatedMinutes: [3, 15],
+  leaderboards: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "streak", icon: "flame", metric: "bestStreak", tiers: [3, 5, 10] }
+  ],
+  // Every move is a cell, so a match replays exactly.
+  scoreValidation: { kind: "replay" },
+  tags: ["classic", "two-player", "quick"]
+});
+
 // packages/games/worm-rush/engine/world.ts
 var TICKS_PER_SECOND = 30;
 var SNAPSHOTS_PER_SECOND = 15;
@@ -7521,7 +7647,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine16 = {
+var engine17 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -7538,7 +7664,7 @@ var engine16 = {
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest16 = defineManifest({
+var manifest17 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -7585,7 +7711,8 @@ var GAMES = {
   "reversi": { manifest: manifest13, engine: engine13 },
   "snake": { manifest: manifest14, engine: engine14 },
   "sudoku": { manifest: manifest15, engine: engine15 },
-  "worm-rush": { manifest: manifest16, engine: engine16, bots, host: arenaHost }
+  "ultimate-ttt": { manifest: manifest16, engine: engine16 },
+  "worm-rush": { manifest: manifest17, engine: engine17, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

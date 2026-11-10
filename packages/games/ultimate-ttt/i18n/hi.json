@@ -1,0 +1,75 @@
+{
+  "name": "अल्टीमेट टिक-टैक-टो",
+  "tagline": "टिक-टैक-टो के अंदर टिक-टैक-टो: हर चाल तय करती है कि विरोधी कहाँ खेलेगा।",
+  "description": "ब्राउज़र में अल्टीमेट टिक-टैक-टो मुफ़्त खेलें: नौ छोटे बोर्ड, एक बड़ा खेल। क्लासिक भी। बॉट, दोस्त या ऑनलाइन।",
+  "about": [
+    "Ultimate Tic-Tac-Toe takes the game everyone knows and makes it a real strategy game. The board is nine small tic-tac-toe boards arranged in a big 3 × 3 grid. Win a small board by getting three in a row on it, and win the game by winning three small boards in a row.",
+    "The twist is where you're allowed to play. The cell you choose inside a small board sends your opponent to the small board in the same position on the big grid. Play in the top-right cell, and your opponent must play in the top-right board. So every move is two decisions: what it does on its own board, and where it sends the other player. If you're sent to a board that's already won or full, you may play in any open board.",
+    "If you just want a quick game, classic tic-tac-toe is here too, on a single 3 × 3 board. Play against a bot on three levels, with a friend on one device, or online."
+  ],
+  "howToPlay": [
+    "Choose Ultimate or Classic, then Play vs bots or Play on this device. The first player starts and may play anywhere.",
+    "Place your mark in an empty cell of the highlighted board or boards.",
+    "Where you play inside a small board decides which small board your opponent plays in next.",
+    "Three in a row on a small board wins it. A board that fills up with no line counts for nobody. If you're sent to a won or full board, play in any open one.",
+    "Win three small boards in a row, across, down or diagonally, to win the game. If no line of boards is possible, it's a draw. In Classic, three in a row on the one board wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap a cell in a highlighted board.",
+    "Mouse: click a cell in a highlighted board.",
+    "Keyboard: move across the whole grid with the arrow keys and press Enter or Space to play.",
+    "Against bots, Undo takes back your last move and the bot's reply."
+  ],
+  "tips": [
+    "Before you play a cell, look at the board it sends your opponent to. A good move on one board can hand them an easy win on another.",
+    "Sending your opponent to a board that's already won lets them play anywhere, which is usually a gift.",
+    "The centre board matters most, as it's part of four lines of boards.",
+    "Sometimes it's worth giving up a small board to keep your opponent away from the one you need.",
+    "In Classic, the first player can't be beaten by perfect play, but never wins against it either: take the centre or a corner."
+  ],
+  "faq": [
+    {
+      "question": "Is Ultimate Tic-Tac-Toe free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Where can I play?",
+      "answer": "In the board the highlighting shows: the one matching the cell your opponent last played. If that board is won or full, any open board is highlighted."
+    },
+    {
+      "question": "What happens to a full board with no winner?",
+      "answer": "It counts for nobody. If no line of three won boards is still possible, the game is a draw."
+    },
+    {
+      "question": "How strong are the bots?",
+      "answer": "In Ultimate they play out many random games to choose a move; easy also plays at random now and then. In Classic, hard never loses."
+    }
+  ],
+  "ui": {
+    "boardLabel": "टिक-टैक-टो बोर्ड",
+    "cellClassic": "खाना {cell}",
+    "cellUltimate": "बोर्ड {board}, खाना {cell}",
+    "cellEmpty": "{cell}, खाली",
+    "cellMark": "{cell}, {name}",
+    "canPlay": "आप यहाँ खेल सकते हैं",
+    "played": "{name} ने {cell} पर खेला।",
+    "wonBoard": "{name} ने बोर्ड {board} जीता।",
+    "nextBoard": "अगली चाल बोर्ड {board} में।",
+    "anyBoard": "अगली चाल किसी भी खुले बोर्ड में।",
+    "undo": "वापस लें",
+    "mode": "मोड",
+    "modeUltimate": "अल्टीमेट",
+    "modeClassic": "क्लासिक"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, number} गेम जीतें"
+    },
+    "streak": {
+      "name": "जीत की लय",
+      "description": "लगातार {count, number} गेम जीतें"
+    }
+  },
+  "leaderboards": {}
+}
