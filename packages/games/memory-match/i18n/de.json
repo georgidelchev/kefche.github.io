@@ -1,0 +1,115 @@
+{
+  "name": "Memory",
+  "tagline": "Deck zwei Karten auf einmal auf und finde alle Paare.",
+  "description": "Spiele Memory kostenlos: finde die Paare unter 12, 20 oder 30 Karten, allein gegen die Uhr, online im Rennen oder mit Freunden und Bots.",
+  "about": [
+    "Memory Match is the classic game of pairs. The cards lie face down, and every symbol is on exactly two of them. Turn two over: if they match, they stay up; if not, they turn back, and you try to remember where they were.",
+    "Play alone to clear the table in the fewest flips and the least time, or race friends online on the same layout. To play together on one device, pick 2 to 4 players and take turns, or play against bots that remember more of what they've seen at each difficulty.",
+    "There are 12, 20 or 30 cards, with 15 symbols drawn for kefche, each a different shape in a different colour."
+  ],
+  "howToPlay": [
+    "Choose how many cards. Alone, the clock starts with the first layout.",
+    "Turn a card over, then another.",
+    "A matching pair stays face up. Two cards that don't match show for a moment and turn back.",
+    "Playing together, a player who finds a pair goes again; a miss passes the turn. The most pairs wins.",
+    "Alone, the game ends when every pair is found."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to turn it.",
+    "Mouse: click a card.",
+    "Keyboard: move between cards with the arrow keys, and press Enter or Space to turn one.",
+    "Pause or start again from the bar above the game."
+  ],
+  "tips": [
+    "Turn the first card of each go somewhere new, and the second where you think its pair is.",
+    "Work along the rows: a fixed order makes places easier to remember.",
+    "Say the symbols to yourself as they turn: words stick better than pictures.",
+    "Against others, watch their flips too: every card they show is one you know.",
+    "Late in the game few cards are left, so a careful second flip is often a sure pair."
+  ],
+  "faq": [
+    {
+      "question": "Is Memory Match free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can I play with friends?",
+      "answer": "Yes. Play together on one device with 2 to 4 players, or race friends online on the same layout. Taking turns online is coming later."
+    },
+    {
+      "question": "How good are the bots?",
+      "answer": "Easy bots forget most of what they see, medium bots remember more, and hard bots remember nearly every card."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same layout at the same moment, and the first to find every pair wins."
+    }
+  ],
+  "ui": {
+    "best": "Bestzeit: {time}",
+    "time": "Zeit",
+    "moves": "Züge",
+    "newBest": "Neue Bestzeit!",
+    "changeSize": "Größe ändern",
+    "boardLabel": "Karten",
+    "aloneTitle": "Allein spielen",
+    "togetherTitle": "Zusammen spielen",
+    "cardsLabel": "{cards} Karten",
+    "cards": "Karten",
+    "players": "Spieler",
+    "opponents": "Gegen",
+    "friends": "Freunde",
+    "easy": "Leichte Bots",
+    "medium": "Mittlere Bots",
+    "hard": "Schwere Bots",
+    "start": "Starten",
+    "cardUp": "Karte {number}, {symbol}",
+    "cardDown": "Karte {number}, verdeckt",
+    "botName": "Bot {number}",
+    "playerName": "Spieler {number}",
+    "scores": "Gefundene Paare",
+    "seatScore": "{name}, Paare: {pairs}",
+    "tie": "Unentschieden!",
+    "wins": "{name} gewinnt!",
+    "turn": "{name} ist dran",
+    "again": "Noch mal",
+    "menu": "Menü",
+    "flips": "Aufdeckungen",
+    "pairs": "Paare",
+    "pairsOf": "{pairs} von {total}",
+    "clearedIn": "Alle Paare gefunden! Aufdeckungen: {flips}.",
+    "cards12": "12",
+    "cards20": "20",
+    "cards30": "30",
+    "symbol0": "Stern",
+    "symbol1": "Mond",
+    "symbol2": "Sonne",
+    "symbol3": "Herz",
+    "symbol4": "Blatt",
+    "symbol5": "Tropfen",
+    "symbol6": "Blitz",
+    "symbol7": "Blume",
+    "symbol8": "Fisch",
+    "symbol9": "Glocke",
+    "symbol10": "Schlüssel",
+    "symbol11": "Krone",
+    "symbol12": "Anker",
+    "symbol13": "Wolke",
+    "symbol14": "Pilz"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Rätsellöser",
+      "description": "Löse {count, plural, one {# Rätsel} other {# Rätsel}}"
+    },
+    "speed": {
+      "name": "Blitzlöser",
+      "description": "Löse ein Rätsel in {time} oder weniger"
+    }
+  },
+  "leaderboards": {
+    "best-time-12": "Beste Zeit · 12 Karten",
+    "best-time-20": "Beste Zeit · 20 Karten",
+    "best-time-30": "Beste Zeit · 30 Karten"
+  }
+}

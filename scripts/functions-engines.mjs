@@ -343,6 +343,18 @@ if (process.argv.includes("--fixtures")) {
         return { type: "step", dir: plan[0] };
       },
     },
+    // A random card, then its pair (or now and then a wrong one).
+    "memory-match": {
+      config: { cards: 12 },
+      next: (state, random) => {
+        const open = state.symbols.flatMap((_, i) => (state.matched[i] ? [] : [i]));
+        const first = state.up.length === 1 ? state.up[0] : undefined;
+        if (first === undefined) return { flip: pick(random, open) };
+        const pair = open.find((i) => i !== first && state.symbols[i] === state.symbols[first]);
+        const others = open.filter((i) => i !== first);
+        return { flip: random() < 0.3 ? pick(random, others) : pair };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },

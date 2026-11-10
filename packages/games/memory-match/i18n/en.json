@@ -1,0 +1,115 @@
+{
+  "name": "Memory Match",
+  "tagline": "Turn two cards at a time and find every pair.",
+  "description": "Play Memory Match free in your browser: find the pairs among 12, 20 or 30 cards, alone against the clock, online in a race, or with friends and bots.",
+  "about": [
+    "Memory Match is the classic game of pairs. The cards lie face down, and every symbol is on exactly two of them. Turn two over: if they match, they stay up; if not, they turn back, and you try to remember where they were.",
+    "Play alone to clear the table in the fewest flips and the least time, or race friends online on the same layout. To play together on one device, pick 2 to 4 players and take turns, or play against bots that remember more of what they've seen at each difficulty.",
+    "There are 12, 20 or 30 cards, with 15 symbols drawn for kefche, each a different shape in a different colour."
+  ],
+  "howToPlay": [
+    "Choose how many cards. Alone, the clock starts with the first layout.",
+    "Turn a card over, then another.",
+    "A matching pair stays face up. Two cards that don't match show for a moment and turn back.",
+    "Playing together, a player who finds a pair goes again; a miss passes the turn. The most pairs wins.",
+    "Alone, the game ends when every pair is found."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to turn it.",
+    "Mouse: click a card.",
+    "Keyboard: move between cards with the arrow keys, and press Enter or Space to turn one.",
+    "Pause or start again from the bar above the game."
+  ],
+  "tips": [
+    "Turn the first card of each go somewhere new, and the second where you think its pair is.",
+    "Work along the rows: a fixed order makes places easier to remember.",
+    "Say the symbols to yourself as they turn: words stick better than pictures.",
+    "Against others, watch their flips too: every card they show is one you know.",
+    "Late in the game few cards are left, so a careful second flip is often a sure pair."
+  ],
+  "faq": [
+    {
+      "question": "Is Memory Match free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can I play with friends?",
+      "answer": "Yes. Play together on one device with 2 to 4 players, or race friends online on the same layout. Taking turns online is coming later."
+    },
+    {
+      "question": "How good are the bots?",
+      "answer": "Easy bots forget most of what they see, medium bots remember more, and hard bots remember nearly every card."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same layout at the same moment, and the first to find every pair wins."
+    }
+  ],
+  "ui": {
+    "best": "Best: {time}",
+    "time": "Time",
+    "moves": "Moves",
+    "newBest": "New best time!",
+    "changeSize": "Change size",
+    "boardLabel": "Cards",
+    "aloneTitle": "Play alone",
+    "togetherTitle": "Play together",
+    "cardsLabel": "{cards} cards",
+    "cards": "Cards",
+    "players": "Players",
+    "opponents": "Against",
+    "friends": "Friends",
+    "easy": "Easy bots",
+    "medium": "Medium bots",
+    "hard": "Hard bots",
+    "start": "Start",
+    "cardUp": "Card {number}, {symbol}",
+    "cardDown": "Card {number}, face down",
+    "botName": "Bot {number}",
+    "playerName": "Player {number}",
+    "scores": "Pairs found",
+    "seatScore": "{name}, pairs: {pairs}",
+    "tie": "It's a tie!",
+    "wins": "{name} wins!",
+    "turn": "{name}'s turn",
+    "again": "Play again",
+    "menu": "Menu",
+    "flips": "Flips",
+    "pairs": "Pairs",
+    "pairsOf": "{pairs} of {total}",
+    "clearedIn": "All pairs found! Flips: {flips}.",
+    "cards12": "12",
+    "cards20": "20",
+    "cards30": "30",
+    "symbol0": "star",
+    "symbol1": "moon",
+    "symbol2": "sun",
+    "symbol3": "heart",
+    "symbol4": "leaf",
+    "symbol5": "drop",
+    "symbol6": "lightning",
+    "symbol7": "flower",
+    "symbol8": "fish",
+    "symbol9": "bell",
+    "symbol10": "key",
+    "symbol11": "crown",
+    "symbol12": "anchor",
+    "symbol13": "cloud",
+    "symbol14": "mushroom"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Solver",
+      "description": "Solve {count, plural, one {# puzzle} other {# puzzles}}"
+    },
+    "speed": {
+      "name": "Speed solver",
+      "description": "Solve a puzzle in {time} or less"
+    }
+  },
+  "leaderboards": {
+    "best-time-12": "Best time · 12 cards",
+    "best-time-20": "Best time · 20 cards",
+    "best-time-30": "Best time · 30 cards"
+  }
+}

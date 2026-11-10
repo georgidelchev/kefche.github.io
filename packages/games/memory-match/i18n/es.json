@@ -1,0 +1,115 @@
+{
+  "name": "Memoria",
+  "tagline": "Da la vuelta a dos cartas cada vez y encuentra todas las parejas.",
+  "description": "Juega a Memoria gratis: encuentra las parejas entre 12, 20 o 30 cartas, solo contra el reloj, en carrera online o con amigos y bots.",
+  "about": [
+    "Memory Match is the classic game of pairs. The cards lie face down, and every symbol is on exactly two of them. Turn two over: if they match, they stay up; if not, they turn back, and you try to remember where they were.",
+    "Play alone to clear the table in the fewest flips and the least time, or race friends online on the same layout. To play together on one device, pick 2 to 4 players and take turns, or play against bots that remember more of what they've seen at each difficulty.",
+    "There are 12, 20 or 30 cards, with 15 symbols drawn for kefche, each a different shape in a different colour."
+  ],
+  "howToPlay": [
+    "Choose how many cards. Alone, the clock starts with the first layout.",
+    "Turn a card over, then another.",
+    "A matching pair stays face up. Two cards that don't match show for a moment and turn back.",
+    "Playing together, a player who finds a pair goes again; a miss passes the turn. The most pairs wins.",
+    "Alone, the game ends when every pair is found."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to turn it.",
+    "Mouse: click a card.",
+    "Keyboard: move between cards with the arrow keys, and press Enter or Space to turn one.",
+    "Pause or start again from the bar above the game."
+  ],
+  "tips": [
+    "Turn the first card of each go somewhere new, and the second where you think its pair is.",
+    "Work along the rows: a fixed order makes places easier to remember.",
+    "Say the symbols to yourself as they turn: words stick better than pictures.",
+    "Against others, watch their flips too: every card they show is one you know.",
+    "Late in the game few cards are left, so a careful second flip is often a sure pair."
+  ],
+  "faq": [
+    {
+      "question": "Is Memory Match free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can I play with friends?",
+      "answer": "Yes. Play together on one device with 2 to 4 players, or race friends online on the same layout. Taking turns online is coming later."
+    },
+    {
+      "question": "How good are the bots?",
+      "answer": "Easy bots forget most of what they see, medium bots remember more, and hard bots remember nearly every card."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same layout at the same moment, and the first to find every pair wins."
+    }
+  ],
+  "ui": {
+    "best": "Mejor: {time}",
+    "time": "Tiempo",
+    "moves": "Movimientos",
+    "newBest": "¡Nuevo mejor tiempo!",
+    "changeSize": "Cambiar tamaño",
+    "boardLabel": "Cartas",
+    "aloneTitle": "Jugar solo",
+    "togetherTitle": "Jugar juntos",
+    "cardsLabel": "{cards} cartas",
+    "cards": "Cartas",
+    "players": "Jugadores",
+    "opponents": "Contra",
+    "friends": "Amigos",
+    "easy": "Bots fáciles",
+    "medium": "Bots medios",
+    "hard": "Bots difíciles",
+    "start": "Empezar",
+    "cardUp": "Carta {number}, {symbol}",
+    "cardDown": "Carta {number}, boca abajo",
+    "botName": "Bot {number}",
+    "playerName": "Jugador {number}",
+    "scores": "Parejas encontradas",
+    "seatScore": "{name}, parejas: {pairs}",
+    "tie": "¡Empate!",
+    "wins": "¡Gana {name}!",
+    "turn": "Turno de {name}",
+    "again": "Jugar otra vez",
+    "menu": "Menú",
+    "flips": "Volteos",
+    "pairs": "Parejas",
+    "pairsOf": "{pairs} de {total}",
+    "clearedIn": "¡Todas las parejas encontradas! Volteos: {flips}.",
+    "cards12": "12",
+    "cards20": "20",
+    "cards30": "30",
+    "symbol0": "estrella",
+    "symbol1": "luna",
+    "symbol2": "sol",
+    "symbol3": "corazón",
+    "symbol4": "hoja",
+    "symbol5": "gota",
+    "symbol6": "rayo",
+    "symbol7": "flor",
+    "symbol8": "pez",
+    "symbol9": "campana",
+    "symbol10": "llave",
+    "symbol11": "corona",
+    "symbol12": "ancla",
+    "symbol13": "nube",
+    "symbol14": "seta"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Solucionador",
+      "description": "Resuelve {count, plural, one {# sudoku} other {# sudokus}}"
+    },
+    "speed": {
+      "name": "Rapidez",
+      "description": "Resuelve un sudoku en {time} o menos"
+    }
+  },
+  "leaderboards": {
+    "best-time-12": "Mejor tiempo · 12 cartas",
+    "best-time-20": "Mejor tiempo · 20 cartas",
+    "best-time-30": "Mejor tiempo · 30 cartas"
+  }
+}

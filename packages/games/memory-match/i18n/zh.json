@@ -1,0 +1,115 @@
+{
+  "name": "记忆配对",
+  "tagline": "每次翻开两张牌，找出所有对子。",
+  "description": "在浏览器中免费玩记忆配对：在 12、20 或 30 张牌中找出对子，独自计时、在线竞速，或与朋友和机器人一起玩。",
+  "about": [
+    "Memory Match is the classic game of pairs. The cards lie face down, and every symbol is on exactly two of them. Turn two over: if they match, they stay up; if not, they turn back, and you try to remember where they were.",
+    "Play alone to clear the table in the fewest flips and the least time, or race friends online on the same layout. To play together on one device, pick 2 to 4 players and take turns, or play against bots that remember more of what they've seen at each difficulty.",
+    "There are 12, 20 or 30 cards, with 15 symbols drawn for kefche, each a different shape in a different colour."
+  ],
+  "howToPlay": [
+    "Choose how many cards. Alone, the clock starts with the first layout.",
+    "Turn a card over, then another.",
+    "A matching pair stays face up. Two cards that don't match show for a moment and turn back.",
+    "Playing together, a player who finds a pair goes again; a miss passes the turn. The most pairs wins.",
+    "Alone, the game ends when every pair is found."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to turn it.",
+    "Mouse: click a card.",
+    "Keyboard: move between cards with the arrow keys, and press Enter or Space to turn one.",
+    "Pause or start again from the bar above the game."
+  ],
+  "tips": [
+    "Turn the first card of each go somewhere new, and the second where you think its pair is.",
+    "Work along the rows: a fixed order makes places easier to remember.",
+    "Say the symbols to yourself as they turn: words stick better than pictures.",
+    "Against others, watch their flips too: every card they show is one you know.",
+    "Late in the game few cards are left, so a careful second flip is often a sure pair."
+  ],
+  "faq": [
+    {
+      "question": "Is Memory Match free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can I play with friends?",
+      "answer": "Yes. Play together on one device with 2 to 4 players, or race friends online on the same layout. Taking turns online is coming later."
+    },
+    {
+      "question": "How good are the bots?",
+      "answer": "Easy bots forget most of what they see, medium bots remember more, and hard bots remember nearly every card."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same layout at the same moment, and the first to find every pair wins."
+    }
+  ],
+  "ui": {
+    "best": "最佳：{time}",
+    "time": "时间",
+    "moves": "步数",
+    "newBest": "新的最佳时间！",
+    "changeSize": "更换大小",
+    "boardLabel": "卡牌",
+    "aloneTitle": "单人游戏",
+    "togetherTitle": "一起玩",
+    "cardsLabel": "{cards} 张牌",
+    "cards": "牌数",
+    "players": "玩家",
+    "opponents": "对手",
+    "friends": "朋友",
+    "easy": "简单机器人",
+    "medium": "中等机器人",
+    "hard": "困难机器人",
+    "start": "开始",
+    "cardUp": "第 {number} 张，{symbol}",
+    "cardDown": "第 {number} 张，背面朝上",
+    "botName": "机器人 {number}",
+    "playerName": "玩家 {number}",
+    "scores": "找到的对子",
+    "seatScore": "{name}，对子：{pairs}",
+    "tie": "平局！",
+    "wins": "{name} 获胜！",
+    "turn": "轮到 {name}",
+    "again": "再来一局",
+    "menu": "菜单",
+    "flips": "翻牌",
+    "pairs": "对子",
+    "pairsOf": "{pairs} / {total}",
+    "clearedIn": "全部配对完成！翻牌：{flips} 次。",
+    "cards12": "12",
+    "cards20": "20",
+    "cards30": "30",
+    "symbol0": "星星",
+    "symbol1": "月亮",
+    "symbol2": "太阳",
+    "symbol3": "爱心",
+    "symbol4": "叶子",
+    "symbol5": "水滴",
+    "symbol6": "闪电",
+    "symbol7": "花朵",
+    "symbol8": "鱼",
+    "symbol9": "铃铛",
+    "symbol10": "钥匙",
+    "symbol11": "皇冠",
+    "symbol12": "锚",
+    "symbol13": "云朵",
+    "symbol14": "蘑菇"
+  },
+  "achievements": {
+    "solver": {
+      "name": "解谜高手",
+      "description": "解开 {count, number} 道谜题"
+    },
+    "speed": {
+      "name": "快速解题",
+      "description": "在 {time} 内解开一道谜题"
+    }
+  },
+  "leaderboards": {
+    "best-time-12": "最佳用时・简单 · 12 张牌",
+    "best-time-20": "最佳用时・简单 · 20 张牌",
+    "best-time-30": "最佳用时・简单 · 30 张牌"
+  }
+}
