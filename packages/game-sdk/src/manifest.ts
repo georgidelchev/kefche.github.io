@@ -134,6 +134,11 @@ export interface GameOptionDef {
   label: string;
   /** The first is the default; `label` is a "ui" key as well. */
   values: { value: string | number | boolean; label: string }[];
+  /**
+   * false: picked only in the game's own menu (Box Pusher's fixed levels).
+   * Rooms and setups don't show it and always play its first value.
+   */
+  rooms?: false;
 }
 
 export interface GameManifest {

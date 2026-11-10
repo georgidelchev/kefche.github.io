@@ -1,0 +1,99 @@
+{
+  "name": "Kistenschieber",
+  "tagline": "Schieb jede Kiste aufs Ziel, ohne dich festzufahren.",
+  "description": "Spiele Kistenschieber kostenlos: Kisten in einem engen Lager aufs Ziel schieben, 60 Level und neue dazu, jedes nachweislich lösbar.",
+  "about": [
+    "Box Pusher is a warehouse puzzle. You walk the floor and push crates, one at a time, onto the marked goals. You can push but never pull, so a crate shoved into a corner stays there: think before you push.",
+    "Every level here is made for kefche by working backwards from the solved warehouse, which proves it can be solved and finds the fewest pushes it needs. There are 20 fixed levels at each of three difficulties, from a few pushes to more than forty, and a fresh level whenever you want one.",
+    "Play the levels in order and try to beat your fewest moves, or race friends online on the same fresh level."
+  ],
+  "howToPlay": [
+    "Choose a fixed level, or a new level at a difficulty. The clock starts with the level.",
+    "Walk into a crate to push it one cell. You can't push two crates at once or pull one back.",
+    "A crate turns green with a tick when it's on a goal.",
+    "Undo takes back your last step, and Restart puts the level back as it began.",
+    "The level is solved when every goal has a crate."
+  ],
+  "controls": [
+    "Phones and tablets: swipe on the board or use the arrow pad to step. Tap a cell to walk there, or a crate next to you to push it.",
+    "Mouse: click a cell to walk there, or a crate next to you to push it.",
+    "Keyboard: arrow keys or WASD move, Z or Backspace undoes, R restarts.",
+    "Pause or start again from the bar above the game."
+  ],
+  "tips": [
+    "Never push a crate into a corner that isn't a goal: it can't come out.",
+    "A crate against a wall can only slide along it. If that wall has no goal, the crate is stuck there.",
+    "Two crates side by side against a wall can't be separated.",
+    "Plan the last crates first: work out which crate goes on which goal before you start.",
+    "Undo is free. Use it as soon as a push looks wrong."
+  ],
+  "faq": [
+    {
+      "question": "Is Box Pusher free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can every level be solved?",
+      "answer": "Yes. Each level is made by working backwards from the solved warehouse, so it always has a solution."
+    },
+    {
+      "question": "What's the difference between fixed and new levels?",
+      "answer": "The 60 fixed levels are the same for everyone and remember your fewest moves. A new level is made fresh each time, and its best times count on the leaderboards."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same fresh level at the same moment, and the first to put every crate on a goal wins."
+    }
+  ],
+  "ui": {
+    "best": "Bestzeit: {time}",
+    "time": "Zeit",
+    "moves": "Züge",
+    "newBest": "Neue Bestzeit!",
+    "changeSize": "Größe ändern",
+    "boardLabel": "Lagerhaus",
+    "freshTitle": "Neues Level",
+    "levelsTitle": "Level",
+    "easy": "Leicht",
+    "medium": "Mittel",
+    "hard": "Schwer",
+    "difficulty": "Schwierigkeit",
+    "level": "Level",
+    "freshLevel": "Neues Level",
+    "fixedLevel": "Festes Level",
+    "levelLabel": "Level {level}",
+    "levelSolved": "Level {level}, gelöst in {moves} Zügen",
+    "levelName": "{difficulty} · Level {level}",
+    "freshName": "{difficulty} · Neues Level",
+    "pushes": "Schübe",
+    "onGoals": "Am Ziel",
+    "onGoalsCount": "{placed} von {total}",
+    "onGoalsStatus": "Kisten am Ziel: {placed} von {total}",
+    "keysHelp": "Pfeiltasten oder WASD bewegen. Z macht rückgängig, R startet neu.",
+    "solvedIn": "Gelöst in {moves} Zügen und {pushes} Schüben!",
+    "newBestMoves": "Deine wenigsten Züge!",
+    "padLabel": "Bewegen",
+    "up": "Hoch",
+    "down": "Runter",
+    "left": "Links",
+    "right": "Rechts",
+    "undo": "Rückgängig",
+    "restart": "Neu starten",
+    "chooseLevel": "Level wählen"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Rätsellöser",
+      "description": "Löse {count, plural, one {# Rätsel} other {# Rätsel}}"
+    },
+    "speed": {
+      "name": "Blitzlöser",
+      "description": "Löse ein Rätsel in {time} oder weniger"
+    }
+  },
+  "leaderboards": {
+    "best-time-easy": "Beste Zeit · Leicht · Neues Level",
+    "best-time-medium": "Beste Zeit · Mittel · Neues Level",
+    "best-time-hard": "Beste Zeit · Schwer · Neues Level"
+  }
+}

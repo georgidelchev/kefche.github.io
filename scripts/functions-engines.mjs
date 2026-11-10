@@ -143,6 +143,39 @@ if (process.argv.includes("--fixtures")) {
     };
   };
   const pick = (random, list) => list[Math.floor(random() * list.length)];
+  /** Box Pusher: the shortest steps to solve from here (null: it can't be solved). */
+  const boxSolution = (state) => {
+    const { width, floor, goals } = state.level;
+    const moves = [
+      ["up", -width],
+      ["down", width],
+      ["left", -1],
+      ["right", 1],
+    ];
+    const key = (player, boxes) => [player, ...[...boxes].sort((a, b) => a - b)].join();
+    const done = (boxes) => goals.every((g) => boxes.includes(g));
+    if (done(state.boxes)) return [];
+    const start = { player: state.player, boxes: state.boxes, path: [] };
+    const seen = new Set([key(start.player, start.boxes)]);
+    const queue = [start];
+    for (const { player, boxes, path } of queue) {
+      for (const [dir, d] of moves) {
+        const to = player + d;
+        if (!floor[to]) continue;
+        let next = boxes;
+        if (boxes.includes(to)) {
+          if (!floor[to + d] || boxes.includes(to + d)) continue;
+          next = boxes.map((b) => (b === to ? to + d : b));
+        }
+        const k = key(to, next);
+        if (seen.has(k)) continue;
+        seen.add(k);
+        if (done(next)) return [...path, dir];
+        queue.push({ player: to, boxes: next, path: [...path, dir] });
+      }
+    }
+    return null;
+  };
   const DIRECTIONS = ["up", "down", "left", "right"];
 
   /** Race games: the config and the next action of a plausible player. */
@@ -240,6 +273,19 @@ if (process.argv.includes("--fixtures")) {
         );
         if (blanks.length > 0 && random() < 0.2) return { cell: pick(random, blanks), mark: 2 };
         return { cell: pick(random, todo), mark: 1 };
+      },
+    },
+    // The shortest solution (a breadth-first search over steps), with an
+    // undone stray step now and then.
+    "box-pusher": {
+      config: { difficulty: "easy", level: 0 },
+      next: (state, random) => {
+        const dirs = ["up", "down", "left", "right"];
+        const plan = boxSolution(state);
+        // A stray step that leaves no way to solve it is undone.
+        if (plan === null) return { type: "undo" };
+        if (random() < 0.1) return { type: "step", dir: pick(random, dirs) };
+        return { type: "step", dir: plan[0] };
       },
     },
     // Presses at random.

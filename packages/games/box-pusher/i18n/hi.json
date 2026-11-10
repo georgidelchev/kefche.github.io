@@ -1,0 +1,99 @@
+{
+  "name": "बक्सा धकेलो",
+  "tagline": "हर बक्से को लक्ष्य पर धकेलें, बिना फँसे।",
+  "description": "ब्राउज़र में बक्सा धकेलो मुफ़्त खेलें: तंग गोदाम में बक्सों को लक्ष्य पर पहुँचाएँ, 60 स्तर और नए भी, हर स्तर हल होने वाला।",
+  "about": [
+    "Box Pusher is a warehouse puzzle. You walk the floor and push crates, one at a time, onto the marked goals. You can push but never pull, so a crate shoved into a corner stays there: think before you push.",
+    "Every level here is made for kefche by working backwards from the solved warehouse, which proves it can be solved and finds the fewest pushes it needs. There are 20 fixed levels at each of three difficulties, from a few pushes to more than forty, and a fresh level whenever you want one.",
+    "Play the levels in order and try to beat your fewest moves, or race friends online on the same fresh level."
+  ],
+  "howToPlay": [
+    "Choose a fixed level, or a new level at a difficulty. The clock starts with the level.",
+    "Walk into a crate to push it one cell. You can't push two crates at once or pull one back.",
+    "A crate turns green with a tick when it's on a goal.",
+    "Undo takes back your last step, and Restart puts the level back as it began.",
+    "The level is solved when every goal has a crate."
+  ],
+  "controls": [
+    "Phones and tablets: swipe on the board or use the arrow pad to step. Tap a cell to walk there, or a crate next to you to push it.",
+    "Mouse: click a cell to walk there, or a crate next to you to push it.",
+    "Keyboard: arrow keys or WASD move, Z or Backspace undoes, R restarts.",
+    "Pause or start again from the bar above the game."
+  ],
+  "tips": [
+    "Never push a crate into a corner that isn't a goal: it can't come out.",
+    "A crate against a wall can only slide along it. If that wall has no goal, the crate is stuck there.",
+    "Two crates side by side against a wall can't be separated.",
+    "Plan the last crates first: work out which crate goes on which goal before you start.",
+    "Undo is free. Use it as soon as a push looks wrong."
+  ],
+  "faq": [
+    {
+      "question": "Is Box Pusher free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can every level be solved?",
+      "answer": "Yes. Each level is made by working backwards from the solved warehouse, so it always has a solution."
+    },
+    {
+      "question": "What's the difference between fixed and new levels?",
+      "answer": "The 60 fixed levels are the same for everyone and remember your fewest moves. A new level is made fresh each time, and its best times count on the leaderboards."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same fresh level at the same moment, and the first to put every crate on a goal wins."
+    }
+  ],
+  "ui": {
+    "best": "सबसे अच्छा: {time}",
+    "time": "समय",
+    "moves": "चालें",
+    "newBest": "नया सबसे अच्छा समय!",
+    "changeSize": "आकार बदलें",
+    "boardLabel": "गोदाम",
+    "freshTitle": "नया स्तर",
+    "levelsTitle": "स्तर",
+    "easy": "आसान",
+    "medium": "मध्यम",
+    "hard": "कठिन",
+    "difficulty": "कठिनाई",
+    "level": "स्तर",
+    "freshLevel": "नया स्तर",
+    "fixedLevel": "तय स्तर",
+    "levelLabel": "स्तर {level}",
+    "levelSolved": "स्तर {level}, {moves} चालों में हल",
+    "levelName": "{difficulty} · स्तर {level}",
+    "freshName": "{difficulty} · नया स्तर",
+    "pushes": "धक्के",
+    "onGoals": "जगह पर",
+    "onGoalsCount": "{total} में से {placed}",
+    "onGoalsStatus": "जगह पर बक्से: {total} में से {placed}",
+    "keysHelp": "तीर कुंजियाँ या WASD से चलें। Z पीछे लेता है, R फिर से शुरू करता है।",
+    "solvedIn": "{moves} चालों और {pushes} धक्कों में हल!",
+    "newBestMoves": "अब तक सबसे कम चालें!",
+    "padLabel": "चलें",
+    "up": "ऊपर",
+    "down": "नीचे",
+    "left": "बाएँ",
+    "right": "दाएँ",
+    "undo": "पीछे लें",
+    "restart": "फिर से शुरू",
+    "chooseLevel": "स्तर चुनें"
+  },
+  "achievements": {
+    "solver": {
+      "name": "पहेली उस्ताद",
+      "description": "{count, plural, one {# पहेली} other {# पहेलियाँ}} सुलझाएँ"
+    },
+    "speed": {
+      "name": "फुर्तीला",
+      "description": "{time} या उससे कम में एक पहेली सुलझाएँ"
+    }
+  },
+  "leaderboards": {
+    "best-time-easy": "सर्वश्रेष्ठ समय · आसान · नया स्तर",
+    "best-time-medium": "सर्वश्रेष्ठ समय · मध्यम · नया स्तर",
+    "best-time-hard": "सर्वश्रेष्ठ समय · कठिन · नया स्तर"
+  }
+}

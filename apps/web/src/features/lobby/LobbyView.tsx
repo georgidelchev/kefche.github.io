@@ -302,7 +302,8 @@ export function LobbyView({
             )}
             {config.options.map(
               (option) =>
-                option.values.length > 1 && (
+                option.values.length > 1 &&
+                option.inRooms && (
                   <Segmented
                     key={option.key}
                     legend={option.legend}
@@ -374,11 +375,13 @@ export function LobbyView({
               {timerLegend}:{" "}
               {limitLabel(config.timers[onlineTimer(config, settings.timer)] ?? { kind: "none" })}
             </li>
-            {config.options.map((option) => (
-              <li key={option.key}>
-                {option.legend}: {option.values[optionIndex(option)]?.label}
-              </li>
-            ))}
+            {config.options
+              .filter((option) => option.inRooms)
+              .map((option) => (
+                <li key={option.key}>
+                  {option.legend}: {option.values[optionIndex(option)]?.label}
+                </li>
+              ))}
             <li>{room.visibility === "public" ? s.public : s.private}</li>
           </ul>
         )}

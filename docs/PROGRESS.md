@@ -2414,6 +2414,13 @@ The owner answered "continue", so the recommended answers stand, as with Phase 1
   - **Puzzles:** 5 × 5, 10 × 10 (the default) or 15 × 15: random blobs from the seed, kept only when a line solver (a dynamic program per row or column, repeated) finishes them, so each has one solution reachable by logic. Generation takes about a millisecond.
   - **Play:** clues as row and column headers, Fill and Cross modes (Enter and X on the keyboard), a clue struck through once its line matches, guide lines every five cells.
   - Checked in Chrome: 36/36, covering the sizes, the clues, fill, clear and cross, keyboard, solving a 5 × 5 from its clues to the finish, 360, 768 and 1280 px, both themes, Arabic, and axe (a finished clue was too faint; it's struck through now instead).
+- [x] **Step 18, Box Pusher:**
+  - **Levels:** a room carved from the seed, its boxes set on their goals, then a breadth-first search of pulls from there. Pulling is pushing backwards, so every position the search reaches can be solved, and its depth is the fewest pushes. The level starts from the deepest one with every box off its goal. One search is both the solver and the grader.
+  - **Fresh levels** (races, the daily challenge and New level): Easy 5 × 5 with 2 boxes, Medium 6 × 6 with 3, Hard 7 × 7 with 3, the deepest of up to 40 rooms, in about 10 ms.
+  - **Fixed levels:** 20 per difficulty in `engine/bank.gen.ts` (`scripts/box-pusher-bank.mjs`), from bigger rooms and up to 4 boxes, sorted to climb: Easy 16–20 pushes, Medium 22–36, Hard 35–44. The menu marks solved ones and keeps the fewest moves for each.
+  - **Options:** `difficulty` and `level` (0 is fresh). `level` is the first option marked `rooms: false` (ADR-0046's amendment): picked only in the game's menu, so rooms always race on a fresh level. The best-time boards count fresh levels only.
+  - **Play:** arrow keys or WASD, a swipe, an arrow pad, or a tap to walk there or push the box beside you. Z undoes and R restarts.
+  - Checked in Chrome: 44/44, covering the menu, a tap walk, restart, the pad, undo, a swipe, solving Easy level 1 by keyboard, the solved mark, a fresh Hard level, 360, 768 and 1280 px, both themes, Arabic, and axe. Fixed on the way: the level list was taller than the screen and centring cut off its top (it scrolls now), and the arrow pad mirrored in Arabic.
 
 ## Known issues
 

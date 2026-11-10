@@ -1,0 +1,99 @@
+{
+  "name": "Empurra Caixas",
+  "tagline": "Empurre cada caixa até o alvo sem ficar preso.",
+  "description": "Jogue Empurra Caixas grátis: leve caixas até o alvo num armazém apertado, 60 níveis e outros novos, todos com solução comprovada.",
+  "about": [
+    "Box Pusher is a warehouse puzzle. You walk the floor and push crates, one at a time, onto the marked goals. You can push but never pull, so a crate shoved into a corner stays there: think before you push.",
+    "Every level here is made for kefche by working backwards from the solved warehouse, which proves it can be solved and finds the fewest pushes it needs. There are 20 fixed levels at each of three difficulties, from a few pushes to more than forty, and a fresh level whenever you want one.",
+    "Play the levels in order and try to beat your fewest moves, or race friends online on the same fresh level."
+  ],
+  "howToPlay": [
+    "Choose a fixed level, or a new level at a difficulty. The clock starts with the level.",
+    "Walk into a crate to push it one cell. You can't push two crates at once or pull one back.",
+    "A crate turns green with a tick when it's on a goal.",
+    "Undo takes back your last step, and Restart puts the level back as it began.",
+    "The level is solved when every goal has a crate."
+  ],
+  "controls": [
+    "Phones and tablets: swipe on the board or use the arrow pad to step. Tap a cell to walk there, or a crate next to you to push it.",
+    "Mouse: click a cell to walk there, or a crate next to you to push it.",
+    "Keyboard: arrow keys or WASD move, Z or Backspace undoes, R restarts.",
+    "Pause or start again from the bar above the game."
+  ],
+  "tips": [
+    "Never push a crate into a corner that isn't a goal: it can't come out.",
+    "A crate against a wall can only slide along it. If that wall has no goal, the crate is stuck there.",
+    "Two crates side by side against a wall can't be separated.",
+    "Plan the last crates first: work out which crate goes on which goal before you start.",
+    "Undo is free. Use it as soon as a push looks wrong."
+  ],
+  "faq": [
+    {
+      "question": "Is Box Pusher free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can every level be solved?",
+      "answer": "Yes. Each level is made by working backwards from the solved warehouse, so it always has a solution."
+    },
+    {
+      "question": "What's the difference between fixed and new levels?",
+      "answer": "The 60 fixed levels are the same for everyone and remember your fewest moves. A new level is made fresh each time, and its best times count on the leaderboards."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same fresh level at the same moment, and the first to put every crate on a goal wins."
+    }
+  ],
+  "ui": {
+    "best": "Melhor: {time}",
+    "time": "Tempo",
+    "moves": "Jogadas",
+    "newBest": "Novo melhor tempo!",
+    "changeSize": "Mudar tamanho",
+    "boardLabel": "Armazém",
+    "freshTitle": "Nível novo",
+    "levelsTitle": "Níveis",
+    "easy": "Fácil",
+    "medium": "Médio",
+    "hard": "Difícil",
+    "difficulty": "Dificuldade",
+    "level": "Nível",
+    "freshLevel": "Nível novo",
+    "fixedLevel": "Nível fixo",
+    "levelLabel": "Nível {level}",
+    "levelSolved": "Nível {level}, resolvido em {moves} movimentos",
+    "levelName": "{difficulty} · Nível {level}",
+    "freshName": "{difficulty} · Nível novo",
+    "pushes": "Empurrões",
+    "onGoals": "No alvo",
+    "onGoalsCount": "{placed} de {total}",
+    "onGoalsStatus": "Caixas no alvo: {placed} de {total}",
+    "keysHelp": "Setas ou WASD movem. Z desfaz, R recomeça.",
+    "solvedIn": "Resolvido em {moves} movimentos e {pushes} empurrões!",
+    "newBestMoves": "Seu recorde de movimentos!",
+    "padLabel": "Mover",
+    "up": "Cima",
+    "down": "Baixo",
+    "left": "Esquerda",
+    "right": "Direita",
+    "undo": "Desfazer",
+    "restart": "Recomeçar",
+    "chooseLevel": "Escolher nível"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Solucionador",
+      "description": "Resolva {count, plural, one {# quebra-cabeça} other {# quebra-cabeças}}"
+    },
+    "speed": {
+      "name": "Relâmpago",
+      "description": "Resolva um quebra-cabeça em {time} ou menos"
+    }
+  },
+  "leaderboards": {
+    "best-time-easy": "Melhor tempo · Fácil · Nível novo",
+    "best-time-medium": "Melhor tempo · Médio · Nível novo",
+    "best-time-hard": "Melhor tempo · Difícil · Nível novo"
+  }
+}

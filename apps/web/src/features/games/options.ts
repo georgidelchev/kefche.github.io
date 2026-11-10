@@ -13,6 +13,8 @@ export interface GameOptionView {
   legend: string;
   /** The first is the default. */
   values: { value: OptionValue; label: string }[];
+  /** Shown in rooms and setups; when not, they play the first value. */
+  inRooms: boolean;
 }
 
 export const gameOptions = (manifest: GameManifest, ui: Record<string, string>): GameOptionView[] =>
@@ -20,6 +22,7 @@ export const gameOptions = (manifest: GameManifest, ui: Record<string, string>):
     key: option.key,
     legend: ui[option.label] ?? option.label,
     values: option.values.map((v) => ({ value: v.value, label: ui[v.label] ?? v.label })),
+    inRooms: option.rooms !== false,
   }));
 
 /** The engine config: every option's chosen value, or its default. Undefined without options. */

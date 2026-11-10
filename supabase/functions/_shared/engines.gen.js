@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine25, bots2, options) {
-    this.engine = engine25;
+  constructor(engine26, bots2, options) {
+    this.engine = engine26;
     this.bots = bots2;
     this.options = options;
-    this.world = engine25.createWorld(options.config, options.seed);
+    this.world = engine26.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine25.ticksPerSecond / engine25.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine26.ticksPerSecond / engine26.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -479,7 +479,7 @@ function canonicalJson(value) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest25) => manifest25;
+var defineManifest = (manifest26) => manifest26;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -717,6 +717,447 @@ var manifest = defineManifest({
   tags: ["puzzle", "numbers", "single-player"]
 });
 
+// packages/games/box-pusher/engine/bank.gen.ts
+var BANK = {
+  easy: [
+    ["########\n##+   ##\n##  $ ##\n####$###\n###   .#\n###    #\n###    #\n########", 16],
+    ["########\n#####+ #\n#####  #\n####   #\n#     .#\n#  $ $ #\n#  #####\n########", 16],
+    ["########\n#@  .  #\n#   .  #\n### $$##\n#####  #\n#####  #\n#####  #\n########", 16],
+    ["########\n###@  .#\n#   .  #\n#    ###\n## #   #\n## $ $ #\n##  ####\n########", 17],
+    ["########\n###@ . #\n### $  #\n####$###\n####  ##\n#.    ##\n#    ###\n########", 17],
+    ["########\n###  ###\n##@$.###\n##$#  .#\n#      #\n#   #  #\n#####  #\n########", 17],
+    ["########\n##  ####\n#   ####\n#   #@.#\n## $# .#\n##$    #\n##     #\n########", 17],
+    ["########\n#+   .##\n#     ##\n## $$###\n####  ##\n####  ##\n####  ##\n########", 17],
+    ["########\n#@  . ##\n#  .  ##\n# # ####\n# #    #\n#   $$ #\n#####  #\n########", 17],
+    ["########\n###@.  #\n###    #\n### # .#\n#  $  ##\n#  $# ##\n###   ##\n########", 17],
+    ["########\n###@ . #\n### #  #\n###  . #\n#     ##\n# $$ ###\n#  #####\n########", 17],
+    ["########\n###@ ###\n###$ ###\n# $    #\n# .# # #\n#     .#\n#   #  #\n########", 17],
+    ["########\n#   #@ #\n#   $  #\n# $#. ##\n##   .##\n#    ###\n#   ####\n########", 17],
+    ["########\n####   #\n##     #\n##   ###\n#### $ #\n###+$  #\n### .###\n########", 18],
+    ["########\n#####@ #\n#      #\n# $### #\n#  ## .#\n# $##  #\n#  ## .#\n########", 18],
+    ["########\n##    ##\n##$  .##\n#@ ## ##\n# $    #\n## ##  #\n##   . #\n########", 18],
+    ["########\n#  #####\n# $#####\n#. ##@ #\n#  ##  #\n#    $ #\n#  ## .#\n########", 18],
+    ["########\n##  #  #\n##    .#\n##  #  #\n###$#. #\n#@   $ #\n#    ###\n########", 18],
+    ["########\n#@  #  #\n#      #\n##  #$ #\n### #  #\n##  .$##\n##.   ##\n########", 19],
+    ["########\n#+   ###\n#  $ ###\n###$####\n###  . #\n#      #\n#   #  #\n########", 20]
+  ],
+  medium: [
+    ["#########\n####  ###\n####  ###\n#  #  ###\n#..  ####\n##   $@##\n#  #$$ ##\n#.   ####\n#########", 22],
+    ["#########\n#@ ##  ##\n#  $   ##\n## .$ $##\n##..#   #\n#####   #\n#########\n#########\n#########", 22],
+    ["#########\n#. ######\n# $@$ ###\n# ##    #\n#       #\n#  $ # ##\n#. ##  ##\n##### .##\n#########", 22],
+    ["#########\n##  #####\n##  #  ##\n## $  .##\n## ######\n# $######\n# .  $@ #\n#  .#   #\n#########", 23],
+    ["#########\n##@ .#  #\n## $$   #\n##  $#  #\n#### # ##\n###  # ##\n### . .##\n#####  ##\n#########", 23],
+    ["#########\n####@ ###\n##.    .#\n##  # # #\n####.   #\n####$$  #\n## $  ###\n##    ###\n#########", 23],
+    ["#########\n##  ## .#\n##. #  $#\n##   $$@#\n#  ## ###\n#     ###\n#. ######\n#########\n#########", 23],
+    ["#########\n#@ ######\n# $###  #\n# $     #\n# ##$ # #\n#    # .#\n###### .#\n###### .#\n#########", 24],
+    ["#########\n##+     #\n##.  ## #\n###   # #\n##   $# #\n##    $.#\n### #$###\n###   ###\n#########", 24],
+    ["#########\n### .  ##\n###  . ##\n###    ##\n#### ####\n#### ####\n##@$$$ ##\n## .   ##\n#########", 24],
+    ["#########\n#@.######\n#   .####\n#.      #\n##  $ $ #\n### ##$ #\n##  ##  #\n##  #####\n#########", 24],
+    ["#########\n##. . ###\n##  . ###\n##  #####\n## $##@ #\n###  #$ #\n##    $ #\n##   ####\n#########", 24],
+    ["#########\n#########\n##  #####\n##  #####\n##     ##\n###.   ##\n#@$$## ##\n#.$   .##\n#########", 25],
+    ["#########\n#@  #  ##\n#  $$   #\n#   #.  #\n#. $# . #\n#   #####\n#   #####\n#  ######\n#########", 25],
+    ["#########\n#########\n#@  #  ##\n# $$.   #\n### .#  #\n###  .  #\n###$  ###\n###   ###\n#########", 25],
+    ["#########\n###   ###\n#     ###\n#   $ ###\n## ######\n# $###@ #\n#    .$ #\n#..##  ##\n#########", 26],
+    ["#########\n##  .####\n##. . $@#\n### ##  #\n##    $##\n# $    ##\n#    ####\n#########\n#########", 26],
+    ["#########\n#########\n#########\n# .  ####\n# $ $@###\n#  #  ###\n#.$#  ###\n#. ######\n#########", 26],
+    ["#########\n###  ####\n#@$  $ ##\n# ## # ##\n#..$    #\n#.  #   #\n#########\n#########\n#########", 27],
+    ["#########\n## . .###\n##      #\n### ##  #\n###  # ##\n####   ##\n#@ $$  ##\n# $  . ##\n#########", 36]
+  ],
+  hard: [
+    ["##########\n##. ######\n##. ######\n# $ ######\n#.  ######\n##    ####\n#+$ # #  #\n# #$$    #\n#   ######\n##########", 35],
+    ["##########\n######  ##\n### .  .##\n#    ##  #\n# .  ##. #\n# $ ### ##\n#    #  ##\n# $ $@$ ##\n#  #  ####\n##########", 36],
+    ["##########\n##+ .#####\n##$$ #####\n#   ######\n#  #######\n## ####  #\n#  $ $   #\n#  .  # .#\n#####    #\n##########", 36],
+    ["##########\n#  ####. #\n#  . ##. #\n#  $ ##  #\n#       ##\n#### ## ##\n##@.$## ##\n## $  $ ##\n###   ####\n##########", 36],
+    ["##########\n#######  #\n####  # .#\n#     .  #\n# $  # . #\n## # ##  #\n## # ##  #\n#@$#$  $ #\n# .  #####\n##########", 36],
+    ["##########\n####@ ####\n#### $#  #\n#### $   #\n##   $#$ #\n#       ##\n#.   .####\n##. ######\n##. ######\n##########", 36],
+    ["##########\n###  #####\n### .#####\n##.  .####\n##   .####\n### #    #\n### ##$$ #\n###  $@$ #\n###   ####\n##########", 37],
+    ["##########\n##@   ####\n## ...   #\n##### $$ #\n###### ###\n###### ###\n###    ###\n### $$.  #\n###      #\n##########", 37],
+    ["##########\n##  #@  ##\n## $#$# ##\n#     $  #\n#.  #$ . #\n#  ##.. ##\n##########\n##########\n##########\n##########", 37],
+    ["##########\n## .  $@##\n#    $ $ #\n# .  ##$ #\n##  ##   #\n#  ### ###\n#     .###\n####    .#\n#######  #\n##########", 37],
+    ["##########\n### $ .  #\n#  .##   #\n#   ######\n##$ ######\n##  #@ ###\n##   $ ###\n##  #$.###\n##  # .###\n##########", 37],
+    ["##########\n###.  .###\n###    ###\n####   ###\n#### #####\n##  $#####\n# $ .  $+#\n#    ##$ #\n#######  #\n##########", 37],
+    ["##########\n##########\n##    $+##\n#    #$$##\n#        #\n##    ## #\n##$## # .#\n##    .  #\n####   . #\n##########", 38],
+    ["##########\n### ..  ##\n# .    $##\n#  ## # ##\n####    ##\n####  #$ #\n##  . #  #\n#  # $@$ #\n#  #  ####\n##########", 38],
+    ["##########\n#####   ##\n#   # .  #\n#.  $  . #\n##  ###  #\n###.  #  #\n#  $  ####\n# $$  ####\n##@ ######\n##########", 39],
+    ["##########\n#####@ ###\n###    ###\n##  .##  #\n##  $  $ #\n#   # $  #\n# # .# $ #\n#.   #   #\n#.   #####\n##########", 41],
+    ["##########\n#####  .##\n#@ #   .##\n#  #$#$###\n#. $    ##\n#  $#.  ##\n#   ######\n#  #######\n##########\n##########", 41],
+    ["##########\n###@ #####\n###$$#####\n# $  $   #\n#  # # # #\n#  ..    #\n##  ## ###\n######.  #\n######.  #\n##########", 42],
+    ["##########\n#  ###   #\n#    $   #\n#    $#. #\n###   # ##\n#### ##$##\n###  ##@##\n## ..  $##\n##  .#  ##\n##########", 44],
+    ["##########\n#  ##  ###\n#  # $   #\n# .$  ## #\n#..##    #\n##$#  ####\n##@#   ###\n##$   .###\n##    ####\n##########", 44]
+  ]
+};
+
+// packages/games/box-pusher/engine/level.ts
+var flood = (floor, blocked2, from, w, seen) => {
+  seen.fill(0);
+  const stack = [from];
+  seen[from] = 1;
+  let min = from;
+  while (stack.length > 0) {
+    const at = stack.pop() ?? 0;
+    for (const y of [at - w, at + w, at - 1, at + 1]) {
+      if (seen[y] || !floor[y] || blocked2[y]) continue;
+      seen[y] = 1;
+      if (y < min) min = y;
+      stack.push(y);
+    }
+  }
+  return min;
+};
+function carve(spec, rng) {
+  const w = spec.inner + 2;
+  const floor = new Uint8Array(w * w);
+  const inside = [];
+  for (let r = 1; r <= spec.inner; r++)
+    for (let c = 1; c <= spec.inner; c++) inside.push(r * w + c);
+  for (const x of inside) floor[x] = 1;
+  const none = new Uint8Array(w * w);
+  const seen = new Uint8Array(w * w);
+  const count2 = () => floor.reduce((a, v) => a + v, 0);
+  const whole2 = () => {
+    const first2 = floor.indexOf(1);
+    if (first2 < 0) return false;
+    flood(floor, none, first2, w, seen);
+    return seen.reduce((a, v) => a + v, 0) === count2();
+  };
+  const target = Math.round(inside.length * spec.walls);
+  let placed2 = 0;
+  for (const x of rng.shuffle([...inside])) {
+    if (placed2 >= target) break;
+    floor[x] = 0;
+    if (whole2()) placed2++;
+    else floor[x] = 1;
+  }
+  for (let changed = true; changed; ) {
+    changed = false;
+    for (const x of inside) {
+      if (!floor[x]) continue;
+      const open = [x - w, x + w, x - 1, x + 1].filter((y) => floor[y]).length;
+      if (open <= 1) {
+        floor[x] = 0;
+        changed = true;
+      }
+    }
+  }
+  return floor;
+}
+function farthest(floor, w, goals, budget, rng) {
+  const n = floor.length;
+  const k = goals.length;
+  const B = 128;
+  const encode = (boxes, player) => {
+    const sorted = [...boxes].sort((a, b) => a - b);
+    let key2 = player;
+    for (const b of sorted) key2 = key2 * B + b;
+    return key2;
+  };
+  const decode = (key2) => {
+    const boxes = [];
+    let rest = key2;
+    for (let i = 0; i < k; i++) {
+      boxes.push(rest % B);
+      rest = Math.floor(rest / B);
+    }
+    return { boxes, player: rest };
+  };
+  const blocked2 = new Uint8Array(n);
+  const seen = new Uint8Array(n);
+  const depth = /* @__PURE__ */ new Map();
+  let queue = [];
+  for (const g of goals) blocked2[g] = 1;
+  const covered = new Uint8Array(n);
+  for (let x = 0; x < n; x++) {
+    if (!floor[x] || blocked2[x] || covered[x]) continue;
+    const min = flood(floor, blocked2, x, w, seen);
+    for (let y = 0; y < n; y++) if (seen[y]) covered[y] = 1;
+    const key2 = encode(goals, min);
+    depth.set(key2, 0);
+    queue.push(key2);
+  }
+  for (const g of goals) blocked2[g] = 0;
+  const goalSet = new Set(goals);
+  let best = null;
+  let level = 0;
+  while (queue.length > 0 && depth.size < budget) {
+    const next = [];
+    level++;
+    for (const key2 of queue) {
+      const { boxes, player } = decode(key2);
+      for (const b of boxes) blocked2[b] = 1;
+      flood(floor, blocked2, player, w, seen);
+      const reach2 = seen.slice();
+      for (const [i, b] of boxes.entries()) {
+        for (const d of [-w, w, -1, 1]) {
+          const p1 = b + d;
+          const p2 = b + 2 * d;
+          if (!reach2[p1] || !floor[p2] || blocked2[p2]) continue;
+          const moved = boxes.map((x, j) => j === i ? p1 : x);
+          blocked2[b] = 0;
+          blocked2[p1] = 1;
+          const min = flood(floor, blocked2, p2, w, seen);
+          blocked2[p1] = 0;
+          blocked2[b] = 1;
+          const nk = encode(moved, min);
+          if (depth.has(nk)) continue;
+          depth.set(nk, level);
+          next.push(nk);
+        }
+      }
+      for (const b of boxes) blocked2[b] = 0;
+    }
+    const fresh = next.filter((key2) => decode(key2).boxes.every((b) => !goalSet.has(b)));
+    if (fresh.length > 0) {
+      const pickKey = rng.pick(fresh);
+      const { boxes, player } = decode(pickKey);
+      best = { boxes, player, pushes: level };
+    }
+    queue = next;
+  }
+  return best;
+}
+function makeLevel(seed, spec) {
+  let best = null;
+  for (let room = 0; room < spec.rooms; room++) {
+    const rng = Rng.fromSeed(`${seed}:room:${String(room)}`);
+    const floor = carve(spec, rng);
+    const cells = floor.reduce((a, v, i) => v ? [...a, i] : a, []);
+    if (cells.length < spec.boxes * 3 + 4) continue;
+    const w = spec.inner + 2;
+    const free = cells.filter((x) => {
+      const up = floor[x - w] ?? 0;
+      const down = floor[x + w] ?? 0;
+      const left = floor[x - 1] ?? 0;
+      const right = floor[x + 1] ?? 0;
+      return (up || down) && (left || right);
+    });
+    if (free.length < spec.boxes) continue;
+    const goals = rng.shuffle(free).slice(0, spec.boxes);
+    const found = farthest(floor, w, goals, spec.budget, rng);
+    if (!found) continue;
+    const level = { width: w, height: w, floor: [...floor], goals, ...found };
+    if (!best || level.pushes > best.pushes) best = level;
+    if (best.pushes >= spec.minPushes) break;
+  }
+  return best ?? fallback(spec);
+}
+function fallback(spec) {
+  const w = spec.inner + 2;
+  const floor = new Array(w * w).fill(0);
+  for (let c = 1; c <= spec.inner; c++) floor[w + c] = 1;
+  return {
+    width: w,
+    height: w,
+    floor,
+    goals: [w + spec.inner],
+    boxes: [w + 2],
+    player: w + 1,
+    pushes: spec.inner - 2
+  };
+}
+function fromText(text, pushes) {
+  const rows = text.split("\n");
+  const width = Math.max(...rows.map((r) => r.length));
+  const floor = [];
+  const goals = [];
+  const boxes = [];
+  let player = 0;
+  rows.forEach((row, r) => {
+    for (let c = 0; c < width; c++) {
+      const ch = row[c] ?? "#";
+      const x = r * width + c;
+      floor.push(ch === "#" ? 0 : 1);
+      if (ch === "." || ch === "*" || ch === "+") goals.push(x);
+      if (ch === "$" || ch === "*") boxes.push(x);
+      if (ch === "@" || ch === "+") player = x;
+    }
+  });
+  return { width, height: rows.length, floor, goals, boxes, player, pushes };
+}
+
+// packages/games/box-pusher/engine/index.ts
+var DIFFICULTIES = ["easy", "medium", "hard"];
+var LEVELS = 20;
+var SPECS = {
+  easy: { inner: 5, boxes: 2, walls: 0.2, minPushes: 10, rooms: 40, budget: 5e4 },
+  medium: { inner: 6, boxes: 3, walls: 0.25, minPushes: 18, rooms: 40, budget: 8e4 },
+  hard: { inner: 7, boxes: 3, walls: 0.3, minPushes: 22, rooms: 40, budget: 15e4 }
+};
+var DIRS = ["up", "down", "left", "right"];
+var configFrom = (raw) => {
+  const r = raw ?? {};
+  const difficulty = DIFFICULTIES.find((d) => d === r.difficulty) ?? "easy";
+  const level = typeof r.level === "number" && Number.isInteger(r.level) && r.level >= 0 && r.level <= LEVELS ? r.level : 0;
+  return { difficulty, level };
+};
+function levelFor(config, seed) {
+  if (config.level > 0) {
+    const entry = BANK[config.difficulty][config.level - 1];
+    if (entry) return fromText(entry[0], entry[1]);
+  }
+  return makeLevel(`${seed}:box-pusher:${config.difficulty}`, SPECS[config.difficulty]);
+}
+var offset = (dir, width) => {
+  const d = typeof dir === "number" ? DIRS[dir] : dir;
+  return d === "up" ? -width : d === "down" ? width : d === "left" ? -1 : 1;
+};
+var solved = (state) => state.level.goals.every((g) => state.boxes.includes(g));
+function walkTo(state, to) {
+  const { width, floor } = state.level;
+  if (!floor[to] || state.boxes.includes(to)) return null;
+  const from = state.player;
+  const prev = /* @__PURE__ */ new Map();
+  const queue = [from];
+  const seen = /* @__PURE__ */ new Set([from]);
+  while (queue.length > 0) {
+    const at = queue.shift() ?? from;
+    if (at === to) break;
+    for (const dir of DIRS) {
+      const y = at + offset(dir, width);
+      if (seen.has(y) || !floor[y] || state.boxes.includes(y)) continue;
+      seen.add(y);
+      prev.set(y, [at, dir]);
+      queue.push(y);
+    }
+  }
+  if (!seen.has(to)) return null;
+  const path = [];
+  for (let at = to; at !== from; ) {
+    const step4 = prev.get(at);
+    if (!step4) return null;
+    path.unshift(step4[1]);
+    at = step4[0];
+  }
+  return path;
+}
+function step(state, dir, push) {
+  const d = offset(dir, state.level.width);
+  const to = state.player + d;
+  if (!state.level.floor[to]) return null;
+  const box = state.boxes.indexOf(to);
+  if (box >= 0) {
+    if (!push) return null;
+    const beyond = to + d;
+    if (!state.level.floor[beyond] || state.boxes.includes(beyond)) return null;
+    const boxes = state.boxes.map((b, i) => i === box ? beyond : b);
+    return {
+      ...state,
+      boxes,
+      player: to,
+      trail: [...state.trail, DIRS.indexOf(dir) * 2 + 1],
+      pushes: state.pushes + 1
+    };
+  }
+  return { ...state, player: to, trail: [...state.trail, DIRS.indexOf(dir) * 2] };
+}
+var engine2 = {
+  initialState(raw, seed) {
+    const config = configFrom(raw);
+    const level = levelFor(config, seed);
+    return { config, level, boxes: level.boxes, player: level.player, trail: [], pushes: 0 };
+  },
+  apply(state, action) {
+    if (solved(state) || typeof action !== "object" || action === null) return state;
+    switch (action.type) {
+      case "step":
+        return DIRS.includes(action.dir) ? step(state, action.dir, true) ?? state : state;
+      case "walk": {
+        if (!Number.isInteger(action.to)) return state;
+        const path = walkTo(state, action.to);
+        if (!path || path.length === 0) return state;
+        let next = state;
+        for (const dir of path) next = step(next, dir, false) ?? next;
+        return next;
+      }
+      case "undo": {
+        const last = state.trail.at(-1);
+        if (last === void 0) return state;
+        const d = offset(last >> 1, state.level.width);
+        const pushed = (last & 1) === 1;
+        const boxes = pushed ? state.boxes.map((b) => b === state.player + d ? state.player : b) : state.boxes;
+        return {
+          ...state,
+          boxes,
+          player: state.player - d,
+          trail: state.trail.slice(0, -1),
+          pushes: state.pushes - (pushed ? 1 : 0)
+        };
+      }
+      case "restart":
+        return state.trail.length === 0 ? state : {
+          ...state,
+          boxes: state.level.boxes,
+          player: state.level.player,
+          trail: [],
+          pushes: 0
+        };
+      default:
+        return state;
+    }
+  },
+  progress: (state) => state.level.goals.filter((g) => state.boxes.includes(g)).length / Math.max(1, state.level.goals.length),
+  result: (state) => solved(state) ? { completed: true, score: state.trail.length } : null
+};
+
+// packages/games/box-pusher/manifest.ts
+var manifest2 = defineManifest({
+  id: "box-pusher",
+  version: 1,
+  category: "logic",
+  kind: "race",
+  players: { min: 1, max: 8, default: 1 },
+  modes: ["solo", "race", "online-private", "online-public", "quick-match"],
+  bots: { supported: false, difficulties: [], canFillSeats: false },
+  timers: [
+    { kind: "countdown", seconds: 300 },
+    { kind: "countdown", seconds: 180 },
+    { kind: "countdown", seconds: 600 }
+  ],
+  options: [
+    {
+      key: "difficulty",
+      label: "difficulty",
+      values: [
+        { value: "easy", label: "easy" },
+        { value: "medium", label: "medium" },
+        { value: "hard", label: "hard" }
+      ]
+    },
+    {
+      key: "level",
+      label: "level",
+      // 0: a fresh level; 1–20: the fixed levels, picked only in the game's menu.
+      values: Array.from({ length: 21 }, (_, i) => ({
+        value: i,
+        label: i === 0 ? "freshLevel" : "fixedLevel"
+      })),
+      rooms: false
+    }
+  ],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["keyboard", "swipe", "tap"],
+  renderer: "dom",
+  estimatedMinutes: [1, 10],
+  leaderboards: [
+    { id: "best-time-easy", metric: "time", order: "asc", when: { difficulty: "easy", level: 0 } },
+    {
+      id: "best-time-medium",
+      metric: "time",
+      order: "asc",
+      when: { difficulty: "medium", level: 0 }
+    },
+    { id: "best-time-hard", metric: "time", order: "asc", when: { difficulty: "hard", level: 0 } }
+  ],
+  achievements: [
+    { id: "solver", icon: "target", metric: "wins", tiers: [1, 25, 100] },
+    { id: "speed", icon: "timer", metric: "bestTime", tiers: [12e4, 45e3, 2e4] }
+  ],
+  // The level comes from the config and the seed; every step is logged.
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 15 },
+  tags: ["puzzle", "logic", "single-player"]
+});
+
 // packages/games/checkers/engine/index.ts
 var VARIANTS = ["russian", "international"];
 var EMPTY = -1;
@@ -731,13 +1172,13 @@ var DIAGONALS = [
   [1, -1],
   [1, 1]
 ];
-function configFrom(raw) {
+function configFrom2(raw) {
   const variant = raw?.variant;
   return { variant: VARIANTS.find((v) => v === variant) ?? "russian" };
 }
 var forward = (seat) => seat === 0 ? -1 : 1;
 var farRow = (seat, size) => seat === 0 ? 0 : size - 1;
-function step(square, size, dr, dc) {
+function step2(square, size, dr, dc) {
   const r = Math.floor(square / size) + dr;
   const c = square % size + dc;
   return r >= 0 && r < size && c >= 0 && c < size ? r * size + c : null;
@@ -750,19 +1191,19 @@ function captures(state, from) {
   const walk = (at, king, path, taken) => {
     const found = [];
     for (const [dr, dc] of DIAGONALS) {
-      let sq = step(at, size, dr, dc);
-      while (king && sq !== null && empty(sq)) sq = step(sq, size, dr, dc);
+      let sq = step2(at, size, dr, dc);
+      while (king && sq !== null && empty(sq)) sq = step2(sq, size, dr, dc);
       if (sq === null) continue;
       const target = board[sq] ?? EMPTY;
       if (empty(sq) || seatOf(target) === seat || taken.includes(sq)) continue;
       const lines = [];
-      let land = step(sq, size, dr, dc);
+      let land = step2(sq, size, dr, dc);
       while (land !== null && empty(land)) {
         const crowned = king || variant === "russian" && Math.floor(land / size) === farRow(seat, size);
         const next = walk(land, crowned, [...path, land], [...taken, sq]);
         lines.push(next.length > 0 ? next : [{ path: [...path, land], captures: [...taken, sq] }]);
         if (!king) break;
-        land = step(land, size, dr, dc);
+        land = step2(land, size, dr, dc);
       }
       const onward = lines.filter((line) => line.some((m) => m.captures.length > taken.length + 1));
       for (const line of onward.length > 0 ? onward : lines) found.push(...line);
@@ -778,11 +1219,11 @@ function steps(state, from) {
   const out = [];
   for (const [dr, dc] of DIAGONALS) {
     if (!isKing(piece) && dr !== forward(seat)) continue;
-    let sq = step(from, size, dr, dc);
+    let sq = step2(from, size, dr, dc);
     while (sq !== null && board[sq] === EMPTY) {
       out.push({ path: [from, sq], captures: [] });
       if (!isKing(piece)) break;
-      sq = step(sq, size, dr, dc);
+      sq = step2(sq, size, dr, dc);
     }
   }
   return out;
@@ -813,9 +1254,9 @@ function initialBoard(variant) {
     return EMPTY;
   });
 }
-var engine2 = {
+var engine3 = {
   initialState(config) {
-    const { variant } = configFrom(config);
+    const { variant } = configFrom2(config);
     const board = initialBoard(variant);
     return {
       variant,
@@ -877,7 +1318,7 @@ var engine2 = {
 };
 
 // packages/games/checkers/manifest.ts
-var manifest2 = defineManifest({
+var manifest3 = defineManifest({
   id: "checkers",
   version: 1,
   category: "board",
@@ -1261,7 +1702,7 @@ function peg$parse(input, options) {
       return details;
     }
   }
-  function peg$computeLocation(startPos, endPos, offset) {
+  function peg$computeLocation(startPos, endPos, offset2) {
     var startPosDetails = peg$computePosDetails(startPos);
     var endPosDetails = peg$computePosDetails(endPos);
     var res = {
@@ -3475,15 +3916,15 @@ var Chess = class {
             continue;
           }
         }
-        const offset = RAYS[index];
-        let j = i + offset;
+        const offset2 = RAYS[index];
+        let j = i + offset2;
         let blocked2 = false;
         while (j !== square) {
           if (this._board[j] != null) {
             blocked2 = true;
             break;
           }
-          j += offset;
+          j += offset2;
         }
         if (!blocked2) {
           if (!verbose) {
@@ -3648,10 +4089,10 @@ var Chess = class {
         if (forPiece && forPiece !== type)
           continue;
         for (let j = 0, len = PIECE_OFFSETS[type].length; j < len; j++) {
-          const offset = PIECE_OFFSETS[type][j];
+          const offset2 = PIECE_OFFSETS[type][j];
           to = from;
           while (true) {
-            to += offset;
+            to += offset2;
             if (to & 136)
               break;
             if (!this._board[to]) {
@@ -4470,7 +4911,7 @@ function takeBack(state, seat) {
   );
 }
 var hasMoved = (state, seat) => state.moves.length > seat;
-var engine3 = {
+var engine4 = {
   initialState(config) {
     return { config, moves: [], fen: START_FEN, drawOffer: null, takeback: null, end: null };
   },
@@ -4559,7 +5000,7 @@ var engine3 = {
 };
 
 // packages/games/chess/manifest.ts
-var manifest3 = defineManifest({
+var manifest4 = defineManifest({
   id: "chess",
   version: 1,
   category: "board",
@@ -4707,7 +5148,7 @@ function finished(state, seat) {
   const goal = armHoles(goalOf(state.seats, seat));
   return goal.every((h) => state.board[h] !== EMPTY3) && goal.some((h) => state.board[h] === seat);
 }
-var engine4 = {
+var engine5 = {
   initialState(_config, seats) {
     const board = HOLES.map(() => EMPTY3);
     for (let seat = 0; seat < seats; seat++) {
@@ -4754,7 +5195,7 @@ var engine4 = {
 };
 
 // packages/games/chinese-checkers/manifest.ts
-var manifest4 = defineManifest({
+var manifest5 = defineManifest({
   id: "chinese-checkers",
   version: 1,
   category: "strategy",
@@ -4820,7 +5261,7 @@ function boxesOf(s, line) {
 var sidesDrawn = (s, box) => sidesOf(s, box).reduce((n, line) => s.lines[line] === -1 ? n : n + 1, 0);
 var isOver = (s) => s.moves === s.lines.length;
 var score = (s, seat) => s.boxes.reduce((n, owner) => owner === seat ? n + 1 : n, 0);
-var engine5 = {
+var engine6 = {
   initialState(_config, seats) {
     const [cols, rows] = sizeFor(seats);
     const size = { cols, rows };
@@ -4871,7 +5312,7 @@ var engine5 = {
 };
 
 // packages/games/dots-and-boxes/manifest.ts
-var manifest5 = defineManifest({
+var manifest6 = defineManifest({
   id: "dots-and-boxes",
   version: 1,
   category: "board",
@@ -4903,7 +5344,7 @@ var manifest5 = defineManifest({
 
 // packages/games/fifteen/engine/index.ts
 var SIZES2 = [4, 3, 5];
-var configFrom2 = (raw) => {
+var configFrom3 = (raw) => {
   const size = raw?.size;
   return { size: SIZES2.find((s) => s === size) ?? 4 };
 };
@@ -4914,19 +5355,19 @@ function slide2(tiles, size, cell) {
   const [gr, gc] = [Math.floor(gap / size), gap % size];
   const [r, c] = [Math.floor(cell / size), cell % size];
   if (r !== gr && c !== gc) return null;
-  const step3 = r === gr ? c < gc ? -1 : 1 : c === gc ? r < gr ? -size : size : 0;
+  const step4 = r === gr ? c < gc ? -1 : 1 : c === gc ? r < gr ? -size : size : 0;
   const out = tiles.slice();
   let at = gap;
   while (at !== cell) {
-    out[at] = out[at + step3] ?? 0;
-    at += step3;
+    out[at] = out[at + step4] ?? 0;
+    at += step4;
   }
   out[cell] = 0;
   return out;
 }
-var engine6 = {
+var engine7 = {
   initialState(config, seed) {
-    const { size } = configFrom2(config);
+    const { size } = configFrom3(config);
     const n = size * size;
     let tiles = Array.from({ length: n }, (_, i) => i === n - 1 ? 0 : i + 1);
     const rng = Rng.fromSeed(`${seed}:fifteen:${String(size)}`);
@@ -4956,7 +5397,7 @@ var engine6 = {
 };
 
 // packages/games/fifteen/manifest.ts
-var manifest6 = defineManifest({
+var manifest7 = defineManifest({
   id: "fifteen",
   version: 1,
   category: "logic",
@@ -5084,22 +5525,22 @@ function lineEngine(rulesFor3) {
 }
 
 // packages/games/gomoku/engine/index.ts
-var configFrom3 = (raw) => ({
+var configFrom4 = (raw) => ({
   exactFive: raw?.exactFive === true
 });
 var rulesFor = (raw) => ({
   size: 15,
   line: 5,
-  exact: configFrom3(raw).exactFive
+  exact: configFrom4(raw).exactFive
 });
-var engine7 = lineEngine(rulesFor);
+var engine8 = lineEngine(rulesFor);
 
 // packages/games/five-colors/engine/index.ts
 var rulesFor2 = (_config, seats) => seats === 2 ? { size: 15, line: 5, exact: false } : { size: seats === 3 ? 15 : 17, line: 4, exact: false };
-var engine8 = lineEngine(rulesFor2);
+var engine9 = lineEngine(rulesFor2);
 
 // packages/games/five-colors/manifest.ts
-var manifest7 = defineManifest({
+var manifest8 = defineManifest({
   id: "five-colors",
   version: 1,
   category: "strategy",
@@ -5161,7 +5602,7 @@ function lineThrough(state, col, row, seat) {
   return null;
 }
 var isOver2 = (state) => state.winner !== null || state.moves === state.cols * state.rows;
-var engine9 = {
+var engine10 = {
   initialState(_config, seats) {
     const [cols, rows] = sizeFor2(seats);
     return {
@@ -5217,7 +5658,7 @@ var engine9 = {
 };
 
 // packages/games/four-in-a-row/manifest.ts
-var manifest8 = defineManifest({
+var manifest9 = defineManifest({
   id: "four-in-a-row",
   version: 1,
   category: "board",
@@ -5522,7 +5963,7 @@ function territory(cells, size, dead) {
 // packages/games/go/engine/index.ts
 var SIZES4 = [9, 13];
 var KOMI = 6.5;
-function configFrom4(raw) {
+function configFrom5(raw) {
   const size = raw?.size;
   return { size: SIZES4.find((s) => s === size) ?? 9 };
 }
@@ -5595,9 +6036,9 @@ function scoreOf(state, dead) {
   };
 }
 var groupAt = (state, point) => groups(state.board, state.size).find((g) => g.includes(point)) ?? [];
-var engine10 = {
+var engine11 = {
   initialState(config, _seats, seed) {
-    const { size } = configFrom4(config);
+    const { size } = configFrom5(config);
     return {
       size,
       seed,
@@ -5707,7 +6148,7 @@ var engine10 = {
   // Online, an away player passes (or, while scoring, accepts the count).
   skipTurn(state, seat) {
     if (state.phase === "over" || seat !== state.turn) return state;
-    return engine10.applyAction(state, seat, { type: state.phase === "scoring" ? "accept" : "pass" });
+    return engine11.applyAction(state, seat, { type: state.phase === "scoring" ? "accept" : "pass" });
   },
   result(state) {
     if (state.phase !== "over") return null;
@@ -5720,7 +6161,7 @@ var engine10 = {
 };
 
 // packages/games/go/manifest.ts
-var manifest9 = defineManifest({
+var manifest10 = defineManifest({
   id: "go",
   version: 1,
   category: "board",
@@ -5769,7 +6210,7 @@ var manifest9 = defineManifest({
 });
 
 // packages/games/gomoku/manifest.ts
-var manifest10 = defineManifest({
+var manifest11 = defineManifest({
   id: "gomoku",
   version: 1,
   category: "board",
@@ -5813,7 +6254,7 @@ var manifest10 = defineManifest({
 
 // packages/games/hanoi/engine/index.ts
 var DISCS = [4, 3, 5, 6, 7, 8];
-var configFrom5 = (raw) => {
+var configFrom6 = (raw) => {
   const discs = raw?.discs;
   return { discs: DISCS.find((d) => d === discs) ?? 4 };
 };
@@ -5828,14 +6269,14 @@ function canMove2(state, from, to) {
   const under = top(b);
   return under === void 0 || under > disc;
 }
-var solved = (state) => state.pegs[2].length === state.discs;
-var engine11 = {
+var solved2 = (state) => state.pegs[2].length === state.discs;
+var engine12 = {
   initialState(config) {
-    const { discs } = configFrom5(config);
+    const { discs } = configFrom6(config);
     return { discs, pegs: [Array.from({ length: discs }, (_, i) => discs - i), [], []], moves: 0 };
   },
   apply(state, { from, to }) {
-    if (solved(state) || !canMove2(state, from, to)) return state;
+    if (solved2(state) || !canMove2(state, from, to)) return state;
     const pegs = state.pegs.map((p) => p.slice());
     const disc = pegs[from].pop() ?? 0;
     pegs[to].push(disc);
@@ -5850,12 +6291,12 @@ var engine11 = {
     }
     return n / state.discs;
   },
-  result: (state) => solved(state) ? { completed: true, score: state.moves } : null,
+  result: (state) => solved2(state) ? { completed: true, score: state.moves } : null,
   score: (state) => state.moves
 };
 
 // packages/games/hanoi/manifest.ts
-var manifest11 = defineManifest({
+var manifest12 = defineManifest({
   id: "hanoi",
   version: 1,
   category: "logic",
@@ -5905,7 +6346,7 @@ var manifest11 = defineManifest({
 // packages/games/hex/engine/index.ts
 var SIZE2 = 11;
 var EMPTY6 = -1;
-var configFrom6 = (raw) => ({
+var configFrom7 = (raw) => ({
   swap: raw?.swap === true
 });
 var neighbourCache = /* @__PURE__ */ new Map();
@@ -5966,14 +6407,14 @@ function winningChain(board, size, seat) {
   return null;
 }
 var mirror = (cell, size) => cell % size * size + Math.floor(cell / size);
-var engine12 = {
+var engine13 = {
   initialState(config) {
     return {
       size: SIZE2,
       board: Array.from({ length: SIZE2 * SIZE2 }, () => EMPTY6),
       turn: 0,
       moves: 0,
-      swapRule: configFrom6(config).swap,
+      swapRule: configFrom7(config).swap,
       swapped: false,
       last: null,
       winner: null,
@@ -6020,7 +6461,7 @@ var engine12 = {
 };
 
 // packages/games/hex/manifest.ts
-var manifest12 = defineManifest({
+var manifest13 = defineManifest({
   id: "hex",
   version: 1,
   category: "board",
@@ -6064,7 +6505,7 @@ var manifest12 = defineManifest({
 
 // packages/games/lights-off/engine/index.ts
 var SIZES5 = [5, 4, 6, 7];
-var configFrom7 = (raw) => {
+var configFrom8 = (raw) => {
   const size = raw?.size;
   return { size: SIZES5.find((s) => s === size) ?? 5 };
 };
@@ -6137,9 +6578,9 @@ function fewestPresses(lights, size) {
   return best;
 }
 var isDark2 = (lights) => lights.every((v) => v === 0);
-var engine13 = {
+var engine14 = {
   initialState(config, seed) {
-    const { size } = configFrom7(config);
+    const { size } = configFrom8(config);
     const n = size * size;
     const rng = Rng.fromSeed(`${seed}:lights:${String(size)}`);
     let lights = Array.from({ length: n }, () => 0);
@@ -6160,7 +6601,7 @@ var engine13 = {
 };
 
 // packages/games/lights-off/manifest.ts
-var manifest13 = defineManifest({
+var manifest14 = defineManifest({
   id: "lights-off",
   version: 1,
   category: "logic",
@@ -6209,7 +6650,7 @@ var manifest13 = defineManifest({
 var PITS = 6;
 var STORE = [6, 13];
 var SEEDS = [4, 3, 5, 6];
-var configFrom8 = (raw) => {
+var configFrom9 = (raw) => {
   const seeds = raw?.seeds;
   return { seeds: SEEDS.find((s) => s === seeds) ?? 4 };
 };
@@ -6221,9 +6662,9 @@ function movesFor3(state, seat) {
 }
 var sideTotal = (holes, seat) => pitsOf(seat).reduce((n, p) => n + (holes[p] ?? 0), 0);
 var score2 = (state, seat) => state.holes[STORE[seat === 0 ? 0 : 1]] ?? 0;
-var engine14 = {
+var engine15 = {
   initialState(config) {
-    const { seeds } = configFrom8(config);
+    const { seeds } = configFrom9(config);
     const holes = Array.from({ length: 14 }, (_, i) => i === 6 || i === 13 ? 0 : seeds);
     return { holes, turn: 0, moves: 0, last: null, over: false };
   },
@@ -6282,7 +6723,7 @@ var engine14 = {
 };
 
 // packages/games/mancala/manifest.ts
-var manifest14 = defineManifest({
+var manifest15 = defineManifest({
   id: "mancala",
   version: 1,
   category: "board",
@@ -6326,13 +6767,13 @@ var manifest14 = defineManifest({
 });
 
 // packages/games/minesweeper/engine/index.ts
-var LEVELS = {
+var LEVELS2 = {
   beginner: { cols: 9, rows: 9, mines: 10 },
   intermediate: { cols: 16, rows: 16, mines: 40 },
   expert: { cols: 16, rows: 30, mines: 99 }
 };
 var LEVEL_ORDER = ["beginner", "intermediate", "expert"];
-var configFrom9 = (raw) => {
+var configFrom10 = (raw) => {
   const level = raw?.level;
   return { level: LEVEL_ORDER.find((l) => l === level) ?? "beginner" };
 };
@@ -6351,7 +6792,7 @@ function around(cell, cols, rows) {
   return out;
 }
 var countAround = (mines, cell, cols, rows) => around(cell, cols, rows).reduce((n, a) => n + (mines[a] ?? 0), 0);
-function flood(mines, open, flags, cell, cols, rows) {
+function flood2(mines, open, flags, cell, cols, rows) {
   const out = open.slice();
   const stack = [cell];
   while (stack.length > 0) {
@@ -6367,7 +6808,7 @@ function flood(mines, open, flags, cell, cols, rows) {
 }
 function solvable(mines, first2, cols, rows) {
   const n = cols * rows;
-  let open = flood(mines, new Array(n).fill(0), [], first2, cols, rows);
+  let open = flood2(mines, new Array(n).fill(0), [], first2, cols, rows);
   const known = new Array(n).fill(0);
   const safeTotal = n - mines.reduce((s, v) => s + v, 0);
   for (let pass = 0; pass < n; pass++) {
@@ -6383,7 +6824,7 @@ function solvable(mines, first2, cols, rows) {
         for (const h of hidden) known[h] = 1;
         changed = true;
       } else if (left === 0) {
-        for (const h of hidden) open = flood(mines, open, known, h, cols, rows);
+        for (const h of hidden) open = flood2(mines, open, known, h, cols, rows);
         changed = true;
       } else info.push({ hidden, left });
     }
@@ -6394,7 +6835,7 @@ function solvable(mines, first2, cols, rows) {
           const rest = b.hidden.filter((h) => !a.hidden.includes(h));
           if (rest.length === 0) continue;
           if (b.left - a.left === 0) {
-            for (const h of rest) open = flood(mines, open, known, h, cols, rows);
+            for (const h of rest) open = flood2(mines, open, known, h, cols, rows);
             changed = true;
             break outer;
           }
@@ -6412,7 +6853,7 @@ function solvable(mines, first2, cols, rows) {
 }
 var ATTEMPTS = 60;
 function layMines(seed, level, first2) {
-  const { cols, rows, mines: count2 } = LEVELS[level];
+  const { cols, rows, mines: count2 } = LEVELS2[level];
   const n = cols * rows;
   const clear = /* @__PURE__ */ new Set([first2, ...around(first2, cols, rows)]);
   const spots = Array.from({ length: n }, (_, i) => i).filter((i) => !clear.has(i));
@@ -6427,10 +6868,10 @@ function layMines(seed, level, first2) {
 }
 var safeLeft = (s) => s.open.reduce((n, v, i) => n + (v || s.mines[i] ? 0 : 1), 0);
 var done = (s) => s.exploded !== null || s.won;
-var engine15 = {
+var engine16 = {
   initialState(config, seed) {
-    const { level } = configFrom9(config);
-    const { cols, rows, mines: count2 } = LEVELS[level];
+    const { level } = configFrom10(config);
+    const { cols, rows, mines: count2 } = LEVELS2[level];
     const rng = Rng.fromSeed(`${seed}:start:${level}`);
     const start = rng.int(2, rows - 3) * cols + rng.int(2, cols - 3);
     const n = cols * rows;
@@ -6476,7 +6917,7 @@ var engine15 = {
     let open = state.open;
     let exploded = null;
     for (const t of targets) {
-      open = flood(mines, open, state.flags, t, cols, rows);
+      open = flood2(mines, open, state.flags, t, cols, rows);
       if (mines[t]) exploded ??= t;
     }
     const next = { ...state, mines, open, exploded, moves: state.moves + 1 };
@@ -6494,7 +6935,7 @@ var engine15 = {
 };
 
 // packages/games/minesweeper/manifest.ts
-var manifest15 = defineManifest({
+var manifest16 = defineManifest({
   id: "minesweeper",
   version: 1,
   category: "logic",
@@ -6540,7 +6981,7 @@ var manifest15 = defineManifest({
 
 // packages/games/nim/engine/index.ts
 var CLASSIC = [1, 3, 5, 7];
-var configFrom10 = (raw) => {
+var configFrom11 = (raw) => {
   const c = raw ?? {};
   return { piles: c.piles === "random" ? "random" : "classic", misere: c.misere === true };
 };
@@ -6550,9 +6991,9 @@ function startingPiles(config, seed) {
   return Array.from({ length: rng.int(3, 5) }, () => rng.int(1, 7));
 }
 var total = (piles) => piles.reduce((n, p) => n + p, 0);
-var engine16 = {
+var engine17 = {
   initialState(config, seats, seed) {
-    const c = configFrom10(config);
+    const c = configFrom11(config);
     return {
       piles: startingPiles(c, seed),
       seats,
@@ -6597,7 +7038,7 @@ var engine16 = {
 };
 
 // packages/games/nim/manifest.ts
-var manifest16 = defineManifest({
+var manifest17 = defineManifest({
   id: "nim",
   version: 1,
   category: "strategy",
@@ -6701,7 +7142,7 @@ var inMill = (board, point) => {
   return seat !== EMPTY7 && (MILLS_AT[point] ?? []).some((m) => m.every((q) => board[q] === seat));
 };
 var countOf = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-function configFrom11(raw) {
+function configFrom12(raw) {
   const flying = raw?.flying;
   return { flying: flying !== false };
 }
@@ -6741,9 +7182,9 @@ function movesFor4(state, seat) {
   return out;
 }
 var key = (state) => `${String(state.turn)}${state.inHand.join("")}:${state.board.map((v) => String(v + 1)).join("")}`;
-var engine17 = {
+var engine18 = {
   initialState(config) {
-    const { flying } = configFrom11(config);
+    const { flying } = configFrom12(config);
     const board = Array.from({ length: POINTS }, () => EMPTY7);
     const state = {
       board,
@@ -6813,7 +7254,7 @@ var engine17 = {
 };
 
 // packages/games/nine-mens-morris/manifest.ts
-var manifest17 = defineManifest({
+var manifest18 = defineManifest({
   id: "nine-mens-morris",
   version: 1,
   category: "board",
@@ -6857,7 +7298,7 @@ var manifest17 = defineManifest({
 
 // packages/games/nonogram/engine/index.ts
 var SIZES6 = [10, 5, 15];
-var configFrom12 = (raw) => {
+var configFrom13 = (raw) => {
   const size = raw?.size;
   return { size: SIZES6.find((s) => s === size) ?? 10 };
 };
@@ -6942,22 +7383,22 @@ function lineSolvable(rowClues, colClues, size) {
     for (let r = 0; r < size; r++) {
       const line = solveLine(rowClues[r] ?? [], rowOf(grid, size, r));
       if (!line) return false;
-      line.forEach((v, c) => {
+      for (const [c, v] of line.entries()) {
         if (v !== -1 && grid[r * size + c] === -1) {
           grid[r * size + c] = v;
           changed = true;
         }
-      });
+      }
     }
     for (let c = 0; c < size; c++) {
       const line = solveLine(colClues[c] ?? [], colOf(grid, size, c));
       if (!line) return false;
-      line.forEach((v, r) => {
+      for (const [r, v] of line.entries()) {
         if (v !== -1 && grid[r * size + c] === -1) {
           grid[r * size + c] = v;
           changed = true;
         }
-      });
+      }
     }
     if (!changed) break;
   }
@@ -6995,10 +7436,10 @@ function makePuzzle(seed, size) {
   }
   return best ?? { solution: [], rowClues: [], colClues: [] };
 }
-var solved2 = (s) => s.solution.every((v, i) => v === 1 === (s.marks[i] === 1));
-var engine18 = {
+var solved3 = (s) => s.solution.every((v, i) => v === 1 === (s.marks[i] === 1));
+var engine19 = {
   initialState(config, seed) {
-    const { size } = configFrom12(config);
+    const { size } = configFrom13(config);
     return {
       size,
       ...makePuzzle(seed, size),
@@ -7007,9 +7448,10 @@ var engine18 = {
     };
   },
   apply(state, { cell, mark }) {
-    if (solved2(state) || !Number.isInteger(cell) || cell < 0 || cell >= state.marks.length)
+    if (solved3(state) || !Number.isInteger(cell) || cell < 0 || cell >= state.marks.length)
       return state;
-    if (mark !== 0 && mark !== 1 && mark !== 2) return state;
+    const m = mark;
+    if (m !== 0 && m !== 1 && m !== 2) return state;
     if (state.marks[cell] === mark) return state;
     const marks = state.marks.slice();
     marks[cell] = mark;
@@ -7027,11 +7469,11 @@ var engine18 = {
     );
     return Math.max(0, right - wrong) / Math.max(1, total2);
   },
-  result: (state) => solved2(state) ? { completed: true } : null
+  result: (state) => solved3(state) ? { completed: true } : null
 };
 
 // packages/games/nonogram/manifest.ts
-var manifest18 = defineManifest({
+var manifest19 = defineManifest({
   id: "nonogram",
   version: 1,
   category: "logic",
@@ -7117,7 +7559,7 @@ function movesFor5(board, seat) {
   return moves;
 }
 var countDiscs = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-var engine19 = {
+var engine20 = {
   initialState() {
     const board = Array.from({ length: SIZE3 * SIZE3 }, () => -1);
     board[3 * SIZE3 + 3] = 1;
@@ -7160,7 +7602,7 @@ var engine19 = {
 };
 
 // packages/games/reversi/manifest.ts
-var manifest19 = defineManifest({
+var manifest20 = defineManifest({
   id: "reversi",
   version: 1,
   category: "board",
@@ -7441,7 +7883,7 @@ function isShape(state, slot, cells) {
   const rc = cells.map((cell) => [Math.floor(cell / size), cell % size]);
   return SHAPE_KEYS[shape]?.has(keyOf(rc)) ?? false;
 }
-var engine20 = {
+var engine21 = {
   initialState(_config, seats, seed) {
     const size = sizeFor3(seats);
     const rng = Rng.fromSeed(`${seed}:bag`);
@@ -7526,7 +7968,7 @@ var engine20 = {
 };
 
 // packages/games/shape-claim/manifest.ts
-var manifest20 = defineManifest({
+var manifest21 = defineManifest({
   id: "shape-claim",
   version: 1,
   category: "strategy",
@@ -7594,7 +8036,7 @@ function neighbor(cell, direction, walls) {
   c = (c + COLS) % COLS;
   return r * COLS + c;
 }
-var engine21 = {
+var engine22 = {
   initialState(config, seed) {
     const middle = Math.floor(ROWS / 2) * COLS + Math.floor(COLS / 2) - 3;
     const snake = [middle, middle - 1, middle - 2];
@@ -7661,7 +8103,7 @@ var engine21 = {
 var stepMs = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
 
 // packages/games/snake/manifest.ts
-var manifest21 = defineManifest({
+var manifest22 = defineManifest({
   id: "snake",
   version: 1,
   category: "arcade",
@@ -7944,7 +8386,7 @@ function search(grid, order, onSolution) {
     cols[k] = (cols[k] ?? 0) | bit;
     boxes[b] = (boxes[b] ?? 0) | bit;
   }
-  const step3 = () => {
+  const step4 = () => {
     let best = -1;
     let bestMask = 0;
     let bestCount = 10;
@@ -7971,7 +8413,7 @@ function search(grid, order, onSolution) {
       rows[r] = (rows[r] ?? 0) | bit;
       cols[k] = (cols[k] ?? 0) | bit;
       boxes[b] = (boxes[b] ?? 0) | bit;
-      if (step3()) return true;
+      if (step4()) return true;
       cells[best] = 0;
       rows[r] = (rows[r] ?? 0) & ~bit;
       cols[k] = (cols[k] ?? 0) & ~bit;
@@ -7979,7 +8421,7 @@ function search(grid, order, onSolution) {
     }
     return false;
   };
-  step3();
+  step4();
   return true;
 }
 var DIGITS = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -8070,7 +8512,7 @@ function commit(state, next, extra = {}) {
     ]
   };
 }
-var engine22 = {
+var engine23 = {
   initialState(config, seed) {
     return fromPuzzle(generate(seed, config.difficulty));
   },
@@ -8127,7 +8569,7 @@ var engine22 = {
 };
 
 // packages/games/sudoku/manifest.ts
-var manifest22 = defineManifest({
+var manifest23 = defineManifest({
   id: "sudoku",
   version: 1,
   category: "logic",
@@ -8189,7 +8631,7 @@ var LINES = [
   [0, 4, 8],
   [2, 4, 6]
 ];
-var configFrom13 = (raw) => ({
+var configFrom14 = (raw) => ({
   mode: raw?.mode === "classic" ? "classic" : "ultimate"
 });
 function lineOf(marks, seat) {
@@ -8206,9 +8648,9 @@ function movesFor6(state) {
     (b) => smallBoard(state.cells, b).flatMap((v, c) => v === EMPTY9 ? [b * 9 + c] : [])
   );
 }
-var engine23 = {
+var engine24 = {
   initialState(config) {
-    const { mode } = configFrom13(config);
+    const { mode } = configFrom14(config);
     return {
       mode,
       cells: Array.from({ length: mode === "classic" ? 9 : 81 }, () => EMPTY9),
@@ -8263,7 +8705,7 @@ var engine23 = {
 };
 
 // packages/games/ultimate-ttt/manifest.ts
-var manifest23 = defineManifest({
+var manifest24 = defineManifest({
   id: "ultimate-ttt",
   version: 1,
   category: "strategy",
@@ -8573,7 +9015,7 @@ function respawn(world, id) {
   return true;
 }
 var alive = (world, id) => world.worms.get(id)?.alive === true;
-function step2(world, inputs) {
+function step3(world, inputs) {
   const rng = new Rng(world.rng);
   world.tick++;
   const trailTick = world.tick % TRAIL_EVERY === 0;
@@ -8906,9 +9348,9 @@ function wanted(world, me, style) {
 }
 function blocked(world, me, heading, distance) {
   const mine = wormRadius(me.mass);
-  for (const step3 of [0.5, 1]) {
-    const x = me.x + detCos(heading) * distance * step3;
-    const y = me.y + detSin(heading) * distance * step3;
+  for (const step4 of [0.5, 1]) {
+    const x = me.x + detCos(heading) * distance * step4;
+    const y = me.y + detSin(heading) * distance * step4;
     if (x * x + y * y > (ARENA_RADIUS - mine - 40) ** 2) return true;
     if (world.bodies.query(x, y, mine + 40).some((id) => id !== me.id)) return true;
   }
@@ -8947,7 +9389,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine24 = {
+var engine25 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -8956,7 +9398,7 @@ var engine24 = {
   leave,
   respawn,
   alive,
-  step: step2,
+  step: step3,
   snapshot,
   result,
   snapshotCodec,
@@ -8964,7 +9406,7 @@ var engine24 = {
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest24 = defineManifest({
+var manifest25 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -8997,29 +9439,30 @@ var manifest24 = defineManifest({
 // engines-entry.js
 var GAMES = {
   "2048": { manifest, engine },
-  "checkers": { manifest: manifest2, engine: engine2 },
-  "chess": { manifest: manifest3, engine: engine3 },
-  "chinese-checkers": { manifest: manifest4, engine: engine4 },
-  "dots-and-boxes": { manifest: manifest5, engine: engine5 },
-  "fifteen": { manifest: manifest6, engine: engine6 },
-  "five-colors": { manifest: manifest7, engine: engine8 },
-  "four-in-a-row": { manifest: manifest8, engine: engine9 },
-  "go": { manifest: manifest9, engine: engine10 },
-  "gomoku": { manifest: manifest10, engine: engine7 },
-  "hanoi": { manifest: manifest11, engine: engine11 },
-  "hex": { manifest: manifest12, engine: engine12 },
-  "lights-off": { manifest: manifest13, engine: engine13 },
-  "mancala": { manifest: manifest14, engine: engine14 },
-  "minesweeper": { manifest: manifest15, engine: engine15 },
-  "nim": { manifest: manifest16, engine: engine16 },
-  "nine-mens-morris": { manifest: manifest17, engine: engine17 },
-  "nonogram": { manifest: manifest18, engine: engine18 },
-  "reversi": { manifest: manifest19, engine: engine19 },
-  "shape-claim": { manifest: manifest20, engine: engine20 },
-  "snake": { manifest: manifest21, engine: engine21 },
-  "sudoku": { manifest: manifest22, engine: engine22 },
-  "ultimate-ttt": { manifest: manifest23, engine: engine23 },
-  "worm-rush": { manifest: manifest24, engine: engine24, bots, host: arenaHost }
+  "box-pusher": { manifest: manifest2, engine: engine2 },
+  "checkers": { manifest: manifest3, engine: engine3 },
+  "chess": { manifest: manifest4, engine: engine4 },
+  "chinese-checkers": { manifest: manifest5, engine: engine5 },
+  "dots-and-boxes": { manifest: manifest6, engine: engine6 },
+  "fifteen": { manifest: manifest7, engine: engine7 },
+  "five-colors": { manifest: manifest8, engine: engine9 },
+  "four-in-a-row": { manifest: manifest9, engine: engine10 },
+  "go": { manifest: manifest10, engine: engine11 },
+  "gomoku": { manifest: manifest11, engine: engine8 },
+  "hanoi": { manifest: manifest12, engine: engine12 },
+  "hex": { manifest: manifest13, engine: engine13 },
+  "lights-off": { manifest: manifest14, engine: engine14 },
+  "mancala": { manifest: manifest15, engine: engine15 },
+  "minesweeper": { manifest: manifest16, engine: engine16 },
+  "nim": { manifest: manifest17, engine: engine17 },
+  "nine-mens-morris": { manifest: manifest18, engine: engine18 },
+  "nonogram": { manifest: manifest19, engine: engine19 },
+  "reversi": { manifest: manifest20, engine: engine20 },
+  "shape-claim": { manifest: manifest21, engine: engine21 },
+  "snake": { manifest: manifest22, engine: engine22 },
+  "sudoku": { manifest: manifest23, engine: engine23 },
+  "ultimate-ttt": { manifest: manifest24, engine: engine24 },
+  "worm-rush": { manifest: manifest25, engine: engine25, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

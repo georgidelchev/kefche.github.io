@@ -995,3 +995,5 @@ Lobby chat already existed (ADR-0023).
 - **A new rated turn game** needs its pools in the manifest and the same rows in `private.rated_clocks` (a migration); no server code.
 - **Chess is unchanged:** its clocks are each in one pool, so a search or a link may leave the pool out.
 - **Rated games other than chess store no record of their moves** with the match (chess keeps its PGN); their moves stay in `private.rated_moves` for a day after the result, as chess's do.
+
+**Amendment (step 18, Box Pusher).** An option may be marked `rooms: false`: it is picked only in the game's own menu (Box Pusher's 20 fixed levels per difficulty), rooms and setup sheets don't show it, and a room plays its first value (a fresh level). It is still part of the engine config, so `submit-match` checks it like any other option, and a leaderboard can name it in `when` (Box Pusher's boards count fresh levels only). A segmented control for 21 levels would not fit a phone, and a race on a fixed level gives nothing a fresh one doesn't.

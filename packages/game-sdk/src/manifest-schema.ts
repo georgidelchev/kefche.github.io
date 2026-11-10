@@ -65,6 +65,7 @@ export const gameManifestSchema = z
               }),
             )
             .min(1),
+          rooms: z.literal(false).optional(),
         }),
       )
       .optional(),

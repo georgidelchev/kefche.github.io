@@ -203,7 +203,8 @@ function TurnSetup({
 
       {config.options.map(
         (option) =>
-          option.values.length > 1 && (
+          option.values.length > 1 &&
+          option.inRooms && (
             <Segmented
               key={option.key}
               legend={option.legend}
