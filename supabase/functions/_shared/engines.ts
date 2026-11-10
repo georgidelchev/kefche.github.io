@@ -70,7 +70,7 @@ export interface RealtimeEngine {
   result(world: unknown, id: number): GameResult | null;
 }
 
-/** A setting a single-player game is played with (the manifest's raceOptions). */
+/** A setting a game is played with (the manifest's options). */
 export interface GameOption {
   key: string;
   values: { value: string | number | boolean }[];
@@ -154,7 +154,7 @@ interface BundledManifest {
   timers: TimerPreset[];
   awayPlayers?: "skip" | "clock";
   onlineTimer?: number;
-  raceOptions?: GameOption[];
+  options?: GameOption[];
   scoreValidation: { kind: string; maxActionsPerSecond?: number };
   achievements: AchievementDef[];
   leaderboards: LeaderboardDef[];
@@ -171,7 +171,7 @@ export const GAMES: ReadonlyMap<string, ServerGame> = new Map(
       timers: m.timers,
       awayPlayers: m.awayPlayers ?? "skip",
       onlineTimer: m.onlineTimer ?? null,
-      options: m.raceOptions ?? [],
+      options: m.options ?? [],
       maxActionsPerSecond: m.scoreValidation.maxActionsPerSecond ?? null,
       achievements: m.achievements,
       leaderboards: m.leaderboards,

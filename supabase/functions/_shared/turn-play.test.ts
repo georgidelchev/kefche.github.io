@@ -2,7 +2,7 @@
 // Run: deno test _shared/turn-play.test.ts
 import type { IssuedPlay } from "./solo-play.ts";
 import { equal, fixture } from "./test-utils.ts";
-import { judgeTurn, type TurnRecord } from "./turn-play.ts";
+import { judgeTurn, turnConfig, type TurnRecord } from "./turn-play.ts";
 
 const BOT = { kind: "bot", difficulty: "easy" } as const;
 const HUMAN = { kind: "human" } as const;
@@ -92,4 +92,13 @@ Deno.test("a setup the game doesn't offer is set aside", () => {
   equal(reason({ seats: [HUMAN, HUMAN] }), "bad-config", "two people against bots");
   equal(reason({ timer: { kind: "clock", base: 1, increment: 0 } }), "bad-config", "its own timer");
   equal(reason({ config: [1, 2] }), "bad-config", "config");
+});
+
+Deno.test("a turn game's options must be ones it offers", () => {
+  const options = [{ key: "variant", values: [{ value: "a" }, { value: "b" }] }];
+  equal(turnConfig([], undefined), null, "no options, no config");
+  equal(turnConfig([], { takebacks: false }) !== false, true, "the game's own keys");
+  equal(turnConfig(options, undefined), false, "an option left out");
+  equal(turnConfig(options, { variant: "c" }), false, "a value it doesn't offer");
+  equal(turnConfig(options, { variant: "b" }) !== false, true, "a value it offers");
 });

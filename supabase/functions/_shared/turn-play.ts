@@ -9,6 +9,7 @@ import * as z from "zod";
 import {
   canonicalJson,
   replayTurn,
+  type GameOption,
   type GameResult,
   type ServerGame,
   type TimerPreset,
@@ -16,6 +17,23 @@ import {
 import { TIME_GRACE_MS, type IssuedPlay } from "./solo-play.ts";
 
 const MAX_MOVES = 5000;
+
+/**
+ * A turn game's config if it fits: an object (or none), with each of the
+ * game's options set to one of its values. Other keys are the game's own
+ * (chess's takebacks), which its engine checks.
+ */
+export function turnConfig(
+  options: readonly GameOption[],
+  config: unknown,
+): Record<string, unknown> | null | false {
+  if (config === null || config === undefined) return options.length === 0 ? null : false;
+  if (typeof config !== "object" || Array.isArray(config)) return false;
+  const values = config as Record<string, unknown>;
+  return options.every((option) => option.values.some((v) => v.value === values[option.key]))
+    ? values
+    : false;
+}
 const gameId = z
   .string()
   .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/)
@@ -83,10 +101,8 @@ export function judgeTurn(
   const humans = record.seats.flatMap((s, i) => (s.kind === "human" ? [i] : []));
   const player = record.mode === "solo-bots" ? (humans[0] ?? null) : null;
   const timer = game.timers.find((t) => canonicalJson(t) === canonicalJson(record.timer)) ?? null;
-  const config =
-    typeof record.config === "object" && record.config !== null && !Array.isArray(record.config)
-      ? (record.config as Record<string, unknown>)
-      : null;
+  const checked = turnConfig(game.options, record.config);
+  const config = checked === false ? null : checked;
   const verdict = (
     status: "counted" | "review",
     reason: string,
@@ -109,7 +125,7 @@ export function judgeTurn(
     seats >= game.players.min &&
     seats <= game.players.max &&
     timer !== null &&
-    (config !== null || record.config === null || record.config === undefined) &&
+    checked !== false &&
     (record.mode === "solo-bots" ? humans.length === 1 : humans.length >= 2);
   if (!setupFits) return verdict("review", "bad-config");
 

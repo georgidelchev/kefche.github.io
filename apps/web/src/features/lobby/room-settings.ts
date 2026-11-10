@@ -5,16 +5,15 @@ import * as z from "zod/mini";
 
 import type { BotDifficulty } from "@kefche/game-sdk";
 
-/** A race option's chosen value, by option key (manifest `raceOptions`). */
-export type RaceOptionValues = Record<string, string | number | boolean>;
+import type { OptionValues } from "@/features/games/options";
 
 export interface RoomSettings {
   /** Index into the manifest's timer presets (a race's time limit). */
   timer: number;
   /** Bot difficulty per bot seat ("2": "hard"). */
   bots: Record<string, BotDifficulty>;
-  /** Race mode: the game's options. */
-  options: RaceOptionValues;
+  /** The game's options (a race's, or a turn game's such as Checkers' variant). */
+  options: OptionValues;
   /** Set by start_room for each match; every member builds the match from it. */
   seed: string | null;
   /** When start_room started the match, ms since epoch (the database's clock). */
@@ -47,7 +46,7 @@ export const settingsJson = ({
   bots,
   options,
 }: Pick<RoomSettings, "timer" | "bots"> & {
-  options?: RaceOptionValues;
+  options?: OptionValues;
 }) => ({ timer, bots, options: options ?? {} });
 
 /**

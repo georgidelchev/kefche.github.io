@@ -13,6 +13,7 @@ import { getArenaUrl, getSupabaseEnv } from "@/lib/env";
 
 import { BOT_NAME_KEYS } from "./catalog";
 import { hasRooms, racesInRooms } from "./game-names";
+import { gameOptions, type GameOptionView } from "./options";
 
 import type { PlayerStrings } from "./GamePlayer";
 import type { ResultsStrings } from "./GameResults";
@@ -131,9 +132,10 @@ function resultsStrings(
 type AchievementName = [string, ResultsStrings["achievementNames"][string]];
 
 /** What a turn-based game's setup offers, or null for other games. */
-export function turnConfig(manifest: GameManifest): TurnConfig | null {
+export function turnConfig(manifest: GameManifest, ui: Record<string, string>): TurnConfig | null {
   if (manifest.kind !== "turn") return null;
   return {
+    options: gameOptions(manifest, ui),
     modes: manifest.modes.filter((m): m is TurnMode => m === "solo-bots" || m === "hotseat"),
     players: manifest.players,
     difficulties: manifest.bots.supported ? manifest.bots.difficulties : [],
@@ -161,14 +163,15 @@ function onlineTimers(manifest: GameManifest): number[] {
  * What a room offers for a game: a turn game's setup, or a race's (people
  * only, from two seats; the manifest's countdowns are the time limits).
  */
-export function roomConfig(manifest: GameManifest): TurnConfig | null {
-  if (manifest.kind === "turn") return turnConfig(manifest);
+export function roomConfig(manifest: GameManifest, ui: Record<string, string>): TurnConfig | null {
+  if (manifest.kind === "turn") return turnConfig(manifest, ui);
   if (!racesInRooms(manifest)) return null;
   const min = Math.max(2, manifest.players.min);
   return {
     modes: [],
     players: { min, max: manifest.players.max, default: Math.max(min, manifest.players.default) },
     difficulties: [],
+    options: gameOptions(manifest, ui),
     timers: manifest.timers,
     onlineTimers: onlineTimers(manifest),
   };
@@ -178,16 +181,9 @@ export function roomConfig(manifest: GameManifest): TurnConfig | null {
 export const playsOnline = (manifest: GameManifest): boolean =>
   hasRooms(manifest) && getSupabaseEnv() !== null;
 
-/** A race option with its labels in the page's language (from the game's "ui" strings). */
-export interface RaceOptionView {
-  key: string;
-  legend: string;
-  values: { value: string | number | boolean; label: string }[];
-}
-
 /** A race game's room setup: its options, and how players rank. */
 export interface RaceSetup {
-  options: RaceOptionView[];
+  options: GameOptionView[];
   /** "time": solving first wins (Sudoku); "score": the highest score wins. */
   ranking: "score" | "time";
 }
@@ -195,11 +191,7 @@ export interface RaceSetup {
 export function raceSetup(manifest: GameManifest, ui: Record<string, string>): RaceSetup | null {
   if (!racesInRooms(manifest)) return null;
   return {
-    options: (manifest.raceOptions ?? []).map((option) => ({
-      key: option.key,
-      legend: ui[option.label] ?? option.label,
-      values: option.values.map((v) => ({ value: v.value, label: ui[v.label] ?? v.label })),
-    })),
+    options: gameOptions(manifest, ui),
     ranking: manifest.leaderboards[0]?.metric === "time" ? "time" : "score",
   };
 }

@@ -959,7 +959,7 @@ function Room({
         config={game.config}
         ratedTimers={game.rated.map((clock) => clock.timer)}
         allowPublic={game.modes.public}
-        race={game.race ? { options: game.race.options, strings: race } : null}
+        race={game.race ? { strings: race } : null}
         turn={turn}
         strings={s}
         locale={locale}

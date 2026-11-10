@@ -8,16 +8,25 @@
   "exports": {
     ".": "./src/index.ts",
     "./manifest-schema": "./src/manifest-schema.ts",
-    "./browser": "./src/browser/index.ts"
+    "./browser": "./src/browser/index.ts",
+    "./react": "./src/react/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc -p . && tsc -p src/browser"
+    "typecheck": "tsc -p . && tsc -p src/browser && tsc -p src/react"
   },
   "devDependencies": {
     "@kefche/config": "workspace:*",
-    "typescript": "6.0.3"
+    "typescript": "6.0.3",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   },
   "dependencies": {
     "zod": "4.6.7"
+  },
+  "peerDependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
   }
 }

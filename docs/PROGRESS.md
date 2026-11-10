@@ -2318,6 +2318,21 @@ Until now the RUNBOOK gives SQL for all of these. Phase 10 puts screens on them 
 - **Q5: Sounds.** Choose them from the existing palette, which you can change later (recommended for 19 games)? Or a sound picker for the batch, as in Phase 4?
 - **Q6: Anything to change in the proposed decisions above** (variants, board sizes, timers)?
 
+### Owner answers (2026-11-10)
+
+The owner answered "continue", so the recommended answers stand, as with Phase 10's Q1:
+
+- **Q1 — Batches:** the four batches above.
+- **Q2 — Ratings:** Checkers (one pool per variant) and Go 9 × 9.
+- **Q3 — Shape Claim:** the shared row of four pieces from a seeded bag, with corner-only contact.
+- **Q4 — Box Pusher:** generated and graded by a solver, a fixed list of 60, and fresh levels for race and the daily challenge.
+- **Q5 — Sounds:** from the existing palette.
+- **Q6 — Decisions:** no changes.
+
+### Status
+
+- [x] Plan written; the recommended answers stand (2026-11-10)
+
 ## Known issues
 
 - **A continued Sudoku isn't recorded (Phase 7):** a saved puzzle finished on a later visit has no log from its start, so the server can't replay it, and it counts for nothing beyond the device's own best times. Saving the log with the game would fix it.

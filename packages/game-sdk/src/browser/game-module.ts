@@ -30,6 +30,11 @@ export interface MatchSetup {
   /** Display names per seat in the page's language, for the game's own announcements. */
   names: string[];
   timer: TimerPreset;
+  /**
+   * The game's options as chosen (manifest `options`), every one set: the
+   * engine config. Absent for a game without options.
+   */
+  config?: Readonly<Record<string, string | number | boolean>>;
   /** Online: the seat this browser plays, if any (spectators have none). */
   localSeat?: number;
 }

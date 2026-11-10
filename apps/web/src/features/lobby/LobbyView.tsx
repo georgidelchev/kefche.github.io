@@ -10,7 +10,7 @@ import type { BotDifficulty, TimerPreset } from "@kefche/game-sdk";
 import { Button } from "@kefche/ui/components/button";
 import { PlayerMarker } from "@kefche/ui/components/player-marker";
 
-import type { RaceOptionView } from "@/features/games/page-props";
+import type { GameOptionView } from "@/features/games/options";
 import { fill, timerLabel, type TurnStrings } from "@/features/games/turn/labels";
 import type { TurnConfig } from "@/features/games/turn/match-setup";
 import { Segmented, slot } from "@/features/games/turn/TurnUi";
@@ -53,7 +53,7 @@ interface Props {
   /** The game offers public lobbies (manifest `online-public`). */
   allowPublic: boolean;
   /** Race games: the game's options, and a time limit instead of a timer. */
-  race: { options: RaceOptionView[]; strings: RaceStrings } | null;
+  race: { strings: RaceStrings } | null;
   turn: TurnStrings;
   strings: RoomStrings;
   locale: string;
@@ -99,7 +99,7 @@ export function LobbyView({
     race && preset.kind === "countdown"
       ? fill(race.strings.minutes, { minutes: (preset.seconds / 60).toLocaleString(locale) })
       : timerLabel(preset, ts, locale);
-  const optionIndex = (option: RaceOptionView) =>
+  const optionIndex = (option: GameOptionView) =>
     Math.max(
       0,
       option.values.findIndex((v) => v.value === settings.options[option.key]),
@@ -300,7 +300,7 @@ export function LobbyView({
                 }}
               />
             )}
-            {race?.options.map(
+            {config.options.map(
               (option) =>
                 option.values.length > 1 && (
                   <Segmented
@@ -374,7 +374,7 @@ export function LobbyView({
               {timerLegend}:{" "}
               {limitLabel(config.timers[onlineTimer(config, settings.timer)] ?? { kind: "none" })}
             </li>
-            {race?.options.map((option) => (
+            {config.options.map((option) => (
               <li key={option.key}>
                 {option.legend}: {option.values[optionIndex(option)]?.label}
               </li>

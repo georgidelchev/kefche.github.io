@@ -1,23 +1,8 @@
 // Race mode's rules (Phase 5 step 10), pure so they're easy to check: the
-// engine config from the room's options, the host's check of a finished
-// player (replaying their moves on the race's seed), and the ranking.
+// host's check of a finished player (replaying their moves on the race's
+// seed), and the ranking. The engine config is the room's options
+// (features/games/options.ts).
 import { replay, unpackActions, type PackedLog, type RaceEngine } from "@kefche/game-sdk";
-
-import type { RaceOptionView } from "@/features/games/page-props";
-
-import type { RaceOptionValues } from "./room-settings";
-
-/** The engine config: every option's chosen value, or its default. Undefined without options. */
-export function raceConfig(options: readonly RaceOptionView[], values: RaceOptionValues): unknown {
-  if (options.length === 0) return undefined;
-  return Object.fromEntries(
-    options.map((option) => {
-      const chosen = values[option.key];
-      const known = option.values.some((v) => v.value === chosen);
-      return [option.key, known ? chosen : option.values[0]?.value];
-    }),
-  );
-}
 
 /** A player's game as the replay found it. */
 export interface Checked {

@@ -4,5 +4,5 @@
   // live in src/browser and have their own tsconfig.json there.
   "extends": "@kefche/config/tsconfig.base.json",
   "include": ["src"],
-  "exclude": ["src/browser"]
+  "exclude": ["src/browser", "src/react"]
 }

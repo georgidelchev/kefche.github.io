@@ -5,7 +5,7 @@ import { Rng, pickBotNames, type BotDifficulty, type Seat } from "@kefche/game-s
 import type { MatchSetup } from "@kefche/game-sdk/browser";
 
 import type { TurnStrings } from "@/features/games/turn/labels";
-import type { TurnConfig } from "@/features/games/turn/match-setup";
+import { configFor, type TurnConfig } from "@/features/games/turn/match-setup";
 
 import type { RoomSettings } from "./room-settings";
 import type { RoomSnapshot } from "./room-store";
@@ -54,6 +54,7 @@ export function roomMatch(
       seats,
       names: seats.map((seat) => (seat.kind === "bot" ? strings.botNames[seat.nameId] : seat.name)),
       timer: config.timers[onlineTimer(config, settings.timer)] ?? { kind: "none" },
+      ...configFor(config, settings.options),
       ...(localSeat >= 0 ? { localSeat } : {}),
     },
     seatMembers,

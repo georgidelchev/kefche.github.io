@@ -4876,7 +4876,7 @@ var manifest6 = defineManifest({
     { kind: "countdown", seconds: 180 },
     { kind: "countdown", seconds: 600 }
   ],
-  raceOptions: [
+  options: [
     {
       key: "speed",
       label: "speed",
@@ -5343,7 +5343,7 @@ var manifest7 = defineManifest({
     { kind: "countdown", seconds: 1800 },
     { kind: "countdown", seconds: 2700 }
   ],
-  raceOptions: [
+  options: [
     {
       key: "difficulty",
       label: "difficulty",

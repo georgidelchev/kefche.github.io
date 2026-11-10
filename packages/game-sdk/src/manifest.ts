@@ -117,10 +117,12 @@ export type ScoreValidationRule =
     };
 
 /**
- * A setting the host of a race picks for everyone (Phase 5). The chosen
- * values form the engine config: `{ [key]: value }` for every option.
+ * A setting a game is played with: a race's, which the host of a room picks
+ * for everyone (Phase 5), or a turn game's, picked in its setup or by the
+ * room's host (Checkers' variant). The chosen values form the engine config:
+ * `{ [key]: value }` for every option.
  */
-export interface RaceOptionDef {
+export interface GameOptionDef {
   key: string;
   /** Key of the option's name in the game's i18n "ui" strings. */
   label: string;
@@ -154,8 +156,8 @@ export interface GameManifest {
   awayPlayers?: "skip" | "clock";
   /** Index into `timers` that a new online room starts with (default: the first it may use). */
   onlineTimer?: number;
-  /** Race mode: the settings a room picks (none when the engine takes no config). */
-  raceOptions?: RaceOptionDef[];
+  /** The settings a game is played with (none when the engine takes no config). */
+  options?: GameOptionDef[];
   /**
    * Rated play (SPEC §12.3): a rating per pool, each pool a set of clock
    * presets (indexes into `timers`). Rated matchmaking offers exactly these;

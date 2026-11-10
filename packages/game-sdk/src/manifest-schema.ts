@@ -52,7 +52,7 @@ export const gameManifestSchema = z
     timers: z.array(timerPresetSchema),
     awayPlayers: z.enum(["skip", "clock"]).optional(),
     onlineTimer: z.int().nonnegative().optional(),
-    raceOptions: z
+    options: z
       .array(
         z.object({
           key: z.string().regex(/^[a-z][a-zA-Z0-9]*$/),

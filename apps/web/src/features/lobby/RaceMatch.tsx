@@ -37,6 +37,7 @@ import { Button } from "@kefche/ui/components/button";
 
 import type { PlayerStrings } from "@/features/games/GamePlayer";
 import { loadGame, loadRaceEngine } from "@/features/games/loaders";
+import { optionsConfig, type OptionValues } from "@/features/games/options";
 import type { RaceSetup } from "@/features/games/page-props";
 import { gameStorage, Overlay, useGameScreen, VOLUME } from "@/features/games/player-parts";
 import { isAccount, submitRaceLog } from "@/features/games/plays";
@@ -44,12 +45,11 @@ import { rewardsState, type Rewards, type RewardsState } from "@/features/games/
 import { fill } from "@/features/games/turn/labels";
 import { send, type Supabase } from "@/lib/supabase/client";
 
-import { checkRace, raceConfig, rank, type Standing } from "./race-standings";
+import { checkRace, rank, type Standing } from "./race-standings";
 import { roomErrorCode } from "./room-store";
 import { measureServerOffset } from "./server-clock";
 
 import type { RoomMatch } from "./room-match";
-import type { RaceOptionValues } from "./room-settings";
 import type { RaceStrings, RoomStrings } from "./strings";
 
 const loadResults = () => import("@/features/games/GameResults");
@@ -85,7 +85,7 @@ interface Props {
   /** Each member's avatar picture (null: initials). */
   avatars: ReadonlyMap<string, string | null>;
   game: { id: string; name: string; ui: Record<string, string>; race: RaceSetup };
-  options: RaceOptionValues;
+  options: OptionValues;
   locale: string;
   dir: "ltr" | "rtl";
   strings: RoomStrings;
@@ -143,7 +143,7 @@ export function RaceMatch({
   const localRef = useRef<Local | null>(null);
   const sentToRef = useRef<string | null>(null);
   const [message] = useState(() => createMessenger(roomId, self));
-  const [config] = useState(() => raceConfig(game.race.options, options));
+  const [config] = useState(() => optionsConfig(game.race.options, options));
   // The database's clock minus this device's (ms): every browser counts down
   // to the same moment, whatever its own clock says.
   const offsetRef = useRef(0);

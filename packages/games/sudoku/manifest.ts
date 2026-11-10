@@ -18,7 +18,7 @@ export const manifest = defineManifest({
     { kind: "countdown", seconds: 1800 },
     { kind: "countdown", seconds: 2700 },
   ],
-  raceOptions: [
+  options: [
     {
       key: "difficulty",
       label: "difficulty",

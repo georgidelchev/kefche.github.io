@@ -201,6 +201,30 @@ function TurnSetup({
         })}
       </ol>
 
+      {config.options.map(
+        (option) =>
+          option.values.length > 1 && (
+            <Segmented
+              key={option.key}
+              legend={option.legend}
+              value={Math.max(
+                0,
+                option.values.findIndex((v) => v.value === choice.options[option.key]),
+              )}
+              options={option.values.map((v, i) => ({ value: i, label: v.label }))}
+              onChange={(i) => {
+                const chosen = option.values[i];
+                if (chosen) {
+                  onChange({
+                    ...choice,
+                    options: { ...choice.options, [option.key]: chosen.value },
+                  });
+                }
+              }}
+            />
+          ),
+      )}
+
       {config.timers.length > 1 && (
         <Segmented
           legend={s.timer}

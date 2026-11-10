@@ -99,7 +99,7 @@ const jsonLd = [
 ];
 
 // Turn-based games open a setup screen (seats, bots, timer) instead of starting at once.
-const config = turnConfig(manifest);
+const config = turnConfig(manifest, text.ui);
 const turn = config && config.modes.length > 0 ? { config, strings: turnStrings(t) } : null;
 // Real-time games: the online arena, when this build has one.
 const arena = arenaProps(manifest, t, locale);

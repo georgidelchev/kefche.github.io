@@ -13,6 +13,8 @@ import {
 } from "@kefche/game-sdk";
 import type { GameStorage, MatchSetup } from "@kefche/game-sdk/browser";
 
+import { optionsConfig, type GameOptionView, type OptionValues } from "../options";
+
 /** The offline modes the setup screen offers (online matches are set up in a lobby). */
 export type TurnMode = Exclude<MatchSetup["mode"], "online">;
 
@@ -23,6 +25,8 @@ export interface TurnConfig {
   difficulties: BotDifficulty[];
   /** A level range players can pick from instead of a difficulty (manifest `bots.levels`). */
   levels?: { min: number; max: number };
+  /** The game's options (manifest `options`), picked in the setup or by a room's host. */
+  options: GameOptionView[];
   /** The first preset is the default. */
   timers: TimerPreset[];
   /**
@@ -42,6 +46,8 @@ export interface SetupChoice {
   seats: SeatChoice[];
   /** Index into `TurnConfig.timers`. */
   timer: number;
+  /** The game's options, by key. */
+  options: OptionValues;
 }
 
 const DIFFICULTY = z.enum(["easy", "medium", "hard"]);
@@ -54,6 +60,7 @@ const SAVED = z.object({
     ]),
   ),
   timer: z.number(),
+  options: z.optional(z.record(z.string(), z.union([z.string(), z.number(), z.boolean()]))),
 });
 
 const middle = (difficulties: BotDifficulty[]): BotDifficulty =>
@@ -88,7 +95,12 @@ export function seatsFor(
 
 export function defaultChoice(config: TurnConfig, mode: TurnMode): SetupChoice {
   const players = Math.max(config.players.default, 2);
-  return { players, seats: seatsFor(players, mode, config), timer: 0 };
+  return {
+    players,
+    seats: seatsFor(players, mode, config),
+    timer: 0,
+    options: optionsConfig(config.options, {}) ?? {},
+  };
 }
 
 /** The saved choice if it still fits the game's limits, else the default. */
@@ -118,7 +130,9 @@ export function loadChoice(storage: GameStorage, config: TurnConfig, mode: TurnM
         ) &&
         timer >= 0 &&
         timer < config.timers.length;
-      if (fits) return { players, seats, timer };
+      // Options the game no longer offers fall back to their default.
+      const options = optionsConfig(config.options, parsed.data.options ?? {}) ?? {};
+      if (fits) return { players, seats, timer, options };
     }
   } catch {
     // Not valid JSON: fall back to the default.
@@ -168,7 +182,14 @@ export function toMatch(
     seats,
     names: seats.map((seat) => (seat.kind === "bot" ? names.bots[seat.nameId] : seat.name)),
     timer: config.timers[choice.timer] ?? { kind: "none" },
+    ...configFor(config, choice.options),
   };
+}
+
+/** The match's `config`: the options as chosen, for a game that has any. */
+export function configFor(config: TurnConfig, values: OptionValues): Pick<MatchSetup, "config"> {
+  const chosen = optionsConfig(config.options, values);
+  return chosen ? { config: chosen } : {};
 }
 
 export type BotNames = Record<BotNameId, string>;

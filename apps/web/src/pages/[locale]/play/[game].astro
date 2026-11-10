@@ -45,7 +45,7 @@ const { bcp47, dir } = LOCALE_INFO[locale];
 const { manifest } = game;
 const text = game.text[locale];
 // Turn games and races share the room; a race adds its options and ranking.
-const config = roomConfig(manifest);
+const config = roomConfig(manifest, text.ui);
 const path = `/play/${manifest.id}/`;
 const strings = roomStrings(t);
 ---
