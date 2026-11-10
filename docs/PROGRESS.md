@@ -16,8 +16,9 @@
 | 7     | Stats, XP, achievements, leaderboards, daily               | ✅ Done (owner signed off 2026-11-01) |
 | 8     | Social: friends, presence, chat, moderation, notifications | ✅ Done (owner signed off 2026-11-05) |
 | 9     | Real-time arena framework & Worm Rush                      | ✅ Done (owner signed off 2026-11-09) |
-| 10    | Admin panel                                                | 🔎 Built; awaiting owner sign-off     |
-| 11–14 | Game batches                                               | ⏳ Not started                        |
+| 10    | Admin panel                                                | ✅ Done (owner signed off 2026-11-10) |
+| 11    | Game batch 1: board, strategy, puzzles                     | 📝 Planned; awaiting owner's answers  |
+| 12–14 | Game batches 2–4                                           | ⏳ Not started                        |
 | 15    | Translation pass & content packs                           | ⏳ Not started                        |
 | 16    | PWA, audio & haptics polish                                | ⏳ Not started                        |
 | 17    | Consent, legal, analytics, monitoring                      | ⏳ Not started                        |
@@ -2160,7 +2161,7 @@ Until now the RUNBOOK gives SQL for all of these. Phase 10 puts screens on them 
   - **Usage, for admins (Q1, `staff_usage`):** the database's size against 500 MB, Storage against 1 GB with its file count, accounts and guests, and the 8 largest tables. Links go to the Supabase project's dashboard and to Cloudflare's for the rest. Error tracking waits for Sentry (Phase 17).
   - Every section now has its view, so the panel's "not built yet" state and its string are gone.
   - Checked in Chrome: 29/29, covering a player and a moderator refused, a guest noted once as a guest, the daily roll keeping no ids and forgetting rows past 35 days, a visit noted, the moderator's dashboard without usage, the admin's usage and links, the privacy notice, 1280, 1024, 768 and 390 px, both themes, Arabic and axe.
-- [x] **Step 12, verification and docs** (Phase 10 built; awaiting the owner's sign-off):
+- [x] **Step 12, verification and docs:**
   - **Every step's check, run again on the final code:** 453/453, with each run's test accounts, rows and audit entries cleaned up afterwards.
 
     | Check     | Result | Check      | Result |
@@ -2198,6 +2199,125 @@ Until now the RUNBOOK gives SQL for all of these. Phase 10 puts screens on them 
   - **Text:** the guidelines and the privacy notice no longer mention the filter (both dated 2026-11-09). The push wording is regenerated.
   - **Checked locally**, in a rolled-back transaction: a nickname and a bio the filter refused now save; three messages with a formerly masked word arrive as written, with no mute; a reserved nickname is still refused; no function still refers to the filter.
 
+- [x] Owner sign-off (2026-11-10, "continue"; the release still waits for the owner's word)
+
+## Phase 11 — Game batch 1: board, strategy and logic puzzles
+
+**Goal (SPEC §20, §22):** the first of four batches that bring the catalog from 7 games to 100, grouped by shared mechanics. This batch has 19 games with no hidden information and no server-side randomness: 11 turn-based board and strategy games and 8 logic puzzles.
+
+**DoD (per batch):** every game is complete per the `ADDING_A_GAME.md` checklist and playable in all its declared modes. Plus the standing DoD.
+
+### The four batches (proposed, Q1)
+
+| Phase | Batch                    | Games | What they share                                                                                                                         |
+| ----- | ------------------------ | ----- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 11    | Board, strategy, puzzles | 19    | The turn runtime, bots and search kit (Phase 4), SVG boards, the race runtime (Sudoku), generators and solvers in workers, exact replay |
+| 12    | Cards, dice and secrets  | 22    | Server-side dealing and dice, hidden hands (SPEC §10.6), the round engine for hidden simultaneous choices, a pass-the-device screen     |
+| 13    | Words and speed          | 23    | Word packs and dictionaries per language (English and Bulgarian first), typing input, quick DOM races                                   |
+| 14    | Real-time and physics    | 29    | The arena server (Phase 9), canvas loops, Matter.js; the largest, so it may split in two                                                |
+
+- **Phase 11:**
+  - **Board and strategy:** Checkers, Go, Nine Men's Morris, Gomoku, Hex, Mancala, Five Colors, Nim, Shape Claim, Chinese Checkers, Ultimate Tic-Tac-Toe.
+  - **Logic puzzles:** Minesweeper, Nonogram, 15 Puzzle, Lights Off, Tower of Hanoi, Box Pusher, Pipe Link, Memory Match.
+- **Phase 12:**
+  - **Cards:** Belote, Santase, Gin Rummy, Spades, Crazy Colors, War, Klondike, Spider, Hearts, Durak.
+  - **Dice and secrets:** Backgammon, Ludo, Liar's Dice, Sea Battle, Conquest.
+  - **Hidden choices:** Mafia, Who's the Spy, Associations, Rock Paper Scissors Tournament, Lowest Unique Number, Split or Steal, Penalty Shootout.
+- **Phase 13:**
+  - **Words:** Word Builder, Word of the Day, Anagrams, Speed Typing, Word Search, Letter Grid, Categories, Mini Crossword, Word Chain, Morse Master, Hangman, Trivia, Draw & Guess.
+  - **Speed:** the ten Speed & Reaction games.
+- **Phase 14:**
+  - **Arcade:** Falling Blocks and the other eight arcade games.
+  - **Arenas:** the nine other arenas, including Billiards.
+  - **Sports:** the ten sports games.
+  - **Strategy:** Tower Defense Co-op.
+
+### Steps (one Conventional Commit each)
+
+1. **Shared pieces,** drawn from what the four existing boards and Sudoku repeat:
+   - an SVG grid-board kit: cells and points, focus moved with the arrow keys, labels for screen readers, and boards that stay left-to-right in Arabic;
+   - race-puzzle helpers: the timer, live progress for race, best times, and a generator worker;
+   - the manifest lets a game declare race next to turn (for Memory Match).
+2. **Checkers:** International 10 × 10 and Russian 8 × 8, mandatory captures (the largest capture in International), multi-jumps and flying kings. A draw at threefold repetition, or 25 moves in a row with only kings moved and nothing captured. Bots: alpha-beta.
+3. **Go:** 9 × 9, with 13 × 13 as an option, Japanese scoring with 6.5 komi, and the ko rule. After two passes, the engine marks dead stones; both players accept, or play goes on. Bots: Monte Carlo tree search.
+4. **Nine Men's Morris:** with the flying phase as an option, on by default. A draw at threefold repetition or after 50 moves without a mill.
+5. **Gomoku:** 15 × 15. Five or more in a row wins, with an "exactly five" option. Bots: threat search.
+6. **Hex:** 11 × 11, with the swap rule as an option. Bots: Monte Carlo tree search with a connection heuristic.
+7. **Mancala:** Kalah with 6 pits, captures and the extra turn, and 3 to 6 seeds a pit (4 by default). Bots: alpha-beta, near perfect on hard.
+8. **Five Colors:** 2–5 players on a large grid.
+   - **Line and grid:** five in a row on 15 × 15 for 2–3 players, four in a row on 17 × 17 for 4–5.
+   - **Bots:** paranoid search, as in Four in a Row.
+9. **Nim:** 2–5 players, 3 to 5 piles (seeded, or the classic 1-3-5-7), with a misère option.
+   - **Two players:** hard plays perfectly (the nim-sum).
+   - **3–5 players:** search.
+10. **Shape Claim:** a polyomino territory game for 2–4 players. The original variant (Q3):
+    - **The board** grows with players: 14 × 14 for 2, 17 × 17 for 3, 20 × 20 for 4.
+    - **The pieces:** instead of a set of their own, players take from a shared row of four pieces of 1–5 cells, refilled from a seeded bag.
+    - **Placing:** a piece touches your own colour only at a corner.
+    - **The end:** the game ends when no one can place, and the most cells covered wins.
+11. **Chinese Checkers:** the star board for 2, 3, 4 or 6 players (5 leave one point empty), 10 pieces each, and jump chains.
+    - **Winning:** fill the opposite point. A point still holding a rival's piece counts as filled once all your other pieces are in.
+    - **Bots:** distance heuristics with a shallow search.
+12. **Ultimate Tic-Tac-Toe:** also classic tic-tac-toe as a mode. Bots: Monte Carlo tree search for Ultimate; classic hard never loses.
+13. **Minesweeper:** Beginner (9 × 9, 10 mines), Intermediate (16 × 16, 40) and Expert (30 × 16, 99, turned upright on phones).
+    - **Controls:** flags by long press or a mode toggle, and chording.
+    - **The first click:** safe when playing alone. Race and the daily challenge give everyone the same board, which needs no guessing, with a marked first cell.
+14. **Nonogram:** 5 × 5 to 15 × 15, generated with a line solver, so each puzzle has one solution reachable by logic alone.
+15. **15 Puzzle:** 3 × 3 to 5 × 5, shuffled to a solvable position. Tap a tile or swipe; moves and time are counted.
+16. **Lights Off:** 5 × 5 (4 × 4 to 7 × 7 as options), generated by pressing from a solved board, with the fewest presses shown after.
+17. **Tower of Hanoi:** 3–8 discs, with moves compared to the minimum (2ⁿ − 1).
+18. **Box Pusher:** original levels (Q4). A generator works back from a solved position, and a solver proves and grades each level. Undo and restart.
+19. **Pipe Link:** connect dots of the same colour and fill the board, 5 × 5 to 9 × 9, with exactly one solution, checked by a solver.
+20. **Memory Match:** 12, 20 or 30 cards with original symbols.
+    - **Turns:** 2–8 players take turns, and bots remember more at each difficulty.
+    - **Alone:** fewest flips and time, and a race online.
+21. **The daily challenge and the catalog:**
+    - **The daily challenge:** a migration adds the 8 puzzles to its rotation.
+    - **The catalog:** it now has 26 games; check its filters and pages at that size.
+    - **Sounds** are chosen as Q5 decides.
+22. **Verification and docs:**
+    - **Each game against the checklist:** bot timing on a throttled CPU, self-play strength, server replay fixtures, and hotseat with every player count;
+    - **Layout:** 360, 768 and 1280 px, both themes, Arabic, and axe;
+    - **Docs:** ADDING_A_GAME for the board kit and puzzle generators, and ADRs for anything new.
+
+**Every game step includes:**
+
+- the engine, bots, renderer and controls (touch and keyboard);
+- the manifest's modes and timers, and replay validation;
+- achievements and, for puzzles, best-time boards;
+- art and credits;
+- names and UI in all 11 locales;
+- SEO text in English and Bulgarian.
+
+### Decisions (proposed)
+
+- **Modes:**
+  - **Board and strategy games:** solo against bots, hotseat, private and public rooms, and quick match, like Reversi.
+  - **Puzzles:** solo, and race online.
+  - **Memory Match:** both.
+- **Ratings (Q2):** Checkers (one pool per variant) and Go 9 × 9 become rated, using the rated queue Chess built. The others stay casual.
+- **Leaderboards:** puzzles get best-time boards per size or difficulty (all-time, weekly, friends). Board games get wins and streak achievements, as now.
+- **Every game replays exactly** on the server: moves, presses and placements are its log. No game in this batch needs plausibility rules.
+- **Renderers:** React with SVG, as the Phase 4 boards. No new libraries.
+- **Timers:** per-move none, 15, 30 or 60 s for board games, plus clocks for Checkers and Go. Puzzles count up.
+
+### Risks
+
+- **Size:** 19 games, each with an engine, bots, art, 11 locales of names and UI, and two languages of SEO text. Every step is its own commit, so the batch can stop at any game.
+- **Go bots:** Monte Carlo search in a browser's time budget plays well on 9 × 9 but only as a beginner on 13 × 13. Hard on 13 × 13 will be beatable.
+- **Go's ending:** marking dead stones automatically can be wrong in unclear positions, so both players must accept it. Online, a disagreement resumes play.
+- **Generated levels:** Box Pusher and Pipe Link levels need solvers to prove them. Generation runs in a worker, and the daily challenge's levels are made once and stored with the day.
+- **The server bundle:** `engines.gen.js` (170 KB now) roughly doubles. Edge Functions allow far more, but cold starts grow a little.
+
+### Open questions for the owner
+
+- **Q1: The four batches.** Keep the batch map above (recommended)? Or change what goes in which phase?
+- **Q2: Ratings.** Rate Checkers (per variant) and Go 9 × 9 (recommended)? Or rate more of the 1v1 games (Gomoku, Hex, Nine Men's Morris, Mancala), or none for now?
+- **Q3: Shape Claim's rules.** The spec asks for an original variant: the shared row of four pieces from a seeded bag, with corner-only contact (recommended). Or a different variant you have in mind?
+- **Q4: Box Pusher's levels.** Generated and graded by a solver, with a fixed set of 60 picked for the level list and fresh ones for race and the daily challenge (recommended)? Or only a hand-picked fixed set?
+- **Q5: Sounds.** Choose them from the existing palette, which you can change later (recommended for 19 games)? Or a sound picker for the batch, as in Phase 4?
+- **Q6: Anything to change in the proposed decisions above** (variants, board sizes, timers)?
+
 ## Known issues
 
 - **A continued Sudoku isn't recorded (Phase 7):** a saved puzzle finished on a later visit has no log from its start, so the server can't replay it, and it counts for nothing beyond the device's own best times. Saving the log with the game would fix it.
@@ -2217,6 +2337,7 @@ Until now the RUNBOOK gives SQL for all of these. Phase 10 puts screens on them 
 - **Game page prose is English in 9 locales (Phase 15):** each game's name, tagline, meta description and in-game UI strings are translated in all 11 locales. The long page sections (about, how to play, controls, tips, FAQ) are written in English and Bulgarian; the other 9 locales carry the English text until the Phase 15 translation pass (SPEC §15, §22 DoD rule).
 - **Translations need native review (Phase 15):** all strings in the 9 locales other than en/bg are my translations and haven't been reviewed by native speakers. Bulgarian should be reviewed by the owner.
 - **Arenas: a real phone and the real limit (Phase 9):** step 12 ran on Chrome's phone emulation and simulated the free plan's daily limit locally. Once Worm Rush is live, play it on a real mid-range phone, and reaching the limit on production waits for the owner's word (it stops online arenas until 00:00 UTC).
+- **Guest play off and online play (Phase 10):** with the `guest_play` flag off, a signed-out visitor who starts online play gets the room's general error, not a "sign in to play" prompt.
 - **Arenas: input rate and the free plan (Phase 9):** a full arena bills about 26,200 requests an hour, so Workers Free allows about 3.8 full-arena hours a day. Lowering the input cap from 10 to 6 a second, or Workers Paid ($5/month), are the levers (ADR-0038).
 
 ## Tracked TODOs
