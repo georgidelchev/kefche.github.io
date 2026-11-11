@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine37, bots2, options) {
-    this.engine = engine37;
+  constructor(engine38, bots2, options) {
+    this.engine = engine38;
     this.bots = bots2;
     this.options = options;
-    this.world = engine37.createWorld(options.config, options.seed);
+    this.world = engine38.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine37.ticksPerSecond / engine37.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine38.ticksPerSecond / engine38.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -523,7 +523,7 @@ function canonicalJson(value2) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest37) => manifest37;
+var defineManifest = (manifest38) => manifest38;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -7665,11 +7665,11 @@ function currentSeats5(state) {
 }
 function result5(state) {
   if (!over5(state)) return null;
-  const low3 = Math.min(...state.scores);
-  const winners = state.scores.filter((s) => s === low3).length;
+  const low4 = Math.min(...state.scores);
+  const winners = state.scores.filter((s) => s === low4).length;
   return {
     completed: true,
-    outcome: state.scores.map((s) => s === low3 ? winners === 1 ? 1 : 0.5 : 0)
+    outcome: state.scores.map((s) => s === low4 ? winners === 1 ? 1 : 0.5 : 0)
   };
 }
 function view5(state, seat) {
@@ -10418,6 +10418,163 @@ var manifest32 = defineManifest({
   tags: ["cards", "classic", "teams", "tricks"]
 });
 
+// packages/games/spider/engine/index.ts
+var configFrom17 = (raw) => {
+  const s = raw?.suits;
+  return { suits: s === 2 || s === 4 ? s : 1 };
+};
+var low3 = (c) => rankOf(c) === ACE ? 1 : rankOf(c);
+var SUIT_SETS = {
+  1: ["spades"],
+  2: ["spades", "hearts"],
+  4: SUITS
+};
+function deal8(config, seed) {
+  const suits = SUIT_SETS[config.suits];
+  const cards = [];
+  for (let set = 0; set < 8; set++) {
+    const suit = suits[set % suits.length] ?? "spades";
+    for (let r = 2; r <= 14; r++) cards.push(card(suit, r));
+  }
+  const deck2 = Rng.fromSeed(`spider:${seed}`).shuffle(cards);
+  let at = 0;
+  const columns = Array.from({ length: 10 }, (_, i) => {
+    const n = i < 4 ? 6 : 5;
+    const col = deck2.slice(at, at + n);
+    at += n;
+    return { down: col.slice(0, -1), up: col.slice(-1) };
+  });
+  return { columns, stock: deck2.slice(at), done: 0 };
+}
+function movable(col) {
+  let n = col.up.length > 0 ? 1 : 0;
+  for (let i = col.up.length - 1; i > 0; i--) {
+    const a = col.up[i] ?? 0;
+    const b = col.up[i - 1] ?? 0;
+    if (suitOf(a) === suitOf(b) && low3(b) === low3(a) + 1) n++;
+    else break;
+  }
+  return n;
+}
+function canMove4(s, from, to, count2) {
+  const a = s.columns[from];
+  const b = s.columns[to];
+  if (!a || !b || from === to || count2 < 1 || count2 > movable(a)) return false;
+  const first2 = a.up[a.up.length - count2];
+  if (first2 === void 0) return false;
+  const top2 = b.up.at(-1);
+  return top2 === void 0 ? b.down.length === 0 : low3(top2) === low3(first2) + 1;
+}
+function settle(s) {
+  let done2 = s.done;
+  const columns = s.columns.map((col) => {
+    let c = { down: [...col.down], up: [...col.up] };
+    if (movable(c) >= 13 && low3(c.up.at(-1) ?? 0) === 1 && low3(c.up.at(-13) ?? 0) === 13) {
+      c = { down: c.down, up: c.up.slice(0, -13) };
+      done2++;
+    }
+    if (c.up.length === 0 && c.down.length > 0)
+      c = { down: c.down.slice(0, -1), up: [c.down.at(-1) ?? 0] };
+    return c;
+  });
+  return { ...s, columns, done: done2 };
+}
+var layout2 = (s) => ({ columns: s.columns, stock: s.stock, done: s.done });
+var canDeal = (s) => s.stock.length >= 10 && s.columns.every((c) => c.up.length > 0);
+var engine33 = {
+  initialState(config, seed) {
+    const c = configFrom17(config);
+    return { ...deal8(c, seed), suits: c.suits, moves: 0, history: [] };
+  },
+  apply(state, action) {
+    if (state.done === 8) return state;
+    if ("undo" in action) {
+      const prev = state.history.at(-1);
+      return prev ? { ...state, ...prev, history: state.history.slice(0, -1), moves: state.moves + 1 } : state;
+    }
+    const save = (next2) => ({
+      ...state,
+      ...next2,
+      moves: state.moves + 1,
+      history: [...state.history.slice(-199), layout2(state)]
+    });
+    if ("deal" in action) {
+      if (!canDeal(state)) return state;
+      const columns2 = state.columns.map((c, i) => ({
+        down: c.down,
+        up: [...c.up, state.stock[i] ?? 0]
+      }));
+      return save(settle({ ...layout2(state), columns: columns2, stock: state.stock.slice(10) }));
+    }
+    const { from, to, count: count2 } = action.move;
+    if (!canMove4(state, from, to, count2)) return state;
+    const columns = state.columns.map((c) => ({ down: [...c.down], up: [...c.up] }));
+    const a = columns[from];
+    const b = columns[to];
+    if (!a || !b) return state;
+    const run = a.up.slice(-count2);
+    a.up = a.up.slice(0, -count2);
+    b.up = [...b.up, ...run];
+    return save(settle({ ...layout2(state), columns }));
+  },
+  progress(state) {
+    return state.done / 8;
+  },
+  result(state) {
+    return state.done === 8 ? { completed: true } : null;
+  },
+  allowedInRace(action) {
+    return !("undo" in action);
+  }
+};
+
+// packages/games/spider/manifest.ts
+var manifest33 = defineManifest({
+  id: "spider",
+  version: 1,
+  category: "cards",
+  kind: "race",
+  players: { min: 1, max: 8, default: 1 },
+  modes: ["solo", "race", "online-private", "online-public", "quick-match"],
+  bots: { supported: false, difficulties: [], canFillSeats: false },
+  // A race's time limit (the first is the default).
+  timers: [
+    { kind: "countdown", seconds: 900 },
+    { kind: "countdown", seconds: 600 },
+    { kind: "countdown", seconds: 1200 }
+  ],
+  options: [
+    {
+      key: "suits",
+      label: "suitsOption",
+      values: [
+        { value: 1, label: "suits1" },
+        { value: 2, label: "suits2" },
+        { value: 4, label: "suits4" }
+      ]
+    }
+  ],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard"],
+  renderer: "dom",
+  estimatedMinutes: [5, 25],
+  leaderboards: [
+    { id: "best-time-1", metric: "time", order: "asc", when: { suits: 1 } },
+    { id: "best-time-2", metric: "time", order: "asc", when: { suits: 2 } },
+    { id: "best-time-4", metric: "time", order: "asc", when: { suits: 4 } }
+  ],
+  achievements: [
+    { id: "solver", icon: "target", metric: "wins", tiers: [1, 25, 100] },
+    // Best times in milliseconds: 15 minutes, 8 minutes, 4 minutes.
+    { id: "speed", icon: "timer", metric: "bestTime", tiers: [9e5, 48e4, 24e4] }
+  ],
+  // The deal comes from the seed and every move is logged.
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 12 },
+  tags: ["cards", "puzzle", "classic", "single-player"]
+});
+
 // packages/games/sudoku/engine/board.ts
 var CELLS2 = 81;
 var ALL = 1022;
@@ -10776,7 +10933,7 @@ function commit(state, next2, extra = {}) {
     ]
   };
 }
-var engine33 = {
+var engine34 = {
   initialState(config, seed) {
     return fromPuzzle(generate(seed, config.difficulty));
   },
@@ -10833,7 +10990,7 @@ var engine33 = {
 };
 
 // packages/games/sudoku/manifest.ts
-var manifest33 = defineManifest({
+var manifest34 = defineManifest({
   id: "sudoku",
   version: 1,
   category: "logic",
@@ -10895,7 +11052,7 @@ var LINES = [
   [0, 4, 8],
   [2, 4, 6]
 ];
-var configFrom17 = (raw) => ({
+var configFrom18 = (raw) => ({
   mode: raw?.mode === "classic" ? "classic" : "ultimate"
 });
 function lineOf(marks, seat) {
@@ -10912,9 +11069,9 @@ function movesFor6(state) {
     (b) => smallBoard(state.cells, b).flatMap((v, c) => v === EMPTY9 ? [b * 9 + c] : [])
   );
 }
-var engine34 = {
+var engine35 = {
   initialState(config) {
-    const { mode } = configFrom17(config);
+    const { mode } = configFrom18(config);
     return {
       mode,
       cells: Array.from({ length: mode === "classic" ? 9 : 81 }, () => EMPTY9),
@@ -10969,7 +11126,7 @@ var engine34 = {
 };
 
 // packages/games/ultimate-ttt/manifest.ts
-var manifest34 = defineManifest({
+var manifest35 = defineManifest({
   id: "ultimate-ttt",
   version: 1,
   category: "strategy",
@@ -11130,7 +11287,7 @@ function view8(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine35 = {
+var engine36 = {
   initialState: initialState8,
   legalActions: legalActions8,
   applyAction: applyAction8,
@@ -11140,7 +11297,7 @@ var engine35 = {
 };
 
 // packages/games/war/manifest.ts
-var manifest35 = defineManifest({
+var manifest36 = defineManifest({
   id: "war",
   version: 1,
   category: "cards",
@@ -11825,7 +11982,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine36 = {
+var engine37 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -11842,7 +11999,7 @@ var engine36 = {
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest36 = defineManifest({
+var manifest37 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -11906,10 +12063,11 @@ var GAMES = {
   "shape-claim": { manifest: manifest30, engine: engine30 },
   "snake": { manifest: manifest31, engine: engine31 },
   "spades": { manifest: manifest32, engine: engine32 },
-  "sudoku": { manifest: manifest33, engine: engine33 },
-  "ultimate-ttt": { manifest: manifest34, engine: engine34 },
-  "war": { manifest: manifest35, engine: engine35 },
-  "worm-rush": { manifest: manifest36, engine: engine36, bots, host: arenaHost }
+  "spider": { manifest: manifest33, engine: engine33 },
+  "sudoku": { manifest: manifest34, engine: engine34 },
+  "ultimate-ttt": { manifest: manifest35, engine: engine35 },
+  "war": { manifest: manifest36, engine: engine36 },
+  "worm-rush": { manifest: manifest37, engine: engine37, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

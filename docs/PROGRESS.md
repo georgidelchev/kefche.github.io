@@ -2713,6 +2713,11 @@ The owner answered "you decide", so the recommended answers stand:
   - **Help:** undo (not in races: it could show a face-down card and hide it again), Finish once every card is face up, and a second tap on a picked card sends it to its best place.
   - **Boards:** best times for draw 1 and draw 3 (winnable deals); achievements for wins and speed.
   - Checked in Chrome: 15/15 (the four choices, seven columns fitting a 360 px phone, the stock, 22 moves by picking and placing, undo, draw 3 showing three cards, 1280 px dark, Arabic, axe). The fixture plays foundation moves first.
+- [x] **Step 12, Spider:** a race game with 1, 2 or 4 suits (two decks, ten columns, a stock of five deals).
+  - **Rules:** any card on one a rank higher; a run moves only when it's one suit in order; anything goes into an empty column; dealing needs every column filled; a king-to-ace run of one suit leaves the table, and eight win. Undo (not in races).
+  - **Compact cards** in the kit (`PlayingCard`'s `compact`): a big rank and suit across the top, the strip that shows in a stacked column, so ten columns fit a phone.
+  - **Boards:** best times per number of suits.
+  - Checked in Chrome: 14/14 (three choices, ten columns at 360 px, 54 cards dealt, moves by picking and placing, a deal, undo, four suits dark at 1280 px, Arabic, axe).
 
 ## Known issues
 

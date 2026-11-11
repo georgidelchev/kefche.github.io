@@ -283,6 +283,24 @@ if (process.argv.includes("--fixtures")) {
         return { draw: true };
       },
     },
+    // A random move the engine accepts (a run onto its own suit first), else deals.
+    spider: {
+      config: { suits: 1 },
+      next: (state, random) => {
+        const { engine } = GAMES.spider;
+        const moves = [];
+        for (let from = 0; from < 10; from++) {
+          for (let count = 1; count <= 13; count++) {
+            for (let to = 0; to < 10; to++) {
+              const a = { move: { from, to, count } };
+              if (engine.apply(state, a) !== state) moves.push(a);
+            }
+          }
+        }
+        if (moves.length > 0 && random() < 0.85) return pick(random, moves);
+        return { deal: true };
+      },
+    },
     // Random slides next to the gap.
     fifteen: {
       config: { size: 3 },

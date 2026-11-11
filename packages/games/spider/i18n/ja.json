@@ -1,0 +1,84 @@
+{
+  "name": "スパイダー",
+  "tagline": "2組のトランプと10列：KからAまでの8列を完成させよう。",
+  "description": "ブラウザで無料のスパイダー・ソリティア。1・2・4スート、元に戻す、スマホ向けのコンパクトなカード。一人で時間と勝負、またはオンラインで競争。",
+  "about": [
+    "Spider is the solitaire played with two decks: 104 cards in ten columns. The first four columns get six cards and the rest five, only the top card face up, and the other 50 cards wait in the stock. The goal is to build eight complete runs, king down to ace in one suit, which then leave the table.",
+    "You can put any card on a card one rank higher, whatever its suit. But only a run that's all one suit, in order, can be moved together, so mixing suits gets in your way later. Any card or run can go into an empty column. When you're stuck, deal from the stock: one new card on every column, as long as none of them is empty.",
+    "With one suit, Spider is a relaxed game you'll usually win. With two suits it takes thought, and with four it's one of the hardest solitaires there is. Undo takes back your last move. Play alone against the clock, or race friends online on the same deal."
+  ],
+  "howToPlay": [
+    "Choose 1, 2 or 4 suits.",
+    "Put a card on one a rank higher, of any suit. Move several cards together only when they're one suit in order.",
+    "Any card or run can go into an empty column.",
+    "Tap the stock to deal one card onto each column (no column may be empty).",
+    "A run from king to ace in one suit leaves the table. Clear eight runs to win."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to pick up the run from it, then tap the column it goes on. Tap a picked card again to send it to the best column.",
+    "Mouse: the same, with clicks.",
+    "Keyboard: Tab moves between the cards and the stock; Enter picks up and puts down.",
+    "Undo takes back a move (not in races). New game goes back to the choices."
+  ],
+  "tips": [
+    "Build in one suit whenever you can: a mixed run can't be moved as a whole.",
+    "An empty column is your most valuable space: use it to rearrange, not to park a single card.",
+    "Turn up face-down cards early, before the stock runs out.",
+    "Deal only when you've done what you can: every deal covers all ten columns."
+  ],
+  "faq": [
+    {
+      "question": "Is Spider free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How many suits should I choose?",
+      "answer": "One suit for a relaxed game, two for a challenge, four for one of the hardest solitaires there is."
+    },
+    {
+      "question": "Why can't I deal?",
+      "answer": "Every column needs at least one card before you deal from the stock."
+    },
+    {
+      "question": "Why is there no undo in races?",
+      "answer": "Undo could show a face-down card and hide it again, which wouldn't be fair when racing on the same deal."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same deal and the same suits; the fastest to clear the table takes first place."
+    }
+  ],
+  "ui": {
+    "choose": "スート数を選ぶ",
+    "suits1": "1スート",
+    "suits2": "2スート",
+    "suits4": "4スート",
+    "suitsOption": "スート",
+    "best": "ベスト：{time}",
+    "time": "時間",
+    "moves": "手数",
+    "runs": "完成：{done}/8",
+    "deal": "山札：残り{count}回、タップで配る",
+    "column": "列{n}",
+    "emptyColumn": "空の列{n}",
+    "won": "{moves}手でクリア！",
+    "newBest": "ベストタイム更新！",
+    "undo": "元に戻す",
+    "newGame": "新しいゲーム"
+  },
+  "achievements": {
+    "solver": {
+      "name": "忍耐の人",
+      "description": "{count, plural, other {#回}}クリアする"
+    },
+    "speed": {
+      "name": "早業",
+      "description": "{time}以内にクリアする"
+    }
+  },
+  "leaderboards": {
+    "best-time-1": "ベストタイム · 1スート",
+    "best-time-2": "ベストタイム · 2スート",
+    "best-time-4": "ベストタイム · 4スート"
+  }
+}

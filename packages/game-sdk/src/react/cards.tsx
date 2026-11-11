@@ -323,17 +323,40 @@ function Back() {
 }
 
 /** One card, face up or (HIDDEN) face down. Its name is for screen readers. */
+/**
+ * A face for very small cards (Spider's ten columns on a phone): a big rank
+ * and suit across the top, the strip that shows when cards are stacked, and
+ * the suit again in the middle.
+ */
+function CompactFace({ c, four }: { c: Card; four: boolean }) {
+  const suit = suitOf(c);
+  const ink = suitColour(suit, four);
+  return (
+    <>
+      <rect x={0.5} y={0.5} width={W - 1} height={H - 1} rx={5} className="gk-face" />
+      <text x={4} y={24} className="gk-rank-big" style={{ fill: ink }}>
+        {rankText(rankOf(c))}
+      </text>
+      <SuitMark suit={suit} x={W - 25} y={4} size={21} four={four} />
+      <SuitMark suit={suit} x={W / 2 - 14} y={40} size={28} four={four} />
+    </>
+  );
+}
+
 export function PlayingCard({
   card: c,
   four = false,
   label,
   className,
+  compact = false,
 }: {
   card: Card;
   four?: boolean;
   /** The card's name; leave it out when the card sits inside a labelled control. */
   label?: string;
   className?: string;
+  /** The big-index face for tiny cards. */
+  compact?: boolean;
 }) {
   return (
     <svg
@@ -343,7 +366,13 @@ export function PlayingCard({
       aria-label={label}
       aria-hidden={label ? undefined : true}
     >
-      {c === HIDDEN ? <Back /> : <Face c={c} four={four} />}
+      {c === HIDDEN ? (
+        <Back />
+      ) : compact ? (
+        <CompactFace c={c} four={four} />
+      ) : (
+        <Face c={c} four={four} />
+      )}
     </svg>
   );
 }
@@ -518,6 +547,7 @@ export const CARD_CSS = `
 .gk-face { fill: var(--card-face); stroke: var(--card-edge); stroke-width: 1; }
 .gk-rank { font: 700 15px/1 system-ui, sans-serif; text-anchor: middle; }
 .gk-card text { direction: ltr; unicode-bidi: isolate; }
+.gk-rank-big { font: 800 24px/1 system-ui, sans-serif; text-anchor: start; }
 .gk-court { fill: none; stroke: var(--card-edge); stroke-width: 0.8; }
 .gk-mark { stroke-width: 1.2; stroke-linejoin: round; }
 .gk-back { fill: var(--card-back); stroke: var(--card-edge); stroke-width: 1; }
