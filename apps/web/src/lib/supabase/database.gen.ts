@@ -1096,6 +1096,18 @@ isOneToOne: false
         isOneToOne: true
         isSetofReturn: false
       } },
+"table_entry":
+{ Args: { "p_match": string,"p_room": string }; Returns: Json
+                           },
+"table_match_load":
+{ Args: { "p_match": string,"p_room": string }; Returns: Json
+                           },
+"table_match_of":
+{ Args: { "p_seed": string,"p_user": string }; Returns: string
+                           },
+"table_match_record":
+{ Args: { "p_match": Json,"p_room": string,"p_seed": string }; Returns: string
+                           },
 "take_gif_search":
 { Args: { "p_remote": boolean,"p_user": string }; Returns: string
                            },

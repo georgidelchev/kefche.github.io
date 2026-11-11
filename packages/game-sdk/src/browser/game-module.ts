@@ -74,6 +74,20 @@ export interface OnlineMatch {
    * own record, from which it works out the result (SPEC §12.5).
    */
   recordAction?: (seat: number, action: unknown) => void;
+  /**
+   * Games with hidden information (Phase 12): the arena server's table holds
+   * the match, so no browser sees anyone else's secrets. Set when the game
+   * plays on the table and this build has an arena server.
+   */
+  table?: TableAccess;
+}
+
+/** The arena server and the player's way in, for a table (like ArenaAccess). */
+export interface TableAccess {
+  /** The arena server's base URL (http or https). */
+  url: string;
+  /** A fresh access token for this player. */
+  token(): Promise<string>;
 }
 
 /**

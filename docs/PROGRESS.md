@@ -2648,11 +2648,21 @@ The owner answered "you decide", so the recommended answers stand:
 ### Status
 
 - [x] Plan written; the recommended answers stand (2026-11-10)
+- [x] **Step 1, hidden information in the SDK:**
+  - **Views:** a turn engine with secrets gives `view(state, seat)` (and `viewAction` for secret moves); renderers and bots only get views, and a finished match shows everything.
+  - **One device:** with two or more people, the screen covers itself between their turns ("Pass the device to …", 11 locales) and no clock runs until the next person says they have it.
+  - **Simultaneous choices** are turn engines with several seats to move: bots choose while a person thinks, every seat to move has its clock, and the device goes to each person still to choose. `RoundEngine` is gone (ADR-0047). Checkers, Five Colors and Go rechecked: 40/40, 36/36, 43/43.
+  - **Kits:** cards (one number each; decks of 52, 36, 32 and 24) and an original SVG deck with large indices, court marks, a four-colour option kept per device, and a fanned hand (a click, Enter or a drag up plays; a tap lifts first); SVG dice with a tumble. Card and dice names are site strings merged into games tagged "cards" or "dice". Card tokens in both themes pass the contrast check. The dev gallery shows both: 18/18 in Chrome, axe clean.
+- [x] **Step 2, the table server** (ADR-0047; migration `20261111100000_tables.sql`):
+  - **The table:** a Durable Object per room's match on the arena Worker, for turn games with `hiddenInformation`. It deals from its own seed (its hash first, the seed at the end), checks actions, plays bots and stand-ins, keeps the clocks with one alarm, sleeps between moves, and sends each seat its own view.
+  - **Results:** `submit-match` replays the table's report from its seed and records the match once (`table_match_record`), counted for each account seated; players ask for their record (`tableResult`) for the results screen.
+  - **The site:** a game with hidden information plays online only on the table (`context.online.table`, `createTableSession`).
+  - **Checked on the local stack,** with Nim made a table game in the working tree only: 14/14 at the protocol level (seats and commitment, refused moves out of turn, stale or from outsiders, a match to its end with the seed matching its hash, recorded once with XP, bots on the table, reconnecting, a stand-in after 15 s), and 7/7 through the room page in Chrome with two accounts. Deno 101/101.
 
 ## Known issues
 
 - **A continued Sudoku isn't recorded (Phase 7):** a saved puzzle finished on a later visit has no log from its start, so the server can't replay it, and it counts for nothing beyond the device's own best times. Saving the log with the game would fix it.
-- **Online casual results are taken on the players' word (Phase 7):** the server compares what the players report, but holds no moves to replay: only the host's browser has them. A result one account reports alone (against a guest, or after the other left) counts unchecked, like a game against bots (Q1), and casual results reach no leaderboard. Sending the host's moves along with its report would let the server replay them.
+- **Online casual results are taken on the players' word (Phase 7)** (except on tables, Phase 12, where the server holds the moves): the server compares what the players report, but holds no moves to replay: only the host's browser has them. A result one account reports alone (against a guest, or after the other left) counts unchecked, like a game against bots (Q1), and casual results reach no leaderboard. Sending the host's moves along with its report would let the server replay them.
 - **Leaving a match early records nothing (Phase 7):** a player who leaves an online match before its end never reports, so the match doesn't count for them, and `player_game_stats.abandons` stays at 0. Recording abandons needs the server to know when a match ends without the leaver's word.
 - **Race placings aren't stored (Phase 7):** each racer's result is its own match, and the room's standings (who came first) stay the host's. A placing could be worked out from the matches that share a race's seed.
 

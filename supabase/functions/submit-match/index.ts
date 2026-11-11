@@ -42,9 +42,14 @@
 //   → { "matchId" } once decided, or { "matchId": null } while others may still report
 //   Body: { "race": { roomId, seed, log } }: a racer's moves.
 //   → { "matchId", "status", "reason", "score", "timeMs" }
+//   Body: { "tableResult": { roomId, seed } }: the player's record of a table's match.
+//   → { "matchId", "rewards" } once the table has reported, or { "matchId": null, "pending": true }
 // POST, Authorization: Bearer <ARENA_SECRET>, from the arena server
 //   Body: { "arena": { gameId, version, lives: [{ life, userId, arena, score, kills, durationMs, end }] } }
 //   → { "recorded": n } (guests' lives aren't recorded)
+//   Body: { "table": { roomId, match, gameId, version, seed, moves, timedOut } }: a
+//   table's finished match (Phase 12), replayed from its seed (_shared/table-play.ts).
+//   → { "matchId" }
 // POST, Authorization: Bearer <SUBMIT_MATCH_SECRET>, from pg_cron
 //   Body: { "sweep": true }: decides rated games whose room is gone.
 import { createClient, type SupabaseClient, type User } from "@supabase/supabase-js";
@@ -53,6 +58,7 @@ import * as z from "zod";
 import { rewardsFor, unlockForMatch } from "../_shared/achievements.ts";
 import { arenaBoardEntries, arenaReportSchema } from "../_shared/arena-play.ts";
 import { arenaLifeRecordSchema, judgeArena } from "../_shared/arena-solo.ts";
+import { judgeTable, tableReportSchema, tableRoomSchema } from "../_shared/table-play.ts";
 import { decide, type Verdict } from "../_shared/chess-rated.ts";
 import { GAMES } from "../_shared/engines.ts";
 import { rate } from "../_shared/glicko2.ts";
@@ -84,6 +90,9 @@ const playBody = z.object({
 });
 const roomBody = z.object({ room: roomResultSchema });
 const raceBody = z.object({ race: raceLogSchema });
+const tableResultBody = z.object({
+  tableResult: z.object({ roomId: z.uuid(), seed: z.string().min(1).max(64) }),
+});
 
 const roomSchema = z.object({
   roomId: z.uuid(),
@@ -465,6 +474,68 @@ async function submitArena(admin: SupabaseClient, body: unknown): Promise<Respon
   return json({ recorded });
 }
 
+/** A table's finished match: replayed from the table's seed, then recorded once. */
+async function submitTable(admin: SupabaseClient, body: unknown): Promise<Response> {
+  const parsed = tableReportSchema.safeParse(body);
+  if (!parsed.success) return fail("bad_request", 400);
+  const report = parsed.data.table;
+  const loaded = await admin.rpc("table_match_load", {
+    p_room: report.roomId,
+    p_match: report.match,
+  });
+  if (loaded.error) throw new Error(`table_match_load: ${loaded.error.message}`);
+  if (loaded.data === null) return fail("game_not_found", 404);
+  const room = tableRoomSchema.parse(loaded.data);
+  const game = GAMES.get(room.gameId);
+  if (game?.kind !== "turn" || !game.table || game.version !== room.gameVersion) {
+    return fail("bad_request", 400);
+  }
+  const verdict = judgeTable(game, room, report, Date.now());
+  if (!verdict.ok) {
+    log("error", "table_refused", { room: room.roomId, game: room.gameId, reason: verdict.reason });
+    return fail("bad_request", 400);
+  }
+  const stored = await admin.rpc("table_match_record", {
+    p_room: room.roomId,
+    p_seed: report.match,
+    p_match: {
+      gameId: room.gameId,
+      gameVersion: room.gameVersion,
+      seats: verdict.seats,
+      outcome: verdict.outcome,
+      reason: verdict.reason,
+      timer: verdict.timer ?? { kind: "none" },
+      config: verdict.config,
+      startedAt: room.settings.startedAt,
+      durationMs: verdict.durationMs,
+    },
+  });
+  if (stored.error) throw new Error(`table_match_record: ${stored.error.message}`);
+  const matchId = z.uuid().parse(stored.data);
+  await unlockForMatch(admin, matchId);
+  log("info", "table_match", { room: room.roomId, game: room.gameId, match: matchId });
+  return json({ matchId });
+}
+
+/** A player asking for their record of a table's match, and what it earned them. */
+async function submitTableResult(
+  admin: SupabaseClient,
+  user: User,
+  body: unknown,
+): Promise<Response> {
+  const parsed = tableResultBody.safeParse(body);
+  if (!parsed.success) return fail("bad_request", 400);
+  const found = await admin.rpc("table_match_of", {
+    p_seed: parsed.data.tableResult.seed,
+    p_user: user.id,
+  });
+  if (found.error) throw new Error(`table_match_of: ${found.error.message}`);
+  const matchId = z.uuid().nullable().parse(found.data);
+  // Not recorded yet (the table reports as the match ends), or a guest's seat.
+  if (matchId === null) return json({ matchId: null, pending: true });
+  return json({ matchId, rewards: await rewardsFor(admin, matchId, user.id) });
+}
+
 /** The room's current match as the reporting player sits in it, or a refusal. */
 async function loadRoom(
   admin: SupabaseClient,
@@ -485,7 +556,10 @@ async function loadRoom(
   const game = GAMES.get(room.gameId);
   const settings = roomSettingsSchema.safeParse(room.settings);
   // Rated games have their own way (above).
-  if (room.rated || game?.kind !== kind || !settings.success) return fail("bad_request", 400);
+  // Rated games have their own way (above), and a table reports its own matches.
+  if (room.rated || game?.kind !== kind || game.table || !settings.success) {
+    return fail("bad_request", 400);
+  }
   if (kind === "race" && !game.modes.includes("race")) return fail("bad_request", 400);
   if (game.version !== room.gameVersion) return fail("game_updated", 409);
   const timer = roomTimer(game, settings.data.timer);
@@ -598,7 +672,10 @@ Deno.serve(async (req) => {
   try {
     // The arena server, reporting lives.
     const arenaSecret = Deno.env.get("ARENA_SECRET");
-    if (arenaSecret && sameSecret(token, arenaSecret)) return await submitArena(admin, body);
+    if (arenaSecret && sameSecret(token, arenaSecret)) {
+      const fromTable = typeof body === "object" && body !== null && "table" in body;
+      return await (fromTable ? submitTable(admin, body) : submitArena(admin, body));
+    }
 
     // The scheduled job: games nobody is left to ask about.
     const secret = Deno.env.get("SUBMIT_MATCH_SECRET");
@@ -621,6 +698,7 @@ Deno.serve(async (req) => {
       if ("play" in body) return await submitPlay(admin, auth.user, body);
       if ("room" in body) return await submitRoom(admin, auth.user, body);
       if ("race" in body) return await submitRace(admin, auth.user, body);
+      if ("tableResult" in body) return await submitTableResult(admin, auth.user, body);
     }
 
     // A player asking for their rated game's result.

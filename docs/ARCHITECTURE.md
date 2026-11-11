@@ -259,6 +259,24 @@ Measured in step 12 on the local arena Worker: 15 people in one arena, 14 from N
 - **The daily challenge** rotates through 11 games.
 - **The server bundle** (`_shared/engines.gen.js`) holds every engine and manifest: 300 KB for 27 games (170 KB for 8 before).
 
+## Cards, dice and secrets (Phase 12)
+
+Online play of games with hidden information runs on a **table**: a Durable Object on the arena Worker, one per room's match (ADR-0047).
+
+```mermaid
+flowchart LR
+  P["Each player's page"] -->|"lobby, seats, chat"| SB[(Supabase)]
+  P <-->|"WebSocket: actions up,<br/>each seat's own view down"| T["Table<br/>Durable Object"]
+  T -->|"table_entry<br/>(the player's token)"| SB
+  T -->|"seed + moves, ARENA_SECRET"| SM["submit-match<br/>(replays, records once)"]
+  SM --> SB
+```
+
+- **Views:** an engine with secrets gives `view(state, seat)`; renderers and bots get only views, offline too. On one device, a "pass the device" cover hides everything between two people's turns.
+- **The table** deals from its own seed (its hash published first), checks actions, plays bots and stand-ins, keeps the clocks with one alarm, and sleeps between moves.
+- **Simultaneous choices** are turn engines with several seats to move.
+- **Kits** (`@kefche/game-sdk/react`): an original SVG deck with large indices and a four-colour option, a fanned hand, and SVG dice. Their names for screen readers are site strings merged into games tagged "cards" or "dice".
+
 ## Internationalization
 
 - **Registry:** `src/i18n/locales.ts` lists every locale with its native name, BCP 47 tag, `dir`, script and OG locale. Routing, fonts, `<html lang dir>`, hreflang and the language switcher all derive from it.

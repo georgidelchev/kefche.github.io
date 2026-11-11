@@ -4,6 +4,7 @@
 // only says how to render.
 
 import { createOnlineTurnSession } from "./online-session";
+import { createTableSession } from "./table-session";
 import {
   createTurnSession,
   type TurnSession,
@@ -52,8 +53,13 @@ export function runTurnGame<State, Action, Config>(
   const start = (seed: string) => {
     session?.destroy();
     view = null;
-    // Online, the room's host runs the match and everyone else mirrors it.
-    const create = context.online ? createOnlineTurnSession : createTurnSession;
+    // Online, a table on the arena server holds a match with hidden
+    // information; otherwise the room's host runs it and everyone mirrors it.
+    const create = context.online?.table
+      ? createTableSession
+      : context.online
+        ? createOnlineTurnSession
+        : createTurnSession;
     session = create({
       ...sessionOptions,
       context: { ...context, seed },

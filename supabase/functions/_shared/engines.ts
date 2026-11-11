@@ -133,6 +133,11 @@ interface Rules {
   achievements: readonly AchievementDef[];
   /** The game's leaderboards (the SDK's LeaderboardDef). */
   leaderboards: readonly LeaderboardDef[];
+  /**
+   * Online play runs on a table on the arena server (a turn game with hidden
+   * information, Phase 12): the table reports the result, not the players.
+   */
+  table: boolean;
 }
 
 export type ServerGame =
@@ -155,6 +160,7 @@ interface BundledManifest {
   awayPlayers?: "skip" | "clock";
   onlineTimer?: number;
   options?: GameOption[];
+  hiddenInformation?: boolean;
   scoreValidation: { kind: string; maxActionsPerSecond?: number };
   achievements: AchievementDef[];
   leaderboards: LeaderboardDef[];
@@ -175,6 +181,7 @@ export const GAMES: ReadonlyMap<string, ServerGame> = new Map(
       maxActionsPerSecond: m.scoreValidation.maxActionsPerSecond ?? null,
       achievements: m.achievements,
       leaderboards: m.leaderboards,
+      table: m.kind === "turn" && m.hiddenInformation === true,
     };
     const game: ServerGame =
       m.kind === "race"

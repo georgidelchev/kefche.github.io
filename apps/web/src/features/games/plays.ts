@@ -159,6 +159,22 @@ export async function submitRoomResult(
   return null;
 }
 
+/**
+ * What a table's match gave this account (Phase 12): the table reports the
+ * match itself as it ends, so this asks until it's recorded. Null for a
+ * guest, or if it isn't recorded by then.
+ */
+export async function submitTableResult(roomId: string, seed: string): Promise<Rewards | null> {
+  if (!isAccount()) return null;
+  for (let ask = 0; ask < ROOM_ASKS; ask++) {
+    // The table reports as the last move lands; give it a moment first.
+    await wait(ask === 0 ? 1000 : ROOM_ASK_MS);
+    const answer = await submit({ tableResult: { roomId, seed } });
+    if (answer.matchId) return answer.rewards;
+  }
+  return null;
+}
+
 /** This account's moves in a race, for the server to replay on the room's seed. */
 export async function submitRaceLog(
   roomId: string,

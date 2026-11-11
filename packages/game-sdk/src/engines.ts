@@ -78,6 +78,13 @@ export interface TurnEngine<State, Action, Config = undefined> {
    * and `currentSeats` and `result` for everyone.
    */
   view?(state: State, seat: number | null): State;
+  /**
+   * How `viewer` may see an action `seat` took (the table tells everyone
+   * the last move): the action itself by default, a blanked copy for a
+   * secret one (the cards passed in Hearts, a fleet placed), or null to
+   * show only that `seat` moved.
+   */
+  viewAction?(action: Action, seat: number, viewer: number | null): Action | null;
 }
 
 /** The state `seat` may see: the engine's view, or the whole state for a game with no secrets. */

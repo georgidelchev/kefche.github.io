@@ -11,6 +11,7 @@ import {
   raceSetup,
   ratedClocks,
   roomConfig,
+  tableAccess,
   turnStrings,
 } from "@/features/games/page-props";
 import { listGames, type RegisteredGame } from "@/features/games/registry";
@@ -95,6 +96,7 @@ const strings = roomStrings(t);
               modes: onlineModes(manifest),
               race: raceSetup(manifest, text.ui),
               rated: ratedClocks(manifest),
+              table: tableAccess(manifest),
             }}
             locale={bcp47}
             dir={dir}

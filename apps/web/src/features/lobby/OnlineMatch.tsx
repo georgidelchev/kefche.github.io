@@ -21,7 +21,7 @@ import { Button } from "@kefche/ui/components/button";
 import type { PlayerStrings } from "@/features/games/GamePlayer";
 import { loadGame } from "@/features/games/loaders";
 import { gameStorage, Overlay, useGameScreen, VOLUME } from "@/features/games/player-parts";
-import { isAccount, submitRoomResult } from "@/features/games/plays";
+import { isAccount, submitRoomResult, submitTableResult } from "@/features/games/plays";
 import { rewardsState, type RewardsState } from "@/features/games/rewards";
 import { fill, resultText, type TurnStrings } from "@/features/games/turn/labels";
 import { send, type Supabase } from "@/lib/supabase/client";
@@ -71,7 +71,12 @@ interface Props {
   away: readonly boolean[];
   /** The match just started (not a reload mid-match): count down first. */
   countdown: boolean;
-  game: { id: string; name: string; ui: Record<string, string> };
+  game: {
+    id: string;
+    name: string;
+    ui: Record<string, string>;
+    table: { url: string | null } | null;
+  };
   locale: string;
   dir: "ltr" | "rtl";
   strings: RoomStrings;
@@ -113,7 +118,9 @@ export function OnlineMatch({
         ? 0
         : COUNTDOWN_S,
   );
-  const [failed, setFailed] = useState(false);
+  const [loadFailed, setLoadFailed] = useState(false);
+  // A game with hidden information can't be played online without the arena server's table.
+  const failed = loadFailed || game.table?.url === null;
   const [attempt, setAttempt] = useState(0);
   const [report, setReport] = useState<TurnReport | null>(null);
   const [result, setResult] = useState<GameResult | null>(null);
@@ -181,11 +188,15 @@ export function OnlineMatch({
     setResult(over);
     // The host records the end; the room then offers a rematch.
     if (hostRef.current === self) send(supabase.rpc("finish_room", { p_room: roomId }));
-    // Casual: each account reports what it saw; the match counts when the reports agree.
+    // Casual: each account reports what it saw; the match counts when the
+    // reports agree. A table reports its match itself; each account asks for its record.
     if (!isRated && seat !== undefined) {
       if (isAccount()) {
         setRewards({ kind: "saving" });
-        void submitRoomResult(roomId, seed, over).then((answer) => {
+        const asked = game.table
+          ? submitTableResult(roomId, seed)
+          : submitRoomResult(roomId, seed, over);
+        void asked.then((answer) => {
           if (!closedRef.current) setRewards(rewardsState(answer));
         });
       } else {
@@ -246,6 +257,19 @@ export function OnlineMatch({
           }
         : {}),
     };
+    // A game with hidden information plays only on a table: never with a host who could see it all.
+    const table = game.table;
+    if (table) {
+      if (table.url === null) return;
+      online.table = {
+        url: table.url,
+        token: async () => {
+          const { data } = await supabase.auth.getSession();
+          if (!data.session) throw new Error("signed_out");
+          return data.session.access_token;
+        },
+      };
+    }
     loadGame(game.id).then(
       (module) => {
         const stage = stageRef.current;
@@ -270,7 +294,7 @@ export function OnlineMatch({
         });
       },
       () => {
-        if (!cancelled) setFailed(true);
+        if (!cancelled) setLoadFailed(true);
       },
     );
     return () => {
@@ -372,7 +396,7 @@ export function OnlineMatch({
             </p>
             <Button
               onClick={() => {
-                setFailed(false);
+                setLoadFailed(false);
                 setAttempt(attempt + 1);
               }}
             >

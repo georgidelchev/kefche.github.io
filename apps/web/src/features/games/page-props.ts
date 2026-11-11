@@ -308,6 +308,14 @@ export interface ArenaProps {
   privacy: string;
 }
 
+/**
+ * Where a game with hidden information plays online: a table on the arena
+ * server (Phase 12, ADR-0047). Null for other games; a null URL when this
+ * build has no arena server.
+ */
+export const tableAccess = (manifest: GameManifest): { url: string | null } | null =>
+  manifest.kind === "turn" && manifest.hiddenInformation ? { url: getArenaUrl() } : null;
+
 /** The online arena for a real-time game, in a build with Supabase and an arena server. */
 export function arenaProps(manifest: GameManifest, t: AppT, locale: Locale): ArenaProps | null {
   const url = getArenaUrl();

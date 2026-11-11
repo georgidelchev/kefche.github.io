@@ -14,12 +14,14 @@
     "bindings": [
       { "name": "ARENA", "class_name": "Arena" },
       { "name": "DIRECTORY", "class_name": "Directory" },
+      { "name": "TABLE", "class_name": "Table" },
     ],
   },
   // Workers Free allows only SQLite-backed Durable Objects.
   "migrations": [
     { "tag": "v1", "new_sqlite_classes": ["Arena"] },
     { "tag": "v2", "new_sqlite_classes": ["Directory"] },
+    { "tag": "v3", "new_sqlite_classes": ["Table"] },
   ],
   "vars": {
     // Pages allowed to open an arena's WebSocket (comma-separated origins).

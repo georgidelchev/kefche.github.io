@@ -68,6 +68,12 @@ export interface OnlineGame {
   race: RaceSetup | null;
   /** The clocks rated matchmaking offers (none for an unrated game). */
   rated: RatedClock[];
+  /**
+   * Games with hidden information (Phase 12): matches play on a table on the
+   * arena server, at this URL; null when this build has no arena server, so
+   * the game can't be played online.
+   */
+  table: { url: string | null } | null;
 }
 
 /** A change to the room as this browser shows it. */

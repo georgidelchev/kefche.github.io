@@ -997,3 +997,29 @@ Lobby chat already existed (ADR-0023).
 - **Rated games other than chess store no record of their moves** with the match (chess keeps its PGN); their moves stay in `private.rated_moves` for a day after the result, as chess's do.
 
 **Amendment (step 18, Box Pusher).** An option may be marked `rooms: false`: it is picked only in the game's own menu (Box Pusher's 20 fixed levels per difficulty), rooms and setup sheets don't show it, and a room plays its first value (a fresh level). It is still part of the engine config, so `submit-match` checks it like any other option, and a leaderboard can name it in `when` (Box Pusher's boards count fresh levels only). A segmented control for 21 levels would not fit a phone, and a race on a fixed level gives nothing a fresh one doesn't.
+
+---
+
+## ADR-0047: Tables: hidden information held on the arena server
+
+**Date:** 2026-11-11 · **Status:** Accepted (Phase 12 Q1; the owner left it to me)
+
+**Context.** SPEC §10.6: in games with secret state (hands, roles, fleets, dice still to come), no browser may see another player's secrets, the host's included. Until now the host's browser ran every online turn game from a seed every member could read. SPEC §10.6 suggested an Edge Function that deals into `room_secrets` rows, with a call for every move. That puts each card played 200–400 ms away, counts every move against Supabase's monthly invocations, and still leaves online bots and dice in a browser.
+
+**Decision.**
+
+- **A table per room's match:** a Durable Object (`Table`) on the arena Worker, at `/tables/<room>/<match seed>`. Lobbies, seats, chat and the room's settings stay in Supabase; when the room starts, each member's page opens a WebSocket to its table, and `public.table_entry` checks their token against the room's seats (spectators if the room allows them).
+- **The table holds the match:** it draws its own seed, publishes its SHA-256 at once and the seed itself at the end, so players can check the deal was fixed in advance. It checks every action against the engine, plays the bots, keeps the clocks, and sends each seat only `engine.view(state, seat)` (spectators `view(state, null)`). The last move is shown as `engine.viewAction` allows.
+- **Which games:** turn games with `hiddenInformation: true` (secrets, or randomness that mustn't be known in advance, like dice). The page passes the arena URL as `context.online.table`, and `runTurnGame` uses `createTableSession` instead of the host's session. Without an arena server such a game can't be played online.
+- **Results:** the table reports the seed and every move to `submit-match` with `ARENA_SECRET`. It replays them with the room's options and timer and records the match once (`private.table_matches`), counted for every account seated (guests aren't counted, as in arenas). Players ask for their record (`{ tableResult }`) for the results screen; reports from players about a table game are refused.
+- **Absent players (Q4):** a player whose sockets are all closed for 15 s while it's their turn gets a stand-in bot (easy), shown as such, until they act again. A player who never connects counts as gone from the start.
+- **Cheap to run:** the table sleeps between moves (the WebSocket Hibernation API). The match lives in storage, written once per change, pings are answered without waking it, and its only timer is one alarm, for the next clock to run out or stand-in to start. Bot moves are made at once, and browsers show them 400 ms apart; the next person's clock starts once those moves have been shown.
+- **Bots on a budget of steps:** a Worker's clock doesn't move while code runs, so a table bot's `now()` advances 0.1 ms per call, and it gets a tenth of the browser's budget. Bots that search stop after a fixed number of steps.
+- **Simultaneous choices** are turn engines with several seats to move, whose views hide pending choices; the unused `RoundEngine` interface is gone.
+
+**Consequences.**
+
+- **Workers Free, estimated** (to measure on the live server): a move from a person is one message (1/20 of a request) and one or two rows written (the match, and the alarm when there's a timer); bot moves add nothing of their own. A four-player card game with three bots is about 10 requests and 200 rows written, so the 100,000 rows written a day allow a few hundred games, shared with the arenas' requests.
+- **CPU per event is unclear on Free:** Cloudflare's pages give Durable Objects 30 s but also say they share Workers' limits (10 ms on Free). Card bots on the table are kept to rule-based play and a small step budget; the first live games will show whether that's enough, and Workers Paid ($5/month) removes the doubt.
+- **One region per table,** near whoever opened it first, as for arenas.
+- **A new path to results,** reviewed with the security pass (Phase 19): tokens, seats, message sizes (64 KB), refused actions, and views that must never carry another seat's secrets.
