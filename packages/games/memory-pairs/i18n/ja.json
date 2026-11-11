@@ -1,0 +1,86 @@
+{
+  "name": "神経衰弱 対戦",
+  "tagline": "順番にカードをめくろう。ペアを当てたらもう一度。",
+  "description": "ブラウザで無料の神経衰弱 対戦。2〜6人で順番に、友だち、ボット、オンラインと。カードは12、20、30枚。",
+  "about": [
+    "Memory Pairs is the card game of pairs, played taking turns: Memory Match's cards for 2 to 6 players, with friends, bots, or online. The cards lie face down in pairs; turn two over, and if they match, they're yours and you go again.",
+    "A miss shows both cards for a moment and passes the turn, so everyone gets a look: the game is remembering where each symbol was. When the table is clear, the most pairs win; a tie is shared.",
+    "Choose 12, 20 or 30 cards. Online, the layout is kept on our server and each card is turned as it's chosen, so nobody can peek at the face-down cards. For a race against the clock, play Memory Match."
+  ],
+  "howToPlay": [
+    "Choose 12, 20 or 30 cards, then Play vs bots, Play on this device, or create a room.",
+    "On your turn, tap a face-down card, then a second one.",
+    "A pair stays face up and scores, and you go again.",
+    "A miss shows both cards for a moment, then turns them back; the next player goes.",
+    "When every pair is found, the most pairs win."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to turn it.",
+    "Mouse: click a card.",
+    "Keyboard: Tab or the arrow keys move between cards; Enter or Space turns one."
+  ],
+  "tips": [
+    "Watch the other players' turns: every card they turn is a free look for you.",
+    "Turn a card you've never seen first; if it matches one you remember, you know where to go.",
+    "Late in the game, a known pair is worth more than a guess.",
+    "Bots forget too: easy ones a lot, hard ones hardly at all."
+  ],
+  "faq": [
+    {
+      "question": "Is Memory Pairs free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How is it different from Memory Match?",
+      "answer": "Memory Match is a race against the clock, alone or against others on the same layout. Memory Pairs is taking turns at one table, and the most pairs win."
+    },
+    {
+      "question": "Can anyone see the face-down cards online?",
+      "answer": "No. The layout is kept on our server, and each card is turned only when it's chosen. The seed is revealed at the end, matching the fingerprint shown at the start."
+    },
+    {
+      "question": "What happens on a tie?",
+      "answer": "Everyone with the most pairs shares the win."
+    }
+  ],
+  "ui": {
+    "boardLabel": "カード",
+    "cardUp": "{number} 枚目、{symbol}",
+    "cardDown": "{number} 枚目、裏向き",
+    "cards": "枚数",
+    "cards12": "12",
+    "cards20": "20",
+    "cards30": "30",
+    "scores": "見つけたペア",
+    "seatScore": "{name}、ペア：{pairs}",
+    "pairsOf": "{pairs} / {total}",
+    "symbol0": "星",
+    "symbol1": "月",
+    "symbol2": "太陽",
+    "symbol3": "ハート",
+    "symbol4": "葉っぱ",
+    "symbol5": "しずく",
+    "symbol6": "稲妻",
+    "symbol7": "花",
+    "symbol8": "魚",
+    "symbol9": "ベル",
+    "symbol10": "鍵",
+    "symbol11": "王冠",
+    "symbol12": "いかり",
+    "symbol13": "雲",
+    "symbol14": "きのこ",
+    "toFlip": "めくる番：{name}",
+    "missed": "ペアならず：{name}"
+  },
+  "achievements": {
+    "winner": {
+      "name": "勝者",
+      "description": "{count, plural, other {#回}}勝つ"
+    },
+    "veteran": {
+      "name": "ベテラン",
+      "description": "{count, plural, other {#回}}プレイする"
+    }
+  },
+  "leaderboards": {}
+}

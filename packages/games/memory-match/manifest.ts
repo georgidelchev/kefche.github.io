@@ -3,9 +3,9 @@ import { defineManifest } from "@kefche/game-sdk";
 // SPEC §20.3 #30: find the pairs, 12, 20 or 30 cards. Alone it's a race
 // against the clock (fewest flips and time) and online a race on the same
 // layout. Playing together (on one device, or against bots) is in the
-// game's own menu, and records nothing: taking turns online needs the
-// layout hidden on the server (SPEC §10.6), which comes in Phase 12.
-// TODO #5: make it a turn game too once the server deals hidden cards.
+// game's own menu, and records nothing. Taking turns online, with the
+// layout hidden on the server (SPEC §10.6), is Memory Pairs: a turn game on
+// the same cards (Phase 12, which resolved TODO #5).
 export const manifest = defineManifest({
   id: "memory-match",
   version: 1,

@@ -1,0 +1,86 @@
+{
+  "name": "Найди пару",
+  "tagline": "Открывайте карты по очереди: нашли пару — ходите ещё.",
+  "description": "Играйте в «Найди пару» бесплатно: игра в пары карт для 2–6 игроков, по очереди с друзьями, ботами или онлайн, с 12, 20 или 30 картами.",
+  "about": [
+    "Memory Pairs is the card game of pairs, played taking turns: Memory Match's cards for 2 to 6 players, with friends, bots, or online. The cards lie face down in pairs; turn two over, and if they match, they're yours and you go again.",
+    "A miss shows both cards for a moment and passes the turn, so everyone gets a look: the game is remembering where each symbol was. When the table is clear, the most pairs win; a tie is shared.",
+    "Choose 12, 20 or 30 cards. Online, the layout is kept on our server and each card is turned as it's chosen, so nobody can peek at the face-down cards. For a race against the clock, play Memory Match."
+  ],
+  "howToPlay": [
+    "Choose 12, 20 or 30 cards, then Play vs bots, Play on this device, or create a room.",
+    "On your turn, tap a face-down card, then a second one.",
+    "A pair stays face up and scores, and you go again.",
+    "A miss shows both cards for a moment, then turns them back; the next player goes.",
+    "When every pair is found, the most pairs win."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to turn it.",
+    "Mouse: click a card.",
+    "Keyboard: Tab or the arrow keys move between cards; Enter or Space turns one."
+  ],
+  "tips": [
+    "Watch the other players' turns: every card they turn is a free look for you.",
+    "Turn a card you've never seen first; if it matches one you remember, you know where to go.",
+    "Late in the game, a known pair is worth more than a guess.",
+    "Bots forget too: easy ones a lot, hard ones hardly at all."
+  ],
+  "faq": [
+    {
+      "question": "Is Memory Pairs free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How is it different from Memory Match?",
+      "answer": "Memory Match is a race against the clock, alone or against others on the same layout. Memory Pairs is taking turns at one table, and the most pairs win."
+    },
+    {
+      "question": "Can anyone see the face-down cards online?",
+      "answer": "No. The layout is kept on our server, and each card is turned only when it's chosen. The seed is revealed at the end, matching the fingerprint shown at the start."
+    },
+    {
+      "question": "What happens on a tie?",
+      "answer": "Everyone with the most pairs shares the win."
+    }
+  ],
+  "ui": {
+    "boardLabel": "Карты",
+    "cardUp": "Карта {number}, {symbol}",
+    "cardDown": "Карта {number}, рубашкой вверх",
+    "cards": "Карты",
+    "cards12": "12",
+    "cards20": "20",
+    "cards30": "30",
+    "scores": "Найденные пары",
+    "seatScore": "{name}, пар: {pairs}",
+    "pairsOf": "{pairs} из {total}",
+    "symbol0": "звезда",
+    "symbol1": "луна",
+    "symbol2": "солнце",
+    "symbol3": "сердце",
+    "symbol4": "лист",
+    "symbol5": "капля",
+    "symbol6": "молния",
+    "symbol7": "цветок",
+    "symbol8": "рыба",
+    "symbol9": "колокольчик",
+    "symbol10": "ключ",
+    "symbol11": "корона",
+    "symbol12": "якорь",
+    "symbol13": "облако",
+    "symbol14": "гриб",
+    "toFlip": "Открывает: {name}",
+    "missed": "Без пары: {name}"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Победитель",
+      "description": "Выиграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    },
+    "veteran": {
+      "name": "Ветеран",
+      "description": "Сыграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    }
+  },
+  "leaderboards": {}
+}

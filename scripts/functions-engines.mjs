@@ -446,6 +446,7 @@ if (process.argv.includes("--fixtures")) {
     "liars-dice": { exact: true, wild: true },
     "sea-battle": { again: false },
     conquest: { goal: "most" },
+    "memory-pairs": { cards: 20 },
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */

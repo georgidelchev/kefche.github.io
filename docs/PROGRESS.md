@@ -2578,7 +2578,7 @@ A second kind of Durable Object on the arena Worker that already runs Worm Rush 
 25. **Mafia.**
 26. **The daily challenge and the catalog:**
     - the daily challenge adds Klondike (a winnable deal) and Spider (one suit);
-    - the catalog is checked at 49 games.
+    - the catalog is checked at 50 games (49 planned, plus Memory Pairs, step 18).
 27. **Verification and docs:**
     - **Bots:** timing on a throttled CPU, self-play strength, every player count.
     - **The table:** two to twelve browsers, a player leaving and coming back, checks that no message carries another seat's secrets, and the cost measured.
@@ -2753,6 +2753,12 @@ The owner answered "you decide", so the recommended answers stand:
   - **Bots:** easy attacks with any edge and never fortifies; medium goes for the region it's closest to holding, attacks with two more armies than the defender, and fortifies its borders; hard also attacks with a smaller edge when the odds are good and breaks other players' whole regions. Self-play: medium won 197 of 200 against easy; hard won 118 of 200 against medium heads-up, but three-way games are about even (64 to 70 of 150); step 27's bot review looks at it again.
   - **The map** is SVG: each territory a focusable button in its holder's colour with their shape and its armies; the regions are framed and named with their bonus, and listed under the map with who holds them.
   - Checked: the engine check at 2, 4 and 6 players with both goals, the table with one and two accounts (5/5 each, 0 secrets in 1,363 frames), and Chrome 17/17 (30 territories, six regions, placing, attacking with dice, moving in, ending attacks and the turn, the whole-map goal on one device with no cover, Enter on a territory, 360, 768 and 1280 px, both themes, Arabic, axe).
+- [x] **Step 18, Memory Pairs (TODO #5):** Memory Match's cards, taking turns, for 2–6 players with bots, on one device or online.
+  - **Changed from the plan:** a game has one kind (race or turn) all through the site, rooms, `submit-match`, the engine bundle and the tables, so Memory Match can't also be a turn game without that changing everywhere. Taking turns is a companion turn game instead, Memory Pairs, through the standard path. Memory Match keeps its race, its daily challenge, its best times and the together menu. The catalog grows to 50, not 49.
+  - **Shared, not copied:** Memory Match's board (its cards, keyboard focus and the missed pair's moment) moved to `renderer/board.tsx`, and its deal, flips and bot memory are exported, with the package exporting `./engine`, `./engine/bots` and `./board`. The symbols' names use a literal key map now. Memory Match's own check still passes 43/43.
+  - **Rules:** a pair scores and goes again, a miss passes the turn; the most pairs win, a tie is shared. 12, 20 or 30 cards.
+  - **Secrets:** a view shows only the cards up; online the table holds the layout and turns each card as it's chosen. Nobody holds a secret of their own, so there's no cover on one device. Every card that has turned up is kept in the state (public: everyone saw it), so the bots, which only get views, can remember with Memory Match's recall (35%, 70%, 95%).
+  - Checked: the engine check with 12, 20 and 30 cards at 2, 4 and 6 players, the table with one and two accounts (5/5 each), and Chrome 15/15 (12 and 30 cards, a game against a bot to its end, whose turn, Enter on a focused card, no cover on one device, 360, 768 and 1024 px, both themes, Arabic, axe).
 
 ## Known issues
 
@@ -2787,4 +2793,4 @@ Each code `TODO` must reference an entry here (`TODO #n`). Resolved entries stay
 | 2   | `apps/web/src/features/auth/SignUpForm.tsx`                  | Link the Community Guidelines page from sign-up (SPEC §8.3).                                                            | ✅ Resolved (Phase 8 step 11)     |
 | 3   | `supabase/templates/*.html`                                  | Auth emails are English only; localize and brand them (SPEC §3).                                                        | Open: Phase 21, with Resend       |
 | 4   | `apps/web/src/pages/[locale]/privacy.astro`                  | Privacy contact is the public GitHub issue tracker; replace it with a dedicated privacy address once the owner has one. | Open: owner to create the address |
-| 5   | `packages/games/memory-match/manifest.ts`                    | Make Memory Match a turn game too, for taking turns online, once the server deals hidden cards (SPEC §10.6).            | Open: Phase 12                    |
+| 5   | `packages/games/memory-match/manifest.ts`                    | Make Memory Match a turn game too, for taking turns online, once the server deals hidden cards (SPEC §10.6).            | ✅ Resolved (Phase 12 step 18)    |

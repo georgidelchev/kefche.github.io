@@ -29,6 +29,9 @@ import { manifest as liarsManifest } from "@kefche/game-liars-dice/manifest";
 import { bots as ludoBots } from "@kefche/game-ludo/bots";
 import { engine as ludoEngine } from "@kefche/game-ludo/engine";
 import { manifest as ludoManifest } from "@kefche/game-ludo/manifest";
+import { bots as pairsBots } from "@kefche/game-memory-pairs/bots";
+import { engine as pairsEngine } from "@kefche/game-memory-pairs/engine";
+import { manifest as pairsManifest } from "@kefche/game-memory-pairs/manifest";
 import { bots as santaseBots } from "@kefche/game-santase/bots";
 import { engine as santaseEngine } from "@kefche/game-santase/engine";
 import { manifest as santaseManifest } from "@kefche/game-santase/manifest";
@@ -73,5 +76,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   "liars-dice": tableGame(liarsManifest, liarsEngine, liarsBots),
   "sea-battle": tableGame(seaManifest, seaEngine, seaBots),
   conquest: tableGame(conquestManifest, conquestEngine, conquestBots),
+  "memory-pairs": tableGame(pairsManifest, pairsEngine, pairsBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

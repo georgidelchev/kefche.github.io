@@ -1,0 +1,86 @@
+{
+  "name": "जोड़ियाँ ढूँढो",
+  "tagline": "बारी-बारी से पत्ते पलटें: जोड़ी मिली तो फिर से बारी।",
+  "description": "जोड़ियाँ ढूँढो मुफ़्त खेलें: 2 से 6 खिलाड़ियों का पत्तों की जोड़ियों का खेल, दोस्तों, बॉट्स या ऑनलाइन के साथ बारी-बारी से, 12, 20 या 30 पत्तों से।",
+  "about": [
+    "Memory Pairs is the card game of pairs, played taking turns: Memory Match's cards for 2 to 6 players, with friends, bots, or online. The cards lie face down in pairs; turn two over, and if they match, they're yours and you go again.",
+    "A miss shows both cards for a moment and passes the turn, so everyone gets a look: the game is remembering where each symbol was. When the table is clear, the most pairs win; a tie is shared.",
+    "Choose 12, 20 or 30 cards. Online, the layout is kept on our server and each card is turned as it's chosen, so nobody can peek at the face-down cards. For a race against the clock, play Memory Match."
+  ],
+  "howToPlay": [
+    "Choose 12, 20 or 30 cards, then Play vs bots, Play on this device, or create a room.",
+    "On your turn, tap a face-down card, then a second one.",
+    "A pair stays face up and scores, and you go again.",
+    "A miss shows both cards for a moment, then turns them back; the next player goes.",
+    "When every pair is found, the most pairs win."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to turn it.",
+    "Mouse: click a card.",
+    "Keyboard: Tab or the arrow keys move between cards; Enter or Space turns one."
+  ],
+  "tips": [
+    "Watch the other players' turns: every card they turn is a free look for you.",
+    "Turn a card you've never seen first; if it matches one you remember, you know where to go.",
+    "Late in the game, a known pair is worth more than a guess.",
+    "Bots forget too: easy ones a lot, hard ones hardly at all."
+  ],
+  "faq": [
+    {
+      "question": "Is Memory Pairs free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How is it different from Memory Match?",
+      "answer": "Memory Match is a race against the clock, alone or against others on the same layout. Memory Pairs is taking turns at one table, and the most pairs win."
+    },
+    {
+      "question": "Can anyone see the face-down cards online?",
+      "answer": "No. The layout is kept on our server, and each card is turned only when it's chosen. The seed is revealed at the end, matching the fingerprint shown at the start."
+    },
+    {
+      "question": "What happens on a tie?",
+      "answer": "Everyone with the most pairs shares the win."
+    }
+  ],
+  "ui": {
+    "boardLabel": "कार्ड",
+    "cardUp": "कार्ड {number}, {symbol}",
+    "cardDown": "कार्ड {number}, उल्टा",
+    "cards": "कार्ड",
+    "cards12": "12",
+    "cards20": "20",
+    "cards30": "30",
+    "scores": "मिले जोड़े",
+    "seatScore": "{name}, जोड़े: {pairs}",
+    "pairsOf": "{total} में से {pairs}",
+    "symbol0": "तारा",
+    "symbol1": "चाँद",
+    "symbol2": "सूरज",
+    "symbol3": "दिल",
+    "symbol4": "पत्ता",
+    "symbol5": "बूँद",
+    "symbol6": "बिजली",
+    "symbol7": "फूल",
+    "symbol8": "मछली",
+    "symbol9": "घंटी",
+    "symbol10": "चाबी",
+    "symbol11": "मुकुट",
+    "symbol12": "लंगर",
+    "symbol13": "बादल",
+    "symbol14": "मशरूम",
+    "toFlip": "पलटने की बारी: {name}",
+    "missed": "जोड़ी नहीं: {name}"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, plural, one {# खेल} other {# खेल}} जीतें"
+    },
+    "veteran": {
+      "name": "अनुभवी",
+      "description": "{count, plural, one {# खेल} other {# खेल}} खेलें"
+    }
+  },
+  "leaderboards": {}
+}
