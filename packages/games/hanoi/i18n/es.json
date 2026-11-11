@@ -76,11 +76,11 @@
   "achievements": {
     "solver": {
       "name": "Solucionador",
-      "description": "Resuelve {count, plural, one {# sudoku} other {# sudokus}}"
+      "description": "Resuelve {count, plural, one {# rompecabezas} other {# rompecabezas}}"
     },
     "speed": {
       "name": "Rapidez",
-      "description": "Resuelve un sudoku en {time} o menos"
+      "description": "Resuelve un rompecabezas en {time} o menos"
     }
   },
   "leaderboards": {

@@ -55,7 +55,7 @@
     "cards": "Cards: {count}",
     "faceDown": "Face down: {count}",
     "war": "War!",
-    "takes": "{name} takes {count} cards",
+    "takes": "Takes {count} cards: {name}",
     "battleOf": "Battle {n} of {total}",
     "battleCount": "Battle {n}",
     "battles": "Length",

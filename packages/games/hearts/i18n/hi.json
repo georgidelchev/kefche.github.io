@@ -54,7 +54,7 @@
     "trick": "हाथ",
     "yourHand": "आपके पत्ते",
     "points": "{total} अंक (+{hand})",
-    "took": "{name} ने हाथ जीता।",
+    "took": "हाथ जीता: {name}।",
     "playedBy": "{name}: {card}",
     "broken": "पान खुल चुके हैं",
     "to": "{target} तक खेल",

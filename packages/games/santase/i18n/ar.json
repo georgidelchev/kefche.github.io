@@ -60,7 +60,7 @@
     "closedBy": "أغلقها {name}",
     "marriage": "{name}: زوج من {suit}",
     "to": "اللعبة حتى {target}",
-    "lastDeal": "{name} ربح التوزيعة السابقة: {points}",
+    "lastDeal": "التوزيعة السابقة: {name}، {points}",
     "exchange": "بدّل التسعة",
     "close": "أغلق",
     "playedBy": "{name}: {card}"

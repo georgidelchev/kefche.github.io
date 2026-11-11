@@ -60,7 +60,7 @@
     "closedBy": "{name}がクローズ",
     "marriage": "{name}：{suit}のマリッジ",
     "to": "{target}点で終了",
-    "lastDeal": "{name}が前のディールに勝利：{points}",
+    "lastDeal": "前のディール：{name}、{points}",
     "exchange": "9を交換",
     "close": "クローズ",
     "playedBy": "{name}：{card}"

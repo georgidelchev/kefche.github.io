@@ -60,8 +60,8 @@
     "inColumn": "домашна колона, стъпка {n}",
     "onTrack": "поле {n} от пътя",
     "canMove": "Може да се мести.",
-    "rolled": "{name} хвърли {value}",
-    "passed": "{name} не можа да мести",
+    "rolled": "Хвърлено {value}: {name}",
+    "passed": "Няма ход: {name}",
     "tokensOption": "Пулове",
     "tokens4": "по 4",
     "tokens2": "по 2"

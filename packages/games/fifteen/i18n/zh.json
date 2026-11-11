@@ -75,8 +75,8 @@
     }
   },
   "leaderboards": {
-    "best-time-3": "最佳用时・简单 · 3 × 3",
-    "best-time-4": "最佳用时・简单 · 4 × 4",
-    "best-time-5": "最佳用时・简单 · 5 × 5"
+    "best-time-3": "最佳用时 · 3 × 3",
+    "best-time-4": "最佳用时 · 4 × 4",
+    "best-time-5": "最佳用时 · 5 × 5"
   }
 }

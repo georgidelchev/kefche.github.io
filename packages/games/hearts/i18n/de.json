@@ -54,7 +54,7 @@
     "trick": "Stich",
     "yourHand": "Deine Hand",
     "points": "{total} Pkt. (+{hand})",
-    "took": "{name} nimmt den Stich.",
+    "took": "Stich: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "Herz ist gebrochen",
     "to": "Spiel bis {target}",

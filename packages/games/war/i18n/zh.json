@@ -55,7 +55,7 @@
     "cards": "牌数：{count}",
     "faceDown": "背面朝上：{count}",
     "war": "战争！",
-    "takes": "{name} 赢得 {count} 张牌",
+    "takes": "赢得 {count} 张牌：{name}",
     "battleOf": "第 {n} 场，共 {total} 场",
     "battleCount": "第 {n} 场",
     "battles": "时长",

@@ -84,8 +84,8 @@
     }
   },
   "leaderboards": {
-    "best-time-beginner": "ベストタイム・やさしい · 初級",
-    "best-time-intermediate": "ベストタイム・やさしい · 中級",
-    "best-time-expert": "ベストタイム・やさしい · 上級"
+    "best-time-beginner": "ベストタイム · 初級",
+    "best-time-intermediate": "ベストタイム · 中級",
+    "best-time-expert": "ベストタイム · 上級"
   }
 }

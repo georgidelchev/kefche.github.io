@@ -60,7 +60,7 @@
     "closedBy": "Cerrado por {name}",
     "marriage": "{name}: cante en {suit}",
     "to": "Partida a {target}",
-    "lastDeal": "{name} ganó la última mano: {points}",
+    "lastDeal": "Última mano: {name}, {points}",
     "exchange": "Cambiar el nueve",
     "close": "Cerrar",
     "playedBy": "{name}: {card}"

@@ -54,7 +54,7 @@
     "trick": "トリック",
     "yourHand": "あなたの手札",
     "points": "{total}点（+{hand}）",
-    "took": "{name}がトリックを取った。",
+    "took": "トリック獲得：{name}。",
     "playedBy": "{name}：{card}",
     "broken": "ハートブレイク済み",
     "to": "{target}点で終了",

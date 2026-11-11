@@ -54,7 +54,7 @@
     "trick": "Взятка",
     "yourHand": "Ваша рука",
     "points": "{total} очк. (+{hand})",
-    "took": "{name} берёт взятку.",
+    "took": "Взятка: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "Черви открыты",
     "to": "Игра до {target}",

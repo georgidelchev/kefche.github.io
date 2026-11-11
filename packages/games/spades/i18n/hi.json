@@ -61,7 +61,7 @@
     "nil": "नील",
     "bidTricks": "बोली {bid} · {tricks}",
     "team": "{names}: {score} ({bags} बैग)",
-    "took": "{name} ने हाथ जीता।",
+    "took": "हाथ जीता: {name}।",
     "playedBy": "{name}: {card}",
     "broken": "हुकुम खुल चुका है",
     "to": "{target} तक खेल",

@@ -55,7 +55,7 @@
     "cards": "Карт: {count}",
     "faceDown": "Рубашкой вверх: {count}",
     "war": "Война!",
-    "takes": "{name} забирает карты: {count}",
+    "takes": "Забирает карты ({count}): {name}",
     "battleOf": "Бой {n} из {total}",
     "battleCount": "Бой {n}",
     "battles": "Длительность",

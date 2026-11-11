@@ -61,7 +61,7 @@
     "nil": "Nulo",
     "bidTricks": "aposta {bid} · {tricks}",
     "team": "{names}: {score} ({bags} sacolas)",
-    "took": "{name} leva a vaza.",
+    "took": "Vaza: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "Espadas abertas",
     "to": "Partida até {target}",

@@ -92,8 +92,8 @@
     }
   },
   "leaderboards": {
-    "best-time-easy": "ベストタイム・やさしい · かんたん · 新しいステージ",
-    "best-time-medium": "ベストタイム・やさしい · ふつう · 新しいステージ",
-    "best-time-hard": "ベストタイム・やさしい · むずかしい · 新しいステージ"
+    "best-time-easy": "ベストタイム · かんたん · 新しいステージ",
+    "best-time-medium": "ベストタイム · ふつう · 新しいステージ",
+    "best-time-hard": "ベストタイム · むずかしい · 新しいステージ"
   }
 }

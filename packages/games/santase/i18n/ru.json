@@ -60,7 +60,7 @@
     "closedBy": "Закрыл(а) {name}",
     "marriage": "{name}: марьяж, {suit}",
     "to": "Игра до {target}",
-    "lastDeal": "{name} выигрывает прошлую раздачу: {points}",
+    "lastDeal": "Прошлая раздача: {name}, {points}",
     "exchange": "Обменять девятку",
     "close": "Закрыть",
     "playedBy": "{name}: {card}"

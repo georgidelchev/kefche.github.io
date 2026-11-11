@@ -55,7 +55,7 @@
     "cards": "الأوراق: {count}",
     "faceDown": "مقلوبة: {count}",
     "war": "حرب!",
-    "takes": "{name} يأخذ {count} أوراق",
+    "takes": "يأخذ {count} أوراق: {name}",
     "battleOf": "المعركة {n} من {total}",
     "battleCount": "المعركة {n}",
     "battles": "المدة",

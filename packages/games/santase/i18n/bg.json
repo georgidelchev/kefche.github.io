@@ -60,7 +60,7 @@
     "closedBy": "Затворено от {name}",
     "marriage": "{name}: двойка {suit}",
     "to": "Игра до {target}",
-    "lastDeal": "{name} спечели последното раздаване: {points}",
+    "lastDeal": "Последното раздаване: {name}, {points}",
     "exchange": "Смени деветката",
     "close": "Затвори",
     "playedBy": "{name}: {card}"

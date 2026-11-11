@@ -61,7 +61,7 @@
     "nil": "Nul",
     "bidTricks": "annonce {bid} · {tricks}",
     "team": "{names} : {score} ({bags} sacs)",
-    "took": "{name} remporte le pli.",
+    "took": "Pli : {name}.",
     "playedBy": "{name} : {card}",
     "broken": "Pique est ouvert",
     "to": "Partie en {target}",

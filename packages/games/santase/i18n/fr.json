@@ -60,7 +60,7 @@
     "closedBy": "Fermée par {name}",
     "marriage": "{name} : mariage à {suit}",
     "to": "Partie en {target}",
-    "lastDeal": "{name} a gagné la dernière donne : {points}",
+    "lastDeal": "Dernière donne : {name}, {points}",
     "exchange": "Échanger le neuf",
     "close": "Fermer",
     "playedBy": "{name} : {card}"

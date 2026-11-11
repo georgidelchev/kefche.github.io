@@ -60,8 +60,8 @@
     "inColumn": "回家通道第 {n} 格",
     "onTrack": "跑道第 {n} 格",
     "canMove": "可以走。",
-    "rolled": "{name} 掷出 {value}",
-    "passed": "{name} 无法移动",
+    "rolled": "掷出 {value}：{name}",
+    "passed": "无法移动：{name}",
     "tokensOption": "棋子",
     "tokens4": "每人 4 枚",
     "tokens2": "每人 2 枚"

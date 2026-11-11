@@ -54,7 +54,7 @@
     "trick": "Pli",
     "yourHand": "Votre main",
     "points": "{total} pts (+{hand})",
-    "took": "{name} remporte le pli.",
+    "took": "Pli : {name}.",
     "playedBy": "{name} : {card}",
     "broken": "Les cœurs sont ouverts",
     "to": "Partie en {target}",

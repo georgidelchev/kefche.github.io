@@ -60,7 +60,7 @@
     "closedBy": "Zugedreht von {name}",
     "marriage": "{name}: Paar in {suit}",
     "to": "Spiel bis {target}",
-    "lastDeal": "{name} gewann die letzte Runde: {points}",
+    "lastDeal": "Letzte Runde: {name}, {points}",
     "exchange": "Neun tauschen",
     "close": "Zudrehen",
     "playedBy": "{name}: {card}"

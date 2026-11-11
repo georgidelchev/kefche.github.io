@@ -92,8 +92,8 @@
     }
   },
   "leaderboards": {
-    "best-time-easy": "最佳用时・简单 · 简单 · 新关卡",
-    "best-time-medium": "最佳用时・简单 · 中等 · 新关卡",
-    "best-time-hard": "最佳用时・简单 · 困难 · 新关卡"
+    "best-time-easy": "最佳用时 · 简单 · 新关卡",
+    "best-time-medium": "最佳用时 · 中等 · 新关卡",
+    "best-time-hard": "最佳用时 · 困难 · 新关卡"
   }
 }

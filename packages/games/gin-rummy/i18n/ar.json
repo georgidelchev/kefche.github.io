@@ -62,9 +62,9 @@
     "drawPrompt": "اسحب ورقة",
     "discardPrompt": "ارمِ ورقة",
     "gin": "{name}: جين! +{points}",
-    "undercut": "{name} يقطع! +{points}",
-    "knocked": "{name} طرق: +{points}",
-    "handOf": "يد {name}",
+    "undercut": "قطع! {name} +{points}",
+    "knocked": "طرق: {name} +{points}",
+    "handOf": "اليد: {name}",
     "drawnHand": "تبقّت ورقتان في الكومة: لا نقاط لهذه اليد",
     "knock": "اطرق ({limit} أو أقل)",
     "target": "اللعبة حتى"

@@ -61,7 +61,7 @@
     "nil": "Нула",
     "bidTricks": "обява {bid} · {tricks}",
     "team": "{names}: {score} ({bags} торби)",
-    "took": "{name} взема взятката.",
+    "took": "Взема взятката: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "Пиката е отворена",
     "to": "Игра до {target}",

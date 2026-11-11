@@ -55,7 +55,7 @@
     "cards": "Cartes : {count}",
     "faceDown": "Face cachée : {count}",
     "war": "Bataille !",
-    "takes": "{name} prend {count} cartes",
+    "takes": "Prend {count} cartes : {name}",
     "battleOf": "Manche {n} sur {total}",
     "battleCount": "Manche {n}",
     "battles": "Durée",

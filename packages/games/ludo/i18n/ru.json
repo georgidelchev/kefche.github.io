@@ -60,8 +60,8 @@
     "inColumn": "домашняя дорожка, шаг {n}",
     "onTrack": "клетка {n} пути",
     "canMove": "Можно ходить.",
-    "rolled": "{name}: выпало {value}",
-    "passed": "{name} не может ходить",
+    "rolled": "Выпало {value}: {name}",
+    "passed": "Нет хода: {name}",
     "tokensOption": "Фишки",
     "tokens4": "по 4",
     "tokens2": "по 2"

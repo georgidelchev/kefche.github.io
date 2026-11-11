@@ -60,8 +60,8 @@
     "inColumn": "colonne d'arrivée, case {n}",
     "onTrack": "case {n} du parcours",
     "canMove": "Peut avancer.",
-    "rolled": "{name} a fait {value}",
-    "passed": "{name} n'a pas pu jouer",
+    "rolled": "Dé : {value}, {name}",
+    "passed": "Aucun coup : {name}",
     "tokensOption": "Pions",
     "tokens4": "4 chacun",
     "tokens2": "2 chacun"

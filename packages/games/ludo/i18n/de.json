@@ -60,8 +60,8 @@
     "inColumn": "Zielspalte, Schritt {n}",
     "onTrack": "Feld {n} der Bahn",
     "canMove": "Kann ziehen.",
-    "rolled": "{name} hat eine {value} gewürfelt",
-    "passed": "{name} konnte nicht ziehen",
+    "rolled": "Gewürfelt {value}: {name}",
+    "passed": "Kein Zug: {name}",
     "tokensOption": "Figuren",
     "tokens4": "je 4",
     "tokens2": "je 2"

@@ -60,8 +60,8 @@
     "inColumn": "home column, step {n}",
     "onTrack": "square {n} of the track",
     "canMove": "Can move.",
-    "rolled": "{name} rolled {value}",
-    "passed": "{name} couldn't move",
+    "rolled": "Rolled {value}: {name}",
+    "passed": "Can't move: {name}",
     "tokensOption": "Tokens",
     "tokens4": "4 each",
     "tokens2": "2 each"

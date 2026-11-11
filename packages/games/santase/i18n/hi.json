@@ -60,7 +60,7 @@
     "closedBy": "{name} ने बंद किया",
     "marriage": "{name}: {suit} की जोड़ी",
     "to": "{target} तक खेल",
-    "lastDeal": "{name} ने पिछला दौर जीता: {points}",
+    "lastDeal": "पिछला दौर: {name}, {points}",
     "exchange": "नहला बदलें",
     "close": "बंद करें",
     "playedBy": "{name}: {card}"

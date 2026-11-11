@@ -54,7 +54,7 @@
     "trick": "一墩",
     "yourHand": "你的手牌",
     "points": "{total} 分（+{hand}）",
-    "took": "{name} 赢得这一墩。",
+    "took": "赢得这一墩：{name}。",
     "playedBy": "{name}：{card}",
     "broken": "红心已破",
     "to": "打到 {target} 分",

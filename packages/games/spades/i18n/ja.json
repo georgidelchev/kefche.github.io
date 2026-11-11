@@ -61,7 +61,7 @@
     "nil": "ニル",
     "bidTricks": "ビッド {bid} · {tricks}",
     "team": "{names}：{score}（バッグ{bags}）",
-    "took": "{name}がトリックを取った。",
+    "took": "トリック獲得：{name}。",
     "playedBy": "{name}：{card}",
     "broken": "スペード解禁",
     "to": "{target}点で終了",

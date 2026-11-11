@@ -84,8 +84,8 @@
     }
   },
   "leaderboards": {
-    "best-time-beginner": "最佳用时・简单 · 初级",
-    "best-time-intermediate": "最佳用时・简单 · 中级",
-    "best-time-expert": "最佳用时・简单 · 高级"
+    "best-time-beginner": "最佳用时 · 初级",
+    "best-time-intermediate": "最佳用时 · 中级",
+    "best-time-expert": "最佳用时 · 高级"
   }
 }

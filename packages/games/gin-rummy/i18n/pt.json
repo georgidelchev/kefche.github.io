@@ -62,9 +62,9 @@
     "drawPrompt": "Compre uma carta",
     "discardPrompt": "Descarte uma carta",
     "gin": "{name}: gin! +{points}",
-    "undercut": "{name} corta! +{points}",
-    "knocked": "{name} bateu: +{points}",
-    "handOf": "Mão de {name}",
+    "undercut": "Corte! {name} +{points}",
+    "knocked": "Bateu: {name} +{points}",
+    "handOf": "Mão: {name}",
     "drawnHand": "Restam duas cartas no monte: mão sem pontos",
     "knock": "Bater ({limit} ou menos)",
     "target": "Partida até"

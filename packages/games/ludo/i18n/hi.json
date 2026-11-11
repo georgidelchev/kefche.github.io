@@ -60,8 +60,8 @@
     "inColumn": "घर की पंक्ति, कदम {n}",
     "onTrack": "रास्ते का खाना {n}",
     "canMove": "चल सकती है।",
-    "rolled": "{name} ने {value} फेंका",
-    "passed": "{name} चल नहीं सके",
+    "rolled": "पासा {value}: {name}",
+    "passed": "कोई चाल नहीं: {name}",
     "tokensOption": "गोटियाँ",
     "tokens4": "हर एक की 4",
     "tokens2": "हर एक की 2"

@@ -62,9 +62,9 @@
     "drawPrompt": "Piochez une carte",
     "discardPrompt": "Défaussez une carte",
     "gin": "{name} : gin ! +{points}",
-    "undercut": "{name} contre ! +{points}",
-    "knocked": "{name} frappe : +{points}",
-    "handOf": "Main de {name}",
+    "undercut": "Contre ! {name} +{points}",
+    "knocked": "Frappe : {name} +{points}",
+    "handOf": "Main : {name}",
     "drawnHand": "Plus que deux cartes au talon : donne nulle",
     "knock": "Frapper ({limit} ou moins)",
     "target": "Partie en"

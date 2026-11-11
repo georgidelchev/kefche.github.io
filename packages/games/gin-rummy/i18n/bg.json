@@ -62,9 +62,9 @@
     "drawPrompt": "Изтегли карта",
     "discardPrompt": "Хвърли карта",
     "gin": "{name}: джин! +{points}",
-    "undercut": "{name} подряза! +{points}",
-    "knocked": "{name} чукна: +{points}",
-    "handOf": "Ръката на {name}",
+    "undercut": "Подрязване! {name} +{points}",
+    "knocked": "Почукване: {name} +{points}",
+    "handOf": "Ръка: {name}",
     "drawnHand": "В тестето останаха две карти: ръката е наравно",
     "knock": "Чукни ({limit} или по-малко)",
     "target": "Игра до"

@@ -61,7 +61,7 @@
     "nil": "Nulo",
     "bidTricks": "apuesta {bid} · {tricks}",
     "team": "{names}: {score} ({bags} bolsas)",
-    "took": "{name} se lleva la baza.",
+    "took": "Baza: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "Picas abiertas",
     "to": "Partida a {target}",

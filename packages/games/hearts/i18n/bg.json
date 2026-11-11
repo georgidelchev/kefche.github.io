@@ -54,7 +54,7 @@
     "trick": "Взятка",
     "yourHand": "Твоята ръка",
     "points": "{total} т. (+{hand})",
-    "took": "{name} взема взятката.",
+    "took": "Взема взятката: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "Купите са отворени",
     "to": "Игра до {target}",

@@ -55,7 +55,7 @@
     "cards": "カード：{count}",
     "faceDown": "裏向き：{count}",
     "war": "戦争！",
-    "takes": "{name}が{count}枚獲得",
+    "takes": "{count}枚獲得：{name}",
     "battleOf": "{total}戦中{n}戦目",
     "battleCount": "{n}戦目",
     "battles": "長さ",

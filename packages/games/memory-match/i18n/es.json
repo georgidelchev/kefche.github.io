@@ -100,11 +100,11 @@
   "achievements": {
     "solver": {
       "name": "Solucionador",
-      "description": "Resuelve {count, plural, one {# sudoku} other {# sudokus}}"
+      "description": "Despeja la mesa {count, plural, one {# vez} other {# veces}}"
     },
     "speed": {
       "name": "Rapidez",
-      "description": "Resuelve un sudoku en {time} o menos"
+      "description": "Despeja la mesa en {time} o menos"
     }
   },
   "leaderboards": {

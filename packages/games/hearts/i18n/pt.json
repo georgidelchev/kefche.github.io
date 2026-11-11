@@ -54,7 +54,7 @@
     "trick": "Vaza",
     "yourHand": "Sua mão",
     "points": "{total} pts (+{hand})",
-    "took": "{name} leva a vaza.",
+    "took": "Vaza: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "Copas abertas",
     "to": "Partida até {target}",

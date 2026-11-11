@@ -61,7 +61,7 @@
     "nil": "Null",
     "bidTricks": "Ansage {bid} · {tricks}",
     "team": "{names}: {score} ({bags} Bags)",
-    "took": "{name} nimmt den Stich.",
+    "took": "Stich: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "Pik ist gebrochen",
     "to": "Spiel bis {target}",

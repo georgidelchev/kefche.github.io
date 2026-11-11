@@ -61,7 +61,7 @@
     "nil": "Ноль",
     "bidTricks": "заказ {bid} · {tricks}",
     "team": "{names}: {score} (мешков: {bags})",
-    "took": "{name} берёт взятку.",
+    "took": "Взятка: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "Пики открыты",
     "to": "Игра до {target}",

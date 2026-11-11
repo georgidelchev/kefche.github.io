@@ -54,7 +54,7 @@
     "trick": "Trick",
     "yourHand": "Your hand",
     "points": "{total} pts (+{hand})",
-    "took": "{name} takes the trick.",
+    "took": "Takes the trick: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "Hearts broken",
     "to": "Game to {target}",

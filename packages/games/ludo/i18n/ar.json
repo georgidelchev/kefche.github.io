@@ -60,8 +60,8 @@
     "inColumn": "عمود البيت، الخطوة {n}",
     "onTrack": "المربع {n} من المسار",
     "canMove": "يمكن تحريكها.",
-    "rolled": "رمى {name} {value}",
-    "passed": "لم يستطع {name} التحرك",
+    "rolled": "الرمية {value}: {name}",
+    "passed": "لا حركة: {name}",
     "tokensOption": "القطع",
     "tokens4": "4 لكل لاعب",
     "tokens2": "2 لكل لاعب"

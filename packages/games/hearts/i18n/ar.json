@@ -54,7 +54,7 @@
     "trick": "اللمّة",
     "yourHand": "يدك",
     "points": "{total} نقطة (+{hand})",
-    "took": "{name} يأخذ اللمّة.",
+    "took": "اللمّة: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "كُسرت القلوب",
     "to": "اللعبة حتى {target}",

@@ -61,7 +61,7 @@
     "nil": "Nil",
     "bidTricks": "bid {bid} · {tricks}",
     "team": "{names}: {score} ({bags} bags)",
-    "took": "{name} takes the trick.",
+    "took": "Takes the trick: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "Spades broken",
     "to": "Game to {target}",

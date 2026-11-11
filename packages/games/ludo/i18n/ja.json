@@ -60,8 +60,8 @@
     "inColumn": "ゴール列の{n}マス目",
     "onTrack": "コースの{n}マス目",
     "canMove": "動かせます。",
-    "rolled": "{name}は{value}を出した",
-    "passed": "{name}は動かせなかった",
+    "rolled": "{value}が出た：{name}",
+    "passed": "動かせない：{name}",
     "tokensOption": "コマ",
     "tokens4": "各4個",
     "tokens2": "各2個"

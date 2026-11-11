@@ -62,9 +62,9 @@
     "drawPrompt": "Ziehe eine Karte",
     "discardPrompt": "Lege eine Karte ab",
     "gin": "{name}: Gin! +{points}",
-    "undercut": "{name} unterbietet! +{points}",
-    "knocked": "{name} klopft: +{points}",
-    "handOf": "Hand von {name}",
+    "undercut": "Unterboten! {name} +{points}",
+    "knocked": "Geklopft: {name} +{points}",
+    "handOf": "Hand: {name}",
     "drawnHand": "Nur noch zwei Karten im Stapel: keine Punkte",
     "knock": "Klopfen ({limit} oder weniger)",
     "target": "Spiel bis"

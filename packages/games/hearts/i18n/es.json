@@ -54,7 +54,7 @@
     "trick": "Baza",
     "yourHand": "Tu mano",
     "points": "{total} pts (+{hand})",
-    "took": "{name} se lleva la baza.",
+    "took": "Baza: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "Corazones abiertos",
     "to": "Partida a {target}",

@@ -61,7 +61,7 @@
     "nil": "零",
     "bidTricks": "叫 {bid} · {tricks}",
     "team": "{names}：{score}（{bags} 袋）",
-    "took": "{name} 赢得这一墩。",
+    "took": "赢得这一墩：{name}。",
     "playedBy": "{name}：{card}",
     "broken": "黑桃已破",
     "to": "打到 {target} 分",

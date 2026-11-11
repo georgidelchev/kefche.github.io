@@ -62,9 +62,9 @@
     "drawPrompt": "Draw a card",
     "discardPrompt": "Discard a card",
     "gin": "{name}: gin! +{points}",
-    "undercut": "{name} undercuts! +{points}",
-    "knocked": "{name} knocked: +{points}",
-    "handOf": "{name}'s hand",
+    "undercut": "Undercut! {name} +{points}",
+    "knocked": "Knocked: {name} +{points}",
+    "handOf": "Hand: {name}",
     "drawnHand": "Two cards left in the stock: no score this hand",
     "knock": "Knock ({limit} or less)",
     "target": "Game to"

@@ -62,9 +62,9 @@
     "drawPrompt": "एक पत्ता उठाएँ",
     "discardPrompt": "एक पत्ता फेंकें",
     "gin": "{name}: जिन! +{points}",
-    "undercut": "{name} ने अंडरकट किया! +{points}",
-    "knocked": "{name} ने नॉक किया: +{points}",
-    "handOf": "{name} के पत्ते",
+    "undercut": "अंडरकट! {name} +{points}",
+    "knocked": "नॉक: {name} +{points}",
+    "handOf": "पत्ते: {name}",
     "drawnHand": "ढेर में दो पत्ते बचे: इस दौर में अंक नहीं",
     "knock": "नॉक ({limit} या कम)",
     "target": "खेल कितने तक"

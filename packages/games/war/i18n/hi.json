@@ -55,7 +55,7 @@
     "cards": "पत्ते: {count}",
     "faceDown": "उलटे: {count}",
     "war": "युद्ध!",
-    "takes": "{name} ने {count} पत्ते जीते",
+    "takes": "{count} पत्ते जीते: {name}",
     "battleOf": "लड़ाई {n} / {total}",
     "battleCount": "लड़ाई {n}",
     "battles": "अवधि",

@@ -60,7 +60,7 @@
     "closedBy": "{name} 关闭了牌堆",
     "marriage": "{name}：{suit}配对",
     "to": "打到 {target} 分",
-    "lastDeal": "{name} 赢得上一副：{points}",
+    "lastDeal": "上一副：{name}，{points}",
     "exchange": "换 9",
     "close": "关牌",
     "playedBy": "{name}：{card}"

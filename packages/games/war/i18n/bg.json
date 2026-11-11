@@ -55,7 +55,7 @@
     "cards": "Карти: {count}",
     "faceDown": "Обърнати: {count}",
     "war": "Война!",
-    "takes": "{name} взема {count} карти",
+    "takes": "Взема {count} карти: {name}",
     "battleOf": "Битка {n} от {total}",
     "battleCount": "Битка {n}",
     "battles": "Продължителност",

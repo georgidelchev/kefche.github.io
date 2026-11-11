@@ -61,7 +61,7 @@
     "nil": "صفر",
     "bidTricks": "مزايدة {bid} · {tricks}",
     "team": "{names}: {score} ({bags} أكياس)",
-    "took": "{name} يأخذ اللمّة.",
+    "took": "اللمّة: {name}.",
     "playedBy": "{name}: {card}",
     "broken": "كُسر البستوني",
     "to": "اللعبة حتى {target}",

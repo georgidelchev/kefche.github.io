@@ -62,9 +62,9 @@
     "drawPrompt": "Roba una carta",
     "discardPrompt": "Descarta una carta",
     "gin": "{name}: ¡gin! +{points}",
-    "undercut": "¡{name} corta! +{points}",
-    "knocked": "{name} llama: +{points}",
-    "handOf": "Mano de {name}",
+    "undercut": "¡Corte! {name} +{points}",
+    "knocked": "Llamada: {name} +{points}",
+    "handOf": "Mano: {name}",
     "drawnHand": "Quedan dos cartas en el mazo: mano sin puntos",
     "knock": "Llamar ({limit} o menos)",
     "target": "Partida a"
