@@ -255,6 +255,34 @@ if (process.argv.includes("--fixtures")) {
           : { type: "tick" };
       },
     },
+    // Plays to the foundations when it can, else a random move that the
+    // engine accepts, else draws.
+    klondike: {
+      config: { draw: 1, deal: "winnable" },
+      next: (state, random) => {
+        const { engine } = GAMES.klondike;
+        const piles = [
+          { waste: true },
+          ...Array.from({ length: 7 }, (_, i) => ({ column: i })),
+          ...[0, 1, 2, 3].map((f) => ({ foundation: f })),
+        ];
+        const ok = (a) => engine.apply(state, a) !== state;
+        const moves = [];
+        for (const from of piles) {
+          if ("foundation" in from) continue;
+          for (const to of piles) {
+            for (let count = 1; count <= ("column" in from ? 13 : 1); count++) {
+              const a = { move: { from, to, count } };
+              if (ok(a)) moves.push(a);
+            }
+          }
+        }
+        const home = moves.filter((a) => "foundation" in a.move.to);
+        if (home.length > 0) return pick(random, home);
+        if (moves.length > 0 && random() < 0.6) return pick(random, moves);
+        return { draw: true };
+      },
+    },
     // Random slides next to the gap.
     fifteen: {
       config: { size: 3 },

@@ -1,0 +1,88 @@
+{
+  "name": "Klondike Solitaire",
+  "tagline": "Das klassische Solitaire: vier Farben vom Ass bis zum König.",
+  "description": "Spiele Klondike Solitaire kostenlos im Browser: 1 oder 3 ziehen, lösbare Spiele, Rückgängig und Auto-Fertig. Allein gegen die Uhr oder im Rennen online.",
+  "about": [
+    "Klondike is the solitaire most people simply call solitaire: one deck, seven columns and four foundations. The columns start with one to seven cards, only the top one face up, and the rest of the deck is the stock. The goal is to move all 52 cards onto the foundations, one per suit, from ace to king.",
+    "In the columns, cards are built down in alternating colours: a red six on a black seven, a black five on that. You can move any face-up run together, and only a king, or a run starting with one, can fill an empty column. When you can't move, turn cards from the stock one at a time or three at a time; with three, only the top card of the waste can be played. When the stock runs out, turn the waste over and go again.",
+    "Not every deal of Klondike can be won, so here you can choose winnable deals: each one has been won by our solver before it reached you. Undo takes back your last move, and Finish plays every card up once they're all face up. Play alone against the clock, or race friends online on the same deal."
+  ],
+  "howToPlay": [
+    "Choose draw 1 or draw 3, and winnable deals or any deal.",
+    "Build the columns down in alternating colours. Move any face-up run; only a king goes into an empty column.",
+    "Build the four foundations up by suit, from ace to king.",
+    "Tap the stock to turn cards onto the waste (one or three at a time); when it's empty, tap it to turn the waste over.",
+    "Win by moving all 52 cards to the foundations. Finish does the rest once every card is face up."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to pick it up with the cards on it, then tap where it goes. Tap a picked card again to send it to the best place.",
+    "Mouse: the same, with clicks.",
+    "Keyboard: Tab moves between the piles and cards; Enter picks up and puts down.",
+    "Undo takes back a move (not in races). New game goes back to the choices."
+  ],
+  "tips": [
+    "Turn up face-down cards first: moves that free one are usually the best.",
+    "Don't empty a column unless you have a king ready to fill it.",
+    "Don't rush cards to the foundations: a low card in a column can still hold a run.",
+    "With draw 3, think about which card the next turn of the waste will bring up."
+  ],
+  "faq": [
+    {
+      "question": "Is Klondike free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can every deal be won?",
+      "answer": "No: some Klondike deals can't be won. Choose winnable deals, and every deal you get has been won by our solver."
+    },
+    {
+      "question": "What's the difference between draw 1 and draw 3?",
+      "answer": "With draw 3, three cards are turned at a time and only the top one can be played, which makes the game much harder."
+    },
+    {
+      "question": "Why is there no undo in races?",
+      "answer": "Undo could show a face-down card and hide it again, which wouldn't be fair when racing on the same deal."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same deal and the same rules; the fastest to win takes first place."
+    }
+  ],
+  "ui": {
+    "draw1": "1 ziehen",
+    "draw3": "3 ziehen",
+    "choose": "Wähle ein Spiel",
+    "winnable": "Lösbare Spiele",
+    "anyDeal": "Beliebiges Spiel",
+    "best": "Bestzeit: {time}",
+    "time": "Zeit",
+    "moves": "Züge",
+    "drawLabel": "Stapel: {count} Karten, tippen zum Aufdecken",
+    "recycle": "Ablage umdrehen",
+    "foundationEmpty": "Leere Ablage",
+    "foundation": "Ablage: {card}",
+    "column": "Spalte {n}",
+    "emptyColumn": "Leere Spalte {n}",
+    "won": "Gelöst in {moves} Zügen!",
+    "newBest": "Neue Bestzeit!",
+    "undo": "Rückgängig",
+    "finish": "Fertigstellen",
+    "newGame": "Neues Spiel",
+    "drawOption": "Ziehen",
+    "dealOption": "Spiel"
+  },
+  "achievements": {
+    "solver": {
+      "name": "Geduldig",
+      "description": "Gewinne {count, plural, one {# Spiel} other {# Spiele}}"
+    },
+    "speed": {
+      "name": "Flinke Hände",
+      "description": "Gewinne ein Spiel in {time} oder weniger"
+    }
+  },
+  "leaderboards": {
+    "best-time-1": "Beste Zeit · 1 ziehen",
+    "best-time-3": "Beste Zeit · 3 ziehen"
+  }
+}

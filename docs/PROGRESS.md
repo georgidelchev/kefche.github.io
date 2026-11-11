@@ -2707,6 +2707,12 @@ The owner answered "you decide", so the recommended answers stand:
   - **Bots:** medium attacks low and beats cheaply; hard also takes rather than spend a high trump on a low card early, holds trumps back while the deck is long, and transfers.
   - **Text limits now checked when writing a game's text** (an Arabic achievement description was over 120 characters).
   - Checked: the engine check at 2, 3, 4 and 6 players with and without transfers, the table with one and two accounts (5/5 each), and Chrome 15/15 (six cards and the trump card, a game against three bots to its end, the cover for the attacker and the defender on one device, Take, 360, 768 and 1024 px, both themes, Arabic, axe).
+- [x] **Step 11, Klondike:** a race game (alone against the clock, or a race online on the same deal).
+  - **Rules:** seven columns built down in alternating colours (a king, or a run from one, fills an empty column), four foundations up by suit from the ace, draw 1 or 3 from the stock, the waste turned over when it runs out.
+  - **Winnable deals** (the default): a bank of 120 deals per draw mode, each won by a depth-first solver playing the engine's own rules (`scripts/klondike-bank.mjs`, `engine/bank.gen.ts`; 120 of 173 draw-1 deals tried, 120 of 223 draw-3). "Any deal" plays the seed's own shuffle.
+  - **Help:** undo (not in races: it could show a face-down card and hide it again), Finish once every card is face up, and a second tap on a picked card sends it to its best place.
+  - **Boards:** best times for draw 1 and draw 3 (winnable deals); achievements for wins and speed.
+  - Checked in Chrome: 15/15 (the four choices, seven columns fitting a 360 px phone, the stock, 22 moves by picking and placing, undo, draw 3 showing three cards, 1280 px dark, Arabic, axe). The fixture plays foundation moves first.
 
 ## Known issues
 
