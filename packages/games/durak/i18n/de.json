@@ -1,0 +1,88 @@
+{
+  "name": "Durak",
+  "tagline": "Wehre jeden Angriff ab und bleib nicht als Letzter mit Karten sitzen.",
+  "description": "Spiele Durak kostenlos im Browser: angreifen, abwehren, nachlegen, auf Wunsch mit Weiterschieben, und sei nicht der Narr. Gegen Bots, an einem Gerät oder online.",
+  "about": [
+    "Durak, \"the fool\", is the card game everybody plays in Russia, Bulgaria and much of Eastern Europe. You don't try to win; you try not to lose. Play uses 36 cards, six to ace. Each player gets six cards, and the next card is turned up to show trumps, lying under the deck.",
+    "The attacker plays a card; the defender must beat it with a higher card of the same suit or any trump, or pick up everything on the table. Once a card is beaten, the attackers may throw in more cards of ranks already on the table, and the defender has to beat those too. If the defender beats everything, the cards are discarded and the defender attacks next; if they take, the next player attacks. After each bout everyone draws back up to six.",
+    "When the deck runs out, players who play their last card are out, safe. The last player left holding cards is the durak. This is Podkidnoy, the throw-in version, for 2 to 6 players, with transfers as an option: before beating anything, the defender may add a card of the same rank to pass the attack on. Play against bots, with friends on one device, or online."
+  ],
+  "howToPlay": [
+    "Choose whether transfers are allowed, then Play vs bots or Play on this device. The player with the lowest trump attacks first.",
+    "The attacker plays a card. The defender beats it with a higher card of the same suit or a trump (a trump only by a higher trump), or takes everything.",
+    "Once a card is beaten, the attackers may throw in cards of ranks already on the table, up to six (five in the first bout) and never more than the defender holds. Tap Done when you don't want to add more.",
+    "If the defender beats everything, the cards go away and the defender attacks next. If they take, the attackers may add more for them to pick up, and the next player attacks.",
+    "With transfers on, a defender who hasn't beaten anything may add a card of the same rank to pass the attack to the next player.",
+    "Everyone draws back to six after each bout. When the deck is gone, a player without cards is out. The last one holding cards is the durak."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to lift it and tap it again to play, or drag it up. Take, Done and Transfer are buttons below your hand.",
+    "Mouse: click a card to play it.",
+    "Keyboard: move through your hand with the arrow keys and press Enter; Tab reaches the buttons.",
+    "On one device, the screen covers your hand between turns: pass the device, and the next player taps to see theirs."
+  ],
+  "tips": [
+    "Attack with low cards and keep your trumps for defending.",
+    "Taking early isn't a disaster while the deck is long: spending a high trump on a seven usually is.",
+    "Throw in cards the defender is likely missing: if they took hearts before, they may be short of something else.",
+    "Remember which trumps have gone: the endgame is decided by them."
+  ],
+  "faq": [
+    {
+      "question": "Is Durak free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Who wins in Durak?",
+      "answer": "Everyone except the durak, the last player left with cards. There's no single winner, only one loser."
+    },
+    {
+      "question": "How many cards can be thrown in?",
+      "answer": "Up to six in a bout (five in the very first), and never more than the defender holds when the bout starts."
+    },
+    {
+      "question": "What is a transfer?",
+      "answer": "With transfers on, a defender who hasn't beaten anything yet may add a card of the same rank, and the next player becomes the defender."
+    },
+    {
+      "question": "Can other players see my cards online?",
+      "answer": "No. Online, the cards are dealt on our server, which sends each player only their own hand and the trump card."
+    }
+  ],
+  "ui": {
+    "players": "Spieler",
+    "yourHand": "Deine Hand",
+    "table": "Tisch",
+    "deck": "Stapel: {count} Karten",
+    "trumpCard": "Trumpfkarte: {card}",
+    "trumps": "Trumpf: {suit}",
+    "beatenBy": "geschlagen mit {card}",
+    "bout": "{attacker} greift {defender} an",
+    "promptAttack": "Greif mit einer Karte an",
+    "promptDefend": "Schlag die offene Karte oder nimm",
+    "promptThrow": "Leg eine Karte nach oder Fertig",
+    "promptPile": "{name} nimmt: leg Karten dazu oder Fertig",
+    "took": "{name} hat die Karten genommen",
+    "beaten": "{name} hat abgewehrt",
+    "take": "Nehmen",
+    "transfer": "Weiterschieben",
+    "done": "Fertig",
+    "out": "Raus",
+    "defending": "Wehrt ab",
+    "attacking": "Greift an",
+    "transfers": "Weiterschieben",
+    "transferOff": "Aus",
+    "transferOn": "An"
+  },
+  "achievements": {
+    "survivor": {
+      "name": "Überlebender",
+      "description": "Komm aus {count, plural, one {# Spiel} other {# Spielen}} heraus, ohne der Durak zu sein"
+    },
+    "veteran": {
+      "name": "Veteran",
+      "description": "Spiele {count, plural, one {# Spiel} other {# Spiele}}"
+    }
+  },
+  "leaderboards": {}
+}

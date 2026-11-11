@@ -394,6 +394,7 @@ if (process.argv.includes("--fixtures")) {
     belote: undefined,
     santase: undefined,
     "gin-rummy": { target: 50 },
+    durak: { transfer: true },
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */

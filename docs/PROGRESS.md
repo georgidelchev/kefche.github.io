@@ -2701,6 +2701,12 @@ The owner answered "you decide", so the recommended answers stand:
   - **Bots:** easy takes the discard only for a meld and knocks at once; medium takes it when it lowers its deadwood; hard also avoids feeding the other player's pickups and waits for gin when close.
   - **Found by the table smoke test:** `submit-match` replays every move, and checking whether a knock is legal ran the meld search for every card. Long games ran past the function's time. Now a bound (a card's removal lowers the deadwood by at most its value) skips nearly all of it: 18,000 replayed moves take 56 ms.
   - Checked: the engine check, the table with one and two accounts (5/5 each), and Chrome 14/14 (ten cards, deadwood, the discard to take, a hand to its end laid out with the score, the cover on one device, 360, 768 and 1024 px, both themes, Arabic, axe).
+- [x] **Step 10, Durak** (Podkidnoy): 2–6 players (4 by default), 36 cards, the trump card under the deck.
+  - **Rules:** the lowest trump attacks first; the defender beats each card with a higher one of its suit or a trump, or takes the table; once a card is beaten, the attackers throw in cards of ranks on the table (lead attacker first, then clockwise), up to six (five in the first bout) and never more than the defender holds; everyone draws to six, the defender last. The last player with cards is the durak; everyone else wins. Transfers are an option: before beating anything, the defender adds a card of the same rank and the next player defends.
+  - **The bout as turns:** Durak is played all at once at a real table; here each attacker in turn may throw in or pass, so the server can replay it.
+  - **Bots:** medium attacks low and beats cheaply; hard also takes rather than spend a high trump on a low card early, holds trumps back while the deck is long, and transfers.
+  - **Text limits now checked when writing a game's text** (an Arabic achievement description was over 120 characters).
+  - Checked: the engine check at 2, 3, 4 and 6 players with and without transfers, the table with one and two accounts (5/5 each), and Chrome 15/15 (six cards and the trump card, a game against three bots to its end, the cover for the attacker and the defender on one device, Take, 360, 768 and 1024 px, both themes, Arabic, axe).
 
 ## Known issues
 
