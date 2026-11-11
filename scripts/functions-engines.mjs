@@ -393,6 +393,7 @@ if (process.argv.includes("--fixtures")) {
     spades: { target: 300 },
     belote: undefined,
     santase: undefined,
+    "gin-rummy": { target: 50 },
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */

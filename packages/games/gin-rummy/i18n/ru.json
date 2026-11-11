@@ -1,0 +1,83 @@
+{
+  "name": "Джин рамми",
+  "tagline": "Собирайте комбинации, сбрасывайте очки и стучите — или джин.",
+  "description": "Играйте в джин рамми бесплатно: собирайте комбинации, уменьшайте очки, стучите или делайте джин и берегитесь подрезки. С ботом, вдвоём или онлайн.",
+  "about": [
+    "Gin Rummy is a two-player card game about building melds: three or four cards of the same rank, or three or more cards in a row of the same suit. Each player gets ten cards. On your turn you draw one card, from the face-down stock or from the top of the face-up discard pile, and then discard one.",
+    "Cards that aren't part of a meld are your deadwood: an ace counts 1, face cards 10, and the others their number. Once your deadwood is 10 or less, you may knock: you discard and lay your hand down. Your opponent then lays off cards that fit your melds, and the deadwood is compared. If your opponent has as little deadwood as you, or less, it's an undercut and they score instead.",
+    "Knocking with no deadwood at all is gin, worth a 25-point bonus. If only two cards are left in the stock and nobody has knocked, the hand is a draw. The first player to 100 points (or 50) wins. Play against a bot, with a friend on one device, or online, where the cards are dealt on our server."
+  ],
+  "howToPlay": [
+    "Choose a game to 100 or 50, then Play vs bots or Play on this device. Each player gets ten cards; one card starts the discard pile.",
+    "On your turn, draw the top card of the stock or of the discard pile, then discard a card (not the one you just took from the pile).",
+    "Make melds: three or four of a kind, or three or more in a row of one suit (ace low). Everything else is deadwood: ace 1, face cards 10, others their number.",
+    "With 10 or less deadwood, turn on Knock and discard: your hand is laid down. Your opponent lays off what fits on your melds.",
+    "The knocker scores the difference in deadwood. If the opponent has the same or less, it's an undercut: they score the difference plus 25. Gin (no deadwood) scores 25 plus the opponent's deadwood.",
+    "With two cards left in the stock and no knock, the hand is a draw. The first to the target wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap the stock or the discard pile to draw, then tap a card to lift it and again to discard it, or drag it up.",
+    "Mouse: click the stock or the discard to draw, and a card to discard.",
+    "Keyboard: Tab to the stock or discard and press Enter; move through your hand with the arrow keys and press Enter to discard.",
+    "Your hand is always sorted into your best melds, then your deadwood, with its total shown."
+  ],
+  "tips": [
+    "Take from the discard pile only when the card helps a meld: it tells your opponent what you're collecting.",
+    "Throw away high deadwood early: face cards cost 10 each if your opponent knocks.",
+    "Watch what your opponent picks up, and don't discard cards next to it.",
+    "Knock early when you can: waiting for gin is worth it only when you're very close."
+  ],
+  "faq": [
+    {
+      "question": "Is Gin Rummy free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is deadwood?",
+      "answer": "The cards in your hand that aren't part of a meld. Aces count 1, face cards 10, and the rest their number."
+    },
+    {
+      "question": "What is an undercut?",
+      "answer": "When the player who didn't knock has as little deadwood as the knocker, or less. They score the difference plus 25."
+    },
+    {
+      "question": "Do I have to find my melds myself?",
+      "answer": "No. kefche always sorts your hand into the melds with the least deadwood, and lays off cards for the defender."
+    },
+    {
+      "question": "Can the other player see my cards online?",
+      "answer": "No. Online, the cards are dealt on our server, which sends each player only their own hand and the discard pile."
+    }
+  ],
+  "ui": {
+    "target100": "100",
+    "target50": "50",
+    "players": "Игроки",
+    "yourHand": "Ваша рука",
+    "score": "{score} очк.",
+    "drawStock": "Взять из колоды (осталось {count})",
+    "takeDiscard": "Взять {card} из сброса",
+    "deadwood": "Очки без комбинаций: {points}",
+    "to": "Игра до {target}",
+    "drawPrompt": "Возьмите карту",
+    "discardPrompt": "Сбросьте карту",
+    "gin": "{name}: джин! +{points}",
+    "undercut": "{name}: подрезка! +{points}",
+    "knocked": "{name} стучит: +{points}",
+    "handOf": "Карты: {name}",
+    "drawnHand": "В колоде две карты: раздача без очков",
+    "knock": "Стучать ({limit} или меньше)",
+    "target": "Игра до"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Победитель",
+      "description": "Выиграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    },
+    "streak": {
+      "name": "Серия побед",
+      "description": "Выиграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}} подряд"
+    }
+  },
+  "leaderboards": {}
+}

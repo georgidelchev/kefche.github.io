@@ -2694,6 +2694,13 @@ The owner answered "you decide", so the recommended answers stand:
   - **Rules:** play anything while the stock lasts (the winner draws first); once it's gone or closed, follow suit and beat the card, or trump. A 11, 10 10, K 4, Q 3, J 2. Marriages (20, 40 in trumps) announced automatically when you lead one of the pair; they count once you've taken a trick. The leader may swap the nine of trumps or close the stock while three or more cards are left. 66 ends the deal at once: 1, 2 (under 33) or 3 (no trick) game points; a closer who falls short gives 2; played out, the last trick is 10. First to 11.
   - **Bots:** medium leads marriages, swaps the nine and wins aces and tens cheaply; hard also closes when its points and trumps should carry it, and trumps high cards while the stock is open.
   - Checked: the engine check, the table with one and two accounts (5/5 each), and Chrome 14/14 (six cards and the trump card, a game against the bot to its end, the cover for each player and Close for the leader on one device, 360, 768 and 1024 px, both themes, Arabic, axe).
+- [x] **Step 9, Gin Rummy:** two players, ten cards each, to 100 (or 50).
+  - **Rules:** draw from the stock or the discard pile, then discard (not the card just taken). Melds of three or four of a kind and runs of three or more (ace low); deadwood counts ace 1, face cards 10. Knock with 10 or less; the defender lays off on the knocker's melds (done automatically); the knocker scores the difference, an undercut scores the difference plus 25 for the defender, gin scores 25 plus the defender's deadwood. Two cards left in the stock: a drawn hand.
+  - **Simplified:** no first-turn offer of the upcard (each turn simply draws from either pile), and no box or line bonuses.
+  - **Your hand is always sorted into its best melds,** then deadwood, with its total; the hand's end lays out both hands.
+  - **Bots:** easy takes the discard only for a meld and knocks at once; medium takes it when it lowers its deadwood; hard also avoids feeding the other player's pickups and waits for gin when close.
+  - **Found by the table smoke test:** `submit-match` replays every move, and checking whether a knock is legal ran the meld search for every card. Long games ran past the function's time. Now a bound (a card's removal lowers the deadwood by at most its value) skips nearly all of it: 18,000 replayed moves take 56 ms.
+  - Checked: the engine check, the table with one and two accounts (5/5 each), and Chrome 14/14 (ten cards, deadwood, the discard to take, a hand to its end laid out with the score, the cover on one device, 360, 768 and 1024 px, both themes, Arabic, axe).
 
 ## Known issues
 

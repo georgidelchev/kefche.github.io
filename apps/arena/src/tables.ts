@@ -8,6 +8,9 @@ import { manifest as beloteManifest } from "@kefche/game-belote/manifest";
 import { bots as crazyBots } from "@kefche/game-crazy-colors/bots";
 import { engine as crazyEngine } from "@kefche/game-crazy-colors/engine";
 import { manifest as crazyManifest } from "@kefche/game-crazy-colors/manifest";
+import { bots as ginBots } from "@kefche/game-gin-rummy/bots";
+import { engine as ginEngine } from "@kefche/game-gin-rummy/engine";
+import { manifest as ginManifest } from "@kefche/game-gin-rummy/manifest";
 import { bots as heartsBots } from "@kefche/game-hearts/bots";
 import { engine as heartsEngine } from "@kefche/game-hearts/engine";
 import { manifest as heartsManifest } from "@kefche/game-hearts/manifest";
@@ -45,5 +48,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   spades: tableGame(spadesManifest, spadesEngine, spadesBots),
   belote: tableGame(beloteManifest, beloteEngine, beloteBots),
   santase: tableGame(santaseManifest, santaseEngine, santaseBots),
+  "gin-rummy": tableGame(ginManifest, ginEngine, ginBots),
   war: tableGame(warManifest, warEngine, warBots),
 };
