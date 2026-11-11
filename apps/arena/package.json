@@ -27,6 +27,7 @@
     "@kefche/game-liars-dice": "workspace:*",
     "@kefche/game-ludo": "workspace:*",
     "@kefche/game-memory-pairs": "workspace:*",
+    "@kefche/game-rps-tournament": "workspace:*",
     "@kefche/game-santase": "workspace:*",
     "@kefche/game-sdk": "workspace:*",
     "@kefche/game-sea-battle": "workspace:*",

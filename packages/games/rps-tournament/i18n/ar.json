@@ -1,0 +1,79 @@
+{
+  "name": "بطولة حجر ورقة مقص",
+  "tagline": "بطولة إقصائية من حجر ورقة مقص: الأفضل من ثلاث، والأخير يفوز.",
+  "description": "العب بطولة حجر ورقة مقص مجانًا: جدول لـ 2 إلى 16 لاعبًا، الأفضل من ثلاث، والرميات مخفية حتى يرمي الاثنان. ضد روبوتات أو على جهاز واحد أو عبر الإنترنت.",
+  "about": [
+    "Rock Paper Scissors Tournament is the hand game everybody knows, played as a knockout bracket for 2 to 16 players, with friends, bots, or online. Rock blunts scissors, scissors cut paper, and paper wraps rock.",
+    "Each match is best of three (or five): both players throw at once, in secret, and the same throw is thrown again. Win the match and you meet another winner in the next round; the last one standing is champion. With an odd number of players, some start with a bye.",
+    "It looks like pure luck, but people fall into patterns: a favourite throw, or the same move after a win. Online, each throw is held on our server until both are in, so nobody can wait to see yours."
+  ],
+  "howToPlay": [
+    "Choose best of three or five, then Play vs bots, Play on this device, or create a room.",
+    "When your match is on, tap Rock, Paper or Scissors.",
+    "Your throw stays hidden until your opponent throws; then both are shown and the score changes.",
+    "The same throw is thrown again. First to two wins (three, in best of five) goes through.",
+    "Follow the bracket below: the last one standing is champion."
+  ],
+  "controls": [
+    "Phones and tablets: tap a throw.",
+    "Mouse: click a throw.",
+    "Keyboard: Tab to a throw; Enter or Space throws it."
+  ],
+  "tips": [
+    "Mix it up: any pattern you fall into can be read.",
+    "Many players repeat a throw that just won, and switch after a loss.",
+    "Watch the other matches: everyone's throws are shown in the bracket's history.",
+    "Against bots, easy ones throw at random; hard ones look for your habits."
+  ],
+  "faq": [
+    {
+      "question": "Is it free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can my opponent see my throw first?",
+      "answer": "No. Online, each throw is held on our server until both players have thrown, then both are shown at once."
+    },
+    {
+      "question": "What happens on a tie?",
+      "answer": "The same throw is thrown again, and doesn't count. A match still level after 15 throws goes to whoever has won more, then to the one drawn first."
+    },
+    {
+      "question": "How many can play?",
+      "answer": "From 2 to 16. With a number that isn't 2, 4, 8 or 16, the first players drawn get a bye into the second round."
+    }
+  ],
+  "ui": {
+    "throw0": "حجر",
+    "throw1": "ورقة",
+    "throw2": "مقص",
+    "yourMatch": "مباراتك",
+    "vs": "{a} ضد {b}",
+    "score": "{a}–{b}",
+    "throwPair": "{a}: {x} · {b}: {y}",
+    "throwLabel": "رميتك",
+    "waitingFor": "بانتظار: {name}",
+    "waitingRound": "تأهلت! بانتظار انتهاء الجولة.",
+    "out": "خرجت من البطولة.",
+    "bye": "{name}: تأهل مباشر",
+    "thrownOne": "رمية واحدة جاهزة.",
+    "bracket": "جدول البطولة",
+    "final": "النهائي",
+    "semi": "نصف النهائي",
+    "roundN": "الجولة {n}",
+    "bestOfOption": "المباراة",
+    "bestOf3": "الأفضل من 3",
+    "bestOf5": "الأفضل من 5"
+  },
+  "achievements": {
+    "winner": {
+      "name": "فائز",
+      "description": "اربح {count, plural, one {مباراة واحدة} two {مباراتين} few {# مباريات} many {# مباراة} other {# مباراة}}"
+    },
+    "veteran": {
+      "name": "مخضرم",
+      "description": "العب {count, plural, one {مباراة واحدة} two {مباراتين} few {# مباريات} many {# مباراة} other {# مباراة}}"
+    }
+  },
+  "leaderboards": {}
+}

@@ -32,6 +32,9 @@ import { manifest as ludoManifest } from "@kefche/game-ludo/manifest";
 import { bots as pairsBots } from "@kefche/game-memory-pairs/bots";
 import { engine as pairsEngine } from "@kefche/game-memory-pairs/engine";
 import { manifest as pairsManifest } from "@kefche/game-memory-pairs/manifest";
+import { bots as rpsBots } from "@kefche/game-rps-tournament/bots";
+import { engine as rpsEngine } from "@kefche/game-rps-tournament/engine";
+import { manifest as rpsManifest } from "@kefche/game-rps-tournament/manifest";
 import { bots as santaseBots } from "@kefche/game-santase/bots";
 import { engine as santaseEngine } from "@kefche/game-santase/engine";
 import { manifest as santaseManifest } from "@kefche/game-santase/manifest";
@@ -77,5 +80,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   "sea-battle": tableGame(seaManifest, seaEngine, seaBots),
   conquest: tableGame(conquestManifest, conquestEngine, conquestBots),
   "memory-pairs": tableGame(pairsManifest, pairsEngine, pairsBots),
+  "rps-tournament": tableGame(rpsManifest, rpsEngine, rpsBots),
   war: tableGame(warManifest, warEngine, warBots),
 };
