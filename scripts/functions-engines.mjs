@@ -388,6 +388,7 @@ if (process.argv.includes("--fixtures")) {
     reversi: undefined,
     "shape-claim": undefined,
     "ultimate-ttt": { mode: "ultimate" },
+    war: { battles: 100 },
   };
   const MAX_ACTIONS = 400;
   /** Real-time games: 20 s of a solo arena, the player steering at random. */

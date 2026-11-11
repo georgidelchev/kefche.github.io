@@ -5,6 +5,7 @@
 
 import { BOT_BUDGET_MS, BOT_MIN_THINK_MS } from "../bots";
 import {
+  canonicalJson,
   isSideAction,
   replayTurns,
   sameAction,
@@ -279,6 +280,12 @@ export function createTurnSession<State, Action, Config>(
     if (!handsOff || result()) return;
     const next = nextHuman();
     if (next === undefined || next === viewer) return;
+    // Nothing for their eyes only (War's face-down piles): no cover needed.
+    const own = canonicalJson(viewFor(engine, state, next));
+    if (own === canonicalJson(viewFor(engine, state, null))) {
+      viewer = next;
+      return;
+    }
     viewer = null;
     handoff = next;
   };

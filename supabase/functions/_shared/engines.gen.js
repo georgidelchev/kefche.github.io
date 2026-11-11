@@ -55,9 +55,9 @@ function reachedTiers(definitions, figures) {
 var ARENA_FRAME = { input: 1, snapshot: 2, ping: 3, pong: 4 };
 function frame(kind, header, headerBytes, body) {
   const bytes = new Uint8Array(1 + headerBytes + (body?.length ?? 0));
-  const view = new DataView(bytes.buffer);
-  view.setUint8(0, kind);
-  header(view);
+  const view2 = new DataView(bytes.buffer);
+  view2.setUint8(0, kind);
+  header(view2);
   if (body) bytes.set(body, 1 + headerBytes);
   return bytes;
 }
@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine28, bots2, options) {
-    this.engine = engine28;
+  constructor(engine29, bots2, options) {
+    this.engine = engine29;
     this.bots = bots2;
     this.options = options;
-    this.world = engine28.createWorld(options.config, options.seed);
+    this.world = engine29.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine28.ticksPerSecond / engine28.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine29.ticksPerSecond / engine29.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -385,11 +385,11 @@ var ByteReader = class {
     return v;
   }
   varint() {
-    let result2 = 0;
+    let result3 = 0;
     for (let shift = 0; shift < 35; shift += 7) {
       const byte = this.u8();
-      result2 |= (byte & 127) << shift;
-      if (byte < 128) return result2 >>> 0;
+      result3 |= (byte & 127) << shift;
+      if (byte < 128) return result3 >>> 0;
     }
     throw new RangeError("varint longer than 5 bytes");
   }
@@ -432,6 +432,23 @@ function angleToByte(radians) {
 function byteToAngle(byte) {
   return (byte & 255) * TURN / 256;
 }
+
+// packages/game-sdk/src/cards.ts
+var SUITS = ["clubs", "diamonds", "hearts", "spades"];
+var ACE = 14;
+var HIDDEN = -1;
+var card = (suit, rank2) => SUITS.indexOf(suit) * 13 + (rank2 - 2);
+var rankOf = (c) => c % 13 + 2;
+var LOWEST = { 52: 2, 36: 6, 32: 7, 24: 9 };
+function deck(size = 52) {
+  const out = [];
+  for (const suit of SUITS) {
+    for (let rank2 = LOWEST[size]; rank2 <= ACE; rank2++) out.push(card(suit, rank2));
+  }
+  return out;
+}
+var shuffledDeck = (rng, size = 52) => rng.shuffle(deck(size));
+var hideCards = (cards) => cards.map(() => HIDDEN);
 
 // packages/game-sdk/src/det-math.ts
 var PI = 3.141592653589793;
@@ -479,7 +496,7 @@ function canonicalJson(value) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest28) => manifest28;
+var defineManifest = (manifest29) => manifest29;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -569,16 +586,16 @@ function xpForLevel(level) {
   return LEVEL_STEP_XP / 2 * l * (l - 1);
 }
 function levelForXp(xp) {
-  const total2 = whole(xp, 0);
-  let level = Math.max(1, Math.floor((1 + Math.sqrt(1 + 8 * total2 / LEVEL_STEP_XP)) / 2));
-  while (xpForLevel(level + 1) <= total2) level += 1;
-  while (level > 1 && xpForLevel(level) > total2) level -= 1;
+  const total3 = whole(xp, 0);
+  let level = Math.max(1, Math.floor((1 + Math.sqrt(1 + 8 * total3 / LEVEL_STEP_XP)) / 2));
+  while (xpForLevel(level + 1) <= total3) level += 1;
+  while (level > 1 && xpForLevel(level) > total3) level -= 1;
   return level;
 }
 function levelProgress(xp) {
-  const total2 = whole(xp, 0);
-  const level = levelForXp(total2);
-  const into = total2 - xpForLevel(level);
+  const total3 = whole(xp, 0);
+  const level = levelForXp(total3);
+  const into = total3 - xpForLevel(level);
   const span = xpForLevel(level + 1) - xpForLevel(level);
   return { level, into, span, fraction: into / span };
 }
@@ -1644,8 +1661,8 @@ function peg$parse(input, options) {
   var peg$f9 = function(line) {
     return line;
   };
-  var peg$f10 = function(result2, comment) {
-    return { result: result2, comment };
+  var peg$f10 = function(result3, comment) {
+    return { result: result3, comment };
   };
   var peg$currPos = options.peg$currPos | 0;
   var peg$posDetailsCache = [{ line: 1, column: 1 }];
@@ -2632,12 +2649,12 @@ function xoroshiro128(state) {
   return function() {
     let s0 = BigInt(state & MASK64);
     let s1 = BigInt(state >> 64n & MASK64);
-    const result2 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
+    const result3 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
     s1 ^= s0;
     s0 = (rotl(s0, 24n) ^ s1 ^ s1 << 16n) & MASK64;
     s1 = rotl(s1, 37n);
     state = s1 << 64n | s0;
-    return result2;
+    return result3;
   };
 }
 var rand = xoroshiro128(0xa187eb39cdcaed8f31c4b365b102e01en);
@@ -4340,16 +4357,16 @@ var Chess = class {
     return move2;
   }
   pgn({ newline = "\n", maxWidth = 0 } = {}) {
-    const result2 = [];
+    const result3 = [];
     let headerExists = false;
     for (const i in this._header) {
       const headerTag = this._header[i];
       if (headerTag)
-        result2.push(`[${i} "${this._header[i]}"]` + newline);
+        result3.push(`[${i} "${this._header[i]}"]` + newline);
       headerExists = true;
     }
     if (headerExists && this._history.length) {
-      result2.push(newline);
+      result3.push(newline);
     }
     const appendComment = (moveString2) => {
       const comment = this._comments[this.fen()];
@@ -4391,11 +4408,11 @@ var Chess = class {
     }
     moves.push(this._header.Result || "*");
     if (maxWidth === 0) {
-      return result2.join("") + moves.join(" ");
+      return result3.join("") + moves.join(" ");
     }
     const strip = function() {
-      if (result2.length > 0 && result2[result2.length - 1] === " ") {
-        result2.pop();
+      if (result3.length > 0 && result3[result3.length - 1] === " ") {
+        result3.pop();
         return true;
       }
       return false;
@@ -4409,12 +4426,12 @@ var Chess = class {
           while (strip()) {
             width--;
           }
-          result2.push(newline);
+          result3.push(newline);
           width = 0;
         }
-        result2.push(token);
+        result3.push(token);
         width += token.length;
-        result2.push(" ");
+        result3.push(" ");
         width++;
       }
       if (strip()) {
@@ -4431,19 +4448,19 @@ var Chess = class {
         }
       }
       if (currentWidth + moves[i].length > maxWidth && i !== 0) {
-        if (result2[result2.length - 1] === " ") {
-          result2.pop();
+        if (result3[result3.length - 1] === " ") {
+          result3.pop();
         }
-        result2.push(newline);
+        result3.push(newline);
         currentWidth = 0;
       } else if (i !== 0) {
-        result2.push(" ");
+        result3.push(" ");
         currentWidth++;
       }
-      result2.push(moves[i]);
+      result3.push(moves[i]);
       currentWidth += moves[i].length;
     }
-    return result2.join("");
+    return result3.join("");
   }
   /**
    * @deprecated Use `setHeader` and `getHeaders` instead. This method will return null header tags (which is not what you want)
@@ -4520,9 +4537,9 @@ var Chess = class {
       }
       node2 = node2.variations[0];
     }
-    const result2 = parsedPgn.result;
-    if (result2 && Object.keys(this._header).length && this._header["Result"] !== result2) {
-      this.setHeader("Result", result2);
+    const result3 = parsedPgn.result;
+    if (result3 && Object.keys(this._header).length && this._header["Result"] !== result3) {
+      this.setHeader("Result", result3);
     }
   }
   /*
@@ -4838,8 +4855,8 @@ var Chess = class {
       }
     }
     this._updateCastlingRights();
-    const result2 = this.getCastlingRights(color);
-    return (rights[KING] === void 0 || rights[KING] === result2[KING]) && (rights[QUEEN] === void 0 || rights[QUEEN] === result2[QUEEN]);
+    const result3 = this.getCastlingRights(color);
+    return (rights[KING] === void 0 || rights[KING] === result3[KING]) && (rights[QUEEN] === void 0 || rights[QUEEN] === result3[QUEEN]);
   }
   getCastlingRights(color) {
     return {
@@ -5123,9 +5140,9 @@ function reach(state, from) {
   const queue = [[from, []]];
   while (queue.length > 0) {
     const [at, path] = queue.shift() ?? [from, []];
-    (NEXT[at] ?? []).forEach((over, d) => {
-      if (over < 0 || over === from || board[over] === EMPTY3) return;
-      const land = NEXT[over]?.[d] ?? -1;
+    (NEXT[at] ?? []).forEach((over2, d) => {
+      if (over2 < 0 || over2 === from || board[over2] === EMPTY3) return;
+      const land = NEXT[over2]?.[d] ?? -1;
       if (land < 0 || seen.has(land) || board[land] !== EMPTY3 && land !== from) return;
       seen.add(land);
       const route = [...path, land];
@@ -5981,7 +5998,7 @@ function legalPoints(state, seat) {
 var ESTIMATE_PLAYOUTS = { 9: 160, 13: 80 };
 function ownership(state, playouts = ESTIMATE_PLAYOUTS[state.size]) {
   const n = state.size * state.size;
-  const total2 = new Float32Array(n);
+  const total3 = new Float32Array(n);
   const rng = Rng.fromSeed(`${state.seed}:own:${String(state.moves)}`);
   const random = () => rng.next();
   for (let i = 0; i < playouts; i++) {
@@ -5995,12 +6012,12 @@ function ownership(state, playouts = ESTIMATE_PLAYOUTS[state.size]) {
         const q = b.around(p)[0];
         owner = q === void 0 ? -1 : b.cells[q] ?? -1;
       }
-      if (owner === 0) total2[p] = (total2[p] ?? 0) + 1;
-      else if (owner === 1) total2[p] = (total2[p] ?? 0) - 1;
+      if (owner === 0) total3[p] = (total3[p] ?? 0) + 1;
+      else if (owner === 1) total3[p] = (total3[p] ?? 0) - 1;
     }
   }
-  for (let p = 0; p < n; p++) total2[p] = (total2[p] ?? 0) / playouts;
-  return total2;
+  for (let p = 0; p < n; p++) total3[p] = (total3[p] ?? 0) / playouts;
+  return total3;
 }
 function estimateDead(state) {
   const own = ownership(state);
@@ -6155,8 +6172,8 @@ var engine11 = {
     if (state.resigned !== null) {
       return { completed: true, outcome: state.resigned === 0 ? [0, 1] : [1, 0] };
     }
-    const { total: total2 } = scoreOf(state, state.dead);
-    return { completed: true, outcome: total2[0] > total2[1] ? [1, 0] : [0, 1] };
+    const { total: total3 } = scoreOf(state, state.dead);
+    return { completed: true, outcome: total3[0] > total3[1] ? [1, 0] : [0, 1] };
   }
 };
 
@@ -6777,20 +6794,20 @@ function deal(cards, seed) {
   const symbols = rng.shuffle(Array.from({ length: cards }, (_, i) => Math.floor(i / 2)));
   return { symbols, matched: symbols.map(() => false), up: [], flips: 0 };
 }
-function flip(table, card) {
-  if (!Number.isInteger(card) || card < 0 || card >= table.symbols.length || table.matched[card]) {
+function flip(table, card2) {
+  if (!Number.isInteger(card2) || card2 < 0 || card2 >= table.symbols.length || table.matched[card2]) {
     return { table, outcome: "none" };
   }
   const up = table.up.length === 2 ? [] : table.up;
-  if (up.includes(card)) return { table, outcome: "none" };
+  if (up.includes(card2)) return { table, outcome: "none" };
   const flips = table.flips + 1;
   const first2 = up[0];
-  if (first2 === void 0) return { table: { ...table, up: [card], flips }, outcome: "first" };
-  if (table.symbols[first2] === table.symbols[card]) {
-    const matched = table.matched.map((m, i) => m || i === first2 || i === card);
+  if (first2 === void 0) return { table: { ...table, up: [card2], flips }, outcome: "first" };
+  if (table.symbols[first2] === table.symbols[card2]) {
+    const matched = table.matched.map((m, i) => m || i === first2 || i === card2);
     return { table: { ...table, matched, up: [], flips }, outcome: "match" };
   }
-  return { table: { ...table, up: [first2, card], flips }, outcome: "miss" };
+  return { table: { ...table, up: [first2, card2], flips }, outcome: "miss" };
 }
 var cleared = (table) => table.matched.every(Boolean);
 var engine16 = {
@@ -7543,7 +7560,7 @@ var engine20 = {
     return { ...state, marks, moves: state.moves + 1 };
   },
   progress(state) {
-    const total2 = state.solution.reduce((n, v) => n + v, 0);
+    const total3 = state.solution.reduce((n, v) => n + v, 0);
     const right = state.solution.reduce(
       (n, v, i) => n + (v === 1 && state.marks[i] === 1 ? 1 : 0),
       0
@@ -7552,7 +7569,7 @@ var engine20 = {
       (n, v, i) => n + (v === 0 && state.marks[i] === 1 ? 1 : 0),
       0
     );
-    return Math.max(0, right - wrong) / Math.max(1, total2);
+    return Math.max(0, right - wrong) / Math.max(1, total3);
   },
   result: (state) => solved3(state) ? { completed: true } : null
 };
@@ -8148,8 +8165,8 @@ var engine23 = {
       const refill2 = bag2.shift();
       if (refill2 !== void 0) row2.push(refill2);
       const passes = state.passes + 1;
-      const over = row2.length === 0 || passes >= state.seats && bag2.length === 0 && refill2 === void 0;
-      return { ...state, row: row2, bag: bag2, turn: next, moves: state.moves + 1, passes, last: null, over };
+      const over2 = row2.length === 0 || passes >= state.seats && bag2.length === 0 && refill2 === void 0;
+      return { ...state, row: row2, bag: bag2, turn: next, moves: state.moves + 1, passes, last: null, over: over2 };
     }
     const cells = Array.isArray(action.cells) ? action.cells.toSorted((a, b) => a - b) : [];
     if (!isShape(state, action.slot, cells) || !fits(state, seat, cells)) return state;
@@ -8971,6 +8988,178 @@ var manifest26 = defineManifest({
   tags: ["classic", "two-player", "quick"]
 });
 
+// packages/games/war/engine/index.ts
+var MAX_BATTLES = 1e3;
+var WAR_DOWN = 3;
+var FLIP = { flip: true };
+var emptyBattle = () => ({ up: [[], []], down: [[], []], winner: null });
+var total2 = (state, seat) => state.piles[seat].length;
+var showing = (battle, seat) => battle.up[seat].at(-1);
+function over(state) {
+  if (state.outOfCards !== null) return true;
+  if (state.battle.up[0].length > 0 || state.battle.up[1].length > 0) return false;
+  return state.piles[0].length === 0 || state.piles[1].length === 0 || state.battles >= state.limit;
+}
+function initialState(config, _seats, seed) {
+  const rng = Rng.fromSeed(seed);
+  const deck2 = shuffledDeck(rng, 52);
+  return {
+    piles: [deck2.slice(0, 26), deck2.slice(26)],
+    battle: emptyBattle(),
+    flipped: [false, false],
+    last: null,
+    battles: 0,
+    limit: config.battles === 0 ? MAX_BATTLES : config.battles,
+    outOfCards: null,
+    moves: 0,
+    rng: rng.state
+  };
+}
+function resolve(state) {
+  const { battle } = state;
+  const a = showing(battle, 0);
+  const b = showing(battle, 1);
+  if (a === void 0 || b === void 0) return state;
+  if (rankOf(a) !== rankOf(b)) {
+    const winner = rankOf(a) > rankOf(b) ? 0 : 1;
+    const rng = new Rng(state.rng);
+    const won = rng.shuffle([
+      ...battle.up[0],
+      ...battle.down[0],
+      ...battle.up[1],
+      ...battle.down[1]
+    ]);
+    const piles2 = [[...state.piles[0]], [...state.piles[1]]];
+    piles2[winner] = [...piles2[winner], ...won];
+    return {
+      ...state,
+      piles: piles2,
+      battle: emptyBattle(),
+      flipped: [false, false],
+      last: { ...battle, winner },
+      battles: state.battles + 1,
+      rng: rng.state
+    };
+  }
+  const piles = [[...state.piles[0]], [...state.piles[1]]];
+  const down = [[...battle.down[0]], [...battle.down[1]]];
+  for (const seat of [0, 1]) {
+    if (piles[seat].length === 0) return { ...state, outOfCards: seat };
+    const laid = Math.min(WAR_DOWN, piles[seat].length - 1);
+    down[seat] = [...down[seat], ...piles[seat].slice(0, laid)];
+    piles[seat] = piles[seat].slice(laid);
+  }
+  return { ...state, piles, battle: { ...battle, down }, flipped: [false, false] };
+}
+function applyAction(state, seat, action) {
+  if (seat !== 0 && seat !== 1) return state;
+  if (legalActions(state, seat).length === 0 || typeof action !== "object") return state;
+  const card2 = state.piles[seat][0];
+  if (card2 === void 0) return { ...state, outOfCards: seat, moves: state.moves + 1 };
+  const piles = [[...state.piles[0]], [...state.piles[1]]];
+  piles[seat] = piles[seat].slice(1);
+  const up = [[...state.battle.up[0]], [...state.battle.up[1]]];
+  up[seat] = [...up[seat], card2];
+  const flipped = [...state.flipped];
+  flipped[seat] = true;
+  const next = {
+    ...state,
+    piles,
+    battle: { ...state.battle, up },
+    flipped,
+    moves: state.moves + 1
+  };
+  return flipped[0] && flipped[1] ? resolve(next) : next;
+}
+function legalActions(state, seat) {
+  if (seat !== 0 && seat !== 1) return [];
+  return over(state) || state.flipped[seat] ? [] : [FLIP];
+}
+function currentSeats(state) {
+  if (over(state)) return [];
+  return [0, 1].filter((s) => !state.flipped[s]);
+}
+function result(state) {
+  if (!over(state)) return null;
+  if (state.outOfCards !== null) {
+    return { completed: true, outcome: state.outOfCards === 0 ? [0, 1] : [1, 0] };
+  }
+  const [a, b] = [total2(state, 0), total2(state, 1)];
+  return { completed: true, outcome: a === b ? [0.5, 0.5] : a > b ? [1, 0] : [0, 1] };
+}
+function view(state, seat) {
+  const up = [[...state.battle.up[0]], [...state.battle.up[1]]];
+  for (const s of [0, 1]) {
+    if (s !== seat && state.flipped[s] && !state.flipped[s === 0 ? 1 : 0]) {
+      up[s] = [...up[s].slice(0, -1), HIDDEN];
+    }
+  }
+  return {
+    ...state,
+    piles: [hideCards(state.piles[0]), hideCards(state.piles[1])],
+    battle: {
+      ...state.battle,
+      up,
+      down: [hideCards(state.battle.down[0]), hideCards(state.battle.down[1])]
+    },
+    last: state.last ? {
+      ...state.last,
+      down: [hideCards(state.last.down[0]), hideCards(state.last.down[1])]
+    } : null,
+    rng: [0, 0, 0, 0]
+  };
+}
+var engine27 = {
+  initialState,
+  legalActions,
+  applyAction,
+  currentSeats,
+  result,
+  view
+};
+
+// packages/games/war/manifest.ts
+var manifest27 = defineManifest({
+  id: "war",
+  version: 1,
+  category: "cards",
+  kind: "turn",
+  players: { min: 2, max: 2, default: 2 },
+  modes: ["solo-bots", "hotseat", "online-private", "online-public", "quick-match"],
+  // No choices to make: one bot that flips.
+  bots: { supported: true, difficulties: ["easy"], canFillSeats: true },
+  timers: [
+    { kind: "none" },
+    { kind: "per-move", seconds: 10, onExpiry: "random-move" },
+    { kind: "per-move", seconds: 30, onExpiry: "random-move" }
+  ],
+  options: [
+    {
+      key: "battles",
+      label: "battles",
+      values: [
+        { value: 100, label: "battles100" },
+        { value: 300, label: "battles300" },
+        { value: 0, label: "battlesEnd" }
+      ]
+    }
+  ],
+  rated: false,
+  hiddenInformation: true,
+  orientation: "any",
+  controls: ["tap", "keyboard"],
+  renderer: "dom",
+  estimatedMinutes: [3, 15],
+  leaderboards: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "veteran", icon: "medal", metric: "played", tiers: [10, 50, 200] }
+  ],
+  // Every flip is a move, so a match replays exactly from its seed.
+  scoreValidation: { kind: "replay" },
+  tags: ["cards", "classic", "two-player"]
+});
+
 // packages/games/worm-rush/engine/world.ts
 var TICKS_PER_SECOND = 30;
 var SNAPSHOTS_PER_SECOND = 15;
@@ -9367,7 +9556,7 @@ function lifeResult(world, worm) {
     completed: true
   };
 }
-function result(world, id) {
+function result2(world, id) {
   const worm = world.worms.get(id);
   if (!worm) return null;
   return worm.alive ? lifeResult(world, worm) : worm.lastLife;
@@ -9444,11 +9633,11 @@ function snapshot(world, id) {
   const ranked = [...world.worms.values()].filter((w) => w.alive).sort((a, b) => b.mass - a.mass || a.id - b.id);
   const cx = me?.x ?? 0;
   const cy = me?.y ?? 0;
-  const view = viewRadius(me?.mass ?? START_MASS);
+  const view2 = viewRadius(me?.mass ?? START_MASS);
   const worms = [];
   for (const worm of world.worms.values()) {
     if (!worm.alive) continue;
-    const reach2 = view + wormLength(worm.mass) + wormRadius(worm.mass);
+    const reach2 = view2 + wormLength(worm.mass) + wormRadius(worm.mass);
     if ((worm.x - cx) ** 2 + (worm.y - cy) ** 2 > reach2 * reach2) continue;
     worms.push({
       id: worm.id,
@@ -9461,7 +9650,7 @@ function snapshot(world, id) {
     });
   }
   worms.sort((a, b) => a.id - b.id);
-  const orbs = world.orbGrid.query(cx, cy, view + 20).map((orbId) => world.orbs.get(orbId)).filter((orb) => orb !== void 0).map(({ id: orbId, x, y, value, hue }) => ({ id: orbId, x, y, value, hue })).sort((a, b) => a.id - b.id);
+  const orbs = world.orbGrid.query(cx, cy, view2 + 20).map((orbId) => world.orbs.get(orbId)).filter((orb) => orb !== void 0).map(({ id: orbId, x, y, value, hue }) => ({ id: orbId, x, y, value, hue })).sort((a, b) => a.id - b.id);
   const board = ranked.slice(0, 10).map((w) => ({ id: w.id, mass: w.mass }));
   const feed = world.knockouts.filter((k) => k.tick > world.tick - TRAIL_EVERY).map((k) => ({ victim: k.victim, by: k.by ?? 0 }));
   const mentioned2 = /* @__PURE__ */ new Set([
@@ -9615,7 +9804,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine27 = {
+var engine28 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -9626,13 +9815,13 @@ var engine27 = {
   alive,
   step: step3,
   snapshot,
-  result,
+  result: result2,
   snapshotCodec,
   inputCodec
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest27 = defineManifest({
+var manifest28 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -9690,7 +9879,8 @@ var GAMES = {
   "snake": { manifest: manifest24, engine: engine24 },
   "sudoku": { manifest: manifest25, engine: engine25 },
   "ultimate-ttt": { manifest: manifest26, engine: engine26 },
-  "worm-rush": { manifest: manifest27, engine: engine27, bots, host: arenaHost }
+  "war": { manifest: manifest27, engine: engine27 },
+  "worm-rush": { manifest: manifest28, engine: engine28, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

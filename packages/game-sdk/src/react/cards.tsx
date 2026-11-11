@@ -113,6 +113,8 @@ export function FourColourToggle({ label }: { label: string }) {
       }}
     >
       <svg viewBox="0 0 48 24" aria-hidden="true">
+        {/* On a card's face, so every suit shows in both themes. */}
+        <rect width={48} height={24} rx={4} style={{ fill: "var(--card-face)" }} />
         {(["spades", "hearts", "diamonds", "clubs"] as const).map((s, i) => (
           <path
             key={s}

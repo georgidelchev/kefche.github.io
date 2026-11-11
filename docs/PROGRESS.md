@@ -2658,6 +2658,13 @@ The owner answered "you decide", so the recommended answers stand:
   - **Results:** `submit-match` replays the table's report from its seed and records the match once (`table_match_record`), counted for each account seated; players ask for their record (`tableResult`) for the results screen.
   - **The site:** a game with hidden information plays online only on the table (`context.online.table`, `createTableSession`).
   - **Checked on the local stack,** with Nim made a table game in the working tree only: 14/14 at the protocol level (seats and commitment, refused moves out of turn, stale or from outsiders, a match to its end with the seed matching its hash, recorded once with XP, bots on the table, reconnecting, a stand-in after 15 s), and 7/7 through the room page in Chrome with two accounts. Deno 101/101.
+- [x] **Step 3, War:** the first game on the table.
+  - **Rules:** 26 cards each, face down; both flip and the higher rank takes the lot (aces high). A tie is war: up to three cards face down each, then another flip. Won cards go under the winner's pile in a shuffled order. 100 battles (the default), 300, or to the end (stopping at 1000), then the bigger pile wins; a player who can't flip loses.
+  - **A simultaneous turn:** both seats flip in either order, and a card flipped first is hidden from the other until they flip too. Piles and shuffles are secret, so online matches play on the table.
+  - **Play:** a big Flip button, "Play by itself" (kept per device), the four-colour deck, and the last battle shown with its winner until both have flipped again. One bot, which flips.
+  - **The pass screen only when it hides something:** on one device it now shows only when the next person would see more than everyone may (never in War, whose piles are face down for both).
+  - Checked in Chrome: 23/23 alone and on one device (a battle, Enter on Flip, playing by itself to the end of 100 battles, no pass screen, 360, 768 and 1280 px, both themes, Arabic, axe), and 10/10 online with two accounts (both on the table, no pile's cards in any message, your own pending card shown and the other's hidden, a match by itself to the end, recorded once by the table with XP and the Winner achievement). Deno 102/102.
+  - **Also fixed:** the signed-in header's account link failed axe's label-in-name rule (its initials and level were text inside it).
 
 ## Known issues
 

@@ -1,0 +1,78 @@
+{
+  "name": "युद्ध",
+  "tagline": "पत्ता पलटें, तुलना करें और बड़ा पत्ता जीते। बराबरी पर युद्ध!",
+  "description": "अपने ब्राउज़र में युद्ध मुफ़्त खेलें: पत्ते पलटें, लड़ाइयाँ जीतें और बराबरी पर युद्ध करें। बॉट के ख़िलाफ़, एक डिवाइस पर दोस्त के साथ या ऑनलाइन।",
+  "about": [
+    "War is the card game many people learn first, and it needs no strategy at all: the deck decides. Two players split a shuffled deck of 52 cards face down. In each battle both flip their top card, and the higher card wins both. Aces are high, then kings, queens and jacks, down to the twos.",
+    "When the two cards are the same rank, it's war. Each player lays up to three cards face down, then flips another one, and the higher of those takes everything on the table. A war can follow a war, so a single battle can swing a dozen cards. Won cards go to the bottom of the winner's pile, and the game goes on until one player has every card.",
+    "A full game of War can take a very long time, so here you choose how long it lasts: 100 battles, 300, or to the end (stopping at 1000 battles). When the battles run out, the bigger pile wins. Play against a bot, with a friend on one device, or online, where the shuffles happen on our server so nobody can know the order of the cards. Turn on Play by itself and just watch the battles."
+  ],
+  "howToPlay": [
+    "Choose how many battles to play, then Play vs bots or Play on this device. Each player gets 26 cards face down.",
+    "Both players flip their top card. The higher rank takes both cards; aces are high.",
+    "On a tie it's war: each player lays up to three cards face down and flips one more. The higher card takes everything.",
+    "Won cards go to the bottom of the winner's pile.",
+    "A player who runs out of cards loses. When the battles you chose are over, the player with more cards wins; equal piles are a draw."
+  ],
+  "controls": [
+    "Phones and tablets: tap Flip when it's your turn.",
+    "Mouse: click Flip.",
+    "Keyboard: move to Flip with Tab and press Enter or Space.",
+    "Play by itself flips for you as soon as it's your turn."
+  ],
+  "tips": [
+    "There's nothing to decide in War, so sit back: Play by itself turns a game into a show.",
+    "Aces only lose to wars. The more aces in your pile, the better your chances.",
+    "Short games of 100 battles end with a count of the piles, so a lucky war near the end can decide them.",
+    "Play online with a friend: the cards are shuffled on the server, so neither of you can know what's coming."
+  ],
+  "faq": [
+    {
+      "question": "Is War free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What happens on a tie?",
+      "answer": "It's war: each player lays up to three cards face down and flips another one. The higher card takes all of them. If that's a tie too, the war goes on."
+    },
+    {
+      "question": "What if I run out of cards in a war?",
+      "answer": "You keep your last card to flip. If you have no card to flip, you lose the game."
+    },
+    {
+      "question": "Why does the game stop before someone has every card?",
+      "answer": "A full game of War can last for hours. You choose 100 or 300 battles, or to the end, which stops at 1000 battles. Then the bigger pile wins."
+    },
+    {
+      "question": "Can anyone cheat online?",
+      "answer": "No. Online, the deck is shuffled on our server, which shows each player only what's face up. When the game ends, the server reveals the seed of the shuffle, which matches the fingerprint it published at the start."
+    }
+  ],
+  "ui": {
+    "flip": "पलटें",
+    "flipFor": "पलटें: {name}",
+    "auto": "अपने आप खेलें",
+    "cards": "पत्ते: {count}",
+    "faceDown": "उलटे: {count}",
+    "war": "युद्ध!",
+    "takes": "{name} ने {count} पत्ते जीते",
+    "battleOf": "लड़ाई {n} / {total}",
+    "battleCount": "लड़ाई {n}",
+    "battles": "अवधि",
+    "battles100": "100 लड़ाइयाँ",
+    "battles300": "300 लड़ाइयाँ",
+    "battlesEnd": "अंत तक",
+    "ready": "पलट दिया"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, plural, one {# खेल} other {# खेल}} जीतें"
+    },
+    "veteran": {
+      "name": "अनुभवी",
+      "description": "{count, plural, one {# खेल} other {# खेल}} खेलें"
+    }
+  },
+  "leaderboards": {}
+}

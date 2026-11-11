@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@kefche/game-sdk": "workspace:*",
+    "@kefche/game-war": "workspace:*",
     "@kefche/game-worm-rush": "workspace:*",
     "zod": "4.6.7"
   }

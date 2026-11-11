@@ -3,6 +3,9 @@
 // is its own engine (with `view`), bots and manifest; the table is the same
 // code for all of them.
 import type { GameBots, GameManifest, TurnEngine } from "@kefche/game-sdk";
+import { bots as warBots } from "@kefche/game-war/bots";
+import { engine as warEngine } from "@kefche/game-war/engine";
+import { manifest as warManifest } from "@kefche/game-war/manifest";
 
 export interface TableGame {
   manifest: GameManifest;
@@ -21,4 +24,6 @@ export const tableGame = <State, Action, Config>(
   bots,
 });
 
-export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {};
+export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
+  war: tableGame(warManifest, warEngine, warBots),
+};
