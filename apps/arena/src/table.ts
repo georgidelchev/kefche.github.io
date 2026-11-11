@@ -62,6 +62,12 @@ const KEEP_MS = 60 * 60_000;
 /** At most this many bot moves in a row, a guard against a game that never ends. */
 const MAX_BOT_MOVES = 1000;
 /**
+ * Side actions a seat may take in one match. Sea Battle's placing, the most
+ * a game needs, takes a few dozen; endless ones could grow the saved match
+ * past what Durable Object storage holds (2 MB a value).
+ */
+const MAX_SIDE_ACTIONS = 200;
+/**
  * Workers don't advance the clock while code runs, so a bot's clock moves
  * this many milliseconds each time it's read: its budget is a number of
  * steps, not time. A table's bots get a tenth of a browser's budget.
@@ -89,6 +95,8 @@ interface Match {
   timedOut: number | null;
   endedAt: number | null;
   reported: boolean;
+  /** Per seat: side actions taken so far (missing in matches saved before the budget). */
+  sideActions?: number[];
 }
 
 /** Who a socket is, kept across hibernation. */
@@ -332,7 +340,17 @@ export class Table extends DurableObject<Env> {
   }
 
   private legal(match: Match, game: TableGame, seat: number, action: unknown): boolean {
-    if (isSideAction(game.engine, match.state, seat, action)) return true;
+    if (isSideAction(game.engine, match.state, seat, action)) {
+      // Side actions don't move a game on (moving a Sea Battle ship again),
+      // so each seat has a budget: endless ones would grow the saved match
+      // past what storage takes, and the table would stall for everyone.
+      const used = match.sideActions?.[seat] ?? 0;
+      if (used >= MAX_SIDE_ACTIONS) return false;
+      match.sideActions = Array.from({ length: match.room.players }, (_, i) =>
+        i === seat ? used + 1 : (match.sideActions?.[i] ?? 0),
+      );
+      return true;
+    }
     if (!this.toMove(match, game).includes(seat)) return false;
     return legalMove(game.engine, match.state, seat, action) !== undefined;
   }
