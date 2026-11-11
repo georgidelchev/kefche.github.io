@@ -55,9 +55,9 @@ function reachedTiers(definitions, figures) {
 var ARENA_FRAME = { input: 1, snapshot: 2, ping: 3, pong: 4 };
 function frame(kind, header, headerBytes, body) {
   const bytes = new Uint8Array(1 + headerBytes + (body?.length ?? 0));
-  const view16 = new DataView(bytes.buffer);
-  view16.setUint8(0, kind);
-  header(view16);
+  const view17 = new DataView(bytes.buffer);
+  view17.setUint8(0, kind);
+  header(view17);
   if (body) bytes.set(body, 1 + headerBytes);
   return bytes;
 }
@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine45, bots2, options) {
-    this.engine = engine45;
+  constructor(engine46, bots2, options) {
+    this.engine = engine46;
     this.bots = bots2;
     this.options = options;
-    this.world = engine45.createWorld(options.config, options.seed);
+    this.world = engine46.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine45.ticksPerSecond / engine45.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine46.ticksPerSecond / engine46.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -385,11 +385,11 @@ var ByteReader = class {
     return v;
   }
   varint() {
-    let result17 = 0;
+    let result18 = 0;
     for (let shift = 0; shift < 35; shift += 7) {
       const byte = this.u8();
-      result17 |= (byte & 127) << shift;
-      if (byte < 128) return result17 >>> 0;
+      result18 |= (byte & 127) << shift;
+      if (byte < 128) return result18 >>> 0;
     }
     throw new RangeError("varint longer than 5 bytes");
   }
@@ -524,7 +524,7 @@ function canonicalJson(value2) {
 var sameAction = (a, b) => canonicalJson(a) === canonicalJson(b);
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest45) => manifest45;
+var defineManifest = (manifest46) => manifest46;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -1143,8 +1143,8 @@ function playable(state, seat) {
   if (teamOf(winning) === teamOf(seat) && winning !== seat) return hand;
   const trumps = hand.filter((c) => isTrump(kind, c));
   if (trumps.length === 0) return hand;
-  const over11 = isTrump(kind, best) ? trumps.filter((c) => strength(kind, c) > strength(kind, best)) : trumps;
-  return over11.length > 0 ? over11 : trumps;
+  const over12 = isTrump(kind, best) ? trumps.filter((c) => strength(kind, c) > strength(kind, best)) : trumps;
+  return over12.length > 0 ? over12 : trumps;
 }
 function trickWinner(plays, kind) {
   const led = plays[0];
@@ -2320,8 +2320,8 @@ function peg$parse(input, options) {
   var peg$f9 = function(line) {
     return line;
   };
-  var peg$f10 = function(result17, comment) {
-    return { result: result17, comment };
+  var peg$f10 = function(result18, comment) {
+    return { result: result18, comment };
   };
   var peg$currPos = options.peg$currPos | 0;
   var peg$posDetailsCache = [{ line: 1, column: 1 }];
@@ -3308,12 +3308,12 @@ function xoroshiro128(state) {
   return function() {
     let s0 = BigInt(state & MASK64);
     let s1 = BigInt(state >> 64n & MASK64);
-    const result17 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
+    const result18 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
     s1 ^= s0;
     s0 = (rotl(s0, 24n) ^ s1 ^ s1 << 16n) & MASK64;
     s1 = rotl(s1, 37n);
     state = s1 << 64n | s0;
-    return result17;
+    return result18;
   };
 }
 var rand = xoroshiro128(0xa187eb39cdcaed8f31c4b365b102e01en);
@@ -5016,16 +5016,16 @@ var Chess = class {
     return move3;
   }
   pgn({ newline = "\n", maxWidth = 0 } = {}) {
-    const result17 = [];
+    const result18 = [];
     let headerExists = false;
     for (const i in this._header) {
       const headerTag = this._header[i];
       if (headerTag)
-        result17.push(`[${i} "${this._header[i]}"]` + newline);
+        result18.push(`[${i} "${this._header[i]}"]` + newline);
       headerExists = true;
     }
     if (headerExists && this._history.length) {
-      result17.push(newline);
+      result18.push(newline);
     }
     const appendComment = (moveString2) => {
       const comment = this._comments[this.fen()];
@@ -5067,11 +5067,11 @@ var Chess = class {
     }
     moves.push(this._header.Result || "*");
     if (maxWidth === 0) {
-      return result17.join("") + moves.join(" ");
+      return result18.join("") + moves.join(" ");
     }
     const strip = function() {
-      if (result17.length > 0 && result17[result17.length - 1] === " ") {
-        result17.pop();
+      if (result18.length > 0 && result18[result18.length - 1] === " ") {
+        result18.pop();
         return true;
       }
       return false;
@@ -5085,12 +5085,12 @@ var Chess = class {
           while (strip()) {
             width--;
           }
-          result17.push(newline);
+          result18.push(newline);
           width = 0;
         }
-        result17.push(token);
+        result18.push(token);
         width += token.length;
-        result17.push(" ");
+        result18.push(" ");
         width++;
       }
       if (strip()) {
@@ -5107,19 +5107,19 @@ var Chess = class {
         }
       }
       if (currentWidth + moves[i].length > maxWidth && i !== 0) {
-        if (result17[result17.length - 1] === " ") {
-          result17.pop();
+        if (result18[result18.length - 1] === " ") {
+          result18.pop();
         }
-        result17.push(newline);
+        result18.push(newline);
         currentWidth = 0;
       } else if (i !== 0) {
-        result17.push(" ");
+        result18.push(" ");
         currentWidth++;
       }
-      result17.push(moves[i]);
+      result18.push(moves[i]);
       currentWidth += moves[i].length;
     }
-    return result17.join("");
+    return result18.join("");
   }
   /**
    * @deprecated Use `setHeader` and `getHeaders` instead. This method will return null header tags (which is not what you want)
@@ -5196,9 +5196,9 @@ var Chess = class {
       }
       node2 = node2.variations[0];
     }
-    const result17 = parsedPgn.result;
-    if (result17 && Object.keys(this._header).length && this._header["Result"] !== result17) {
-      this.setHeader("Result", result17);
+    const result18 = parsedPgn.result;
+    if (result18 && Object.keys(this._header).length && this._header["Result"] !== result18) {
+      this.setHeader("Result", result18);
     }
   }
   /*
@@ -5514,8 +5514,8 @@ var Chess = class {
       }
     }
     this._updateCastlingRights();
-    const result17 = this.getCastlingRights(color);
-    return (rights[KING2] === void 0 || rights[KING2] === result17[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result17[QUEEN2]);
+    const result18 = this.getCastlingRights(color);
+    return (rights[KING2] === void 0 || rights[KING2] === result18[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result18[QUEEN2]);
   }
   getCastlingRights(color) {
     return {
@@ -5799,9 +5799,9 @@ function reach(state, from) {
   const queue = [[from, []]];
   while (queue.length > 0) {
     const [at, path] = queue.shift() ?? [from, []];
-    (NEXT[at] ?? []).forEach((over11, d) => {
-      if (over11 < 0 || over11 === from || board[over11] === EMPTY3) return;
-      const land = NEXT[over11]?.[d] ?? -1;
+    (NEXT[at] ?? []).forEach((over12, d) => {
+      if (over12 < 0 || over12 === from || board[over12] === EMPTY3) return;
+      const land = NEXT[over12]?.[d] ?? -1;
       if (land < 0 || seen.has(land) || board[land] !== EMPTY3 && land !== from) return;
       seen.add(land);
       const route = [...path, land];
@@ -8711,7 +8711,7 @@ function countFace(dice, face2, wild) {
   return dice.reduce((n, cup) => n + cup.filter((d) => counts(d, face2, wild)).length, 0);
 }
 var totalDice = (s) => s.dice.reduce((n, cup) => n + cup.length, 0);
-var higher = (b, over11) => over11 === null ? b.qty >= 1 : b.qty > over11.qty || b.qty === over11.qty && b.face > over11.face;
+var higher = (b, over12) => over12 === null ? b.qty >= 1 : b.qty > over12.qty || b.qty === over12.qty && b.face > over12.face;
 var alive = (s, seat) => (s.dice[seat]?.length ?? 0) > 0;
 function nextAlive(s, from) {
   for (let i = 1; i <= s.players; i++) {
@@ -9032,6 +9032,115 @@ var manifest23 = defineManifest({
   tags: ["puzzle", "logic", "single-player"]
 });
 
+// packages/games/lowest-unique/engine/index.ts
+var MAX = 10;
+var SECRET = -1;
+function lowestUnique(picks) {
+  let best = null;
+  picks.forEach((n, seat) => {
+    const unique = picks.filter((m) => m === n).length === 1;
+    if (unique && (best === null || n < (picks[best] ?? Infinity))) best = seat;
+  });
+  return best;
+}
+function initialState9(config, seats) {
+  return {
+    players: seats,
+    config,
+    picks: Array.from({ length: seats }, () => null),
+    history: [],
+    scores: Array.from({ length: seats }, () => 0),
+    moves: 0
+  };
+}
+var over7 = (s) => s.history.length >= s.config.rounds;
+function legalActions9(s, seat) {
+  if (over7(s) || s.picks[seat] !== null) return [];
+  return Array.from({ length: MAX }, (_, i) => ({ pick: i + 1 }));
+}
+function applyAction9(s, seat, action) {
+  if (over7(s) || s.picks[seat] !== null) return s;
+  if (!Number.isInteger(action.pick) || action.pick < 1 || action.pick > MAX) return s;
+  const picks = s.picks.map((p, i) => i === seat ? action.pick : p);
+  if (picks.some((p) => p === null)) return { ...s, picks, moves: s.moves + 1 };
+  const all = picks.map((p) => p ?? 0);
+  const winner = lowestUnique(all);
+  return {
+    ...s,
+    picks: picks.map(() => null),
+    history: [...s.history, { picks: all, winner }],
+    scores: s.scores.map((v, i) => i === winner ? v + 1 : v),
+    moves: s.moves + 1
+  };
+}
+function currentSeats9(s) {
+  return over7(s) ? [] : s.picks.flatMap((p, seat) => p === null ? [seat] : []);
+}
+function result9(s) {
+  if (!over7(s)) return null;
+  const best = Math.max(...s.scores);
+  const top2 = s.scores.filter((v) => v === best).length;
+  return {
+    completed: true,
+    outcome: s.scores.map((v) => v === best ? top2 === 1 ? 1 : 0.5 : 0)
+  };
+}
+function view9(s, seat) {
+  return { ...s, picks: s.picks.map((p, i) => p === null || i === seat ? p : SECRET) };
+}
+function viewAction2(action, seat, viewer) {
+  return viewer === seat ? action : null;
+}
+var engine24 = {
+  initialState: initialState9,
+  legalActions: legalActions9,
+  applyAction: applyAction9,
+  currentSeats: currentSeats9,
+  result: result9,
+  view: view9,
+  viewAction: viewAction2
+};
+
+// packages/games/lowest-unique/manifest.ts
+var manifest24 = defineManifest({
+  id: "lowest-unique",
+  version: 1,
+  category: "party",
+  kind: "turn",
+  players: { min: 2, max: 10, default: 5 },
+  modes: ["solo-bots", "hotseat", "online-private", "online-public", "quick-match"],
+  bots: { supported: true, difficulties: ["easy", "medium", "hard"], canFillSeats: true },
+  timers: [
+    { kind: "per-move", seconds: 15, onExpiry: "random-move" },
+    { kind: "none" },
+    { kind: "per-move", seconds: 30, onExpiry: "random-move" }
+  ],
+  options: [
+    {
+      key: "rounds",
+      label: "roundsOption",
+      values: [
+        { value: 5, label: "rounds5" },
+        { value: 10, label: "rounds10" }
+      ]
+    }
+  ],
+  rated: false,
+  hiddenInformation: true,
+  orientation: "any",
+  controls: ["tap", "keyboard"],
+  renderer: "dom",
+  estimatedMinutes: [2, 6],
+  leaderboards: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "veteran", icon: "medal", metric: "played", tiers: [10, 50, 200] }
+  ],
+  // Every pick is a move.
+  scoreValidation: { kind: "replay" },
+  tags: ["party", "numbers", "quick", "multiplayer"]
+});
+
 // packages/games/ludo/engine/index.ts
 var YARD = -1;
 var HOME = 56;
@@ -9044,7 +9153,7 @@ function rollDie(s) {
   const rng = new Rng(s.rng);
   return { ...s, die: rng.int(1, 6), rng: rng.state };
 }
-function initialState9(config, seats, seed) {
+function initialState10(config, seats, seed) {
   const s = {
     players: seats,
     colours: COLOURS[seats] ?? [0, 1, 2, 3].slice(0, seats),
@@ -9083,10 +9192,10 @@ function skipStuck(s) {
   }
   return cur;
 }
-function legalActions9(s, seat) {
+function legalActions10(s, seat) {
   return movable(s, seat).map((token) => ({ token }));
 }
-function applyAction9(s, seat, action) {
+function applyAction10(s, seat, action) {
   if (!movable(s, seat).includes(action.token)) return s;
   const from = s.tokens[seat]?.[action.token] ?? YARD;
   const to = destination(s, seat, action.token) ?? from;
@@ -9124,30 +9233,30 @@ function applyAction9(s, seat, action) {
   const sixes = six ? s.sixes + 1 : 0;
   return nextTurn2({ ...next2, sixes }, six && sixes < 3);
 }
-function currentSeats9(s) {
+function currentSeats10(s) {
   return s.winner === null ? [s.turn] : [];
 }
-function result9(s) {
+function result10(s) {
   if (s.winner === null) return null;
   return {
     completed: true,
     outcome: Array.from({ length: s.players }, (_, i) => i === s.winner ? 1 : 0)
   };
 }
-function view9(s) {
+function view10(s) {
   return { ...s, rng: [0, 0, 0, 0] };
 }
-var engine24 = {
-  initialState: initialState9,
-  legalActions: legalActions9,
-  applyAction: applyAction9,
-  currentSeats: currentSeats9,
-  result: result9,
-  view: view9
+var engine25 = {
+  initialState: initialState10,
+  legalActions: legalActions10,
+  applyAction: applyAction10,
+  currentSeats: currentSeats10,
+  result: result10,
+  view: view10
 };
 
 // packages/games/ludo/manifest.ts
-var manifest24 = defineManifest({
+var manifest25 = defineManifest({
   id: "ludo",
   version: 1,
   category: "board",
@@ -9202,7 +9311,7 @@ function movesFor3(state, seat) {
 }
 var sideTotal = (holes, seat) => pitsOf(seat).reduce((n, p) => n + (holes[p] ?? 0), 0);
 var score2 = (state, seat) => state.holes[STORE[seat === 0 ? 0 : 1]] ?? 0;
-var engine25 = {
+var engine26 = {
   initialState(config) {
     const { seeds } = configFrom10(config);
     const holes = Array.from({ length: 14 }, (_, i) => i === 6 || i === 13 ? 0 : seeds);
@@ -9263,7 +9372,7 @@ var engine25 = {
 };
 
 // packages/games/mancala/manifest.ts
-var manifest25 = defineManifest({
+var manifest26 = defineManifest({
   id: "mancala",
   version: 1,
   category: "board",
@@ -9333,7 +9442,7 @@ function flip(table, card2) {
   return { table: { ...table, up: [first2, card2], flips }, outcome: "miss" };
 }
 var cleared = (table) => table.matched.every(Boolean);
-var engine26 = {
+var engine27 = {
   initialState(config, seed) {
     const { cards } = configFrom11(config);
     return { cards, ...deal5(cards, seed) };
@@ -9371,7 +9480,7 @@ function partyWinners(party) {
 }
 
 // packages/games/memory-match/manifest.ts
-var manifest26 = defineManifest({
+var manifest27 = defineManifest({
   id: "memory-match",
   version: 1,
   category: "logic",
@@ -9417,29 +9526,29 @@ var manifest26 = defineManifest({
 
 // packages/games/memory-pairs/engine/index.ts
 var UNSEEN2 = -1;
-function initialState10(config, seats, seed) {
+function initialState11(config, seats, seed) {
   const party = startParty(config.cards, seats, seed);
   return { ...party, seen: party.symbols.map(() => UNSEEN2), moves: 0 };
 }
-var over7 = (s) => s.matched.every(Boolean);
-function legalActions10(s, seat) {
-  if (over7(s) || seat !== s.turn) return [];
+var over8 = (s) => s.matched.every(Boolean);
+function legalActions11(s, seat) {
+  if (over8(s) || seat !== s.turn) return [];
   const up = s.up.length === 2 ? [] : s.up;
   return s.symbols.flatMap(
     (_, card2) => s.matched[card2] || up.includes(card2) ? [] : [{ flip: card2 }]
   );
 }
-function applyAction10(s, seat, action) {
-  if (!legalActions10(s, seat).some((a) => a.flip === action.flip)) return s;
+function applyAction11(s, seat, action) {
+  if (!legalActions11(s, seat).some((a) => a.flip === action.flip)) return s;
   const { party, outcome } = partyFlip(s, action.flip);
   if (outcome === "none") return s;
   const seen = s.seen.map((v, card2) => card2 === action.flip ? s.symbols[card2] ?? v : v);
   return { ...s, ...party, seen, moves: s.moves + 1 };
 }
-function currentSeats10(s) {
-  return over7(s) ? [] : [s.turn];
+function currentSeats11(s) {
+  return over8(s) ? [] : [s.turn];
 }
-function result10(s) {
+function result11(s) {
   const winners = partyWinners(s);
   if (!winners) return null;
   const share = winners.length === 1 ? 1 : 0.5;
@@ -9448,7 +9557,7 @@ function result10(s) {
     outcome: s.pairs.map((_, seat) => winners.includes(seat) ? share : 0)
   };
 }
-function view10(s) {
+function view11(s) {
   return {
     ...s,
     symbols: s.symbols.map(
@@ -9456,17 +9565,17 @@ function view10(s) {
     )
   };
 }
-var engine27 = {
-  initialState: initialState10,
-  legalActions: legalActions10,
-  applyAction: applyAction10,
-  currentSeats: currentSeats10,
-  result: result10,
-  view: view10
+var engine28 = {
+  initialState: initialState11,
+  legalActions: legalActions11,
+  applyAction: applyAction11,
+  currentSeats: currentSeats11,
+  result: result11,
+  view: view11
 };
 
 // packages/games/memory-pairs/manifest.ts
-var manifest27 = defineManifest({
+var manifest28 = defineManifest({
   id: "memory-pairs",
   version: 1,
   category: "logic",
@@ -9608,7 +9717,7 @@ function layMines(seed, level, first2) {
 }
 var safeLeft = (s) => s.open.reduce((n, v, i) => n + (v || s.mines[i] ? 0 : 1), 0);
 var done = (s) => s.exploded !== null || s.won;
-var engine28 = {
+var engine29 = {
   initialState(config, seed) {
     const { level } = configFrom12(config);
     const { cols, rows, mines: count3 } = LEVELS2[level];
@@ -9675,7 +9784,7 @@ var engine28 = {
 };
 
 // packages/games/minesweeper/manifest.ts
-var manifest28 = defineManifest({
+var manifest29 = defineManifest({
   id: "minesweeper",
   version: 1,
   category: "logic",
@@ -9731,7 +9840,7 @@ function startingPiles(config, seed) {
   return Array.from({ length: rng.int(3, 5) }, () => rng.int(1, 7));
 }
 var total = (piles) => piles.reduce((n, p) => n + p, 0);
-var engine29 = {
+var engine30 = {
   initialState(config, seats, seed) {
     const c = configFrom13(config);
     return {
@@ -9778,7 +9887,7 @@ var engine29 = {
 };
 
 // packages/games/nim/manifest.ts
-var manifest29 = defineManifest({
+var manifest30 = defineManifest({
   id: "nim",
   version: 1,
   category: "strategy",
@@ -9922,7 +10031,7 @@ function movesFor4(state, seat) {
   return out;
 }
 var key = (state) => `${String(state.turn)}${state.inHand.join("")}:${state.board.map((v) => String(v + 1)).join("")}`;
-var engine30 = {
+var engine31 = {
   initialState(config) {
     const { flying } = configFrom14(config);
     const board = Array.from({ length: POINTS }, () => EMPTY7);
@@ -9994,7 +10103,7 @@ var engine30 = {
 };
 
 // packages/games/nine-mens-morris/manifest.ts
-var manifest30 = defineManifest({
+var manifest31 = defineManifest({
   id: "nine-mens-morris",
   version: 1,
   category: "board",
@@ -10177,7 +10286,7 @@ function makePuzzle(seed, size) {
   return best ?? { solution: [], rowClues: [], colClues: [] };
 }
 var solved3 = (s) => s.solution.every((v, i) => v === 1 === (s.marks[i] === 1));
-var engine31 = {
+var engine32 = {
   initialState(config, seed) {
     const { size } = configFrom15(config);
     return {
@@ -10213,7 +10322,7 @@ var engine31 = {
 };
 
 // packages/games/nonogram/manifest.ts
-var manifest31 = defineManifest({
+var manifest32 = defineManifest({
   id: "nonogram",
   version: 1,
   category: "logic",
@@ -10326,7 +10435,7 @@ function validPath(state, colour, cells) {
   }
   return out;
 }
-var engine32 = {
+var engine33 = {
   initialState(config, seed) {
     const { size } = configFrom16(config);
     const ends = puzzleFor(size, seed);
@@ -10349,7 +10458,7 @@ var engine32 = {
 };
 
 // packages/games/pipe-link/manifest.ts
-var manifest32 = defineManifest({
+var manifest33 = defineManifest({
   id: "pipe-link",
   version: 1,
   category: "logic",
@@ -10440,7 +10549,7 @@ function movesFor5(board, seat) {
   return moves;
 }
 var countDiscs = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-var engine33 = {
+var engine34 = {
   initialState() {
     const board = Array.from({ length: SIZE3 * SIZE3 }, () => -1);
     board[3 * SIZE3 + 3] = 1;
@@ -10483,7 +10592,7 @@ var engine33 = {
 };
 
 // packages/games/reversi/manifest.ts
-var manifest33 = defineManifest({
+var manifest34 = defineManifest({
   id: "reversi",
   version: 1,
   category: "board",
@@ -10517,7 +10626,7 @@ var manifest33 = defineManifest({
 
 // packages/games/rps-tournament/engine/index.ts
 var THROWS = [0, 1, 2];
-var SECRET = -1;
+var SECRET2 = -1;
 var MAX_THROWS = 15;
 var beats2 = (x, y) => (x - y + 3) % 3 === 1;
 var match = (a, b) => ({
@@ -10528,7 +10637,7 @@ var match = (a, b) => ({
   pending: [null, null],
   winner: b === null ? a : null
 });
-function initialState11(config, seats, seed) {
+function initialState12(config, seats, seed) {
   const order = Rng.fromSeed(seed).shuffle(Array.from({ length: seats }, (_, i) => i));
   let size = 1;
   while (size < seats) size *= 2;
@@ -10558,13 +10667,13 @@ function matchOf(s, seat) {
   }
   return null;
 }
-function legalActions11(s, seat) {
+function legalActions12(s, seat) {
   if (s.champion !== null) return [];
   const mine = matchOf(s, seat);
   if (mine?.match.pending[mine.side] !== null) return [];
   return THROWS.map((t2) => ({ throw: t2 }));
 }
-function applyAction11(s, seat, action) {
+function applyAction12(s, seat, action) {
   const mine = matchOf(s, seat);
   if (s.champion !== null || mine?.match.pending[mine.side] !== null) return s;
   if (!THROWS.includes(action.throw)) return s;
@@ -10587,7 +10696,7 @@ function applyAction11(s, seat, action) {
   const round = (s.rounds.at(-1) ?? []).map((old, i) => i === mine.index ? next2 : old);
   return advance({ ...s, rounds: [...s.rounds.slice(0, -1), round], moves: s.moves + 1 });
 }
-function currentSeats11(s) {
+function currentSeats12(s) {
   if (s.champion !== null) return [];
   const round = s.rounds.at(-1) ?? [];
   return round.flatMap((m) => {
@@ -10595,42 +10704,42 @@ function currentSeats11(s) {
     return [m.pending[0] === null ? m.a : null, m.pending[1] === null ? m.b : null];
   }).filter((seat) => seat !== null).sort((p, q) => p - q);
 }
-function result11(s) {
+function result12(s) {
   if (s.champion === null) return null;
   return {
     completed: true,
     outcome: Array.from({ length: s.players }, (_, i) => i === s.champion ? 1 : 0)
   };
 }
-function view11(s, seat) {
+function view12(s, seat) {
   return {
     ...s,
     rounds: s.rounds.map(
       (round) => round.map((m) => ({
         ...m,
         pending: [
-          m.pending[0] === null || m.a === seat ? m.pending[0] : SECRET,
-          m.pending[1] === null || m.b === seat ? m.pending[1] : SECRET
+          m.pending[0] === null || m.a === seat ? m.pending[0] : SECRET2,
+          m.pending[1] === null || m.b === seat ? m.pending[1] : SECRET2
         ]
       }))
     )
   };
 }
-function viewAction2(action, seat, viewer) {
+function viewAction3(action, seat, viewer) {
   return viewer === seat ? action : null;
 }
-var engine34 = {
-  initialState: initialState11,
-  legalActions: legalActions11,
-  applyAction: applyAction11,
-  currentSeats: currentSeats11,
-  result: result11,
-  view: view11,
-  viewAction: viewAction2
+var engine35 = {
+  initialState: initialState12,
+  legalActions: legalActions12,
+  applyAction: applyAction12,
+  currentSeats: currentSeats12,
+  result: result12,
+  view: view12,
+  viewAction: viewAction3
 };
 
 // packages/games/rps-tournament/manifest.ts
-var manifest34 = defineManifest({
+var manifest35 = defineManifest({
   id: "rps-tournament",
   version: 1,
   category: "party",
@@ -10695,7 +10804,7 @@ function deal6(base, rng) {
     rng: rng.state
   };
 }
-function initialState12(_config, _seats, seed) {
+function initialState13(_config, _seats, seed) {
   return deal6(
     {
       closed: null,
@@ -10717,7 +10826,7 @@ function initialState12(_config, _seats, seed) {
 }
 var strict = (state) => state.closed !== null || state.stock.length === 0;
 var trumpCard = (state) => state.stock.at(-1) ?? null;
-var over8 = (state) => state.scores.some((s) => s >= TARGET2);
+var over9 = (state) => state.scores.some((s) => s >= TARGET2);
 function beats3(state, a, led) {
   if (suitOf(a) === suitOf(led)) return strength2(a) > strength2(led);
   return suitOf(a) === state.trump;
@@ -10734,8 +10843,8 @@ function playable3(state, seat) {
   const trumps = hand.filter((c) => suitOf(c) === state.trump);
   return trumps.length > 0 ? trumps : hand;
 }
-function legalActions12(state, seat) {
-  if (over8(state) || seat !== state.turn) return [];
+function legalActions13(state, seat) {
+  if (over9(state) || seat !== state.turn) return [];
   const actions = playable3(state, seat).map((c) => ({ play: c }));
   const leading = state.trick.length === 0;
   const open = state.closed === null && state.stock.length >= 3;
@@ -10757,8 +10866,8 @@ function finish3(state, winner, points2) {
   return deal6({ ...after, dealer: other3(state.dealer), lastTrick: null }, new Rng(state.rng));
 }
 var gamePoints = (theirPoints, theirTricks) => theirTricks === 0 ? 3 : theirPoints < 33 ? 2 : 1;
-function applyAction12(state, seat, action) {
-  const legal = legalActions12(state, seat).some(
+function applyAction13(state, seat, action) {
+  const legal = legalActions13(state, seat).some(
     (a) => "play" in a && "play" in action && a.play === action.play || "exchange" in a && "exchange" in action || "close" in a && "close" in action
   );
   if (!legal) return state;
@@ -10834,14 +10943,14 @@ function applyAction12(state, seat, action) {
   }
   return next2;
 }
-function currentSeats12(state) {
-  return over8(state) ? [] : [state.turn];
+function currentSeats13(state) {
+  return over9(state) ? [] : [state.turn];
 }
-function result12(state) {
-  if (!over8(state)) return null;
+function result13(state) {
+  if (!over9(state)) return null;
   return { completed: true, outcome: state.scores[0] > state.scores[1] ? [1, 0] : [0, 1] };
 }
-function view12(state, seat) {
+function view13(state, seat) {
   const up = trumpCard(state);
   return {
     ...state,
@@ -10853,17 +10962,17 @@ function view12(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine35 = {
-  initialState: initialState12,
-  legalActions: legalActions12,
-  applyAction: applyAction12,
-  currentSeats: currentSeats12,
-  result: result12,
-  view: view12
+var engine36 = {
+  initialState: initialState13,
+  legalActions: legalActions13,
+  applyAction: applyAction13,
+  currentSeats: currentSeats13,
+  result: result13,
+  view: view13
 };
 
 // packages/games/santase/manifest.ts
-var manifest35 = defineManifest({
+var manifest36 = defineManifest({
   id: "santase",
   version: 1,
   category: "cards",
@@ -10945,7 +11054,7 @@ function sunkShips(s, seat) {
     (s.shots[other4(seat)] ?? []).flatMap((shot) => shot.sunk === null ? [] : [shot.sunk])
   );
 }
-function initialState13(config) {
+function initialState14(config) {
   return {
     config,
     phase: "place",
@@ -10959,7 +11068,7 @@ function initialState13(config) {
   };
 }
 var fleetOf = (s, seat) => s.fleets[seat] ?? [];
-function legalActions13(s, seat) {
+function legalActions14(s, seat) {
   if (s.winner !== null || seat !== 0 && seat !== 1) return [];
   if (s.phase === "place") {
     if (s.ready[seat]) return [];
@@ -10982,7 +11091,7 @@ function sideActions(s, seat) {
     (_, i) => fleet[i] ? placements(fleet, i).map((place2) => ({ place: place2 })) : []
   );
 }
-function applyAction13(s, seat, action) {
+function applyAction14(s, seat, action) {
   if (s.winner !== null || seat !== 0 && seat !== 1) return s;
   if ("place" in action) {
     if (s.phase !== "place" || s.ready[seat]) return s;
@@ -11029,16 +11138,16 @@ function applyAction13(s, seat, action) {
   if (sunkAll) return { ...next2, winner: seat };
   return { ...next2, turn: i !== null && s.config.again ? seat : other4(seat) };
 }
-function currentSeats13(s) {
+function currentSeats14(s) {
   if (s.winner !== null) return [];
   if (s.phase === "place") return [0, 1].filter((seat) => !s.ready[seat]);
   return [s.turn];
 }
-function result13(s) {
+function result14(s) {
   if (s.winner === null) return null;
   return { completed: true, outcome: [0, 1].map((seat) => seat === s.winner ? 1 : 0) };
 }
-function view13(s, seat) {
+function view14(s, seat) {
   return {
     ...s,
     fleets: s.fleets.map((fleet, owner) => {
@@ -11048,22 +11157,22 @@ function view13(s, seat) {
     })
   };
 }
-function viewAction3(action, seat, viewer) {
+function viewAction4(action, seat, viewer) {
   return "place" in action && viewer !== seat ? null : action;
 }
-var engine36 = {
-  initialState: initialState13,
-  legalActions: legalActions13,
+var engine37 = {
+  initialState: initialState14,
+  legalActions: legalActions14,
   sideActions,
-  applyAction: applyAction13,
-  currentSeats: currentSeats13,
-  result: result13,
-  view: view13,
-  viewAction: viewAction3
+  applyAction: applyAction14,
+  currentSeats: currentSeats14,
+  result: result14,
+  view: view14,
+  viewAction: viewAction4
 };
 
 // packages/games/sea-battle/manifest.ts
-var manifest36 = defineManifest({
+var manifest37 = defineManifest({
   id: "sea-battle",
   version: 1,
   category: "board",
@@ -11351,7 +11460,7 @@ function isShape(state, slot, cells) {
   const rc = cells.map((cell) => [Math.floor(cell / size), cell % size]);
   return SHAPE_KEYS[shape]?.has(keyOf(rc)) ?? false;
 }
-var engine37 = {
+var engine38 = {
   initialState(_config, seats, seed) {
     const size = sizeFor3(seats);
     const rng = Rng.fromSeed(`${seed}:bag`);
@@ -11390,8 +11499,8 @@ var engine37 = {
       const refill2 = bag2.shift();
       if (refill2 !== void 0) row2.push(refill2);
       const passes = state.passes + 1;
-      const over11 = row2.length === 0 || passes >= state.seats && bag2.length === 0 && refill2 === void 0;
-      return { ...state, row: row2, bag: bag2, turn: next2, moves: state.moves + 1, passes, last: null, over: over11 };
+      const over12 = row2.length === 0 || passes >= state.seats && bag2.length === 0 && refill2 === void 0;
+      return { ...state, row: row2, bag: bag2, turn: next2, moves: state.moves + 1, passes, last: null, over: over12 };
     }
     const cells = Array.isArray(action.cells) ? action.cells.toSorted((a, b) => a - b) : [];
     if (!isShape(state, action.slot, cells) || !fits3(state, seat, cells)) return state;
@@ -11436,7 +11545,7 @@ var engine37 = {
 };
 
 // packages/games/shape-claim/manifest.ts
-var manifest37 = defineManifest({
+var manifest38 = defineManifest({
   id: "shape-claim",
   version: 1,
   category: "strategy",
@@ -11504,7 +11613,7 @@ function neighbor(cell, direction, walls) {
   c = (c + COLS) % COLS;
   return r * COLS + c;
 }
-var engine38 = {
+var engine39 = {
   initialState(config, seed) {
     const middle = Math.floor(ROWS / 2) * COLS + Math.floor(COLS / 2) - 3;
     const snake = [middle, middle - 1, middle - 2];
@@ -11571,7 +11680,7 @@ var engine38 = {
 var stepMs = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
 
 // packages/games/snake/manifest.ts
-var manifest38 = defineManifest({
+var manifest39 = defineManifest({
   id: "snake",
   version: 1,
   category: "arcade",
@@ -11640,7 +11749,7 @@ function deal7(state, rng) {
     rng: rng.state
   };
 }
-function initialState14(config, _seats, seed) {
+function initialState15(config, _seats, seed) {
   return deal7(
     {
       phase: "bid",
@@ -11682,13 +11791,13 @@ function trickWinner3(plays) {
   }
   return best.seat;
 }
-function over9(state) {
+function over10(state) {
   if (state.phase !== "bid" || state.bids.some((b2) => b2 !== null)) return false;
   const [a, b] = state.scores;
   return a <= MERCY || b <= MERCY || (a >= state.target || b >= state.target) && a !== b;
 }
-function legalActions14(state, seat) {
-  if (over9(state) || seat !== state.turn) return [];
+function legalActions15(state, seat) {
+  if (over10(state) || seat !== state.turn) return [];
   if (state.phase === "bid") return Array.from({ length: 14 }, (_, n) => ({ bid: n }));
   return playable4(state, seat).map((c) => ({ play: c }));
 }
@@ -11719,8 +11828,8 @@ function handScore(state) {
   }
   return { points: points2, bags };
 }
-function applyAction14(state, seat, action) {
-  if (!legalActions14(state, seat).some(
+function applyAction15(state, seat, action) {
+  if (!legalActions15(state, seat).some(
     (a) => "bid" in a && "bid" in action ? a.bid === action.bid : "play" in a && "play" in action && a.play === action.play
   )) {
     return state;
@@ -11769,33 +11878,33 @@ function applyAction14(state, seat, action) {
     new Rng(state.rng)
   );
 }
-function currentSeats14(state) {
-  return over9(state) ? [] : [state.turn];
+function currentSeats15(state) {
+  return over10(state) ? [] : [state.turn];
 }
-function result14(state) {
-  if (!over9(state)) return null;
+function result15(state) {
+  if (!over10(state)) return null;
   const [a, b] = state.scores;
   const winner = a <= MERCY ? 1 : b <= MERCY ? 0 : a > b ? 0 : 1;
   return { completed: true, outcome: [0, 1, 2, 3].map((s) => teamOf2(s) === winner ? 1 : 0) };
 }
-function view14(state, seat) {
+function view15(state, seat) {
   return {
     ...state,
     hands: state.hands.map((h, i) => i === seat ? h : hideCards(h)),
     rng: [0, 0, 0, 0]
   };
 }
-var engine39 = {
-  initialState: initialState14,
-  legalActions: legalActions14,
-  applyAction: applyAction14,
-  currentSeats: currentSeats14,
-  result: result14,
-  view: view14
+var engine40 = {
+  initialState: initialState15,
+  legalActions: legalActions15,
+  applyAction: applyAction15,
+  currentSeats: currentSeats15,
+  result: result15,
+  view: view15
 };
 
 // packages/games/spades/manifest.ts
-var manifest39 = defineManifest({
+var manifest40 = defineManifest({
   id: "spades",
   version: 1,
   category: "cards",
@@ -11897,7 +12006,7 @@ function settle(s) {
 }
 var layout2 = (s) => ({ columns: s.columns, stock: s.stock, done: s.done });
 var canDeal = (s) => s.stock.length >= 10 && s.columns.every((c) => c.up.length > 0);
-var engine40 = {
+var engine41 = {
   initialState(config, seed) {
     const c = configFrom17(config);
     return { ...deal8(c, seed), suits: c.suits, moves: 0, history: [] };
@@ -11945,7 +12054,7 @@ var engine40 = {
 };
 
 // packages/games/spider/manifest.ts
-var manifest40 = defineManifest({
+var manifest41 = defineManifest({
   id: "spider",
   version: 1,
   category: "cards",
@@ -12349,7 +12458,7 @@ function commit(state, next2, extra = {}) {
     ]
   };
 }
-var engine41 = {
+var engine42 = {
   initialState(config, seed) {
     return fromPuzzle(generate(seed, config.difficulty));
   },
@@ -12406,7 +12515,7 @@ var engine41 = {
 };
 
 // packages/games/sudoku/manifest.ts
-var manifest41 = defineManifest({
+var manifest42 = defineManifest({
   id: "sudoku",
   version: 1,
   category: "logic",
@@ -12485,7 +12594,7 @@ function movesFor6(state) {
     (b) => smallBoard(state.cells, b).flatMap((v, c) => v === EMPTY9 ? [b * 9 + c] : [])
   );
 }
-var engine42 = {
+var engine43 = {
   initialState(config) {
     const { mode } = configFrom18(config);
     return {
@@ -12542,7 +12651,7 @@ var engine42 = {
 };
 
 // packages/games/ultimate-ttt/manifest.ts
-var manifest42 = defineManifest({
+var manifest43 = defineManifest({
   id: "ultimate-ttt",
   version: 1,
   category: "strategy",
@@ -12589,12 +12698,12 @@ var FLIP = { flip: true };
 var emptyBattle = () => ({ up: [[], []], down: [[], []], winner: null });
 var total2 = (state, seat) => state.piles[seat].length;
 var showing = (battle, seat) => battle.up[seat].at(-1);
-function over10(state) {
+function over11(state) {
   if (state.outOfCards !== null) return true;
   if (state.battle.up[0].length > 0 || state.battle.up[1].length > 0) return false;
   return state.piles[0].length === 0 || state.piles[1].length === 0 || state.battles >= state.limit;
 }
-function initialState15(config, _seats, seed) {
+function initialState16(config, _seats, seed) {
   const rng = Rng.fromSeed(seed);
   const deck2 = shuffledDeck(rng, 52);
   return {
@@ -12645,9 +12754,9 @@ function resolve(state) {
   }
   return { ...state, piles, battle: { ...battle, down }, flipped: [false, false] };
 }
-function applyAction15(state, seat, action) {
+function applyAction16(state, seat, action) {
   if (seat !== 0 && seat !== 1) return state;
-  if (legalActions15(state, seat).length === 0 || typeof action !== "object") return state;
+  if (legalActions16(state, seat).length === 0 || typeof action !== "object") return state;
   const card2 = state.piles[seat][0];
   if (card2 === void 0) return { ...state, outOfCards: seat, moves: state.moves + 1 };
   const piles = [[...state.piles[0]], [...state.piles[1]]];
@@ -12665,23 +12774,23 @@ function applyAction15(state, seat, action) {
   };
   return flipped[0] && flipped[1] ? resolve(next2) : next2;
 }
-function legalActions15(state, seat) {
+function legalActions16(state, seat) {
   if (seat !== 0 && seat !== 1) return [];
-  return over10(state) || state.flipped[seat] ? [] : [FLIP];
+  return over11(state) || state.flipped[seat] ? [] : [FLIP];
 }
-function currentSeats15(state) {
-  if (over10(state)) return [];
+function currentSeats16(state) {
+  if (over11(state)) return [];
   return [0, 1].filter((s) => !state.flipped[s]);
 }
-function result15(state) {
-  if (!over10(state)) return null;
+function result16(state) {
+  if (!over11(state)) return null;
   if (state.outOfCards !== null) {
     return { completed: true, outcome: state.outOfCards === 0 ? [0, 1] : [1, 0] };
   }
   const [a, b] = [total2(state, 0), total2(state, 1)];
   return { completed: true, outcome: a === b ? [0.5, 0.5] : a > b ? [1, 0] : [0, 1] };
 }
-function view15(state, seat) {
+function view16(state, seat) {
   const up = [[...state.battle.up[0]], [...state.battle.up[1]]];
   for (const s of [0, 1]) {
     if (s !== seat && state.flipped[s] && !state.flipped[s === 0 ? 1 : 0]) {
@@ -12703,17 +12812,17 @@ function view15(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine43 = {
-  initialState: initialState15,
-  legalActions: legalActions15,
-  applyAction: applyAction15,
-  currentSeats: currentSeats15,
-  result: result15,
-  view: view15
+var engine44 = {
+  initialState: initialState16,
+  legalActions: legalActions16,
+  applyAction: applyAction16,
+  currentSeats: currentSeats16,
+  result: result16,
+  view: view16
 };
 
 // packages/games/war/manifest.ts
-var manifest43 = defineManifest({
+var manifest44 = defineManifest({
   id: "war",
   version: 1,
   category: "cards",
@@ -13150,7 +13259,7 @@ function lifeResult(world, worm) {
     completed: true
   };
 }
-function result16(world, id) {
+function result17(world, id) {
   const worm = world.worms.get(id);
   if (!worm) return null;
   return worm.alive ? lifeResult(world, worm) : worm.lastLife;
@@ -13227,11 +13336,11 @@ function snapshot(world, id) {
   const ranked = [...world.worms.values()].filter((w) => w.alive).sort((a, b) => b.mass - a.mass || a.id - b.id);
   const cx = me?.x ?? 0;
   const cy = me?.y ?? 0;
-  const view16 = viewRadius(me?.mass ?? START_MASS);
+  const view17 = viewRadius(me?.mass ?? START_MASS);
   const worms = [];
   for (const worm of world.worms.values()) {
     if (!worm.alive) continue;
-    const reach2 = view16 + wormLength(worm.mass) + wormRadius(worm.mass);
+    const reach2 = view17 + wormLength(worm.mass) + wormRadius(worm.mass);
     if ((worm.x - cx) ** 2 + (worm.y - cy) ** 2 > reach2 * reach2) continue;
     worms.push({
       id: worm.id,
@@ -13244,7 +13353,7 @@ function snapshot(world, id) {
     });
   }
   worms.sort((a, b) => a.id - b.id);
-  const orbs = world.orbGrid.query(cx, cy, view16 + 20).map((orbId) => world.orbs.get(orbId)).filter((orb) => orb !== void 0).map(({ id: orbId, x, y, value: value2, hue }) => ({ id: orbId, x, y, value: value2, hue })).sort((a, b) => a.id - b.id);
+  const orbs = world.orbGrid.query(cx, cy, view17 + 20).map((orbId) => world.orbs.get(orbId)).filter((orb) => orb !== void 0).map(({ id: orbId, x, y, value: value2, hue }) => ({ id: orbId, x, y, value: value2, hue })).sort((a, b) => a.id - b.id);
   const board = ranked.slice(0, 10).map((w) => ({ id: w.id, mass: w.mass }));
   const feed = world.knockouts.filter((k) => k.tick > world.tick - TRAIL_EVERY).map((k) => ({ victim: k.victim, by: k.by ?? 0 }));
   const mentioned2 = /* @__PURE__ */ new Set([
@@ -13398,7 +13507,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine44 = {
+var engine45 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -13409,13 +13518,13 @@ var engine44 = {
   alive: alive2,
   step: step3,
   snapshot,
-  result: result16,
+  result: result17,
   snapshotCodec,
   inputCodec
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest44 = defineManifest({
+var manifest45 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -13470,27 +13579,28 @@ var GAMES = {
   "klondike": { manifest: manifest21, engine: engine21 },
   "liars-dice": { manifest: manifest22, engine: engine22 },
   "lights-off": { manifest: manifest23, engine: engine23 },
-  "ludo": { manifest: manifest24, engine: engine24 },
-  "mancala": { manifest: manifest25, engine: engine25 },
-  "memory-match": { manifest: manifest26, engine: engine26 },
-  "memory-pairs": { manifest: manifest27, engine: engine27 },
-  "minesweeper": { manifest: manifest28, engine: engine28 },
-  "nim": { manifest: manifest29, engine: engine29 },
-  "nine-mens-morris": { manifest: manifest30, engine: engine30 },
-  "nonogram": { manifest: manifest31, engine: engine31 },
-  "pipe-link": { manifest: manifest32, engine: engine32 },
-  "reversi": { manifest: manifest33, engine: engine33 },
-  "rps-tournament": { manifest: manifest34, engine: engine34 },
-  "santase": { manifest: manifest35, engine: engine35 },
-  "sea-battle": { manifest: manifest36, engine: engine36 },
-  "shape-claim": { manifest: manifest37, engine: engine37 },
-  "snake": { manifest: manifest38, engine: engine38 },
-  "spades": { manifest: manifest39, engine: engine39 },
-  "spider": { manifest: manifest40, engine: engine40 },
-  "sudoku": { manifest: manifest41, engine: engine41 },
-  "ultimate-ttt": { manifest: manifest42, engine: engine42 },
-  "war": { manifest: manifest43, engine: engine43 },
-  "worm-rush": { manifest: manifest44, engine: engine44, bots, host: arenaHost }
+  "lowest-unique": { manifest: manifest24, engine: engine24 },
+  "ludo": { manifest: manifest25, engine: engine25 },
+  "mancala": { manifest: manifest26, engine: engine26 },
+  "memory-match": { manifest: manifest27, engine: engine27 },
+  "memory-pairs": { manifest: manifest28, engine: engine28 },
+  "minesweeper": { manifest: manifest29, engine: engine29 },
+  "nim": { manifest: manifest30, engine: engine30 },
+  "nine-mens-morris": { manifest: manifest31, engine: engine31 },
+  "nonogram": { manifest: manifest32, engine: engine32 },
+  "pipe-link": { manifest: manifest33, engine: engine33 },
+  "reversi": { manifest: manifest34, engine: engine34 },
+  "rps-tournament": { manifest: manifest35, engine: engine35 },
+  "santase": { manifest: manifest36, engine: engine36 },
+  "sea-battle": { manifest: manifest37, engine: engine37 },
+  "shape-claim": { manifest: manifest38, engine: engine38 },
+  "snake": { manifest: manifest39, engine: engine39 },
+  "spades": { manifest: manifest40, engine: engine40 },
+  "spider": { manifest: manifest41, engine: engine41 },
+  "sudoku": { manifest: manifest42, engine: engine42 },
+  "ultimate-ttt": { manifest: manifest43, engine: engine43 },
+  "war": { manifest: manifest44, engine: engine44 },
+  "worm-rush": { manifest: manifest45, engine: engine45, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

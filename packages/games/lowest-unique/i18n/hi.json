@@ -1,0 +1,73 @@
+{
+  "name": "सबसे छोटी अनोखी संख्या",
+  "tagline": "वह सबसे छोटी संख्या चुनें जो कोई और न चुने: अंदाज़े का तेज़ खेल।",
+  "description": "सबसे छोटी अनोखी संख्या मुफ़्त खेलें: 2 से 10 खिलाड़ी गुप्त रूप से चुनते हैं, सबसे छोटी अनोखी संख्या दौर जीतती है। बॉट्स के विरुद्ध, एक डिवाइस पर या ऑनलाइन।",
+  "about": [
+    "Lowest Unique Number is a quick party game of second-guessing for 2 to 10 players. Each round, everyone picks a number from 1 to 10 at the same time, in secret.",
+    "The lowest number that nobody else picked wins the round. Pick 1 and you win, unless someone else picked 1 too; then both of you are out of that round, and maybe a lone 3 wins. If every number was picked more than once, nobody scores.",
+    "Play 5 or 10 rounds; the most rounds won wins the game, and a tie is shared. Online, every pick is held on our server until all are in, so nobody can wait and see."
+  ],
+  "howToPlay": [
+    "Choose 5 or 10 rounds, then Play vs bots, Play on this device, or create a room.",
+    "Each round, tap a number from 1 to 10. Your pick stays hidden until everyone has picked.",
+    "Then all the numbers are shown: the lowest one that only one player picked wins the round.",
+    "After the last round, the most rounds won wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap a number.",
+    "Mouse: click a number.",
+    "Keyboard: Tab to a number; Enter or Space picks it."
+  ],
+  "tips": [
+    "1 is tempting, so it's often taken twice.",
+    "With more players, aim a little higher: the low numbers fill up.",
+    "Watch the history: people repeat what worked for them.",
+    "Don't always pick the same way, or you'll be read."
+  ],
+  "faq": [
+    {
+      "question": "Is it free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can others see my number first?",
+      "answer": "No. Online, every pick is held on our server until everyone has picked, then all are shown at once."
+    },
+    {
+      "question": "What if nobody has a unique number?",
+      "answer": "Then nobody scores that round."
+    },
+    {
+      "question": "How do the bots play?",
+      "answer": "Easy ones pick nearly at random; medium ones favour low numbers; hard ones learn how each player picks and play the odds."
+    }
+  ],
+  "ui": {
+    "rounds5": "5",
+    "rounds10": "10",
+    "scores": "जीते गए दौर",
+    "scoreLine": "{name}: {points}",
+    "pickTitle": "एक संख्या चुनें",
+    "roundN": "दौर {n} / {total}",
+    "noWinner": "पिछला दौर: कोई अनोखी संख्या नहीं।",
+    "lastWinner": "पिछला दौर {number} से जीता: {name}",
+    "stillChoosing": "अभी चुन रहे हैं: {names}",
+    "rounds": "दौर",
+    "roundShort": "#{n}",
+    "pickOf": "{name}: {number}",
+    "nobody": "कोई नहीं",
+    "someIn": "कुछ संख्याएँ चुनी जा चुकी हैं।",
+    "roundsOption": "दौर"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, plural, one {# खेल} other {# खेल}} जीतें"
+    },
+    "veteran": {
+      "name": "अनुभवी",
+      "description": "{count, plural, one {# खेल} other {# खेल}} खेलें"
+    }
+  },
+  "leaderboards": {}
+}

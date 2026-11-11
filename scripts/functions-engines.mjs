@@ -448,6 +448,7 @@ if (process.argv.includes("--fixtures")) {
     conquest: { goal: "most" },
     "memory-pairs": { cards: 20 },
     "rps-tournament": { bestOf: 3 },
+    "lowest-unique": { rounds: 5 },
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */

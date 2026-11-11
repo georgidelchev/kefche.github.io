@@ -26,6 +26,9 @@ import { manifest as heartsManifest } from "@kefche/game-hearts/manifest";
 import { bots as liarsBots } from "@kefche/game-liars-dice/bots";
 import { engine as liarsEngine } from "@kefche/game-liars-dice/engine";
 import { manifest as liarsManifest } from "@kefche/game-liars-dice/manifest";
+import { bots as lunBots } from "@kefche/game-lowest-unique/bots";
+import { engine as lunEngine } from "@kefche/game-lowest-unique/engine";
+import { manifest as lunManifest } from "@kefche/game-lowest-unique/manifest";
 import { bots as ludoBots } from "@kefche/game-ludo/bots";
 import { engine as ludoEngine } from "@kefche/game-ludo/engine";
 import { manifest as ludoManifest } from "@kefche/game-ludo/manifest";
@@ -81,5 +84,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   conquest: tableGame(conquestManifest, conquestEngine, conquestBots),
   "memory-pairs": tableGame(pairsManifest, pairsEngine, pairsBots),
   "rps-tournament": tableGame(rpsManifest, rpsEngine, rpsBots),
+  "lowest-unique": tableGame(lunManifest, lunEngine, lunBots),
   war: tableGame(warManifest, warEngine, warBots),
 };
