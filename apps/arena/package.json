@@ -36,6 +36,7 @@
     "@kefche/game-spades": "workspace:*",
     "@kefche/game-split-or-steal": "workspace:*",
     "@kefche/game-war": "workspace:*",
+    "@kefche/game-whos-the-spy": "workspace:*",
     "@kefche/game-worm-rush": "workspace:*",
     "zod": "4.6.7"
   }

@@ -1,0 +1,82 @@
+{
+  "name": "谁是间谍",
+  "tagline": "除了间谍，大家都知道地点。提问、虚张声势，再投票把他找出来。",
+  "description": "在浏览器中免费玩谁是间谍：3 到 10 人共享一个秘密地点，只有一人不知道。提问、虚张声势、投票。同设备或在线。",
+  "about": [
+    "Who's the Spy is a party game of questions and bluffing for 3 to 10 players. Everyone is told the same secret location, a beach, a hospital, a submarine, except one player: the spy, who isn't.",
+    "Take turns asking each other questions about the place, in the room's chat or out loud on one device. Answer so the others know you belong, but don't make it easy: the spy is listening, trying to blend in and to work out where you all are. At any moment the spy may stop and name the location; right, the spy wins.",
+    "When everyone is ready, vote in secret for who you think the spy is. Catch them and they still get one guess at the place; vote out anyone else, or tie, and the spy wins. Online, the roles and votes are kept on our server, so nobody can peek."
+  ],
+  "howToPlay": [
+    "Choose the language of the locations, then Play on this device or create a room. You need at least three people.",
+    "Look at your card: it shows the location, or tells you you're the spy. On one device, pass it around so each person sees their own.",
+    "Ask each other questions in turn, and answer them. Vague enough to fool the spy, clear enough to show you know.",
+    "The spy can name the location at any time: pick it in the list and confirm.",
+    "When you're ready, press Ready to vote. Once everyone is, vote for the spy.",
+    "Caught, the spy gets one last guess at the location."
+  ],
+  "controls": [
+    "Phones and tablets: tap the buttons.",
+    "Mouse: click the buttons.",
+    "Keyboard: Tab between the buttons; Enter or Space presses one."
+  ],
+  "tips": [
+    "Ask questions only someone at the location could answer, but don't name it.",
+    "As the spy, give answers that fit many places, and listen for clues.",
+    "A player whose answers are oddly general may be the spy, or just careful.",
+    "The full list of possible locations is on the screen for everyone."
+  ],
+  "faq": [
+    {
+      "question": "Is it free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Why can't I play against bots?",
+      "answer": "Who's the Spy is all about talking and reading people, which bots can't do well. Play with friends on one device, or in a room online."
+    },
+    {
+      "question": "Which languages are there?",
+      "answer": "English and Bulgarian locations for now; more languages are coming."
+    },
+    {
+      "question": "Can anyone see the roles online?",
+      "answer": "No. The location and the spy are kept on our server; your browser learns only your own role."
+    }
+  ],
+  "ui": {
+    "packEn": "English",
+    "packBg": "Български",
+    "yourRole": "你的身份",
+    "roleSpy": "你是间谍",
+    "roleSpyHint": "仔细听、别露馅，弄清楚大家在哪里。",
+    "roleLocation": "地点：{place}",
+    "roleLocationHint": "找出间谍，但别泄露地点。",
+    "talkChat": "在房间聊天里互相提问。",
+    "talkAloud": "轮流大声互相提问。",
+    "ready": "准备投票",
+    "readyCount": "准备投票：{n} / {total}",
+    "votePrompt": "谁是间谍？",
+    "votesIn": "已投票：{n} / {total}",
+    "caught": "被抓到：{name}。间谍最后的机会是说出地点。",
+    "locations": "可能的地点",
+    "nameIt": "说出地点",
+    "confirmGuess": "猜：{place}",
+    "reveal": "间谍：{name} · 地点：{place}。",
+    "spyGuessed": "间谍猜的是：{place}。",
+    "tie": "投票打平。",
+    "wrongVote": "被投出局：{name}。",
+    "packOption": "地点"
+  },
+  "achievements": {
+    "winner": {
+      "name": "赢家",
+      "description": "赢得 {count, plural, other {# 局}}"
+    },
+    "veteran": {
+      "name": "老手",
+      "description": "玩 {count, plural, other {# 局}}"
+    }
+  },
+  "leaderboards": {}
+}

@@ -1,0 +1,82 @@
+{
+  "name": "من هو الجاسوس",
+  "tagline": "الجميع يعرف المكان إلا الجاسوس. اسألوا وراوغوا وأخرجوه بالتصويت.",
+  "description": "العب من هو الجاسوس مجانًا: من 3 إلى 10 لاعبين يعرفون مكانًا سريًا إلا واحدًا. اسألوا وراوغوا وصوّتوا. على جهاز واحد أو عبر الإنترنت.",
+  "about": [
+    "Who's the Spy is a party game of questions and bluffing for 3 to 10 players. Everyone is told the same secret location, a beach, a hospital, a submarine, except one player: the spy, who isn't.",
+    "Take turns asking each other questions about the place, in the room's chat or out loud on one device. Answer so the others know you belong, but don't make it easy: the spy is listening, trying to blend in and to work out where you all are. At any moment the spy may stop and name the location; right, the spy wins.",
+    "When everyone is ready, vote in secret for who you think the spy is. Catch them and they still get one guess at the place; vote out anyone else, or tie, and the spy wins. Online, the roles and votes are kept on our server, so nobody can peek."
+  ],
+  "howToPlay": [
+    "Choose the language of the locations, then Play on this device or create a room. You need at least three people.",
+    "Look at your card: it shows the location, or tells you you're the spy. On one device, pass it around so each person sees their own.",
+    "Ask each other questions in turn, and answer them. Vague enough to fool the spy, clear enough to show you know.",
+    "The spy can name the location at any time: pick it in the list and confirm.",
+    "When you're ready, press Ready to vote. Once everyone is, vote for the spy.",
+    "Caught, the spy gets one last guess at the location."
+  ],
+  "controls": [
+    "Phones and tablets: tap the buttons.",
+    "Mouse: click the buttons.",
+    "Keyboard: Tab between the buttons; Enter or Space presses one."
+  ],
+  "tips": [
+    "Ask questions only someone at the location could answer, but don't name it.",
+    "As the spy, give answers that fit many places, and listen for clues.",
+    "A player whose answers are oddly general may be the spy, or just careful.",
+    "The full list of possible locations is on the screen for everyone."
+  ],
+  "faq": [
+    {
+      "question": "Is it free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Why can't I play against bots?",
+      "answer": "Who's the Spy is all about talking and reading people, which bots can't do well. Play with friends on one device, or in a room online."
+    },
+    {
+      "question": "Which languages are there?",
+      "answer": "English and Bulgarian locations for now; more languages are coming."
+    },
+    {
+      "question": "Can anyone see the roles online?",
+      "answer": "No. The location and the spy are kept on our server; your browser learns only your own role."
+    }
+  ],
+  "ui": {
+    "packEn": "English",
+    "packBg": "Български",
+    "yourRole": "دورك",
+    "roleSpy": "أنت الجاسوس",
+    "roleSpyHint": "استمع واندمج واكتشف أين الجميع.",
+    "roleLocation": "المكان: {place}",
+    "roleLocationHint": "اعثر على الجاسوس دون أن تكشف المكان.",
+    "talkChat": "اسألوا بعضكم في دردشة الغرفة.",
+    "talkAloud": "اسألوا بعضكم بصوت عالٍ بالتناوب.",
+    "ready": "جاهز للتصويت",
+    "readyCount": "جاهزون للتصويت: {n} من {total}",
+    "votePrompt": "من هو الجاسوس؟",
+    "votesIn": "الأصوات: {n} من {total}",
+    "caught": "تم الإمساك به: {name}. فرصة الجاسوس الأخيرة هي تسمية المكان.",
+    "locations": "الأماكن الممكنة",
+    "nameIt": "سمِّ المكان",
+    "confirmGuess": "التخمين: {place}",
+    "reveal": "الجاسوس: {name} · المكان: {place}.",
+    "spyGuessed": "تخمين الجاسوس: {place}.",
+    "tie": "تعادلت الأصوات.",
+    "wrongVote": "خرج بالتصويت: {name}.",
+    "packOption": "الأماكن"
+  },
+  "achievements": {
+    "winner": {
+      "name": "فائز",
+      "description": "اربح {count, plural, one {مباراة واحدة} two {مباراتين} few {# مباريات} many {# مباراة} other {# مباراة}}"
+    },
+    "veteran": {
+      "name": "مخضرم",
+      "description": "العب {count, plural, one {مباراة واحدة} two {مباراتين} few {# مباريات} many {# مباراة} other {# مباراة}}"
+    }
+  },
+  "leaderboards": {}
+}

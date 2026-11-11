@@ -57,6 +57,9 @@ import { manifest as sosManifest } from "@kefche/game-split-or-steal/manifest";
 import { bots as warBots } from "@kefche/game-war/bots";
 import { engine as warEngine } from "@kefche/game-war/engine";
 import { manifest as warManifest } from "@kefche/game-war/manifest";
+import { bots as spyBots } from "@kefche/game-whos-the-spy/bots";
+import { engine as spyEngine } from "@kefche/game-whos-the-spy/engine";
+import { manifest as spyManifest } from "@kefche/game-whos-the-spy/manifest";
 
 export interface TableGame {
   manifest: GameManifest;
@@ -93,5 +96,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   "lowest-unique": tableGame(lunManifest, lunEngine, lunBots),
   "split-or-steal": tableGame(sosManifest, sosEngine, sosBots),
   "penalty-shootout": tableGame(penManifest, penEngine, penBots),
+  "whos-the-spy": tableGame(spyManifest, spyEngine, spyBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

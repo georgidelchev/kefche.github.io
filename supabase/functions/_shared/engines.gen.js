@@ -55,9 +55,9 @@ function reachedTiers(definitions, figures) {
 var ARENA_FRAME = { input: 1, snapshot: 2, ping: 3, pong: 4 };
 function frame(kind, header, headerBytes, body) {
   const bytes = new Uint8Array(1 + headerBytes + (body?.length ?? 0));
-  const view19 = new DataView(bytes.buffer);
-  view19.setUint8(0, kind);
-  header(view19);
+  const view20 = new DataView(bytes.buffer);
+  view20.setUint8(0, kind);
+  header(view20);
   if (body) bytes.set(body, 1 + headerBytes);
   return bytes;
 }
@@ -147,13 +147,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine48, bots2, options) {
-    this.engine = engine48;
+  constructor(engine49, bots2, options) {
+    this.engine = engine49;
     this.bots = bots2;
     this.options = options;
-    this.world = engine48.createWorld(options.config, options.seed);
+    this.world = engine49.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine48.ticksPerSecond / engine48.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine49.ticksPerSecond / engine49.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -385,11 +385,11 @@ var ByteReader = class {
     return v;
   }
   varint() {
-    let result20 = 0;
+    let result21 = 0;
     for (let shift = 0; shift < 35; shift += 7) {
       const byte = this.u8();
-      result20 |= (byte & 127) << shift;
-      if (byte < 128) return result20 >>> 0;
+      result21 |= (byte & 127) << shift;
+      if (byte < 128) return result21 >>> 0;
     }
     throw new RangeError("varint longer than 5 bytes");
   }
@@ -524,7 +524,7 @@ function canonicalJson(value2) {
 var sameAction = (a, b) => canonicalJson(a) === canonicalJson(b);
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest48) => manifest48;
+var defineManifest = (manifest49) => manifest49;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -2320,8 +2320,8 @@ function peg$parse(input, options) {
   var peg$f9 = function(line) {
     return line;
   };
-  var peg$f10 = function(result20, comment) {
-    return { result: result20, comment };
+  var peg$f10 = function(result21, comment) {
+    return { result: result21, comment };
   };
   var peg$currPos = options.peg$currPos | 0;
   var peg$posDetailsCache = [{ line: 1, column: 1 }];
@@ -3308,12 +3308,12 @@ function xoroshiro128(state) {
   return function() {
     let s0 = BigInt(state & MASK64);
     let s1 = BigInt(state >> 64n & MASK64);
-    const result20 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
+    const result21 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
     s1 ^= s0;
     s0 = (rotl(s0, 24n) ^ s1 ^ s1 << 16n) & MASK64;
     s1 = rotl(s1, 37n);
     state = s1 << 64n | s0;
-    return result20;
+    return result21;
   };
 }
 var rand = xoroshiro128(0xa187eb39cdcaed8f31c4b365b102e01en);
@@ -5016,16 +5016,16 @@ var Chess = class {
     return move3;
   }
   pgn({ newline = "\n", maxWidth = 0 } = {}) {
-    const result20 = [];
+    const result21 = [];
     let headerExists = false;
     for (const i in this._header) {
       const headerTag = this._header[i];
       if (headerTag)
-        result20.push(`[${i} "${this._header[i]}"]` + newline);
+        result21.push(`[${i} "${this._header[i]}"]` + newline);
       headerExists = true;
     }
     if (headerExists && this._history.length) {
-      result20.push(newline);
+      result21.push(newline);
     }
     const appendComment = (moveString2) => {
       const comment = this._comments[this.fen()];
@@ -5067,11 +5067,11 @@ var Chess = class {
     }
     moves.push(this._header.Result || "*");
     if (maxWidth === 0) {
-      return result20.join("") + moves.join(" ");
+      return result21.join("") + moves.join(" ");
     }
     const strip = function() {
-      if (result20.length > 0 && result20[result20.length - 1] === " ") {
-        result20.pop();
+      if (result21.length > 0 && result21[result21.length - 1] === " ") {
+        result21.pop();
         return true;
       }
       return false;
@@ -5085,12 +5085,12 @@ var Chess = class {
           while (strip()) {
             width--;
           }
-          result20.push(newline);
+          result21.push(newline);
           width = 0;
         }
-        result20.push(token);
+        result21.push(token);
         width += token.length;
-        result20.push(" ");
+        result21.push(" ");
         width++;
       }
       if (strip()) {
@@ -5107,19 +5107,19 @@ var Chess = class {
         }
       }
       if (currentWidth + moves[i].length > maxWidth && i !== 0) {
-        if (result20[result20.length - 1] === " ") {
-          result20.pop();
+        if (result21[result21.length - 1] === " ") {
+          result21.pop();
         }
-        result20.push(newline);
+        result21.push(newline);
         currentWidth = 0;
       } else if (i !== 0) {
-        result20.push(" ");
+        result21.push(" ");
         currentWidth++;
       }
-      result20.push(moves[i]);
+      result21.push(moves[i]);
       currentWidth += moves[i].length;
     }
-    return result20.join("");
+    return result21.join("");
   }
   /**
    * @deprecated Use `setHeader` and `getHeaders` instead. This method will return null header tags (which is not what you want)
@@ -5196,9 +5196,9 @@ var Chess = class {
       }
       node2 = node2.variations[0];
     }
-    const result20 = parsedPgn.result;
-    if (result20 && Object.keys(this._header).length && this._header["Result"] !== result20) {
-      this.setHeader("Result", result20);
+    const result21 = parsedPgn.result;
+    if (result21 && Object.keys(this._header).length && this._header["Result"] !== result21) {
+      this.setHeader("Result", result21);
     }
   }
   /*
@@ -5514,8 +5514,8 @@ var Chess = class {
       }
     }
     this._updateCastlingRights();
-    const result20 = this.getCastlingRights(color);
-    return (rights[KING2] === void 0 || rights[KING2] === result20[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result20[QUEEN2]);
+    const result21 = this.getCastlingRights(color);
+    return (rights[KING2] === void 0 || rights[KING2] === result21[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result21[QUEEN2]);
   }
   getCastlingRights(color) {
     return {
@@ -10425,8 +10425,8 @@ function applyAction12(s, seat, action) {
   const spot = next2.shot;
   const dive = next2.dive;
   const reach2 = columnOf(spot) === dive && !(isHigh(spot) && columnOf(spot) !== 1);
-  const result20 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
-  const kick = { shooter: shooterOf(s), spot, dive, result: result20 };
+  const result21 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
+  const kick = { shooter: shooterOf(s), spot, dive, result: result21 };
   return decide({ ...next2, shot: null, dive: null, kicks: [...s.kicks, kick], rng: rng.state });
 }
 function currentSeats12(s) {
@@ -13149,6 +13149,155 @@ var manifest46 = defineManifest({
   tags: ["cards", "classic", "two-player"]
 });
 
+// packages/games/whos-the-spy/engine/index.ts
+var PACK_SIZE = 30;
+var HIDDEN2 = -1;
+function initialState19(config, seats, seed) {
+  const rng = Rng.fromSeed(seed);
+  return {
+    players: seats,
+    config,
+    phase: "talk",
+    location: rng.int(0, PACK_SIZE - 1),
+    spy: rng.int(0, seats - 1),
+    ready: Array.from({ length: seats }, () => false),
+    votes: Array.from({ length: seats }, () => null),
+    accused: null,
+    guess: null,
+    winner: null,
+    moves: 0
+  };
+}
+var guesses = () => Array.from({ length: PACK_SIZE }, (_, guess) => ({ guess }));
+function legalActions19(s, seat) {
+  if (s.winner !== null || seat < 0 || seat >= s.players) return [];
+  if (s.phase === "talk") return s.ready[seat] ? [] : [{ ready: true }];
+  if (s.phase === "vote") {
+    if (s.votes[seat] !== null) return [];
+    return Array.from({ length: s.players }, (_, v) => v).flatMap(
+      (v) => v === seat ? [] : [{ vote: v }]
+    );
+  }
+  return seat === s.spy ? guesses() : [];
+}
+function sideActions2(s, seat) {
+  return s.winner === null && s.phase === "talk" && seat === s.spy ? guesses() : [];
+}
+function countVotes(votes, players) {
+  const tally = Array.from({ length: players }, () => 0);
+  for (const v of votes) if (v !== null && v >= 0) tally[v] = (tally[v] ?? 0) + 1;
+  const best = Math.max(...tally);
+  const top2 = tally.flatMap((n, seat) => n === best ? [seat] : []);
+  return top2.length === 1 ? top2[0] ?? null : null;
+}
+function applyAction19(s, seat, action) {
+  if (s.winner !== null) return s;
+  const moved = { ...s, moves: s.moves + 1 };
+  if ("guess" in action) {
+    const legal = (s.phase === "talk" || s.phase === "guess") && seat === s.spy;
+    if (!legal || !Number.isInteger(action.guess) || action.guess < 0 || action.guess >= PACK_SIZE)
+      return s;
+    return {
+      ...moved,
+      guess: action.guess,
+      winner: action.guess === s.location ? "spy" : "others"
+    };
+  }
+  if ("ready" in action) {
+    if (s.phase !== "talk" || s.ready[seat] !== false) return s;
+    const ready = s.ready.map((r, i) => r || i === seat);
+    return { ...moved, ready, phase: ready.every(Boolean) ? "vote" : "talk" };
+  }
+  if (s.phase !== "vote" || s.votes[seat] !== null) return s;
+  if (!Number.isInteger(action.vote) || action.vote < 0 || action.vote >= s.players || action.vote === seat)
+    return s;
+  const votes = s.votes.map((v, i) => i === seat ? action.vote : v);
+  if (votes.some((v) => v === null)) return { ...moved, votes };
+  const accused = countVotes(votes, s.players);
+  if (accused === s.spy) return { ...moved, votes, accused, phase: "guess" };
+  return { ...moved, votes, accused, winner: "spy" };
+}
+function currentSeats19(s) {
+  if (s.winner !== null) return [];
+  if (s.phase === "talk") return s.ready.flatMap((r, seat) => r ? [] : [seat]);
+  if (s.phase === "vote") return s.votes.flatMap((v, seat) => v === null ? [seat] : []);
+  return [s.spy];
+}
+function result19(s) {
+  if (s.winner === null) return null;
+  return {
+    completed: true,
+    outcome: Array.from(
+      { length: s.players },
+      (_, seat) => seat === s.spy === (s.winner === "spy") ? 1 : 0
+    )
+  };
+}
+function view19(s, seat) {
+  const spyKnown = s.phase === "guess" || s.winner !== null;
+  const isSpy = seat !== null && seat === s.spy;
+  return {
+    ...s,
+    location: seat !== null && !isSpy ? s.location : HIDDEN2,
+    spy: isSpy || spyKnown ? s.spy : HIDDEN2,
+    votes: s.phase === "vote" ? s.votes.map((v, i) => v === null || i === seat ? v : HIDDEN2) : s.votes
+  };
+}
+function viewAction7(action, seat, viewer) {
+  return "vote" in action && viewer !== seat ? null : action;
+}
+var engine47 = {
+  initialState: initialState19,
+  legalActions: legalActions19,
+  sideActions: sideActions2,
+  applyAction: applyAction19,
+  currentSeats: currentSeats19,
+  result: result19,
+  view: view19,
+  viewAction: viewAction7
+};
+
+// packages/games/whos-the-spy/manifest.ts
+var manifest47 = defineManifest({
+  id: "whos-the-spy",
+  version: 1,
+  category: "party",
+  kind: "turn",
+  players: { min: 3, max: 10, default: 6 },
+  modes: ["hotseat", "online-private", "online-public", "quick-match"],
+  bots: { supported: false, difficulties: [], canFillSeats: false },
+  timers: [
+    { kind: "none" },
+    { kind: "per-move", seconds: 300, onExpiry: "random-move" },
+    { kind: "per-move", seconds: 180, onExpiry: "random-move" }
+  ],
+  options: [
+    {
+      key: "pack",
+      label: "packOption",
+      values: [
+        { value: "en", label: "packEn", defaultIn: ["en"] },
+        { value: "bg", label: "packBg", defaultIn: ["bg"] }
+      ]
+    }
+  ],
+  contentPacks: ["en", "bg"],
+  rated: false,
+  hiddenInformation: true,
+  orientation: "any",
+  controls: ["tap", "keyboard"],
+  renderer: "dom",
+  estimatedMinutes: [5, 15],
+  leaderboards: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "veteran", icon: "medal", metric: "played", tiers: [10, 50, 200] }
+  ],
+  // The location and the spy come from the seed; every vote is a move.
+  scoreValidation: { kind: "replay" },
+  tags: ["party", "talk", "deduction", "multiplayer"]
+});
+
 // packages/games/worm-rush/engine/world.ts
 var TICKS_PER_SECOND = 30;
 var SNAPSHOTS_PER_SECOND = 15;
@@ -13545,7 +13694,7 @@ function lifeResult(world, worm) {
     completed: true
   };
 }
-function result19(world, id) {
+function result20(world, id) {
   const worm = world.worms.get(id);
   if (!worm) return null;
   return worm.alive ? lifeResult(world, worm) : worm.lastLife;
@@ -13622,11 +13771,11 @@ function snapshot(world, id) {
   const ranked = [...world.worms.values()].filter((w) => w.alive).sort((a, b) => b.mass - a.mass || a.id - b.id);
   const cx = me?.x ?? 0;
   const cy = me?.y ?? 0;
-  const view19 = viewRadius(me?.mass ?? START_MASS);
+  const view20 = viewRadius(me?.mass ?? START_MASS);
   const worms = [];
   for (const worm of world.worms.values()) {
     if (!worm.alive) continue;
-    const reach2 = view19 + wormLength(worm.mass) + wormRadius(worm.mass);
+    const reach2 = view20 + wormLength(worm.mass) + wormRadius(worm.mass);
     if ((worm.x - cx) ** 2 + (worm.y - cy) ** 2 > reach2 * reach2) continue;
     worms.push({
       id: worm.id,
@@ -13639,7 +13788,7 @@ function snapshot(world, id) {
     });
   }
   worms.sort((a, b) => a.id - b.id);
-  const orbs = world.orbGrid.query(cx, cy, view19 + 20).map((orbId) => world.orbs.get(orbId)).filter((orb) => orb !== void 0).map(({ id: orbId, x, y, value: value2, hue }) => ({ id: orbId, x, y, value: value2, hue })).sort((a, b) => a.id - b.id);
+  const orbs = world.orbGrid.query(cx, cy, view20 + 20).map((orbId) => world.orbs.get(orbId)).filter((orb) => orb !== void 0).map(({ id: orbId, x, y, value: value2, hue }) => ({ id: orbId, x, y, value: value2, hue })).sort((a, b) => a.id - b.id);
   const board = ranked.slice(0, 10).map((w) => ({ id: w.id, mass: w.mass }));
   const feed = world.knockouts.filter((k) => k.tick > world.tick - TRAIL_EVERY).map((k) => ({ victim: k.victim, by: k.by ?? 0 }));
   const mentioned2 = /* @__PURE__ */ new Set([
@@ -13793,7 +13942,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine47 = {
+var engine48 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -13804,13 +13953,13 @@ var engine47 = {
   alive: alive2,
   step: step3,
   snapshot,
-  result: result19,
+  result: result20,
   snapshotCodec,
   inputCodec
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest47 = defineManifest({
+var manifest48 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -13888,7 +14037,8 @@ var GAMES = {
   "sudoku": { manifest: manifest44, engine: engine44 },
   "ultimate-ttt": { manifest: manifest45, engine: engine45 },
   "war": { manifest: manifest46, engine: engine46 },
-  "worm-rush": { manifest: manifest47, engine: engine47, bots, host: arenaHost }
+  "whos-the-spy": { manifest: manifest47, engine: engine47 },
+  "worm-rush": { manifest: manifest48, engine: engine48, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

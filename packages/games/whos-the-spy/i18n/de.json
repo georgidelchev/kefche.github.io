@@ -1,0 +1,82 @@
+{
+  "name": "Wer ist der Spion",
+  "tagline": "Alle kennen den Ort, nur der Spion nicht. Fragt, blufft und stimmt ab.",
+  "description": "Spiele Wer ist der Spion kostenlos: 3 bis 10 Spieler kennen einen geheimen Ort, einer nicht. Fragen, bluffen, abstimmen. An einem Gerät oder online.",
+  "about": [
+    "Who's the Spy is a party game of questions and bluffing for 3 to 10 players. Everyone is told the same secret location, a beach, a hospital, a submarine, except one player: the spy, who isn't.",
+    "Take turns asking each other questions about the place, in the room's chat or out loud on one device. Answer so the others know you belong, but don't make it easy: the spy is listening, trying to blend in and to work out where you all are. At any moment the spy may stop and name the location; right, the spy wins.",
+    "When everyone is ready, vote in secret for who you think the spy is. Catch them and they still get one guess at the place; vote out anyone else, or tie, and the spy wins. Online, the roles and votes are kept on our server, so nobody can peek."
+  ],
+  "howToPlay": [
+    "Choose the language of the locations, then Play on this device or create a room. You need at least three people.",
+    "Look at your card: it shows the location, or tells you you're the spy. On one device, pass it around so each person sees their own.",
+    "Ask each other questions in turn, and answer them. Vague enough to fool the spy, clear enough to show you know.",
+    "The spy can name the location at any time: pick it in the list and confirm.",
+    "When you're ready, press Ready to vote. Once everyone is, vote for the spy.",
+    "Caught, the spy gets one last guess at the location."
+  ],
+  "controls": [
+    "Phones and tablets: tap the buttons.",
+    "Mouse: click the buttons.",
+    "Keyboard: Tab between the buttons; Enter or Space presses one."
+  ],
+  "tips": [
+    "Ask questions only someone at the location could answer, but don't name it.",
+    "As the spy, give answers that fit many places, and listen for clues.",
+    "A player whose answers are oddly general may be the spy, or just careful.",
+    "The full list of possible locations is on the screen for everyone."
+  ],
+  "faq": [
+    {
+      "question": "Is it free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Why can't I play against bots?",
+      "answer": "Who's the Spy is all about talking and reading people, which bots can't do well. Play with friends on one device, or in a room online."
+    },
+    {
+      "question": "Which languages are there?",
+      "answer": "English and Bulgarian locations for now; more languages are coming."
+    },
+    {
+      "question": "Can anyone see the roles online?",
+      "answer": "No. The location and the spy are kept on our server; your browser learns only your own role."
+    }
+  ],
+  "ui": {
+    "packEn": "English",
+    "packBg": "Български",
+    "yourRole": "Deine Rolle",
+    "roleSpy": "Du bist der Spion",
+    "roleSpyHint": "Hör zu, fall nicht auf und finde heraus, wo alle sind.",
+    "roleLocation": "Ort: {place}",
+    "roleLocationHint": "Finde den Spion, ohne den Ort zu verraten.",
+    "talkChat": "Stellt euch Fragen im Chat des Raums.",
+    "talkAloud": "Stellt euch abwechselnd laut Fragen.",
+    "ready": "Bereit zur Abstimmung",
+    "readyCount": "Bereit zur Abstimmung: {n} von {total}",
+    "votePrompt": "Wer ist der Spion?",
+    "votesIn": "Stimmen: {n} von {total}",
+    "caught": "Erwischt: {name}. Die letzte Chance des Spions: den Ort nennen.",
+    "locations": "Mögliche Orte",
+    "nameIt": "Den Ort nennen",
+    "confirmGuess": "Tipp: {place}",
+    "reveal": "Spion: {name} · Ort: {place}.",
+    "spyGuessed": "Tipp des Spions: {place}.",
+    "tie": "Die Abstimmung ging unentschieden aus.",
+    "wrongVote": "Rausgewählt: {name}.",
+    "packOption": "Orte"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Spiel} other {# Spiele}}"
+    },
+    "veteran": {
+      "name": "Veteran",
+      "description": "Spiele {count, plural, one {# Spiel} other {# Spiele}}"
+    }
+  },
+  "leaderboards": {}
+}
