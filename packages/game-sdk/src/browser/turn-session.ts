@@ -254,6 +254,18 @@ export function createTurnSession<State, Action, Config>(
   const result = () => timeout ?? engine.result(state);
   const toMove = () => (result() ? [] : engine.currentSeats(state));
   const mover = () => toMove()[0];
+  /**
+   * The seat a person here plays now: the first of the seats to move. With
+   * simultaneous choices (several seats to move) it's the first person still
+   * to choose, and the bots choose meanwhile.
+   */
+  const nextHuman = () => toMove().find((s) => seats[s]?.kind === "human");
+  /** Starts the turn of every seat that has just become one to move (and `again`'s). */
+  const startTurns = (before: readonly number[], again?: number) => {
+    for (const s of toMove()) {
+      if (s === again || !before.includes(s)) timers = startTurn(timer, timers, s);
+    }
+  };
   const canUndo = () =>
     Boolean(options.allowUndo) &&
     match.mode === "solo-bots" &&
@@ -265,8 +277,8 @@ export function createTurnSession<State, Action, Config>(
   /** Covers the screen when the next person to move isn't the one looking. */
   const checkHandoff = () => {
     if (!handsOff || result()) return;
-    const next = mover();
-    if (next === undefined || seats[next]?.kind !== "human" || next === viewer) return;
+    const next = nextHuman();
+    if (next === undefined || next === viewer) return;
     viewer = null;
     handoff = next;
   };
@@ -287,7 +299,7 @@ export function createTurnSession<State, Action, Config>(
   const emit = () => {
     checkHandoff();
     const seatsToMove = toMove();
-    const next = seatsToMove[0];
+    const next = seatsToMove.find((s) => plays(s));
     const over = result();
     options.onChange({
       state: over ? state : viewFor(engine, state, viewer),
@@ -335,13 +347,13 @@ export function createTurnSession<State, Action, Config>(
   };
 
   const advance = (next: State, move: TurnMove<Action> | null, seat: number) => {
+    const before = toMove();
     timers = endTurn(timer, timers, seat);
     state = next;
     count++;
     lastMove = move;
     if (move) moves = [...moves, move];
-    const following = mover();
-    if (following !== undefined) timers = startTurn(timer, timers, following);
+    startTurns(before, seat);
     emit();
     schedule();
   };
@@ -359,6 +371,7 @@ export function createTurnSession<State, Action, Config>(
    * otherwise a bot that is thinking carries on with its move.
    */
   const applySide = (seat: number, action: Action): boolean => {
+    const waiting = toMove();
     const before = mover();
     const next = engine.applyAction(state, seat, action);
     if (next === state) return false;
@@ -373,7 +386,7 @@ export function createTurnSession<State, Action, Config>(
     stopBot();
     // A takeback undid moves, so the last one isn't on the board any more.
     lastMove = null;
-    if (following !== undefined) timers = startTurn(timer, timers, following);
+    startTurns(waiting.filter((s) => s !== following));
     emit();
     schedule();
     return true;
@@ -386,7 +399,8 @@ export function createTurnSession<State, Action, Config>(
 
   function schedule(): void {
     if (paused || destroyed || result()) return;
-    const seat = mover();
+    // A bot among the seats to move chooses now, even while a person thinks.
+    const seat = toMove().find((s) => seats[s]?.kind === "bot") ?? mover();
     if (seat === undefined) return;
     const player = seats[seat];
     if (player?.kind === "human") {
@@ -474,15 +488,18 @@ export function createTurnSession<State, Action, Config>(
           last = now;
           // No one's time runs while the device changes hands.
           if (paused || destroyed || handoff !== null || result()) return;
-          const seat = mover();
-          if (seat === undefined) return;
-          timers = elapse(timer, timers, seat, passed);
-          if (isExpired(timer, timers, seat)) expire(seat);
-          else report();
+          // Every seat still to move uses its time (one shared countdown counts once).
+          const waiting = timer.kind === "countdown" ? toMove().slice(0, 1) : toMove();
+          if (waiting.length === 0) return;
+          for (const seat of waiting) timers = elapse(timer, timers, seat, passed);
+          const out = waiting.filter((seat) => isExpired(timer, timers, seat));
+          for (const seat of out) {
+            if (!result() && toMove().includes(seat)) expire(seat);
+          }
+          if (out.length === 0) report();
         }, TICK_MS);
 
-  const first = mover();
-  if (first !== undefined && !resumed) timers = startTurn(timer, timers, first);
+  if (!resumed) startTurns([]);
   if (seats.some((seat) => seat.kind === "bot")) bots.warm();
   // After the caller has its session object, so onChange may use it.
   queueMicrotask(() => {
@@ -509,8 +526,7 @@ export function createTurnSession<State, Action, Config>(
       lastMove = moves.at(-1) ?? null;
       state = replayTurns(engine, config, seats.length, seed, moves);
       timers = createTimers(timer, seats.length);
-      const next = mover();
-      if (next !== undefined) timers = startTurn(timer, timers, next);
+      startTurns([]);
       emit();
       schedule();
     },

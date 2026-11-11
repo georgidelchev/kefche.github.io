@@ -188,5 +188,9 @@
     "name": "{rank} de {suit}",
     "faceDown": "Carta virada para baixo",
     "fourColour": "Baralho de quatro cores"
+  },
+  "dice": {
+    "showing": "Dado mostrando {value}",
+    "unrolled": "Dado ainda não lançado"
   }
 }

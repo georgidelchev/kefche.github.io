@@ -188,5 +188,9 @@
     "name": "{rank} de {suit}",
     "faceDown": "Carte face cachée",
     "fourColour": "Jeu en quatre couleurs"
+  },
+  "dice": {
+    "showing": "Dé indiquant {value}",
+    "unrolled": "Dé pas encore lancé"
   }
 }

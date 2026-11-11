@@ -188,5 +188,9 @@
     "name": "{suit}-{rank}",
     "faceDown": "Verdeckte Karte",
     "fourColour": "Vierfarbiges Blatt"
+  },
+  "dice": {
+    "showing": "Würfel zeigt {value}",
+    "unrolled": "Noch nicht gewürfelt"
   }
 }

@@ -253,6 +253,8 @@ function TurnSetup({
 
 interface HudProps {
   seats: readonly Seat[];
+  /** BCP 47, for lists of names. */
+  locale: string;
   timer: TimerPreset;
   report: TurnReport | null;
   strings: TurnStrings;
@@ -268,15 +270,22 @@ export function TurnUi(props: ({ part: "setup" } & SetupProps) | ({ part: "hud" 
   return props.part === "setup" ? <TurnSetup {...props} /> : <TurnHud {...props} />;
 }
 
-function TurnHud({ seats, timer, report, strings: s, away }: HudProps) {
+function TurnHud({ seats, locale, timer, report, strings: s, away }: HudProps) {
   const moving = report?.toMove[0];
   const mover = moving === undefined ? undefined : seats[moving];
+  // Simultaneous choices: everyone still to choose ("Turn: Ana and Teo").
+  const movers = (report?.toMove ?? []).flatMap((i) => {
+    const seat = seats[i];
+    return seat ? [seatName(seat, s)] : [];
+  });
   const announcement =
     mover === undefined
       ? ""
-      : report?.thinking
+      : report?.thinking && movers.length === 1
         ? fill(s.thinking, { name: seatName(mover, s) })
-        : fill(s.toMove, { name: seatName(mover, s) });
+        : fill(s.toMove, {
+            name: new Intl.ListFormat(locale, { type: "conjunction" }).format(movers),
+          });
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-2 border-b border-border bg-surface px-3 py-2">
@@ -316,7 +325,7 @@ function TurnHud({ seats, timer, report, strings: s, away }: HudProps) {
                   {away.label}
                 </span>
               )}
-              {active && report?.thinking && (
+              {active && report?.thinking && seat.kind === "bot" && (
                 <LoaderCircle
                   aria-hidden="true"
                   className="size-4 animate-spin motion-reduce:animate-none"

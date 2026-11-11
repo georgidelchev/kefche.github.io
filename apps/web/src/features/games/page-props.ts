@@ -216,11 +216,24 @@ export const ratedClocks = (manifest: GameManifest): RatedClock[] =>
 
 /**
  * A game's UI strings as its player gets them: its own, plus the kit's
- * shared ones it uses (keys "kit.…"), so every card game names cards the
- * same way without carrying the words itself (Phase 12).
+ * shared ones it uses (keys "kit.…"), so every card game names cards (and
+ * every dice game dice) the same way without carrying the words itself
+ * (Phase 12): games tagged "cards" or "dice".
  */
 export function playerUi(manifest: GameManifest, ui: Record<string, string>, t: AppT) {
-  return manifest.tags.includes("cards") ? { ...cardKitUi(t), ...ui } : ui;
+  return {
+    ...(manifest.tags.includes("cards") ? cardKitUi(t) : {}),
+    ...(manifest.tags.includes("dice") ? diceKitUi(t) : {}),
+    ...ui,
+  };
+}
+
+/** The dice kit's strings (@kefche/game-sdk/react diceText). */
+export function diceKitUi(t: AppT): Record<string, string> {
+  return {
+    "kit.die.showing": t("games:dice.showing", { value: "{value}" }),
+    "kit.die.unrolled": t("games:dice.unrolled"),
+  };
 }
 
 /** The card kit's strings (@kefche/game-sdk/react cardText), keyed as games ask for them. */

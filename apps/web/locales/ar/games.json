@@ -188,5 +188,9 @@
     "name": "{rank} {suit}",
     "faceDown": "ورقة مقلوبة",
     "fourColour": "أوراق بأربعة ألوان"
+  },
+  "dice": {
+    "showing": "نرد يُظهر {value}",
+    "unrolled": "لم يُرمَ النرد بعد"
   }
 }

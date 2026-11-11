@@ -188,5 +188,9 @@
     "name": "{suit}{rank}",
     "faceDown": "背面朝上的牌",
     "fourColour": "四色牌"
+  },
+  "dice": {
+    "showing": "骰子点数 {value}",
+    "unrolled": "骰子尚未掷出"
   }
 }

@@ -59,7 +59,7 @@ flowchart LR
 ```
 
 - **SDK** (`packages/game-sdk`, ADR-0016):
-  - The root entry is isomorphic: the engine interfaces (`RaceEngine`, `TurnEngine`, `RealtimeEngine`, `RoundEngine`), the seeded sfc32 `Rng` and `replay()`, plus the manifest types and `defineManifest`.
+  - The root entry is isomorphic: the engine interfaces (`RaceEngine`, `TurnEngine`, `RealtimeEngine`; simultaneous choices are turn engines with several seats to move), the seeded sfc32 `Rng` and `replay()`, plus the manifest types and `defineManifest`.
   - `manifest-schema` holds the Zod schemas, used only at build time.
   - `browser` holds the runtime helpers: the `GameModule` contract, a fixed-step loop, canvas stage, keyboard and swipe input, the stopwatch, haptics, sound (synthesized, ADR-0015) and `runInWorker`.
 - **Registry** (`apps/web/src/features/games/registry.ts`): globs every game's manifest, translations and art at build time, validates them, and fails the build on any problem. `loaders.ts` globs each game's `index.ts` lazily, so every game is its own chunk.

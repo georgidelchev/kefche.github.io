@@ -188,5 +188,9 @@
     "name": "{rank}, {suit}",
     "faceDown": "Карта рубашкой вверх",
     "fourColour": "Колода в четыре цвета"
+  },
+  "dice": {
+    "showing": "На кубике {value}",
+    "unrolled": "Кубик ещё не брошен"
   }
 }

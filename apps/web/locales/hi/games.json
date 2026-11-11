@@ -188,5 +188,9 @@
     "name": "{suit} का {rank}",
     "faceDown": "उलटा पत्ता",
     "fourColour": "चार रंगों की गड्डी"
+  },
+  "dice": {
+    "showing": "पासा {value} दिखा रहा है",
+    "unrolled": "पासा अभी फेंका नहीं गया"
   }
 }

@@ -535,6 +535,7 @@ export function GamePlayer({
             <TurnUi
               part="hud"
               seats={match.seats}
+              locale={locale}
               timer={match.timer}
               report={report}
               strings={turn.strings}

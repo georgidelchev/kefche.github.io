@@ -188,5 +188,9 @@
     "name": "{rank} of {suit}",
     "faceDown": "Face-down card",
     "fourColour": "Four-colour deck"
+  },
+  "dice": {
+    "showing": "Die showing {value}",
+    "unrolled": "Die not rolled yet"
   }
 }

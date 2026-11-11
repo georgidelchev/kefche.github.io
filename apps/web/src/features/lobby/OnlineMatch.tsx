@@ -333,6 +333,7 @@ export function OnlineMatch({
           <TurnUi
             part="hud"
             seats={match.setup.seats}
+            locale={locale}
             timer={match.setup.timer}
             report={report}
             strings={turn}

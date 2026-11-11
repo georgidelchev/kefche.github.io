@@ -188,5 +188,9 @@
     "name": "{suit}の{rank}",
     "faceDown": "裏向きのカード",
     "fourColour": "4色デッキ"
+  },
+  "dice": {
+    "showing": "サイコロの目は{value}",
+    "unrolled": "まだ振っていないサイコロ"
   }
 }

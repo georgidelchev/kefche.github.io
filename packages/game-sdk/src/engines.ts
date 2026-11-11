@@ -130,15 +130,10 @@ export interface TurnMove<Action> {
 
 // Real-time arenas (SPEC §9.4.2) have their own contract: realtime.ts.
 
-/** Simultaneous-choice rounds (SPEC §9.4.3). Implemented with party games. */
-export interface RoundEngine<State, Choice, Config = undefined> {
-  initialState(config: Config, seats: number, seed: string): State;
-  submit(state: State, seat: number, choice: Choice): State;
-  /** True when every active seat has chosen (or the round timer expired). */
-  readyToReveal(state: State): boolean;
-  reveal(state: State): State;
-  result(state: State): GameResult | null;
-}
+// Simultaneous-choice rounds (SPEC §9.4.3) are turn engines whose
+// `currentSeats` lists everyone still to choose: `view` keeps each choice
+// hidden until the engine reveals the round, and the turn runtime runs the
+// bots, clocks and the device handoff for several seats at once (Phase 12).
 
 /** Common shape for states that carry their own randomness. */
 export interface SeededState {
