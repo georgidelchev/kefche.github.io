@@ -50,6 +50,14 @@ export interface TurnEngine<State, Action, Config = undefined> {
   initialState(config: Config, seats: number, seed: string): State;
   /** Empty when `seat` can't act now. */
   legalActions(state: State, seat: number): Action[];
+  /**
+   * For moves that can't all be listed (a typed word in Associations):
+   * whether `action`, as it arrived, is a legal move for `seat` now. Then
+   * `legalActions` lists only what a clock running out or a stand-in may
+   * choose, and the table, rooms and the server's replay also take any
+   * move this accepts. It must be as strict as `applyAction`.
+   */
+  accepts?(state: State, seat: number, action: unknown): action is Action;
   /** Applies a seat's action. Illegal actions return the same state object. */
   applyAction(state: State, seat: number, action: Action): State;
   /** Seats that may act now (more than one for simultaneous turns); empty once finished. */
@@ -118,6 +126,23 @@ export function canonicalJson(value: unknown): string {
 /** Whether two actions are the same, compared as data (key order doesn't matter). */
 export const sameAction = (a: unknown, b: unknown): boolean =>
   canonicalJson(a) === canonicalJson(b);
+
+/**
+ * The move `seat` may make now equal to `action` (as data): one of its legal
+ * actions, or, for an engine with `accepts`, the action itself. Undefined
+ * when it isn't legal. Side actions are checked apart (`isSideAction`).
+ */
+export function legalMove<State, Action, Config>(
+  engine: TurnEngine<State, Action, Config>,
+  state: State,
+  seat: number,
+  action: unknown,
+): Action | undefined {
+  const listed = engine.legalActions(state, seat).find((a) => sameAction(a, action));
+  if (listed !== undefined) return listed;
+  if (engine.accepts?.(state, seat, action)) return action;
+  return undefined;
+}
 
 /** True when `action` is one of `seat`'s side actions now (compared as data). */
 export function isSideAction<State, Action, Config>(

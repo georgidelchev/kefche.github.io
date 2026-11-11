@@ -15,7 +15,14 @@
 // - Rejoining: a member asks the host for the latest state on connecting. A
 //   host that reloads carries on from the snapshot its device saved.
 
-import { canonicalJson, isSideAction, sameAction, viewFor, type GameResult } from "../engines";
+import {
+  canonicalJson,
+  isSideAction,
+  legalMove,
+  sameAction,
+  viewFor,
+  type GameResult,
+} from "../engines";
 import { stateHash, createMessenger, type Message, type Payload } from "../protocol";
 import { elapse, isLowTime, timeLeft } from "../timers";
 import {
@@ -202,11 +209,9 @@ export function createOnlineTurnSession<State, Action, Config>(
   };
 
   /** The legal action (or side action) equal to one that arrived as plain data. */
-  const legal = (state: State, seat: number, action: unknown): Action | undefined => {
-    return [...engine.legalActions(state, seat), ...(engine.sideActions?.(state, seat) ?? [])].find(
-      (a) => sameAction(a, action),
-    );
-  };
+  const legal = (state: State, seat: number, action: unknown): Action | undefined =>
+    legalMove(engine, state, seat, action) ??
+    (engine.sideActions?.(state, seat) ?? []).find((a) => sameAction(a, action));
 
   /**
    * Whether `seat` had the same moves on the state after move `base` as now:

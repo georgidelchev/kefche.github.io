@@ -6,7 +6,7 @@
 // after a drop. At the end the table reveals its seed, which must hash to
 // the commitment it published at the start.
 import { BOT_MIN_THINK_MS } from "../bots";
-import { isSideAction, sameAction, type GameResult } from "../engines";
+import { isSideAction, legalMove, type GameResult } from "../engines";
 import {
   TABLE_ERRORS,
   TABLE_PING,
@@ -211,8 +211,7 @@ export function createTableSession<State, Action, Config>(
       const view = current.view as State;
       const legal =
         isSideAction(engine, view, by, action) ||
-        (current.toMove.includes(by) &&
-          engine.legalActions(view, by).some((a) => sameAction(a, action)));
+        (current.toMove.includes(by) && legalMove(engine, view, by, action) !== undefined);
       if (!legal) return false;
       socket.send(JSON.stringify({ t: "act", n: current.n, action }));
       return true;

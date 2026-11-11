@@ -7,8 +7,8 @@ import { BOT_BUDGET_MS, BOT_MIN_THINK_MS } from "../bots";
 import {
   canonicalJson,
   isSideAction,
+  legalMove,
   replayTurns,
-  sameAction,
   type GameResult,
   type TurnEngine,
   type TurnMove,
@@ -417,7 +417,7 @@ export function createTurnSession<State, Action, Config>(
 
   /** The legal action equal to a bot's answer, which comes back as plain data. */
   const legal = (seat: number, answer: unknown): Action | undefined => {
-    return engine.legalActions(state, seat).find((a) => sameAction(a, answer));
+    return legalMove(engine, state, seat, answer);
   };
 
   function schedule(): void {

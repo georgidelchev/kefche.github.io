@@ -25,11 +25,11 @@ import {
   expiryRule,
   isExpired,
   isSideAction,
+  legalMove,
   parseTableText,
   roomBotDifficulty,
   roomConfig,
   roomTimer,
-  sameAction,
   startTurn,
   tableClientText,
   timeLeft,
@@ -334,7 +334,7 @@ export class Table extends DurableObject<Env> {
   private legal(match: Match, game: TableGame, seat: number, action: unknown): boolean {
     if (isSideAction(game.engine, match.state, seat, action)) return true;
     if (!this.toMove(match, game).includes(seat)) return false;
-    return game.engine.legalActions(match.state, seat).some((a) => sameAction(a, action));
+    return legalMove(game.engine, match.state, seat, action) !== undefined;
   }
 
   /** A legal action, already checked: applied, with the clocks of whoever moves next started. */

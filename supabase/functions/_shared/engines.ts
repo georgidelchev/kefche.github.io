@@ -58,6 +58,8 @@ export interface TurnEngine {
   currentSeats(state: unknown): number[];
   result(state: unknown): GameResult | null;
   sideActions?(state: unknown, seat: number): unknown[];
+  /** Moves that can't all be listed (a typed word): whether this one is legal now. */
+  accepts?(state: unknown, seat: number, action: unknown): boolean;
   /** The result when `seat` runs out of time (chess: a draw if nobody can mate). */
   timeoutResult?(state: unknown, seat: number): GameResult;
 }
@@ -334,7 +336,12 @@ export function replayTurn(
           ]
         : [];
     const wanted = canonicalJson(action);
-    const legal = offered.find((a) => canonicalJson(a) === wanted);
+    // A move that can't be listed (a typed word) counts when the engine accepts it.
+    const typed =
+      engine.result(state) === null &&
+      engine.currentSeats(state).includes(seat) &&
+      engine.accepts?.(state, seat, action) === true;
+    const legal = offered.find((a) => canonicalJson(a) === wanted) ?? (typed ? action : undefined);
     if (legal === undefined) refused++;
     else state = engine.applyAction(state, seat, legal);
   }
