@@ -33,6 +33,7 @@
     "@kefche/game-sdk": "workspace:*",
     "@kefche/game-sea-battle": "workspace:*",
     "@kefche/game-spades": "workspace:*",
+    "@kefche/game-split-or-steal": "workspace:*",
     "@kefche/game-war": "workspace:*",
     "@kefche/game-worm-rush": "workspace:*",
     "zod": "4.6.7"

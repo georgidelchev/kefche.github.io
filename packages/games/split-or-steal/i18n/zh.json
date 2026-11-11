@@ -1,0 +1,80 @@
+{
+  "name": "平分还是独吞",
+  "tagline": "平分奖池，还是全部拿走？先商量，再秘密选择。只为积分。",
+  "description": "在浏览器中免费玩平分还是独吞：2 到 10 人两两配对，商量后秘密选择平分或独吞，只为积分。可对战机器人、同设备多人或在线。",
+  "about": [
+    "Split or Steal is a party game of trust for 2 to 10 players, for points only. Each round the players are paired, and each pair has a pot: 10 points in the first round, 20 in the second, and so on.",
+    "Talk it over with your partner, then both choose at once, in secret. If you both split, you share the pot. If one of you steals, the stealer takes it all and the other gets nothing. If you both steal, nobody gets anything.",
+    "Pairs change every round, so everyone remembers what you did. After 3 or 5 rounds, the most points win. Online, you talk in the room's chat, and every choice is held on our server until your partner has chosen too."
+  ],
+  "howToPlay": [
+    "Choose 3 or 5 rounds, then Play vs bots, Play on this device, or create a room.",
+    "See who your partner is this round, and how big the pot is.",
+    "Talk it over: in the room's chat online, or aloud on one device. Promise whatever you like.",
+    "Tap Split or Steal. Your choice stays hidden until your partner has chosen.",
+    "Both split: half each. One steals: the stealer takes it all. Both steal: nothing for anyone.",
+    "With an odd number of players, one sits out each round. The most points after the last round win."
+  ],
+  "controls": [
+    "Phones and tablets: tap Split or Steal.",
+    "Mouse: click Split or Steal.",
+    "Keyboard: Tab to a choice; Enter or Space chooses it."
+  ],
+  "tips": [
+    "A reputation for splitting gets others to split with you, until the last round.",
+    "The pot grows each round: the last one is where temptation is strongest.",
+    "Watch the history: it shows who keeps their word.",
+    "Bots don't talk, but they remember who stole."
+  ],
+  "faq": [
+    {
+      "question": "Is anything real at stake?",
+      "answer": "No. It's for points only; kefche has no stakes, money or prizes."
+    },
+    {
+      "question": "Can my partner see my choice first?",
+      "answer": "No. Online, each choice is held on our server until both of you have chosen, then both are shown at once."
+    },
+    {
+      "question": "How do we talk?",
+      "answer": "Online, in the room's chat; on one device, out loud. The time for each choice leaves room for it."
+    },
+    {
+      "question": "What if we both steal?",
+      "answer": "Nobody gets the pot. That's the risk of trying to take it all."
+    }
+  ],
+  "ui": {
+    "rounds3": "3",
+    "rounds5": "5",
+    "pairResult": "{a}：{x}（+{wa}）· {b}：{y}（+{wb}）",
+    "scoreLine": "{name}：{points}",
+    "roundShort": "#{n}",
+    "talkBots": "机器人不说话：它们以往的选择会透露它们的打算。",
+    "split": "平分",
+    "steal": "独吞",
+    "sittingOut": "本轮你轮空。",
+    "yourPair": "你的搭档",
+    "withPartner": "搭档：{name}",
+    "pot": "奖池：{n}",
+    "talkAloud": "先大声商量，再做选择。",
+    "talkChat": "先在房间聊天里商量，再做选择。",
+    "yourChoice": "你的选择",
+    "waitingFor": "等待：{name}",
+    "scores": "积分",
+    "roundN": "第 {n} 轮，共 {total} 轮",
+    "rounds": "各轮",
+    "roundsOption": "轮数"
+  },
+  "achievements": {
+    "winner": {
+      "name": "赢家",
+      "description": "赢得 {count, plural, other {# 局}}"
+    },
+    "veteran": {
+      "name": "老手",
+      "description": "玩 {count, plural, other {# 局}}"
+    }
+  },
+  "leaderboards": {}
+}

@@ -48,6 +48,9 @@ import { manifest as seaManifest } from "@kefche/game-sea-battle/manifest";
 import { bots as spadesBots } from "@kefche/game-spades/bots";
 import { engine as spadesEngine } from "@kefche/game-spades/engine";
 import { manifest as spadesManifest } from "@kefche/game-spades/manifest";
+import { bots as sosBots } from "@kefche/game-split-or-steal/bots";
+import { engine as sosEngine } from "@kefche/game-split-or-steal/engine";
+import { manifest as sosManifest } from "@kefche/game-split-or-steal/manifest";
 import { bots as warBots } from "@kefche/game-war/bots";
 import { engine as warEngine } from "@kefche/game-war/engine";
 import { manifest as warManifest } from "@kefche/game-war/manifest";
@@ -85,5 +88,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   "memory-pairs": tableGame(pairsManifest, pairsEngine, pairsBots),
   "rps-tournament": tableGame(rpsManifest, rpsEngine, rpsBots),
   "lowest-unique": tableGame(lunManifest, lunEngine, lunBots),
+  "split-or-steal": tableGame(sosManifest, sosEngine, sosBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

@@ -1,0 +1,80 @@
+{
+  "name": "Teilen oder Stehlen",
+  "tagline": "Den Topf teilen oder alles nehmen? Redet, dann wählt geheim. Nur um Punkte.",
+  "description": "Spiele Teilen oder Stehlen kostenlos: 2 bis 10 Spieler in Paaren reden, dann teilen oder stehlen sie geheim, nur um Punkte. Gegen Bots, an einem Gerät oder online.",
+  "about": [
+    "Split or Steal is a party game of trust for 2 to 10 players, for points only. Each round the players are paired, and each pair has a pot: 10 points in the first round, 20 in the second, and so on.",
+    "Talk it over with your partner, then both choose at once, in secret. If you both split, you share the pot. If one of you steals, the stealer takes it all and the other gets nothing. If you both steal, nobody gets anything.",
+    "Pairs change every round, so everyone remembers what you did. After 3 or 5 rounds, the most points win. Online, you talk in the room's chat, and every choice is held on our server until your partner has chosen too."
+  ],
+  "howToPlay": [
+    "Choose 3 or 5 rounds, then Play vs bots, Play on this device, or create a room.",
+    "See who your partner is this round, and how big the pot is.",
+    "Talk it over: in the room's chat online, or aloud on one device. Promise whatever you like.",
+    "Tap Split or Steal. Your choice stays hidden until your partner has chosen.",
+    "Both split: half each. One steals: the stealer takes it all. Both steal: nothing for anyone.",
+    "With an odd number of players, one sits out each round. The most points after the last round win."
+  ],
+  "controls": [
+    "Phones and tablets: tap Split or Steal.",
+    "Mouse: click Split or Steal.",
+    "Keyboard: Tab to a choice; Enter or Space chooses it."
+  ],
+  "tips": [
+    "A reputation for splitting gets others to split with you, until the last round.",
+    "The pot grows each round: the last one is where temptation is strongest.",
+    "Watch the history: it shows who keeps their word.",
+    "Bots don't talk, but they remember who stole."
+  ],
+  "faq": [
+    {
+      "question": "Is anything real at stake?",
+      "answer": "No. It's for points only; kefche has no stakes, money or prizes."
+    },
+    {
+      "question": "Can my partner see my choice first?",
+      "answer": "No. Online, each choice is held on our server until both of you have chosen, then both are shown at once."
+    },
+    {
+      "question": "How do we talk?",
+      "answer": "Online, in the room's chat; on one device, out loud. The time for each choice leaves room for it."
+    },
+    {
+      "question": "What if we both steal?",
+      "answer": "Nobody gets the pot. That's the risk of trying to take it all."
+    }
+  ],
+  "ui": {
+    "rounds3": "3",
+    "rounds5": "5",
+    "pairResult": "{a}: {x} (+{wa}) · {b}: {y} (+{wb})",
+    "scoreLine": "{name}: {points}",
+    "roundShort": "#{n}",
+    "talkBots": "Bots reden nicht: ihre früheren Runden verraten, was sie tun.",
+    "split": "Teilen",
+    "steal": "Stehlen",
+    "sittingOut": "Du setzt diese Runde aus.",
+    "yourPair": "Dein Paar",
+    "withPartner": "Partner: {name}",
+    "pot": "Topf: {n}",
+    "talkAloud": "Redet laut darüber, dann wählt.",
+    "talkChat": "Redet im Chat des Raums darüber, dann wählt.",
+    "yourChoice": "Deine Wahl",
+    "waitingFor": "Warten auf: {name}",
+    "scores": "Punkte",
+    "roundN": "Runde {n} von {total}",
+    "rounds": "Runden",
+    "roundsOption": "Runden"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Spiel} other {# Spiele}}"
+    },
+    "veteran": {
+      "name": "Veteran",
+      "description": "Spiele {count, plural, one {# Spiel} other {# Spiele}}"
+    }
+  },
+  "leaderboards": {}
+}

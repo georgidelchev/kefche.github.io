@@ -449,6 +449,7 @@ if (process.argv.includes("--fixtures")) {
     "memory-pairs": { cards: 20 },
     "rps-tournament": { bestOf: 3 },
     "lowest-unique": { rounds: 5 },
+    "split-or-steal": { rounds: 3 },
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */
