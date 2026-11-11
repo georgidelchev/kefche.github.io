@@ -35,6 +35,9 @@ import { manifest as lunManifest } from "@kefche/game-lowest-unique/manifest";
 import { bots as ludoBots } from "@kefche/game-ludo/bots";
 import { engine as ludoEngine } from "@kefche/game-ludo/engine";
 import { manifest as ludoManifest } from "@kefche/game-ludo/manifest";
+import { bots as mafiaBots } from "@kefche/game-mafia/bots";
+import { engine as mafiaEngine } from "@kefche/game-mafia/engine";
+import { manifest as mafiaManifest } from "@kefche/game-mafia/manifest";
 import { bots as pairsBots } from "@kefche/game-memory-pairs/bots";
 import { engine as pairsEngine } from "@kefche/game-memory-pairs/engine";
 import { manifest as pairsManifest } from "@kefche/game-memory-pairs/manifest";
@@ -101,5 +104,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   "penalty-shootout": tableGame(penManifest, penEngine, penBots),
   "whos-the-spy": tableGame(spyManifest, spyEngine, spyBots),
   associations: tableGame(assocManifest, assocEngine, assocBots),
+  mafia: tableGame(mafiaManifest, mafiaEngine, mafiaBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

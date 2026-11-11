@@ -1,0 +1,102 @@
+{
+  "name": "マフィア",
+  "tagline": "見つかる前にマフィアを見つけ出せ。秘密の役職、夜の行動、昼の投票。",
+  "description": "ブラウザで無料のマフィア。5〜12人で秘密の役職、医者と探偵、夜の行動と昼の投票、進行役つき。ボットでもオンラインでも。",
+  "about": [
+    "Mafia is the classic party game of hidden roles for 5 to 12 players. Most players are the town: Villagers, a Doctor and a Detective. A few are the Mafia, who know each other and want the town gone.",
+    "At night the Mafia choose someone to eliminate, the Doctor protects someone, and the Detective checks whether someone is Mafia. In the morning the narrator tells what happened. By day everyone talks, in the room's chat or aloud on one device, then votes in secret for who to eliminate, or for no one.",
+    "The town wins when the last Mafia is out; the Mafia win when they're as many as everyone else. A player's role is shown when they're eliminated. Online, roles and night choices are kept on our server, so nobody can peek."
+  ],
+  "howToPlay": [
+    "Choose Play vs bots, Play on this device, or create a room, with 5 to 12 players.",
+    "Look at your role card. On one device, pass it around so each person sees only their own.",
+    "At night, do what your role does: eliminate, protect, check, or sleep.",
+    "In the morning, hear what happened. Then talk: who's lying?",
+    "When you're ready, press Ready to vote, then vote for someone, or for no one.",
+    "Keep going until the town or the Mafia wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap the buttons.",
+    "Mouse: click the buttons.",
+    "Keyboard: Tab between the buttons; Enter or Space presses one."
+  ],
+  "tips": [
+    "Watch the votes: who voted to eliminate players who turned out innocent?",
+    "As the Detective, use what you find, but you can't say how you know without giving yourself away.",
+    "As the Mafia, vote like the town would, and agree on your target at night.",
+    "Voting for no one gives the Mafia another free night."
+  ],
+  "faq": [
+    {
+      "question": "Is Mafia free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How many Mafia are there?",
+      "answer": "One for every four players: one with 5 to 7, two with 8 to 11, three with 12."
+    },
+    {
+      "question": "Do bots talk?",
+      "answer": "No. Bots act and vote from what's been revealed, and never talk. Mafia is best with people."
+    },
+    {
+      "question": "Can anyone see the roles online?",
+      "answer": "No. Roles and night choices are kept on our server; your browser learns only your own role, and the roles of players who are out."
+    }
+  ],
+  "ui": {
+    "voteLine": "{voter} → {target}",
+    "roleMafia": "マフィア",
+    "roleDoctor": "医者",
+    "roleDetective": "探偵",
+    "roleVillager": "市民",
+    "hintMafia": "毎晩、誰を消すか選ぶ。昼は正体を隠そう。",
+    "hintDoctor": "毎晩、マフィアから誰かを守る。自分も守れる。",
+    "hintDetective": "毎晩、誰かがマフィアか調べる。答えはあなただけが知る。",
+    "hintVillager": "夜は眠り、昼にマフィアを見つけよう。",
+    "nightMafia": "誰を消す？",
+    "nightDoctor": "誰を守る？",
+    "nightDetective": "誰を調べる？",
+    "nightVillager": "目を閉じて",
+    "sleep": "眠る",
+    "partnerChose": "仲間がこの人を選びました。",
+    "talkChat": "ルームのチャットで話そう：マフィアは誰？",
+    "talkAloud": "声に出して話そう：マフィアは誰？",
+    "talkBots": "ボットは話しません。下の経緯が手がかりです。",
+    "ready": "投票の準備OK",
+    "readyCount": "投票の準備OK：{n}／{total}",
+    "votePrompt": "誰を追放する？",
+    "nobody": "誰もしない",
+    "waiting": "ほかの人を待っています。",
+    "storyKilled": "{day}日目の夜・消された：{name}（{role}）。",
+    "storySaved": "{day}日目の夜・誰も消されなかった。",
+    "storyExecuted": "{day}日目・追放：{name}（{role}）。",
+    "storySpared": "{day}日目・誰も追放されなかった。",
+    "townWins": "市民の勝ち",
+    "mafiaWins": "マフィアの勝ち",
+    "drawEnd": "引き分け",
+    "phaseNight": "{day}日目の夜",
+    "phaseDay": "{day}日目",
+    "yourRole": "あなたの役職",
+    "youAre": "あなたの役職：{role}",
+    "partners": "仲間のマフィア：{names}",
+    "checksTitle": "調べた結果",
+    "checkMafia": "{name}：マフィア",
+    "checkClear": "{name}：マフィアではない",
+    "youAreOut": "あなたは脱落しました。結末を見届けよう。",
+    "players": "プレイヤー",
+    "out": "脱落",
+    "story": "これまでの経緯"
+  },
+  "achievements": {
+    "winner": {
+      "name": "勝者",
+      "description": "{count, plural, other {#回}}勝つ"
+    },
+    "veteran": {
+      "name": "ベテラン",
+      "description": "{count, plural, other {#回}}プレイする"
+    }
+  },
+  "leaderboards": {}
+}

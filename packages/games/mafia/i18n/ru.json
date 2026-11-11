@@ -1,0 +1,102 @@
+{
+  "name": "Мафия",
+  "tagline": "Найдите мафию, пока она не нашла вас: тайные роли, ночные ходы, голосование.",
+  "description": "Играйте в «Мафию» бесплатно, от 5 до 12 игроков: тайные роли, Доктор и Детектив, ночные ходы и дневное голосование, с ведущим. С ботами или онлайн.",
+  "about": [
+    "Mafia is the classic party game of hidden roles for 5 to 12 players. Most players are the town: Villagers, a Doctor and a Detective. A few are the Mafia, who know each other and want the town gone.",
+    "At night the Mafia choose someone to eliminate, the Doctor protects someone, and the Detective checks whether someone is Mafia. In the morning the narrator tells what happened. By day everyone talks, in the room's chat or aloud on one device, then votes in secret for who to eliminate, or for no one.",
+    "The town wins when the last Mafia is out; the Mafia win when they're as many as everyone else. A player's role is shown when they're eliminated. Online, roles and night choices are kept on our server, so nobody can peek."
+  ],
+  "howToPlay": [
+    "Choose Play vs bots, Play on this device, or create a room, with 5 to 12 players.",
+    "Look at your role card. On one device, pass it around so each person sees only their own.",
+    "At night, do what your role does: eliminate, protect, check, or sleep.",
+    "In the morning, hear what happened. Then talk: who's lying?",
+    "When you're ready, press Ready to vote, then vote for someone, or for no one.",
+    "Keep going until the town or the Mafia wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap the buttons.",
+    "Mouse: click the buttons.",
+    "Keyboard: Tab between the buttons; Enter or Space presses one."
+  ],
+  "tips": [
+    "Watch the votes: who voted to eliminate players who turned out innocent?",
+    "As the Detective, use what you find, but you can't say how you know without giving yourself away.",
+    "As the Mafia, vote like the town would, and agree on your target at night.",
+    "Voting for no one gives the Mafia another free night."
+  ],
+  "faq": [
+    {
+      "question": "Is Mafia free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How many Mafia are there?",
+      "answer": "One for every four players: one with 5 to 7, two with 8 to 11, three with 12."
+    },
+    {
+      "question": "Do bots talk?",
+      "answer": "No. Bots act and vote from what's been revealed, and never talk. Mafia is best with people."
+    },
+    {
+      "question": "Can anyone see the roles online?",
+      "answer": "No. Roles and night choices are kept on our server; your browser learns only your own role, and the roles of players who are out."
+    }
+  ],
+  "ui": {
+    "voteLine": "{voter} → {target}",
+    "roleMafia": "Мафия",
+    "roleDoctor": "Доктор",
+    "roleDetective": "Детектив",
+    "roleVillager": "Мирный житель",
+    "hintMafia": "Каждую ночь выбирайте, кого устранить. Днём не попадитесь.",
+    "hintDoctor": "Каждую ночь защищайте кого-то от мафии, себя тоже.",
+    "hintDetective": "Каждую ночь проверяйте, не мафия ли кто-то. Ответ узнаете только вы.",
+    "hintVillager": "Ночью спите; днём найдите мафию.",
+    "nightMafia": "Кого устраняете?",
+    "nightDoctor": "Кого защищаете?",
+    "nightDetective": "Кого проверяете?",
+    "nightVillager": "Закройте глаза",
+    "sleep": "Спать",
+    "partnerChose": "Ваш сообщник выбрал этого игрока.",
+    "talkChat": "Обсуждайте в чате комнаты: кто мафия?",
+    "talkAloud": "Обсуждайте вслух: кто мафия?",
+    "talkBots": "Боты не разговаривают: история ниже — ваши улики.",
+    "ready": "Готов голосовать",
+    "readyCount": "Готовы голосовать: {n} из {total}",
+    "votePrompt": "Кого изгнать голосованием?",
+    "nobody": "Никого",
+    "waiting": "Ждём остальных.",
+    "storyKilled": "Ночь {day} · Устранён: {name}, {role}.",
+    "storySaved": "Ночь {day} · Никто не устранён.",
+    "storyExecuted": "День {day} · Изгнан: {name}, {role}.",
+    "storySpared": "День {day} · Никто не изгнан.",
+    "townWins": "Город побеждает",
+    "mafiaWins": "Мафия побеждает",
+    "drawEnd": "Ничья",
+    "phaseNight": "Ночь {day}",
+    "phaseDay": "День {day}",
+    "yourRole": "Ваша роль",
+    "youAre": "Ваша роль: {role}",
+    "partners": "Мафия с вами: {names}",
+    "checksTitle": "Что вы узнали",
+    "checkMafia": "{name}: мафия",
+    "checkClear": "{name}: не мафия",
+    "youAreOut": "Вы выбыли. Посмотрите, чем кончится.",
+    "players": "Игроки",
+    "out": "Выбыл",
+    "story": "История до сих пор"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Победитель",
+      "description": "Выиграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    },
+    "veteran": {
+      "name": "Ветеран",
+      "description": "Сыграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    }
+  },
+  "leaderboards": {}
+}

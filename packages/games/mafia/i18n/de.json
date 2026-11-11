@@ -1,0 +1,102 @@
+{
+  "name": "Mafia",
+  "tagline": "Finde die Mafia, bevor sie dich findet: geheime Rollen, Nachtzüge, Abstimmungen.",
+  "description": "Spiele Mafia kostenlos für 5 bis 12 Spieler: geheime Rollen, Arzt und Detektiv, Nachtzüge und Abstimmungen am Tag, mit Erzähler. Auch mit Bots oder online.",
+  "about": [
+    "Mafia is the classic party game of hidden roles for 5 to 12 players. Most players are the town: Villagers, a Doctor and a Detective. A few are the Mafia, who know each other and want the town gone.",
+    "At night the Mafia choose someone to eliminate, the Doctor protects someone, and the Detective checks whether someone is Mafia. In the morning the narrator tells what happened. By day everyone talks, in the room's chat or aloud on one device, then votes in secret for who to eliminate, or for no one.",
+    "The town wins when the last Mafia is out; the Mafia win when they're as many as everyone else. A player's role is shown when they're eliminated. Online, roles and night choices are kept on our server, so nobody can peek."
+  ],
+  "howToPlay": [
+    "Choose Play vs bots, Play on this device, or create a room, with 5 to 12 players.",
+    "Look at your role card. On one device, pass it around so each person sees only their own.",
+    "At night, do what your role does: eliminate, protect, check, or sleep.",
+    "In the morning, hear what happened. Then talk: who's lying?",
+    "When you're ready, press Ready to vote, then vote for someone, or for no one.",
+    "Keep going until the town or the Mafia wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap the buttons.",
+    "Mouse: click the buttons.",
+    "Keyboard: Tab between the buttons; Enter or Space presses one."
+  ],
+  "tips": [
+    "Watch the votes: who voted to eliminate players who turned out innocent?",
+    "As the Detective, use what you find, but you can't say how you know without giving yourself away.",
+    "As the Mafia, vote like the town would, and agree on your target at night.",
+    "Voting for no one gives the Mafia another free night."
+  ],
+  "faq": [
+    {
+      "question": "Is Mafia free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How many Mafia are there?",
+      "answer": "One for every four players: one with 5 to 7, two with 8 to 11, three with 12."
+    },
+    {
+      "question": "Do bots talk?",
+      "answer": "No. Bots act and vote from what's been revealed, and never talk. Mafia is best with people."
+    },
+    {
+      "question": "Can anyone see the roles online?",
+      "answer": "No. Roles and night choices are kept on our server; your browser learns only your own role, and the roles of players who are out."
+    }
+  ],
+  "ui": {
+    "voteLine": "{voter} → {target}",
+    "roleMafia": "Mafia",
+    "roleDoctor": "Arzt",
+    "roleDetective": "Detektiv",
+    "roleVillager": "Bürger",
+    "hintMafia": "Wähle jede Nacht, wen du ausschaltest. Lass dich am Tag nicht erwischen.",
+    "hintDoctor": "Schütze jede Nacht jemanden vor der Mafia, auch dich selbst.",
+    "hintDetective": "Prüfe jede Nacht, ob jemand zur Mafia gehört. Nur du erfährst es.",
+    "hintVillager": "Schlaf in der Nacht; finde am Tag die Mafia.",
+    "nightMafia": "Wen schaltest du aus?",
+    "nightDoctor": "Wen schützt du?",
+    "nightDetective": "Wen prüfst du?",
+    "nightVillager": "Augen zu",
+    "sleep": "Schlafen",
+    "partnerChose": "Dein Komplize hat diese Person gewählt.",
+    "talkChat": "Redet im Chat des Raums: Wer ist Mafia?",
+    "talkAloud": "Redet laut: Wer ist Mafia?",
+    "talkBots": "Bots reden nicht: Die Geschichte unten ist dein Beweis.",
+    "ready": "Bereit zur Abstimmung",
+    "readyCount": "Bereit zur Abstimmung: {n} von {total}",
+    "votePrompt": "Wen wählst du raus?",
+    "nobody": "Niemanden",
+    "waiting": "Warten auf die anderen.",
+    "storyKilled": "Nacht {day} · Ausgeschaltet: {name}, {role}.",
+    "storySaved": "Nacht {day} · Niemand wurde ausgeschaltet.",
+    "storyExecuted": "Tag {day} · Rausgewählt: {name}, {role}.",
+    "storySpared": "Tag {day} · Niemand wurde rausgewählt.",
+    "townWins": "Die Stadt gewinnt",
+    "mafiaWins": "Die Mafia gewinnt",
+    "drawEnd": "Unentschieden",
+    "phaseNight": "Nacht {day}",
+    "phaseDay": "Tag {day}",
+    "yourRole": "Deine Rolle",
+    "youAre": "Deine Rolle: {role}",
+    "partners": "Mafia mit dir: {names}",
+    "checksTitle": "Was du herausgefunden hast",
+    "checkMafia": "{name}: Mafia",
+    "checkClear": "{name}: keine Mafia",
+    "youAreOut": "Du bist raus. Schau, wie es endet.",
+    "players": "Spieler",
+    "out": "Raus",
+    "story": "Die Geschichte bisher"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Spiel} other {# Spiele}}"
+    },
+    "veteran": {
+      "name": "Veteran",
+      "description": "Spiele {count, plural, one {# Spiel} other {# Spiele}}"
+    }
+  },
+  "leaderboards": {}
+}

@@ -1,0 +1,102 @@
+{
+  "name": "黑手党",
+  "tagline": "在黑手党找到你之前找到他们：秘密身份、夜间行动、白天投票。",
+  "description": "在浏览器中免费玩黑手党，5 到 12 人：秘密身份、医生和侦探、夜间行动和白天投票，有自动主持人。可对战机器人或在线。",
+  "about": [
+    "Mafia is the classic party game of hidden roles for 5 to 12 players. Most players are the town: Villagers, a Doctor and a Detective. A few are the Mafia, who know each other and want the town gone.",
+    "At night the Mafia choose someone to eliminate, the Doctor protects someone, and the Detective checks whether someone is Mafia. In the morning the narrator tells what happened. By day everyone talks, in the room's chat or aloud on one device, then votes in secret for who to eliminate, or for no one.",
+    "The town wins when the last Mafia is out; the Mafia win when they're as many as everyone else. A player's role is shown when they're eliminated. Online, roles and night choices are kept on our server, so nobody can peek."
+  ],
+  "howToPlay": [
+    "Choose Play vs bots, Play on this device, or create a room, with 5 to 12 players.",
+    "Look at your role card. On one device, pass it around so each person sees only their own.",
+    "At night, do what your role does: eliminate, protect, check, or sleep.",
+    "In the morning, hear what happened. Then talk: who's lying?",
+    "When you're ready, press Ready to vote, then vote for someone, or for no one.",
+    "Keep going until the town or the Mafia wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap the buttons.",
+    "Mouse: click the buttons.",
+    "Keyboard: Tab between the buttons; Enter or Space presses one."
+  ],
+  "tips": [
+    "Watch the votes: who voted to eliminate players who turned out innocent?",
+    "As the Detective, use what you find, but you can't say how you know without giving yourself away.",
+    "As the Mafia, vote like the town would, and agree on your target at night.",
+    "Voting for no one gives the Mafia another free night."
+  ],
+  "faq": [
+    {
+      "question": "Is Mafia free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How many Mafia are there?",
+      "answer": "One for every four players: one with 5 to 7, two with 8 to 11, three with 12."
+    },
+    {
+      "question": "Do bots talk?",
+      "answer": "No. Bots act and vote from what's been revealed, and never talk. Mafia is best with people."
+    },
+    {
+      "question": "Can anyone see the roles online?",
+      "answer": "No. Roles and night choices are kept on our server; your browser learns only your own role, and the roles of players who are out."
+    }
+  ],
+  "ui": {
+    "voteLine": "{voter} → {target}",
+    "roleMafia": "黑手党",
+    "roleDoctor": "医生",
+    "roleDetective": "侦探",
+    "roleVillager": "平民",
+    "hintMafia": "每晚选择淘汰一人。白天别暴露。",
+    "hintDoctor": "每晚保护一人免遭黑手党毒手，也可以保护自己。",
+    "hintDetective": "每晚查验一人是否是黑手党，只有你知道结果。",
+    "hintVillager": "夜里睡觉，白天找出黑手党。",
+    "nightMafia": "你要淘汰谁？",
+    "nightDoctor": "你要保护谁？",
+    "nightDetective": "你要查验谁？",
+    "nightVillager": "闭上眼睛",
+    "sleep": "睡觉",
+    "partnerChose": "你的同伙选了此人。",
+    "talkChat": "在房间聊天里讨论：谁是黑手党？",
+    "talkAloud": "大声讨论：谁是黑手党？",
+    "talkBots": "机器人不说话：下面的经过就是你的证据。",
+    "ready": "准备投票",
+    "readyCount": "准备投票：{n} / {total}",
+    "votePrompt": "你投票淘汰谁？",
+    "nobody": "不淘汰",
+    "waiting": "等待其他人。",
+    "storyKilled": "第 {day} 夜 · 被淘汰：{name}，{role}。",
+    "storySaved": "第 {day} 夜 · 无人被淘汰。",
+    "storyExecuted": "第 {day} 天 · 被投出：{name}，{role}。",
+    "storySpared": "第 {day} 天 · 无人被投出。",
+    "townWins": "城镇获胜",
+    "mafiaWins": "黑手党获胜",
+    "drawEnd": "平局",
+    "phaseNight": "第 {day} 夜",
+    "phaseDay": "第 {day} 天",
+    "yourRole": "你的身份",
+    "youAre": "你的身份：{role}",
+    "partners": "你的同伙：{names}",
+    "checksTitle": "查验结果",
+    "checkMafia": "{name}：黑手党",
+    "checkClear": "{name}：不是黑手党",
+    "youAreOut": "你已出局，看看结局吧。",
+    "players": "玩家",
+    "out": "出局",
+    "story": "目前的经过"
+  },
+  "achievements": {
+    "winner": {
+      "name": "赢家",
+      "description": "赢得 {count, plural, other {# 局}}"
+    },
+    "veteran": {
+      "name": "老手",
+      "description": "玩 {count, plural, other {# 局}}"
+    }
+  },
+  "leaderboards": {}
+}

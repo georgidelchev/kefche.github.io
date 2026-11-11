@@ -28,6 +28,7 @@
     "@kefche/game-liars-dice": "workspace:*",
     "@kefche/game-lowest-unique": "workspace:*",
     "@kefche/game-ludo": "workspace:*",
+    "@kefche/game-mafia": "workspace:*",
     "@kefche/game-memory-pairs": "workspace:*",
     "@kefche/game-penalty-shootout": "workspace:*",
     "@kefche/game-rps-tournament": "workspace:*",

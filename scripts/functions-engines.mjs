@@ -453,10 +453,25 @@ if (process.argv.includes("--fixtures")) {
     "penalty-shootout": {},
     "whos-the-spy": { pack: "en" },
     associations: { pack: "en", rounds: 5 },
+    mafia: undefined,
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */
-  const turnSeats = { hearts: 4, spades: 4 };
+  const turnSeats = {
+    hearts: 4,
+    spades: 4,
+    belote: 4,
+    durak: 4,
+    ludo: 4,
+    "liars-dice": 4,
+    conquest: 4,
+    "rps-tournament": 8,
+    "lowest-unique": 5,
+    "split-or-steal": 4,
+    "whos-the-spy": 4,
+    associations: 4,
+    mafia: 8,
+  };
   const MAX_ACTIONS = 400;
   /** Real-time games: 20 s of a solo arena, the player steering at random. */
   const ARENA_TICKS = 600;

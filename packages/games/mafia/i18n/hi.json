@@ -1,0 +1,102 @@
+{
+  "name": "माफ़िया",
+  "tagline": "माफ़िया को पकड़ें इससे पहले कि वह आपको: गुप्त भूमिकाएँ, रात की चालें, दिन में वोट।",
+  "description": "माफ़िया मुफ़्त खेलें, 5 से 12 खिलाड़ी: गुप्त भूमिकाएँ, डॉक्टर और जासूस, रात की चालें और दिन में वोट, कथावाचक के साथ। बॉट्स या ऑनलाइन।",
+  "about": [
+    "Mafia is the classic party game of hidden roles for 5 to 12 players. Most players are the town: Villagers, a Doctor and a Detective. A few are the Mafia, who know each other and want the town gone.",
+    "At night the Mafia choose someone to eliminate, the Doctor protects someone, and the Detective checks whether someone is Mafia. In the morning the narrator tells what happened. By day everyone talks, in the room's chat or aloud on one device, then votes in secret for who to eliminate, or for no one.",
+    "The town wins when the last Mafia is out; the Mafia win when they're as many as everyone else. A player's role is shown when they're eliminated. Online, roles and night choices are kept on our server, so nobody can peek."
+  ],
+  "howToPlay": [
+    "Choose Play vs bots, Play on this device, or create a room, with 5 to 12 players.",
+    "Look at your role card. On one device, pass it around so each person sees only their own.",
+    "At night, do what your role does: eliminate, protect, check, or sleep.",
+    "In the morning, hear what happened. Then talk: who's lying?",
+    "When you're ready, press Ready to vote, then vote for someone, or for no one.",
+    "Keep going until the town or the Mafia wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap the buttons.",
+    "Mouse: click the buttons.",
+    "Keyboard: Tab between the buttons; Enter or Space presses one."
+  ],
+  "tips": [
+    "Watch the votes: who voted to eliminate players who turned out innocent?",
+    "As the Detective, use what you find, but you can't say how you know without giving yourself away.",
+    "As the Mafia, vote like the town would, and agree on your target at night.",
+    "Voting for no one gives the Mafia another free night."
+  ],
+  "faq": [
+    {
+      "question": "Is Mafia free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How many Mafia are there?",
+      "answer": "One for every four players: one with 5 to 7, two with 8 to 11, three with 12."
+    },
+    {
+      "question": "Do bots talk?",
+      "answer": "No. Bots act and vote from what's been revealed, and never talk. Mafia is best with people."
+    },
+    {
+      "question": "Can anyone see the roles online?",
+      "answer": "No. Roles and night choices are kept on our server; your browser learns only your own role, and the roles of players who are out."
+    }
+  ],
+  "ui": {
+    "voteLine": "{voter} → {target}",
+    "roleMafia": "माफ़िया",
+    "roleDoctor": "डॉक्टर",
+    "roleDetective": "जासूस",
+    "roleVillager": "नागरिक",
+    "hintMafia": "हर रात किसी को बाहर करें। दिन में पकड़े न जाएँ।",
+    "hintDoctor": "हर रात किसी को माफ़िया से बचाएँ, खुद को भी।",
+    "hintDetective": "हर रात जाँचें कि कोई माफ़िया है या नहीं। जवाब सिर्फ़ आपको पता चलेगा।",
+    "hintVillager": "रात में सोएँ; दिन में माफ़िया खोजें।",
+    "nightMafia": "किसे बाहर करेंगे?",
+    "nightDoctor": "किसे बचाएँगे?",
+    "nightDetective": "किसकी जाँच करेंगे?",
+    "nightVillager": "आँखें बंद करें",
+    "sleep": "सोएँ",
+    "partnerChose": "आपके साथी ने इन्हें चुना।",
+    "talkChat": "कमरे की चैट में बात करें: माफ़िया कौन है?",
+    "talkAloud": "ज़ोर से बात करें: माफ़िया कौन है?",
+    "talkBots": "बॉट बात नहीं करते: नीचे की कहानी ही आपका सबूत है।",
+    "ready": "वोट के लिए तैयार",
+    "readyCount": "वोट के लिए तैयार: {n} / {total}",
+    "votePrompt": "किसे बाहर करने को वोट देंगे?",
+    "nobody": "किसी को नहीं",
+    "waiting": "बाकी का इंतज़ार।",
+    "storyKilled": "रात {day} · बाहर: {name}, {role}।",
+    "storySaved": "रात {day} · कोई बाहर नहीं हुआ।",
+    "storyExecuted": "दिन {day} · वोट से बाहर: {name}, {role}।",
+    "storySpared": "दिन {day} · कोई वोट से बाहर नहीं हुआ।",
+    "townWins": "शहर जीता",
+    "mafiaWins": "माफ़िया जीता",
+    "drawEnd": "बराबरी",
+    "phaseNight": "रात {day}",
+    "phaseDay": "दिन {day}",
+    "yourRole": "आपकी भूमिका",
+    "youAre": "आपकी भूमिका: {role}",
+    "partners": "आपके साथ माफ़िया: {names}",
+    "checksTitle": "आपने क्या पाया",
+    "checkMafia": "{name}: माफ़िया",
+    "checkClear": "{name}: माफ़िया नहीं",
+    "youAreOut": "आप बाहर हैं। देखें कैसे खत्म होता है।",
+    "players": "खिलाड़ी",
+    "out": "बाहर",
+    "story": "अब तक की कहानी"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, plural, one {# खेल} other {# खेल}} जीतें"
+    },
+    "veteran": {
+      "name": "अनुभवी",
+      "description": "{count, plural, one {# खेल} other {# खेल}} खेलें"
+    }
+  },
+  "leaderboards": {}
+}
