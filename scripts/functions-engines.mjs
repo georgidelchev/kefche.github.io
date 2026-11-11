@@ -452,6 +452,7 @@ if (process.argv.includes("--fixtures")) {
     "split-or-steal": { rounds: 3 },
     "penalty-shootout": {},
     "whos-the-spy": { pack: "en" },
+    associations: { pack: "en", rounds: 5 },
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */

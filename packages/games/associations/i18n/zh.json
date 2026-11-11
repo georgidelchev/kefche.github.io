@@ -1,0 +1,77 @@
+{
+  "name": "联想",
+  "tagline": "写出大家都会写的那个词，每有一人相同就得一分。",
+  "description": "在浏览器中免费玩联想：2 到 8 人看到一个词，写下别人也会写的词，每次相同得一分。可对战机器人、同设备多人或在线。",
+  "about": [
+    "Associations is a quick party game of thinking alike, for 2 to 8 players. Each round shows a word, like Beach or Winter, and everyone writes the first word they think the others will write.",
+    "You score a point for every other player who wrote the same word as you: sand and sand match, and so do Ice cream and ice-cream, since case, spaces and accents don't count. Nobody wins by being clever; you win by being in tune.",
+    "Play 5 or 8 rounds; the most points win, and a tie is shared. Online, every answer is held on our server until everyone has written, so nobody can copy."
+  ],
+  "howToPlay": [
+    "Choose the language of the words and 5 or 8 rounds, then Play vs bots, Play on this device, or create a room.",
+    "Read the word, then write the one you think everyone else will write, and press Send.",
+    "Your word stays hidden until everyone has written; then all are shown.",
+    "You get a point for each other player who wrote the same word.",
+    "After the last round, the most points win."
+  ],
+  "controls": [
+    "Phones and tablets: tap the field, type your word, then Send.",
+    "Mouse and keyboard: type your word and press Enter.",
+    "Letters, digits, spaces, apostrophes and hyphens, up to 24."
+  ],
+  "tips": [
+    "Go for the obvious: the most common word is usually the best.",
+    "Watch what the others wrote before: some players think alike.",
+    "One word is safer than two.",
+    "Bots know the most common associations; hard ones go straight for them."
+  ],
+  "faq": [
+    {
+      "question": "Is it free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Do spelling and capitals matter?",
+      "answer": "Capitals, spaces, hyphens and accents on Latin letters don't. Spelling does: write the word as the others would."
+    },
+    {
+      "question": "Which languages are there?",
+      "answer": "English and Bulgarian words for now; more languages are coming."
+    },
+    {
+      "question": "Can others see my word first?",
+      "answer": "No. Online, every answer is held on our server until everyone has written."
+    }
+  ],
+  "ui": {
+    "packEn": "English",
+    "packBg": "Български",
+    "rounds5": "5",
+    "rounds8": "8",
+    "scoreLine": "{name}：{points}",
+    "answerLine": "{name}：{word}（+{points}）",
+    "scores": "积分",
+    "roundN": "第 {n} 轮，共 {total} 轮",
+    "hint": "写下你认为其他人会写的词。",
+    "yourAnswer": "你的词",
+    "send": "发送",
+    "invalid": "可用字母、数字、空格、撇号或连字符，最多 24 个。",
+    "yourWord": "你写的是：{word}",
+    "noAnswer": "未作答",
+    "writtenCount": "已写：{n} / {total}",
+    "rounds": "各轮",
+    "packOption": "词语",
+    "roundsOption": "轮数"
+  },
+  "achievements": {
+    "winner": {
+      "name": "赢家",
+      "description": "赢得 {count, plural, other {# 局}}"
+    },
+    "veteran": {
+      "name": "老手",
+      "description": "玩 {count, plural, other {# 局}}"
+    }
+  },
+  "leaderboards": {}
+}

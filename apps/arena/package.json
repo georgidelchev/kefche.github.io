@@ -17,6 +17,7 @@
     "wrangler": "4.151.3"
   },
   "dependencies": {
+    "@kefche/game-associations": "workspace:*",
     "@kefche/game-backgammon": "workspace:*",
     "@kefche/game-belote": "workspace:*",
     "@kefche/game-conquest": "workspace:*",

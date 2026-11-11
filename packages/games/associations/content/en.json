@@ -1,0 +1,74 @@
+{
+  "source": "Written for kefche (Phase 12); see CREDITS.md.",
+  "prompts": [
+    { "word": "Beach", "associations": ["sand", "sea", "sun", "waves", "holiday", "towel"] },
+    { "word": "Winter", "associations": ["snow", "cold", "christmas", "ice", "scarf", "skiing"] },
+    {
+      "word": "Coffee",
+      "associations": ["morning", "cup", "milk", "caffeine", "bean", "espresso"]
+    },
+    { "word": "Cat", "associations": ["dog", "mouse", "meow", "fur", "milk", "whiskers"] },
+    { "word": "Rain", "associations": ["umbrella", "water", "cloud", "wet", "storm", "puddle"] },
+    {
+      "word": "Birthday",
+      "associations": ["cake", "party", "presents", "candles", "balloons", "age"]
+    },
+    {
+      "word": "School",
+      "associations": ["teacher", "homework", "class", "books", "exam", "friends"]
+    },
+    { "word": "Night", "associations": ["moon", "dark", "stars", "sleep", "dream", "owl"] },
+    { "word": "Kitchen", "associations": ["cooking", "food", "oven", "knife", "fridge", "chef"] },
+    { "word": "Football", "associations": ["ball", "goal", "team", "stadium", "match", "boots"] },
+    { "word": "Apple", "associations": ["red", "fruit", "tree", "pie", "green", "juice"] },
+    {
+      "word": "Music",
+      "associations": ["song", "guitar", "dance", "piano", "concert", "headphones"]
+    },
+    {
+      "word": "Forest",
+      "associations": ["trees", "green", "wood", "animals", "mushrooms", "bear"]
+    },
+    {
+      "word": "Hospital",
+      "associations": ["doctor", "nurse", "sick", "ambulance", "bed", "medicine"]
+    },
+    { "word": "Space", "associations": ["stars", "rocket", "moon", "astronaut", "planet", "dark"] },
+    {
+      "word": "Breakfast",
+      "associations": ["eggs", "morning", "toast", "coffee", "cereal", "pancakes"]
+    },
+    {
+      "word": "Garden",
+      "associations": ["flowers", "grass", "plants", "vegetables", "tree", "roses"]
+    },
+    {
+      "word": "Train",
+      "associations": ["station", "travel", "tracks", "ticket", "railway", "carriage"]
+    },
+    { "word": "Fire", "associations": ["hot", "red", "smoke", "flame", "water", "wood"] },
+    { "word": "Book", "associations": ["read", "library", "pages", "story", "author", "novel"] },
+    { "word": "Mountain", "associations": ["snow", "climbing", "peak", "hiking", "high", "rocks"] },
+    { "word": "Money", "associations": ["bank", "rich", "cash", "gold", "coins", "work"] },
+    { "word": "Wedding", "associations": ["bride", "ring", "love", "dress", "marriage", "church"] },
+    { "word": "Chocolate", "associations": ["sweet", "brown", "cake", "milk", "candy", "cocoa"] },
+    {
+      "word": "Doctor",
+      "associations": ["hospital", "nurse", "medicine", "sick", "health", "stethoscope"]
+    },
+    {
+      "word": "Summer",
+      "associations": ["sun", "hot", "holiday", "beach", "ice cream", "swimming"]
+    },
+    { "word": "Phone", "associations": ["call", "mobile", "app", "screen", "message", "battery"] },
+    {
+      "word": "Bread",
+      "associations": ["butter", "bakery", "toast", "flour", "sandwich", "wheat"]
+    },
+    { "word": "Ocean", "associations": ["sea", "blue", "fish", "waves", "water", "whale"] },
+    {
+      "word": "Halloween",
+      "associations": ["pumpkin", "costume", "candy", "ghost", "scary", "witch"]
+    }
+  ]
+}

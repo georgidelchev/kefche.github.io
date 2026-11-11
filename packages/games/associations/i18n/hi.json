@@ -1,0 +1,77 @@
+{
+  "name": "जुड़ते शब्द",
+  "tagline": "वह शब्द लिखें जो बाकी सब लिखेंगे, और हर मेल पर अंक पाएँ।",
+  "description": "जुड़ते शब्द मुफ़्त खेलें: 2 से 8 खिलाड़ी एक शब्द देखकर वह लिखते हैं जो बाकी लिखेंगे, हर मेल पर अंक। बॉट्स के विरुद्ध, एक डिवाइस पर या ऑनलाइन।",
+  "about": [
+    "Associations is a quick party game of thinking alike, for 2 to 8 players. Each round shows a word, like Beach or Winter, and everyone writes the first word they think the others will write.",
+    "You score a point for every other player who wrote the same word as you: sand and sand match, and so do Ice cream and ice-cream, since case, spaces and accents don't count. Nobody wins by being clever; you win by being in tune.",
+    "Play 5 or 8 rounds; the most points win, and a tie is shared. Online, every answer is held on our server until everyone has written, so nobody can copy."
+  ],
+  "howToPlay": [
+    "Choose the language of the words and 5 or 8 rounds, then Play vs bots, Play on this device, or create a room.",
+    "Read the word, then write the one you think everyone else will write, and press Send.",
+    "Your word stays hidden until everyone has written; then all are shown.",
+    "You get a point for each other player who wrote the same word.",
+    "After the last round, the most points win."
+  ],
+  "controls": [
+    "Phones and tablets: tap the field, type your word, then Send.",
+    "Mouse and keyboard: type your word and press Enter.",
+    "Letters, digits, spaces, apostrophes and hyphens, up to 24."
+  ],
+  "tips": [
+    "Go for the obvious: the most common word is usually the best.",
+    "Watch what the others wrote before: some players think alike.",
+    "One word is safer than two.",
+    "Bots know the most common associations; hard ones go straight for them."
+  ],
+  "faq": [
+    {
+      "question": "Is it free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Do spelling and capitals matter?",
+      "answer": "Capitals, spaces, hyphens and accents on Latin letters don't. Spelling does: write the word as the others would."
+    },
+    {
+      "question": "Which languages are there?",
+      "answer": "English and Bulgarian words for now; more languages are coming."
+    },
+    {
+      "question": "Can others see my word first?",
+      "answer": "No. Online, every answer is held on our server until everyone has written."
+    }
+  ],
+  "ui": {
+    "packEn": "English",
+    "packBg": "Български",
+    "rounds5": "5",
+    "rounds8": "8",
+    "scoreLine": "{name}: {points}",
+    "answerLine": "{name}: {word} (+{points})",
+    "scores": "अंक",
+    "roundN": "दौर {n} / {total}",
+    "hint": "वह शब्द लिखें जो आपके हिसाब से बाकी लिखेंगे।",
+    "yourAnswer": "आपका शब्द",
+    "send": "भेजें",
+    "invalid": "अक्षर, अंक, स्पेस, एपॉस्ट्रॉफ़ी या हाइफ़न: 24 तक।",
+    "yourWord": "आपने लिखा: {word}",
+    "noAnswer": "कोई जवाब नहीं",
+    "writtenCount": "लिख चुके: {n} / {total}",
+    "rounds": "दौर",
+    "packOption": "शब्द",
+    "roundsOption": "दौर"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, plural, one {# खेल} other {# खेल}} जीतें"
+    },
+    "veteran": {
+      "name": "अनुभवी",
+      "description": "{count, plural, one {# खेल} other {# खेल}} खेलें"
+    }
+  },
+  "leaderboards": {}
+}

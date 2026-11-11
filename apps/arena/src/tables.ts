@@ -2,6 +2,9 @@
 // games with hidden information (manifest `hiddenInformation`), by id. Each
 // is its own engine (with `view`), bots and manifest; the table is the same
 // code for all of them.
+import { bots as assocBots } from "@kefche/game-associations/bots";
+import { engine as assocEngine } from "@kefche/game-associations/engine";
+import { manifest as assocManifest } from "@kefche/game-associations/manifest";
 import { bots as bgBots } from "@kefche/game-backgammon/bots";
 import { engine as bgEngine } from "@kefche/game-backgammon/engine";
 import { manifest as bgManifest } from "@kefche/game-backgammon/manifest";
@@ -97,5 +100,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   "split-or-steal": tableGame(sosManifest, sosEngine, sosBots),
   "penalty-shootout": tableGame(penManifest, penEngine, penBots),
   "whos-the-spy": tableGame(spyManifest, spyEngine, spyBots),
+  associations: tableGame(assocManifest, assocEngine, assocBots),
   war: tableGame(warManifest, warEngine, warBots),
 };
