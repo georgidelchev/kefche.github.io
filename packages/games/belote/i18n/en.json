@@ -1,0 +1,91 @@
+{
+  "name": "Belote",
+  "tagline": "Bulgarian Belote for two teams: bid, declare and play to 151.",
+  "description": "Play Bulgarian Belote free in your browser: bid, double, declare tierces and belote, and play to 151 with a partner. Against bots, on one device, or online.",
+  "about": [
+    "Belote is the most popular card game in Bulgaria, and this is the Bulgarian version, sometimes called bridge-belote. Four players play in two teams of two, partners sitting opposite each other, with a deck of 32 cards from seven to ace. Play goes counter-clockwise, to the right.",
+    "Each player is dealt five cards, and then the bidding begins. You can pass or call a contract higher than the last one: clubs, diamonds, hearts and spades make that suit trumps, No Trumps has no trumps and counts double, and All Trumps makes every suit a trump suit. The other team may double, and the bidders may redouble. When three players pass after a call, everyone gets three more cards and play begins.",
+    "You must follow suit; in a suit contract you must trump when you can't follow (and over-trump if you can) unless your partner is already winning. Points come from the cards taken, the last trick, declarations (sequences of three or more, four of a kind) and belote, the king and queen of trumps. The bidders must score more than their opponents, or everything goes to the opponents: they are inside. The first team to 151 game points wins. Play against bots, with friends on one device, or online, where the cards are dealt on our server."
+  ],
+  "howToPlay": [
+    "Play vs bots or Play on this device. You and the player opposite are a team; play goes counter-clockwise.",
+    "With five cards each, bid: pass, or call a higher contract (clubs, diamonds, hearts, spades, No Trumps, All Trumps). Opponents may double; the bidders may redouble.",
+    "After three passes, everyone gets three more cards. Declarations are made automatically: tierce 20, quarte 50, quinte 100, four jacks 200, four nines 150, four aces, kings, queens or tens 100. Only the team with the best sequence scores its sequences.",
+    "Follow suit. In a suit contract, if you can't, trump (and over-trump if you can), unless your partner is winning. On a trump lead, and in All Trumps, play higher if you can.",
+    "Trumps: J 20, 9 14, A 11, 10 10, K 4, Q 3. Other suits: A 11, 10 10, K 4, Q 3, J 2. The last trick is 10, belote 20, all eight tricks 90 more. No Trumps counts double.",
+    "The bidders must score more than the opponents, or all points go to the opponents. The first team to 151 wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap a call to bid. Tap a card to lift it and tap it again to play, or drag it up.",
+    "Mouse: click a call or a card.",
+    "Keyboard: Tab to the calls and press Enter. Move through your hand with the arrow keys and press Enter to play.",
+    "On one device, the screen covers your hand between turns: pass the device, and the next player taps to see theirs."
+  ],
+  "tips": [
+    "The jack and nine are the strongest trumps: with both, a suit contract is usually safe.",
+    "No Trumps wants aces and guarded tens; All Trumps wants jacks and nines.",
+    "Give points to your partner when they're winning the trick: a ten or an ace is worth 10 or 11.",
+    "Double only when you're sure: a doubled contract that's made scores double for the bidders."
+  ],
+  "faq": [
+    {
+      "question": "Is Belote free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Which rules does this Belote use?",
+      "answer": "Bulgarian rules: 32 cards, teams of two, play counter-clockwise, contracts from clubs to All Trumps with double and redouble, declarations and belote, and a game to 151."
+    },
+    {
+      "question": "What does it mean to be inside?",
+      "answer": "The bidding team scored no more than the opponents. Then all the points of the deal go to the opponents."
+    },
+    {
+      "question": "Do I have to announce declarations?",
+      "answer": "No. kefche announces tierces, quartes, quintes, carrés and belote for you, as play starts and when you play the king or queen of trumps."
+    },
+    {
+      "question": "Can other players see my cards online?",
+      "answer": "No. Online, the cards are dealt on our server, which sends each player only their own hand. Calls and declarations are public, as at a real table."
+    }
+  ],
+  "ui": {
+    "players": "Players",
+    "trick": "Trick",
+    "yourHand": "Your hand",
+    "yourCall": "Your call",
+    "calls": "Calls",
+    "declarations": "Declarations",
+    "team": "{names}: {score}",
+    "to": "Game to {target}",
+    "contract": "{contract}, called by {name}",
+    "pass": "Pass",
+    "double": "Double",
+    "redouble": "Redouble",
+    "clubs": "Clubs",
+    "diamonds": "Diamonds",
+    "hearts": "Hearts",
+    "spades": "Spades",
+    "noTrumps": "No Trumps",
+    "allTrumps": "All Trumps",
+    "tierce": "Tierce",
+    "quarte": "Quarte",
+    "quinte": "Quinte",
+    "carre": "Carré",
+    "belote": "Belote",
+    "playedBy": "{name}: {card}",
+    "lastDeal": "Last deal: {a} and {b}",
+    "lastInside": "Last deal, inside: {a} and {b}"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Winner",
+      "description": "Win {count, plural, one {# game} other {# games}}"
+    },
+    "veteran": {
+      "name": "Veteran",
+      "description": "Play {count, plural, one {# game} other {# games}}"
+    }
+  },
+  "leaderboards": {}
+}

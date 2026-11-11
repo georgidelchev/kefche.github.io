@@ -369,6 +369,7 @@ export function Hand({
   selected,
   four = false,
   face,
+  quiet = false,
 }: {
   cards: readonly Card[];
   /** Names for screen readers (`name` is all a game with its own deck needs). */
@@ -387,6 +388,8 @@ export function Hand({
    * class gk-card, role img and the card's name. By default, the French deck.
    */
   face?: (c: Card, label: string) => ReactNode;
+  /** Nothing can be played now (bidding), but the hand isn't greyed out: it's for reading. */
+  quiet?: boolean;
 }) {
   const [lifted, setLifted] = useState<Card | null>(null);
   const [focus, setFocus] = useState(0);
@@ -438,7 +441,7 @@ export function Hand({
 
   return (
     <div
-      className="gk-hand"
+      className={quiet ? "gk-hand gk-quiet" : "gk-hand"}
       role="group"
       aria-label={label}
       dir="ltr"
@@ -525,6 +528,7 @@ export const CARD_CSS = `
 .gk-hand-card[data-up] { transform: translateY(-0.8rem); }
 .gk-hand-card[aria-disabled="true"] { cursor: default; }
 .gk-hand-card[aria-disabled="true"] .gk-card { filter: brightness(0.72) saturate(0.6); }
+.gk-quiet .gk-hand-card[aria-disabled="true"] .gk-card { filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.25)); }
 .gk-hand-card:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; z-index: 1; }
 .gk-backs { display: flex; --card-w: clamp(1.6rem, 6vw, 2.5rem); }
 .gk-backs .gk-card + .gk-card { margin-inline-start: calc(var(--card-w) * -0.6); }

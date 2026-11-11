@@ -136,6 +136,7 @@ export function Game({ context, store, session, sounds }: Props) {
               text={text}
               four={four}
               label={t("yourHand")}
+              quiet={bidding}
               canPlay={(c) => canPlay.has(c)}
               onPlay={(c) => {
                 if (human !== null) session.act(human, { play: c });

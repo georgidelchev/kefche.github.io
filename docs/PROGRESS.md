@@ -2683,6 +2683,13 @@ The owner answered "you decide", so the recommended answers stand:
   - **Bots:** bids from aces, guarded kings and queens, long spades and short side suits (nil on a hopeless hand); medium ducks under a partner and wins cheaply while the team needs tricks; hard also dodges bags and covers a partner's nil.
   - **The trick** now sits in two rows (across and you in the middle, left and right beside), which fits a phone better.
   - Checked: the engine check, the table with one and two accounts (5/5 each), and Chrome 16/16 (bids from Nil to 13, the team scores, a bid then tricks counted, the cover from the dealer's left on one device, 360, 768 and 1280 px, both themes, Arabic, axe).
+- [x] **Step 7, Belote** (Bulgarian rules): four players in two teams, 32 cards, play counter-clockwise.
+  - **Bidding:** five cards each, then pass or a higher contract (clubs, diamonds, hearts, spades, No Trumps, All Trumps), with double and redouble; three passes after a call end it (four at the start: a new deal), then three more cards each.
+  - **Play by the strict rules:** follow suit; in a suit contract trump (and over-trump) when you can't follow unless your partner is winning; raise on a trump lead and in All Trumps.
+  - **Points:** Bulgarian card values (trumps J 20, 9 14…), last trick 10, No Trumps double; declarations made automatically (tierce, quarte, quinte, carrés; only the best sequence's team scores sequences), belote 20, valat 90; the bidders must score more or go "inside"; doubled, the higher side takes all ×2 (×4 redoubled). Game points by tens with each contract's rounding; to 151.
+  - **Bots:** value each contract from the five cards (jacks and nines in a suit, aces in No Trumps, jacks and nines in All Trumps); play strong leads, give points to a winning partner, win cheaply when it's worth it. Hard also doubles.
+  - **The hand while bidding** is no longer greyed out (`Hand`'s `quiet`), in Spades too.
+  - Checked: the engine check, the table with one and two accounts (5/5 each), and Chrome 18/18 (five cards, all calls, a contract and play with eight cards, the cover going counter-clockwise on one device, Bulgarian calls, 360, 768 and 1280 px, both themes, Arabic, axe).
 
 ## Known issues
 

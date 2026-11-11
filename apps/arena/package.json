@@ -17,6 +17,7 @@
     "wrangler": "4.151.3"
   },
   "dependencies": {
+    "@kefche/game-belote": "workspace:*",
     "@kefche/game-crazy-colors": "workspace:*",
     "@kefche/game-hearts": "workspace:*",
     "@kefche/game-sdk": "workspace:*",
