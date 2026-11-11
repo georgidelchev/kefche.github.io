@@ -2724,6 +2724,12 @@ The owner answered "you decide", so the recommended answers stand:
   - **Bots:** medium tries every full play of the dice and scores the result (pips, made points, hits, blots); hard also counts direct shots at each blot, values primes, and doubles and drops by the race.
   - **The board** is SVG with each point a keyboard-focusable button; the checkers carry their seat's shape.
   - Checked: the engine check (single games and matches with the cube), the table with one and two accounts (5/5 each), and Chrome 18/18 (the opening position at 167 pips, moving by tapping a point and then its target, pips going down, a match to 3 with the cube offered and taken on one device, 360, 768 and 1024 px, both themes, Arabic, axe).
+- [x] **Step 14, Ludo:** 2–4 players (two play opposite corners), four tokens each or two for a quicker game.
+  - **Rules:** the die is rolled for the player; a 6 brings a token out onto its start square and rolls again (a third 6 in a row ends the turn); a lone token of another colour is sent back to its yard unless it stands on a start square or a star; two of a colour together can't be hit; home by the exact number. A roll that can't be played passes on by itself. The first with every token home wins; the others lose (no placings).
+  - **The die on the table,** like Backgammon's: the state's Rng is never in a view.
+  - **Bots:** medium hits first, then brings a token out, then gets one home, else moves the furthest; hard also counts the tokens one to six squares behind where a token would land.
+  - **The board** is SVG on a 15 × 15 grid; each token is a keyboard-focusable button carrying its seat's shape, and tokens sharing a square spread out so each one shows.
+  - Checked: the engine check at 2, 3 and 4 players with 4 and 2 tokens, the table with one and two accounts (5/5 each), and Chrome 15/15 (16 tokens, moving by tapping, tokens leaving the yard, two tokens each on one device with no cover, Enter on a focused token, 360, 768 and 1024 px, both themes, Arabic, axe).
 
 ## Known issues
 

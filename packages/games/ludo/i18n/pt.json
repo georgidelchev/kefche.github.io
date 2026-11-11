@@ -1,0 +1,80 @@
+{
+  "name": "Ludo",
+  "tagline": "Jogue o dado, tire suas peças, mande outras para casa e corra ao centro.",
+  "description": "Jogue Ludo grátis no navegador, de 2 a 4 jogadores, com quatro ou duas peças e dado justo do servidor online. Contra bots, num aparelho ou online.",
+  "about": [
+    "Ludo is the family race game played around the world, from the old Indian game of Pachisi. Two to four players each bring their tokens out of their yard, once around the cross-shaped board, up their own home column and into the middle.",
+    "The die decides how far you go. A 6 brings a token out of the yard and gives you another roll, but a third 6 in a row ends your turn. Land on a lone token of another colour and it goes back to its yard, unless it stands on a start square or a star, which are safe. Two of one colour together can't be hit.",
+    "You need the exact number to reach home. The first player with every token home wins. Play with four tokens each, or two for a quicker game. Online, the die is rolled on our server, so nobody can know the next roll."
+  ],
+  "howToPlay": [
+    "Choose four tokens or two, then Play vs bots, Play on this device, or create a room.",
+    "The die is rolled for you at the start of each turn.",
+    "Tap one of your ringed tokens to move it by the roll. You need a 6 to bring a token out of the yard.",
+    "If no token can move, the turn passes on by itself.",
+    "Landing on a lone token of another colour sends it back to its yard, except on start squares and stars.",
+    "Go once around the board and up your home column; the last steps need the exact number."
+  ],
+  "controls": [
+    "Phones and tablets: tap a ringed token to move it.",
+    "Mouse: click a ringed token.",
+    "Keyboard: Tab moves between the tokens that can move; Enter or Space moves one."
+  ],
+  "tips": [
+    "Bring a second token out early: two tokens in play give you a choice on every roll.",
+    "A token just in front of an opponent is in danger; a token on a star or a start square is safe.",
+    "Two of your tokens on one square form a block that can't be hit.",
+    "Hit when you can, above all a token that has gone a long way."
+  ],
+  "faq": [
+    {
+      "question": "Is Ludo free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Is the die fair?",
+      "answer": "Yes. Online it's rolled on our server, and the seed of the rolls is revealed at the end, matching the fingerprint shown at the start."
+    },
+    {
+      "question": "Why can't I move?",
+      "answer": "A token in the yard needs a 6 to come out, and a token near home needs the exact number. When no token can move, the turn passes on."
+    },
+    {
+      "question": "Which squares are safe?",
+      "answer": "Every start square (in a player's colour) and the squares with a star. A token there can't be hit."
+    },
+    {
+      "question": "Can I play with fewer tokens?",
+      "answer": "Yes. Choose two tokens each for a quicker game."
+    }
+  ],
+  "ui": {
+    "board": "Tabuleiro de Ludo",
+    "colour0": "laranja",
+    "colour1": "azul",
+    "colour2": "verde",
+    "colour3": "amarelo",
+    "token": "Peça {n} ({colour}), {where}",
+    "inYard": "na base",
+    "atHome": "em casa",
+    "inColumn": "corredor de casa, passo {n}",
+    "onTrack": "casa {n} do percurso",
+    "canMove": "Pode mover.",
+    "rolled": "{name} tirou {value}",
+    "passed": "{name} não pôde mover",
+    "tokensOption": "Peças",
+    "tokens4": "4 cada",
+    "tokens2": "2 cada"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Vencedor",
+      "description": "Vença {count, plural, one {# partida} other {# partidas}}"
+    },
+    "veteran": {
+      "name": "Veterano",
+      "description": "Jogue {count, plural, one {# partida} other {# partidas}}"
+    }
+  },
+  "leaderboards": {}
+}
