@@ -23,6 +23,7 @@
     "@kefche/game-durak": "workspace:*",
     "@kefche/game-gin-rummy": "workspace:*",
     "@kefche/game-hearts": "workspace:*",
+    "@kefche/game-liars-dice": "workspace:*",
     "@kefche/game-ludo": "workspace:*",
     "@kefche/game-santase": "workspace:*",
     "@kefche/game-sdk": "workspace:*",

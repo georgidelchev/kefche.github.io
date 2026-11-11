@@ -20,6 +20,9 @@ import { manifest as ginManifest } from "@kefche/game-gin-rummy/manifest";
 import { bots as heartsBots } from "@kefche/game-hearts/bots";
 import { engine as heartsEngine } from "@kefche/game-hearts/engine";
 import { manifest as heartsManifest } from "@kefche/game-hearts/manifest";
+import { bots as liarsBots } from "@kefche/game-liars-dice/bots";
+import { engine as liarsEngine } from "@kefche/game-liars-dice/engine";
+import { manifest as liarsManifest } from "@kefche/game-liars-dice/manifest";
 import { bots as ludoBots } from "@kefche/game-ludo/bots";
 import { engine as ludoEngine } from "@kefche/game-ludo/engine";
 import { manifest as ludoManifest } from "@kefche/game-ludo/manifest";
@@ -61,5 +64,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   durak: tableGame(durakManifest, durakEngine, durakBots),
   backgammon: tableGame(bgManifest, bgEngine, bgBots),
   ludo: tableGame(ludoManifest, ludoEngine, ludoBots),
+  "liars-dice": tableGame(liarsManifest, liarsEngine, liarsBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

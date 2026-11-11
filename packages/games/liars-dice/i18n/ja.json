@@ -1,0 +1,92 @@
+{
+  "name": "ライアーズダイス",
+  "tagline": "すべてのカップの下のサイコロに賭け、ここぞでブラフを見破ろう。",
+  "description": "ブラウザで無料のライアーズダイス。2〜6人で隠したサイコロでブラフ。ポイントのみで賭けなし。1のワイルドとピッタリ宣言あり。ボット、1台で、またはオンラインで。",
+  "about": [
+    "Liar's Dice is the bluffing game played with cups and dice from South America to the rest of the world. Each player has five dice hidden under a cup, and bids on what's on the whole table.",
+    "A bid is a number of dice and a face: \"five 4s\" means at least five dice on the table show a 4. Each bid must be higher than the last: more dice, or as many of a higher face. Instead of bidding, call the last bid a lie: every cup is lifted, and whoever was wrong loses a die. With wild ones, a 1 counts toward every other face.",
+    "With exact calls on, you may instead say the bid is exactly right: if it is, you get a die back; if not, you lose one. The loser starts the next round. The last player with dice wins. Points only, never stakes. Online, the dice are rolled on our server, so nobody sees another cup."
+  ],
+  "howToPlay": [
+    "Choose wild ones and exact calls, then Play vs bots, Play on this device, or create a room.",
+    "Look at your own dice. Everyone else's are hidden; you only see how many they hold.",
+    "On your turn, pick how many and which face, and bid. Your bid must beat the last one.",
+    "Or call Liar! if you think the last bid is false. The cups are lifted and the dice counted.",
+    "Whoever was wrong loses a die. With no dice left, you're out.",
+    "On one device, pass it on when asked, so nobody sees another player's cup."
+  ],
+  "controls": [
+    "Phones and tablets: tap − and + for how many, a die for the face, then Bid, Liar! or Exact!",
+    "Mouse: the same, with clicks.",
+    "Keyboard: Tab moves between the controls; Enter or Space presses one."
+  ],
+  "tips": [
+    "Count what you hold: on average a sixth of the dice show each face, or a third with wild ones.",
+    "A player who bids a face probably holds some of it.",
+    "Raise on a face you hold, so a call against you is more likely to fail.",
+    "Bluff now and then, or your bids tell everyone what's in your cup."
+  ],
+  "faq": [
+    {
+      "question": "Is Liar's Dice free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play. It's for points only, never stakes."
+    },
+    {
+      "question": "Can anyone see my dice?",
+      "answer": "No. Online, the dice are rolled and kept on our server, and only you are sent yours. The seed of the rolls is revealed at the end, matching the fingerprint shown at the start."
+    },
+    {
+      "question": "What are wild ones?",
+      "answer": "With wild ones, every 1 counts toward a bid on any other face. A bid on 1s counts only 1s."
+    },
+    {
+      "question": "What is an exact call?",
+      "answer": "Saying the last bid is exactly right. If it is, you get a die back (up to five); if not, you lose a die."
+    },
+    {
+      "question": "Who starts the next round?",
+      "answer": "The player who lost a die, or the next player if they're out."
+    }
+  ],
+  "ui": {
+    "players": "プレイヤー",
+    "out": "脱落",
+    "cup": "カップの下のサイコロ：{count}",
+    "round": "ラウンド {n}",
+    "onesWild": "1はワイルド",
+    "bidText": "{face}が{qty}個",
+    "opens": "最初の宣言：{name}",
+    "bidBy": "{name}：{bid}",
+    "yourDice": "あなたのサイコロ",
+    "fewer": "減らす",
+    "more": "増やす",
+    "quantity": "個数",
+    "face": "目",
+    "bid": "宣言：{bid}",
+    "liar": "ダウト！",
+    "exact": "ピッタリ！",
+    "calledLiar": "ダウト：{caller}（{bidder}の宣言 {bid}）。",
+    "calledExact": "ピッタリ宣言：{caller}（{bidder}の宣言 {bid}）。",
+    "thereWere": "数えたサイコロ：{count}。",
+    "loses": "サイコロを1個失う：{name}。",
+    "gains": "サイコロを1個取り戻す：{name}。",
+    "lastCall": "直前のコール",
+    "wildOption": "1の目",
+    "wildOn": "ワイルド",
+    "wildOff": "通常",
+    "exactOption": "ピッタリ宣言",
+    "exactOn": "あり",
+    "exactOff": "なし"
+  },
+  "achievements": {
+    "winner": {
+      "name": "勝者",
+      "description": "{count, plural, other {#回}}勝つ"
+    },
+    "veteran": {
+      "name": "ベテラン",
+      "description": "{count, plural, other {#回}}プレイする"
+    }
+  },
+  "leaderboards": {}
+}

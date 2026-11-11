@@ -2583,6 +2583,7 @@ A second kind of Durable Object on the arena Worker that already runs Worm Rush 
     - **Bots:** timing on a throttled CPU, self-play strength, every player count.
     - **The table:** two to twelve browsers, a player leaving and coming back, checks that no message carries another seat's secrets, and the cost measured.
     - **Accessibility:** 360, 768 and 1280 px, both themes, Arabic and axe.
+    - **Wording with a name:** in-game strings that put a player's name before a verb ("{name} rolled {value}") read wrongly when the name is the local "You" in languages that conjugate ("Du hat … gewürfelt"). Recast them as labels ("Rolled: …"), as Liar's Dice does, across the Phase 12 games.
     - **Docs:** ADDING_A_GAME for hidden information, cards and rounds; ARCHITECTURE; and ADRs.
 
 **Every game step includes:**
@@ -2730,6 +2731,12 @@ The owner answered "you decide", so the recommended answers stand:
   - **Bots:** medium hits first, then brings a token out, then gets one home, else moves the furthest; hard also counts the tokens one to six squares behind where a token would land.
   - **The board** is SVG on a 15 × 15 grid; each token is a keyboard-focusable button carrying its seat's shape, and tokens sharing a square spread out so each one shows.
   - Checked: the engine check at 2, 3 and 4 players with 4 and 2 tokens, the table with one and two accounts (5/5 each), and Chrome 15/15 (16 tokens, moving by tapping, tokens leaving the yard, two tokens each on one device with no cover, Enter on a focused token, 360, 768 and 1024 px, both themes, Arabic, axe).
+- [x] **Step 15, Liar's Dice:** 2–6 players (4 by default), five dice each under a cup, points only.
+  - **Rules:** a bid is a number of dice and a face, over the whole table; each bid raises the count, or keeps it with a higher face. Calling a lie lifts every cup: whoever was wrong loses a die. Options: wild ones (on by default; a bid on ones counts only ones) and exact calls (on by default: right gets a die back, up to five; wrong loses one). The loser starts the next round; the last with dice wins, the others lose (no placings).
+  - **Secrets:** a view shows only your own cup and the others' counts; the last call's cups stay shown until the next one.
+  - **Bots:** easy bids on its most common face and calls bids well over what it expects; medium works out the chance a bid holds from its own dice and calls when it's likelier false than the best raise is true; hard also reads who bid what, makes exact calls, and bluffs now and then. Self-play: hard won 483 of 600 games against medium, and 494 of 600 three-way games against medium and easy.
+  - **Strings with a name** are labels ("Opening bid: You"), so they read right whatever the name (see step 27).
+  - Checked: the engine check at 2, 4 and 6 players with both options on and off, the table with one and two accounts (5/5 each), and Chrome 20/20 (your five dice, the others' counts, a game against three bots with bids and calls, the call explained with the cups shown, the cover on one device, the options off, the stepper, 360, 768 and 1024 px, both themes, Arabic, axe).
 
 ## Known issues
 

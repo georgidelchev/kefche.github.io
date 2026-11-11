@@ -443,6 +443,7 @@ if (process.argv.includes("--fixtures")) {
     durak: { transfer: true },
     backgammon: { match: 3, cube: true },
     ludo: { tokens: 4 },
+    "liars-dice": { exact: true, wild: true },
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */
