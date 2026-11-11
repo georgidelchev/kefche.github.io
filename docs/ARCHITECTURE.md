@@ -272,7 +272,7 @@ flowchart LR
   SM --> SB
 ```
 
-- **Views:** an engine with secrets gives `view(state, seat)`; renderers and bots get only views, offline too. On one device, a "pass the device" cover hides everything between two people's turns.
+- **Views:** an engine with secrets gives `view(state, seat)`; renderers and bots get only views, offline too. On one device, a "pass the device" cover hides everything between two people's turns, whenever the next person's view holds a secret, now or after a move that leaves them at the device (a Sea Battle fleet being placed). Games with nothing secret on screen, like War or Backgammon, go straight on.
 - **The table** deals from its own seed (its hash published first), checks actions, plays bots and stand-ins, keeps the clocks with one alarm, and sleeps between moves.
 - **Simultaneous choices** are turn engines with several seats to move.
 - **Kits** (`@kefche/game-sdk/react`): an original SVG deck with large indices and a four-colour option, a fanned hand, and SVG dice. Their names for screen readers are site strings merged into games tagged "cards" or "dice".

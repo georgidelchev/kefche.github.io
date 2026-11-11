@@ -280,9 +280,25 @@ export function createTurnSession<State, Action, Config>(
     if (!handsOff || result()) return;
     const next = nextHuman();
     if (next === undefined || next === viewer) return;
-    // Nothing for their eyes only (War's face-down piles): no cover needed.
-    const own = canonicalJson(viewFor(engine, state, next));
-    if (own === canonicalJson(viewFor(engine, state, null))) {
+    // Nothing for their eyes only, now or after a move that leaves them at
+    // the device (War's face-down piles): no cover needed. Switching views
+    // already hides what the one handing over could see. "After a move"
+    // covers a player about to make a secret, like a Sea Battle fleet still
+    // to be placed; a few of their moves are tried, enough for every game
+    // so far.
+    const secret = (s: State) =>
+      canonicalJson(viewFor(engine, s, next)) !== canonicalJson(viewFor(engine, s, null));
+    const soon = engine
+      .legalActions(state, next)
+      .slice(0, 3)
+      .some((a) => {
+        const after = engine.applyAction(state, next, a);
+        const stays =
+          engine.result(after) === null &&
+          engine.currentSeats(after).find((s) => seats[s]?.kind === "human") === next;
+        return stays && secret(after);
+      });
+    if (!secret(state) && !soon) {
       viewer = next;
       return;
     }
