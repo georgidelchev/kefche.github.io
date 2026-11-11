@@ -14,6 +14,7 @@ import {
   type CSSProperties,
   type KeyboardEvent,
   type PointerEvent,
+  type ReactNode,
 } from "react";
 
 import { HIDDEN, rankOf, suitOf, type Card, type Rank, type Suit } from "../cards";
@@ -367,9 +368,11 @@ export function Hand({
   pick = "play",
   selected,
   four = false,
+  face,
 }: {
   cards: readonly Card[];
-  text: CardText;
+  /** Names for screen readers (`name` is all a game with its own deck needs). */
+  text: Pick<CardText, "name">;
   /** The hand's name, "Your hand". */
   label: string;
   /** Whether a card may be played (or selected) now; nothing is when it isn't your turn. */
@@ -379,6 +382,11 @@ export function Hand({
   /** "select": the cards chosen so far. */
   selected?: ReadonlySet<Card>;
   four?: boolean;
+  /**
+   * A game with its own deck (Crazy Colors) draws its cards: an SVG with
+   * class gk-card, role img and the card's name. By default, the French deck.
+   */
+  face?: (c: Card, label: string) => ReactNode;
 }) {
   const [lifted, setLifted] = useState<Card | null>(null);
   const [focus, setFocus] = useState(0);
@@ -474,7 +482,11 @@ export function Hand({
             }}
           >
             {/* The card's image names the button (its indices are part of the picture). */}
-            <PlayingCard card={c} four={four} label={text.name(c)} />
+            {face ? (
+              face(c, text.name(c))
+            ) : (
+              <PlayingCard card={c} four={four} label={text.name(c)} />
+            )}
           </button>
         );
       })}
@@ -502,6 +514,7 @@ export const CARD_CSS = `
 .gk-card { display: block; width: var(--card-w, clamp(2.75rem, 12vw, 4.75rem)); aspect-ratio: 60 / 84; height: auto; filter: drop-shadow(0 1px 1.5px rgb(0 0 0 / 0.25)); }
 .gk-face { fill: var(--card-face); stroke: var(--card-edge); stroke-width: 1; }
 .gk-rank { font: 700 15px/1 system-ui, sans-serif; text-anchor: middle; }
+.gk-card text { direction: ltr; unicode-bidi: isolate; }
 .gk-court { fill: none; stroke: var(--card-edge); stroke-width: 0.8; }
 .gk-mark { stroke-width: 1.2; stroke-linejoin: round; }
 .gk-back { fill: var(--card-back); stroke: var(--card-edge); stroke-width: 1; }

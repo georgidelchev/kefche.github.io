@@ -1,0 +1,89 @@
+{
+  "name": "Crazy Colors",
+  "tagline": "Farbe oder Symbol bedienen und als Erster die Hand leeren.",
+  "description": "Spiele Crazy Colors kostenlos im Browser: Farben und Symbole bedienen, Joker spielen, als Erster fertig sein. Gegen Bots, an einem Gerät oder online.",
+  "about": [
+    "Crazy Colors is kefche's own take on a family of card games played all over the world, the one Crazy Eights belongs to. Everyone starts with seven cards, and the goal is simple: be the first to get rid of all of them. On your turn you play a card that matches the top card of the pile, by colour or by symbol.",
+    "The deck is ours: four colours, each with its own shape, so the cards read just as well for colour-blind players. Each colour has numbers from 1 to 9 and three action cards. Skip passes over the next player, Turn reverses the order of play, and +2 makes the next player draw two cards and miss their turn. Wild cards go on anything and let you name the next colour.",
+    "When you can't play, or would rather not, draw a card: if it fits you may play it at once, or keep it. Play with 2 to 8 players, against bots on three levels, with friends passing one device, or online, where hands are dealt on our server so no one can see yours. Choose 7 cards for a full game or 5 for a quick one."
+  ],
+  "howToPlay": [
+    "Choose 7 or 5 cards a hand, then Play vs bots or Play on this device. One card is turned up to start the pile.",
+    "On your turn, play a card of the same colour or the same symbol as the top card. A Wild goes on anything: then choose the next colour.",
+    "Skip passes over the next player. Turn reverses the order of play (with two players, you go again). +2 makes the next player draw two cards and miss their turn.",
+    "If you can't or don't want to play, tap the pile to draw a card. If it fits, you may play it; otherwise keep it, and your turn ends.",
+    "The first player to play their last card wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to lift it and tap it again to play, or drag it up. Tap the face-down pile to draw.",
+    "Mouse: click a card to play it.",
+    "Keyboard: move through your hand with the arrow keys and press Enter to play. Tab reaches the pile and the buttons.",
+    "On one device, the screen covers your hand between turns: pass the device, and the next player taps to see theirs."
+  ],
+  "tips": [
+    "Keep your Wilds for when nothing else fits: they always do.",
+    "When you name a colour, choose the one you hold most of.",
+    "Save Skip and +2 for a player who is close to going out.",
+    "Watch how many cards the others hold: a player with one card left is about to win."
+  ],
+  "faq": [
+    {
+      "question": "Is Crazy Colors free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Is this Crazy Eights?",
+      "answer": "It belongs to the same family: match the colour or the symbol, and Wild cards change the colour. The deck, the names and the cards are kefche's own."
+    },
+    {
+      "question": "Can I draw a card even if I could play?",
+      "answer": "Yes. Drawing is always allowed. If the card you draw fits, you may play it straight away, or keep it."
+    },
+    {
+      "question": "What happens when the draw pile runs out?",
+      "answer": "The played cards, except the top one, are shuffled to make a new draw pile."
+    },
+    {
+      "question": "Can other players see my cards online?",
+      "answer": "No. Online, the cards are dealt on our server, which sends each player only their own hand and how many cards the others hold."
+    }
+  ],
+  "ui": {
+    "players": "Spieler",
+    "yourHand": "Deine Hand",
+    "draw": "Karte ziehen",
+    "top": "Oberste Karte: {card}",
+    "cardName": "{colour} {symbol}",
+    "colour0": "Orange",
+    "colour1": "Blau",
+    "colour2": "Grün",
+    "colour3": "Gelb",
+    "skip": "Aussetzen",
+    "turn": "Richtungswechsel",
+    "plus2": "+2",
+    "wild": "Joker",
+    "chooseColour": "Farbe wählen",
+    "pass": "Passen",
+    "keep": "Behalten",
+    "drewFits": "Sie passt: ausspielen oder behalten",
+    "played": "{name} spielt {card}.",
+    "named": "Nächste Farbe: {colour}.",
+    "skipped": "{name} setzt aus.",
+    "drew": "{name} zieht eine Karte.",
+    "kept": "{name} behält sie.",
+    "hand": "Karten auf der Hand",
+    "hand7": "7",
+    "hand5": "5"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Spiel} other {# Spiele}}"
+    },
+    "streak": {
+      "name": "Siegesserie",
+      "description": "Gewinne {count, plural, one {# Spiel} other {# Spiele}} in Folge"
+    }
+  },
+  "leaderboards": {}
+}

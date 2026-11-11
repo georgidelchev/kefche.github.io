@@ -374,6 +374,7 @@ if (process.argv.includes("--fixtures")) {
   /** Turn games: their config (a random legal move each turn, two seats). */
   const turnConfigs = {
     checkers: { variant: "russian" },
+    "crazy-colors": { hand: 7 },
     "chinese-checkers": undefined,
     chess: { takebacks: false },
     "dots-and-boxes": undefined,

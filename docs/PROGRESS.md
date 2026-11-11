@@ -2665,6 +2665,13 @@ The owner answered "you decide", so the recommended answers stand:
   - **The pass screen only when it hides something:** on one device it now shows only when the next person would see more than everyone may (never in War, whose piles are face down for both).
   - Checked in Chrome: 23/23 alone and on one device (a battle, Enter on Flip, playing by itself to the end of 100 battles, no pass screen, 360, 768 and 1280 px, both themes, Arabic, axe), and 10/10 online with two accounts (both on the table, no pile's cards in any message, your own pending card shown and the other's hidden, a match by itself to the end, recorded once by the table with XP and the Winner achievement). Deno 102/102.
   - **Also fixed:** the signed-in header's account link failed axe's label-in-name rule (its initials and level were text inside it).
+- [x] **Step 4, Crazy Colors:** kefche's own shedding game in the Crazy Eights family, for 2–8 players (4 by default).
+  - **The deck is ours:** four colours, each with the seat palette's shape (circle, square, triangle, diamond), 1–9 twice, two each of Skip, Turn and +2, and six Wilds: 102 cards. Its names and design are original.
+  - **Rules:** 7 cards (or 5); match the colour or the symbol, or play a Wild and name a colour. Draw one at any time, then play it if it fits or keep it. Skip, Turn (a skip with two players) and +2 (draw two, miss a turn). First out wins; a game that runs 3000 moves goes to the fewest cards.
+  - **Bots:** easy plays any card that fits; medium keeps Wilds for last and plays to its strongest colour; hard also saves Skip and +2 for a player about to go out.
+  - **Shared pieces it added:** `CardTable` (the other players along the top with their card counts and turn, the play area, your hand) and `Hand` with a game's own card faces. Card text stays left to right in Arabic.
+  - **New checks for every Phase 12 game:** an engine check (random and bot-vs-bot games at every player count end; each seat's view offers the same moves as the state and shows nothing of the others'), and a table smoke test (one or two accounts with table bots, every frame checked for secrets, the seed against its commitment, the match recorded once).
+  - Checked: the engine check at 2, 3, 4 and 8 players; the table with one and with two accounts (5/5 each, 0 secrets in 187 frames); and in Chrome, 19/19 plus 5/5 (a full game against three bots, a Wild and its colour picker, the cover on one device before each person's turn, 360, 768 and 1280 px, both themes, Arabic, axe).
 
 ## Known issues
 

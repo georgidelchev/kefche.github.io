@@ -2,6 +2,9 @@
 // games with hidden information (manifest `hiddenInformation`), by id. Each
 // is its own engine (with `view`), bots and manifest; the table is the same
 // code for all of them.
+import { bots as crazyBots } from "@kefche/game-crazy-colors/bots";
+import { engine as crazyEngine } from "@kefche/game-crazy-colors/engine";
+import { manifest as crazyManifest } from "@kefche/game-crazy-colors/manifest";
 import type { GameBots, GameManifest, TurnEngine } from "@kefche/game-sdk";
 import { bots as warBots } from "@kefche/game-war/bots";
 import { engine as warEngine } from "@kefche/game-war/engine";
@@ -25,5 +28,6 @@ export const tableGame = <State, Action, Config>(
 });
 
 export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
+  "crazy-colors": tableGame(crazyManifest, crazyEngine, crazyBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

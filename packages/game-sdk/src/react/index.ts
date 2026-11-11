@@ -7,3 +7,4 @@ export * from "./feedback";
 export * from "./grid";
 export * from "./puzzle";
 export * from "./seat";
+export * from "./table";
