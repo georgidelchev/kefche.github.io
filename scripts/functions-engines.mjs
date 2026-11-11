@@ -390,10 +390,11 @@ if (process.argv.includes("--fixtures")) {
     reversi: undefined,
     "shape-claim": undefined,
     "ultimate-ttt": { mode: "ultimate" },
+    spades: { target: 300 },
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */
-  const turnSeats = { hearts: 4 };
+  const turnSeats = { hearts: 4, spades: 4 };
   const MAX_ACTIONS = 400;
   /** Real-time games: 20 s of a solo arena, the player steering at random. */
   const ARENA_TICKS = 600;

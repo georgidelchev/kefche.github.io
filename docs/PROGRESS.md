@@ -2677,6 +2677,12 @@ The owner answered "you decide", so the recommended answers stand:
   - **Bots:** easy at random; medium passes its most dangerous cards, ducks under the winning card and dumps the queen or high hearts when void; hard also flushes the queen with low spades and takes clean tricks when last.
   - **Shared piece:** `TrickArea`, each card in front of the seat that played it, you at the bottom, the winner marked (for Spades, Belote and Santase too). Fixtures can now use more than two seats.
   - Checked: the engine check (12/12 games end, views match, nothing leaks), the table with one and two accounts (5/5 each, 0 secrets in 230 frames), and Chrome 18/18 (passing, a whole hand to 26 points, the next hand passing right, the cover for each of four people on one device, 360, 768 and 1024 px, both themes, Arabic, axe).
+- [x] **Step 6, Spades:** four players in two teams (0 and 2 against 1 and 3).
+  - **Rules:** bid 1–13 or nil from the dealer's left; spades always trump and can't be led until broken; making the team's bid scores 10 a trick bid plus 1 a bag; falling short loses 10 a trick bid; nil is ±100 (its tricks are bags and don't help the partner); 10 bags cost 100. To 500 or 300; −200 loses.
+  - **Changed from the plan:** no blind nil. It needs bidding before seeing your cards, and the hand is on screen from the deal; it would take a "look at your cards" step of its own. The FAQ says so.
+  - **Bots:** bids from aces, guarded kings and queens, long spades and short side suits (nil on a hopeless hand); medium ducks under a partner and wins cheaply while the team needs tricks; hard also dodges bags and covers a partner's nil.
+  - **The trick** now sits in two rows (across and you in the middle, left and right beside), which fits a phone better.
+  - Checked: the engine check, the table with one and two accounts (5/5 each), and Chrome 16/16 (bids from Nil to 13, the team scores, a bid then tricks counted, the cover from the dealer's left on one device, 360, 768 and 1280 px, both themes, Arabic, axe).
 
 ## Known issues
 

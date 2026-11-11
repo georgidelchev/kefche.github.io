@@ -58,7 +58,7 @@ export function TrickArea({
 
 /** Styles for TrickArea, with CARD_CSS. */
 export const TRICK_CSS = `
-.gk-trick { display: grid; grid-template-areas: ". n ." "w . e" ". s ."; grid-template-columns: repeat(3, var(--card-w, 4rem)); grid-template-rows: repeat(3, calc(var(--card-w, 4rem) * 0.9)); gap: 0.25rem; justify-content: center; align-items: center; justify-items: center; }
+.gk-trick { display: grid; grid-template-areas: "w n e" "w s e"; grid-template-columns: repeat(3, var(--card-w, 4rem)); grid-template-rows: repeat(2, auto); column-gap: 0.4rem; row-gap: 0.25rem; justify-content: center; align-items: center; justify-items: center; min-height: calc(var(--card-w, 4rem) * 2.9); }
 .gk-trick-card[data-place="n"] { grid-area: n; }
 .gk-trick-card[data-place="s"] { grid-area: s; }
 .gk-trick-card[data-place="w"] { grid-area: w; }

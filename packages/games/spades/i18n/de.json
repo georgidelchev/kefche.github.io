@@ -1,0 +1,81 @@
+{
+  "name": "Spades",
+  "tagline": "Sagt mit eurem Partner Stiche an – Pik ist immer Trumpf.",
+  "description": "Spiele Spades kostenlos im Browser: mit dem Partner ansagen, den Kontrakt erfüllen, auf Bags achten oder Null ansagen. Gegen Bots, an einem Gerät oder online.",
+  "about": [
+    "Spades is a partnership trick-taking game for four players: you and the player opposite you are a team. Each player gets 13 cards, and spades are always trumps. Before playing, everyone bids how many tricks they expect to take, and the team's two bids add up to its contract.",
+    "The player to the dealer's left leads the first trick. You must follow the suit led if you can; if you can't, you may play any card, and a spade beats every other suit. Spades can't be led until one has been played on an earlier trick, unless you hold nothing but spades.",
+    "A team that makes its contract scores 10 points for each trick bid and 1 point for each extra trick, called a bag. Ten bags cost 100 points, so bidding too low is risky too. A team that falls short loses 10 points for each trick bid. A player can also bid nil, promising to take no tricks at all: it scores 100 points, or loses 100. The first team to 500 (or 300) wins. Play against bots, with friends on one device, or online, where the cards are dealt on our server."
+  ],
+  "howToPlay": [
+    "Choose a game to 500 or 300, then Play vs bots or Play on this device. You and the player opposite are a team.",
+    "Bid the number of tricks you expect to take, from 1 to 13, or Nil to take none.",
+    "The player left of the dealer leads. Follow suit if you can; otherwise play any card. A spade beats any other suit.",
+    "Spades can't be led until a spade has been played, unless you hold only spades.",
+    "Making the team's bid scores 10 a trick bid plus 1 a bag; falling short loses 10 a trick bid. Nil scores 100, or loses 100. Every 10 bags cost 100.",
+    "The first team to reach the target wins; a team down to −200 loses."
+  ],
+  "controls": [
+    "Phones and tablets: tap a number to bid. Tap a card to lift it and tap it again to play, or drag it up.",
+    "Mouse: click a number to bid and a card to play it.",
+    "Keyboard: Tab to the bids and press Enter. Move through your hand with the arrow keys and press Enter to play.",
+    "On one device, the screen covers your hand between turns: pass the device, and the next player taps to see theirs."
+  ],
+  "tips": [
+    "Count your sure tricks: aces, kings with a guard, and long spades. Bid what you're confident of.",
+    "Bags add up: once your team has made its bid, try not to take extra tricks.",
+    "When your partner bids nil, help: win the tricks they might otherwise be forced to take.",
+    "A short side suit is valuable when you hold spades: you can trump that suit early."
+  ],
+  "faq": [
+    {
+      "question": "Is Spades free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a bag?",
+      "answer": "A trick taken above the team's bid. Each one scores a point, but every 10 bags cost the team 100 points."
+    },
+    {
+      "question": "How does nil work?",
+      "answer": "A player who bids nil promises to take no tricks: 100 points if they succeed, minus 100 if they don't. Their partner's bid is scored on its own."
+    },
+    {
+      "question": "Is blind nil included?",
+      "answer": "Not yet. Nil is bid after looking at your cards."
+    },
+    {
+      "question": "Can other players see my cards online?",
+      "answer": "No. Online, the cards are dealt on our server, which sends each player only their own hand. Bids are public, as at a real table."
+    }
+  ],
+  "ui": {
+    "target": "Spiel bis",
+    "target500": "500",
+    "target300": "300",
+    "players": "Spieler",
+    "trick": "Stich",
+    "yourHand": "Deine Hand",
+    "yourBid": "Deine Ansage",
+    "bidding": "Ansagen",
+    "nil": "Null",
+    "bidTricks": "Ansage {bid} · {tricks}",
+    "team": "{names}: {score} ({bags} Bags)",
+    "took": "{name} nimmt den Stich.",
+    "playedBy": "{name}: {card}",
+    "broken": "Pik ist gebrochen",
+    "to": "Spiel bis {target}",
+    "lastHand": "Letzte Runde: {a} und {b}"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Spiel} other {# Spiele}}"
+    },
+    "veteran": {
+      "name": "Veteran",
+      "description": "Spiele {count, plural, one {# Spiel} other {# Spiele}}"
+    }
+  },
+  "leaderboards": {}
+}
