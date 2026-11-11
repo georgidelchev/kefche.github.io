@@ -20,6 +20,7 @@
     "@kefche/game-belote": "workspace:*",
     "@kefche/game-crazy-colors": "workspace:*",
     "@kefche/game-hearts": "workspace:*",
+    "@kefche/game-santase": "workspace:*",
     "@kefche/game-sdk": "workspace:*",
     "@kefche/game-spades": "workspace:*",
     "@kefche/game-war": "workspace:*",

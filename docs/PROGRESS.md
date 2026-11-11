@@ -2690,6 +2690,10 @@ The owner answered "you decide", so the recommended answers stand:
   - **Bots:** value each contract from the five cards (jacks and nines in a suit, aces in No Trumps, jacks and nines in All Trumps); play strong leads, give points to a winning partner, win cheaply when it's worth it. Hard also doubles.
   - **The hand while bidding** is no longer greyed out (`Hand`'s `quiet`), in Spades too.
   - Checked: the engine check, the table with one and two accounts (5/5 each), and Chrome 18/18 (five cards, all calls, a contract and play with eight cards, the cover going counter-clockwise on one device, Bulgarian calls, 360, 768 and 1280 px, both themes, Arabic, axe).
+- [x] **Step 8, Santase** (Bulgarian Sixty-Six): two players, 24 cards, six each, the trump card face up under the stock.
+  - **Rules:** play anything while the stock lasts (the winner draws first); once it's gone or closed, follow suit and beat the card, or trump. A 11, 10 10, K 4, Q 3, J 2. Marriages (20, 40 in trumps) announced automatically when you lead one of the pair; they count once you've taken a trick. The leader may swap the nine of trumps or close the stock while three or more cards are left. 66 ends the deal at once: 1, 2 (under 33) or 3 (no trick) game points; a closer who falls short gives 2; played out, the last trick is 10. First to 11.
+  - **Bots:** medium leads marriages, swaps the nine and wins aces and tens cheaply; hard also closes when its points and trumps should carry it, and trumps high cards while the stock is open.
+  - Checked: the engine check, the table with one and two accounts (5/5 each), and Chrome 14/14 (six cards and the trump card, a game against the bot to its end, the cover for each player and Close for the leader on one device, 360, 768 and 1024 px, both themes, Arabic, axe).
 
 ## Known issues
 

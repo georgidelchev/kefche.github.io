@@ -1,0 +1,79 @@
+{
+  "name": "सांतासे",
+  "tagline": "बल्गेरियाई छियासठ: जोड़ियाँ, बंद करना और 66 तक दौड़।",
+  "description": "ब्राउज़र में सांतासे, बल्गेरियाई छियासठ, मुफ़्त खेलें: जोड़ियाँ, नहले की अदला-बदली, ढेर बंद करना और 66 तक दौड़। बॉट के साथ, एक डिवाइस पर या ऑनलाइन।",
+  "about": [
+    "Santase is the Bulgarian Sixty-Six, a quick card game for two. It uses 24 cards: the nine, jack, queen, king, ten and ace of each suit. Each player gets six cards, and the next card is turned face up to show trumps, lying under the stock.",
+    "While the stock lasts, you may play any card: the higher card of the suit led, or a trump, takes the trick, and then each player draws a card, the winner first. Once the stock is gone, or closed, the rules get strict: you must follow suit and beat the card if you can, or trump if you can't follow.",
+    "Cards are worth points: ace 11, ten 10, king 4, queen 3, jack 2, nine nothing. A king and queen of the same suit make a marriage, worth 20, or 40 in trumps. The first to reach 66 points wins the deal: one game point, two if the other has less than 33, three if they haven't taken a trick. The first player to 11 game points wins the game. Play against a bot, with a friend on one device, or online."
+  ],
+  "howToPlay": [
+    "Play vs bots or Play on this device. Each player gets six cards; the face-up card under the stock shows trumps.",
+    "While the stock lasts, play any card. The higher card of the suit led, or a trump, wins; then the winner draws first.",
+    "Lead a king or a queen while holding its partner to announce a marriage: 20, or 40 in trumps. It counts once you've taken a trick.",
+    "When you lead, you may swap the nine of trumps for the face-up trump card, or close the stock: from then on, nobody draws and the strict rules apply.",
+    "Once the stock is gone or closed, follow suit and beat the card if you can, or trump if you can't follow.",
+    "Reach 66 to win the deal: 1 game point, 2 if the other has under 33, 3 if they took no trick. If you close and fall short, the other gets 2. First to 11 wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to lift it and tap it again to play, or drag it up. Swap the nine and Close are buttons below your hand.",
+    "Mouse: click a card to play it.",
+    "Keyboard: move through your hand with the arrow keys and press Enter. Tab reaches the buttons.",
+    "On one device, the screen covers your hand between turns: pass the device, and the next player taps to see theirs."
+  ],
+  "tips": [
+    "Keep your marriages: leading one is worth 20 or 40 at once.",
+    "While the stock is open, don't waste trumps on cheap tricks: take aces and tens with them.",
+    "Count your points. When you're close to 66 and strong in trumps, closing the stock can win the deal before the other catches up.",
+    "Swap the nine for the trump card when you can: you get a better trump for nothing."
+  ],
+  "faq": [
+    {
+      "question": "Is Santase free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a marriage?",
+      "answer": "The king and queen of one suit. Lead one of them while holding the other to announce it: 20 points, or 40 in trumps."
+    },
+    {
+      "question": "What does closing do?",
+      "answer": "It stops the drawing: the strict rules apply at once, and you must reach 66 with the cards left, or the other player gets 2 game points."
+    },
+    {
+      "question": "Do I have to say when I reach 66?",
+      "answer": "No. kefche ends the deal as soon as you have 66 points."
+    },
+    {
+      "question": "Can the other player see my cards online?",
+      "answer": "No. Online, the cards are dealt on our server, which sends each player only their own hand and the trump card."
+    }
+  ],
+  "ui": {
+    "players": "खिलाड़ी",
+    "trick": "हाथ",
+    "yourHand": "आपके पत्ते",
+    "points": "{points} अंक · 11 में से {score}",
+    "stock": "ढेर: {count} पत्ते",
+    "trumpCard": "तुरुप का पत्ता: {card}",
+    "trumps": "तुरुप: {suit}",
+    "closedBy": "{name} ने बंद किया",
+    "marriage": "{name}: {suit} की जोड़ी",
+    "to": "{target} तक खेल",
+    "lastDeal": "{name} ने पिछला दौर जीता: {points}",
+    "exchange": "नहला बदलें",
+    "close": "बंद करें",
+    "playedBy": "{name}: {card}"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, plural, one {# खेल} other {# खेल}} जीतें"
+    },
+    "streak": {
+      "name": "जीत का सिलसिला",
+      "description": "लगातार {count, plural, one {# खेल} other {# खेल}} जीतें"
+    }
+  },
+  "leaderboards": {}
+}

@@ -11,6 +11,9 @@ import { manifest as crazyManifest } from "@kefche/game-crazy-colors/manifest";
 import { bots as heartsBots } from "@kefche/game-hearts/bots";
 import { engine as heartsEngine } from "@kefche/game-hearts/engine";
 import { manifest as heartsManifest } from "@kefche/game-hearts/manifest";
+import { bots as santaseBots } from "@kefche/game-santase/bots";
+import { engine as santaseEngine } from "@kefche/game-santase/engine";
+import { manifest as santaseManifest } from "@kefche/game-santase/manifest";
 import type { GameBots, GameManifest, TurnEngine } from "@kefche/game-sdk";
 import { bots as spadesBots } from "@kefche/game-spades/bots";
 import { engine as spadesEngine } from "@kefche/game-spades/engine";
@@ -41,5 +44,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   hearts: tableGame(heartsManifest, heartsEngine, heartsBots),
   spades: tableGame(spadesManifest, spadesEngine, spadesBots),
   belote: tableGame(beloteManifest, beloteEngine, beloteBots),
+  santase: tableGame(santaseManifest, santaseEngine, santaseBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

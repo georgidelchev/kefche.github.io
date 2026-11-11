@@ -392,6 +392,7 @@ if (process.argv.includes("--fixtures")) {
     "ultimate-ttt": { mode: "ultimate" },
     spades: { target: 300 },
     belote: undefined,
+    santase: undefined,
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */
