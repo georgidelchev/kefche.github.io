@@ -35,6 +35,9 @@ import { manifest as ludoManifest } from "@kefche/game-ludo/manifest";
 import { bots as pairsBots } from "@kefche/game-memory-pairs/bots";
 import { engine as pairsEngine } from "@kefche/game-memory-pairs/engine";
 import { manifest as pairsManifest } from "@kefche/game-memory-pairs/manifest";
+import { bots as penBots } from "@kefche/game-penalty-shootout/bots";
+import { engine as penEngine } from "@kefche/game-penalty-shootout/engine";
+import { manifest as penManifest } from "@kefche/game-penalty-shootout/manifest";
 import { bots as rpsBots } from "@kefche/game-rps-tournament/bots";
 import { engine as rpsEngine } from "@kefche/game-rps-tournament/engine";
 import { manifest as rpsManifest } from "@kefche/game-rps-tournament/manifest";
@@ -89,5 +92,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   "rps-tournament": tableGame(rpsManifest, rpsEngine, rpsBots),
   "lowest-unique": tableGame(lunManifest, lunEngine, lunBots),
   "split-or-steal": tableGame(sosManifest, sosEngine, sosBots),
+  "penalty-shootout": tableGame(penManifest, penEngine, penBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

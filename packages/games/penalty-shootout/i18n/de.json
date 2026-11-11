@@ -1,0 +1,80 @@
+{
+  "name": "Elfmeterschießen",
+  "tagline": "Wähle die Ecke, errate den Sprung: fünf Schüsse je, dann Sudden Death.",
+  "description": "Spiele Elfmeterschießen kostenlos: schieß auf eine von sechs Stellen oder spring zur Parade, gleichzeitig und geheim. Gegen einen Bot, an einem Gerät oder online.",
+  "about": [
+    "Penalty Shootout is a duel of guessing for two: against a friend, a bot, or online. You take turns to shoot and to keep goal, five kicks each, and then sudden death.",
+    "The shooter picks one of six spots, left, centre or right, low or high, while the keeper picks a dive: left, stay in the centre, or right. Both choose at once, in secret. A shot into the keeper's column is saved, except a high corner, which is out of reach; but a high corner goes over the bar one time in three, and a high centre one time in six.",
+    "The shootout ends as soon as one side can't catch up. Online, both choices are held on our server until both are in, and so are the rolls for the bar, so nobody can know them in advance."
+  ],
+  "howToPlay": [
+    "Choose Play vs bots, Play on this device, or create a room.",
+    "When you shoot, tap one of the six spots in the goal.",
+    "When you're in goal, tap Dive left, Stay centre or Dive right.",
+    "Low shots are sure to be on target but can be saved; high corners can't be saved but can miss.",
+    "Five kicks each; if it's level, kicks go in pairs until one scores and the other doesn't."
+  ],
+  "controls": [
+    "Phones and tablets: tap a spot or a dive.",
+    "Mouse: click a spot or a dive.",
+    "Keyboard: Tab to a spot or a dive; Enter or Space chooses it."
+  ],
+  "tips": [
+    "Mix your shots: a keeper who reads you saves everything low.",
+    "A high corner is never saved, but misses a third of the time: save it for when it counts.",
+    "In goal, watch where the shooter has aimed so far; people have favourite sides.",
+    "Left and right are as the shooter sees the goal."
+  ],
+  "faq": [
+    {
+      "question": "Is it free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can my opponent see my choice first?",
+      "answer": "No. Online, both choices are held on our server until both are in, then shown at once."
+    },
+    {
+      "question": "Why did my shot go over the bar?",
+      "answer": "A high shot is a risk: a high corner goes over one time in three, a high centre one time in six. In return, a high corner can't be saved."
+    },
+    {
+      "question": "How does sudden death work?",
+      "answer": "After five kicks each, if it's level, both take one more kick; if one scores and the other doesn't, it's over."
+    }
+  ],
+  "ui": {
+    "spot0": "Unten links",
+    "spot1": "Unten Mitte",
+    "spot2": "Unten rechts",
+    "spot3": "Oben links",
+    "spot4": "Oben Mitte",
+    "spot5": "Oben rechts",
+    "dive0": "Links springen",
+    "dive1": "Mitte bleiben",
+    "dive2": "Rechts springen",
+    "goal": "Tor!",
+    "saved": "Gehalten!",
+    "over": "Drüber!",
+    "lastKick": "Letzter Schuss, {name}: {spot}, {result}",
+    "scoreOf": "{name}: {goals} Tore aus {kicks} Schüssen",
+    "scoreboard": "Spielstand",
+    "suddenDeath": "Sudden Death",
+    "roles": "Schütze: {shooter} · Im Tor: {keeper}",
+    "aim": "Wähle deine Ecke",
+    "goalLabel": "Das Tor",
+    "diveLabel": "Dein Sprung",
+    "waitingFor": "Warten auf: {name}"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Spiel} other {# Spiele}}"
+    },
+    "veteran": {
+      "name": "Veteran",
+      "description": "Spiele {count, plural, one {# Spiel} other {# Spiele}}"
+    }
+  },
+  "leaderboards": {}
+}

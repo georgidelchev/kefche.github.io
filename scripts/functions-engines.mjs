@@ -450,6 +450,7 @@ if (process.argv.includes("--fixtures")) {
     "rps-tournament": { bestOf: 3 },
     "lowest-unique": { rounds: 5 },
     "split-or-steal": { rounds: 3 },
+    "penalty-shootout": {},
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */
