@@ -274,8 +274,11 @@ flowchart LR
 
 - **Views:** an engine with secrets gives `view(state, seat)`; renderers and bots get only views, offline too. On one device, a "pass the device" cover hides everything between two people's turns, whenever the next person's view holds a secret, now or after a move that leaves them at the device (a Sea Battle fleet being placed). Games with nothing secret on screen, like War or Backgammon, go straight on.
 - **The table** deals from its own seed (its hash published first), checks actions, plays bots and stand-ins, keeps the clocks with one alarm, and sleeps between moves.
-- **Simultaneous choices** are turn engines with several seats to move.
-- **Kits** (`@kefche/game-sdk/react`): an original SVG deck with large indices and a four-colour option, a fanned hand, and SVG dice. Their names for screen readers are site strings merged into games tagged "cards" or "dice".
+- **Simultaneous choices** are turn engines with several seats to move. When who moves would itself be a secret (Mafia's night), everyone alive acts, the Villagers by sleeping.
+- **Moves:** the table, rooms and the server's replay take a move only if it's listed by `legalActions`, a side action, or accepted by the engine's `accepts` (a typed word in Associations; ADR-0048). A side action doesn't move a game on, so each seat has 200 a match on a table, which keeps the saved match small.
+- **Dice and shuffles** come from the state's Rng, which every view blanks, so the table holds the next roll even in a game with nothing else to hide (Backgammon, Ludo, Conquest).
+- **Kits** (`@kefche/game-sdk/react`): an original SVG deck with large indices and a four-colour option, a fanned hand, a table layout and a trick area, and SVG dice. Their names for screen readers are site strings merged into games tagged "cards" or "dice".
+- **Content packs** (`packages/games/<id>/content/<locale>.json`, manifest `contentPacks`): a game with words is offered only in its packs' languages (ADR-0049). Elsewhere it has no page and isn't listed; its pages' hreflang and language switcher follow, and an option value can be the default in a language (`defaultIn`), so the pack starts as the page's own. The engine knows the words by number only.
 
 ## Internationalization
 

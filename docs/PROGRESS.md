@@ -18,7 +18,7 @@
 | 9     | Real-time arena framework & Worm Rush                      | ✅ Done (owner signed off 2026-11-09) |
 | 10    | Admin panel                                                | ✅ Done (owner signed off 2026-11-10) |
 | 11    | Game batch 1: board, strategy, puzzles                     | ✅ Done (owner signed off 2026-11-10) |
-| 12    | Game batch 2: cards, dice and secrets                      | 📝 Planned; awaiting owner's answers  |
+| 12    | Game batch 2: cards, dice and secrets                      | 🔨 Built; awaiting owner sign-off     |
 | 13–14 | Game batches 3–4                                           | ⏳ Not started                        |
 | 15    | Translation pass & content packs                           | ⏳ Not started                        |
 | 16    | PWA, audio & haptics polish                                | ⏳ Not started                        |
@@ -2816,6 +2816,19 @@ The owner answered "you decide", so the recommended answers stand:
     - **Secrets:** every state frame is the engine's view for that socket's seat (the whole state only once the match is over), the last move goes through `viewAction`, the seed's SHA-256 is sent first and the seed only at the end; results reach `submit-match` with `ARENA_SECRET`, compared in constant time, which replays the moves.
     - **Found and fixed:** side actions don't move a game on (moving a Sea Battle ship again and again), and the match is saved as one value; a player could have grown it past Durable Object storage's 2 MB a value and stalled their own match for everyone in it. Each seat now has 200 side actions a match (placing a fleet takes a few dozen). Checked by reading and with a normal Sea Battle match (5/5); not load-tested.
     - **To know:** Associations' answers are free text the other players see, like the room's chat but without its reporting; they're words of up to 24 letters, digits, spaces, apostrophes or hyphens.
+  - **Bots, timing:** the engine check over all 21 Phase 12 turn games, at every player count each offers (2 to 16) and with every option set, has every bot's slowest move under 3 ms (Backgammon's medium 2.5, Lowest Unique's hard 2.0), or stopping at its deadline (the card games' search on a budget of steps). Four times slower, as on a weak phone, that's still far inside 150/400/900 ms. Every random and bot game at every count ended with a result for every seat, and no view showed another seat's secrets or the Rng.
+  - **Bots, strength:** each game's step records its self-play: stronger at each level everywhere it can be, and, where play is guessing (the tournament, Penalty Shootout, Lowest Unique, Split or Steal), measured against patterned players. Two weaker spots to know: Conquest's hard is about even with medium in three-way games, and Mafia's hard town is only a little ahead of medium.
+  - **Server replay:** all 50 games have fixtures, each turn game at its usual seat count (`turnSeats`); Deno 124/124. `engines.gen.js` grew from 300 KB to 457 KB.
+  - **Table cost, estimated** (to measure live, ADR-0047): a card game of four with three bots is about 10 requests and 200 rows written; the choice games about one request and one row a choice. Workers Free's 100,000 rows written a day allow a few hundred table games, shared with the arenas.
+  - **Docs:** ADDING_A_GAME (Phase 12's worked examples; hidden information, simultaneous choices, typed moves, the kits, names in strings, content packs, `turnSeats` and `functions:push`, and a checklist item for secrets), ARCHITECTURE ("Cards, dice and secrets": moves, side actions, dice, kits, content packs), ADR-0048 (moves that can't be listed) and ADR-0049 (a game offered only in its packs' languages).
+  - **Release, waiting for the owner's word:**
+    - push the commits;
+    - apply 2 migrations to the hosted database, each with a dry run first: `20261111100000_tables.sql` and `20261111100100_daily_solitaire.sql` (with Phase 11's 3, `20261110100000` to `20261110100200`, and Phase 10's 10, `20261109100000` to `20261109100900`, if they're still waiting);
+    - redeploy `submit-match` (the new engines and the table reports) and `send-push` (the new game names);
+    - set `ARENA_SECRET` (the owner, in the arena Worker's and the Edge Functions' secrets) and deploy the arena Worker with the tables (migration tag v3);
+    - then play one table game online with two accounts to see a result recorded.
+
+- [ ] Owner sign-off
 
 ## Known issues
 

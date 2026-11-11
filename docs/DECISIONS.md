@@ -1023,3 +1023,32 @@ Lobby chat already existed (ADR-0023).
 - **CPU per event is unclear on Free:** Cloudflare's pages give Durable Objects 30 s but also say they share Workers' limits (10 ms on Free). Card bots on the table are kept to rule-based play and a small step budget; the first live games will show whether that's enough, and Workers Paid ($5/month) removes the doubt.
 - **One region per table,** near whoever opened it first, as for arenas.
 - **A new path to results,** reviewed with the security pass (Phase 19): tokens, seats, message sizes (64 KB), refused actions, and views that must never carry another seat's secrets.
+
+## ADR-0048: Moves that can't be listed
+
+**Date:** 2026-11-11 · **Status:** Accepted (Phase 12 step 24)
+
+**Context.** Every place that takes a move (the table, the host's room session, the browser's bots, the server's replay in `submit-match`) took only a move that `engine.legalActions` listed, compared as data. Associations' move is a typed word, and the words can't be listed.
+
+**Decision.**
+
+- **`accepts(state, seat, action)`**, optional on `TurnEngine`: whether a move that arrived as plain data is legal for `seat` now. It must be as strict as `applyAction` (Associations checks the word: letters, digits, spaces, apostrophes and hyphens, up to 24).
+- **`legalMove(engine, state, seat, action)`** in the SDK takes a listed move, or one the engine accepts, and every place that takes a move uses it; the Deno replay does the same, for seats that are to move.
+- **`legalActions` still lists something:** what a clock running out or a stand-in may choose (no answer, in Associations), so timers and bots work as before.
+
+**Consequences.** Every other game is unchanged. A game with typed moves shows free text to the other players in its match; that is like the room's chat without its reporting, so such a game keeps its words short and plain.
+
+## ADR-0049: A game offered only in its content packs' languages
+
+**Date:** 2026-11-11 · **Status:** Accepted (Phase 12 Q3)
+
+**Context.** Who's the Spy and Associations need words in each language (SPEC §5: content packs, no silent fallback). Phase 12 writes English and Bulgarian packs; the other nine languages come with Phase 15. The manifest already had `contentPacks`, unused.
+
+**Decision.**
+
+- **Offered where there's a pack:** `listGames(locale)` leaves a game out of the catalog, its categories, the lobby browser, rooms and leaderboards in languages without its pack, and no page is built there.
+- **Pages know their languages:** `AppShell` takes `locales`; hreflang lists only those, and the language switcher sends any other language to its catalog rather than to a page that doesn't exist.
+- **The pack is a room option** (`pack`), so everyone in a room plays the same words; a value can be the default in some locales (`defaultIn`), so it starts as the page's own language.
+- **The engine knows the words by number only:** the packs live in `content/<locale>.json`, loaded by the renderer and bots; the server replays without them.
+
+**Consequences.** Adding a language to such a game is a pack, its locale in `contentPacks`, and an option value. Until then, a player whose site language has no pack doesn't see the game at all.
