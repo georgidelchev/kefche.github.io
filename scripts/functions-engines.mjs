@@ -444,6 +444,7 @@ if (process.argv.includes("--fixtures")) {
     backgammon: { match: 3, cube: true },
     ludo: { tokens: 4 },
     "liars-dice": { exact: true, wild: true },
+    "sea-battle": { again: false },
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */

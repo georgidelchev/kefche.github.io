@@ -1,0 +1,97 @@
+{
+  "name": "海戦ゲーム",
+  "tagline": "艦隊を隠し、相手の艦隊を1マスずつ探して沈めよう。",
+  "description": "ブラウザで無料の海戦ゲーム。10×10のマスに5隻の船を隠し、先に相手の艦隊を沈めよう。ボット、1台で、またはオンラインで。",
+  "about": [
+    "Sea Battle is the pencil-and-paper game of hidden ships, played on squared paper in classrooms everywhere. Each player hides a fleet on a 10 × 10 grid and takes turns firing at the other's waters, one square at a time.",
+    "Your fleet has five ships, of 5, 4, 3, 3 and 2 squares, each in a straight line across or down; ships can't overlap. A shot is a miss, a hit, or, when the last square of a ship is hit, a sinking, and the whole ship is shown.",
+    "Sink all five ships before the other player sinks yours. Play taking turns, or let a hit fire again. Online, both fleets are kept on our server, so nobody can peek at the other's grid."
+  ],
+  "howToPlay": [
+    "Choose taking turns or shooting again after a hit, then Play vs bots, Play on this device, or create a room.",
+    "Place your fleet: pick a ship, then tap the square where it starts. Rotate turns it across or down.",
+    "Drag a placed ship to move it, or press Random to place the rest. Press Ready when all five are in.",
+    "Then fire: tap a square of the other player's waters. A dot is a miss, a cross a hit.",
+    "A sunk ship is shown whole. Your own waters, below, show where the other player has fired.",
+    "On one device, pass it on when asked, so nobody sees the other fleet."
+  ],
+  "controls": [
+    "Phones and tablets: tap to place and fire; drag a placed ship to move it.",
+    "Mouse: click to place and fire; drag a placed ship to move it.",
+    "Keyboard: Tab to a grid, the arrow keys to move between squares, Enter to place or fire."
+  ],
+  "tips": [
+    "Every ship covers a square of each colour on a checkerboard: hunt on one colour first.",
+    "After a hit, try the four squares around it; after two in a line, keep going along it.",
+    "Don't line your ships up along the edges: that's where many players look first.",
+    "Ships far apart are harder to find than a cluster."
+  ],
+  "faq": [
+    {
+      "question": "Is Sea Battle free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can ships touch?",
+      "answer": "Yes, they may touch, but not overlap. Each ship lies in a straight line across or down."
+    },
+    {
+      "question": "Can the other player see my fleet?",
+      "answer": "No. Online, both fleets are kept on our server; your browser only learns where your own shots landed."
+    },
+    {
+      "question": "What does \"shoot again\" do?",
+      "answer": "With it on, a hit fires again at once, as in many schoolyard rules. With it off, players simply take turns."
+    },
+    {
+      "question": "Can I play on one phone with a friend?",
+      "answer": "Yes. Play on this device asks you to pass the phone between turns, so neither of you sees the other's ships."
+    }
+  ],
+  "ui": {
+    "ship0": "空母",
+    "ship1": "戦艦",
+    "ship2": "巡洋艦",
+    "ship3": "フリゲート",
+    "ship4": "哨戒艇",
+    "cell": "{cell}、{state}",
+    "cellWater": "海",
+    "cellShip": "自分の船",
+    "cellMiss": "はずれ",
+    "cellHit": "命中",
+    "cellSunk": "撃沈",
+    "fleetOf": "艦隊：{name}",
+    "shipSunk": "{ship}、撃沈",
+    "placeTitle": "艦隊を配置",
+    "placeHint": "船を選び、始まりのマスをタップ。置いた船はドラッグで動かせます。",
+    "dock": "船",
+    "shipSize": "{ship}（{size}）",
+    "yourWaters": "自分の海",
+    "rotate": "回転：{dir}",
+    "across": "横",
+    "down": "縦",
+    "random": "おまかせ",
+    "ready": "準備完了",
+    "stillPlacing": "配置中：{name}",
+    "toFire": "攻撃：{name}",
+    "lastShot": "{name} → {cell}：{result}",
+    "resultSunk": "{ship}を撃沈",
+    "resultHit": "命中",
+    "resultMiss": "はずれ",
+    "theirWaters": "海：{name}",
+    "againOption": "命中したら",
+    "againOff": "交互に",
+    "againOn": "もう一度"
+  },
+  "achievements": {
+    "winner": {
+      "name": "勝者",
+      "description": "{count, plural, other {#回}}勝つ"
+    },
+    "veteran": {
+      "name": "ベテラン",
+      "description": "{count, plural, other {#回}}プレイする"
+    }
+  },
+  "leaderboards": {}
+}

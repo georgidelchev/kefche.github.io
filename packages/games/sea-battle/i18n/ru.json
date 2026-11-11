@@ -1,0 +1,97 @@
+{
+  "name": "Морской бой",
+  "tagline": "Спрячьте свой флот, а потом найдите и потопите чужой, клетка за клеткой.",
+  "description": "Играйте в морской бой бесплатно в браузере: спрячьте пять кораблей на поле 10 × 10 и потопите чужой флот первым. С ботами, вдвоём или онлайн.",
+  "about": [
+    "Sea Battle is the pencil-and-paper game of hidden ships, played on squared paper in classrooms everywhere. Each player hides a fleet on a 10 × 10 grid and takes turns firing at the other's waters, one square at a time.",
+    "Your fleet has five ships, of 5, 4, 3, 3 and 2 squares, each in a straight line across or down; ships can't overlap. A shot is a miss, a hit, or, when the last square of a ship is hit, a sinking, and the whole ship is shown.",
+    "Sink all five ships before the other player sinks yours. Play taking turns, or let a hit fire again. Online, both fleets are kept on our server, so nobody can peek at the other's grid."
+  ],
+  "howToPlay": [
+    "Choose taking turns or shooting again after a hit, then Play vs bots, Play on this device, or create a room.",
+    "Place your fleet: pick a ship, then tap the square where it starts. Rotate turns it across or down.",
+    "Drag a placed ship to move it, or press Random to place the rest. Press Ready when all five are in.",
+    "Then fire: tap a square of the other player's waters. A dot is a miss, a cross a hit.",
+    "A sunk ship is shown whole. Your own waters, below, show where the other player has fired.",
+    "On one device, pass it on when asked, so nobody sees the other fleet."
+  ],
+  "controls": [
+    "Phones and tablets: tap to place and fire; drag a placed ship to move it.",
+    "Mouse: click to place and fire; drag a placed ship to move it.",
+    "Keyboard: Tab to a grid, the arrow keys to move between squares, Enter to place or fire."
+  ],
+  "tips": [
+    "Every ship covers a square of each colour on a checkerboard: hunt on one colour first.",
+    "After a hit, try the four squares around it; after two in a line, keep going along it.",
+    "Don't line your ships up along the edges: that's where many players look first.",
+    "Ships far apart are harder to find than a cluster."
+  ],
+  "faq": [
+    {
+      "question": "Is Sea Battle free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can ships touch?",
+      "answer": "Yes, they may touch, but not overlap. Each ship lies in a straight line across or down."
+    },
+    {
+      "question": "Can the other player see my fleet?",
+      "answer": "No. Online, both fleets are kept on our server; your browser only learns where your own shots landed."
+    },
+    {
+      "question": "What does \"shoot again\" do?",
+      "answer": "With it on, a hit fires again at once, as in many schoolyard rules. With it off, players simply take turns."
+    },
+    {
+      "question": "Can I play on one phone with a friend?",
+      "answer": "Yes. Play on this device asks you to pass the phone between turns, so neither of you sees the other's ships."
+    }
+  ],
+  "ui": {
+    "ship0": "Авианосец",
+    "ship1": "Линкор",
+    "ship2": "Крейсер",
+    "ship3": "Фрегат",
+    "ship4": "Катер",
+    "cell": "{cell}, {state}",
+    "cellWater": "вода",
+    "cellShip": "ваш корабль",
+    "cellMiss": "мимо",
+    "cellHit": "ранен",
+    "cellSunk": "потоплен",
+    "fleetOf": "Флот: {name}",
+    "shipSunk": "{ship}, потоплен",
+    "placeTitle": "Расставьте флот",
+    "placeHint": "Выберите корабль и нажмите клетку, с которой он начинается. Перетащите поставленный корабль, чтобы сдвинуть его.",
+    "dock": "Корабли",
+    "shipSize": "{ship} ({size})",
+    "yourWaters": "Ваши воды",
+    "rotate": "Повернуть: {dir}",
+    "across": "по горизонтали",
+    "down": "по вертикали",
+    "random": "Случайно",
+    "ready": "Готово",
+    "stillPlacing": "Ещё расставляет: {name}",
+    "toFire": "Стреляет: {name}",
+    "lastShot": "{name} → {cell}: {result}",
+    "resultSunk": "потоплен: {ship}",
+    "resultHit": "ранен",
+    "resultMiss": "мимо",
+    "theirWaters": "Воды: {name}",
+    "againOption": "После попадания",
+    "againOff": "По очереди",
+    "againOn": "Ещё выстрел"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Победитель",
+      "description": "Выиграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    },
+    "veteran": {
+      "name": "Ветеран",
+      "description": "Сыграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    }
+  },
+  "leaderboards": {}
+}

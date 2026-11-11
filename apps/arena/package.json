@@ -27,6 +27,7 @@
     "@kefche/game-ludo": "workspace:*",
     "@kefche/game-santase": "workspace:*",
     "@kefche/game-sdk": "workspace:*",
+    "@kefche/game-sea-battle": "workspace:*",
     "@kefche/game-spades": "workspace:*",
     "@kefche/game-war": "workspace:*",
     "@kefche/game-worm-rush": "workspace:*",

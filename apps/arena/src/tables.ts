@@ -30,6 +30,9 @@ import { bots as santaseBots } from "@kefche/game-santase/bots";
 import { engine as santaseEngine } from "@kefche/game-santase/engine";
 import { manifest as santaseManifest } from "@kefche/game-santase/manifest";
 import type { GameBots, GameManifest, TurnEngine } from "@kefche/game-sdk";
+import { bots as seaBots } from "@kefche/game-sea-battle/bots";
+import { engine as seaEngine } from "@kefche/game-sea-battle/engine";
+import { manifest as seaManifest } from "@kefche/game-sea-battle/manifest";
 import { bots as spadesBots } from "@kefche/game-spades/bots";
 import { engine as spadesEngine } from "@kefche/game-spades/engine";
 import { manifest as spadesManifest } from "@kefche/game-spades/manifest";
@@ -65,5 +68,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   backgammon: tableGame(bgManifest, bgEngine, bgBots),
   ludo: tableGame(ludoManifest, ludoEngine, ludoBots),
   "liars-dice": tableGame(liarsManifest, liarsEngine, liarsBots),
+  "sea-battle": tableGame(seaManifest, seaEngine, seaBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

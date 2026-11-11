@@ -1,0 +1,97 @@
+{
+  "name": "समुद्री युद्ध",
+  "tagline": "अपना बेड़ा छिपाएँ, फिर दूसरे का बेड़ा खोजकर डुबोएँ, एक-एक खाना।",
+  "description": "ब्राउज़र में समुद्री युद्ध मुफ़्त खेलें: 10 × 10 ग्रिड में पाँच जहाज़ छिपाएँ और पहले दूसरे का बेड़ा डुबोएँ। बॉट्स के विरुद्ध, एक डिवाइस पर या ऑनलाइन।",
+  "about": [
+    "Sea Battle is the pencil-and-paper game of hidden ships, played on squared paper in classrooms everywhere. Each player hides a fleet on a 10 × 10 grid and takes turns firing at the other's waters, one square at a time.",
+    "Your fleet has five ships, of 5, 4, 3, 3 and 2 squares, each in a straight line across or down; ships can't overlap. A shot is a miss, a hit, or, when the last square of a ship is hit, a sinking, and the whole ship is shown.",
+    "Sink all five ships before the other player sinks yours. Play taking turns, or let a hit fire again. Online, both fleets are kept on our server, so nobody can peek at the other's grid."
+  ],
+  "howToPlay": [
+    "Choose taking turns or shooting again after a hit, then Play vs bots, Play on this device, or create a room.",
+    "Place your fleet: pick a ship, then tap the square where it starts. Rotate turns it across or down.",
+    "Drag a placed ship to move it, or press Random to place the rest. Press Ready when all five are in.",
+    "Then fire: tap a square of the other player's waters. A dot is a miss, a cross a hit.",
+    "A sunk ship is shown whole. Your own waters, below, show where the other player has fired.",
+    "On one device, pass it on when asked, so nobody sees the other fleet."
+  ],
+  "controls": [
+    "Phones and tablets: tap to place and fire; drag a placed ship to move it.",
+    "Mouse: click to place and fire; drag a placed ship to move it.",
+    "Keyboard: Tab to a grid, the arrow keys to move between squares, Enter to place or fire."
+  ],
+  "tips": [
+    "Every ship covers a square of each colour on a checkerboard: hunt on one colour first.",
+    "After a hit, try the four squares around it; after two in a line, keep going along it.",
+    "Don't line your ships up along the edges: that's where many players look first.",
+    "Ships far apart are harder to find than a cluster."
+  ],
+  "faq": [
+    {
+      "question": "Is Sea Battle free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can ships touch?",
+      "answer": "Yes, they may touch, but not overlap. Each ship lies in a straight line across or down."
+    },
+    {
+      "question": "Can the other player see my fleet?",
+      "answer": "No. Online, both fleets are kept on our server; your browser only learns where your own shots landed."
+    },
+    {
+      "question": "What does \"shoot again\" do?",
+      "answer": "With it on, a hit fires again at once, as in many schoolyard rules. With it off, players simply take turns."
+    },
+    {
+      "question": "Can I play on one phone with a friend?",
+      "answer": "Yes. Play on this device asks you to pass the phone between turns, so neither of you sees the other's ships."
+    }
+  ],
+  "ui": {
+    "ship0": "विमानवाहक",
+    "ship1": "युद्धपोत",
+    "ship2": "क्रूज़र",
+    "ship3": "फ्रिगेट",
+    "ship4": "गश्ती नाव",
+    "cell": "{cell}, {state}",
+    "cellWater": "पानी",
+    "cellShip": "आपका जहाज़",
+    "cellMiss": "चूका",
+    "cellHit": "लगा",
+    "cellSunk": "डूबा",
+    "fleetOf": "बेड़ा: {name}",
+    "shipSunk": "{ship}, डूबा",
+    "placeTitle": "अपना बेड़ा रखें",
+    "placeHint": "एक जहाज़ चुनें, फिर उस खाने को छुएँ जहाँ से वह शुरू हो। रखे जहाज़ को खींचकर हटाएँ।",
+    "dock": "जहाज़",
+    "shipSize": "{ship} ({size})",
+    "yourWaters": "आपका पानी",
+    "rotate": "घुमाएँ: {dir}",
+    "across": "आड़ा",
+    "down": "खड़ा",
+    "random": "अपने-आप",
+    "ready": "तैयार",
+    "stillPlacing": "अभी रख रहे हैं: {name}",
+    "toFire": "निशाना: {name}",
+    "lastShot": "{name} → {cell}: {result}",
+    "resultSunk": "{ship} डूबा",
+    "resultHit": "लगा",
+    "resultMiss": "चूका",
+    "theirWaters": "पानी: {name}",
+    "againOption": "निशाना लगने पर",
+    "againOff": "बारी-बारी",
+    "againOn": "फिर से चलाएँ"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, plural, one {# खेल} other {# खेल}} जीतें"
+    },
+    "veteran": {
+      "name": "अनुभवी",
+      "description": "{count, plural, one {# खेल} other {# खेल}} खेलें"
+    }
+  },
+  "leaderboards": {}
+}
