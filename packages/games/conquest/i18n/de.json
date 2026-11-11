@@ -1,0 +1,103 @@
+{
+  "name": "Eroberung",
+  "tagline": "Erobere Gebiete mit Würfeln, halte ganze Regionen und erobere die Karte.",
+  "description": "Spiele Eroberung kostenlos: eine eigene Karte mit 30 Gebieten für 2 bis 6, mit Verstärkung, Würfelschlachten und fairen Würfeln vom Server online. Auch Bots.",
+  "about": [
+    "Conquest is kefche's own game of territory for 2 to 6 players, on an original map of thirty territories in six regions, joined by land borders and two sea lanes. The territories are dealt out at the start, and each player's armies spread over theirs.",
+    "Each turn has three parts. Reinforce: you get armies for the territories you hold, more for every whole region, and a little supply if you took a territory last turn. Attack: from one of your territories into a neighbouring enemy one; you roll up to three dice and the defender up to two, the highest are compared in pairs and ties go to the defender. Take a territory and move armies in. Fortify: once, move armies between two neighbouring territories of yours.",
+    "Hold most of the map (or all of it, if you choose) to win; a player with no territories is out. After 40 rounds, whoever holds the most territories wins. Online, the dice are rolled on our server, so nobody can know the next roll."
+  ],
+  "howToPlay": [
+    "Choose the goal, most of the map or all of it, then Play vs bots, Play on this device, or create a room.",
+    "Reinforce: tap one of your territories to place an army there; Place puts more on it at once.",
+    "Attack: tap one of your territories with two or more armies, then a ringed neighbouring enemy. Each tap rolls the dice once.",
+    "When you take a territory, choose how many armies move in. Attack again, or end attacks.",
+    "Fortify: tap one of your territories, then a neighbouring one of yours, and how many to move. Or end your turn.",
+    "A whole region adds its bonus to your armies each turn: the bonus is shown by its name."
+  ],
+  "controls": [
+    "Phones and tablets: tap territories, then the buttons below the map.",
+    "Mouse: the same, with clicks.",
+    "Keyboard: Tab moves between the territories you can use; Enter or Space taps one."
+  ],
+  "tips": [
+    "Go for one region at a time: its bonus every turn adds up fast.",
+    "Attack with a clear edge: three dice against one or two win most often.",
+    "Keep your borders strong and your interior thin; fortify towards the front.",
+    "Break up an opponent's whole region before its bonus snowballs."
+  ],
+  "faq": [
+    {
+      "question": "Is Conquest free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Are the dice fair?",
+      "answer": "Yes. Online they're rolled on our server, and the seed of the rolls is revealed at the end, matching the fingerprint shown at the start."
+    },
+    {
+      "question": "How many dice are rolled?",
+      "answer": "The attacker rolls one die for each army that can attack, up to three; the defender one for each army, up to two. The highest are compared in pairs; ties go to the defender."
+    },
+    {
+      "question": "How long does a game take?",
+      "answer": "Usually 15 to 45 minutes. A game ends when someone holds the goal, or after 40 rounds, when whoever holds the most territories wins."
+    },
+    {
+      "question": "Is this map from another game?",
+      "answer": "No. Conquest's map, regions and rules are kefche's own, in the tradition of map-and-dice war games."
+    }
+  ],
+  "ui": {
+    "region0": "Frostmark",
+    "region1": "Kiefernhügel",
+    "region2": "Steingipfel",
+    "region3": "Großes Moor",
+    "region4": "Rote Sande",
+    "region5": "Sonnenküste",
+    "territory": "{region} {n}",
+    "board": "Karte",
+    "territoryLabel": "{territory}: {name}, Armeen: {armies}.",
+    "selected": "Ausgewählt.",
+    "canAttack": "Kann angegriffen werden.",
+    "canFortify": "Kann Armeen aufnehmen.",
+    "turnOf": "Am Zug: {name}",
+    "phaseReinforce": "Armeen zu setzen: {n}",
+    "phaseAttack": "Angreifen oder Angriffe beenden",
+    "phaseOccupy": "Armeen nach {territory} ziehen",
+    "phaseFortify": "Einmal befestigen oder den Zug beenden",
+    "hintReinforce": "Tippe auf eines deiner Gebiete, um dort eine Armee zu setzen.",
+    "hintAttack": "Tippe auf eines deiner Gebiete, dann auf einen markierten Nachbarn.",
+    "hintFortify": "Tippe auf eines deiner Gebiete, dann auf ein benachbartes eigenes.",
+    "round": "Runde {n} von {total}",
+    "goal": "Ziel: {n} Gebiete",
+    "players": "Spieler",
+    "out": "Raus",
+    "stats": "Gebiete: {territories} · Armeen: {armies}",
+    "regionBonus": "{region} +{bonus}",
+    "lastRoll": "Letzter Wurf: {from} → {to}",
+    "lost": "Verluste: Angreifer {attacker}, Verteidiger {defender}.",
+    "taken": "Erobert!",
+    "placeN": "{n} setzen",
+    "moveN": "{n} ziehen",
+    "endAttacks": "Angriffe beenden",
+    "endTurn": "Zug beenden",
+    "regions": "Regionen",
+    "regionLine": "{region}: +{bonus}",
+    "heldBy": "Gehalten von: {name}",
+    "goalOption": "Ziel",
+    "goalMost": "Großteil der Karte",
+    "goalAll": "Die ganze Karte"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Spiel} other {# Spiele}}"
+    },
+    "veteran": {
+      "name": "Veteran",
+      "description": "Spiele {count, plural, one {# Spiel} other {# Spiele}}"
+    }
+  },
+  "leaderboards": {}
+}

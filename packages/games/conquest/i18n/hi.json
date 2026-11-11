@@ -1,0 +1,103 @@
+{
+  "name": "विजय",
+  "tagline": "पासों से इलाके जीतें, पूरे क्षेत्र अपने पास रखें और नक्शा जीतें।",
+  "description": "विजय मुफ़्त खेलें: 2 से 6 खिलाड़ियों के लिए 30 इलाकों का मौलिक नक्शा, कुमक, पासों की लड़ाई और ऑनलाइन सर्वर के निष्पक्ष पासे। बॉट्स भी।",
+  "about": [
+    "Conquest is kefche's own game of territory for 2 to 6 players, on an original map of thirty territories in six regions, joined by land borders and two sea lanes. The territories are dealt out at the start, and each player's armies spread over theirs.",
+    "Each turn has three parts. Reinforce: you get armies for the territories you hold, more for every whole region, and a little supply if you took a territory last turn. Attack: from one of your territories into a neighbouring enemy one; you roll up to three dice and the defender up to two, the highest are compared in pairs and ties go to the defender. Take a territory and move armies in. Fortify: once, move armies between two neighbouring territories of yours.",
+    "Hold most of the map (or all of it, if you choose) to win; a player with no territories is out. After 40 rounds, whoever holds the most territories wins. Online, the dice are rolled on our server, so nobody can know the next roll."
+  ],
+  "howToPlay": [
+    "Choose the goal, most of the map or all of it, then Play vs bots, Play on this device, or create a room.",
+    "Reinforce: tap one of your territories to place an army there; Place puts more on it at once.",
+    "Attack: tap one of your territories with two or more armies, then a ringed neighbouring enemy. Each tap rolls the dice once.",
+    "When you take a territory, choose how many armies move in. Attack again, or end attacks.",
+    "Fortify: tap one of your territories, then a neighbouring one of yours, and how many to move. Or end your turn.",
+    "A whole region adds its bonus to your armies each turn: the bonus is shown by its name."
+  ],
+  "controls": [
+    "Phones and tablets: tap territories, then the buttons below the map.",
+    "Mouse: the same, with clicks.",
+    "Keyboard: Tab moves between the territories you can use; Enter or Space taps one."
+  ],
+  "tips": [
+    "Go for one region at a time: its bonus every turn adds up fast.",
+    "Attack with a clear edge: three dice against one or two win most often.",
+    "Keep your borders strong and your interior thin; fortify towards the front.",
+    "Break up an opponent's whole region before its bonus snowballs."
+  ],
+  "faq": [
+    {
+      "question": "Is Conquest free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Are the dice fair?",
+      "answer": "Yes. Online they're rolled on our server, and the seed of the rolls is revealed at the end, matching the fingerprint shown at the start."
+    },
+    {
+      "question": "How many dice are rolled?",
+      "answer": "The attacker rolls one die for each army that can attack, up to three; the defender one for each army, up to two. The highest are compared in pairs; ties go to the defender."
+    },
+    {
+      "question": "How long does a game take?",
+      "answer": "Usually 15 to 45 minutes. A game ends when someone holds the goal, or after 40 rounds, when whoever holds the most territories wins."
+    },
+    {
+      "question": "Is this map from another game?",
+      "answer": "No. Conquest's map, regions and rules are kefche's own, in the tradition of map-and-dice war games."
+    }
+  ],
+  "ui": {
+    "region0": "पाला प्रदेश",
+    "region1": "चीड़ की पहाड़ियाँ",
+    "region2": "पत्थर की चोटियाँ",
+    "region3": "महा दलदल",
+    "region4": "लाल रेत",
+    "region5": "सूर्य तट",
+    "territory": "{region} {n}",
+    "board": "नक्शा",
+    "territoryLabel": "{territory}: {name}, सेनाएँ: {armies}।",
+    "selected": "चुना गया।",
+    "canAttack": "हमला किया जा सकता है।",
+    "canFortify": "सेनाएँ ले सकता है।",
+    "turnOf": "बारी: {name}",
+    "phaseReinforce": "रखने को सेनाएँ: {n}",
+    "phaseAttack": "हमला करें, या हमले खत्म करें",
+    "phaseOccupy": "{territory} में सेनाएँ भेजें",
+    "phaseFortify": "एक बार मज़बूत करें, या बारी खत्म करें",
+    "hintReinforce": "सेना रखने के लिए अपने किसी इलाके को छुएँ।",
+    "hintAttack": "अपना कोई इलाका छुएँ, फिर हमले के लिए घेरे वाला पड़ोसी।",
+    "hintFortify": "अपना कोई इलाका छुएँ, फिर अपना पड़ोसी इलाका।",
+    "round": "दौर {n} / {total}",
+    "goal": "लक्ष्य: {n} इलाके",
+    "players": "खिलाड़ी",
+    "out": "बाहर",
+    "stats": "इलाके: {territories} · सेनाएँ: {armies}",
+    "regionBonus": "{region} +{bonus}",
+    "lastRoll": "पिछला पासा: {from} → {to}",
+    "lost": "नुकसान: हमलावर {attacker}, रक्षक {defender}।",
+    "taken": "जीत लिया!",
+    "placeN": "{n} रखें",
+    "moveN": "{n} भेजें",
+    "endAttacks": "हमले खत्म",
+    "endTurn": "बारी खत्म",
+    "regions": "क्षेत्र",
+    "regionLine": "{region}: +{bonus}",
+    "heldBy": "कब्ज़ा: {name}",
+    "goalOption": "लक्ष्य",
+    "goalMost": "ज़्यादातर नक्शा",
+    "goalAll": "पूरा नक्शा"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, plural, one {# खेल} other {# खेल}} जीतें"
+    },
+    "veteran": {
+      "name": "अनुभवी",
+      "description": "{count, plural, one {# खेल} other {# खेल}} खेलें"
+    }
+  },
+  "leaderboards": {}
+}

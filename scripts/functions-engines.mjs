@@ -445,6 +445,7 @@ if (process.argv.includes("--fixtures")) {
     ludo: { tokens: 4 },
     "liars-dice": { exact: true, wild: true },
     "sea-battle": { again: false },
+    conquest: { goal: "most" },
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */

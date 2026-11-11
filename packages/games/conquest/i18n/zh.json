@@ -1,0 +1,103 @@
+{
+  "name": "征服",
+  "tagline": "用骰子夺取领土，占据整片地区，征服地图。",
+  "description": "在浏览器中免费玩征服：原创地图，30 块领土，2 到 6 人，增援、骰子战斗，在线时由服务器公平掷骰。也有机器人。",
+  "about": [
+    "Conquest is kefche's own game of territory for 2 to 6 players, on an original map of thirty territories in six regions, joined by land borders and two sea lanes. The territories are dealt out at the start, and each player's armies spread over theirs.",
+    "Each turn has three parts. Reinforce: you get armies for the territories you hold, more for every whole region, and a little supply if you took a territory last turn. Attack: from one of your territories into a neighbouring enemy one; you roll up to three dice and the defender up to two, the highest are compared in pairs and ties go to the defender. Take a territory and move armies in. Fortify: once, move armies between two neighbouring territories of yours.",
+    "Hold most of the map (or all of it, if you choose) to win; a player with no territories is out. After 40 rounds, whoever holds the most territories wins. Online, the dice are rolled on our server, so nobody can know the next roll."
+  ],
+  "howToPlay": [
+    "Choose the goal, most of the map or all of it, then Play vs bots, Play on this device, or create a room.",
+    "Reinforce: tap one of your territories to place an army there; Place puts more on it at once.",
+    "Attack: tap one of your territories with two or more armies, then a ringed neighbouring enemy. Each tap rolls the dice once.",
+    "When you take a territory, choose how many armies move in. Attack again, or end attacks.",
+    "Fortify: tap one of your territories, then a neighbouring one of yours, and how many to move. Or end your turn.",
+    "A whole region adds its bonus to your armies each turn: the bonus is shown by its name."
+  ],
+  "controls": [
+    "Phones and tablets: tap territories, then the buttons below the map.",
+    "Mouse: the same, with clicks.",
+    "Keyboard: Tab moves between the territories you can use; Enter or Space taps one."
+  ],
+  "tips": [
+    "Go for one region at a time: its bonus every turn adds up fast.",
+    "Attack with a clear edge: three dice against one or two win most often.",
+    "Keep your borders strong and your interior thin; fortify towards the front.",
+    "Break up an opponent's whole region before its bonus snowballs."
+  ],
+  "faq": [
+    {
+      "question": "Is Conquest free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Are the dice fair?",
+      "answer": "Yes. Online they're rolled on our server, and the seed of the rolls is revealed at the end, matching the fingerprint shown at the start."
+    },
+    {
+      "question": "How many dice are rolled?",
+      "answer": "The attacker rolls one die for each army that can attack, up to three; the defender one for each army, up to two. The highest are compared in pairs; ties go to the defender."
+    },
+    {
+      "question": "How long does a game take?",
+      "answer": "Usually 15 to 45 minutes. A game ends when someone holds the goal, or after 40 rounds, when whoever holds the most territories wins."
+    },
+    {
+      "question": "Is this map from another game?",
+      "answer": "No. Conquest's map, regions and rules are kefche's own, in the tradition of map-and-dice war games."
+    }
+  ],
+  "ui": {
+    "region0": "霜之边境",
+    "region1": "松林丘陵",
+    "region2": "石峰",
+    "region3": "大沼泽",
+    "region4": "红沙",
+    "region5": "阳光海岸",
+    "territory": "{region} {n}",
+    "board": "地图",
+    "territoryLabel": "{territory}：{name}，军队：{armies}。",
+    "selected": "已选中。",
+    "canAttack": "可以进攻。",
+    "canFortify": "可以接收军队。",
+    "turnOf": "轮到：{name}",
+    "phaseReinforce": "待部署军队：{n}",
+    "phaseAttack": "进攻，或结束进攻",
+    "phaseOccupy": "把军队移入{territory}",
+    "phaseFortify": "加固一次，或结束回合",
+    "hintReinforce": "点击你的领土，在那里部署一支军队。",
+    "hintAttack": "点击你的领土，再点击带圈的相邻敌方领土进攻。",
+    "hintFortify": "点击你的领土，再点击相邻的己方领土。",
+    "round": "第 {n} 轮，共 {total} 轮",
+    "goal": "目标：{n} 块领土",
+    "players": "玩家",
+    "out": "出局",
+    "stats": "领土：{territories} · 军队：{armies}",
+    "regionBonus": "{region} +{bonus}",
+    "lastRoll": "上次掷骰：{from} → {to}",
+    "lost": "损失：进攻方 {attacker}，防守方 {defender}。",
+    "taken": "攻占！",
+    "placeN": "部署 {n}",
+    "moveN": "移动 {n}",
+    "endAttacks": "结束进攻",
+    "endTurn": "结束回合",
+    "regions": "地区",
+    "regionLine": "{region}：+{bonus}",
+    "heldBy": "占领者：{name}",
+    "goalOption": "目标",
+    "goalMost": "地图大部分",
+    "goalAll": "整张地图"
+  },
+  "achievements": {
+    "winner": {
+      "name": "赢家",
+      "description": "赢得 {count, plural, other {# 局}}"
+    },
+    "veteran": {
+      "name": "老手",
+      "description": "玩 {count, plural, other {# 局}}"
+    }
+  },
+  "leaderboards": {}
+}

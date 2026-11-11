@@ -1,0 +1,103 @@
+{
+  "name": "الغزو",
+  "tagline": "استولِ على الأراضي بالنرد، واحتفظ بمناطق كاملة، واغزُ الخريطة.",
+  "description": "العب الغزو مجانًا: خريطة أصلية من 30 أرضًا للاعبين من 2 إلى 6، مع تعزيزات ومعارك بالنرد ونرد عادل من الخادم عبر الإنترنت. وروبوتات أيضًا.",
+  "about": [
+    "Conquest is kefche's own game of territory for 2 to 6 players, on an original map of thirty territories in six regions, joined by land borders and two sea lanes. The territories are dealt out at the start, and each player's armies spread over theirs.",
+    "Each turn has three parts. Reinforce: you get armies for the territories you hold, more for every whole region, and a little supply if you took a territory last turn. Attack: from one of your territories into a neighbouring enemy one; you roll up to three dice and the defender up to two, the highest are compared in pairs and ties go to the defender. Take a territory and move armies in. Fortify: once, move armies between two neighbouring territories of yours.",
+    "Hold most of the map (or all of it, if you choose) to win; a player with no territories is out. After 40 rounds, whoever holds the most territories wins. Online, the dice are rolled on our server, so nobody can know the next roll."
+  ],
+  "howToPlay": [
+    "Choose the goal, most of the map or all of it, then Play vs bots, Play on this device, or create a room.",
+    "Reinforce: tap one of your territories to place an army there; Place puts more on it at once.",
+    "Attack: tap one of your territories with two or more armies, then a ringed neighbouring enemy. Each tap rolls the dice once.",
+    "When you take a territory, choose how many armies move in. Attack again, or end attacks.",
+    "Fortify: tap one of your territories, then a neighbouring one of yours, and how many to move. Or end your turn.",
+    "A whole region adds its bonus to your armies each turn: the bonus is shown by its name."
+  ],
+  "controls": [
+    "Phones and tablets: tap territories, then the buttons below the map.",
+    "Mouse: the same, with clicks.",
+    "Keyboard: Tab moves between the territories you can use; Enter or Space taps one."
+  ],
+  "tips": [
+    "Go for one region at a time: its bonus every turn adds up fast.",
+    "Attack with a clear edge: three dice against one or two win most often.",
+    "Keep your borders strong and your interior thin; fortify towards the front.",
+    "Break up an opponent's whole region before its bonus snowballs."
+  ],
+  "faq": [
+    {
+      "question": "Is Conquest free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Are the dice fair?",
+      "answer": "Yes. Online they're rolled on our server, and the seed of the rolls is revealed at the end, matching the fingerprint shown at the start."
+    },
+    {
+      "question": "How many dice are rolled?",
+      "answer": "The attacker rolls one die for each army that can attack, up to three; the defender one for each army, up to two. The highest are compared in pairs; ties go to the defender."
+    },
+    {
+      "question": "How long does a game take?",
+      "answer": "Usually 15 to 45 minutes. A game ends when someone holds the goal, or after 40 rounds, when whoever holds the most territories wins."
+    },
+    {
+      "question": "Is this map from another game?",
+      "answer": "No. Conquest's map, regions and rules are kefche's own, in the tradition of map-and-dice war games."
+    }
+  ],
+  "ui": {
+    "region0": "أرض الصقيع",
+    "region1": "تلال الصنوبر",
+    "region2": "قمم الحجر",
+    "region3": "المستنقع الكبير",
+    "region4": "الرمال الحمراء",
+    "region5": "ساحل الشمس",
+    "territory": "{region} {n}",
+    "board": "الخريطة",
+    "territoryLabel": "{territory}: {name}، الجيوش: {armies}.",
+    "selected": "محددة.",
+    "canAttack": "يمكن مهاجمتها.",
+    "canFortify": "يمكنها استقبال جيوش.",
+    "turnOf": "الدور: {name}",
+    "phaseReinforce": "جيوش للوضع: {n}",
+    "phaseAttack": "هاجم أو أنهِ الهجمات",
+    "phaseOccupy": "انقل جيوشًا إلى {territory}",
+    "phaseFortify": "حصّن مرة واحدة أو أنهِ دورك",
+    "hintReinforce": "المس إحدى أراضيك لتضع جيشًا فيها.",
+    "hintAttack": "المس إحدى أراضيك، ثم جارًا محاطًا بحلقة لتهاجمه.",
+    "hintFortify": "المس إحدى أراضيك، ثم أرضًا مجاورة لك.",
+    "round": "الجولة {n} من {total}",
+    "goal": "الهدف: {n} أرضًا",
+    "players": "اللاعبون",
+    "out": "خرج",
+    "stats": "الأراضي: {territories} · الجيوش: {armies}",
+    "regionBonus": "{region} +{bonus}",
+    "lastRoll": "آخر رمية: {from} ← {to}",
+    "lost": "الخسائر: المهاجم {attacker}، المدافع {defender}.",
+    "taken": "تم الاستيلاء!",
+    "placeN": "ضع {n}",
+    "moveN": "انقل {n}",
+    "endAttacks": "إنهاء الهجمات",
+    "endTurn": "إنهاء الدور",
+    "regions": "المناطق",
+    "regionLine": "{region}: +{bonus}",
+    "heldBy": "يحتفظ بها: {name}",
+    "goalOption": "الهدف",
+    "goalMost": "معظم الخريطة",
+    "goalAll": "الخريطة كلها"
+  },
+  "achievements": {
+    "winner": {
+      "name": "فائز",
+      "description": "اربح {count, plural, one {مباراة واحدة} two {مباراتين} few {# مباريات} many {# مباراة} other {# مباراة}}"
+    },
+    "veteran": {
+      "name": "مخضرم",
+      "description": "العب {count, plural, one {مباراة واحدة} two {مباراتين} few {# مباريات} many {# مباراة} other {# مباراة}}"
+    }
+  },
+  "leaderboards": {}
+}

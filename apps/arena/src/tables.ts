@@ -8,6 +8,9 @@ import { manifest as bgManifest } from "@kefche/game-backgammon/manifest";
 import { bots as beloteBots } from "@kefche/game-belote/bots";
 import { engine as beloteEngine } from "@kefche/game-belote/engine";
 import { manifest as beloteManifest } from "@kefche/game-belote/manifest";
+import { bots as conquestBots } from "@kefche/game-conquest/bots";
+import { engine as conquestEngine } from "@kefche/game-conquest/engine";
+import { manifest as conquestManifest } from "@kefche/game-conquest/manifest";
 import { bots as crazyBots } from "@kefche/game-crazy-colors/bots";
 import { engine as crazyEngine } from "@kefche/game-crazy-colors/engine";
 import { manifest as crazyManifest } from "@kefche/game-crazy-colors/manifest";
@@ -69,5 +72,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   ludo: tableGame(ludoManifest, ludoEngine, ludoBots),
   "liars-dice": tableGame(liarsManifest, liarsEngine, liarsBots),
   "sea-battle": tableGame(seaManifest, seaEngine, seaBots),
+  conquest: tableGame(conquestManifest, conquestEngine, conquestBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

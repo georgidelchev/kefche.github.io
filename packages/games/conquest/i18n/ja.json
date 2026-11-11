@@ -1,0 +1,103 @@
+{
+  "name": "征服",
+  "tagline": "サイコロで領土を取り、地方を丸ごと押さえ、地図を征服しよう。",
+  "description": "ブラウザで無料の征服ゲーム。2〜6人用のオリジナル地図に30の領土。増援、サイコロの戦い、オンラインではサーバーが公平にサイコロを振る。ボットも。",
+  "about": [
+    "Conquest is kefche's own game of territory for 2 to 6 players, on an original map of thirty territories in six regions, joined by land borders and two sea lanes. The territories are dealt out at the start, and each player's armies spread over theirs.",
+    "Each turn has three parts. Reinforce: you get armies for the territories you hold, more for every whole region, and a little supply if you took a territory last turn. Attack: from one of your territories into a neighbouring enemy one; you roll up to three dice and the defender up to two, the highest are compared in pairs and ties go to the defender. Take a territory and move armies in. Fortify: once, move armies between two neighbouring territories of yours.",
+    "Hold most of the map (or all of it, if you choose) to win; a player with no territories is out. After 40 rounds, whoever holds the most territories wins. Online, the dice are rolled on our server, so nobody can know the next roll."
+  ],
+  "howToPlay": [
+    "Choose the goal, most of the map or all of it, then Play vs bots, Play on this device, or create a room.",
+    "Reinforce: tap one of your territories to place an army there; Place puts more on it at once.",
+    "Attack: tap one of your territories with two or more armies, then a ringed neighbouring enemy. Each tap rolls the dice once.",
+    "When you take a territory, choose how many armies move in. Attack again, or end attacks.",
+    "Fortify: tap one of your territories, then a neighbouring one of yours, and how many to move. Or end your turn.",
+    "A whole region adds its bonus to your armies each turn: the bonus is shown by its name."
+  ],
+  "controls": [
+    "Phones and tablets: tap territories, then the buttons below the map.",
+    "Mouse: the same, with clicks.",
+    "Keyboard: Tab moves between the territories you can use; Enter or Space taps one."
+  ],
+  "tips": [
+    "Go for one region at a time: its bonus every turn adds up fast.",
+    "Attack with a clear edge: three dice against one or two win most often.",
+    "Keep your borders strong and your interior thin; fortify towards the front.",
+    "Break up an opponent's whole region before its bonus snowballs."
+  ],
+  "faq": [
+    {
+      "question": "Is Conquest free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Are the dice fair?",
+      "answer": "Yes. Online they're rolled on our server, and the seed of the rolls is revealed at the end, matching the fingerprint shown at the start."
+    },
+    {
+      "question": "How many dice are rolled?",
+      "answer": "The attacker rolls one die for each army that can attack, up to three; the defender one for each army, up to two. The highest are compared in pairs; ties go to the defender."
+    },
+    {
+      "question": "How long does a game take?",
+      "answer": "Usually 15 to 45 minutes. A game ends when someone holds the goal, or after 40 rounds, when whoever holds the most territories wins."
+    },
+    {
+      "question": "Is this map from another game?",
+      "answer": "No. Conquest's map, regions and rules are kefche's own, in the tradition of map-and-dice war games."
+    }
+  ],
+  "ui": {
+    "region0": "霜の辺境",
+    "region1": "松の丘",
+    "region2": "石の峰",
+    "region3": "大湿原",
+    "region4": "赤い砂",
+    "region5": "陽の海岸",
+    "territory": "{region} {n}",
+    "board": "地図",
+    "territoryLabel": "{territory}：{name}、軍：{armies}。",
+    "selected": "選択中。",
+    "canAttack": "攻撃できます。",
+    "canFortify": "軍を受け取れます。",
+    "turnOf": "手番：{name}",
+    "phaseReinforce": "配置する軍：{n}",
+    "phaseAttack": "攻撃するか、攻撃を終える",
+    "phaseOccupy": "{territory}に軍を移す",
+    "phaseFortify": "一度だけ強化するか、手番を終える",
+    "hintReinforce": "自分の領土をタップして軍を置きます。",
+    "hintAttack": "自分の領土をタップし、次に印のついた隣の敵をタップ。",
+    "hintFortify": "自分の領土をタップし、次に隣の自分の領土をタップ。",
+    "round": "ラウンド {n}／{total}",
+    "goal": "目標：{n}領土",
+    "players": "プレイヤー",
+    "out": "脱落",
+    "stats": "領土：{territories}・軍：{armies}",
+    "regionBonus": "{region} +{bonus}",
+    "lastRoll": "直前のロール：{from} → {to}",
+    "lost": "損失：攻撃側 {attacker}、防御側 {defender}。",
+    "taken": "占領！",
+    "placeN": "{n}置く",
+    "moveN": "{n}移す",
+    "endAttacks": "攻撃を終える",
+    "endTurn": "手番を終える",
+    "regions": "地方",
+    "regionLine": "{region}：+{bonus}",
+    "heldBy": "支配：{name}",
+    "goalOption": "目標",
+    "goalMost": "地図の大部分",
+    "goalAll": "地図すべて"
+  },
+  "achievements": {
+    "winner": {
+      "name": "勝者",
+      "description": "{count, plural, other {#回}}勝つ"
+    },
+    "veteran": {
+      "name": "ベテラン",
+      "description": "{count, plural, other {#回}}プレイする"
+    }
+  },
+  "leaderboards": {}
+}
