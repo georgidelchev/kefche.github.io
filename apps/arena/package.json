@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@kefche/game-crazy-colors": "workspace:*",
+    "@kefche/game-hearts": "workspace:*",
     "@kefche/game-sdk": "workspace:*",
     "@kefche/game-war": "workspace:*",
     "@kefche/game-worm-rush": "workspace:*",

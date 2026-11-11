@@ -5,6 +5,9 @@
 import { bots as crazyBots } from "@kefche/game-crazy-colors/bots";
 import { engine as crazyEngine } from "@kefche/game-crazy-colors/engine";
 import { manifest as crazyManifest } from "@kefche/game-crazy-colors/manifest";
+import { bots as heartsBots } from "@kefche/game-hearts/bots";
+import { engine as heartsEngine } from "@kefche/game-hearts/engine";
+import { manifest as heartsManifest } from "@kefche/game-hearts/manifest";
 import type { GameBots, GameManifest, TurnEngine } from "@kefche/game-sdk";
 import { bots as warBots } from "@kefche/game-war/bots";
 import { engine as warEngine } from "@kefche/game-war/engine";
@@ -29,5 +32,6 @@ export const tableGame = <State, Action, Config>(
 
 export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   "crazy-colors": tableGame(crazyManifest, crazyEngine, crazyBots),
+  hearts: tableGame(heartsManifest, heartsEngine, heartsBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

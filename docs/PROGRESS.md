@@ -2672,6 +2672,11 @@ The owner answered "you decide", so the recommended answers stand:
   - **Shared pieces it added:** `CardTable` (the other players along the top with their card counts and turn, the play area, your hand) and `Hand` with a game's own card faces. Card text stays left to right in Arabic.
   - **New checks for every Phase 12 game:** an engine check (random and bot-vs-bot games at every player count end; each seat's view offers the same moves as the state and shows nothing of the others'), and a table smoke test (one or two accounts with table bots, every frame checked for secrets, the seed against its commitment, the match recorded once).
   - Checked: the engine check at 2, 3, 4 and 8 players; the table with one and with two accounts (5/5 each, 0 secrets in 187 frames); and in Chrome, 19/19 plus 5/5 (a full game against three bots, a Wild and its colour picker, the cover on one device before each person's turn, 360, 768 and 1280 px, both themes, Arabic, axe).
+- [x] **Step 5, Hearts:** four players, 13 cards each.
+  - **Rules:** pass three cards left, right, across, then hold, everyone choosing at once (hidden until all have chosen); the two of clubs leads; follow suit; no points on the first trick; hearts can't be led until broken; a heart is 1 and the queen of spades 13; taking all 26 shoots the moon (everyone else gets 26). To 100 or 50, lowest wins.
+  - **Bots:** easy at random; medium passes its most dangerous cards, ducks under the winning card and dumps the queen or high hearts when void; hard also flushes the queen with low spades and takes clean tricks when last.
+  - **Shared piece:** `TrickArea`, each card in front of the seat that played it, you at the bottom, the winner marked (for Spades, Belote and Santase too). Fixtures can now use more than two seats.
+  - Checked: the engine check (12/12 games end, views match, nothing leaks), the table with one and two accounts (5/5 each, 0 secrets in 230 frames), and Chrome 18/18 (passing, a whole hand to 26 points, the next hand passing right, the cover for each of four people on one device, 360, 768 and 1024 px, both themes, Arabic, axe).
 
 ## Known issues
 

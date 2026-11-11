@@ -1,0 +1,84 @@
+{
+  "name": "Hearts",
+  "tagline": "Meide die Herzen und die Pik-Dame – oder schieß den Mond ab.",
+  "description": "Spiele Hearts kostenlos im Browser: drei Karten weitergeben, Herzen und die Pik-Dame meiden oder den Mond abschießen. Gegen Bots, an einem Gerät oder online.",
+  "about": [
+    "Hearts is a classic card game for four players in which you want to take as few points as possible. Each player gets 13 cards. Before each hand, everyone passes three cards: to the left, then to the right, then across the table, and every fourth hand nobody passes.",
+    "The player holding the two of clubs leads the first trick. Everyone must follow suit if they can; otherwise they may play any card. The highest card of the suit led wins the trick and leads the next. Every heart you take is worth one point and the queen of spades is worth thirteen. Hearts can't be led until someone has played one, and nobody may throw points on the very first trick.",
+    "If you take every heart and the queen of spades, you shoot the moon: you score nothing and everyone else gets 26. The game ends when someone reaches 100 points (or 50 for a quicker game), and the lowest score wins. Play against bots on three levels, with friends on one device, or online, where the cards are dealt on our server so nobody can see anyone else's hand."
+  ],
+  "howToPlay": [
+    "Choose a game to 100 or 50, then Play vs bots or Play on this device.",
+    "Choose three cards to pass, then tap Pass. The direction changes every hand: left, right, across, then no pass.",
+    "The two of clubs leads the first trick. Follow suit if you can; if you can't, play any card.",
+    "The highest card of the suit led takes the trick. Each heart is 1 point and the queen of spades is 13.",
+    "Hearts can't be led until one has been played, and no points may be played on the first trick if you have another choice.",
+    "Take all 26 points to shoot the moon: everyone else scores 26 instead. When someone reaches the target, the lowest score wins."
+  ],
+  "controls": [
+    "Phones and tablets: tap a card to lift it and tap it again to play, or drag it up. When passing, tap three cards, then Pass.",
+    "Mouse: click a card to play it.",
+    "Keyboard: move through your hand with the arrow keys and press Enter. Tab reaches the buttons.",
+    "On one device, the screen covers your hand between turns: pass the device, and the next player taps to see theirs."
+  ],
+  "tips": [
+    "Pass the queen of spades, or the ace and king of spades that might be forced to take her.",
+    "Empty a short suit when passing: being void lets you throw away hearts and the queen later.",
+    "Play your highest card under the one winning the trick to get rid of it safely.",
+    "Watch for a player taking every heart: one point given to someone else stops a moon."
+  ],
+  "faq": [
+    {
+      "question": "Is Hearts free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is shooting the moon?",
+      "answer": "Taking every heart and the queen of spades in one hand. Instead of 26 points for you, everyone else gets 26."
+    },
+    {
+      "question": "Why can't I lead a heart?",
+      "answer": "Hearts can't be led until a heart has been played on an earlier trick, unless you hold nothing but hearts."
+    },
+    {
+      "question": "Who wins?",
+      "answer": "When anyone reaches the target score (100, or 50), the game ends and the player with the lowest score wins."
+    },
+    {
+      "question": "Can other players see my cards online?",
+      "answer": "No. Online, the cards are dealt on our server, which sends each player only their own hand, and the cards passed to you only to you."
+    }
+  ],
+  "ui": {
+    "players": "Spieler",
+    "trick": "Stich",
+    "yourHand": "Deine Hand",
+    "points": "{total} Pkt. (+{hand})",
+    "took": "{name} nimmt den Stich.",
+    "playedBy": "{name}: {card}",
+    "broken": "Herz ist gebrochen",
+    "to": "Spiel bis {target}",
+    "received": "Erhalten: {cards}",
+    "lastHand": "Letzte Runde: {points}",
+    "passLeft": "Drei Karten an {name} links weitergeben",
+    "passRight": "Drei Karten an {name} rechts weitergeben",
+    "passAcross": "Drei Karten an {name} gegenüber weitergeben",
+    "passNone": "Diese Runde wird nicht weitergegeben",
+    "passThree": "Weitergeben ({count} von 3)",
+    "waiting": "Warten, bis alle weitergegeben haben",
+    "target": "Spiel bis",
+    "target100": "100",
+    "target50": "50"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Spiel} other {# Spiele}}"
+    },
+    "veteran": {
+      "name": "Veteran",
+      "description": "Spiele {count, plural, one {# Spiel} other {# Spiele}}"
+    }
+  },
+  "leaderboards": {}
+}

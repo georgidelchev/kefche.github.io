@@ -382,6 +382,7 @@ if (process.argv.includes("--fixtures")) {
     "four-in-a-row": undefined,
     go: { size: 9 },
     gomoku: { exactFive: false },
+    hearts: { target: 50 },
     hex: { swap: true },
     mancala: { seeds: 4 },
     nim: { piles: "random", misere: false },
@@ -391,6 +392,8 @@ if (process.argv.includes("--fixtures")) {
     "ultimate-ttt": { mode: "ultimate" },
     war: { battles: 100 },
   };
+  /** Turn games that need more than two seats. */
+  const turnSeats = { hearts: 4 };
   const MAX_ACTIONS = 400;
   /** Real-time games: 20 s of a solo arena, the player steering at random. */
   const ARENA_TICKS = 600;
@@ -464,7 +467,7 @@ if (process.argv.includes("--fixtures")) {
     }
     if (!(id in turnConfigs)) throw new Error(`Add a fixture config for the turn game "${id}".`);
     const config = turnConfigs[id];
-    const seats = 2;
+    const seats = turnSeats[id] ?? 2;
     let state = engine.initialState(config, seats, seed);
     const moves = [];
     while (moves.length < MAX_ACTIONS && engine.result(state) === null) {
