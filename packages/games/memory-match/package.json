@@ -6,7 +6,10 @@
   "sideEffects": false,
   "exports": {
     ".": "./index.ts",
-    "./manifest": "./manifest.ts"
+    "./manifest": "./manifest.ts",
+    "./engine": "./engine/index.ts",
+    "./engine/bots": "./engine/bots.ts",
+    "./board": "./renderer/board.tsx"
   },
   "scripts": {
     "typecheck": "tsc -p . && tsc -p engine"

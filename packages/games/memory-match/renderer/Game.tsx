@@ -13,7 +13,6 @@ import {
   bestTime,
   KIT_CSS,
   mountPuzzle,
-  useGridFocus,
   usePuzzle,
   type PuzzleHandle,
 } from "@kefche/game-sdk/react";
@@ -21,7 +20,6 @@ import {
 import {
   configFrom,
   engine,
-  LAYOUT,
   partyFlip,
   partyWinners,
   SIZES,
@@ -30,15 +28,13 @@ import {
   type Outcome,
   type Party,
   type Size,
-  type Table,
 } from "../engine";
+import { BOARD_CSS, Cards, SHOW_MS, useHiddenMiss } from "./board";
 import { createSounds, type Sounds } from "./sounds";
-import { SYMBOLS } from "./symbols";
 import { chooseFlip, RECALL, remember, type Difficulty, type Memory } from "../engine/bots";
 
 const timeKey = (config: Config) => String(config.cards);
-/** How long a missed pair stays face up, and a bot's pause before a flip. */
-const SHOW_MS = 1100;
+/** A bot's pause before a flip. */
 const BOT_MS = 700;
 const SEAT_COLOURS = ["#2563eb", "#dc2626", "#16a34a", "#9333ea"];
 
@@ -87,7 +83,7 @@ function Menu({
   return (
     <div className="gk gk-menu gmm-menu">
       <style>{KIT_CSS}</style>
-      <style>{CSS}</style>
+      <style>{BOARD_CSS + CSS}</style>
       <h3 className="gk-title">{t("aloneTitle")}</h3>
       {SIZES.map((cards) => {
         const best = bestTime(context.storage, String(cards));
@@ -133,107 +129,6 @@ function Menu({
       </button>
     </div>
   );
-}
-
-function Cards({
-  context,
-  table,
-  cards,
-  hidden,
-  disabled,
-  onFlip,
-}: {
-  context: GameContext;
-  table: Table;
-  cards: Size;
-  /** Cards shown face down although still up (a missed pair after its moment). */
-  hidden: readonly number[];
-  disabled: boolean;
-  onFlip: (card: number) => void;
-}) {
-  const { t } = context;
-  const [cols, rows] = LAYOUT[cards];
-  const grid = useGridFocus({
-    cols,
-    rows,
-    initial: 0,
-    onActivate: (card) => {
-      if (!disabled) onFlip(card);
-    },
-  });
-  return (
-    <div
-      className="gmm-board"
-      role="grid"
-      aria-label={t("boardLabel")}
-      style={{ "--cols": String(cols), "--rows": String(rows) } as CSSProperties}
-    >
-      {Array.from({ length: rows }, (_, r) => (
-        <div key={r} role="row" className="gmm-row">
-          {Array.from({ length: cols }, (__, c) => {
-            const card = r * cols + c;
-            const symbol = table.symbols[card] ?? 0;
-            const faceUp =
-              table.matched[card] === true || (table.up.includes(card) && !hidden.includes(card));
-            const focus = grid.cellProps(card);
-            const art = SYMBOLS[symbol % SYMBOLS.length];
-            return (
-              <div key={card} role="gridcell" className="gmm-cell">
-                <button
-                  type="button"
-                  ref={focus.ref}
-                  tabIndex={focus.tabIndex}
-                  onFocus={focus.onFocus}
-                  onKeyDown={focus.onKeyDown}
-                  className="gmm-card"
-                  data-up={faceUp ? "" : undefined}
-                  data-matched={table.matched[card] ? "" : undefined}
-                  aria-label={
-                    faceUp
-                      ? t("cardUp", {
-                          number: card + 1,
-                          symbol: t(`symbol${String(symbol % SYMBOLS.length)}`),
-                        })
-                      : t("cardDown", { number: card + 1 })
-                  }
-                  aria-disabled={disabled || table.matched[card] ? true : undefined}
-                  onClick={() => {
-                    if (!disabled) onFlip(card);
-                  }}
-                >
-                  {faceUp && art && (
-                    <svg
-                      viewBox="0 0 24 24"
-                      aria-hidden="true"
-                      style={{ color: art.colour, fill: art.colour }}
-                    >
-                      {art.draw}
-                    </svg>
-                  )}
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-/** A missed pair turns face down after a moment (only how it looks: the next flip does it for real). */
-function useHiddenMiss(table: Table | null) {
-  const [hidden, setHidden] = useState<number[]>([]);
-  const key = table?.up.length === 2 ? table.up.join() : "";
-  useEffect(() => {
-    if (!key) return;
-    const timer = setTimeout(() => {
-      setHidden(key.split(",").map(Number));
-    }, SHOW_MS);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [key]);
-  return key ? hidden.filter((c) => key.split(",").map(Number).includes(c)) : [];
 }
 
 function feedback(outcome: Outcome, sounds: Sounds, context: GameContext) {
@@ -307,7 +202,7 @@ function PartyGame({
   return (
     <div className="gk gmm">
       <style>{KIT_CSS}</style>
-      <style>{CSS}</style>
+      <style>{BOARD_CSS + CSS}</style>
       <ol className="gmm-seats" aria-label={t("scores")}>
         {party.pairs.map((pairs, seat) => (
           <li
@@ -398,7 +293,7 @@ function Game({
   return (
     <div className="gk gmm">
       <style>{KIT_CSS}</style>
-      <style>{CSS}</style>
+      <style>{BOARD_CSS + CSS}</style>
       <div className="gk-hud">
         <span className="gk-chip">{t("cardsLabel", { cards: state.cards })}</span>
         <span className="gk-stat">
@@ -463,16 +358,6 @@ export function mount(container: HTMLElement, context: GameContext) {
 }
 
 const CSS = `
-.gmm-board { direction: ltr; display: grid; grid-template-rows: repeat(var(--rows), minmax(0, 1fr)); gap: 0.4rem; width: min(100%, 30rem, calc((100dvh - 16rem) * var(--cols) / var(--rows))); aspect-ratio: var(--cols) / var(--rows); }
-.gmm-row { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: 0.4rem; }
-.gmm-cell { display: grid; }
-.gmm-card { display: grid; place-items: center; width: 100%; height: 100%; padding: 12%; border-radius: 0.6rem; border: 2px solid #1e3a8a; background: repeating-linear-gradient(45deg, #2b4fb3 0 6px, #3560d0 6px 12px); cursor: pointer; transition: transform 0.15s; }
-.gmm-card[data-up] { background: #fffdf7; border-color: #c9c2b0; }
-.gmm-card[data-matched] { background: #eef7ef; border-color: #6fbf73; cursor: default; }
-.gmm-card[aria-disabled] { cursor: default; }
-.gmm-card:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
-.gmm-card svg { width: 100%; height: 100%; }
-@media (prefers-reduced-motion: no-preference) { .gmm-card:not([aria-disabled]):active { transform: scale(0.95); } }
 .gmm-status { margin: 0; font-weight: 600; text-align: center; }
 .gmm-seats { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; }
 .gmm-seat { display: flex; gap: 0.35rem; align-items: center; padding: 0.3rem 0.7rem; border-radius: 999px; border: 2px solid var(--seat); background: var(--surface); font-size: 0.9rem; }
