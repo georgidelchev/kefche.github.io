@@ -2718,6 +2718,12 @@ The owner answered "you decide", so the recommended answers stand:
   - **Compact cards** in the kit (`PlayingCard`'s `compact`): a big rank and suit across the top, the strip that shows in a stacked column, so ten columns fit a phone.
   - **Boards:** best times per number of suits.
   - Checked in Chrome: 14/14 (three choices, ten columns at 360 px, 54 cards dealt, moves by picking and placing, a deal, undo, four suits dark at 1280 px, Arabic, axe).
+- [x] **Step 13, Backgammon:** two players; a single game or a match to 3 or 5, with the doubling cube as an option (points only).
+  - **Rules:** standard movement and hitting, entering from the bar, bearing off (exact, or higher from the farthest point); both dice must be used when possible, else the larger; doubles four times; gammon 2 and backgammon 3, times the cube; the cube offered before rolling (take and own it, or drop); no doubling in the Crawford game. The opening roll is one die each.
+  - **Dice on the table:** the engine rolls from the state's Rng, which views never show, so the table holds the next roll (it's `hiddenInformation` with no hands at all). On one device there's no cover, since nothing is secret, and the board keeps one orientation.
+  - **Bots:** medium tries every full play of the dice and scores the result (pips, made points, hits, blots); hard also counts direct shots at each blot, values primes, and doubles and drops by the race.
+  - **The board** is SVG with each point a keyboard-focusable button; the checkers carry their seat's shape.
+  - Checked: the engine check (single games and matches with the cube), the table with one and two accounts (5/5 each), and Chrome 18/18 (the opening position at 167 pips, moving by tapping a point and then its target, pips going down, a match to 3 with the cube offered and taken on one device, 360, 768 and 1024 px, both themes, Arabic, axe).
 
 ## Known issues
 

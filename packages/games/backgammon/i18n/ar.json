@@ -1,0 +1,91 @@
+{
+  "name": "طاولة الزهر",
+  "tagline": "سابق بقطعك الخمس عشرة إلى البيت، واضرب واخرج أولًا.",
+  "description": "العب طاولة الزهر مجانًا في متصفحك: لعبة واحدة أو مباراة ومكعب المضاعفة ونرد عادل من الخادم عبر الإنترنت. ضد روبوتات أو على جهاز واحد أو عبر الإنترنت.",
+  "about": [
+    "Backgammon is one of the oldest board games in the world: a race of 15 checkers each around a board of 24 points, with dice deciding how far you go. You move toward your home board and then bear your checkers off; the first to bear them all off wins.",
+    "Each turn you roll two dice and move one checker by each number, or one checker by both; a double is played four times. You can land on any point that isn't held by two or more of your opponent's checkers. Landing on a single opposing checker hits it: it goes to the bar and has to come back in from the start. Once all your checkers are home, you start bearing off.",
+    "Win before your opponent has borne off any checker and it's a gammon, worth two; if they still have one on the bar or in your home board, it's a backgammon, worth three. Play a single game or a match to 3 or 5 points, with the doubling cube if you like (points only, never stakes). Online, the dice are rolled on our server, so nobody can know the next roll."
+  ],
+  "howToPlay": [
+    "Choose a single game or a match, and whether to use the doubling cube. Then Play vs bots or Play on this device.",
+    "The opening roll is one die each; the higher plays both. After that the dice are rolled for you each turn.",
+    "Tap a point with one of your checkers, then a highlighted point to move there. A checker on the bar must come in first.",
+    "You must use both dice if you can, and the larger one if only one can be played. Doubles are played four times.",
+    "When all your checkers are in your home board, tap the tray on the right to bear them off.",
+    "With the cube on, you may double before rolling; your opponent takes (and owns the cube) or drops and loses the game."
+  ],
+  "controls": [
+    "Phones and tablets: tap a point with your checker, then where it goes. The tray on the right bears off.",
+    "Mouse: the same, with clicks.",
+    "Keyboard: Tab moves between the points you can play from and to; Enter picks and places.",
+    "Roll, Double, Take and Drop are buttons below the board."
+  ],
+  "tips": [
+    "Make points, two or more checkers together: they're safe, and they block your opponent.",
+    "Avoid leaving single checkers where your opponent can hit them with a likely roll.",
+    "Building a row of points in front of an opposing checker, a prime, can trap it for many turns.",
+    "Keep count of the pips: when you're well ahead in the race, stop fighting and run home."
+  ],
+  "faq": [
+    {
+      "question": "Is Backgammon free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Are the dice fair?",
+      "answer": "Yes. Online they're rolled on our server, and the seed of the rolls is revealed at the end, matching the fingerprint shown at the start."
+    },
+    {
+      "question": "What is a gammon?",
+      "answer": "Winning before your opponent has borne off a single checker: worth two points. If they also still have a checker on the bar or in your home board, it's a backgammon, worth three."
+    },
+    {
+      "question": "How does the doubling cube work?",
+      "answer": "Before rolling, offer to double the value of the game. Your opponent takes and owns the cube, or drops and loses at the current value. It's for points only: kefche has no stakes."
+    },
+    {
+      "question": "Why must I use both dice?",
+      "answer": "That's the rule: if both numbers can be played, you must play both; if only one can, play the larger one when possible."
+    }
+  ],
+  "ui": {
+    "match1": "لعبة واحدة",
+    "match3": "حتى 3",
+    "match5": "حتى 5",
+    "board": "رقعة الطاولة",
+    "point": "الخانة {n}",
+    "empty": "فارغة",
+    "checkers": "{count} من قطع {name}",
+    "canMoveHere": "يمكنك النقل إلى هنا.",
+    "canMoveFrom": "يمكنك النقل من هنا.",
+    "pips": "{name}: {pips} نقطة",
+    "match": "المباراة {a}–{b}، حتى {target}",
+    "cube": "المكعب: {value}",
+    "bar": "{name}: {count} على الحاجز",
+    "off": "أُخرجت: {a} و{b}",
+    "roll": "ارمِ",
+    "double": "ضاعف إلى {value}",
+    "take": "قبول",
+    "drop": "انسحاب",
+    "gameSingle": "{name} ربح اللعبة: {points}",
+    "gameGammon": "{name} ربح غامون: {points}",
+    "gameBackgammon": "{name} ربح باكغامون: {points}",
+    "gameDrop": "{name} ربح: رُفضت المضاعفة ({points})",
+    "matchOption": "المباراة",
+    "cubeOption": "مكعب المضاعفة",
+    "cubeOff": "لا",
+    "cubeOn": "نعم"
+  },
+  "achievements": {
+    "winner": {
+      "name": "فائز",
+      "description": "اربح {count, plural, one {مباراة واحدة} two {مباراتين} few {# مباريات} many {# مباراة} other {# مباراة}}"
+    },
+    "streak": {
+      "name": "في سلسلة",
+      "description": "اربح {count, plural, one {مباراة واحدة} two {مباراتين} few {# مباريات} many {# مباراة} other {# مباراة}} متتالية"
+    }
+  },
+  "leaderboards": {}
+}

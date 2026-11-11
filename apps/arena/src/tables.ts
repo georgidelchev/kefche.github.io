@@ -2,6 +2,9 @@
 // games with hidden information (manifest `hiddenInformation`), by id. Each
 // is its own engine (with `view`), bots and manifest; the table is the same
 // code for all of them.
+import { bots as bgBots } from "@kefche/game-backgammon/bots";
+import { engine as bgEngine } from "@kefche/game-backgammon/engine";
+import { manifest as bgManifest } from "@kefche/game-backgammon/manifest";
 import { bots as beloteBots } from "@kefche/game-belote/bots";
 import { engine as beloteEngine } from "@kefche/game-belote/engine";
 import { manifest as beloteManifest } from "@kefche/game-belote/manifest";
@@ -53,5 +56,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   santase: tableGame(santaseManifest, santaseEngine, santaseBots),
   "gin-rummy": tableGame(ginManifest, ginEngine, ginBots),
   durak: tableGame(durakManifest, durakEngine, durakBots),
+  backgammon: tableGame(bgManifest, bgEngine, bgBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

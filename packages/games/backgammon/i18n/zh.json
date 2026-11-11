@@ -1,0 +1,91 @@
+{
+  "name": "西洋双陆棋",
+  "tagline": "把 15 枚棋子带回家，打掉孤子，率先全部移出。",
+  "description": "在浏览器中免费玩西洋双陆棋：单局或比赛、加倍骰，在线时由服务器公平掷骰。可对战机器人、同设备双人或在线。",
+  "about": [
+    "Backgammon is one of the oldest board games in the world: a race of 15 checkers each around a board of 24 points, with dice deciding how far you go. You move toward your home board and then bear your checkers off; the first to bear them all off wins.",
+    "Each turn you roll two dice and move one checker by each number, or one checker by both; a double is played four times. You can land on any point that isn't held by two or more of your opponent's checkers. Landing on a single opposing checker hits it: it goes to the bar and has to come back in from the start. Once all your checkers are home, you start bearing off.",
+    "Win before your opponent has borne off any checker and it's a gammon, worth two; if they still have one on the bar or in your home board, it's a backgammon, worth three. Play a single game or a match to 3 or 5 points, with the doubling cube if you like (points only, never stakes). Online, the dice are rolled on our server, so nobody can know the next roll."
+  ],
+  "howToPlay": [
+    "Choose a single game or a match, and whether to use the doubling cube. Then Play vs bots or Play on this device.",
+    "The opening roll is one die each; the higher plays both. After that the dice are rolled for you each turn.",
+    "Tap a point with one of your checkers, then a highlighted point to move there. A checker on the bar must come in first.",
+    "You must use both dice if you can, and the larger one if only one can be played. Doubles are played four times.",
+    "When all your checkers are in your home board, tap the tray on the right to bear them off.",
+    "With the cube on, you may double before rolling; your opponent takes (and owns the cube) or drops and loses the game."
+  ],
+  "controls": [
+    "Phones and tablets: tap a point with your checker, then where it goes. The tray on the right bears off.",
+    "Mouse: the same, with clicks.",
+    "Keyboard: Tab moves between the points you can play from and to; Enter picks and places.",
+    "Roll, Double, Take and Drop are buttons below the board."
+  ],
+  "tips": [
+    "Make points, two or more checkers together: they're safe, and they block your opponent.",
+    "Avoid leaving single checkers where your opponent can hit them with a likely roll.",
+    "Building a row of points in front of an opposing checker, a prime, can trap it for many turns.",
+    "Keep count of the pips: when you're well ahead in the race, stop fighting and run home."
+  ],
+  "faq": [
+    {
+      "question": "Is Backgammon free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Are the dice fair?",
+      "answer": "Yes. Online they're rolled on our server, and the seed of the rolls is revealed at the end, matching the fingerprint shown at the start."
+    },
+    {
+      "question": "What is a gammon?",
+      "answer": "Winning before your opponent has borne off a single checker: worth two points. If they also still have a checker on the bar or in your home board, it's a backgammon, worth three."
+    },
+    {
+      "question": "How does the doubling cube work?",
+      "answer": "Before rolling, offer to double the value of the game. Your opponent takes and owns the cube, or drops and loses at the current value. It's for points only: kefche has no stakes."
+    },
+    {
+      "question": "Why must I use both dice?",
+      "answer": "That's the rule: if both numbers can be played, you must play both; if only one can, play the larger one when possible."
+    }
+  ],
+  "ui": {
+    "match1": "1 局",
+    "match3": "先到 3",
+    "match5": "先到 5",
+    "board": "双陆棋盘",
+    "point": "第 {n} 点",
+    "empty": "空",
+    "checkers": "{name} 的 {count} 枚棋子",
+    "canMoveHere": "可以移到这里。",
+    "canMoveFrom": "可以从这里移动。",
+    "pips": "{name}：{pips} 点",
+    "match": "比赛 {a}–{b}，先到 {target}",
+    "cube": "加倍骰：{value}",
+    "bar": "{name}：{count} 枚在中栏",
+    "off": "已移出：{a} 和 {b}",
+    "roll": "掷骰",
+    "double": "加倍到 {value}",
+    "take": "接受",
+    "drop": "认输",
+    "gameSingle": "{name} 赢得本局：{points}",
+    "gameGammon": "{name} 全胜：{points}",
+    "gameBackgammon": "{name} 完胜：{points}",
+    "gameDrop": "{name} 获胜：对方拒绝加倍（{points}）",
+    "matchOption": "比赛",
+    "cubeOption": "加倍骰",
+    "cubeOff": "关",
+    "cubeOn": "开"
+  },
+  "achievements": {
+    "winner": {
+      "name": "赢家",
+      "description": "赢得 {count, plural, other {# 局}}"
+    },
+    "streak": {
+      "name": "连胜",
+      "description": "连续赢得 {count, plural, other {# 局}}"
+    }
+  },
+  "leaderboards": {}
+}
