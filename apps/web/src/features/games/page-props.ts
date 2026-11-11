@@ -132,10 +132,14 @@ function resultsStrings(
 type AchievementName = [string, ResultsStrings["achievementNames"][string]];
 
 /** What a turn-based game's setup offers, or null for other games. */
-export function turnConfig(manifest: GameManifest, ui: Record<string, string>): TurnConfig | null {
+export function turnConfig(
+  manifest: GameManifest,
+  ui: Record<string, string>,
+  locale?: string,
+): TurnConfig | null {
   if (manifest.kind !== "turn") return null;
   return {
-    options: gameOptions(manifest, ui),
+    options: gameOptions(manifest, ui, locale),
     modes: manifest.modes.filter((m): m is TurnMode => m === "solo-bots" || m === "hotseat"),
     players: manifest.players,
     difficulties: manifest.bots.supported ? manifest.bots.difficulties : [],
@@ -163,8 +167,12 @@ function onlineTimers(manifest: GameManifest): number[] {
  * What a room offers for a game: a turn game's setup, or a race's (people
  * only, from two seats; the manifest's countdowns are the time limits).
  */
-export function roomConfig(manifest: GameManifest, ui: Record<string, string>): TurnConfig | null {
-  if (manifest.kind === "turn") return turnConfig(manifest, ui);
+export function roomConfig(
+  manifest: GameManifest,
+  ui: Record<string, string>,
+  locale?: string,
+): TurnConfig | null {
+  if (manifest.kind === "turn") return turnConfig(manifest, ui, locale);
   if (!racesInRooms(manifest)) return null;
   const min = Math.max(2, manifest.players.min);
   return {

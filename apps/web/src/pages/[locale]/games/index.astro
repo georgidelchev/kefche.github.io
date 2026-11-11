@@ -22,7 +22,7 @@ export const getStaticPaths = (() =>
 const locale = Astro.params.locale as Locale;
 const t = getT(locale);
 const { bcp47 } = LOCALE_INFO[locale];
-const games = sortByName(listGames(), locale, bcp47);
+const games = sortByName(listGames(locale), locale, bcp47);
 const url = (p: string) => new URL(getRelativeLocaleUrl(locale, p), Astro.site).href;
 
 // Pre-rendered result counts (ICU plurals stay on the server) and the

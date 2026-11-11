@@ -14,7 +14,7 @@ import {
   tableAccess,
   turnStrings,
 } from "@/features/games/page-props";
-import { listGames, type RegisteredGame } from "@/features/games/registry";
+import { listGames, offeredLocales, type RegisteredGame } from "@/features/games/registry";
 import { OnlineRoom } from "@/features/lobby/OnlineRoom";
 import {
   chatStrings,
@@ -35,7 +35,7 @@ import type { GetStaticPaths } from "astro";
 // builds with Supabase.
 export const getStaticPaths = (() =>
   LOCALES.flatMap((locale) =>
-    listGames()
+    listGames(locale)
       .filter((game) => playsOnline(game.manifest))
       .map((game) => ({ params: { locale, game: game.manifest.id }, props: { game } })),
   )) satisfies GetStaticPaths;
@@ -47,7 +47,7 @@ const { bcp47, dir } = LOCALE_INFO[locale];
 const { manifest } = game;
 const text = game.text[locale];
 // Turn games and races share the room; a race adds its options and ranking.
-const config = roomConfig(manifest, text.ui);
+const config = roomConfig(manifest, text.ui, locale);
 const path = `/play/${manifest.id}/`;
 const strings = roomStrings(t);
 ---
@@ -60,6 +60,7 @@ const strings = roomStrings(t);
   description={strings.description}
   noindex
   layout="app"
+  locales={offeredLocales(game)}
 >
   <!--
     One screen: the room scrolls, and the lobby chat (rendered by the room

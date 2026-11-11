@@ -86,9 +86,21 @@ function discover(): Map<string, RegisteredGame> {
 
 const GAMES = discover();
 
-/** Every registered game, in a stable order (by id). */
-export function listGames(): RegisteredGame[] {
-  return [...GAMES.values()].sort((a, b) => a.manifest.id.localeCompare(b.manifest.id));
+/**
+ * The languages a game is offered in: all of them, or only those with a
+ * content pack (`contentPacks`, SPEC §5: no silent fallback). Elsewhere it
+ * has no page and isn't listed.
+ */
+export const offeredLocales = (game: RegisteredGame): readonly Locale[] =>
+  game.manifest.contentPacks
+    ? LOCALES.filter((l) => game.manifest.contentPacks?.includes(l) === true)
+    : LOCALES;
+
+/** Every registered game, in a stable order (by id); with a locale, those offered in it. */
+export function listGames(locale?: Locale): RegisteredGame[] {
+  return [...GAMES.values()]
+    .filter((game) => locale === undefined || offeredLocales(game).includes(locale))
+    .sort((a, b) => a.manifest.id.localeCompare(b.manifest.id));
 }
 
 export const getGame = (id: string): RegisteredGame | undefined => GAMES.get(id);

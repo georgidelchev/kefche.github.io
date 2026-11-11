@@ -26,8 +26,7 @@ import {
   turnConfig,
   turnStrings,
 } from "./page-props";
-
-import type { RegisteredGame } from "./registry";
+import { offeredLocales, type RegisteredGame } from "./registry";
 
 // A game's page (SPEC §15): play first, then the about / how to play /
 // controls / tips / FAQ sections with JSON-LD.
@@ -100,7 +99,7 @@ const jsonLd = [
 ];
 
 // Turn-based games open a setup screen (seats, bots, timer) instead of starting at once.
-const config = turnConfig(manifest, text.ui);
+const config = turnConfig(manifest, text.ui, locale);
 const turn = config && config.modes.length > 0 ? { config, strings: turnStrings(t) } : null;
 // Real-time games: the online arena, when this build has one.
 const arena = arenaProps(manifest, t, locale);
@@ -122,6 +121,7 @@ const crumb = "rounded-sm hover:underline";
   section="games"
   title={t("common:meta.sectionTitle", { section: text.name })}
   description={text.description}
+  locales={offeredLocales(game)}
 >
   <article class="mx-auto grid w-full max-w-3xl gap-10 pb-6">
     <nav aria-label={t("games:breadcrumb")} class="text-sm text-muted">

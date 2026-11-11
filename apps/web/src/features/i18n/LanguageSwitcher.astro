@@ -11,9 +11,15 @@ interface Props {
   label: string;
   /** `dropdown`: compact popover (header). `list`: inline grid (settings panel). */
   variant?: "dropdown" | "list";
+  /**
+   * The languages this page exists in (a game with content packs); all by
+   * default. Another language leads to its catalog instead.
+   */
+  locales?: readonly Locale[];
 }
 
-const { locale, path, label, variant = "dropdown" } = Astro.props;
+const { locale, path, label, variant = "dropdown", locales = LOCALES } = Astro.props;
+const hrefFor = (l: Locale) => getRelativeLocaleUrl(l, locales.includes(l) ? path : "/games/");
 // Behavior (remembering the choice, closing popovers) lives in shell.client.ts.
 const linkClass =
   "flex min-h-11 items-center rounded-lg px-3 text-text hover:bg-surface-2 focus-visible:outline-2 focus-visible:outline-focus aria-[current=true]:bg-surface-2 aria-[current=true]:font-semibold";
@@ -34,7 +40,7 @@ const linkClass =
       {LOCALES.map((l) => (
         <li>
           <a
-            href={getRelativeLocaleUrl(l, path)}
+            href={hrefFor(l)}
             lang={LOCALE_INFO[l].bcp47}
             hreflang={LOCALE_INFO[l].bcp47}
             data-locale={l}
@@ -53,7 +59,7 @@ const linkClass =
       {LOCALES.map((l) => (
         <li>
           <a
-            href={getRelativeLocaleUrl(l, path)}
+            href={hrefFor(l)}
             lang={LOCALE_INFO[l].bcp47}
             hreflang={LOCALE_INFO[l].bcp47}
             data-locale={l}

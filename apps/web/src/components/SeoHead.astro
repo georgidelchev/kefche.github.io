@@ -11,9 +11,11 @@ interface Props {
   description: string;
   /** Pages that must not be indexed (dev, coming soon, private areas; SPEC §15). */
   noindex?: boolean;
+  /** The languages this page exists in (a game with content packs); all by default. */
+  locales?: readonly Locale[];
 }
 
-const { locale, path, title, description, noindex = false } = Astro.props;
+const { locale, path, title, description, noindex = false, locales = LOCALES } = Astro.props;
 const absolute = (l: Locale) => new URL(getRelativeLocaleUrl(l, path), Astro.site).href;
 ---
 
@@ -22,8 +24,10 @@ const absolute = (l: Locale) => new URL(getRelativeLocaleUrl(l, path), Astro.sit
 {noindex && <meta name="robots" content="noindex" />}
 <link rel="canonical" href={absolute(locale)} />
 {!noindex &&
-  LOCALES.map((l) => <link rel="alternate" hreflang={LOCALE_INFO[l].bcp47} href={absolute(l)} />)}
-{!noindex && <link rel="alternate" hreflang="x-default" href={absolute(DEFAULT_LOCALE)} />}
+  locales.map((l) => <link rel="alternate" hreflang={LOCALE_INFO[l].bcp47} href={absolute(l)} />)}
+{!noindex && locales.includes(DEFAULT_LOCALE) && (
+  <link rel="alternate" hreflang="x-default" href={absolute(DEFAULT_LOCALE)} />
+)}
 <meta property="og:site_name" content="kefche" />
 <meta property="og:type" content="website" />
 <meta property="og:title" content={title} />

@@ -20,7 +20,7 @@ interface Props {
 
 const { locale, current } = Astro.props;
 const t = getT(locale);
-const games = listGames();
+const games = listGames(locale);
 const chips = [
   {
     href: getRelativeLocaleUrl(locale, "/games/"),

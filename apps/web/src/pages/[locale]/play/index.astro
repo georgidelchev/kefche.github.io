@@ -22,7 +22,7 @@ export const getStaticPaths = (() =>
 
 const locale = Astro.params.locale as Locale;
 const t = getT(locale);
-const games = listGames()
+const games = listGames(locale)
   .filter((game) => playsOnline(game.manifest) && onlineModes(game.manifest).public)
   .map((game) => ({
     id: game.manifest.id,

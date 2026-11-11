@@ -26,7 +26,7 @@ const path = `/games/${category}/`;
 const name = t(CATEGORY_KEYS[category].name);
 const description = t(CATEGORY_KEYS[category].description);
 const games = sortByName(
-  listGames().filter((game) => game.manifest.category === category),
+  listGames(locale).filter((game) => game.manifest.category === category),
   locale,
   LOCALE_INFO[locale].bcp47,
 );

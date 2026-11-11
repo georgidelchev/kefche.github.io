@@ -14,7 +14,7 @@ export const getStaticPaths = authStaticPaths;
 
 const locale = Astro.params.locale as Locale;
 const t = getT(locale);
-const groups = allBoards(listGames(), t, locale);
+const groups = allBoards(listGames(locale), t, locale);
 ---
 
 <AppShell

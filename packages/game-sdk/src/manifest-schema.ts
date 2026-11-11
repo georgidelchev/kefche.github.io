@@ -62,6 +62,7 @@ export const gameManifestSchema = z
               z.object({
                 value: z.union([z.string(), z.number(), z.boolean()]),
                 label: z.string(),
+                defaultIn: z.array(z.string()).optional(),
               }),
             )
             .min(1),

@@ -132,8 +132,12 @@ export interface GameOptionDef {
   key: string;
   /** Key of the option's name in the game's i18n "ui" strings. */
   label: string;
-  /** The first is the default; `label` is a "ui" key as well. */
-  values: { value: string | number | boolean; label: string }[];
+  /**
+   * The first is the default; `label` is a "ui" key as well. `defaultIn`
+   * makes a value the default on pages in those locales instead (a content
+   * pack's language: Who's the Spy starts in Bulgarian on Bulgarian pages).
+   */
+  values: { value: string | number | boolean; label: string; defaultIn?: string[] }[];
   /**
    * false: picked only in the game's own menu (Box Pusher's fixed levels).
    * Rooms and setups don't show it and always play its first value.

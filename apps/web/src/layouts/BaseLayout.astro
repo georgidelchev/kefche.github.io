@@ -13,9 +13,11 @@ interface Props {
   title: string;
   description: string;
   noindex?: boolean;
+  /** The languages this page exists in; all by default. */
+  locales?: readonly Locale[];
 }
 
-const { locale, path, title, description, noindex } = Astro.props;
+const { locale, path, title, description, noindex, locales } = Astro.props;
 const { bcp47, dir, script } = LOCALE_INFO[locale];
 // Fails the build on invalid Supabase settings before client code inlines them.
 getSupabaseEnv();
@@ -37,6 +39,7 @@ getSupabaseEnv();
       title={title}
       description={description}
       noindex={noindex ?? false}
+      {...(locales ? { locales } : {})}
     />
     <Fonts script={script} />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />

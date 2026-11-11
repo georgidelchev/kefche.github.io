@@ -13,19 +13,21 @@ import type { GetStaticPaths } from "astro";
 // that is also a category). One pre-rendered page per slug and locale.
 type Props = { kind: "game"; game: RegisteredGame } | { kind: "category"; category: GameCategory };
 
-export const getStaticPaths = (() => {
-  const games = listGames();
-  return LOCALES.flatMap((locale) => [
-    ...games.map((game) => ({
-      params: { locale, slug: game.manifest.id },
-      props: { kind: "game", game } satisfies Props,
-    })),
-    ...categoriesWithGames(games).map((category) => ({
-      params: { locale, slug: category },
-      props: { kind: "category", category } satisfies Props,
-    })),
-  ]);
-}) satisfies GetStaticPaths;
+export const getStaticPaths = (() =>
+  LOCALES.flatMap((locale) => {
+    // Only the games offered in this language (content packs) get a page here.
+    const games = listGames(locale);
+    return [
+      ...games.map((game) => ({
+        params: { locale, slug: game.manifest.id },
+        props: { kind: "game", game } satisfies Props,
+      })),
+      ...categoriesWithGames(games).map((category) => ({
+        params: { locale, slug: category },
+        props: { kind: "category", category } satisfies Props,
+      })),
+    ];
+  })) satisfies GetStaticPaths;
 
 const props = Astro.props as Props;
 const locale = Astro.params.locale as Locale;

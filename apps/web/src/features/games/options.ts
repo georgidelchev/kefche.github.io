@@ -17,13 +17,29 @@ export interface GameOptionView {
   inRooms: boolean;
 }
 
-export const gameOptions = (manifest: GameManifest, ui: Record<string, string>): GameOptionView[] =>
-  (manifest.options ?? []).map((option) => ({
-    key: option.key,
-    legend: ui[option.label] ?? option.label,
-    values: option.values.map((v) => ({ value: v.value, label: ui[v.label] ?? v.label })),
-    inRooms: option.rooms !== false,
-  }));
+/**
+ * Each option in the page's language. A value marked `defaultIn` the page's
+ * locale comes first, so it's the default there.
+ */
+export const gameOptions = (
+  manifest: GameManifest,
+  ui: Record<string, string>,
+  locale?: string,
+): GameOptionView[] =>
+  (manifest.options ?? []).map((option) => {
+    const local = option.values.findIndex(
+      (v) => locale !== undefined && v.defaultIn?.includes(locale) === true,
+    );
+    const first = option.values[local];
+    const ordered =
+      local > 0 && first ? [first, ...option.values.filter((_, i) => i !== local)] : option.values;
+    return {
+      key: option.key,
+      legend: ui[option.label] ?? option.label,
+      values: ordered.map((v) => ({ value: v.value, label: ui[v.label] ?? v.label })),
+      inRooms: option.rooms !== false,
+    };
+  });
 
 /** The engine config: every option's chosen value, or its default. Undefined without options. */
 export function optionsConfig(

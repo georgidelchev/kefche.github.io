@@ -44,9 +44,21 @@ interface Props {
    * scrolls; the page scrolls its own panes and places `SiteFooter` itself.
    */
   layout?: "page" | "app";
+  /** The languages this page exists in (a game with content packs); all by default. */
+  locales?: readonly Locale[];
 }
 
-const { locale, path, section, title, description, noindex = false, layout = "page" } = Astro.props;
+const {
+  locale,
+  path,
+  section,
+  title,
+  description,
+  noindex = false,
+  layout = "page",
+  locales,
+} = Astro.props;
+const only = locales ? { locales } : {};
 const app = layout === "app";
 const t = getT(locale);
 
@@ -86,7 +98,14 @@ const focusRing =
   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
 ---
 
-<BaseLayout locale={locale} path={path} title={title} description={description} noindex={noindex}>
+<BaseLayout
+  locale={locale}
+  path={path}
+  title={title}
+  description={description}
+  noindex={noindex}
+  {...only}
+>
   <a
     href="#main"
     class:list={[
@@ -160,7 +179,12 @@ const focusRing =
 
       <!-- Inline controls from 1024px; below that they live in the settings panel. -->
       <div class="hidden items-center gap-2 lg:flex">
-        <LanguageSwitcher locale={locale} path={path} label={t("common:language.label")} />
+        <LanguageSwitcher
+          locale={locale}
+          path={path}
+          label={t("common:language.label")}
+          {...only}
+        />
         <ThemeSwitcher labels={themeLabels} name="theme-header" />
       </div>
 
@@ -240,6 +264,7 @@ const focusRing =
               path={path}
               label={t("common:language.label")}
               variant="list"
+              {...only}
             />
           </div>
         </div>
