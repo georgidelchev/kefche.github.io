@@ -47,7 +47,8 @@ export function renderAccount(summary: AccountSummary | null): void {
     // The URL was validated by the summary schema (no quotes or parentheses).
     avatar.style.backgroundImage = summary.avatarUrl ? `url("${summary.avatarUrl}")` : "";
     const label = avatar.querySelector("[data-account-initials]");
-    if (label) label.textContent = hasPicture ? "" : initials;
+    // Drawn by CSS from data-text, so the link's only name is its label (WCAG 2.5.3).
+    if (label instanceof HTMLElement) label.dataset.text = hasPicture ? "" : initials;
     avatar
       .querySelector("[data-account-icon]")
       ?.toggleAttribute("hidden", hasPicture || initials !== "");
@@ -59,7 +60,7 @@ export function renderAccount(summary: AccountSummary | null): void {
   }
   const level = summary.level?.toLocaleString(root.lang);
   for (const badge of document.querySelectorAll<HTMLElement>("[data-account-level]")) {
-    badge.textContent = level ?? "";
+    badge.dataset.text = level ?? "";
     badge.hidden = level === undefined;
   }
   // "Your account, level 4": the link's name says what the badge shows.
