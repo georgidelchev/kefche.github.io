@@ -1,0 +1,81 @@
+{
+  "name": "找不同",
+  "tagline": "有一个圆环朝向不同。你能找到它吗？",
+  "description": "免费玩找不同：在不断变大的方格中找出朝向不同的圆环。四十五秒，可以单人玩，也可以和朋友在线比赛。",
+  "about": [
+    "Odd One Out fills a grid with rings, each with a small gap. Every ring's gap faces the same way, except one. Find the odd ring and tap it, and the next grid appears: a little bigger, and with an odd ring that's harder to tell apart.",
+    "The first grids are easy, a three-by-three square with one ring turned right around. By the later levels there are sixty-four rings and the odd one is turned only a few degrees. You have forty-five seconds to clear as many grids as you can, and a wrong tap costs two of them.",
+    "The rings are the shape eye doctors use, and they differ only in which way they face, never in colour, so the game is the same for everyone. Race friends online and you'll all get the same grids in the same order."
+  ],
+  "howToPlay": [
+    "Press Start. After a 3, 2, 1 countdown the first grid of rings appears and the clock starts.",
+    "Find the ring whose gap faces a different way from all the others, and tap it.",
+    "Each grid you clear brings a bigger one, with an odd ring that's closer to the rest.",
+    "A wrong tap flashes and takes two seconds off your time.",
+    "When the forty-five seconds are up, your score is the number of grids you cleared."
+  ],
+  "controls": [
+    "Phones and tablets: tap the odd ring.",
+    "Mouse: click the odd ring.",
+    "Keyboard: move with the arrow keys and press Enter or Space on a ring.",
+    "Pause or start again from the bar above the game. Pausing starts the run over."
+  ],
+  "tips": [
+    "Don't look at each ring in turn: relax your eyes and let the odd one stand out.",
+    "Look at the gaps, not the rings: a gap in the wrong place is what catches the eye.",
+    "If you can't spot it in a couple of seconds, scan row by row.",
+    "Guessing costs two seconds, which is usually more than a careful look.",
+    "On big grids, a larger screen or sitting a little further back helps."
+  ],
+  "faq": [
+    {
+      "question": "Is Odd One Out free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "Around ten grids is typical. Clearing eighteen or more in forty-five seconds is very sharp."
+    },
+    {
+      "question": "Why rings with gaps?",
+      "answer": "They're the shape used in eye tests: only the direction of the gap differs, so the game depends on looking, not on telling colours apart."
+    },
+    {
+      "question": "What happens if I tap the wrong ring?",
+      "answer": "It flashes red and two seconds come off your time. The grid stays until you find the right one."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same grids in the same order. The most grids cleared wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "找不同",
+    "start": "开始",
+    "startDetail": "四十五秒",
+    "best": "最佳：{n} 关",
+    "level": "关",
+    "timeLeft": "剩余时间",
+    "seconds": "{s} 秒",
+    "gridLabel": "{n} 个圆环的方格：找出朝向不同的那个",
+    "ringLabel": "第 {row} 行，第 {col} 个圆环",
+    "wrongTap": "选错了：扣 {s} 秒",
+    "levelsTotal": "通过 {n} 关",
+    "mistakesTotal": "点错：{n}",
+    "newBest": "新纪录！",
+    "quit": "退出"
+  },
+  "achievements": {
+    "played": {
+      "name": "再看一眼",
+      "description": "玩 {count, plural, other {# 局}}"
+    },
+    "spotter": {
+      "name": "眼尖",
+      "description": "单局通过 {count} 关"
+    }
+  },
+  "leaderboards": {
+    "most-levels": "最多关卡"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "name": "El Diferente",
+  "tagline": "Un anillo mira hacia otro lado. ¿Lo encuentras?",
+  "description": "Juega gratis a El Diferente: encuentra el anillo girado de otra forma en cuadrículas que crecen. Cuarenta y cinco segundos, solo u online.",
+  "about": [
+    "Odd One Out fills a grid with rings, each with a small gap. Every ring's gap faces the same way, except one. Find the odd ring and tap it, and the next grid appears: a little bigger, and with an odd ring that's harder to tell apart.",
+    "The first grids are easy, a three-by-three square with one ring turned right around. By the later levels there are sixty-four rings and the odd one is turned only a few degrees. You have forty-five seconds to clear as many grids as you can, and a wrong tap costs two of them.",
+    "The rings are the shape eye doctors use, and they differ only in which way they face, never in colour, so the game is the same for everyone. Race friends online and you'll all get the same grids in the same order."
+  ],
+  "howToPlay": [
+    "Press Start. After a 3, 2, 1 countdown the first grid of rings appears and the clock starts.",
+    "Find the ring whose gap faces a different way from all the others, and tap it.",
+    "Each grid you clear brings a bigger one, with an odd ring that's closer to the rest.",
+    "A wrong tap flashes and takes two seconds off your time.",
+    "When the forty-five seconds are up, your score is the number of grids you cleared."
+  ],
+  "controls": [
+    "Phones and tablets: tap the odd ring.",
+    "Mouse: click the odd ring.",
+    "Keyboard: move with the arrow keys and press Enter or Space on a ring.",
+    "Pause or start again from the bar above the game. Pausing starts the run over."
+  ],
+  "tips": [
+    "Don't look at each ring in turn: relax your eyes and let the odd one stand out.",
+    "Look at the gaps, not the rings: a gap in the wrong place is what catches the eye.",
+    "If you can't spot it in a couple of seconds, scan row by row.",
+    "Guessing costs two seconds, which is usually more than a careful look.",
+    "On big grids, a larger screen or sitting a little further back helps."
+  ],
+  "faq": [
+    {
+      "question": "Is Odd One Out free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "Around ten grids is typical. Clearing eighteen or more in forty-five seconds is very sharp."
+    },
+    {
+      "question": "Why rings with gaps?",
+      "answer": "They're the shape used in eye tests: only the direction of the gap differs, so the game depends on looking, not on telling colours apart."
+    },
+    {
+      "question": "What happens if I tap the wrong ring?",
+      "answer": "It flashes red and two seconds come off your time. The grid stays until you find the right one."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same grids in the same order. The most grids cleared wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "El Diferente",
+    "start": "Empezar",
+    "startDetail": "Cuarenta y cinco segundos",
+    "best": "Mejor: {n} cuadrículas",
+    "level": "Cuadrícula",
+    "timeLeft": "Tiempo restante",
+    "seconds": "{s} s",
+    "gridLabel": "Cuadrícula de {n} anillos: encuentra el girado de otra forma",
+    "ringLabel": "Fila {row}, anillo {col}",
+    "wrongTap": "Anillo equivocado: menos {s} s",
+    "levelsTotal": "Cuadrículas superadas: {n}",
+    "mistakesTotal": "Toques erróneos: {n}",
+    "newBest": "¡Nuevo récord!",
+    "quit": "Salir"
+  },
+  "achievements": {
+    "played": {
+      "name": "Segunda mirada",
+      "description": "Juega {count, plural, one {# partida} other {# partidas}}"
+    },
+    "spotter": {
+      "name": "Buen ojo",
+      "description": "Supera {count} cuadrículas en una partida"
+    }
+  },
+  "leaderboards": {
+    "most-levels": "Más cuadrículas"
+  }
+}

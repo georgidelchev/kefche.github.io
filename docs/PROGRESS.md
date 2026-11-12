@@ -3149,6 +3149,21 @@ The owner answered "you decide, continue", so the recommended answers stand:
   - Checked:
     - over 200 seeds, every round's count in its range and no two dots too close;
     - in Chrome, 24/24: ten rounds answered from the dots drawn, one 2 off (60 points for 10 of 12), adding up to 960 with the best on the menu; the dots hidden while answering; the keyboard (digits, Backspace, Enter); 360, 768 and 1280 px, both themes, Bulgarian and Arabic, and axe.
+- [x] **Step 12, Odd One Out:**
+  - **Rules:** a grid of rings with a gap (Landolt rings, as in eye tests), all turned the same way but one; tap the odd one to clear the grid.
+    - Grids grow from 3 × 3 (the odd ring 180° apart) to 8 × 8 (20° apart).
+    - 45 seconds in all; a wrong tap takes 2 off. The score is the grids cleared.
+    - The first tap within 100 ms, taps within 50 ms of the last, and taps after the time don't count. A stop ends the run at the time left.
+  - **Never colour:** the odd ring differs only in which way it's turned, so the game is the same for everyone who can see the grid (screen readers can't tell rings apart; the page says how to play).
+  - **Controls:** tap or click, or the arrow keys and Enter or Space (timed by the key's event). A countdown first; pausing starts the run over.
+  - **Board:** most grids, marked as measured on the device. **Achievements:** games played, and 12, 18 or 25 grids.
+  - **Server:** its fixture (29 actions, 25 grids).
+  - Checked in Chrome, 28/28:
+    - a run tapping the odd ring (found from the rings drawn) cleared 12 grids, reaching 7 × 7, and a wrong tap took 2 s off;
+    - the end after the time, with the best on the menu;
+    - the arrow keys and Enter;
+    - 8 × 8 at 360, 768 and 1280 px and on a landscape phone, rings at least 24 px, both themes, Bulgarian and Arabic, and axe.
+    - It found the grid's cells missing their rows (an ARIA grid needs them), and 17 px rings on a landscape phone. Both are fixed: the grid now keeps at least 16rem, so a landscape phone scrolls a little rather than shrinking the rings.
 
 ## Known issues
 

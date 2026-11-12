@@ -515,6 +515,18 @@ if (process.argv.includes("--fixtures")) {
         return { guess: Math.max(0, actual + off) };
       },
     },
+    // The odd ring 0.8 to 2 s into each grid, a wrong cell now and then,
+    // until the time (less the penalties) is up.
+    "odd-one-out": {
+      config: undefined,
+      next: (state, random) => {
+        const ms = state.last + 800 + Math.floor(random() * 1200);
+        if (ms >= 45000 - state.mistakes * 2000) return { stop: true };
+        const level = state.levels[state.cleared];
+        const cell = random() < 0.1 ? (level.odd + 1) % (level.size * level.size) : level.odd;
+        return { cell, ms };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },
