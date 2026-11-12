@@ -192,5 +192,13 @@
   "dice": {
     "showing": "पासा {value} दिखा रहा है",
     "unrolled": "पासा अभी फेंका नहीं गया"
+  },
+  "words": {
+    "enter": "एंटर",
+    "backspace": "अक्षर मिटाएँ",
+    "keyboard": "कीबोर्ड",
+    "layout": "कीबोर्ड लेआउट",
+    "phonetic": "ध्वन्यात्मक",
+    "bds": "BDS"
   }
 }

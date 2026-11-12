@@ -192,5 +192,13 @@
   "dice": {
     "showing": "サイコロの目は{value}",
     "unrolled": "まだ振っていないサイコロ"
+  },
+  "words": {
+    "enter": "決定",
+    "backspace": "1文字消す",
+    "keyboard": "キーボード",
+    "layout": "キー配列",
+    "phonetic": "フォネティック",
+    "bds": "BDS"
   }
 }

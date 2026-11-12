@@ -74,7 +74,12 @@ const fillPairs = (prefix) =>
   Object.keys(light)
     .filter((k) => k.startsWith(prefix) && !k.endsWith("-ink"))
     .map((k) => [`${k}-ink`, k, TEXT]);
-pairs.push(...fillPairs("player-"), ...fillPairs("cat-"), ...fillPairs("tier-"));
+pairs.push(
+  ...fillPairs("player-"),
+  ...fillPairs("cat-"),
+  ...fillPairs("tier-"),
+  ...fillPairs("tile-"),
+);
 
 const showAll = process.argv.includes("--all");
 for (const [theme, tokens] of Object.entries(themes)) {

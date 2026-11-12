@@ -21,7 +21,8 @@ import { EmptyState, ErrorState } from "@kefche/ui/components/states";
 import Logo from "@/components/Logo.astro";
 import { DevCards } from "@/features/dev/DevCards";
 import { DevInteractive } from "@/features/dev/DevInteractive";
-import { cardKitUi, diceKitUi } from "@/features/games/page-props";
+import { DevWords } from "@/features/dev/DevWords";
+import { cardKitUi, diceKitUi, wordKitUi } from "@/features/games/page-props";
 import AppShell from "@/features/shell/AppShell.astro";
 import { getT } from "@/i18n/i18n";
 import { LOCALE_INFO, LOCALES, type Locale } from "@/i18n/locales";
@@ -291,6 +292,13 @@ const h2Class = "text-2xl";
         Cards and dice
       </h2>
       <DevCards client:load ui={{ ...cardKitUi(t), ...diceKitUi(t) }} />
+    </section>
+
+    <section class={sectionClass} aria-labelledby="words">
+      <h2 id="words" class={h2Class}>
+        Word kit
+      </h2>
+      <DevWords client:load ui={wordKitUi(t)} />
     </section>
   </div>
 </AppShell>

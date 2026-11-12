@@ -2996,6 +2996,13 @@ The owner answered "you decide, continue", so the recommended answers stand:
 ### Status
 
 - [x] Plan written; the recommended answers stand (2026-11-12)
+- [x] **Step 1, the word kit** (`@kefche/game-sdk` `words`, and `words` in `@kefche/game-sdk/react`):
+  - **Letters:** each content language's alphabet (English and Bulgarian), and one way to fold a typed word (NFC, lower case in its language, accents dropped: café → cafe, ѝ → и, but й stays й), shared by engines, bots and the server's replay.
+  - **On-screen keyboards:** QWERTY, and Bulgarian in the phonetic and БДС layouts (without ы and э), chosen per device; keys show a state (in place, elsewhere, not in the word) by colour and a mark, from new tile tokens checked for contrast; keys at least 24 px wide at 360 px.
+  - **Physical keys:** letters, Enter and Backspace, left alone in text fields; in Bulgarian, a Latin-only keyboard types phonetically.
+  - **Typed answers:** a field that keeps only the language's letters (spaces too if asked), never filters while a phone keyboard is composing, and stays in view above it.
+  - **Strings:** games tagged "words" get the kit's (Enter, Delete letter, the keyboard and its layouts), in all 11 locales.
+  - Checked: the helpers on their own (folding, letters, spelling, every layout covering its alphabet exactly, key mapping: all passed), and the dev gallery in Chrome, 62/64: typing, Backspace, Enter, keys, both Bulgarian layouts and the choice kept, the input cleaned and submitted, English, Bulgarian and Arabic, both themes, axe. The 2 misses are the dev page itself, wider than 360 px before this step (its title and the cards section too).
 
 ## Known issues
 

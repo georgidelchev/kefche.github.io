@@ -192,5 +192,13 @@
   "dice": {
     "showing": "Würfel zeigt {value}",
     "unrolled": "Noch nicht gewürfelt"
+  },
+  "words": {
+    "enter": "Eingabe",
+    "backspace": "Buchstaben löschen",
+    "keyboard": "Tastatur",
+    "layout": "Tastaturbelegung",
+    "phonetic": "Phonetisch",
+    "bds": "BDS"
   }
 }

@@ -192,5 +192,13 @@
   "dice": {
     "showing": "Dé indiquant {value}",
     "unrolled": "Dé pas encore lancé"
+  },
+  "words": {
+    "enter": "Entrée",
+    "backspace": "Effacer la lettre",
+    "keyboard": "Clavier",
+    "layout": "Disposition du clavier",
+    "phonetic": "Phonétique",
+    "bds": "BDS"
   }
 }

@@ -192,5 +192,13 @@
   "dice": {
     "showing": "骰子点数 {value}",
     "unrolled": "骰子尚未掷出"
+  },
+  "words": {
+    "enter": "确定",
+    "backspace": "删除字母",
+    "keyboard": "键盘",
+    "layout": "键盘布局",
+    "phonetic": "语音式",
+    "bds": "BDS"
   }
 }

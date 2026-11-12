@@ -192,5 +192,13 @@
   "dice": {
     "showing": "نرد يُظهر {value}",
     "unrolled": "لم يُرمَ النرد بعد"
+  },
+  "words": {
+    "enter": "إدخال",
+    "backspace": "حذف حرف",
+    "keyboard": "لوحة المفاتيح",
+    "layout": "تخطيط لوحة المفاتيح",
+    "phonetic": "صوتي",
+    "bds": "BDS"
   }
 }

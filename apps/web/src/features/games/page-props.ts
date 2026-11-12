@@ -226,13 +226,27 @@ export const ratedClocks = (manifest: GameManifest): RatedClock[] =>
  * A game's UI strings as its player gets them: its own, plus the kit's
  * shared ones it uses (keys "kit.…"), so every card game names cards (and
  * every dice game dice) the same way without carrying the words itself
- * (Phase 12): games tagged "cards" or "dice".
+ * (Phase 12): games tagged "cards" or "dice", and the word kit's for games
+ * tagged "words" (Phase 13).
  */
 export function playerUi(manifest: GameManifest, ui: Record<string, string>, t: AppT) {
   return {
     ...(manifest.tags.includes("cards") ? cardKitUi(t) : {}),
     ...(manifest.tags.includes("dice") ? diceKitUi(t) : {}),
+    ...(manifest.tags.includes("words") ? wordKitUi(t) : {}),
     ...ui,
+  };
+}
+
+/** The word kit's strings (@kefche/game-sdk/react wordText). */
+export function wordKitUi(t: AppT): Record<string, string> {
+  return {
+    "kit.word.enter": t("games:words.enter"),
+    "kit.word.backspace": t("games:words.backspace"),
+    "kit.word.keyboard": t("games:words.keyboard"),
+    "kit.word.layout": t("games:words.layout"),
+    "kit.word.phonetic": t("games:words.phonetic"),
+    "kit.word.bds": t("games:words.bds"),
   };
 }
 

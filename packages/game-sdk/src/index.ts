@@ -23,4 +23,5 @@ export * from "./spatial-grid";
 export * from "./table-protocol";
 export * from "./timers";
 export * from "./transport";
+export * from "./words";
 export * from "./xp";

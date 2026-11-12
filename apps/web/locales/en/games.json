@@ -192,5 +192,13 @@
   "dice": {
     "showing": "Die showing {value}",
     "unrolled": "Die not rolled yet"
+  },
+  "words": {
+    "enter": "Enter",
+    "backspace": "Delete letter",
+    "keyboard": "Keyboard",
+    "layout": "Keyboard layout",
+    "phonetic": "Phonetic",
+    "bds": "BDS"
   }
 }

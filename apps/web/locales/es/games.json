@@ -192,5 +192,13 @@
   "dice": {
     "showing": "Dado que muestra {value}",
     "unrolled": "Dado aún sin lanzar"
+  },
+  "words": {
+    "enter": "Intro",
+    "backspace": "Borrar letra",
+    "keyboard": "Teclado",
+    "layout": "Distribución del teclado",
+    "phonetic": "Fonética",
+    "bds": "BDS"
   }
 }

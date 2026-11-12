@@ -102,6 +102,16 @@
   --card-edge: #7f889c;
   --card-back: #1e3a8a;
   --card-back-ink: #93c5fd;
+
+  /* Letter tiles and keys of the word games (Phase 13), the same in both themes:
+     in place, in the word elsewhere, not in it. A mark on each tile carries the
+     state too, so colour is never the only cue. */
+  --tile-good: #15803d;
+  --tile-good-ink: #ffffff;
+  --tile-near: #b45309;
+  --tile-near-ink: #ffffff;
+  --tile-miss: #5b6478;
+  --tile-miss-ink: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
