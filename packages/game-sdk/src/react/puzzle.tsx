@@ -63,6 +63,28 @@ export function bestTime(storage: GameStorage, key: string): number | null {
   return Number.isFinite(ms) && ms > 0 ? ms : null;
 }
 
+const scoreKey = (key: string) => `best-score:${key}`;
+
+/** Best score for a choice (speed games, Phase 13), or null before the first. */
+export function bestScore(storage: GameStorage, key: string): number | null {
+  const raw = storage.get(scoreKey(key));
+  const value = raw === null ? NaN : Number(raw);
+  return Number.isFinite(value) ? value : null;
+}
+
+/** Records a score; true when it beat the previous best ("asc": lower is better). */
+export function recordBestScore(
+  storage: GameStorage,
+  key: string,
+  score: number,
+  order: "asc" | "desc",
+): boolean {
+  const best = bestScore(storage, key);
+  if (best !== null && (order === "asc" ? best <= score : best >= score)) return false;
+  storage.set(scoreKey(key), String(score));
+  return true;
+}
+
 /** Records a finish; true when it beat the previous best. */
 export function recordBestTime(storage: GameStorage, key: string, ms: number): boolean {
   const best = bestTime(storage, key);
@@ -84,6 +106,11 @@ export interface PuzzleOptions<State, Action, Config> {
   timeKey: (config: Config) => string;
   /** Makes the puzzle (in a worker, when it's slow); by default engine.initialState. */
   create?: (seed: string, config: Config) => Promise<State>;
+  /**
+   * Keep the best score for each choice rather than the best time (speed
+   * games): "asc" when lower is better (a reaction), "desc" when higher is.
+   */
+  best?: { order: "asc" | "desc" };
 }
 
 export interface Puzzle<State, Action, Config> {
@@ -94,7 +121,7 @@ export interface Puzzle<State, Action, Config> {
   state: State | null;
   /** Play time so far, in milliseconds. */
   elapsedMs: number;
-  /** The finish beat this device's best time for its choice. */
+  /** The finish beat this device's best (time, or score with `best`) for its choice. */
   newBest: boolean;
   start: (config: Config) => void;
   /** Applies a player action: the new state, or null when nothing changed. */
@@ -111,6 +138,7 @@ export function usePuzzle<State, Action, Config>({
   raceConfig,
   timeKey,
   create,
+  best,
 }: PuzzleOptions<State, Action, Config>): Puzzle<State, Action, Config> {
   const [racing] = useState(() => (context.race ? raceConfig(context.race.config) : null));
   const [screen, setScreen] = useState<PuzzleScreen>(racing === null ? "menu" : "loading");
@@ -184,7 +212,13 @@ export function usePuzzle<State, Action, Config>({
       setElapsedMs(ms);
       setScreen("over");
       if (racing === null && result.completed) {
-        setNewBest(recordBestTime(context.storage, timeKey(config), ms));
+        const score = result.score ?? engine.score?.(next);
+        setNewBest(
+          best
+            ? score !== undefined &&
+                recordBestScore(context.storage, timeKey(config), score, best.order)
+            : recordBestTime(context.storage, timeKey(config), ms),
+        );
       }
       context.report({ type: "finish", result: { ...result, timeMs: result.timeMs ?? ms } });
     }
@@ -225,6 +259,7 @@ export function PuzzleMenu<Config>({
   bestLabel,
   failed,
   onPick,
+  formatBest,
 }: {
   title: string;
   choices: MenuChoice<Config>[];
@@ -232,6 +267,8 @@ export function PuzzleMenu<Config>({
   timeKey: (config: Config) => string;
   /** "Best: {time}" */
   bestLabel: string;
+  /** For games that keep a best score (`best` in usePuzzle): the whole line for it ("Best: 231 ms"). */
+  formatBest?: (score: number) => string;
   /** Shown when making the last puzzle failed. */
   failed?: string;
   onPick: (config: Config) => void;
@@ -242,7 +279,9 @@ export function PuzzleMenu<Config>({
       <h3 className="gk-title">{title}</h3>
       {failed && <p role="alert">{failed}</p>}
       {choices.map((choice) => {
-        const best = bestTime(storage, timeKey(choice.config));
+        const key = timeKey(choice.config);
+        const best = formatBest ? null : bestTime(storage, key);
+        const score = formatBest ? bestScore(storage, key) : null;
         return (
           <button
             key={timeKey(choice.config)}
@@ -255,6 +294,7 @@ export function PuzzleMenu<Config>({
             <strong>{choice.label}</strong>
             {choice.detail && <span>{choice.detail}</span>}
             {best !== null && <span>{bestLabel.replace("{time}", formatDuration(best))}</span>}
+            {score !== null && formatBest && <span>{formatBest(score)}</span>}
           </button>
         );
       })}

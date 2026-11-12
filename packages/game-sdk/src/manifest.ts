@@ -67,6 +67,11 @@ export interface LeaderboardDef {
   order: "asc" | "desc";
   /** Only games played with these settings (Sudoku's difficulty) count on it. */
   when?: Readonly<Record<string, string | number | boolean>>;
+  /**
+   * Its values are times the player's own device measured (a reaction, taps
+   * in 5 s), which a faster screen can help (Phase 13): the board says so.
+   */
+  device?: boolean;
 }
 
 /**

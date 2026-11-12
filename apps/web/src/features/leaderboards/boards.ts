@@ -17,6 +17,8 @@ export interface BoardOption {
   kind: "score" | "time" | "rating" | "xp" | "daily";
   /** Rated boards are ratings as they are now: no week of their own. */
   weekly: boolean;
+  /** Its values were timed on each player's own device (speed games, Phase 13). */
+  device?: boolean;
 }
 
 export interface BoardGroup {
@@ -35,6 +37,7 @@ export function gameBoards(game: RegisteredGame, t: AppT, locale: Locale): Board
       name: text.leaderboards[board.id] ?? board.id,
       kind: board.metric,
       weekly: true,
+      device: board.device === true,
     })),
     ...(manifest.rated
       ? manifest.rated.pools.map((pool) => ({

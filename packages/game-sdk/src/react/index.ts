@@ -7,6 +7,7 @@ export * from "./feedback";
 export * from "./grid";
 export * from "./puzzle";
 export * from "./seat";
+export * from "./speed";
 export * from "./table";
 export * from "./trick";
 export * from "./words";

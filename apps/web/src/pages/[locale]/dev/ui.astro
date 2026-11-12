@@ -21,6 +21,7 @@ import { EmptyState, ErrorState } from "@kefche/ui/components/states";
 import Logo from "@/components/Logo.astro";
 import { DevCards } from "@/features/dev/DevCards";
 import { DevInteractive } from "@/features/dev/DevInteractive";
+import { DevSpeed } from "@/features/dev/DevSpeed";
 import { DevWords } from "@/features/dev/DevWords";
 import { cardKitUi, diceKitUi, wordKitUi } from "@/features/games/page-props";
 import AppShell from "@/features/shell/AppShell.astro";
@@ -299,6 +300,13 @@ const h2Class = "text-2xl";
         Word kit
       </h2>
       <DevWords client:load ui={wordKitUi(t)} />
+    </section>
+
+    <section class={sectionClass} aria-labelledby="speed">
+      <h2 id="speed" class={h2Class}>
+        Speed kit
+      </h2>
+      <DevSpeed client:load />
     </section>
   </div>
 </AppShell>

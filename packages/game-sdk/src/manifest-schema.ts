@@ -100,6 +100,7 @@ export const gameManifestSchema = z
         metric: z.enum(["score", "time"]),
         order: z.enum(["asc", "desc"]),
         when: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).optional(),
+        device: z.boolean().optional(),
       }),
     ),
     achievements: z.array(

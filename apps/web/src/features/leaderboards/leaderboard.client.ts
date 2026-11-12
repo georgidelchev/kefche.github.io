@@ -25,6 +25,7 @@ const stringsSchema = z.object({
   friendsSignIn: z.string(),
   friendsEmpty: z.string(),
   weekEnds: z.string(),
+  device: z.string(),
   xpValue: z.string(),
 });
 
@@ -213,7 +214,8 @@ function setUp(root: HTMLElement) {
       button.setAttribute("aria-pressed", String(id === period));
       button.hidden = id === "week" && !weekly;
     }
-    note.textContent =
+    const notes = [
+      option()?.dataset.device === "true" ? s.device : "",
       period === "week"
         ? fill(s.weekEnds, {
             date: new Intl.DateTimeFormat(locale, {
@@ -222,7 +224,9 @@ function setUp(root: HTMLElement) {
               minute: "2-digit",
             }).format(nextMonday()),
           })
-        : "";
+        : "",
+    ];
+    note.textContent = notes.filter((n) => n !== "").join(" ");
     if (sync) {
       const params = new URLSearchParams(location.search);
       params.set("board", select.value);

@@ -14,6 +14,7 @@
   "friendsSignIn": "登录后即可与好友比较。",
   "friendsEmpty": "添加好友后即可与他们比较。",
   "weekEnds": "新的一周于 {date} 开始。",
+  "device": "此排行榜的成绩在每位玩家自己的设备上测量，因此响应更快的屏幕或手机会略有优势。",
   "you": "你",
   "yourPlace": "你的名次：第 {rank} 名，共 {total} 人",
   "empty": "这个榜单还没有人。",

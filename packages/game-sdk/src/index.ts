@@ -21,6 +21,7 @@ export * from "./rooms";
 export * from "./search";
 export * from "./seats";
 export * from "./spatial-grid";
+export * from "./speed";
 export * from "./table-protocol";
 export * from "./timers";
 export * from "./transport";

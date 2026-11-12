@@ -3022,6 +3022,16 @@ The owner answered "you decide, continue", so the recommended answers stand:
     - English and Bulgarian words and non-words;
     - a file with a wrong hash refused;
     - in Chrome, both lists loaded through the dev gallery and words judged (5/5).
+- [x] **Step 3, the speed kit** (`speed` in `@kefche/game-sdk` and in `@kefche/game-sdk/react`):
+  - **Timing:** a stimulus is stamped with the time of the animation frame that draws it; a press is timed by its own event's timestamp, on pointerdown (not click, which waits for the finger to lift) or Space and Enter. Both are on `performance.now()`'s clock, so a busy page doesn't add to a reaction. A large pad with no double-tap zoom, long-press menu or selection; a 3-2-1 countdown.
+  - **The limits are rules** (Q6): a reaction under 100 ms is a guess, and taps closer than 50 ms don't count. Every speed engine applies them, so the server's replay does too. Each action carries its measured time and returns it from `actionMs`, so the existing check refuses a log claiming more time than passed since the play was issued.
+  - **Best scores:** the puzzle flow (`usePuzzle`, `PuzzleMenu`) can keep each choice's best score, lower or higher being better, as well as best times.
+  - **Boards measured on the device:** a manifest board can say `device: true`, and its leaderboard then notes that results are timed on each player's own device (11 locales).
+  - Checked in Chrome through the dev gallery, light at 1280 px and dark at 360 px, 14/14:
+    - presses made 200, 300 and 450 ms after the green, from inside the page, read within a frame of the wait (197 to 466 ms);
+    - a press before the green is "too soon", and one under 100 ms is marked a guess;
+    - Space answers;
+    - axe found a pad named differently from its visible text (WCAG 2.5.3), so a pad's own text now names it, with a label only for pads that show no words.
 
 ## Known issues
 

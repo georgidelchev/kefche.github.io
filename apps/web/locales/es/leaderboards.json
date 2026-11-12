@@ -14,6 +14,7 @@
   "friendsSignIn": "Inicia sesión para compararte con tus amigos.",
   "friendsEmpty": "Añade amigos para compararte con ellos.",
   "weekEnds": "Una nueva semana empieza el {date}.",
+  "device": "Los resultados de esta clasificación se miden en el dispositivo de cada jugador, así que una pantalla o un móvil más rápidos ayudan un poco.",
   "you": "Tú",
   "yourPlace": "Tu puesto: #{rank} de {total}",
   "empty": "Todavía no hay nadie en esta clasificación.",

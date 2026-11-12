@@ -37,6 +37,7 @@ const strings = {
   friendsSignIn: t("leaderboards:friendsSignIn"),
   friendsEmpty: t("leaderboards:friendsEmpty"),
   weekEnds: t("leaderboards:weekEnds", { date: "{date}" }),
+  device: t("leaderboards:device"),
   xpValue: t("leaderboards:xpValue", { xp: "{xp}" }),
 };
 const PERIODS = [
@@ -73,6 +74,7 @@ const control =
                 value={b.id}
                 data-kind={b.kind}
                 data-weekly={String(b.weekly)}
+                data-device={b.device ? "true" : undefined}
                 selected={b.id === initial}
               >
                 {b.name}
@@ -85,6 +87,7 @@ const control =
                   value={b.id}
                   data-kind={b.kind}
                   data-weekly={String(b.weekly)}
+                  data-device={b.device ? "true" : undefined}
                   selected={b.id === initial}
                 >
                   {b.name}
