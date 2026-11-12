@@ -18,7 +18,7 @@ export const manifest = defineManifest({
   controls: ["tap", "keyboard", "mouse"],
   renderer: "dom",
   estimatedMinutes: [1, 2],
-  leaderboards: [{ id: "best-average", metric: "score", order: "asc", device: true }],
+  leaderboards: [{ id: "best-average", metric: "score", order: "asc", device: true, unit: "ms" }],
   achievements: [
     { id: "played", icon: "repeat", metric: "played", tiers: [1, 25, 100] },
     { id: "quick", icon: "flame", metric: "lowestScore", tiers: [350, 280, 230] },

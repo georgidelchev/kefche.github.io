@@ -101,6 +101,7 @@ export const gameManifestSchema = z
         order: z.enum(["asc", "desc"]),
         when: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).optional(),
         device: z.boolean().optional(),
+        unit: z.literal("ms").optional(),
       }),
     ),
     achievements: z.array(

@@ -72,6 +72,8 @@ export interface LeaderboardDef {
    * in 5 s), which a faster screen can help (Phase 13): the board says so.
    */
   device?: boolean;
+  /** A score that's a time in milliseconds (a reaction): boards show it as one. */
+  unit?: "ms";
 }
 
 /**

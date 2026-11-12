@@ -3109,6 +3109,22 @@ The owner answered "you decide, continue", so the recommended answers stand:
     - answering by each word's real ink, with one wrong, scored 10 for 11 right, and a key answered too;
     - after 30 s the summary showed 11 points, 12 right, 1 wrong and 92%, with the best on the menu;
     - 360, 768 and 1280 px, both themes, Bulgarian and Arabic, and axe.
+- [x] **Step 9, Number Hunt** (a Schulte table):
+  - **Rules:** the numbers 1 to 25 shuffled on a 5 × 5 grid (from the seed); tap them in order.
+    - A wrong tap adds a second.
+    - The score is the time to 25 plus the penalties, in milliseconds, lower being better (migration `20261112100100_number_hunt.sql` adds it to `private.lower_scores`).
+    - The first tap within 100 ms of the grid, and any within 50 ms of the last, don't count.
+    - Finding all 25 finishes the task, so unlike the other speed games it ends "completed", as a solved puzzle does.
+  - **Boards show times:** a score board can say `unit: "ms"`, and the leaderboard then shows it with the browser's own units ("265 ms", or "12.35 s" from 10 s up, in every language). Reaction Flash's board uses it too.
+  - **The screen:** a countdown with the numbers hidden, then the grid; found numbers fade and a wrong tap flashes. The arrow keys move over the grid, and Enter or Space taps, timed by the key's own event.
+  - **Board:** best time, marked as measured on the device. **Achievements:** games played, and all 25 in 30, 18 or 12 seconds (`lowestScore`).
+  - **Server:** its fixture (27 taps with mistakes, 16.7 s).
+  - Checked in Chrome, 27/27:
+    - the numbers hidden during the countdown, then 1 to 25 on the grid;
+    - all 25 found 150 ms apart with one wrong tap: 4.35 s plus 1 s, and the best on the menu;
+    - the arrow keys and Enter;
+    - 360, 768 and 1280 px and a landscape phone, both themes, Bulgarian and Arabic, cells at least 24 px, and axe.
+    - The landscape phone's cells were under 24 px at first; the grid now takes more of the height.
 
 ## Known issues
 

@@ -489,6 +489,15 @@ if (process.argv.includes("--fixtures")) {
         return { pick: random() < 0.8 ? ink : (ink + 1) % 4, ms };
       },
     },
+    // Each number in turn, 300 to 900 ms apart, a wrong cell now and then.
+    "number-hunt": {
+      config: undefined,
+      next: (state, random) => {
+        const ms = state.last + 300 + Math.floor(random() * 600);
+        const cell = state.grid.indexOf(state.next);
+        return { cell: random() < 0.1 ? (cell + 1) % 25 : cell, ms };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },

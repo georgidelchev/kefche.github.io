@@ -110,6 +110,21 @@ function setUp(root: HTMLElement) {
     const kind = option()?.dataset.kind;
     if (kind === "time" || (kind === "daily" && lowerIsBetter)) return formatDuration(value);
     if (kind === "xp") return fill(s.xpValue, { xp: Math.round(value).toLocaleString(locale) });
+    // A score in milliseconds (a reaction): "265 ms", or "12.35 s" from 10 s up.
+    if (option()?.dataset.unit === "ms") {
+      return value < 10_000
+        ? new Intl.NumberFormat(locale, {
+            style: "unit",
+            unit: "millisecond",
+            maximumFractionDigits: 0,
+          }).format(value)
+        : new Intl.NumberFormat(locale, {
+            style: "unit",
+            unit: "second",
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2,
+          }).format(value / 1000);
+    }
     return Math.round(value).toLocaleString(locale);
   };
 

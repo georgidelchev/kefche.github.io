@@ -1,0 +1,80 @@
+{
+  "name": "संख्या खोज",
+  "tagline": "मिली-जुली ग्रिड में 1 से 25 तक जितनी जल्दी हो सके खोजें।",
+  "description": "संख्या खोज मुफ़्त खेलें: मिली-जुली ग्रिड में 1 से 25 तक की संख्याएँ क्रम से टैप करें। अपनी नज़र तेज़ करें या दोस्तों से ऑनलाइन रेस करें।",
+  "about": [
+    "Number Hunt hides the numbers 1 to 25 in a shuffled five-by-five grid. Find them in order and tap each one: 1, then 2, then 3, all the way to 25. The clock runs from the moment the grid appears until you tap the last number.",
+    "It's a classic exercise for attention and quick eyes, known as a Schulte table. At first you search the whole grid for every number; with practice you start to take in the grid at a glance and your times drop fast. A wrong tap adds a second to your time, so accuracy matters as much as speed.",
+    "Found numbers fade so you can see your progress, and your best time is kept on this device. Race friends online and everyone gets the same grid at the same moment, so the quickest eyes win."
+  ],
+  "howToPlay": [
+    "Press Start. After a 3, 2, 1 countdown the grid of numbers appears and the clock starts.",
+    "Tap 1, then 2, then 3, and so on up to 25.",
+    "Numbers you've found fade. A wrong tap flashes red and adds one second.",
+    "Your time ends when you tap 25. Lower is better."
+  ],
+  "controls": [
+    "Phones and tablets: tap the numbers.",
+    "Mouse: click the numbers.",
+    "Keyboard: move with the arrow keys and press Enter or Space on a number.",
+    "Pause or start again from the bar above the game. Pausing starts the grid over."
+  ],
+  "tips": [
+    "Keep your eyes near the centre of the grid and use the edges of your vision to spot the next number.",
+    "While tapping one number, already look for the next.",
+    "Don't guess: a wrong tap costs a whole second.",
+    "Play a few rounds in a row; times usually drop quickly at first.",
+    "On a keyboard, it's often faster to tap than to move, so a touch screen or mouse helps."
+  ],
+  "faq": [
+    {
+      "question": "Is Number Hunt free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good time?",
+      "answer": "Around 25 to 35 seconds is typical at first. Under 15 seconds is very quick."
+    },
+    {
+      "question": "What happens if I tap the wrong number?",
+      "answer": "It flashes red and adds one second to your time. You keep looking for the same number."
+    },
+    {
+      "question": "Is this a Schulte table?",
+      "answer": "Yes: finding numbers in order on a shuffled grid is the Schulte table, a traditional attention exercise."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same grid, starting together. The lowest time wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "संख्या खोज",
+    "start": "शुरू करें",
+    "startDetail": "1 से 25",
+    "best": "सर्वश्रेष्ठ: {time} से",
+    "find": "खोजें",
+    "time": "समय",
+    "secondsShort": "{s} से",
+    "mistakes": "गलतियाँ",
+    "gridLabel": "संख्या ग्रिड: {n} खोजें",
+    "foundCell": "{n}, मिल गया",
+    "wrongTap": "गलत संख्या: {s} से जुड़े",
+    "quit": "छोड़ें",
+    "timeAndPenalty": "समय {time} से, गलतियाँ: {n}",
+    "newBest": "नया सर्वश्रेष्ठ समय!"
+  },
+  "achievements": {
+    "played": {
+      "name": "अंकों की समझ",
+      "description": "{count, plural, one {# गेम} other {# गेम}} खेलें"
+    },
+    "eagle-eye": {
+      "name": "बाज़ की नज़र",
+      "description": "सभी 25 को {time} या उससे कम में खोजें"
+    }
+  },
+  "leaderboards": {
+    "best-time": "सर्वश्रेष्ठ समय"
+  }
+}

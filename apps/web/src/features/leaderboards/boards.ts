@@ -19,6 +19,8 @@ export interface BoardOption {
   weekly: boolean;
   /** Its values were timed on each player's own device (speed games, Phase 13). */
   device?: boolean;
+  /** Its scores are milliseconds (a reaction time), shown as a time. */
+  unit?: "ms";
 }
 
 export interface BoardGroup {
@@ -38,6 +40,7 @@ export function gameBoards(game: RegisteredGame, t: AppT, locale: Locale): Board
       kind: board.metric,
       weekly: true,
       device: board.device === true,
+      ...(board.unit ? { unit: board.unit } : {}),
     })),
     ...(manifest.rated
       ? manifest.rated.pools.map((pool) => ({

@@ -75,6 +75,7 @@ const control =
                 data-kind={b.kind}
                 data-weekly={String(b.weekly)}
                 data-device={b.device ? "true" : undefined}
+                data-unit={b.unit}
                 selected={b.id === initial}
               >
                 {b.name}
@@ -88,6 +89,7 @@ const control =
                   data-kind={b.kind}
                   data-weekly={String(b.weekly)}
                   data-device={b.device ? "true" : undefined}
+                  data-unit={b.unit}
                   selected={b.id === initial}
                 >
                   {b.name}
