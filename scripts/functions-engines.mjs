@@ -451,6 +451,19 @@ if (process.argv.includes("--fixtures")) {
         return t > 5000 ? { stop: true } : { t };
       },
     },
+    // Clicks near each target 200 to 900 ms after it appears, a miss now
+    // and then, and a target let go.
+    "aim-trainer": {
+      config: undefined,
+      next: (state, random) => {
+        const target = state.targets[state.index];
+        const r = random();
+        if (r < 0.05) return { expire: true };
+        const ms = Math.max(state.lastMs, 200 + Math.floor(random() * 700));
+        if (r < 0.2) return { x: (target.x + 400) % 1000, y: target.y, ms };
+        return { x: target.x + Math.floor(random() * 20) - 10, y: target.y, ms };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },

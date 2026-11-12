@@ -1,0 +1,83 @@
+{
+  "name": "Тренажёр меткости",
+  "tagline": "Попадите по сжимающимся мишеням, пока они не исчезли.",
+  "description": "Играйте в «Тренажёр меткости» бесплатно: поразите двадцать сжимающихся мишеней как можно быстрее. Очки, точность, рекорд или онлайн-гонка.",
+  "about": [
+    "Aim Trainer tests how quickly and precisely you can hit a target. Twenty targets appear one at a time at different places on the board, and each one shrinks from full size to nothing in a second and a half. Tap or click it before it disappears.",
+    "The sooner you hit a target, the more it's worth: up to 100 points for a target hit at full size, fewer as it shrinks. Missing the target doesn't end it, but every click that misses lowers your accuracy, which you see at the end along with your average time to hit.",
+    "It's good practice for anything that needs a quick, steady hand, and a fair test: every hit is judged by where you clicked and how big the target was at that moment, the same way on your screen and on the server. Race friends online and everyone gets the same targets in the same places."
+  ],
+  "howToPlay": [
+    "Press Start. After a 3, 2, 1 countdown the first target appears.",
+    "Tap or click the target. It shrinks away to nothing in a second and a half.",
+    "A hit is worth up to 100 points: the bigger the target still was, the more.",
+    "Clicks that miss lower your accuracy. A target you don't hit in time is lost.",
+    "After twenty targets you see your points, hits, accuracy and average time."
+  ],
+  "controls": [
+    "Phones and tablets: tap the targets. The board doesn't scroll or zoom while you play.",
+    "Mouse or trackpad: click the targets.",
+    "Aiming needs a pointer, so there's no keyboard way to play.",
+    "Pause or start again from the bar above the game. Pausing starts the run over."
+  ],
+  "tips": [
+    "Hit early: a target is worth the most the moment it appears.",
+    "Don't chase a tiny target into its last instant if you're unsure: missing costs accuracy.",
+    "Keep your eyes on the board, not on your finger or cursor.",
+    "On a computer, a mouse is usually quicker and steadier than a trackpad.",
+    "Targets never appear right on top of the last one, so be ready to move."
+  ],
+  "faq": [
+    {
+      "question": "Is Aim Trainer free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "Hitting every target at about half size scores around 1,000 points. Above 1,300 means you're consistently quick."
+    },
+    {
+      "question": "Why didn't a very fast hit count?",
+      "answer": "A hit within a tenth of a second of the target appearing counts as a miss, because nobody can see, aim and click that fast."
+    },
+    {
+      "question": "Can I play with the keyboard?",
+      "answer": "No. Aim Trainer measures aiming, which needs a pointer: a finger, mouse, trackpad or pen."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same twenty targets in the same places. The most points wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "Тренажёр меткости",
+    "start": "Старт",
+    "startDetail": "Двадцать мишеней",
+    "best": "Лучшее: очков {points}",
+    "target": "Мишень",
+    "of": "{n} / {total}",
+    "points": "Очки",
+    "accuracy": "Точность",
+    "percent": "{n}%",
+    "boardLabel": "Мишени: нажмите на каждую, пока она не исчезла",
+    "quit": "Выйти",
+    "pointsTotal": "Очков: {n}",
+    "hitOf": "Поражено мишеней: {n} / {total}",
+    "accuracyIs": "Точность: {n}%",
+    "averageHit": "Среднее время до попадания: {ms} мс",
+    "newBest": "Новый рекорд!"
+  },
+  "achievements": {
+    "played": {
+      "name": "В цель",
+      "description": "Сыграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    },
+    "sharpshooter": {
+      "name": "Снайпер",
+      "description": "Наберите {count} очков за одну игру"
+    }
+  },
+  "leaderboards": {
+    "best-score": "Лучший результат"
+  }
+}

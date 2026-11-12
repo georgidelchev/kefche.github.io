@@ -3065,6 +3065,24 @@ The owner answered "you decide, continue", so the recommended answers stand:
   - Checked:
     - the rules on their own (even taps void, uneven ones count, the 50 ms gap, no going back in time, nothing past 5 s, and the claimed time adding up to 5000 ms);
     - in Chrome, 27/27: 40 uneven taps with two fingers counted as they came, with the summary, taps a second and the best kept on the menu; taps 10 ms apart counted every other one; Space taps; a pause sets the run back to zero; 360, 768 and 1280 px, both themes, Bulgarian and Arabic, and axe.
+- [x] **Step 6, Aim Trainer:**
+  - **Rules:** 20 targets, one at a time, at places from the seed (never on top of the last). Each shrinks from full size to nothing over 1.5 s.
+    - A hit scores up to 100 points by how much of the target was left.
+    - Clicks that miss lower the accuracy shown at the end, and a target not hit is lost.
+    - A hit within 100 ms of a target appearing is a miss.
+    - Each click says where it landed on the 1000 × 1000 board and how long after its target appeared, so the engine (and the server's replay) judges it against the target's size at that moment.
+  - **The screen:** a square board with a 3-2-1 countdown first. The target shrinks by a CSS animation that starts on the frame its clock does, so the size seen is the size judged. Pausing starts the run over after a new countdown.
+  - **Controls:** aiming needs a pointer (touch, mouse or pen), so there's no keyboard way to play; the page says so.
+  - **Board:** best score, marked as measured on the device. **Achievements:** games played, and 900, 1200 or 1450 points.
+  - **Server:** its fixture (23 actions, 1131 points).
+  - Checked:
+    - the rules on their own (the same seed gives the same targets, all inside the board and apart; points at 0 and 750 ms; a hit inside 100 ms is a miss; the edge of a target and just outside; no going back in time; a full run's score, accuracy and claimed time);
+    - in Chrome, 30/30:
+      - a run played from inside the page (clicks at the centre 400 ms in, one miss, one target let go) gave 19 of 20, 95% and 1383 points, and the best on the menu;
+      - the drawn target measured 0.73 of its size at 400 ms, as the engine has it;
+      - a pause showed nothing until resumed, then a new countdown;
+      - 360, 768 and 1280 px and a landscape phone (740 × 360), both themes, Bulgarian and Arabic, and axe.
+    - It found two bugs, both fixed: the "+points" text shared the target's key and replaced it on the board, and a landscape phone's board was 136 px (now 200).
 
 ## Known issues
 
