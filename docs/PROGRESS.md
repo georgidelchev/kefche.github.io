@@ -18,8 +18,9 @@
 | 9     | Real-time arena framework & Worm Rush                      | ✅ Done (owner signed off 2026-11-09) |
 | 10    | Admin panel                                                | ✅ Done (owner signed off 2026-11-10) |
 | 11    | Game batch 1: board, strategy, puzzles                     | ✅ Done (owner signed off 2026-11-10) |
-| 12    | Game batch 2: cards, dice and secrets                      | 🔨 Built; awaiting owner sign-off     |
-| 13–14 | Game batches 3–4                                           | ⏳ Not started                        |
+| 12    | Game batch 2: cards, dice and secrets                      | ✅ Done (owner signed off 2026-11-12) |
+| 13    | Game batch 3: words and speed                              | 📝 Planned; awaiting owner answers    |
+| 14    | Game batch 4: real-time and physics                        | ⏳ Not started                        |
 | 15    | Translation pass & content packs                           | ⏳ Not started                        |
 | 16    | PWA, audio & haptics polish                                | ⏳ Not started                        |
 | 17    | Consent, legal, analytics, monitoring                      | ⏳ Not started                        |
@@ -2828,7 +2829,161 @@ The owner answered "you decide", so the recommended answers stand:
     - set `ARENA_SECRET` (the owner, in the arena Worker's and the Edge Functions' secrets) and deploy the arena Worker with the tables (migration tag v3);
     - then play one table game online with two accounts to see a result recorded.
 
-- [ ] Owner sign-off
+- [x] Owner sign-off (2026-11-12, "continue"; the release still waits for the owner's word)
+
+## Phase 13 — Game batch 3: words and speed
+
+**Goal (SPEC §5, §20.6–20.8, §22, §23):** 23 games: 13 word and knowledge games, whose content is different in each language, and the 10 Speed & Reaction games, which need no words at all. The catalog goes from 50 games to 73.
+
+**DoD (per batch):** every game is complete per the `ADDING_A_GAME.md` checklist and playable in all its declared modes. Plus the standing DoD.
+
+### What's new in this batch
+
+- **Words and dictionaries:** until now a game's only language content was its UI strings, plus Phase 12's two small packs. Seven of these games must say whether a word exists (Word Builder, Word of the Day, Anagrams, Letter Grid, Word Chain, Hangman's versus mode, Categories' bots), in English and in Bulgarian, and so must the server that replays a result. Bulgarian is highly inflected, so its list of word forms is far larger than its list of headwords (Q2).
+- **Typed input on phones:** answers typed in a game, with Android's composition events and the keyboard covering half the screen. Word of the Day and Hangman get an on-screen keyboard for each language.
+- **Speed and reaction:** times that matter to the millisecond, measured from the frame the stimulus was drawn, with false starts and limits on what a human can do (Q6).
+- **Daily puzzles in each language:** Word of the Day and the Mini Crossword are daily, one puzzle a day for each language, beside the daily challenge (Q5).
+- **Content written for the site:** trivia questions, typing texts, crossword clues and themed word sets, in English and Bulgarian (Q3, Q4).
+
+### Languages (proposed, Q1)
+
+- **Word and knowledge games:** English and Bulgarian, with every other language hidden until its packs come in Phase 15, as for Who's the Spy and Associations (ADR-0049, SPEC §5: no silent fallback). Their UI strings and game names are in all 11 locales, as always.
+- **Speed games:** every language. Color Clash's colour words are UI strings, and the rest use numbers, symbols and colours.
+- **Morse Master:** International Morse over the Latin alphabet in English, and the Cyrillic Morse table in Bulgarian.
+
+### Dictionaries (proposed, Q2)
+
+- **English:**
+  - **Valid words:** ENABLE (public domain; about 173,000 words), which word games commonly use and which has no trademark attached.
+  - **Answers:** words people know, drawn from SCOWL's commonness levels (its permissive licence checked in step 2), so a daily answer or a Hangman word is never obscure.
+- **Bulgarian:**
+  - **Valid words:** the BgOffice spelling dictionary's word forms, expanded from its Hunspell affix rules at build time. BgOffice is offered under GPL 2+, LGPL 2.1+ or MPL 1.1; the derived list is used under MPL 1.1, which keeps the list itself (and changes to it) open but asks nothing of the rest of the code. To confirm against the release's own licence files in step 2.
+  - **Answers:** common headwords and forms that I choose, with the owner's review (see Risks).
+- **Blocklists:** slurs and crude words stay valid as guesses but never become an answer, a Hangman word, a Word Chain prompt or a bot's play.
+- **Where they live:** a build script (`pnpm words:build`) makes a compact sorted list for each language, named by its hash, served as a static asset from Cloudflare. A game loads it lazily, in a worker, only when it needs one. `submit-match` and the table fetch the same file by its hash and check it, so the browser and the server always judge with the same list, and a new list never changes an old match's replay.
+
+### Proposed games
+
+- **Words:**
+  - **Word Builder:** 2–4 players, a turn game with racks of letter tiles placed crossword-style.
+    - **Its own design:** a 15 × 15 board with an original bonus layout, letter values and counts for each language from the dictionary's letter frequencies, and an original name and look (SPEC: nothing trademarked).
+    - **Online:** on the table (the racks and the bag are secret).
+    - **Bots:** move generation over the dictionary, easy to hard by how often they choose the best scoring move.
+  - **Word of the Day:** guess the day's 5-letter word in 6 tries, with an original look and a share grid (no spoilers in what's shared).
+    - **Daily:** one word a day for each language, the same for everyone, from 00:00 UTC; a streak; a practice mode with random words.
+    - **The admin panel** can replace a coming day's word (SPEC §14).
+  - **Anagrams:** a race to make as many words as possible from 7 letters in 2 minutes; every set has a 7-letter word to find.
+  - **Speed Typing:** words per minute and accuracy over a passage (Q4), in a race of up to 8.
+  - **Word Search:** themed grids (animals, food, sport…) in each language, words in 8 directions, in a race.
+  - **Letter Grid:** find words by joining neighbouring letters in a 4 × 4 or 5 × 5 grid of letter dice made for each language, in a race.
+  - **Categories:** 2–10 players, a random letter, then a country, a city, an animal and so on, answered at the same time; the room votes on doubtful answers. Bots answer from packs of known answers.
+  - **Mini Crossword:** a daily 5 × 5 crossword in each language (Q5), solved alone or raced, with a practice bank.
+  - **Word Chain:** 2–8 players in turns, each word starting with the last one's last letter, checked against the dictionary, on a timer. Each language's rules for letters no word starts with (Bulgarian's ь and ъ).
+  - **Morse Master:** decode Morse heard and seen, or tap it in, with Web Audio tones, in a race.
+  - **Hangman:** 1–6 players, words from themed packs; in versus, players set words for each other, which must be dictionary words and not blocked.
+- **Knowledge and drawing:**
+  - **Trivia:** 1–10 players race through questions in 8 categories and 3 difficulties, with points for speed (Q3).
+  - **Draw & Guess:** 3–10 players; one draws a secret word, the others guess in the chat, with a hint when a guess is close (Q7).
+- **Speed & Reaction** (each 1–10 players, solo or a race, with best scores):
+  - **Reaction Flash:** tap when the screen turns green; tapping early is a false start.
+  - **Tap Frenzy:** as many taps as possible in 5 seconds.
+  - **Aim Trainer:** targets that shrink as they last, with accuracy and time per hit.
+  - **Black Keys:** tap only the black tiles as they scroll, faster and faster (original name and look).
+  - **Color Clash:** the Stroop test: pick the colour of the ink, not the word.
+  - **Number Hunt:** tap 1 to 25 in a shuffled grid.
+  - **Sequence Memory:** repeat a growing sequence of colours and sounds.
+  - **Dot Count:** say how many dots flashed, closest wins.
+  - **Odd One Out:** find the one symbol or colour that differs, in grids that grow.
+  - **Math Sprint:** mental arithmetic in three levels against the clock.
+
+### Steps (one Conventional Commit each)
+
+1. **The word kit in the SDK:**
+   - letters for each language: case, accents and normalising (Bulgarian's й kept apart from и);
+   - typed input that works with phone keyboards and composition events, kept clear of the on-screen keyboard;
+   - an on-screen keyboard for each language (Latin QWERTY, and Bulgarian in the phonetic and BDS layouts, chosen in settings);
+   - word sets and themed packs loaded by language.
+2. **Dictionaries:** `pnpm words:build` for English and Bulgarian; answer lists and blocklists; the hashed static files; loading in a worker; the server's fetch by hash in `submit-match` and the table; sizes measured; licences in CREDITS; an ADR.
+3. **The speed kit:** times from the frame a stimulus is drawn (`requestAnimationFrame`, `performance.now`), false starts, the race runtime's live standings, best scores, and the server's plausibility limits (Q6).
+4. **Reaction Flash.**
+5. **Tap Frenzy.**
+6. **Aim Trainer.**
+7. **Black Keys.**
+8. **Color Clash.**
+9. **Number Hunt.**
+10. **Sequence Memory.**
+11. **Dot Count.**
+12. **Odd One Out.**
+13. **Math Sprint.**
+14. **Hangman.**
+15. **Word Search.**
+16. **Anagrams.**
+17. **Letter Grid.**
+18. **Word Chain.**
+19. **Speed Typing** (with its texts, Q4).
+20. **Morse Master.**
+21. **Word of the Day:** the game, the daily word for each language (a migration), the streak and the admin panel's override view.
+22. **Categories.**
+23. **Trivia** (with its question packs, Q3).
+24. **Mini Crossword:** the generator, the clue bank, a bank of daily puzzles for each language, and the content pipeline written up (SPEC §20.7).
+25. **Word Builder.**
+26. **Draw & Guess** (Q7).
+27. **The catalog:** checked at 73 games (71 in the languages without the word games' packs, if Q1 stands: the speed games count everywhere).
+28. **Verification and docs:**
+    - **Bots:** timing on a throttled CPU (Word Builder's move generation above all), self-play strength.
+    - **Speed:** input latency on a real phone and on a throttled CPU; the plausibility limits against fast honest play.
+    - **Words:** dictionary sizes and load times on a slow connection; the server's replay with each list.
+    - **Accessibility:** 360, 768 and 1280 px, both themes, Arabic and axe; colour never the only cue (Color Clash, Odd One Out); flashes within safe limits (WCAG 2.3.1: no more than three a second).
+    - **Docs:** ADDING_A_GAME for dictionaries, typed input, daily puzzles and speed games; ARCHITECTURE; ADRs.
+
+**Every game step includes:**
+
+- the engine, bots (where the game has them), renderer and controls (touch and keyboard);
+- the manifest's modes and timers, and replay validation;
+- achievements, and best-score or best-time boards for the races;
+- art and credits;
+- names and UI in all 11 locales;
+- SEO text in English and Bulgarian.
+
+### Decisions (proposed)
+
+- **Modes:**
+  - **Races** (the speed games, Anagrams, Speed Typing, Word Search, Letter Grid, Mini Crossword, Morse Master, Trivia, Word of the Day's practice): solo, race in private and public rooms, and quick match.
+  - **Turn games** (Hangman, Word Chain, Word Builder): solo against bots, hotseat (Word Builder with the pass screen), rooms and quick match. Word Builder plays online on the table; Hangman and Word Chain have nothing secret except a versus word, which goes to the table too.
+  - **Categories:** solo against bots, hotseat and rooms, on the table (answers are hidden until everyone has answered).
+  - **Draw & Guess:** rooms only, on the table (no bots: they can't draw or guess well).
+  - **Word of the Day:** solo only; the daily word is the same for everyone, so its "race" is the streak.
+- **Content is original or licensed,** with each source and licence in the game's `CREDITS.md` (SPEC §5, §19).
+- **Ratings:** none in this batch.
+- **Daily results:** Word of the Day and the Mini Crossword keep a streak per player and language; neither has a leaderboard, since the answer reaches the browser at the start (as in every such game).
+- **Renderers:** React with SVG or the DOM; no new libraries. Morse's tones use Web Audio, as the existing sounds do.
+
+### Risks
+
+- **Bulgarian content quality:** the answers, packs, clues, questions and texts I write in Bulgarian need the owner's review, as the UI strings do (see Known issues). A wrong daily word or a broken clue is visible to every player that day, so the daily banks are ready a few weeks ahead for review.
+- **Dictionary size:** ENABLE is about 1.8 MB as text and should be a few hundred KB compressed; Bulgarian's expanded forms could be several times that. If they're too big for a phone, the fallback is headwords plus the common inflections, measured in step 2.
+- **Word Builder's bots:** move generation over a large inflected dictionary is the heaviest bot so far; it runs in a worker on a budget, like the card games' search.
+- **Trivia accuracy:** facts go stale and some are disputed; each question carries a source note in its pack, and players can report a question (the existing reporting).
+- **Speed fairness:** a time measured in a browser depends on the screen and the device, so speed boards compare players on different hardware; the plausibility limits stop only what no human could do.
+- **Flashing content:** Reaction Flash, Color Clash and Black Keys flash colours; they stay under WCAG's three flashes a second and respect reduced motion.
+- **Draw & Guess is the odd one out:** a stream of strokes is new for the table (Q7).
+- **Size:** 23 games, but the 10 speed games are small. Every step is its own commit, so the batch can stop between games.
+
+### Open questions for the owner
+
+- **Q1: Languages.** Should the word and knowledge games come in English and Bulgarian, hidden in other languages until Phase 15 (recommended, as for Who's the Spy)? Or wait for every language?
+- **Q2: Dictionaries.** Should English use ENABLE (public domain) with SCOWL's common words for answers, and Bulgarian BgOffice's word forms under MPL 1.1 (recommended)? Both are checked again against the files themselves in step 2. Or do you know a Bulgarian list you prefer?
+- **Q3: Trivia questions.** Should I write original questions in English and Bulgarian, about 600 in each across 8 categories (recommended: they're ours, and work the same in both languages)? Or start from the Open Trivia Database (CC BY-SA 4.0: English only, with attribution, and our pack shared under the same licence)?
+- **Q4: Typing texts.** Should Speed Typing use passages from public-domain classics (English authors long dead; in Bulgarian, Vazov, Botev, Aleko Konstantinov and Elin Pelin, in modern spelling) plus original sentences (recommended)?
+- **Q5: Daily puzzles.** Should Word of the Day and the Mini Crossword be daily for each language, with answers I choose and you review, and an admin override for a coming day (recommended)? Or build the Mini Crossword as a practice bank only, and its daily later?
+- **Q6: Speed boards.** Should speed games have best-score boards, with the server refusing what no human could do (a reaction under 100 ms, more than 20 taps a second), and those boards marked as measured on the player's device (recommended)? Or no boards for them?
+- **Q7: Draw & Guess.** Should it be built here, as the last step, on the table, with strokes batched every 100 ms, passed to the room and not stored (recommended: only the word and the guesses are secret)? Or move it to Phase 14 with the real-time games?
+- **Q8: Anything to change** in the proposed games, rules and decisions above?
+
+### Status
+
+- [x] Plan written (2026-11-12)
+- [ ] Owner answers
 
 ## Known issues
 
