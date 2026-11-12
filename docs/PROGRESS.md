@@ -3138,6 +3138,17 @@ The owner answered "you decide, continue", so the recommended answers stand:
     - the keys;
     - 360, 768 and 1280 px and a landscape phone, both themes, Bulgarian and Arabic, and axe.
     - It found the pads' names leaving out their visible key numbers (WCAG 2.5.3), pads of 120 px on a landscape phone, and key numbers hard to read on dimmed pads; all fixed.
+- [x] **Step 11, Dot Count:**
+  - **Rules:** ten rounds. A field of dots shows for 1.2 s, then hides; say how many.
+    - The counts rise from 5–8 (countable) to 28–40 (estimated). The counts and places come from the seed, spread so no two dots touch.
+    - An exact answer scores 100. Otherwise up to 90, falling with the distance, to nothing at half the count away (19 of 20 scores 81, 15 scores 45). The score is the total out of 1000.
+    - Each answer returns its round's showing time from `actionMs`.
+  - **The screen:** a light field in both themes with dark dots (15:1). A keypad (and the keyboard's digits, Backspace and Enter) for the answer. After each answer the dots come back with the count and the points. Pausing during a showing shows that round again.
+  - **Board:** best score (not timed on the device). **Achievements:** games played, and 600, 780 or 900 points.
+  - **Server:** its fixture (10 answers, 859 points).
+  - Checked:
+    - over 200 seeds, every round's count in its range and no two dots too close;
+    - in Chrome, 24/24: ten rounds answered from the dots drawn, one 2 off (60 points for 10 of 12), adding up to 960 with the best on the menu; the dots hidden while answering; the keyboard (digits, Backspace, Enter); 360, 768 and 1280 px, both themes, Bulgarian and Arabic, and axe.
 
 ## Known issues
 

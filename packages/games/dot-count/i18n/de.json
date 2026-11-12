@@ -1,0 +1,86 @@
+{
+  "name": "Punkte zählen",
+  "tagline": "Ein Blitz voller Punkte: Wie viele waren es?",
+  "description": "Spiele Punkte zählen kostenlos: Punkte blitzen kurz auf, dann sagst du, wie viele es waren. Zehn Runden Zählen und Schätzen, auch online.",
+  "about": [
+    "Dot Count flashes a field of dots for just over a second, then hides it and asks: how many were there? The first rounds have few enough dots to count if you're quick. By the end there are up to forty, far too many to count, and you have to trust your sense of quantity.",
+    "Every round is scored by how close you got. An exact answer earns 100 points; a near miss still earns most of them, and the points fall away the further off you are. Ten rounds make a game, so the best possible score is 1,000.",
+    "Estimating at a glance is a real skill that gets better with practice: you learn to see small groups, like five or six, as a single shape and add them up. Race friends online and you'll all see the same dots in the same places."
+  ],
+  "howToPlay": [
+    "Press Start. Each round, dots appear for 1.2 seconds and then disappear.",
+    "Type how many you think there were and press OK.",
+    "The dots come back with the real count and your points.",
+    "An exact answer scores 100. Close answers score less, the further off the fewer.",
+    "After ten rounds you see your total out of 1,000."
+  ],
+  "controls": [
+    "Phones and tablets: tap the number keys under the field, then OK.",
+    "Mouse: click the number keys, then OK.",
+    "Keyboard: type the digits, Backspace to correct, Enter to answer.",
+    "Pause or start again from the bar above the game. Pausing during a showing shows the dots again on return."
+  ],
+  "tips": [
+    "Don't count one by one: look for small groups of three, four or five and add them up.",
+    "Split the field into quarters in your mind and estimate each.",
+    "On the big rounds, a quick estimate beats a count you can't finish.",
+    "Being a little off still scores well, so always answer something.",
+    "Take a breath before each round: the dots show only once."
+  ],
+  "faq": [
+    {
+      "question": "Is Dot Count free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "Around 600 is typical. Over 800 means your estimates are sharp; 900 and up is excellent."
+    },
+    {
+      "question": "How are points worked out?",
+      "answer": "An exact answer is 100. Otherwise you get up to 90, falling the further you are from the real count, to nothing at half the count away."
+    },
+    {
+      "question": "Can I see the dots again?",
+      "answer": "Only after you answer, when they come back with the real count. Each round shows them once."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room sees the same ten fields of dots. The most points wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "Punkte zählen",
+    "start": "Start",
+    "startDetail": "Zehn Runden",
+    "best": "Bestwert: {n} Punkte",
+    "round": "Runde",
+    "of": "{n} / {total}",
+    "points": "Punkte",
+    "dotsShowing": "Punkte sichtbar: zähl sie",
+    "reveal": "Es waren {n}. Du hast {guess} gesagt: {points} Punkte.",
+    "fieldLabel": "Punktefeld",
+    "getReady": "Mach dich bereit",
+    "final": "Spielende: {n} von 1000 Punkten.",
+    "howMany": "Wie viele Punkte waren es?",
+    "yourAnswer": "Deine Antwort",
+    "keypad": "Zifferntasten",
+    "backspace": "Ziffer löschen",
+    "ok": "OK",
+    "newBest": "Neuer Bestwert!",
+    "quit": "Beenden"
+  },
+  "achievements": {
+    "played": {
+      "name": "Zahlenkopf",
+      "description": "Spiele {count, plural, one {# Partie} other {# Partien}}"
+    },
+    "sharp-eye": {
+      "name": "Scharfer Blick",
+      "description": "Erziele {count} Punkte in einer Partie"
+    }
+  },
+  "leaderboards": {
+    "best-score": "Bestes Ergebnis"
+  }
+}

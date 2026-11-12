@@ -1,0 +1,86 @@
+{
+  "name": "数点点",
+  "tagline": "一闪而过的点：有多少个？",
+  "description": "免费玩数点点：点会闪现片刻，然后由你说出有几个。十个回合的计数与估算，可以单人玩，也可以和朋友在线比赛。",
+  "about": [
+    "Dot Count flashes a field of dots for just over a second, then hides it and asks: how many were there? The first rounds have few enough dots to count if you're quick. By the end there are up to forty, far too many to count, and you have to trust your sense of quantity.",
+    "Every round is scored by how close you got. An exact answer earns 100 points; a near miss still earns most of them, and the points fall away the further off you are. Ten rounds make a game, so the best possible score is 1,000.",
+    "Estimating at a glance is a real skill that gets better with practice: you learn to see small groups, like five or six, as a single shape and add them up. Race friends online and you'll all see the same dots in the same places."
+  ],
+  "howToPlay": [
+    "Press Start. Each round, dots appear for 1.2 seconds and then disappear.",
+    "Type how many you think there were and press OK.",
+    "The dots come back with the real count and your points.",
+    "An exact answer scores 100. Close answers score less, the further off the fewer.",
+    "After ten rounds you see your total out of 1,000."
+  ],
+  "controls": [
+    "Phones and tablets: tap the number keys under the field, then OK.",
+    "Mouse: click the number keys, then OK.",
+    "Keyboard: type the digits, Backspace to correct, Enter to answer.",
+    "Pause or start again from the bar above the game. Pausing during a showing shows the dots again on return."
+  ],
+  "tips": [
+    "Don't count one by one: look for small groups of three, four or five and add them up.",
+    "Split the field into quarters in your mind and estimate each.",
+    "On the big rounds, a quick estimate beats a count you can't finish.",
+    "Being a little off still scores well, so always answer something.",
+    "Take a breath before each round: the dots show only once."
+  ],
+  "faq": [
+    {
+      "question": "Is Dot Count free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "Around 600 is typical. Over 800 means your estimates are sharp; 900 and up is excellent."
+    },
+    {
+      "question": "How are points worked out?",
+      "answer": "An exact answer is 100. Otherwise you get up to 90, falling the further you are from the real count, to nothing at half the count away."
+    },
+    {
+      "question": "Can I see the dots again?",
+      "answer": "Only after you answer, when they come back with the real count. Each round shows them once."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room sees the same ten fields of dots. The most points wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "数点点",
+    "start": "开始",
+    "startDetail": "十个回合",
+    "best": "最佳：{n} 分",
+    "round": "回合",
+    "of": "{n} / {total}",
+    "points": "得分",
+    "dotsShowing": "点正在显示：数一数",
+    "reveal": "共有 {n} 个。你的答案是 {guess}：{points} 分。",
+    "fieldLabel": "点阵区域",
+    "getReady": "准备",
+    "final": "游戏结束：满分 1000，你得了 {n} 分。",
+    "howMany": "有多少个点？",
+    "yourAnswer": "你的答案",
+    "keypad": "数字键",
+    "backspace": "删除一位",
+    "ok": "确定",
+    "newBest": "新纪录！",
+    "quit": "退出"
+  },
+  "achievements": {
+    "played": {
+      "name": "数字头脑",
+      "description": "玩 {count, plural, other {# 局}}"
+    },
+    "sharp-eye": {
+      "name": "火眼金睛",
+      "description": "单局得到 {count} 分"
+    }
+  },
+  "leaderboards": {
+    "best-score": "最高分"
+  }
+}

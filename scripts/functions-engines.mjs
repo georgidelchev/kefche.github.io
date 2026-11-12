@@ -506,6 +506,15 @@ if (process.argv.includes("--fixtures")) {
         return { pad: state.length >= 10 ? (pad + 1) % 4 : pad };
       },
     },
+    // Each round's count, off by up to a quarter now and then.
+    "dot-count": {
+      config: undefined,
+      next: (state, random) => {
+        const actual = state.rounds[state.answers.length].dots.length;
+        const off = random() < 0.5 ? 0 : Math.round((random() - 0.5) * actual * 0.5);
+        return { guess: Math.max(0, actual + off) };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },
