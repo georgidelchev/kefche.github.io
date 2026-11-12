@@ -31,3 +31,12 @@ export declare function reachedTiers(
   definitions: Readonly<Record<string, readonly unknown[]>>,
   figures: unknown,
 ): { achievement: string; tier: "bronze" | "silver" | "gold" }[];
+/** A word list (lexicon.ts), and making one available to the engines (ADR-0050). */
+export declare class Lexicon {
+  static decode(bytes: Uint8Array): Lexicon;
+  readonly lang: string;
+  readonly size: number;
+  has(word: string): boolean;
+}
+export declare function provideLexicon(name: "all" | "common" | "blocked", lexicon: Lexicon): void;
+export declare function lexiconOf(lang: "en" | "bg", name: "all" | "common" | "blocked"): Lexicon;

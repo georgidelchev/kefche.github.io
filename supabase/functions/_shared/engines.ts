@@ -9,8 +9,11 @@ import {
   canonicalJson,
   GAMES as BUNDLED,
   hexInput,
+  Lexicon,
+  lexiconOf,
   levelForXp,
   levelProgress,
+  provideLexicon,
   RACE_LOG_LIMITS,
   reachedTiers as bundledReachedTiers,
   unpackActions,
@@ -21,6 +24,7 @@ import {
 export {
   ARENA_REPLAY_SECONDS,
   canonicalJson,
+  lexiconOf,
   levelForXp,
   levelProgress,
   RACE_LOG_LIMITS,
@@ -140,6 +144,8 @@ interface Rules {
    * information, Phase 12): the table reports the result, not the players.
    */
   table: boolean;
+  /** The word lists its engine reads (ADR-0050): provided by readyLexicons before a replay. */
+  lexicons: readonly ("all" | "common" | "blocked")[];
 }
 
 export type ServerGame =
@@ -166,6 +172,7 @@ interface BundledManifest {
   scoreValidation: { kind: string; maxActionsPerSecond?: number };
   achievements: AchievementDef[];
   leaderboards: LeaderboardDef[];
+  lexicons?: ("all" | "common" | "blocked")[];
 }
 
 /** Every game by id. */
@@ -184,6 +191,7 @@ export const GAMES: ReadonlyMap<string, ServerGame> = new Map(
       achievements: m.achievements,
       leaderboards: m.leaderboards,
       table: m.kind === "turn" && m.hiddenInformation === true,
+      lexicons: m.lexicons ?? [],
     };
     const game: ServerGame =
       m.kind === "race"
@@ -357,4 +365,41 @@ export function reachedTiers(
 ): { achievement: string; tier: "bronze" | "silver" | "gold" }[] {
   const definitions = Object.fromEntries([...GAMES].map(([id, game]) => [id, game.achievements]));
   return bundledReachedTiers(definitions, figures);
+}
+
+// ------------------------------------------------------------- word lists
+
+const ready = new Set<string>();
+
+/** Gunzips bytes with the platform's DecompressionStream. */
+async function gunzip(bytes: Uint8Array): Promise<Uint8Array> {
+  const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+
+async function sha256(bytes: Uint8Array): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+/**
+ * Provides the word lists a game's engine reads, in every language there's
+ * a file for, before it's replayed (ADR-0050). The files come with the
+ * function (lexicons.gen.ts, written by `pnpm words:build`), are checked
+ * against their hashes, and are read once per instance. Games without lists
+ * cost nothing: the module is imported only when one is needed.
+ */
+export async function readyLexicons(game: ServerGame): Promise<void> {
+  const wanted = game.lexicons.filter((name) => !ready.has(name));
+  if (wanted.length === 0) return;
+  const { LEXICON_FILES } = await import("./lexicons.gen.ts");
+  for (const name of wanted) {
+    for (const file of Object.values(LEXICON_FILES)) {
+      if (file.name !== name) continue;
+      const bytes = await gunzip(Uint8Array.from(atob(file.gz), (c) => c.charCodeAt(0)));
+      if ((await sha256(bytes)) !== file.sha256) throw new Error(`lexicon ${file.file}: bad hash`);
+      provideLexicon(name, Lexicon.decode(bytes));
+    }
+    ready.add(name);
+  }
 }

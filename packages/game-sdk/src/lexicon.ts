@@ -167,3 +167,34 @@ export async function loadLexicon(ref: LexiconRef, source: LexiconSource): Promi
     throw new Error(`lexicon: ${ref.file} isn't the list named`);
   return lexicon;
 }
+
+// ------------------------------------------------------------ the registry
+
+/** The lists a game can read: every valid word, words people know, blocked words. */
+export type LexiconName = "all" | "common" | "blocked";
+export const LEXICON_NAMES: readonly LexiconName[] = ["all", "common", "blocked"];
+
+const provided = new Map<string, Lexicon>();
+
+/**
+ * Makes a loaded list available to engines (`lexiconOf`). The browser
+ * provides a game's lists before it starts (`loadLexicons` in
+ * @kefche/lexicons/browser); the server before it replays (ADR-0050).
+ */
+export function provideLexicon(name: LexiconName, lexicon: Lexicon): void {
+  provided.set(`${lexicon.lang}:${name}`, lexicon);
+}
+
+export const hasLexicon = (lang: WordLang, name: LexiconName): boolean =>
+  provided.has(`${lang}:${name}`);
+
+/**
+ * A list an engine reads, by language and name. Engines may call it only
+ * for the lists their manifest's `lexicons` names; it throws when one
+ * hasn't been provided, which is a bug in whatever runs the engine.
+ */
+export function lexiconOf(lang: WordLang, name: LexiconName): Lexicon {
+  const lexicon = provided.get(`${lang}:${name}`);
+  if (!lexicon) throw new Error(`lexicon ${lang}:${name} hasn't been loaded`);
+  return lexicon;
+}

@@ -525,6 +525,157 @@ function canonicalJson(value2) {
 }
 var sameAction = (a, b) => canonicalJson(a) === canonicalJson(b);
 
+// packages/game-sdk/src/words.ts
+var ALPHABETS = {
+  en: "abcdefghijklmnopqrstuvwxyz",
+  bg: "\u0430\u0431\u0432\u0433\u0434\u0435\u0436\u0437\u0438\u0439\u043A\u043B\u043C\u043D\u043E\u043F\u0440\u0441\u0442\u0443\u0444\u0445\u0446\u0447\u0448\u0449\u044A\u044C\u044E\u044F"
+};
+var LETTER_SETS = {
+  en: new Set(ALPHABETS.en),
+  bg: new Set(ALPHABETS.bg)
+};
+var charsOf = (word) => Array.from(word);
+var PHYSICAL = {
+  en: {},
+  bg: physicalMap([
+    ["KeyQ KeyW KeyE KeyR KeyT KeyY KeyU KeyI KeyO KeyP BracketLeft BracketRight", "\u044F\u0432\u0435\u0440\u0442\u044A\u0443\u0438\u043E\u043F\u0448\u0449"],
+    ["KeyA KeyS KeyD KeyF KeyG KeyH KeyJ KeyK KeyL Backquote Backslash", "\u0430\u0441\u0434\u0444\u0433\u0445\u0439\u043A\u043B\u0447\u044E"],
+    ["KeyZ KeyX KeyC KeyV KeyB KeyN KeyM", "\u0437\u044C\u0446\u0436\u0431\u043D\u043C"]
+  ])
+};
+function physicalMap(rows) {
+  const map = {};
+  for (const [codes, letters] of rows) {
+    const keys = codes.split(" ");
+    const chars = charsOf(letters);
+    keys.forEach((code, i) => {
+      const ch = chars[i];
+      if (ch !== void 0) map[code] = ch;
+    });
+  }
+  return map;
+}
+
+// packages/game-sdk/src/lexicon.ts
+var MAGIC = "KWL1";
+var HEADER = 16;
+var LETTER = 31;
+var LAST = 1 << 5;
+var FINAL = 1 << 6;
+var Lexicon = class _Lexicon {
+  lang;
+  size;
+  /** The node every word starts from. */
+  root = 1;
+  edges;
+  letters;
+  alphabet;
+  constructor(lang, size, edges) {
+    this.lang = lang;
+    this.size = size;
+    this.edges = edges;
+    this.alphabet = charsOf(ALPHABETS[lang]);
+    this.letters = new Map(this.alphabet.map((c, i) => [c, i]));
+  }
+  /** Reads an uncompressed list file; throws if it isn't one for a known language. */
+  static decode(bytes) {
+    const view22 = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    const magic = String.fromCharCode(...bytes.subarray(0, 4));
+    if (bytes.byteLength < HEADER || magic !== MAGIC || view22.getUint8(4) !== 1)
+      throw new Error("lexicon: not a word list");
+    const lang = String.fromCharCode(...bytes.subarray(6, 12).filter((b) => b !== 0));
+    if (!(lang === "en" || lang === "bg")) throw new Error(`lexicon: unknown language ${lang}`);
+    if (view22.getUint8(5) !== charsOf(ALPHABETS[lang]).length)
+      throw new Error("lexicon: alphabet differs");
+    const count3 = (bytes.byteLength - HEADER) / 4;
+    if (!Number.isInteger(count3)) throw new Error("lexicon: truncated");
+    const edges = new Uint32Array(count3);
+    for (let i = 0; i < count3; i++) edges[i] = view22.getUint32(HEADER + i * 4, true);
+    return new _Lexicon(lang, view22.getUint32(12, true), edges);
+  }
+  /**
+   * The node after one more letter, and whether the letters so far make a
+   * word; null when no word continues that way.
+   */
+  step(node2, letter) {
+    const c = this.letters.get(letter);
+    if (c === void 0 || node2 === 0) return null;
+    for (let at = node2; at < this.edges.length; at++) {
+      const e = this.edges[at] ?? 0;
+      if ((e & LETTER) === c) return { node: e >>> 7, word: (e & FINAL) !== 0 };
+      if ((e & LAST) !== 0) return null;
+    }
+    return null;
+  }
+  /** The node a prefix leads to, or null when no word starts with it. */
+  walk(prefix, from = this.root) {
+    let at = { node: from, word: false };
+    for (const ch of prefix) {
+      const next3 = this.step(at.node, ch);
+      if (!next3) return null;
+      at = next3;
+    }
+    return at;
+  }
+  /** Whether a (folded) word is in the list. */
+  has(word) {
+    return word.length > 0 && (this.walk(word)?.word ?? false);
+  }
+  /** Whether some word in the list starts with `prefix` (or is it). */
+  hasPrefix(prefix) {
+    return this.walk(prefix) !== null;
+  }
+  /** The letters that can follow a node, each with its node and whether it ends a word. */
+  next(node2) {
+    const out = [];
+    if (node2 === 0) return out;
+    for (let at = node2; at < this.edges.length; at++) {
+      const e = this.edges[at] ?? 0;
+      out.push({
+        letter: this.alphabet[e & LETTER] ?? "",
+        node: e >>> 7,
+        word: (e & FINAL) !== 0
+      });
+      if ((e & LAST) !== 0) break;
+    }
+    return out;
+  }
+  /**
+   * Every word from a node on, in alphabetical order (with `prefix` in
+   * front), up to `limit`: for small walks, like the words of one length.
+   */
+  words({
+    prefix = "",
+    length,
+    limit = Infinity
+  } = {}) {
+    const start = prefix === "" ? { node: this.root, word: false } : this.walk(prefix);
+    const out = [];
+    if (!start) return out;
+    if (start.word && (length === void 0 || charsOf(prefix).length === length)) out.push(prefix);
+    const visit = (node2, sofar, depth) => {
+      for (const edge of this.next(node2)) {
+        if (out.length >= limit) return;
+        const word = sofar + edge.letter;
+        if (length !== void 0 && depth + 1 > length) return;
+        if (edge.word && (length === void 0 || depth + 1 === length)) out.push(word);
+        visit(edge.node, word, depth + 1);
+      }
+    };
+    visit(start.node, prefix, charsOf(prefix).length);
+    return out;
+  }
+};
+var provided = /* @__PURE__ */ new Map();
+function provideLexicon(name, lexicon) {
+  provided.set(`${lexicon.lang}:${name}`, lexicon);
+}
+function lexiconOf(lang, name) {
+  const lexicon = provided.get(`${lang}:${name}`);
+  if (!lexicon) throw new Error(`lexicon ${lang}:${name} hasn't been loaded`);
+  return lexicon;
+}
+
 // packages/game-sdk/src/manifest.ts
 var defineManifest = (manifest61) => manifest61;
 
@@ -15308,12 +15459,15 @@ export {
   ARENA_REPLAY_SECONDS,
   ArenaHost,
   GAMES,
+  Lexicon,
   RACE_LOG_LIMITS,
   canonicalJson,
   hexInput,
   inputHex,
   levelForXp,
   levelProgress,
+  lexiconOf,
+  provideLexicon,
   reachedTiers,
   unpackActions,
   xpForLevel

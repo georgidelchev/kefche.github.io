@@ -94,6 +94,7 @@ export const gameManifestSchema = z
     physics: z.literal("matter").optional(),
     estimatedMinutes: z.tuple([z.int().positive(), z.int().positive()]),
     contentPacks: z.array(z.string()).optional(),
+    lexicons: z.array(z.enum(["all", "common", "blocked"])).optional(),
     leaderboards: z.array(
       z.object({
         id: z.string().regex(kebab),

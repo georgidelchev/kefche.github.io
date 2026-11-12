@@ -199,6 +199,12 @@ export interface GameManifest {
   /** Locales with content packs (word and party games). */
   contentPacks?: string[];
   leaderboards: LeaderboardDef[];
+  /**
+   * The word lists its engine reads (`lexiconOf`, Phase 13, ADR-0050), in
+   * each language it's offered in: loaded before it starts, and before the
+   * server replays it.
+   */
+  lexicons?: ("all" | "common" | "blocked")[];
   achievements: AchievementDef[];
   scoreValidation: ScoreValidationRule;
   tags: string[];

@@ -60,7 +60,7 @@ import { arenaBoardEntries, arenaReportSchema } from "../_shared/arena-play.ts";
 import { arenaLifeRecordSchema, judgeArena } from "../_shared/arena-solo.ts";
 import { judgeTable, tableReportSchema, tableRoomSchema } from "../_shared/table-play.ts";
 import { decide, type Verdict } from "../_shared/chess-rated.ts";
-import { GAMES } from "../_shared/engines.ts";
+import { GAMES, readyLexicons } from "../_shared/engines.ts";
 import { rate } from "../_shared/glicko2.ts";
 import { decideTurn } from "../_shared/turn-rated.ts";
 import { bearer, env, fail, json, log } from "../_shared/http.ts";
@@ -214,6 +214,7 @@ async function settle(admin: SupabaseClient, game: Loaded, attempt = 0): Promise
   const recorded = game.moves.map((m) => ({ seat: m.seat, action: m.action, at: new Date(m.at) }));
   const now = new Date(game.now);
   const engine = GAMES.get(game.gameId);
+  if (engine) await readyLexicons(engine);
   let verdict: Verdict;
   if (game.gameId === "chess") verdict = decide(rated, recorded, now);
   else if (engine?.kind === "turn") {
@@ -318,6 +319,7 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
   }
   const game = GAMES.get(play.gameId);
   if (!game || record.gameId !== play.gameId) return fail("bad_request", 400);
+  await readyLexicons(game);
   // A game updated since the play began is played to its old rules: it can't be judged.
   if (record.version !== play.gameVersion || game.version !== play.gameVersion) {
     return fail("game_updated", 409);
@@ -490,6 +492,7 @@ async function submitTable(admin: SupabaseClient, body: unknown): Promise<Respon
   if (game?.kind !== "turn" || !game.table || game.version !== room.gameVersion) {
     return fail("bad_request", 400);
   }
+  await readyLexicons(game);
   const verdict = judgeTable(game, room, report, Date.now());
   if (!verdict.ok) {
     log("error", "table_refused", { room: room.roomId, game: room.gameId, reason: verdict.reason });
@@ -560,6 +563,7 @@ async function loadRoom(
   if (room.rated || game?.kind !== kind || game.table || !settings.success) {
     return fail("bad_request", 400);
   }
+  await readyLexicons(game);
   if (kind === "race" && !game.modes.includes("race")) return fail("bad_request", 400);
   if (game.version !== room.gameVersion) return fail("game_updated", 409);
   const timer = roomTimer(game, settings.data.timer);

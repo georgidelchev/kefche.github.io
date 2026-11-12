@@ -1,6 +1,7 @@
 {
-  // Data only: the list of current word-list files, read by engines, bots,
-  // the browser and the server alike.
+  // The list of current files (read by engines, bots, the browser and the
+  // server alike), and the browser's loader (DOM types for fetch).
   "extends": "@kefche/config/tsconfig.base.json",
-  "include": ["index.gen.ts"]
+  "compilerOptions": { "lib": ["es2024", "dom", "dom.iterable"] },
+  "include": ["index.gen.ts", "browser.ts"]
 }

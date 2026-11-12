@@ -17,6 +17,7 @@ import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { gunzipSync } from "node:zlib";
 
 import { build } from "esbuild";
 
@@ -54,6 +55,7 @@ const entry = [
   'export { RACE_LOG_LIMITS, unpackActions } from "./packages/game-sdk/src/race-log.ts";',
   'export { levelForXp, levelProgress, xpForLevel } from "./packages/game-sdk/src/xp.ts";',
   'export { reachedTiers } from "./packages/game-sdk/src/achievements.ts";',
+  'export { Lexicon, lexiconOf, provideLexicon } from "./packages/game-sdk/src/lexicon.ts";',
   "export const GAMES = {",
   ...ids.map((id, i) =>
     realtime.has(id)
@@ -120,6 +122,15 @@ writeFileSync(
     "  definitions: Readonly<Record<string, readonly unknown[]>>,",
     "  figures: unknown,",
     '): { achievement: string; tier: "bronze" | "silver" | "gold" }[];',
+    "/** A word list (lexicon.ts), and making one available to the engines (ADR-0050). */",
+    "export declare class Lexicon {",
+    "  static decode(bytes: Uint8Array): Lexicon;",
+    "  readonly lang: string;",
+    "  readonly size: number;",
+    "  has(word: string): boolean;",
+    "}",
+    'export declare function provideLexicon(name: "all" | "common" | "blocked", lexicon: Lexicon): void;',
+    'export declare function lexiconOf(lang: "en" | "bg", name: "all" | "common" | "blocked"): Lexicon;',
     "",
   ].join("\n"),
 );
@@ -155,9 +166,22 @@ console.log(`engines.gen.js: ${ids.join(", ")} (${String(Math.round(bundle.lengt
 }
 
 if (process.argv.includes("--fixtures")) {
-  const { GAMES, ArenaHost, canonicalJson, inputHex } = await import(
+  const { GAMES, ArenaHost, canonicalJson, inputHex, Lexicon, provideLexicon } = await import(
     `${pathToFileURL(join(out, "engines.gen.js")).href}?t=${String(Date.now())}`
   );
+  // Word games' engines read word lists (ADR-0050): provide the current files,
+  // as the browser and the server do before playing or replaying.
+  {
+    const index = readFileSync(join(root, "packages/lexicons/index.gen.ts"), "utf8");
+    const json = /LEXICONS = (\{[\s\S]*\}) as const/.exec(index)?.[1];
+    if (!json) throw new Error("packages/lexicons/index.gen.ts: no LEXICONS");
+    for (const named of Object.values(JSON.parse(json))) {
+      for (const ref of Object.values(named)) {
+        const gz = readFileSync(join(root, "apps/web/public/lexicons", ref.file));
+        provideLexicon(ref.name, Lexicon.decode(new Uint8Array(gunzipSync(gz))));
+      }
+    }
+  }
 
   /** Small seeded PRNG (mulberry32). */
   const rng = (seed) => {

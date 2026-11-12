@@ -4,6 +4,7 @@
 import {
   canonicalJson,
   GAMES,
+  readyLexicons,
   replayArena,
   replayRace,
   replayTurn,
@@ -48,6 +49,7 @@ for (const f of all) {
   Deno.test(`${f.id}: the recorded game replays to the same end`, async () => {
     const game = GAMES.get(f.id);
     if (!game) throw new Error(`no game ${f.id}`);
+    await readyLexicons(game);
     const config = f.config ?? undefined;
     if (game.kind === "realtime") {
       const replay = replayArena(game, f.seed, f.look ?? 0, f.actions ?? []);

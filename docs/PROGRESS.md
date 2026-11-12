@@ -3177,6 +3177,11 @@ The owner answered "you decide, continue", so the recommended answers stand:
     - 20,000 problems at each level, every answer a whole number of zero or more (the largest 20, 144 and 891);
     - in Chrome, 23/23: the three levels; ten answers by keyboard with one wrong, then the keypad; the note; after the minute 10 right and 1 wrong, with medium's best on the menu and not the others'; 360, 768 and 1280 px, both themes, Bulgarian and Arabic (the sums still left to right), and axe.
 - **The ten speed games are done** (steps 4 to 13).
+- [x] **Word lists in engines** (before the word games, ADR-0050 updated):
+  - **Engines read lists from a registry:** a manifest names the lists its engine reads (`lexicons`), and the engine reads them with `lexiconOf(lang, name)`. Whatever runs the engine provides them first: `loadLexicons` (`@kefche/lexicons/browser`) in the browser, the fixture runner in Node, and `readyLexicons` on the server.
+  - **The server's copy:** `words:build` writes the current files into the Edge Functions (`_shared/lexicons.gen.ts`, gzipped in base64, 849 KB). `submit-match` imports it only to replay a word game, checks the hashes, and keeps the lists for the instance. It needs no fetch and no setting, which a site address for the functions would have needed.
+  - **CI** checks the copy with the other built lists.
+  - Checked: a Deno test loads every list through `readyLexicons` (about 80 ms) and looks words up in both languages; Deno 135/135.
 
 ## Known issues
 

@@ -6,7 +6,8 @@
   "description": "The word games' word lists: sources, licences, and the current built files (ADR-0050).",
   "sideEffects": false,
   "exports": {
-    ".": "./index.gen.ts"
+    ".": "./index.gen.ts",
+    "./browser": "./browser.ts"
   },
   "scripts": {
     "typecheck": "tsc -p ."
