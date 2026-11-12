@@ -19,7 +19,7 @@
 | 10    | Admin panel                                                | ✅ Done (owner signed off 2026-11-10) |
 | 11    | Game batch 1: board, strategy, puzzles                     | ✅ Done (owner signed off 2026-11-10) |
 | 12    | Game batch 2: cards, dice and secrets                      | ✅ Done (owner signed off 2026-11-12) |
-| 13    | Game batch 3: words and speed                              | 📝 Planned; awaiting owner answers    |
+| 13    | Game batch 3: words and speed                              | 🔨 In progress                        |
 | 14    | Game batch 4: real-time and physics                        | ⏳ Not started                        |
 | 15    | Translation pass & content packs                           | ⏳ Not started                        |
 | 16    | PWA, audio & haptics polish                                | ⏳ Not started                        |
@@ -2980,10 +2980,22 @@ The owner answered "you decide", so the recommended answers stand:
 - **Q7: Draw & Guess.** Should it be built here, as the last step, on the table, with strokes batched every 100 ms, passed to the room and not stored (recommended: only the word and the guesses are secret)? Or move it to Phase 14 with the real-time games?
 - **Q8: Anything to change** in the proposed games, rules and decisions above?
 
+### Owner answers (2026-11-12)
+
+The owner answered "you decide, continue", so the recommended answers stand:
+
+- **Q1 — Languages:** the word and knowledge games in English and Bulgarian, hidden in other languages until Phase 15; the speed games everywhere.
+- **Q2 — Dictionaries:** ENABLE and SCOWL's common words for English, BgOffice's word forms under MPL 1.1 for Bulgarian, checked against the files in step 2.
+- **Q3 — Trivia:** original questions in English and Bulgarian.
+- **Q4 — Typing texts:** public-domain classics and original sentences.
+- **Q5 — Daily puzzles:** Word of the Day and the Mini Crossword daily in each language, with an admin override.
+- **Q6 — Speed boards:** best-score boards with the server's plausibility limits, marked as measured on the player's device.
+- **Q7 — Draw & Guess:** in this phase, last, on the table.
+- **Q8 — Decisions:** no changes.
+
 ### Status
 
-- [x] Plan written (2026-11-12)
-- [ ] Owner answers
+- [x] Plan written; the recommended answers stand (2026-11-12)
 
 ## Known issues
 
