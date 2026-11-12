@@ -3053,6 +3053,18 @@ The owner answered "you decide, continue", so the recommended answers stand:
     - pausing calls the round off and resuming starts the next wait;
     - 360, 768 and 1280 px, both themes, Bulgarian and Arabic, and axe while waiting and at the summary.
   - Races between browsers come with step 28's checks.
+- [x] **Step 5, Tap Frenzy:**
+  - **Rules:** as many taps as possible in 5 seconds from the first. Each tap says when it came after the first, and a stop ends the run at 5000 ms.
+    - A tap within 50 ms of the last one that counted doesn't count.
+    - **The autoclicker check** (SPEC): 20 or more counted taps whose gaps vary by under 3 ms make the run void, since no person taps that steadily.
+    - The score is the taps that count, higher being better.
+  - **The screen:** a large pad that takes every finger (tapping with two, alternating, is the fast way), a bar and the seconds left, then the taps and taps a second. Pausing calls the run off.
+  - **The kit:** a pad can take every finger's touch (`multiTouch`), not only the first's.
+  - **Board:** most taps, marked as measured on the device. **Achievements:** games played, and 35, 50 or 65 taps.
+  - **Server:** its fixture (49 taps at random gaps, some too soon, scoring 45).
+  - Checked:
+    - the rules on their own (even taps void, uneven ones count, the 50 ms gap, no going back in time, nothing past 5 s, and the claimed time adding up to 5000 ms);
+    - in Chrome, 27/27: 40 uneven taps with two fingers counted as they came, with the summary, taps a second and the best kept on the menu; taps 10 ms apart counted every other one; Space taps; a pause sets the run back to zero; 360, 768 and 1280 px, both themes, Bulgarian and Arabic, and axe.
 
 ## Known issues
 

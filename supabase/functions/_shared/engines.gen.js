@@ -149,13 +149,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine52, bots2, options) {
-    this.engine = engine52;
+  constructor(engine53, bots2, options) {
+    this.engine = engine53;
     this.bots = bots2;
     this.options = options;
-    this.world = engine52.createWorld(options.config, options.seed);
+    this.world = engine53.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine52.ticksPerSecond / engine52.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine53.ticksPerSecond / engine53.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -387,11 +387,11 @@ var ByteReader = class {
     return v;
   }
   varint() {
-    let result24 = 0;
+    let result25 = 0;
     for (let shift = 0; shift < 35; shift += 7) {
       const byte = this.u8();
-      result24 |= (byte & 127) << shift;
-      if (byte < 128) return result24 >>> 0;
+      result25 |= (byte & 127) << shift;
+      if (byte < 128) return result25 >>> 0;
     }
     throw new RangeError("varint longer than 5 bytes");
   }
@@ -526,7 +526,7 @@ function canonicalJson(value2) {
 var sameAction = (a, b) => canonicalJson(a) === canonicalJson(b);
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest52) => manifest52;
+var defineManifest = (manifest53) => manifest53;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -2472,8 +2472,8 @@ function peg$parse(input, options) {
   var peg$f9 = function(line) {
     return line;
   };
-  var peg$f10 = function(result24, comment) {
-    return { result: result24, comment };
+  var peg$f10 = function(result25, comment) {
+    return { result: result25, comment };
   };
   var peg$currPos = options.peg$currPos | 0;
   var peg$posDetailsCache = [{ line: 1, column: 1 }];
@@ -3460,12 +3460,12 @@ function xoroshiro128(state) {
   return function() {
     let s0 = BigInt(state & MASK64);
     let s1 = BigInt(state >> 64n & MASK64);
-    const result24 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
+    const result25 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
     s1 ^= s0;
     s0 = (rotl(s0, 24n) ^ s1 ^ s1 << 16n) & MASK64;
     s1 = rotl(s1, 37n);
     state = s1 << 64n | s0;
-    return result24;
+    return result25;
   };
 }
 var rand = xoroshiro128(0xa187eb39cdcaed8f31c4b365b102e01en);
@@ -5168,16 +5168,16 @@ var Chess = class {
     return move3;
   }
   pgn({ newline = "\n", maxWidth = 0 } = {}) {
-    const result24 = [];
+    const result25 = [];
     let headerExists = false;
     for (const i in this._header) {
       const headerTag = this._header[i];
       if (headerTag)
-        result24.push(`[${i} "${this._header[i]}"]` + newline);
+        result25.push(`[${i} "${this._header[i]}"]` + newline);
       headerExists = true;
     }
     if (headerExists && this._history.length) {
-      result24.push(newline);
+      result25.push(newline);
     }
     const appendComment = (moveString2) => {
       const comment = this._comments[this.fen()];
@@ -5219,11 +5219,11 @@ var Chess = class {
     }
     moves.push(this._header.Result || "*");
     if (maxWidth === 0) {
-      return result24.join("") + moves.join(" ");
+      return result25.join("") + moves.join(" ");
     }
     const strip = function() {
-      if (result24.length > 0 && result24[result24.length - 1] === " ") {
-        result24.pop();
+      if (result25.length > 0 && result25[result25.length - 1] === " ") {
+        result25.pop();
         return true;
       }
       return false;
@@ -5237,12 +5237,12 @@ var Chess = class {
           while (strip()) {
             width--;
           }
-          result24.push(newline);
+          result25.push(newline);
           width = 0;
         }
-        result24.push(token);
+        result25.push(token);
         width += token.length;
-        result24.push(" ");
+        result25.push(" ");
         width++;
       }
       if (strip()) {
@@ -5259,19 +5259,19 @@ var Chess = class {
         }
       }
       if (currentWidth + moves[i].length > maxWidth && i !== 0) {
-        if (result24[result24.length - 1] === " ") {
-          result24.pop();
+        if (result25[result25.length - 1] === " ") {
+          result25.pop();
         }
-        result24.push(newline);
+        result25.push(newline);
         currentWidth = 0;
       } else if (i !== 0) {
-        result24.push(" ");
+        result25.push(" ");
         currentWidth++;
       }
-      result24.push(moves[i]);
+      result25.push(moves[i]);
       currentWidth += moves[i].length;
     }
-    return result24.join("");
+    return result25.join("");
   }
   /**
    * @deprecated Use `setHeader` and `getHeaders` instead. This method will return null header tags (which is not what you want)
@@ -5348,9 +5348,9 @@ var Chess = class {
       }
       node2 = node2.variations[0];
     }
-    const result24 = parsedPgn.result;
-    if (result24 && Object.keys(this._header).length && this._header["Result"] !== result24) {
-      this.setHeader("Result", result24);
+    const result25 = parsedPgn.result;
+    if (result25 && Object.keys(this._header).length && this._header["Result"] !== result25) {
+      this.setHeader("Result", result25);
     }
   }
   /*
@@ -5666,8 +5666,8 @@ var Chess = class {
       }
     }
     this._updateCastlingRights();
-    const result24 = this.getCastlingRights(color);
-    return (rights[KING2] === void 0 || rights[KING2] === result24[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result24[QUEEN2]);
+    const result25 = this.getCastlingRights(color);
+    return (rights[KING2] === void 0 || rights[KING2] === result25[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result25[QUEEN2]);
   }
   getCastlingRights(color) {
     return {
@@ -10793,8 +10793,8 @@ function applyAction14(s, seat, action) {
   const spot = next2.shot;
   const dive = next2.dive;
   const reach2 = columnOf(spot) === dive && !(isHigh(spot) && columnOf(spot) !== 1);
-  const result24 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
-  const kick = { shooter: shooterOf(s), spot, dive, result: result24 };
+  const result25 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
+  const kick = { shooter: shooterOf(s), spot, dive, result: result25 };
   return decide({ ...next2, shot: null, dive: null, kicks: [...s.kicks, kick], rng: rng.state });
 }
 function currentSeats14(s) {
@@ -13297,6 +13297,82 @@ var manifest47 = defineManifest({
   tags: ["puzzle", "numbers", "single-player"]
 });
 
+// packages/games/tap-frenzy/engine/index.ts
+var DURATION_MS = 5e3;
+var STEADY_SPREAD_MS = 3;
+var STEADY_TAPS = 20;
+var initialState21 = () => ({ taps: [], last: 0, ignored: 0, over: false });
+var gaps = (s) => s.taps.slice(1).map((t2, i) => t2 - (s.taps[i] ?? 0));
+function machineLike(s) {
+  const g = gaps(s);
+  if (g.length < STEADY_TAPS) return false;
+  const m = mean(g);
+  const spread = Math.sqrt(mean(g.map((x) => (x - m) ** 2)));
+  return spread < STEADY_SPREAD_MS;
+}
+function read(s, action) {
+  if (s.over || typeof action !== "object" || action === null) return null;
+  if ("stop" in action)
+    return action.stop === true && s.taps.length > 0 ? { stop: true } : null;
+  const t2 = measuredMs(action.t, DURATION_MS);
+  if (t2 === null) return null;
+  if (s.taps.length === 0 ? t2 !== 0 : t2 < s.last) return null;
+  return { tap: t2 };
+}
+function apply2(s, action) {
+  const read_ = read(s, action);
+  if (!read_) return s;
+  if ("stop" in read_) return { ...s, over: true };
+  const t2 = read_.tap;
+  const previous = s.taps.at(-1);
+  if (previous !== void 0 && t2 - previous < HUMAN.tapGapMs)
+    return { ...s, last: t2, ignored: s.ignored + 1 };
+  return { ...s, taps: [...s.taps, t2], last: t2 };
+}
+function result21(s) {
+  if (!s.over) return null;
+  if (machineLike(s)) return { completed: false };
+  return { completed: true, score: s.taps.length };
+}
+var engine48 = {
+  initialState: initialState21,
+  apply: apply2,
+  progress: (s) => s.over ? 1 : Math.min(1, s.last / DURATION_MS),
+  result: result21,
+  actionMs: (s, action) => {
+    const read_ = read(s, action);
+    if (!read_) return 0;
+    return ("stop" in read_ ? DURATION_MS : read_.tap) - s.last;
+  }
+};
+
+// packages/games/tap-frenzy/manifest.ts
+var manifest48 = defineManifest({
+  id: "tap-frenzy",
+  version: 1,
+  category: "speed",
+  kind: "race",
+  players: { min: 1, max: 10, default: 2 },
+  modes: ["solo", "race", "online-private", "online-public", "quick-match"],
+  bots: { supported: false, difficulties: [], canFillSeats: false },
+  timers: [{ kind: "countdown", seconds: 60 }],
+  options: [],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard", "mouse"],
+  renderer: "dom",
+  estimatedMinutes: [1, 2],
+  leaderboards: [{ id: "most-taps", metric: "score", order: "desc", device: true }],
+  achievements: [
+    { id: "played", icon: "repeat", metric: "played", tiers: [1, 25, 100] },
+    { id: "fast-fingers", icon: "flame", metric: "bestScore", tiers: [35, 50, 65] }
+  ],
+  // Every tap carries its time; the engine applies the limits.
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 25 },
+  tags: ["speed", "reflex", "single-player", "quick"]
+});
+
 // packages/games/ultimate-ttt/engine/index.ts
 var EMPTY9 = -1;
 var LINES = [
@@ -13326,7 +13402,7 @@ function movesFor6(state) {
     (b) => smallBoard(state.cells, b).flatMap((v, c) => v === EMPTY9 ? [b * 9 + c] : [])
   );
 }
-var engine48 = {
+var engine49 = {
   initialState(config) {
     const { mode } = configFrom18(config);
     return {
@@ -13383,7 +13459,7 @@ var engine48 = {
 };
 
 // packages/games/ultimate-ttt/manifest.ts
-var manifest48 = defineManifest({
+var manifest49 = defineManifest({
   id: "ultimate-ttt",
   version: 1,
   category: "strategy",
@@ -13435,7 +13511,7 @@ function over14(state) {
   if (state.battle.up[0].length > 0 || state.battle.up[1].length > 0) return false;
   return state.piles[0].length === 0 || state.piles[1].length === 0 || state.battles >= state.limit;
 }
-function initialState21(config, _seats, seed) {
+function initialState22(config, _seats, seed) {
   const rng = Rng.fromSeed(seed);
   const deck2 = shuffledDeck(rng, 52);
   return {
@@ -13514,7 +13590,7 @@ function currentSeats20(state) {
   if (over14(state)) return [];
   return [0, 1].filter((s) => !state.flipped[s]);
 }
-function result21(state) {
+function result22(state) {
   if (!over14(state)) return null;
   if (state.outOfCards !== null) {
     return { completed: true, outcome: state.outOfCards === 0 ? [0, 1] : [1, 0] };
@@ -13544,17 +13620,17 @@ function view20(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine49 = {
-  initialState: initialState21,
+var engine50 = {
+  initialState: initialState22,
   legalActions: legalActions20,
   applyAction: applyAction20,
   currentSeats: currentSeats20,
-  result: result21,
+  result: result22,
   view: view20
 };
 
 // packages/games/war/manifest.ts
-var manifest49 = defineManifest({
+var manifest50 = defineManifest({
   id: "war",
   version: 1,
   category: "cards",
@@ -13598,7 +13674,7 @@ var manifest49 = defineManifest({
 // packages/games/whos-the-spy/engine/index.ts
 var PACK_SIZE2 = 30;
 var HIDDEN4 = -1;
-function initialState22(config, seats, seed) {
+function initialState23(config, seats, seed) {
   const rng = Rng.fromSeed(seed);
   return {
     players: seats,
@@ -13669,7 +13745,7 @@ function currentSeats21(s) {
   if (s.phase === "vote") return s.votes.flatMap((v, seat) => v === null ? [seat] : []);
   return [s.spy];
 }
-function result22(s) {
+function result23(s) {
   if (s.winner === null) return null;
   return {
     completed: true,
@@ -13692,19 +13768,19 @@ function view21(s, seat) {
 function viewAction9(action, seat, viewer) {
   return "vote" in action && viewer !== seat ? null : action;
 }
-var engine50 = {
-  initialState: initialState22,
+var engine51 = {
+  initialState: initialState23,
   legalActions: legalActions21,
   sideActions: sideActions2,
   applyAction: applyAction21,
   currentSeats: currentSeats21,
-  result: result22,
+  result: result23,
   view: view21,
   viewAction: viewAction9
 };
 
 // packages/games/whos-the-spy/manifest.ts
-var manifest50 = defineManifest({
+var manifest51 = defineManifest({
   id: "whos-the-spy",
   version: 1,
   category: "party",
@@ -14140,7 +14216,7 @@ function lifeResult(world, worm) {
     completed: true
   };
 }
-function result23(world, id) {
+function result24(world, id) {
   const worm = world.worms.get(id);
   if (!worm) return null;
   return worm.alive ? lifeResult(world, worm) : worm.lastLife;
@@ -14388,7 +14464,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine51 = {
+var engine52 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -14399,13 +14475,13 @@ var engine51 = {
   alive: alive2,
   step: step3,
   snapshot,
-  result: result23,
+  result: result24,
   snapshotCodec,
   inputCodec
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest51 = defineManifest({
+var manifest52 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -14484,10 +14560,11 @@ var GAMES = {
   "spider": { manifest: manifest45, engine: engine45 },
   "split-or-steal": { manifest: manifest46, engine: engine46 },
   "sudoku": { manifest: manifest47, engine: engine47 },
-  "ultimate-ttt": { manifest: manifest48, engine: engine48 },
-  "war": { manifest: manifest49, engine: engine49 },
-  "whos-the-spy": { manifest: manifest50, engine: engine50 },
-  "worm-rush": { manifest: manifest51, engine: engine51, bots, host: arenaHost }
+  "tap-frenzy": { manifest: manifest48, engine: engine48 },
+  "ultimate-ttt": { manifest: manifest49, engine: engine49 },
+  "war": { manifest: manifest50, engine: engine50 },
+  "whos-the-spy": { manifest: manifest51, engine: engine51 },
+  "worm-rush": { manifest: manifest52, engine: engine52, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

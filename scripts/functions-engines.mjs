@@ -442,6 +442,15 @@ if (process.argv.includes("--fixtures")) {
         return { ms: wait + 180 + Math.floor(random() * 220) };
       },
     },
+    // Taps 40 to 180 ms apart (some too soon to count) for 5 s, then the stop.
+    "tap-frenzy": {
+      config: undefined,
+      next: (state, random) => {
+        if (state.taps.length === 0) return { t: 0 };
+        const t = state.last + 40 + Math.floor(random() * 140);
+        return t > 5000 ? { stop: true } : { t };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },

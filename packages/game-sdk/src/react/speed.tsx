@@ -90,6 +90,7 @@ export function SpeedPad({
   className,
   style,
   takeFocus,
+  multiTouch,
 }: {
   /** `at`: the input's timeStamp, on performance.now()'s clock. */
   onPress: (at: number) => void;
@@ -107,6 +108,8 @@ export function SpeedPad({
    * pad that appears because the player started a game (never on page load).
    */
   takeFocus?: boolean | undefined;
+  /** Every finger's touch presses (tapping with two fingers), not only the first's. */
+  multiTouch?: boolean | undefined;
 }) {
   const ref = useRef<HTMLButtonElement>(null);
   useEffect(() => {
@@ -121,7 +124,7 @@ export function SpeedPad({
       aria-label={label}
       disabled={disabled}
       onPointerDown={(event: PointerEvent<HTMLButtonElement>) => {
-        if (!event.isPrimary || event.button > 0) return;
+        if ((!event.isPrimary && !multiTouch) || event.button > 0) return;
         event.preventDefault();
         onPress(event.timeStamp);
       }}

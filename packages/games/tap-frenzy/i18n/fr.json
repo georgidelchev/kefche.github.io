@@ -1,0 +1,80 @@
+{
+  "name": "Frénésie de Tapes",
+  "tagline": "Combien de tapes en cinq secondes ?",
+  "description": "Joue gratuitement à Frénésie de Tapes : tape le plus vite possible pendant cinq secondes. À deux doigts, pour ton record ou en course en ligne.",
+  "about": [
+    "Tap Frenzy is five seconds of pure speed. Your first tap starts the clock, and every tap after it adds one to your count until the time runs out. That's the whole game: how many times can you tap in five seconds?",
+    "It's harder to keep up than it sounds. Most people manage six or seven taps a second at the start and slow down as their hand tires, so the trick is a relaxed, steady rhythm. On a phone you can use two fingers, alternating, which is usually faster than one.",
+    "The game is fair about speed: taps closer together than a twentieth of a second don't count, and tapping so perfectly evenly that only a machine could do it voids the run. Your best is kept on this device, and you can race friends online to see whose fingers are quickest."
+  ],
+  "howToPlay": [
+    "Press Start, then tap the big pad. Your first tap starts five seconds.",
+    "Keep tapping as fast as you can until the bar runs out.",
+    "Every tap counts one, unless it comes less than a twentieth of a second after the last.",
+    "When time is up you see your taps and your taps per second."
+  ],
+  "controls": [
+    "Phones and tablets: tap the pad. Two fingers, one after the other, both count.",
+    "Mouse: click the pad. Each press counts as it goes down.",
+    "Keyboard: press Space or Enter again and again (holding a key down doesn't repeat).",
+    "Pause or start again from the bar above the game. Pausing calls off the run in play."
+  ],
+  "tips": [
+    "Use two fingers and alternate them: it's faster than one finger.",
+    "Stay relaxed. A tense hand tires before the five seconds are up.",
+    "Tap close to the screen with small movements rather than lifting your finger high.",
+    "Rest your phone on a table so it doesn't move as you tap.",
+    "Your first tap starts the clock, so get comfortable before you begin."
+  ],
+  "faq": [
+    {
+      "question": "Is Tap Frenzy free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "Around 30 to 40 taps in five seconds is typical. Over 50 is very fast, usually with two fingers."
+    },
+    {
+      "question": "Why didn't some taps count?",
+      "answer": "Taps less than a twentieth of a second after the one before don't count, because no finger moves that fast: they're usually a bounce or a double touch."
+    },
+    {
+      "question": "Why was my run not counted?",
+      "answer": "If twenty or more taps are spaced so evenly that they vary by less than three thousandths of a second, the game treats it as an autoclicker. No person taps that steadily."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room has five seconds from their own first tap. The most taps wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "Frénésie de Tapes",
+    "start": "Commencer",
+    "startDetail": "Cinq secondes",
+    "best": "Record : {taps} tapes",
+    "taps": "Tapes",
+    "timeLeft": "Temps restant",
+    "seconds": "{s} s",
+    "tapToStart": "Tape pour commencer",
+    "keepTapping": "Continue !",
+    "quit": "Quitter",
+    "tapsTotal": "Tapes : {n}",
+    "perSecond": "{rate} tapes par seconde",
+    "newBest": "Nouveau record !",
+    "machine": "Ces tapes étaient trop régulières pour venir d'une personne : cet essai ne compte pas."
+  },
+  "achievements": {
+    "played": {
+      "name": "Échauffé",
+      "description": "Joue {count, plural, one {# partie} other {# parties}}"
+    },
+    "fast-fingers": {
+      "name": "Doigts de fée",
+      "description": "Tape {count} fois en cinq secondes"
+    }
+  },
+  "leaderboards": {
+    "most-taps": "Le plus de tapes"
+  }
+}

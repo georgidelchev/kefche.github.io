@@ -1,0 +1,80 @@
+{
+  "name": "疯狂点击",
+  "tagline": "五秒内你能点多少下？",
+  "description": "免费玩疯狂点击：在五秒内尽可能快地点击。可以用两根手指，挑战个人纪录，或与朋友在线比赛。",
+  "about": [
+    "Tap Frenzy is five seconds of pure speed. Your first tap starts the clock, and every tap after it adds one to your count until the time runs out. That's the whole game: how many times can you tap in five seconds?",
+    "It's harder to keep up than it sounds. Most people manage six or seven taps a second at the start and slow down as their hand tires, so the trick is a relaxed, steady rhythm. On a phone you can use two fingers, alternating, which is usually faster than one.",
+    "The game is fair about speed: taps closer together than a twentieth of a second don't count, and tapping so perfectly evenly that only a machine could do it voids the run. Your best is kept on this device, and you can race friends online to see whose fingers are quickest."
+  ],
+  "howToPlay": [
+    "Press Start, then tap the big pad. Your first tap starts five seconds.",
+    "Keep tapping as fast as you can until the bar runs out.",
+    "Every tap counts one, unless it comes less than a twentieth of a second after the last.",
+    "When time is up you see your taps and your taps per second."
+  ],
+  "controls": [
+    "Phones and tablets: tap the pad. Two fingers, one after the other, both count.",
+    "Mouse: click the pad. Each press counts as it goes down.",
+    "Keyboard: press Space or Enter again and again (holding a key down doesn't repeat).",
+    "Pause or start again from the bar above the game. Pausing calls off the run in play."
+  ],
+  "tips": [
+    "Use two fingers and alternate them: it's faster than one finger.",
+    "Stay relaxed. A tense hand tires before the five seconds are up.",
+    "Tap close to the screen with small movements rather than lifting your finger high.",
+    "Rest your phone on a table so it doesn't move as you tap.",
+    "Your first tap starts the clock, so get comfortable before you begin."
+  ],
+  "faq": [
+    {
+      "question": "Is Tap Frenzy free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "Around 30 to 40 taps in five seconds is typical. Over 50 is very fast, usually with two fingers."
+    },
+    {
+      "question": "Why didn't some taps count?",
+      "answer": "Taps less than a twentieth of a second after the one before don't count, because no finger moves that fast: they're usually a bounce or a double touch."
+    },
+    {
+      "question": "Why was my run not counted?",
+      "answer": "If twenty or more taps are spaced so evenly that they vary by less than three thousandths of a second, the game treats it as an autoclicker. No person taps that steadily."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room has five seconds from their own first tap. The most taps wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "疯狂点击",
+    "start": "开始",
+    "startDetail": "五秒",
+    "best": "最佳：{taps} 次",
+    "taps": "点击",
+    "timeLeft": "剩余时间",
+    "seconds": "{s} 秒",
+    "tapToStart": "点击开始",
+    "keepTapping": "继续点！",
+    "quit": "退出",
+    "tapsTotal": "{n} 次",
+    "perSecond": "每秒 {rate} 次",
+    "newBest": "新纪录！",
+    "machine": "这些点击间隔过于均匀，不像人手所为，因此本次不计成绩。"
+  },
+  "achievements": {
+    "played": {
+      "name": "热身",
+      "description": "玩 {count, plural, other {# 局}}"
+    },
+    "fast-fingers": {
+      "name": "快手指",
+      "description": "五秒内点击 {count} 次"
+    }
+  },
+  "leaderboards": {
+    "most-taps": "最多点击"
+  }
+}
