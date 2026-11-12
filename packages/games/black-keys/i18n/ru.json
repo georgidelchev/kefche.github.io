@@ -1,0 +1,81 @@
+{
+  "name": "Чёрные клавиши",
+  "tagline": "Нажимайте только чёрные плитки, пока ряды несутся вниз.",
+  "description": "Играйте в «Чёрные клавиши» бесплатно: нажмите чёрную плитку в каждом ряду, пока она не ускользнула, всё быстрее. Рекорд или онлайн-гонка.",
+  "about": [
+    "Black Keys is a race against a scrolling board. Rows of four tiles slide down the screen, and each row has exactly one black tile. Tap the black tile in every row, in order, before it slides off the bottom. Tap a white tile, or let a black one get away, and the game is over.",
+    "It starts gently, at two and a half rows a second, and never stops speeding up. After half a minute the rows are coming twice as fast, and your eyes have to read the next few rows ahead while your fingers keep up with the one at the bottom. Your score is the number of black tiles you tapped.",
+    "Every tap is checked against where the rows were at that moment, the same way on your screen and on the server, so scores are fair. Play on a phone with two thumbs, or on a keyboard with D, F, J and K, and race friends online through the very same rows."
+  ],
+  "howToPlay": [
+    "Press Start. Tap the black tile marked Start on the bottom row: the board begins to scroll.",
+    "Keep tapping the black tile in each row, from the bottom up, as the rows slide down.",
+    "Tapping a white tile ends the game, and so does tapping a row out of order.",
+    "If a black tile slides off the bottom before you tap it, the game ends too.",
+    "The board speeds up all the time. Your score is the black tiles you tapped."
+  ],
+  "controls": [
+    "Phones and tablets: tap the black tiles. Two thumbs, one for each side, work best.",
+    "Mouse: click the black tiles.",
+    "Keyboard: D, F, J and K (or 1, 2, 3 and 4) tap the bottom row's first to fourth column.",
+    "Pause or start again from the bar above the game. Pausing starts the game over."
+  ],
+  "tips": [
+    "Look one or two rows ahead, not at the tile you're tapping.",
+    "Use both hands: left side with one thumb, right side with the other.",
+    "Keep a steady rhythm rather than rushing: a white tile costs everything.",
+    "On a keyboard, rest your fingers on D, F, J and K like home keys.",
+    "The speed only ever goes up, so every early tile is a chance to settle in."
+  ],
+  "faq": [
+    {
+      "question": "Is Black Keys free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "Reaching 50 tiles takes concentration; past 100 the rows come very fast. Over 200 is excellent."
+    },
+    {
+      "question": "Does it ever end?",
+      "answer": "Only when you tap a white tile or miss a black one. The rows keep coming, faster and faster."
+    },
+    {
+      "question": "Why didn't a tap register?",
+      "answer": "Taps on rows you've already played do nothing, and taps less than a twentieth of a second apart don't count."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same rows, scrolling at the same speeds, from their own first tap. The most tiles wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "Чёрные клавиши",
+    "start": "Старт",
+    "startDetail": "Бесконечно и всё быстрее",
+    "best": "Лучшее: плиток {n}",
+    "tiles": "Плитки",
+    "speed": "Скорость",
+    "rowsPerSecond": "{n} ряд./с",
+    "boardLabel": "Бегущие ряды плиток: нажимайте чёрную плитку в каждом ряду снизу вверх или клавиши D, F, J и K",
+    "startTile": "Старт",
+    "tilesTotal": "Плиток: {n}",
+    "missed": "Чёрная плитка ускользнула.",
+    "wrongTile": "Это была белая плитка.",
+    "newBest": "Новый рекорд!",
+    "quit": "Выйти"
+  },
+  "achievements": {
+    "played": {
+      "name": "Разогрев",
+      "description": "Сыграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    },
+    "pianist": {
+      "name": "Виртуоз",
+      "description": "Нажмите {count} чёрных плиток за одну игру"
+    }
+  },
+  "leaderboards": {
+    "most-tiles": "Больше всего плиток"
+  }
+}

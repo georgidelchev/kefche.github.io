@@ -1,0 +1,81 @@
+{
+  "name": "黑色琴键",
+  "tagline": "在方块行飞速落下时，只点黑色方块。",
+  "description": "免费玩黑色琴键：在每一行滑走前点中其中的黑色方块，速度越来越快。挑战个人纪录，或和朋友在线比赛。",
+  "about": [
+    "Black Keys is a race against a scrolling board. Rows of four tiles slide down the screen, and each row has exactly one black tile. Tap the black tile in every row, in order, before it slides off the bottom. Tap a white tile, or let a black one get away, and the game is over.",
+    "It starts gently, at two and a half rows a second, and never stops speeding up. After half a minute the rows are coming twice as fast, and your eyes have to read the next few rows ahead while your fingers keep up with the one at the bottom. Your score is the number of black tiles you tapped.",
+    "Every tap is checked against where the rows were at that moment, the same way on your screen and on the server, so scores are fair. Play on a phone with two thumbs, or on a keyboard with D, F, J and K, and race friends online through the very same rows."
+  ],
+  "howToPlay": [
+    "Press Start. Tap the black tile marked Start on the bottom row: the board begins to scroll.",
+    "Keep tapping the black tile in each row, from the bottom up, as the rows slide down.",
+    "Tapping a white tile ends the game, and so does tapping a row out of order.",
+    "If a black tile slides off the bottom before you tap it, the game ends too.",
+    "The board speeds up all the time. Your score is the black tiles you tapped."
+  ],
+  "controls": [
+    "Phones and tablets: tap the black tiles. Two thumbs, one for each side, work best.",
+    "Mouse: click the black tiles.",
+    "Keyboard: D, F, J and K (or 1, 2, 3 and 4) tap the bottom row's first to fourth column.",
+    "Pause or start again from the bar above the game. Pausing starts the game over."
+  ],
+  "tips": [
+    "Look one or two rows ahead, not at the tile you're tapping.",
+    "Use both hands: left side with one thumb, right side with the other.",
+    "Keep a steady rhythm rather than rushing: a white tile costs everything.",
+    "On a keyboard, rest your fingers on D, F, J and K like home keys.",
+    "The speed only ever goes up, so every early tile is a chance to settle in."
+  ],
+  "faq": [
+    {
+      "question": "Is Black Keys free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "Reaching 50 tiles takes concentration; past 100 the rows come very fast. Over 200 is excellent."
+    },
+    {
+      "question": "Does it ever end?",
+      "answer": "Only when you tap a white tile or miss a black one. The rows keep coming, faster and faster."
+    },
+    {
+      "question": "Why didn't a tap register?",
+      "answer": "Taps on rows you've already played do nothing, and taps less than a twentieth of a second apart don't count."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same rows, scrolling at the same speeds, from their own first tap. The most tiles wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "黑色琴键",
+    "start": "开始",
+    "startDetail": "无尽模式，越来越快",
+    "best": "最佳：{n} 块",
+    "tiles": "方块",
+    "speed": "速度",
+    "rowsPerSecond": "每秒 {n} 行",
+    "boardLabel": "不断滚动的方块行：从下往上点每行的黑色方块，或使用 D、F、J、K 键",
+    "startTile": "开始",
+    "tilesTotal": "{n} 块",
+    "missed": "漏掉了一个黑色方块。",
+    "wrongTile": "那是白色方块。",
+    "newBest": "新纪录！",
+    "quit": "退出"
+  },
+  "achievements": {
+    "played": {
+      "name": "热手",
+      "description": "玩 {count, plural, other {# 局}}"
+    },
+    "pianist": {
+      "name": "琴键大师",
+      "description": "单局点中 {count} 块黑色方块"
+    }
+  },
+  "leaderboards": {
+    "most-tiles": "最多方块"
+  }
+}

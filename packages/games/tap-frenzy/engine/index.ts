@@ -72,7 +72,8 @@ function apply(s: State, action: Action): State {
 function result(s: State): GameResult | null {
   if (!s.over) return null;
   if (machineLike(s)) return { completed: false };
-  return { completed: true, score: s.taps.length };
+  // No winning here, only a score (like Snake and 2048).
+  return { completed: false, score: s.taps.length };
 }
 
 export const engine: RaceEngine<State, Action> = {

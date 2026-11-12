@@ -116,7 +116,8 @@ export const accuracy = (s: State): number =>
   s.clicks === 0 ? 1 : (s.clicks - s.misses) / s.clicks;
 
 function result(s: State): GameResult | null {
-  return isOver(s) ? { completed: true, score: score(s) } : null;
+  // No winning here, only a score (like Snake and 2048).
+  return isOver(s) ? { completed: false, score: score(s) } : null;
 }
 
 export const engine: RaceEngine<State, Action> = {

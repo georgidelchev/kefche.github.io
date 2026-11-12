@@ -464,6 +464,21 @@ if (process.argv.includes("--fixtures")) {
         return { x: target.x + Math.floor(random() * 20) - 10, y: target.y, ms };
       },
     },
+    // Each row's black tile while it shows, about 40 rows, then a wrong tile.
+    "black-keys": {
+      config: undefined,
+      next: (state, random) => {
+        const row = state.played;
+        const col = state.cols[row];
+        if (row === 0) return { row, col, ms: 0 };
+        // When the scroll (2.5 t + 0.04 t² rows) reaches y, in ms.
+        const when = (y) => (1000 * (-2.5 + Math.sqrt(6.25 + 0.16 * Math.max(0, y)))) / 0.08;
+        const from = Math.max(state.last + 60, when(row - 3.5));
+        const ms = Math.round(Math.min(from + random() * 300, when(row + 0.9)));
+        if (row >= 40) return { row, col: (col + 1) % 4, ms };
+        return { row, col, ms };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },

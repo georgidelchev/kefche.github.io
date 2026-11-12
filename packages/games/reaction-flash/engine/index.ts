@@ -79,7 +79,8 @@ export const average = (s: State): number | null =>
 function result(s: State): GameResult | null {
   if (!isOver(s)) return null;
   if (s.times.length < ROUNDS) return { completed: false };
-  return { completed: true, score: average(s) ?? 0 };
+  // No winning here, only a score (like Snake and 2048: "Game over", not "You won").
+  return { completed: false, score: average(s) ?? 0 };
 }
 
 export const engine: RaceEngine<State, Action> = {

@@ -3083,6 +3083,19 @@ The owner answered "you decide, continue", so the recommended answers stand:
       - a pause showed nothing until resumed, then a new countdown;
       - 360, 768 and 1280 px and a landscape phone (740 × 360), both themes, Bulgarian and Arabic, and axe.
     - It found two bugs, both fixed: the "+points" text shared the target's key and replaced it on the board, and a landscape phone's board was 136 px (now 200).
+- [x] **Step 7, Black Keys** (an original name and look):
+  - **Rules:** rows of four tiles scroll down, each with one black tile (its column from the seed). Tap each row's black tile in order before it goes off the bottom. A white tile, a row out of order, or a black tile let go ends the game; the score is the black tiles tapped.
+    - The scroll is a fixed function of time since the first tap: 2.5 rows a second, gaining 0.08 rows a second every second.
+    - Each tap says which tile and when, so the engine knows what was on the board then: a row not showing can't be tapped.
+    - A miss is reported once the next black tile has gone, and the engine checks the time it claims. Taps within 50 ms of the last don't count.
+  - **The screen:** the board is black and white in both themes. The rows ride a track moved by a transform each frame (no layout work), and React re-renders only when a new row comes on. The first black tile says "Start", and after a miss the board scrolls back to show the tile that got away, in red.
+  - **Controls:** any finger; D, F, J and K (or 1 to 4) play the bottom row's columns. The board is one input surface (`role="application"`, its label naming the keys).
+  - **Board:** most tiles, marked as measured on the device. **Achievements:** games played, and 50, 120 or 220 tiles.
+  - **Server:** its fixture (40 rows, then a white tile).
+  - **Speed games end with a score, not a win.** The first four games had returned `completed: true`, so the results said "You won!" and every finished run would have counted as a win (and its XP). They now end as Snake and 2048 do ("Game over", with the score). The puzzle flow keeps a best score whenever there is one; a void run (three false starts, an autoclicker) has none. Fixtures redone; all four rechecked in Chrome.
+  - Checked:
+    - the rules on their own (the scroll at 1 s; the first tap; the 50 ms gap; a row not yet showing; a white tile and a row out of order; a miss only once due; a row gone can't be tapped; 20 rows and their claimed time);
+    - in Chrome, 26/26: 30 rows tapped as they came while the board scrolled, then a tile let go ending the game with it shown in red and the best on the menu; the keys, and a white tile by key; 360, 768 and 1280 px, both themes, Bulgarian and Arabic, and axe.
 
 ## Known issues
 

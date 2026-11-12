@@ -211,14 +211,12 @@ export function usePuzzle<State, Action, Config>({
       const ms = watch.elapsed();
       setElapsedMs(ms);
       setScreen("over");
-      if (racing === null && result.completed) {
-        const score = result.score ?? engine.score?.(next);
-        setNewBest(
-          best
-            ? score !== undefined &&
-                recordBestScore(context.storage, timeKey(config), score, best.order)
-            : recordBestTime(context.storage, timeKey(config), ms),
-        );
+      // A best time needs the puzzle solved; a best score needs only a score
+      // (speed games end with one and no win, as Snake does).
+      if (racing === null && best && result.score !== undefined) {
+        setNewBest(recordBestScore(context.storage, timeKey(config), result.score, best.order));
+      } else if (racing === null && !best && result.completed) {
+        setNewBest(recordBestTime(context.storage, timeKey(config), ms));
       }
       context.report({ type: "finish", result: { ...result, timeMs: result.timeMs ?? ms } });
     }
