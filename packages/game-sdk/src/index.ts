@@ -11,6 +11,7 @@ export * from "./det-math";
 export * from "./bots";
 export * from "./engines";
 export * from "./game-text";
+export * from "./lexicon";
 export * from "./manifest";
 export * from "./prng";
 export * from "./protocol";

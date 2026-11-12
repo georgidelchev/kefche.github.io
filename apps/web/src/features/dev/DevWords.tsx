@@ -2,9 +2,10 @@
 // tiles in every state, the on-screen keyboard in each language and layout,
 // typing from a physical keyboard, and the typed-answer input. Kit strings
 // come from the real translations (wordKitUi).
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { charsOf, WORD_LANGS, type WordLang } from "@kefche/game-sdk";
+import { charsOf, wordOf, WORD_LANGS, type Lexicon, type WordLang } from "@kefche/game-sdk";
+import { fetchLexicon } from "@kefche/game-sdk/browser";
 import {
   KIT_CSS,
   LayoutSwitch,
@@ -16,6 +17,7 @@ import {
   wordText,
   type TileState,
 } from "@kefche/game-sdk/react";
+import { LEXICONS } from "@kefche/lexicons";
 
 const SAMPLE: Record<WordLang, { word: string; states: TileState[] }> = {
   en: { word: "crane", states: ["good", "miss", "near", "miss", "good"] },
@@ -29,6 +31,13 @@ export function DevWords({ ui }: { ui: Record<string, string> }) {
   const [typed, setTyped] = useState("");
   const [answer, setAnswer] = useState("");
   const [sent, setSent] = useState<string[]>([]);
+  const [lexicons, setLexicons] = useState<Partial<Record<WordLang, Lexicon>>>({});
+  const lexicon = lexicons[lang] ?? null;
+  useEffect(() => {
+    void fetchLexicon(LEXICONS[lang].all).then((l) => {
+      setLexicons((known) => ({ ...known, [lang]: l }));
+    });
+  }, [lang]);
   const sample = SAMPLE[lang];
   const keyStates: Record<string, TileState> = {};
   charsOf(sample.word).forEach((ch, i) => {
@@ -98,6 +107,18 @@ export function DevWords({ ui }: { ui: Record<string, string> }) {
             setAnswer("");
           }}
         />
+        <span className="text-sm text-muted" data-verdict>
+          {lexicon === null
+            ? "Loading the word list…"
+            : answer === ""
+              ? `${String(lexicon.size)} words`
+              : answer
+                  .split(" ")
+                  .map(
+                    (w) => `${w}: ${lexicon.has(wordOf(lang, w) ?? "") ? "a word" : "not a word"}`,
+                  )
+                  .join(", ")}
+        </span>
         <span className="text-sm text-muted">{sent.join(", ")}</span>
       </form>
     </div>

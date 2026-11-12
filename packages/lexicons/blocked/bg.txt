@@ -1,0 +1,26 @@
+# Думи, които остават валидни (играч може да ги напише), но никога не са
+# отговор, подсказка или ход на бот: обиди, вулгарни и сексуални думи.
+# Words that stay valid but are never an answer, a prompt, a hint or a
+# bot's play. One headword per line; every form the dictionary makes from
+# it is blocked too. Lines starting with # are comments.
+гъз
+ебавам
+ебан
+ебач
+еба
+задник
+копеле
+кур
+курва
+курец
+кучка
+лайно
+мангал
+педал
+педераст
+пичка
+путка
+хуй
+циганка
+шибам
+шибан

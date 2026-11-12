@@ -22,6 +22,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 | `pnpm db:types`                          | Regenerate `apps/web/src/lib/supabase/database.gen.ts` (CI checks drift).         |
 | `pnpm functions:engines [--fixtures]`    | Bundle the game engines for the Edge Functions (CI checks drift).                 |
 | `pnpm functions:push`                    | Bundle the notification wording for `send-push` (CI checks drift).                |
+| `pnpm words:build`                       | Build the word games' lists into `apps/web/public/lexicons/` (CI checks drift).   |
 | `pnpm --filter web run cf:deploy`        | Deploy to Cloudflare Workers (CI does this on `main`).                            |
 | `pnpm --filter arena dev`                | The arena server locally at http://localhost:8787 (needs `apps/arena/.dev.vars`). |
 
@@ -60,6 +61,7 @@ kefche is a multilingual, mobile-first browser games portal. **`docs/SPEC.md` is
 - `supabase/`: `migrations/`, `functions/` (Edge Functions, Deno), `templates/` (auth emails). `public/avatars/` holds the preset avatars (`pnpm avatars:generate`).
 - `packages/ui`: design tokens (`src/tokens.css`), the Tailwind theme mapping (`src/theme.css`), typography (`src/typography.css`), components (`src/components/*.tsx`, imported as `@kefche/ui/components/<name>`) and brand marks (`src/brand/marks.ts`).
 - `packages/game-sdk`: game SDK. The root entry is isomorphic: engines, PRNG, manifest types, seats, bots, search and timers. `browser` holds the runtime helpers, including `createTurnSession` and `runTurnGame` for turn-based games (ADR-0018), and for arenas `connectArena`, `createLocalArena` and `createArenaControls` (touch joystick, mouse and keys).
+- `packages/lexicons`: the word games' word lists (Phase 13, ADR-0050): sources, licences and blocklists, built by `pnpm words:build` into hashed files under `apps/web/public/lexicons/` (never delete one: old matches replay with them), read with `Lexicon` from `@kefche/game-sdk` (`fetchLexicon` in the browser).
 - `packages/games/<id>`: one package per game (template in `packages/games/README.md`; the guide is `docs/ADDING_A_GAME.md`). The player, catalog and turn-game setup and HUD live in `apps/web/src/features/games/`.
 - `supabase/`: CLI project (`config.toml`, `migrations/`, `functions/`, `tests/`, `seed.sql`).
 

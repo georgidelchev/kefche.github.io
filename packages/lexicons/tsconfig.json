@@ -1,0 +1,6 @@
+{
+  // Data only: the list of current word-list files, read by engines, bots,
+  // the browser and the server alike.
+  "extends": "@kefche/config/tsconfig.base.json",
+  "include": ["index.gen.ts"]
+}

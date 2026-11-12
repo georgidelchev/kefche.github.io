@@ -6,6 +6,7 @@ export * from "./broadcast-transport";
 export * from "./game-module";
 export * from "./haptics";
 export * from "./input";
+export * from "./lexicon-loader";
 export * from "./loop";
 export * from "./netcode";
 export * from "./online-session";

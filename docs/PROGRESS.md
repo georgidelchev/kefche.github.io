@@ -3003,6 +3003,25 @@ The owner answered "you decide, continue", so the recommended answers stand:
   - **Typed answers:** a field that keeps only the language's letters (spaces too if asked), never filters while a phone keyboard is composing, and stays in view above it.
   - **Strings:** games tagged "words" get the kit's (Enter, Delete letter, the keyboard and its layouts), in all 11 locales.
   - Checked: the helpers on their own (folding, letters, spelling, every layout covering its alphabet exactly, key mapping: all passed), and the dev gallery in Chrome, 62/64: typing, Backspace, Enter, keys, both Bulgarian layouts and the choice kept, the input cleaned and submitted, English, Bulgarian and Arabic, both themes, axe. The 2 misses are the dev page itself, wider than 360 px before this step (its title and the cards section too).
+- [x] **Step 2, the dictionaries** (ADR-0050; `packages/lexicons`, `pnpm words:build`):
+  - **Licences checked against the files themselves:**
+    - ENABLE's own notice (public domain, in SCOWL's `Copyright`), and its 2000 edition from CPAN with the 173,528 words its README counts.
+    - SCOWL 2020.12.07: Kevin Atkinson's permissive licence and the public-domain sources of levels 10 to 35. Nothing from levels 80 and above, so not UKACD and its notice clause.
+    - BgOffice: the original OOo-spell-bg 4.3 release, whose `Copyright` offers GPL 2+, LGPL 2.1+ or MPL 1.1. LibreOffice's copy ships only a GPL `COPYING`, so the original is the one used. We use MPL 1.1; the changes to its files (re-encoded to UTF-8) are recorded in `CREDITS.md`.
+  - **Lists:**
+    - **English:** every valid word, 173,528 (330 KB gzipped); common words for answers, 38,902 (79 KB).
+    - **Bulgarian:** every form of BgOffice's 72,235 lower-case headwords, 861,087 forms (212 KB). Proper names are left out.
+    - **Blocklists:** for both languages (124 English and 68 Bulgarian forms, a blocked Bulgarian headword taking all its forms). They stay valid but are kept out of answers.
+    - Bulgarian answers come with the games that need them (Hangman, Word of the Day).
+  - **The format:** a minimal automaton, named by its SHA-256 and never overwritten. `Lexicon` (isomorphic: lookup, prefixes, walking, words of a length) reads it at about 4 lookups a µs. `loadLexicon` refuses a file that doesn't match its name, and `fetchLexicon` loads one per page or worker. The files are `.kwl`, not `.gz`: the dev server (and possibly a CDN) sends `.gz` with `Content-Encoding`, so the loader gunzips only bytes that are still gzipped.
+  - **Served** from `/lexicons/`, immutable; CI checks that `words:build` changes nothing.
+  - **The server's loading** is wired with the first game whose replay checks words, using the same `loadLexicon` with Deno's fetch, gunzip and hash.
+  - Checked:
+    - every source word reads back from its built file (the build checks each one);
+    - a second build makes the same files;
+    - English and Bulgarian words and non-words;
+    - a file with a wrong hash refused;
+    - in Chrome, both lists loaded through the dev gallery and words judged (5/5).
 
 ## Known issues
 
@@ -3017,7 +3036,7 @@ The owner answered "you decide, continue", so the recommended answers stand:
 - **Auth pages are near the JS budget:** sign-up 110 KB and settings 116 KB gzip before supabase-js. New React on these pages needs a size check (Phase 18 may split islands further).
 - **Guest identity creation moves to Phase 5:** step 9 built the upgrade (sign-up or OAuth link keeps the guest's user id) and the merge (Edge Function `merge-guest` plus a confirmation page). `ensureIdentity()` is built with its first users, the rooms, in Phase 5; guests aren't asked their age (owner decision, 2026-10-24). No other page creates guest sessions.
 - **CSP for Stockfish (Phase 17):** chess runs Stockfish as WebAssembly in a nested worker, so the full Content-Security-Policy must allow `'wasm-unsafe-eval'` in `script-src` and `worker-src 'self'`. The Credits page lists Stockfish (GPL-3.0) and the cburnett pieces (BSD 3-Clause) from `packages/games/chess/CREDITS.md`.
-- **Credits attribution (Phase 17):** the Credits page lists frimousse, Emojibase and PixiJS (all MIT), and GIPHY ("Powered by GIPHY", already shown in the GIF picker).
+- **Credits attribution (Phase 17):** the Credits page lists frimousse, Emojibase and PixiJS (all MIT), GIPHY ("Powered by GIPHY", already shown in the GIF picker), and the word lists (Phase 13, `packages/lexicons/CREDITS.md`): ENABLE (its authors ask to be credited), SCOWL (its notice), and BgOffice under MPL 1.1 (its notice, and where the source is).
 - **CSP for GIFs (Phase 17):** the full Content-Security-Policy must allow `https://media.giphy.com` in `img-src` (ADR-0032).
 - **The emoji picker is patched (Phase 8):** frimousse 0.4.0 numbers its grid from 0, which ARIA forbids, so `patches/frimousse@0.4.0.patch` shifts it by one. Upgrading frimousse means checking whether a release fixed it, then dropping or redoing the patch (`patches/README.md`). Worth reporting upstream.
 - **Game page prose is English in 9 locales (Phase 15):** each game's name, tagline, meta description and in-game UI strings are translated in all 11 locales. The long page sections (about, how to play, controls, tips, FAQ) are written in English and Bulgarian; the other 9 locales carry the English text until the Phase 15 translation pass (SPEC §15, §22 DoD rule).

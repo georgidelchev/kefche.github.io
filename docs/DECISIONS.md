@@ -1052,3 +1052,19 @@ Lobby chat already existed (ADR-0023).
 - **The engine knows the words by number only:** the packs live in `content/<locale>.json`, loaded by the renderer and bots; the server replays without them.
 
 **Consequences.** Adding a language to such a game is a pack, its locale in `contentPacks`, and an option value. Until then, a player whose site language has no pack doesn't see the game at all.
+
+## ADR-0050: Word lists as hashed automata, the same file everywhere
+
+**Date:** 2026-11-12 · **Status:** Accepted (Phase 13 Q2)
+
+**Context.** Seven of Phase 13's word games must say whether a word exists, in English and Bulgarian, and so must the bots, the table and `submit-match` when it replays a result. Bulgarian is highly inflected: BgOffice's 72,235 headwords make 861,087 forms, 18 MB as text. A list that changes must not change how an old match replays.
+
+**Decision.**
+
+- **Sources:** English, ENABLE (public domain) for every valid word, and SCOWL's levels 10 to 35 for words people know (answers, bot plays); Bulgarian, BgOffice's spelling dictionary under MPL 1.1, every lower-case headword with every form its suffix rules make. The sources, their licences and the record of changes are in `packages/lexicons`.
+- **Blocked words** stay valid (a player may type them) but are never an answer, a prompt, a hint or a bot's play.
+- **One format:** a minimal acyclic automaton (DAFSA). Words that share an ending share nodes, so English is 482 KB (330 KB gzipped) and Bulgarian 339 KB (212 KB). It answers "is this a word" and "does any word start so" by walking, which Letter Grid, Anagrams and Word Builder's bots need. A lookup is about 0.25 µs.
+- **Named by hash:** `pnpm words:build` writes each list once to `/lexicons/<lang>-<name>-<sha256>.kwl` (gzipped, but not named `.gz`, which servers may send with `Content-Encoding`) and never deletes an old one; `packages/lexicons/index.gen.ts` names the current files. Games record the file they played with, so a replay loads that one. Files are served immutable; CI fails if the build would change anything.
+- **The same reader everywhere:** `Lexicon` in `@kefche/game-sdk` is isomorphic. `loadLexicon` takes the place's own fetch, gunzip and SHA-256 and refuses a file that doesn't match its name; `fetchLexicon` does that in a page or a worker (with `DecompressionStream`), once per page. The table and the Edge Functions fetch the same files from the site.
+
+**Consequences.** A word game downloads its language's list once, a few hundred KB, cached for good. Changing a list is a new file, never an edit. A word that should count (or not) is fixed in the sources or the blocklists, then `pnpm words:build`. The server loads a list on its first replay of a word game, so a cold start costs one fetch.

@@ -57,6 +57,13 @@ jobs:
           git diff --exit-code -- 'packages/games/*/assets/*.svg' \
             || { echo "::error::Game art is stale. Run 'pnpm art:generate' and commit the result."; exit 1; }
 
+      # The word games' lists (ADR-0050): every built file committed, the index current.
+      - name: Word lists are up to date
+        run: |
+          pnpm words:build
+          test -z "$(git status --porcelain -- apps/web/public/lexicons packages/lexicons)" \
+            || { echo "::error::The word lists are stale. Run 'pnpm words:build' and commit the result."; exit 1; }
+
       # The Edge Functions replay games with the engines bundled from packages/games.
       - name: Server engines are up to date
         run: |

@@ -1,0 +1,21 @@
+{
+  "name": "@kefche/lexicons",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The word games' word lists: sources, licences, and the current built files (ADR-0050).",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.gen.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@kefche/game-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "@kefche/config": "workspace:*",
+    "typescript": "6.0.3"
+  }
+}
