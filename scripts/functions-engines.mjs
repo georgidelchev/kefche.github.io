@@ -479,6 +479,16 @@ if (process.argv.includes("--fixtures")) {
         return { row, col, ms };
       },
     },
+    // A pick every 400 to 900 ms, right four times in five, until 30 s.
+    "color-clash": {
+      config: undefined,
+      next: (state, random) => {
+        const ms = state.last + 400 + Math.floor(random() * 500);
+        if (ms > 30000) return { stop: true };
+        const ink = state.trials[state.index].ink;
+        return { pick: random() < 0.8 ? ink : (ink + 1) % 4, ms };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },

@@ -1,0 +1,86 @@
+{
+  "name": "Choque de Cores",
+  "tagline": "Escolha a cor da tinta, não a palavra. Mais difícil do que parece.",
+  "description": "Jogue Choque de Cores grátis: o teste de Stroop em 30 segundos. Escolha a cor da tinta, não a palavra, sozinho ou em corrida online.",
+  "about": [
+    "Color Clash is the Stroop test as a game. A colour's name appears, printed in a colour of ink, and your job is to pick the ink, not the word. When the word says RED and it's printed in blue, the right answer is blue. It sounds simple, but reading is so automatic that the word keeps pulling you the wrong way.",
+    "You have thirty seconds. Every right pick scores a point and every wrong one takes a point away, so guessing doesn't pay. A quarter of the time the word and the ink agree, just to keep you honest. Your score is the points you end with.",
+    "The four inks were chosen so that people with every common kind of colour blindness can still tell them apart, and the buttons always show each colour as a swatch with its name, in the same order. Play alone to train your focus, or race friends online through the same words."
+  ],
+  "howToPlay": [
+    "Press Start. After a 3, 2, 1 countdown the first word appears.",
+    "Look at the colour of the ink the word is printed in.",
+    "Press the button with that colour. Ignore what the word says.",
+    "A right pick scores a point; a wrong one takes a point away.",
+    "After thirty seconds you see your points, right and wrong picks, and accuracy."
+  ],
+  "controls": [
+    "Phones and tablets: tap the colour buttons under the word.",
+    "Mouse: click the colour buttons.",
+    "Keyboard: 1, 2, 3 and 4 pick the buttons in order (red, blue, green, yellow).",
+    "Pause or start again from the bar above the game. Pausing starts the run over."
+  ],
+  "tips": [
+    "Blur the word slightly in your mind and look at the colour as a patch, not as letters.",
+    "Learn the button order once; then your fingers can go there without looking.",
+    "Don't rush: a wrong pick costs as much as a right one earns.",
+    "On a keyboard, rest four fingers on 1 to 4.",
+    "When word and ink agree, it's not a trick: just answer."
+  ],
+  "faq": [
+    {
+      "question": "Is Color Clash free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "Around 20 points in thirty seconds is typical. Over 35 means you're reading the ink, not the word."
+    },
+    {
+      "question": "Can I play if I'm colour-blind?",
+      "answer": "The four inks are from a colour-blind-safe palette and were checked to stay apart for the common kinds of colour blindness. Each button also shows its colour's name."
+    },
+    {
+      "question": "Why didn't a very fast pick count?",
+      "answer": "A pick within a tenth of a second of the word appearing doesn't count, because no one can read the colour and answer that fast."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same words in the same inks. The most points after thirty seconds wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "Choque de Cores",
+    "start": "Começar",
+    "startDetail": "Trinta segundos",
+    "best": "Melhor: {n} pontos",
+    "points": "Pontos",
+    "timeLeft": "Tempo restante",
+    "seconds": "{s} s",
+    "colourRed": "Vermelho",
+    "colourBlue": "Azul",
+    "colourGreen": "Verde",
+    "colourYellow": "Amarelo",
+    "wordIn": "{word}, com tinta: {ink}",
+    "pickLabel": "Escolha a cor da tinta",
+    "right": "Certo",
+    "wrong": "Errado",
+    "pointsTotal": "Pontos: {n}",
+    "rightWrong": "Certas: {right} · Erradas: {wrong}",
+    "accuracy": "Precisão: {n}%",
+    "newBest": "Novo recorde!"
+  },
+  "achievements": {
+    "played": {
+      "name": "Olho para cores",
+      "description": "Jogue {count, plural, one {# partida} other {# partidas}}"
+    },
+    "focus": {
+      "name": "Inabalável",
+      "description": "Faça {count} pontos em uma partida"
+    }
+  },
+  "leaderboards": {
+    "best-score": "Melhor pontuação"
+  }
+}

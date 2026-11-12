@@ -3096,6 +3096,19 @@ The owner answered "you decide, continue", so the recommended answers stand:
   - Checked:
     - the rules on their own (the scroll at 1 s; the first tap; the 50 ms gap; a row not yet showing; a white tile and a row out of order; a miss only once due; a row gone can't be tapped; 20 rows and their claimed time);
     - in Chrome, 26/26: 30 rows tapped as they came while the board scrolled, then a tile let go ending the game with it shown in red and the best on the menu; the keys, and a white tile by key; 360, 768 and 1280 px, both themes, Bulgarian and Arabic, and axe.
+- [x] **Step 8, Color Clash** (the Stroop test):
+  - **Rules:** a colour's name printed in an ink colour (from the seed; a quarter of the time they agree); pick the ink, not the word. In 30 seconds, a right pick scores a point and a wrong one costs a point (never below zero). A pick within 100 ms of its word appearing doesn't count.
+  - **Colour, when colour is the test** (the plan's accessibility point): the four inks are from the Okabe–Ito colour-blind-safe palette, checked with the dataviz validator over every pair.
+    - The worst pair under deuteranopia is ΔE 11 (8 is the target), and for normal vision 18 (15 is the floor). Each ink is at least 3:1 on the dark panel, for large bold text.
+    - The validator's lightness band (an aesthetic rule for chart marks) doesn't apply to words on a panel.
+    - The answer buttons always show a swatch, the colour's name and its key, in the same order, and the word tells screen readers its ink.
+  - **Controls:** tap or click a colour, or keys 1 to 4. A 3-2-1 countdown first; pausing starts the run over.
+  - **Board:** best score, marked as measured on the device. **Achievements:** games played, and 20, 32 or 45 points.
+  - **Server:** its fixture (50 picks, 29 points).
+  - Checked in Chrome, 24/24:
+    - answering by each word's real ink, with one wrong, scored 10 for 11 right, and a key answered too;
+    - after 30 s the summary showed 11 points, 12 right, 1 wrong and 92%, with the best on the menu;
+    - 360, 768 and 1280 px, both themes, Bulgarian and Arabic, and axe.
 
 ## Known issues
 
