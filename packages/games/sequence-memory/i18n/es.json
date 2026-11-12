@@ -1,0 +1,82 @@
+{
+  "name": "Memoria de Secuencias",
+  "tagline": "Mira, escucha y repite. ¿Qué secuencia tan larga recuerdas?",
+  "description": "Juega gratis a Memoria de Secuencias: repite una secuencia creciente de luces y sonidos en cuatro paneles. Bate tu récord o compite online.",
+  "about": [
+    "Sequence Memory is a game of watching, listening and remembering. Four pads sit in a square, each with its own colour, shape and sound. The game lights one pad; you press it. Then it lights two in a row, and you press both, in the same order. Each time you get it right, the sequence grows by one more step.",
+    "It gets hard quickly: most people manage seven or eight steps, and the sequences play a little faster as they grow. One wrong pad ends the game, and the game shows you which pad it should have been. Your score is the longest sequence you repeated.",
+    "You can follow the sequence by sight, by sound or both, since every pad has a different note and a different shape as well as a colour. Race friends online and everyone gets the very same sequence: who remembers the most?"
+  ],
+  "howToPlay": [
+    "Press Start. Watch the pads: the game lights them one at a time, each with its sound.",
+    "When it says it's your turn, press the pads in the same order.",
+    "Get it right and the sequence plays again with one more step at the end.",
+    "One wrong pad ends the game. Your score is the longest sequence you repeated."
+  ],
+  "controls": [
+    "Phones and tablets: tap the pads.",
+    "Mouse: click the pads.",
+    "Keyboard: 1, 2, 3 and 4 press the pads, numbered in their corners.",
+    "Pause or start again from the bar above the game. Pausing replays the sequence when you return."
+  ],
+  "tips": [
+    "Say the sequence to yourself as it plays: “circle, square, square, diamond.”",
+    "Group the steps in threes or fours, like a phone number.",
+    "Listen as well as look: each pad's sound is different, and tunes are easy to remember.",
+    "The sequence only ever adds one step at the end, so you just need to remember the newest one.",
+    "Take your time on your turn: there's no clock while you press."
+  ],
+  "faq": [
+    {
+      "question": "Is Sequence Memory free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "Seven or eight is typical. Twelve and up is a strong memory; past twenty is rare."
+    },
+    {
+      "question": "Is there a time limit on my turn?",
+      "answer": "No. Take as long as you need to press each pad. Only the playback gets faster as the sequence grows."
+    },
+    {
+      "question": "Can I play without colour or sound?",
+      "answer": "Yes: every pad has a different shape and position as well as a colour and a sound, so any one of them is enough to follow."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same sequence. The longest one repeated wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "Memoria de Secuencias",
+    "start": "Empezar",
+    "startDetail": "Cuatro paneles",
+    "best": "Mejor: {n} pasos",
+    "length": "Secuencia",
+    "bestRun": "Repetidos",
+    "over": "Fin: repetiste {n} pasos. El panel iluminado era el siguiente.",
+    "yourTurn": "Tu turno: faltan {n}",
+    "watch": "Mira y escucha…",
+    "padsLabel": "Paneles",
+    "pad1": "Círculo rojo",
+    "pad2": "Cuadrado azul",
+    "pad3": "Triángulo verde",
+    "pad4": "Rombo amarillo",
+    "newBest": "¡Nuevo récord!",
+    "quit": "Salir"
+  },
+  "achievements": {
+    "played": {
+      "name": "Buen oído",
+      "description": "Juega {count, plural, one {# partida} other {# partidas}}"
+    },
+    "memory": {
+      "name": "Memoria de elefante",
+      "description": "Repite una secuencia de {count} pasos"
+    }
+  },
+  "leaderboards": {
+    "longest": "Secuencia más larga"
+  }
+}

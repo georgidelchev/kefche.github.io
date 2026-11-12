@@ -3125,6 +3125,19 @@ The owner answered "you decide, continue", so the recommended answers stand:
     - the arrow keys and Enter;
     - 360, 768 and 1280 px and a landscape phone, both themes, Bulgarian and Arabic, cells at least 24 px, and axe.
     - The landscape phone's cells were under 24 px at first; the grid now takes more of the height.
+- [x] **Step 10, Sequence Memory:**
+  - **Rules:** four pads. The game shows a sequence (from the seed) and you repeat it; each time you do, it grows by one step. A wrong pad ends the game, and the score is the longest sequence repeated. There's no clock on your turn.
+  - **Timing on the server:** showing n steps takes n × the step time, which shortens from 600 to 350 ms as the sequence grows. The first press of each round returns that from `actionMs`, so a long run can't be claimed sooner than its sequences could have been shown.
+  - **Never colour alone:** each pad has its own colour (Okabe–Ito), sound, shape (circle, square, triangle, diamond) and key number. Screen readers hear "Red circle 1". A lit pad brightens, rings in white and grows a little (not with reduced motion).
+  - **Flashes:** at most under three a second (WCAG 2.3.1); measured, the closest two were 497 ms apart.
+  - **Controls:** tap or click the pads, or keys 1 to 4. After a wrong pad the right one is shown too. Pausing replays the sequence on return.
+  - **Board:** longest sequence. It isn't timed, so it isn't marked as measured on the device. **Achievements:** games played, and sequences of 8, 14 or 20.
+  - **Server:** its fixture (9 rounds, then a wrong pad).
+  - Checked in Chrome, 28/28:
+    - five rounds watched and repeated, then a wrong pad ending it with the right one shown, and the best on the menu;
+    - the keys;
+    - 360, 768 and 1280 px and a landscape phone, both themes, Bulgarian and Arabic, and axe.
+    - It found the pads' names leaving out their visible key numbers (WCAG 2.5.3), pads of 120 px on a landscape phone, and key numbers hard to read on dimmed pads; all fixed.
 
 ## Known issues
 

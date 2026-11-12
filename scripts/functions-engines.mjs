@@ -498,6 +498,14 @@ if (process.argv.includes("--fixtures")) {
         return { cell: random() < 0.1 ? (cell + 1) % 25 : cell, ms };
       },
     },
+    // The right pad each time up to a sequence of 9, then a wrong one.
+    "sequence-memory": {
+      config: undefined,
+      next: (state) => {
+        const pad = state.steps[state.pos];
+        return { pad: state.length >= 10 ? (pad + 1) % 4 : pad };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },

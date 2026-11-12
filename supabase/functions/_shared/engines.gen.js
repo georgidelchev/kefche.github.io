@@ -149,13 +149,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine57, bots2, options) {
-    this.engine = engine57;
+  constructor(engine58, bots2, options) {
+    this.engine = engine58;
     this.bots = bots2;
     this.options = options;
-    this.world = engine57.createWorld(options.config, options.seed);
+    this.world = engine58.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine57.ticksPerSecond / engine57.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine58.ticksPerSecond / engine58.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -387,11 +387,11 @@ var ByteReader = class {
     return v;
   }
   varint() {
-    let result29 = 0;
+    let result30 = 0;
     for (let shift = 0; shift < 35; shift += 7) {
       const byte = this.u8();
-      result29 |= (byte & 127) << shift;
-      if (byte < 128) return result29 >>> 0;
+      result30 |= (byte & 127) << shift;
+      if (byte < 128) return result30 >>> 0;
     }
     throw new RangeError("varint longer than 5 bytes");
   }
@@ -526,7 +526,7 @@ function canonicalJson(value2) {
 var sameAction = (a, b) => canonicalJson(a) === canonicalJson(b);
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest57) => manifest57;
+var defineManifest = (manifest58) => manifest58;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -2661,8 +2661,8 @@ function peg$parse(input, options) {
   var peg$f9 = function(line) {
     return line;
   };
-  var peg$f10 = function(result29, comment) {
-    return { result: result29, comment };
+  var peg$f10 = function(result30, comment) {
+    return { result: result30, comment };
   };
   var peg$currPos = options.peg$currPos | 0;
   var peg$posDetailsCache = [{ line: 1, column: 1 }];
@@ -3649,12 +3649,12 @@ function xoroshiro128(state) {
   return function() {
     let s0 = BigInt(state & MASK64);
     let s1 = BigInt(state >> 64n & MASK64);
-    const result29 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
+    const result30 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
     s1 ^= s0;
     s0 = (rotl(s0, 24n) ^ s1 ^ s1 << 16n) & MASK64;
     s1 = rotl(s1, 37n);
     state = s1 << 64n | s0;
-    return result29;
+    return result30;
   };
 }
 var rand = xoroshiro128(0xa187eb39cdcaed8f31c4b365b102e01en);
@@ -5357,16 +5357,16 @@ var Chess = class {
     return move3;
   }
   pgn({ newline = "\n", maxWidth = 0 } = {}) {
-    const result29 = [];
+    const result30 = [];
     let headerExists = false;
     for (const i in this._header) {
       const headerTag = this._header[i];
       if (headerTag)
-        result29.push(`[${i} "${this._header[i]}"]` + newline);
+        result30.push(`[${i} "${this._header[i]}"]` + newline);
       headerExists = true;
     }
     if (headerExists && this._history.length) {
-      result29.push(newline);
+      result30.push(newline);
     }
     const appendComment = (moveString2) => {
       const comment = this._comments[this.fen()];
@@ -5408,11 +5408,11 @@ var Chess = class {
     }
     moves.push(this._header.Result || "*");
     if (maxWidth === 0) {
-      return result29.join("") + moves.join(" ");
+      return result30.join("") + moves.join(" ");
     }
     const strip = function() {
-      if (result29.length > 0 && result29[result29.length - 1] === " ") {
-        result29.pop();
+      if (result30.length > 0 && result30[result30.length - 1] === " ") {
+        result30.pop();
         return true;
       }
       return false;
@@ -5426,12 +5426,12 @@ var Chess = class {
           while (strip()) {
             width--;
           }
-          result29.push(newline);
+          result30.push(newline);
           width = 0;
         }
-        result29.push(token);
+        result30.push(token);
         width += token.length;
-        result29.push(" ");
+        result30.push(" ");
         width++;
       }
       if (strip()) {
@@ -5448,19 +5448,19 @@ var Chess = class {
         }
       }
       if (currentWidth + moves[i].length > maxWidth && i !== 0) {
-        if (result29[result29.length - 1] === " ") {
-          result29.pop();
+        if (result30[result30.length - 1] === " ") {
+          result30.pop();
         }
-        result29.push(newline);
+        result30.push(newline);
         currentWidth = 0;
       } else if (i !== 0) {
-        result29.push(" ");
+        result30.push(" ");
         currentWidth++;
       }
-      result29.push(moves[i]);
+      result30.push(moves[i]);
       currentWidth += moves[i].length;
     }
-    return result29.join("");
+    return result30.join("");
   }
   /**
    * @deprecated Use `setHeader` and `getHeaders` instead. This method will return null header tags (which is not what you want)
@@ -5537,9 +5537,9 @@ var Chess = class {
       }
       node2 = node2.variations[0];
     }
-    const result29 = parsedPgn.result;
-    if (result29 && Object.keys(this._header).length && this._header["Result"] !== result29) {
-      this.setHeader("Result", result29);
+    const result30 = parsedPgn.result;
+    if (result30 && Object.keys(this._header).length && this._header["Result"] !== result30) {
+      this.setHeader("Result", result30);
     }
   }
   /*
@@ -5855,8 +5855,8 @@ var Chess = class {
       }
     }
     this._updateCastlingRights();
-    const result29 = this.getCastlingRights(color);
-    return (rights[KING2] === void 0 || rights[KING2] === result29[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result29[QUEEN2]);
+    const result30 = this.getCastlingRights(color);
+    return (rights[KING2] === void 0 || rights[KING2] === result30[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result30[QUEEN2]);
   }
   getCastlingRights(color) {
     return {
@@ -11140,8 +11140,8 @@ function applyAction14(s, seat, action) {
   const spot = next3.shot;
   const dive = next3.dive;
   const reach2 = columnOf(spot) === dive && !(isHigh(spot) && columnOf(spot) !== 1);
-  const result29 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
-  const kick = { shooter: shooterOf(s), spot, dive, result: result29 };
+  const result30 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
+  const kick = { shooter: shooterOf(s), spot, dive, result: result30 };
   return decide({ ...next3, shot: null, dive: null, kicks: [...s.kicks, kick], rng: rng.state });
 }
 function currentSeats14(s) {
@@ -12129,6 +12129,72 @@ var manifest45 = defineManifest({
   tags: ["classic", "two-player", "pencil-and-paper", "strategy"]
 });
 
+// packages/games/sequence-memory/engine/index.ts
+var PADS = 4;
+var MAX_LENGTH2 = 500;
+function initialState23(_config, seed) {
+  const rng = Rng.fromSeed(`sequence-memory:${seed}`);
+  return {
+    steps: Array.from({ length: MAX_LENGTH2 }, () => rng.int(0, PADS - 1)),
+    length: 1,
+    pos: 0,
+    missed: null
+  };
+}
+var stepMs = (length) => Math.max(350, 600 - 20 * (length - 1));
+var showMs = (length) => length * stepMs(length);
+var isOver5 = (s) => s.missed !== null || s.length > MAX_LENGTH2;
+function read5(s, action) {
+  if (isOver5(s) || typeof action !== "object" || action === null) return null;
+  return measuredMs(action.pad, PADS - 1);
+}
+function apply6(s, action) {
+  const pad = read5(s, action);
+  if (pad === null) return s;
+  if (pad !== s.steps[s.pos]) return { ...s, missed: pad };
+  return s.pos + 1 === s.length ? { ...s, length: s.length + 1, pos: 0 } : { ...s, pos: s.pos + 1 };
+}
+var score6 = (s) => s.length - 1;
+function result23(s) {
+  return isOver5(s) ? { completed: false, score: score6(s) } : null;
+}
+var engine46 = {
+  initialState: initialState23,
+  apply: apply6,
+  progress: (s) => Math.min(1, score6(s) / 20),
+  result: result23,
+  score: score6,
+  // The round's first press comes after its sequence was shown.
+  actionMs: (s, action) => read5(s, action) !== null && s.pos === 0 ? showMs(s.length) : 0
+};
+
+// packages/games/sequence-memory/manifest.ts
+var manifest46 = defineManifest({
+  id: "sequence-memory",
+  version: 1,
+  category: "speed",
+  kind: "race",
+  players: { min: 1, max: 10, default: 1 },
+  modes: ["solo", "race", "online-private", "online-public", "quick-match"],
+  bots: { supported: false, difficulties: [], canFillSeats: false },
+  timers: [{ kind: "countdown", seconds: 600 }],
+  options: [],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard", "mouse"],
+  renderer: "dom",
+  estimatedMinutes: [1, 5],
+  leaderboards: [{ id: "longest", metric: "score", order: "desc" }],
+  achievements: [
+    { id: "played", icon: "repeat", metric: "played", tiers: [1, 25, 100] },
+    { id: "memory", icon: "star", metric: "bestScore", tiers: [8, 14, 20] }
+  ],
+  // The sequence comes from the seed; each round's showing takes its time.
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 10 },
+  tags: ["speed", "memory", "sound", "single-player"]
+});
+
 // packages/games/shape-claim/engine/index.ts
 var EMPTY8 = -1;
 var ROW = 4;
@@ -12378,7 +12444,7 @@ function isShape(state, slot, cells) {
   const rc = cells.map((cell) => [Math.floor(cell / size), cell % size]);
   return SHAPE_KEYS[shape]?.has(keyOf(rc)) ?? false;
 }
-var engine46 = {
+var engine47 = {
   initialState(_config, seats, seed) {
     const size = sizeFor3(seats);
     const rng = Rng.fromSeed(`${seed}:bag`);
@@ -12463,7 +12529,7 @@ var engine46 = {
 };
 
 // packages/games/shape-claim/manifest.ts
-var manifest46 = defineManifest({
+var manifest47 = defineManifest({
   id: "shape-claim",
   version: 1,
   category: "strategy",
@@ -12531,7 +12597,7 @@ function neighbor(cell, direction, walls) {
   c = (c + COLS) % COLS;
   return r * COLS + c;
 }
-var engine47 = {
+var engine48 = {
   initialState(config, seed) {
     const middle = Math.floor(ROWS / 2) * COLS + Math.floor(COLS / 2) - 3;
     const snake = [middle, middle - 1, middle - 2];
@@ -12550,7 +12616,7 @@ var engine47 = {
   },
   // A tick takes the step time of the state it moves on (the game loop's
   // timing); the server checks a game's time against the sum (Phase 7).
-  actionMs: (state, action) => action.type === "tick" ? stepMs(state) : 0,
+  actionMs: (state, action) => action.type === "tick" ? stepMs2(state) : 0,
   apply(state, action) {
     if (state.over) return state;
     if (action.type === "turn") {
@@ -12595,10 +12661,10 @@ var engine47 = {
   },
   score: (state) => state.score
 };
-var stepMs = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
+var stepMs2 = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
 
 // packages/games/snake/manifest.ts
-var manifest47 = defineManifest({
+var manifest48 = defineManifest({
   id: "snake",
   version: 1,
   category: "arcade",
@@ -12667,7 +12733,7 @@ function deal7(state, rng) {
     rng: rng.state
   };
 }
-function initialState23(config, _seats, seed) {
+function initialState24(config, _seats, seed) {
   return deal7(
     {
       phase: "bid",
@@ -12799,7 +12865,7 @@ function applyAction18(state, seat, action) {
 function currentSeats18(state) {
   return over12(state) ? [] : [state.turn];
 }
-function result23(state) {
+function result24(state) {
   if (!over12(state)) return null;
   const [a, b] = state.scores;
   const winner = a <= MERCY ? 1 : b <= MERCY ? 0 : a > b ? 0 : 1;
@@ -12812,17 +12878,17 @@ function view18(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine48 = {
-  initialState: initialState23,
+var engine49 = {
+  initialState: initialState24,
   legalActions: legalActions18,
   applyAction: applyAction18,
   currentSeats: currentSeats18,
-  result: result23,
+  result: result24,
   view: view18
 };
 
 // packages/games/spades/manifest.ts
-var manifest48 = defineManifest({
+var manifest49 = defineManifest({
   id: "spades",
   version: 1,
   category: "cards",
@@ -12924,7 +12990,7 @@ function settle(s) {
 }
 var layout2 = (s) => ({ columns: s.columns, stock: s.stock, done: s.done });
 var canDeal = (s) => s.stock.length >= 10 && s.columns.every((c) => c.up.length > 0);
-var engine49 = {
+var engine50 = {
   initialState(config, seed) {
     const c = configFrom17(config);
     return { ...deal8(c, seed), suits: c.suits, moves: 0, history: [] };
@@ -12972,7 +13038,7 @@ var engine49 = {
 };
 
 // packages/games/spider/manifest.ts
-var manifest49 = defineManifest({
+var manifest50 = defineManifest({
   id: "spider",
   version: 1,
   category: "cards",
@@ -13053,7 +13119,7 @@ function startRound(s) {
     out
   };
 }
-function initialState24(config, seats) {
+function initialState25(config, seats) {
   return startRound({
     players: seats,
     config,
@@ -13103,7 +13169,7 @@ function currentSeats19(s) {
   if (over13(s)) return [];
   return s.pairs.flatMap((p) => [p.choices[0] === null ? p.a : null, p.choices[1] === null ? p.b : null]).filter((seat) => seat !== null).sort((x, y) => x - y);
 }
-function result24(s) {
+function result25(s) {
   if (!over13(s)) return null;
   const best = Math.max(...s.scores);
   const top2 = s.scores.filter((v) => v === best).length;
@@ -13129,18 +13195,18 @@ function view19(s, seat) {
 function viewAction8(action, seat, viewer) {
   return viewer === seat ? action : null;
 }
-var engine50 = {
-  initialState: initialState24,
+var engine51 = {
+  initialState: initialState25,
   legalActions: legalActions19,
   applyAction: applyAction19,
   currentSeats: currentSeats19,
-  result: result24,
+  result: result25,
   view: view19,
   viewAction: viewAction8
 };
 
 // packages/games/split-or-steal/manifest.ts
-var manifest50 = defineManifest({
+var manifest51 = defineManifest({
   id: "split-or-steal",
   version: 1,
   category: "party",
@@ -13537,7 +13603,7 @@ function commit(state, next3, extra = {}) {
     ]
   };
 }
-var engine51 = {
+var engine52 = {
   initialState(config, seed) {
     return fromPuzzle(generate(seed, config.difficulty));
   },
@@ -13594,7 +13660,7 @@ var engine51 = {
 };
 
 // packages/games/sudoku/manifest.ts
-var manifest51 = defineManifest({
+var manifest52 = defineManifest({
   id: "sudoku",
   version: 1,
   category: "logic",
@@ -13648,7 +13714,7 @@ var manifest51 = defineManifest({
 var DURATION_MS2 = 5e3;
 var STEADY_SPREAD_MS = 3;
 var STEADY_TAPS = 20;
-var initialState25 = () => ({ taps: [], last: 0, ignored: 0, over: false });
+var initialState26 = () => ({ taps: [], last: 0, ignored: 0, over: false });
 var gaps = (s) => s.taps.slice(1).map((t2, i) => t2 - (s.taps[i] ?? 0));
 function machineLike(s) {
   const g = gaps(s);
@@ -13657,7 +13723,7 @@ function machineLike(s) {
   const spread = Math.sqrt(mean(g.map((x) => (x - m) ** 2)));
   return spread < STEADY_SPREAD_MS;
 }
-function read5(s, action) {
+function read6(s, action) {
   if (s.over || typeof action !== "object" || action === null) return null;
   if ("stop" in action)
     return action.stop === true && s.taps.length > 0 ? { stop: true } : null;
@@ -13666,8 +13732,8 @@ function read5(s, action) {
   if (s.taps.length === 0 ? t2 !== 0 : t2 < s.last) return null;
   return { tap: t2 };
 }
-function apply6(s, action) {
-  const read_ = read5(s, action);
+function apply7(s, action) {
+  const read_ = read6(s, action);
   if (!read_) return s;
   if ("stop" in read_) return { ...s, over: true };
   const t2 = read_.tap;
@@ -13676,25 +13742,25 @@ function apply6(s, action) {
     return { ...s, last: t2, ignored: s.ignored + 1 };
   return { ...s, taps: [...s.taps, t2], last: t2 };
 }
-function result25(s) {
+function result26(s) {
   if (!s.over) return null;
   if (machineLike(s)) return { completed: false };
   return { completed: false, score: s.taps.length };
 }
-var engine52 = {
-  initialState: initialState25,
-  apply: apply6,
+var engine53 = {
+  initialState: initialState26,
+  apply: apply7,
   progress: (s) => s.over ? 1 : Math.min(1, s.last / DURATION_MS2),
-  result: result25,
+  result: result26,
   actionMs: (s, action) => {
-    const read_ = read5(s, action);
+    const read_ = read6(s, action);
     if (!read_) return 0;
     return ("stop" in read_ ? DURATION_MS2 : read_.tap) - s.last;
   }
 };
 
 // packages/games/tap-frenzy/manifest.ts
-var manifest52 = defineManifest({
+var manifest53 = defineManifest({
   id: "tap-frenzy",
   version: 1,
   category: "speed",
@@ -13749,7 +13815,7 @@ function movesFor6(state) {
     (b) => smallBoard(state.cells, b).flatMap((v, c) => v === EMPTY9 ? [b * 9 + c] : [])
   );
 }
-var engine53 = {
+var engine54 = {
   initialState(config) {
     const { mode } = configFrom18(config);
     return {
@@ -13806,7 +13872,7 @@ var engine53 = {
 };
 
 // packages/games/ultimate-ttt/manifest.ts
-var manifest53 = defineManifest({
+var manifest54 = defineManifest({
   id: "ultimate-ttt",
   version: 1,
   category: "strategy",
@@ -13858,7 +13924,7 @@ function over14(state) {
   if (state.battle.up[0].length > 0 || state.battle.up[1].length > 0) return false;
   return state.piles[0].length === 0 || state.piles[1].length === 0 || state.battles >= state.limit;
 }
-function initialState26(config, _seats, seed) {
+function initialState27(config, _seats, seed) {
   const rng = Rng.fromSeed(seed);
   const deck2 = shuffledDeck(rng, 52);
   return {
@@ -13937,7 +14003,7 @@ function currentSeats20(state) {
   if (over14(state)) return [];
   return [0, 1].filter((s) => !state.flipped[s]);
 }
-function result26(state) {
+function result27(state) {
   if (!over14(state)) return null;
   if (state.outOfCards !== null) {
     return { completed: true, outcome: state.outOfCards === 0 ? [0, 1] : [1, 0] };
@@ -13967,17 +14033,17 @@ function view20(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine54 = {
-  initialState: initialState26,
+var engine55 = {
+  initialState: initialState27,
   legalActions: legalActions20,
   applyAction: applyAction20,
   currentSeats: currentSeats20,
-  result: result26,
+  result: result27,
   view: view20
 };
 
 // packages/games/war/manifest.ts
-var manifest54 = defineManifest({
+var manifest55 = defineManifest({
   id: "war",
   version: 1,
   category: "cards",
@@ -14021,7 +14087,7 @@ var manifest54 = defineManifest({
 // packages/games/whos-the-spy/engine/index.ts
 var PACK_SIZE2 = 30;
 var HIDDEN4 = -1;
-function initialState27(config, seats, seed) {
+function initialState28(config, seats, seed) {
   const rng = Rng.fromSeed(seed);
   return {
     players: seats,
@@ -14092,7 +14158,7 @@ function currentSeats21(s) {
   if (s.phase === "vote") return s.votes.flatMap((v, seat) => v === null ? [seat] : []);
   return [s.spy];
 }
-function result27(s) {
+function result28(s) {
   if (s.winner === null) return null;
   return {
     completed: true,
@@ -14115,19 +14181,19 @@ function view21(s, seat) {
 function viewAction9(action, seat, viewer) {
   return "vote" in action && viewer !== seat ? null : action;
 }
-var engine55 = {
-  initialState: initialState27,
+var engine56 = {
+  initialState: initialState28,
   legalActions: legalActions21,
   sideActions: sideActions2,
   applyAction: applyAction21,
   currentSeats: currentSeats21,
-  result: result27,
+  result: result28,
   view: view21,
   viewAction: viewAction9
 };
 
 // packages/games/whos-the-spy/manifest.ts
-var manifest55 = defineManifest({
+var manifest56 = defineManifest({
   id: "whos-the-spy",
   version: 1,
   category: "party",
@@ -14563,7 +14629,7 @@ function lifeResult(world, worm) {
     completed: true
   };
 }
-function result28(world, id) {
+function result29(world, id) {
   const worm = world.worms.get(id);
   if (!worm) return null;
   return worm.alive ? lifeResult(world, worm) : worm.lastLife;
@@ -14811,7 +14877,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine56 = {
+var engine57 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -14822,13 +14888,13 @@ var engine56 = {
   alive: alive2,
   step: step3,
   snapshot,
-  result: result28,
+  result: result29,
   snapshotCodec,
   inputCodec
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest56 = defineManifest({
+var manifest57 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -14905,17 +14971,18 @@ var GAMES = {
   "rps-tournament": { manifest: manifest43, engine: engine43 },
   "santase": { manifest: manifest44, engine: engine44 },
   "sea-battle": { manifest: manifest45, engine: engine45 },
-  "shape-claim": { manifest: manifest46, engine: engine46 },
-  "snake": { manifest: manifest47, engine: engine47 },
-  "spades": { manifest: manifest48, engine: engine48 },
-  "spider": { manifest: manifest49, engine: engine49 },
-  "split-or-steal": { manifest: manifest50, engine: engine50 },
-  "sudoku": { manifest: manifest51, engine: engine51 },
-  "tap-frenzy": { manifest: manifest52, engine: engine52 },
-  "ultimate-ttt": { manifest: manifest53, engine: engine53 },
-  "war": { manifest: manifest54, engine: engine54 },
-  "whos-the-spy": { manifest: manifest55, engine: engine55 },
-  "worm-rush": { manifest: manifest56, engine: engine56, bots, host: arenaHost }
+  "sequence-memory": { manifest: manifest46, engine: engine46 },
+  "shape-claim": { manifest: manifest47, engine: engine47 },
+  "snake": { manifest: manifest48, engine: engine48 },
+  "spades": { manifest: manifest49, engine: engine49 },
+  "spider": { manifest: manifest50, engine: engine50 },
+  "split-or-steal": { manifest: manifest51, engine: engine51 },
+  "sudoku": { manifest: manifest52, engine: engine52 },
+  "tap-frenzy": { manifest: manifest53, engine: engine53 },
+  "ultimate-ttt": { manifest: manifest54, engine: engine54 },
+  "war": { manifest: manifest55, engine: engine55 },
+  "whos-the-spy": { manifest: manifest56, engine: engine56 },
+  "worm-rush": { manifest: manifest57, engine: engine57, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,
