@@ -125,6 +125,35 @@ writeFileSync(
 );
 console.log(`engines.gen.js: ${ids.join(", ")} (${String(Math.round(bundle.length / 1024))} KB)`);
 
+// Games whose best score is the lowest (a score board ordered "asc") must be
+// in private.lower_scores, and only they, or players' best scores and
+// achievements read the wrong way round (20261112100000_lower_scores.sql).
+{
+  const { GAMES } = await import(
+    `${pathToFileURL(join(out, "engines.gen.js")).href}?check=${String(Date.now())}`
+  );
+  const lower = ids.filter((id) =>
+    GAMES[id].manifest.leaderboards.some((b) => b.metric === "score" && b.order === "asc"),
+  );
+  const sql = readdirSync(join(root, "supabase/migrations"))
+    .filter((f) => f.endsWith(".sql"))
+    .map((f) => readFileSync(join(root, "supabase/migrations", f), "utf8"))
+    .join("\n");
+  const listed = new Set();
+  for (const m of sql.matchAll(/insert into private\.lower_scores \(game_id\) values ([^;]+);/g))
+    for (const v of m[1].matchAll(/'([a-z0-9-]+)'/g)) listed.add(v[1]);
+  for (const m of sql.matchAll(/delete from private\.lower_scores where game_id = '([a-z0-9-]+)'/g))
+    listed.delete(m[1]);
+  const missing = lower.filter((id) => !listed.has(id));
+  const extra = [...listed].filter((id) => !lower.includes(id));
+  if (missing.length > 0 || extra.length > 0) {
+    console.error(
+      `private.lower_scores is out of step with the manifests: add ${missing.join(", ") || "none"}, remove ${extra.join(", ") || "none"} (a new migration).`,
+    );
+    process.exit(1);
+  }
+}
+
 if (process.argv.includes("--fixtures")) {
   const { GAMES, ArenaHost, canonicalJson, inputHex } = await import(
     `${pathToFileURL(join(out, "engines.gen.js")).href}?t=${String(Date.now())}`
@@ -399,6 +428,18 @@ if (process.argv.includes("--fixtures")) {
         const pair = open.find((i) => i !== first && state.symbols[i] === state.symbols[first]);
         const others = open.filter((i) => i !== first);
         return { flip: random() < 0.3 ? pick(random, others) : pair };
+      },
+    },
+    // Five rounds pressed after each green, with a false start and a guess
+    // (under 100 ms) now and then.
+    "reaction-flash": {
+      config: undefined,
+      next: (state, random) => {
+        const wait = state.waits[state.tries];
+        const r = random();
+        if (r < 0.1) return { ms: Math.floor(random() * wait) };
+        if (r < 0.15) return { ms: wait + 40 };
+        return { ms: wait + 180 + Math.floor(random() * 220) };
       },
     },
     // Presses at random.

@@ -1,0 +1,86 @@
+{
+  "name": "Reflexo Relâmpago",
+  "tagline": "Espere o verde e toque. Quão rápidos são seus reflexos?",
+  "description": "Jogue Reflexo Relâmpago grátis: toque assim que o painel ficar verde. Cinco rodadas e sua média em milissegundos, sozinho ou em corrida online.",
+  "about": [
+    "Reaction Flash measures one thing: how quickly you respond to what you see. The pad in front of you stays dark for a moment, then flashes bright green. Press it the instant it changes. Five rounds, and your score is your average reaction time in milliseconds, so lower is better.",
+    "The wait before the green is different every round, between one and a half and four seconds, so you can't count your way to a good time. Press too early and it's a false start: that round is played again, and three false starts end the game. Anything faster than a tenth of a second counts as a guess, because nobody sees and reacts that quickly.",
+    "Most people react in about a quarter of a second. Race friends online and you'll all get the same waits at the same moment, so the fastest eyes and fingers win. Your time is measured on your own device, from the frame that shows the green to the moment your press arrives."
+  ],
+  "howToPlay": [
+    "Press Start. A short break, then the pad goes dark: wait.",
+    "When the pad turns bright green, press it as fast as you can.",
+    "Your reaction time shows, then the next round begins.",
+    "Pressing before the green is a false start: the round is played again. Three false starts end the game.",
+    "After five rounds you get your average, your fastest round and all five times."
+  ],
+  "controls": [
+    "Phones and tablets: tap anywhere on the pad. It reacts the moment your finger touches, not when you lift it.",
+    "Mouse: press the button down on the pad.",
+    "Keyboard: Space or Enter, with the pad focused (it is when a game starts).",
+    "Pause or start again from the bar above the game. Pausing calls off the round in play."
+  ],
+  "tips": [
+    "Watch the middle of the pad and keep your finger resting just above it.",
+    "Don't try to guess the timing: the wait is random every round, and early presses cost you a round.",
+    "Play in a quiet moment: you react faster when you're not distracted.",
+    "A screen that refreshes faster can save you a few milliseconds.",
+    "Your best average is kept on this device, so you can see yourself improve."
+  ],
+  "faq": [
+    {
+      "question": "Is Reaction Flash free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good reaction time?",
+      "answer": "Most people average between 200 and 300 milliseconds. Under 200 is very quick."
+    },
+    {
+      "question": "Why was my press a false start when the pad was already green?",
+      "answer": "A press within a tenth of a second of the green counts as a false start, because no one can see the change and react that fast: it must have been a guess."
+    },
+    {
+      "question": "Are the times accurate?",
+      "answer": "Each time runs from the screen frame that shows the green to the moment your touch, click or key arrives, as your device measures it. Different screens and phones add a little delay, so the leaderboard notes that times are measured on each player's device."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room plays the same five rounds with the same waits, starting together. The lowest average wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "Reflexo Relâmpago",
+    "start": "Começar",
+    "startDetail": "Cinco rodadas",
+    "best": "Melhor: {ms} ms",
+    "round": "Rodada",
+    "roundOf": "{n} / {total}",
+    "average": "Média",
+    "falseStarts": "Queimadas",
+    "ms": "{ms} ms",
+    "press": "Toque!",
+    "wait": "Espere o verde…",
+    "getReady": "Prepare-se",
+    "tooSoon": "Cedo demais!",
+    "tooSoonHint": "Essa rodada será jogada de novo.",
+    "quit": "Sair",
+    "averageOf": "Média de {n} rodadas",
+    "fastest": "A mais rápida: {ms} ms",
+    "newBest": "Nova melhor média!",
+    "disqualified": "Queimadas: {n}. Sem pontuação desta vez. Espere o verde!"
+  },
+  "achievements": {
+    "played": {
+      "name": "Mão rápida",
+      "description": "Jogue {count, plural, one {# partida} other {# partidas}}"
+    },
+    "quick": {
+      "name": "Relâmpago",
+      "description": "Média de {count} ms ou menos em cinco rodadas"
+    }
+  },
+  "leaderboards": {
+    "best-average": "Melhor média"
+  }
+}

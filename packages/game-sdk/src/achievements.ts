@@ -64,6 +64,9 @@ export function tiersFor(
   });
 }
 
+const lowerIsBetter = (def: AchievementDef): boolean =>
+  def.metric === "bestTime" || def.metric === "lowestScore";
+
 function gameFigure(def: AchievementDef, figures: GameFigures): number | null {
   switch (def.metric) {
     case "played":
@@ -71,6 +74,8 @@ function gameFigure(def: AchievementDef, figures: GameFigures): number | null {
     case "wins":
       return figures.wins;
     case "bestScore":
+    case "lowestScore":
+      // A game whose lower scores are better keeps its lowest as its best.
       return figures.bestScore;
     case "bestTime":
       return figures.bestTimeMs;
@@ -99,7 +104,7 @@ export function reachedTiers(
     const game = figures.games[gameId];
     if (!game) continue;
     for (const def of defs) {
-      for (const tier of tiersFor(def.tiers, gameFigure(def, game), def.metric === "bestTime")) {
+      for (const tier of tiersFor(def.tiers, gameFigure(def, game), lowerIsBetter(def))) {
         reached.push({ achievement: `${gameId}.${def.id}`, tier });
       }
     }

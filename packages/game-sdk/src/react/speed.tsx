@@ -89,7 +89,7 @@ export function SpeedPad({
   disabled,
   className,
   style,
-  autoFocus,
+  takeFocus,
 }: {
   /** `at`: the input's timeStamp, on performance.now()'s clock. */
   onPress: (at: number) => void;
@@ -102,12 +102,16 @@ export function SpeedPad({
   disabled?: boolean | undefined;
   className?: string | undefined;
   style?: CSSProperties | undefined;
-  autoFocus?: boolean | undefined;
+  /**
+   * Focus the pad when it appears, so Space and Enter press it. Only for a
+   * pad that appears because the player started a game (never on page load).
+   */
+  takeFocus?: boolean | undefined;
 }) {
   const ref = useRef<HTMLButtonElement>(null);
   useEffect(() => {
-    if (autoFocus) ref.current?.focus({ preventScroll: true });
-  }, [autoFocus]);
+    if (takeFocus) ref.current?.focus({ preventScroll: true });
+  }, [takeFocus]);
   return (
     <button
       ref={ref}

@@ -3032,6 +3032,27 @@ The owner answered "you decide, continue", so the recommended answers stand:
     - a press before the green is "too soon", and one under 100 ms is marked a guess;
     - Space answers;
     - axe found a pad named differently from its visible text (WCAG 2.5.3), so a pad's own text now names it, with a label only for pads that show no words.
+- [x] **Step 4, Reaction Flash** (the first speed game, and scores where lower is better):
+  - **Rules:** five rounds. The pad waits 1.5 to 4 s (from the seed, so a race's waits are everyone's), then turns green; press it.
+    - Each press says how long after its round began it came; the engine knows the wait, so a press before the green, or within 100 ms of it, is a false start and the round is played again.
+    - Three false starts end the game with no score.
+    - A reaction counts up to 1.5 s, and the game presses for a player who hasn't by then.
+    - The score is the average in milliseconds, lower being better.
+  - **The screen:** the change from waiting to pressing shows in brightness, words ("Wait for green…", "Press!") and shape (a ring, then a filled circle), not only in colour. The green switches on the frame its wait runs out. Pausing calls the round off, and the break before the next wait starts over on resume.
+  - **Scores where lower is better** (migration `20261112100000_lower_scores.sql`):
+    - **The problem:** a player's best score was always their highest (`count_result`'s `greatest`), so a reaction time's profile figure and achievements would read the wrong way round.
+    - **Database:** `private.lower_scores` lists the games whose best is their lowest, and `count_result` keeps the lowest for them. Checked in a rolled-back transaction: the lowest of three kept, an assisted result ignored, another game still keeping its highest.
+    - **Achievements:** a new metric, `lowestScore`, with goals that fall; the manifest schema allows it only in games with an "asc" score board, and `bestScore` only elsewhere.
+    - **The check:** `pnpm functions:engines` fails if `private.lower_scores` and the manifests disagree.
+  - **Board:** best average, marked as measured on the player's device. **Achievements:** games played, and an average of 350, 280 or 230 ms.
+  - **Server:** its fixture (five rounds and a false start, average 302 ms); Deno 125/125.
+  - Checked in Chrome, 41/41:
+    - a game played from inside the page (presses 220 to 300 ms after the green and one false start) averaged 265 ms, with all five times and a new best kept on the menu;
+    - no press counts 1.5 s, and three false starts end the game with no score;
+    - Space presses;
+    - pausing calls the round off and resuming starts the next wait;
+    - 360, 768 and 1280 px, both themes, Bulgarian and Arabic, and axe while waiting and at the summary.
+  - Races between browsers come with step 28's checks.
 
 ## Known issues
 

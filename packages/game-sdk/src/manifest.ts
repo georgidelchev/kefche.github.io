@@ -104,13 +104,16 @@ export type AchievementIcon = (typeof ACHIEVEMENT_ICONS)[number];
 
 /**
  * What a game's achievement counts: games finished, wins, the best score, the
- * best time in milliseconds (lower is better), the longest win streak, or the
- * best established rating (10 or more rated games) in any of its pools.
+ * best score in a game where lower is better ("lowestScore": a reaction time,
+ * for games with a score board ordered "asc"), the best time in milliseconds
+ * (lower is better), the longest win streak, or the best established rating
+ * (10 or more rated games) in any of its pools.
  */
 export const GAME_ACHIEVEMENT_METRICS = [
   "played",
   "wins",
   "bestScore",
+  "lowestScore",
   "bestTime",
   "bestStreak",
   "rating",

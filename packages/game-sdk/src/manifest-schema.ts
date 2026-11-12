@@ -114,11 +114,11 @@ export const gameManifestSchema = z
         .strict()
         .refine(
           ({ metric, tiers: [bronze, silver, gold] }) =>
-            metric === "bestTime"
+            metric === "bestTime" || metric === "lowestScore"
               ? bronze > silver && silver > gold
               : bronze < silver && silver < gold,
           {
-            message: "tiers: goals rise from bronze to gold (fall, for bestTime)",
+            message: "tiers: goals rise from bronze to gold (fall, for bestTime and lowestScore)",
             path: ["tiers"],
           },
         ),
@@ -157,6 +157,20 @@ export const gameManifestSchema = z
     message: 'awayPlayers: "clock" needs at least one clock timer',
     path: ["awayPlayers"],
   })
+  .refine(
+    (m) => {
+      // A game's best score is its lowest exactly when a score board is "asc".
+      const lower = m.leaderboards.some((b) => b.metric === "score" && b.order === "asc");
+      return m.achievements.every((a) =>
+        a.metric === "lowestScore" ? lower : a.metric !== "bestScore" || !lower,
+      );
+    },
+    {
+      message:
+        'achievements: use "lowestScore" (not "bestScore") in a game whose score board is "asc", and only there',
+      path: ["achievements"],
+    },
+  )
   .refine((m) => !m.bots.supported || m.bots.difficulties.length > 0, {
     message: "bots: list at least one difficulty when bots are supported",
     path: ["bots"],

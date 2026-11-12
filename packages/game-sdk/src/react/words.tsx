@@ -316,7 +316,7 @@ export function WordInput({
   maxLength,
   disabled,
   keepSpaces,
-  autoFocus,
+  takeFocus,
 }: {
   lang: WordLang;
   value: string;
@@ -328,7 +328,8 @@ export function WordInput({
   disabled?: boolean | undefined;
   /** Keep single spaces between words (a city's name), not only letters. */
   keepSpaces?: boolean | undefined;
-  autoFocus?: boolean | undefined;
+  /** Focus the field when it appears (only once the player has started something). */
+  takeFocus?: boolean | undefined;
 }) {
   const ref = useRef<HTMLInputElement>(null);
   const composingRef = useRef(false);
@@ -358,8 +359,8 @@ export function WordInput({
   }, []);
 
   useEffect(() => {
-    if (autoFocus) ref.current?.focus({ preventScroll: true });
-  }, [autoFocus]);
+    if (takeFocus) ref.current?.focus({ preventScroll: true });
+  }, [takeFocus]);
 
   return (
     <input
