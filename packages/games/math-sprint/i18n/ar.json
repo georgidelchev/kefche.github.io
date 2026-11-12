@@ -1,0 +1,91 @@
+{
+  "name": "سباق الحساب",
+  "tagline": "ستون ثانية من الحساب الذهني. كم إجابة صحيحة تستطيع؟",
+  "description": "العب سباق الحساب مجانًا: دقيقة من الحساب الذهني بمستوى سهل أو متوسط أو صعب. حطّم رقمك في كل مستوى أو تسابق مع أصدقائك عبر الإنترنت.",
+  "about": [
+    "Math Sprint is sixty seconds of mental arithmetic. A problem appears, you type the answer, and the next one comes straight away. Every right answer is a point; a wrong one scores nothing and shows you the right answer, so you can keep going without losing your rhythm.",
+    "There are three levels. Easy is adding and taking away up to twenty, good for warming up or for younger players. Medium goes up to a hundred and adds the times tables to twelve. Hard mixes two-digit multiplication, exact division and three-digit sums. Each level has its own best score and leaderboard.",
+    "No answer is ever negative or a fraction, so you only ever type a whole number. Race friends online on the same level and you'll all get the very same problems at the same moment."
+  ],
+  "howToPlay": [
+    "Choose a level. After a 3, 2, 1 countdown the first problem appears and the minute starts.",
+    "Type the answer and press OK (or Enter).",
+    "The next problem shows at once, with a note saying whether the last one was right.",
+    "A right answer is a point. A wrong one scores nothing; just carry on.",
+    "When the minute is up you see your right and wrong answers."
+  ],
+  "controls": [
+    "Phones and tablets: tap the number keys, then OK.",
+    "Mouse: click the number keys, then OK.",
+    "Keyboard: type the digits, Backspace to correct, Enter to answer.",
+    "Pause or start again from the bar above the game. Pausing starts the minute over."
+  ],
+  "tips": [
+    "Break big sums into parts: 47 + 38 is 47 + 30 + 8.",
+    "For times tables, know the squares (7 × 7, 8 × 8) and work from them.",
+    "Division is multiplication backwards: 96 ÷ 8 asks what times 8 makes 96.",
+    "Don't stop after a wrong answer: there's no penalty, only a lost point.",
+    "On a computer, typing with the number keys is much faster than clicking."
+  ],
+  "faq": [
+    {
+      "question": "Is Math Sprint free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "On easy, 30 or more in a minute is quick. On medium, 25; on hard, 15 is a strong score."
+    },
+    {
+      "question": "Are there negative numbers or fractions?",
+      "answer": "No. Every answer is a whole number of zero or more, and divisions always come out exactly."
+    },
+    {
+      "question": "Is there a penalty for a wrong answer?",
+      "answer": "No penalty: a wrong answer just doesn't score, and you see the right answer under the next problem."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room plays the same level and gets the same problems. The most right answers in the minute wins."
+    }
+  ],
+  "ui": {
+    "chooseLevel": "اختر مستوى",
+    "level": "المستوى",
+    "levelEasy": "سهل",
+    "levelEasyDetail": "جمع وطرح حتى 20",
+    "levelMedium": "متوسط",
+    "levelMediumDetail": "حتى 100، وجدول الضرب",
+    "levelHard": "صعب",
+    "levelHardDetail": "ضرب وقسمة ومجاميع كبيرة",
+    "best": "الأفضل: {n} صحيحة",
+    "right": "صحيحة",
+    "timeLeft": "الوقت المتبقي",
+    "seconds": "{s} ث",
+    "yourAnswer": "إجابتك",
+    "wasRight": "{problem} = {answer}: صحيح!",
+    "wasWrong": "{problem} = {answer}",
+    "keypad": "أزرار الأرقام",
+    "backspace": "احذف رقمًا",
+    "ok": "موافق",
+    "rightTotal": "الإجابات الصحيحة: {n}",
+    "wrongTotal": "الخاطئة: {n}",
+    "newBest": "رقم قياسي جديد!",
+    "quit": "خروج"
+  },
+  "achievements": {
+    "played": {
+      "name": "حاسب الأرقام",
+      "description": "العب {count, plural, one {مباراة واحدة} two {مباراتين} few {# مباريات} many {# مباراة} other {# مباراة}}"
+    },
+    "quick-maths": {
+      "name": "حساب سريع",
+      "description": "أجب عن {count} إجابة صحيحة في مباراة واحدة"
+    }
+  },
+  "leaderboards": {
+    "best-easy": "أكثر إجابات صحيحة · سهل",
+    "best-medium": "أكثر إجابات صحيحة · متوسط",
+    "best-hard": "أكثر إجابات صحيحة · صعب"
+  }
+}

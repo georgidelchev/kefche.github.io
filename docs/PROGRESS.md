@@ -3164,6 +3164,19 @@ The owner answered "you decide, continue", so the recommended answers stand:
     - the arrow keys and Enter;
     - 8 × 8 at 360, 768 and 1280 px and on a landscape phone, rings at least 24 px, both themes, Bulgarian and Arabic, and axe.
     - It found the grid's cells missing their rows (an ARIA grid needs them), and 17 px rings on a landscape phone. Both are fixed: the grid now keeps at least 16rem, so a landscape phone scrolls a little rather than shrinking the rings.
+- [x] **Step 13, Math Sprint** (the last speed game):
+  - **Rules:** 60 seconds of problems (from the seed); a right answer is a point, a wrong one scores nothing. There are three levels, each with its own best and board:
+    - easy: adding and taking away to 20;
+    - medium: to 100, and the times tables to 12;
+    - hard: two-digit × one-digit, exact division, and three-digit sums.
+  - **Answers:** no answer is negative or a fraction. An answer within 100 ms of the last doesn't count, nor any after the minute; a stop ends the run.
+  - **The screen:** the problem stays left to right in every language. Type on the keypad (timed on pointerdown) or the keyboard (digits, Backspace, Enter). The next problem comes at once, with a note on the last ("4 × 4 = 16: right!", or the right answer).
+  - **Boards:** most right at each level, marked as measured on the device. **Achievements:** games played, and 20, 32 or 45 right.
+  - **Server:** its fixture (medium, 33 actions, 28 right).
+  - Checked:
+    - 20,000 problems at each level, every answer a whole number of zero or more (the largest 20, 144 and 891);
+    - in Chrome, 23/23: the three levels; ten answers by keyboard with one wrong, then the keypad; the note; after the minute 10 right and 1 wrong, with medium's best on the menu and not the others'; 360, 768 and 1280 px, both themes, Bulgarian and Arabic (the sums still left to right), and axe.
+- **The ten speed games are done** (steps 4 to 13).
 
 ## Known issues
 

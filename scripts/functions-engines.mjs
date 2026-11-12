@@ -527,6 +527,16 @@ if (process.argv.includes("--fixtures")) {
         return { cell, ms };
       },
     },
+    // An answer every 1 to 3 s, right four times in five, until 60 s.
+    "math-sprint": {
+      config: { level: "medium" },
+      next: (state, random) => {
+        const ms = state.last + 1000 + Math.floor(random() * 2000);
+        if (ms >= 60000) return { stop: true };
+        const answer = state.problems[state.index].answer;
+        return { answer: random() < 0.8 ? answer : answer + 1, ms };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },

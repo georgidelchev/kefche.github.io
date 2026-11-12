@@ -1,0 +1,91 @@
+{
+  "name": "速算冲刺",
+  "tagline": "六十秒心算。你能答对多少？",
+  "description": "免费玩速算冲刺：在简单、中等或困难难度下进行一分钟心算。刷新每个难度的个人最佳，或和朋友在线比赛。",
+  "about": [
+    "Math Sprint is sixty seconds of mental arithmetic. A problem appears, you type the answer, and the next one comes straight away. Every right answer is a point; a wrong one scores nothing and shows you the right answer, so you can keep going without losing your rhythm.",
+    "There are three levels. Easy is adding and taking away up to twenty, good for warming up or for younger players. Medium goes up to a hundred and adds the times tables to twelve. Hard mixes two-digit multiplication, exact division and three-digit sums. Each level has its own best score and leaderboard.",
+    "No answer is ever negative or a fraction, so you only ever type a whole number. Race friends online on the same level and you'll all get the very same problems at the same moment."
+  ],
+  "howToPlay": [
+    "Choose a level. After a 3, 2, 1 countdown the first problem appears and the minute starts.",
+    "Type the answer and press OK (or Enter).",
+    "The next problem shows at once, with a note saying whether the last one was right.",
+    "A right answer is a point. A wrong one scores nothing; just carry on.",
+    "When the minute is up you see your right and wrong answers."
+  ],
+  "controls": [
+    "Phones and tablets: tap the number keys, then OK.",
+    "Mouse: click the number keys, then OK.",
+    "Keyboard: type the digits, Backspace to correct, Enter to answer.",
+    "Pause or start again from the bar above the game. Pausing starts the minute over."
+  ],
+  "tips": [
+    "Break big sums into parts: 47 + 38 is 47 + 30 + 8.",
+    "For times tables, know the squares (7 × 7, 8 × 8) and work from them.",
+    "Division is multiplication backwards: 96 ÷ 8 asks what times 8 makes 96.",
+    "Don't stop after a wrong answer: there's no penalty, only a lost point.",
+    "On a computer, typing with the number keys is much faster than clicking."
+  ],
+  "faq": [
+    {
+      "question": "Is Math Sprint free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is a good score?",
+      "answer": "On easy, 30 or more in a minute is quick. On medium, 25; on hard, 15 is a strong score."
+    },
+    {
+      "question": "Are there negative numbers or fractions?",
+      "answer": "No. Every answer is a whole number of zero or more, and divisions always come out exactly."
+    },
+    {
+      "question": "Is there a penalty for a wrong answer?",
+      "answer": "No penalty: a wrong answer just doesn't score, and you see the right answer under the next problem."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room plays the same level and gets the same problems. The most right answers in the minute wins."
+    }
+  ],
+  "ui": {
+    "chooseLevel": "选择难度",
+    "level": "难度",
+    "levelEasy": "简单",
+    "levelEasyDetail": "20 以内加减法",
+    "levelMedium": "中等",
+    "levelMediumDetail": "100 以内，加乘法口诀",
+    "levelHard": "困难",
+    "levelHardDetail": "乘除法与大数加减",
+    "best": "最佳：答对 {n} 题",
+    "right": "答对",
+    "timeLeft": "剩余时间",
+    "seconds": "{s} 秒",
+    "yourAnswer": "你的答案",
+    "wasRight": "{problem} = {answer}：正确！",
+    "wasWrong": "{problem} = {answer}",
+    "keypad": "数字键",
+    "backspace": "删除一位",
+    "ok": "确定",
+    "rightTotal": "答对：{n}",
+    "wrongTotal": "答错：{n}",
+    "newBest": "新纪录！",
+    "quit": "退出"
+  },
+  "achievements": {
+    "played": {
+      "name": "数字达人",
+      "description": "玩 {count, plural, other {# 局}}"
+    },
+    "quick-maths": {
+      "name": "速算高手",
+      "description": "单局答对 {count} 题"
+    }
+  },
+  "leaderboards": {
+    "best-easy": "答对最多 · 简单",
+    "best-medium": "答对最多 · 中等",
+    "best-hard": "答对最多 · 困难"
+  }
+}
