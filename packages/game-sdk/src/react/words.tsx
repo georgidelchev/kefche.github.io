@@ -19,6 +19,8 @@ import {
 
 import {
   charsOf,
+  foldWord,
+  isLetter,
   KEYBOARD_ROWS,
   LAYOUTS_FOR,
   letterFromKey,
@@ -393,7 +395,24 @@ export function WordInput({
         if (event.key === "Enter" && !event.nativeEvent.isComposing && onSubmit) {
           event.preventDefault();
           onSubmit();
+          return;
         }
+        // A keyboard without the language's letters types them phonetically
+        // (the key in that place: A gives А), as on the on-screen keyboard.
+        if (event.ctrlKey || event.metaKey || event.altKey || event.nativeEvent.isComposing) return;
+        if (charsOf(event.key).length !== 1 || isLetter(lang, foldWord(lang, event.key))) return;
+        const letter = letterFromKey(lang, event.key, event.code);
+        if (letter === null) return;
+        event.preventDefault();
+        const input = event.currentTarget;
+        const from = input.selectionStart ?? input.value.length;
+        const to = input.selectionEnd ?? from;
+        const typed = input.value.slice(0, from) + letter + input.value.slice(to);
+        onChange(clean(typed));
+        const caret = from + letter.length;
+        requestAnimationFrame(() => {
+          if (document.activeElement === input) input.setSelectionRange(caret, caret);
+        });
       }}
     />
   );

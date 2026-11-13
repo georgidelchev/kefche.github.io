@@ -3240,6 +3240,22 @@ The owner answered "you decide, continue", so the recommended answers stand:
   - **Boards:** best score for each size. **Achievements:** games played, and 25, 50 or 90 points.
   - **Server:** its fixture finds five words by walking the dictionary from each square (the last "gauntries", 11 points).
   - Checked in Chrome, 31/31: the page in English and Bulgarian and none in Arabic; a long word dragged, a short one tapped, one typed with its path lit, one not on the grid refused, and the points adding up; the end after three minutes with missed words; both sizes at 360, 768 and 1280 px, both themes, Bulgarian, and axe.
+- [x] **Step 18, Word Chain:**
+  - **Rules:** 2 to 8 players take turns saying a word that starts with the last letter of the word before. It must be in the dictionary, three letters or more, not blocked, and not said already this game. Stuck? Pass and lose one of three lives; a clock running out passes for you. Out of lives, out; the last player in wins. After 80 words, the most lives left wins, then the most words said.
+    - The first letter comes from the seed, from the common first letters.
+    - In Bulgarian, a word ending in ь or ъ hands on the letter before it.
+    - Words are typed, so `accepts` checks them, and `legalActions` offers only a pass (what a clock or a stand-in plays).
+  - **The screen:** the players with their lives (hearts and a number for screen readers), the letter to start with, the word box checked as you type (a word, the wrong letter, already said, not in the dictionary, too short), Play word and Pass, and the chain, newest first, in each player's colour. Nothing is secret, so online the room's host runs the match.
+  - **Bots** walk the dictionary at random from the letter, among common words where the language has a list (English). Easy plays short words and passes one turn in five; medium passes one in twenty; hard never passes while it can find a word, and plays the one ending in the letter fewest words start with.
+    - Over 200 games each, in English: hard beat easy 200–0 and medium 196–0 (4 draws), and medium beat easy 185–14. In Bulgarian: 200–0, 177–0 (23 draws) and 184–15. Every bot move took under 10 ms.
+    - Bulgarian has no common-word list, so its bots sometimes play rare word forms.
+  - **Typing phonetically:** `WordInput` now types a language's letters from a keyboard without them (the key in that place, as the on-screen keyboard does), so Bulgarian works on a Latin keyboard here and in Hangman's set word.
+  - **Bot workers** can wait for something before choosing (`serveBots(bots, ready)`): Word Chain's loads both languages' lists.
+  - **Achievements:** wins and games played.
+  - **Server:** its fixture plays dictionary words the engine accepts, with passes, among three players (the functions-engines script can now give a turn game a fixture policy).
+  - Checked:
+    - the engine check at 2, 3 and 8 players in English and Bulgarian: every game ended, and every bot move was legal;
+    - in Chrome, 32/32: the page in English and Bulgarian and none in Arabic; the field focused, each verdict, a word played, the bot's answer handing on its last letter, a used word flagged, three passes putting you out; Bulgarian typed phonetically; 360, 768 and 1280 px, both themes, and axe. Axe found the out player's faded name too faint, now shown in the muted text colour.
 
 ## Known issues
 

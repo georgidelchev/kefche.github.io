@@ -7,11 +7,19 @@ import { Rng } from "../prng";
 import type { GameBots } from "../bots";
 import type { BotReply, BotRequest } from "./turn-session";
 
-export function serveBots<State, Action>(bots: GameBots<State, Action>): void {
-  self.onmessage = (event: MessageEvent<BotRequest>) => {
+export function serveBots<State, Action>(
+  bots: GameBots<State, Action>,
+  /**
+   * What the bots need first, such as a word game's lists (Phase 13): a
+   * request waits for it rather than being lost while it loads.
+   */
+  ready?: Promise<unknown>,
+): void {
+  self.onmessage = async (event: MessageEvent<BotRequest>) => {
     const { id, state, seat, difficulty, seed, budgetMs } = event.data;
     let reply: BotReply;
     try {
+      await ready;
       const bot = bots[difficulty];
       if (!bot) throw new Error(`No bot for difficulty "${difficulty}"`);
       const start = performance.now();

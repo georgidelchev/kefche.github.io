@@ -1,0 +1,82 @@
+{
+  "name": "Wortkette",
+  "tagline": "Jedes Wort beginnt mit dem letzten Buchstaben des vorigen.",
+  "description": "Spiele Wortkette kostenlos: verbinde Wörter über ihren letzten Buchstaben mit Freunden an einem Gerät, online oder gegen Bots.",
+  "about": [
+    "Word Chain is the word game of linking words: each word must start with the last letter of the word before. Say \"apple\" and the next player needs a word starting with E, such as \"eagle\", and the next one with E again.",
+    "Every word must be a real word from the dictionary, three letters or more, and not said already this game. Stuck? Pass, and lose one of your three lives. Lose all three and you're out; the last player in wins.",
+    "Play with two to eight players: friends on one device or online, or bots at three levels. Word Chain is played in English and Bulgarian. A game ends after 80 words at most, and then the most lives left wins, then the most words said."
+  ],
+  "howToPlay": [
+    "Choose the language of the words. The first letter is drawn at random.",
+    "On your turn, type a word that starts with the letter shown. It's checked as you type.",
+    "Press Enter or Play word. The word's last letter is the next player's first.",
+    "No word? Pass, and lose a life. With a clock on, running out of time passes for you.",
+    "Lose all three lives and you're out. The last player in wins; after 80 words, the most lives left wins."
+  ],
+  "controls": [
+    "Type a word with your keyboard or your phone's, and press Enter.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А).",
+    "Play word plays it; Pass gives up your turn for a life."
+  ],
+  "tips": [
+    "Hand on hard letters: words ending in X, Z, J or Q leave the next player few choices.",
+    "Long words aren't worth more, so a short, sure word is fine.",
+    "Keep a few words ready for the common letters, like S, T and E.",
+    "Words already said can't be used again, so the easy ones run out as the game goes on.",
+    "In Bulgarian, a word ending in Ь or Ъ hands on the letter before it."
+  ],
+  "faq": [
+    {
+      "question": "Is Word Chain free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Which words count?",
+      "answer": "Real words from the game's dictionary in that language, three letters or more, not offensive, and not said already this game. Plurals and other forms count."
+    },
+    {
+      "question": "What happens when I pass?",
+      "answer": "You lose one of your three lives, and the next player gets the same letter."
+    },
+    {
+      "question": "Can I play alone?",
+      "answer": "Yes, against one to seven bots: easy, medium or hard."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their dictionaries."
+    }
+  ],
+  "ui": {
+    "players": "Spieler und Leben",
+    "livesLeft": "Verbleibende Leben: {n}",
+    "startsWith": "Das nächste Wort beginnt mit",
+    "yourWord": "Dein Wort",
+    "yourTurn": "Du bist dran: ein Wort mit {letter}",
+    "verdictOk": "Gutes Wort.",
+    "verdictShort": "Mindestens 3 Buchstaben.",
+    "verdictLetter": "Es muss mit {letter} beginnen.",
+    "verdictUsed": "Wurde in diesem Spiel schon gesagt.",
+    "verdictUnknown": "Das steht nicht im Wörterbuch.",
+    "pass": "Passen (kostet ein Leben)",
+    "playWord": "Wort spielen",
+    "thinking": "Überlegt: {name}",
+    "chain": "Bisherige Wörter, neueste zuerst",
+    "wordsSaid": "Wörter in der Kette: {n}",
+    "packOption": "Wörter auf",
+    "packEn": "Englisch",
+    "packBg": "Bulgarisch"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Der Letzte im Spiel",
+      "description": "Gewinne {count, plural, one {# Partie} other {# Partien}}"
+    },
+    "veteran": {
+      "name": "Glied um Glied",
+      "description": "Spiele {count, plural, one {# Partie} other {# Partien}}"
+    }
+  },
+  "leaderboards": {}
+}

@@ -149,13 +149,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine65, bots2, options) {
-    this.engine = engine65;
+  constructor(engine66, bots2, options) {
+    this.engine = engine66;
     this.bots = bots2;
     this.options = options;
-    this.world = engine65.createWorld(options.config, options.seed);
+    this.world = engine66.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine65.ticksPerSecond / engine65.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine66.ticksPerSecond / engine66.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -387,11 +387,11 @@ var ByteReader = class {
     return v;
   }
   varint() {
-    let result37 = 0;
+    let result38 = 0;
     for (let shift = 0; shift < 35; shift += 7) {
       const byte = this.u8();
-      result37 |= (byte & 127) << shift;
-      if (byte < 128) return result37 >>> 0;
+      result38 |= (byte & 127) << shift;
+      if (byte < 128) return result38 >>> 0;
     }
     throw new RangeError("varint longer than 5 bytes");
   }
@@ -707,7 +707,7 @@ function lexiconOf(lang, name) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest65) => manifest65;
+var defineManifest = (manifest66) => manifest66;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -5394,8 +5394,8 @@ function peg$parse(input, options) {
   var peg$f9 = function(line2) {
     return line2;
   };
-  var peg$f10 = function(result37, comment) {
-    return { result: result37, comment };
+  var peg$f10 = function(result38, comment) {
+    return { result: result38, comment };
   };
   var peg$currPos = options.peg$currPos | 0;
   var peg$posDetailsCache = [{ line: 1, column: 1 }];
@@ -6382,12 +6382,12 @@ function xoroshiro128(state) {
   return function() {
     let s0 = BigInt(state & MASK64);
     let s1 = BigInt(state >> 64n & MASK64);
-    const result37 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
+    const result38 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
     s1 ^= s0;
     s0 = (rotl(s0, 24n) ^ s1 ^ s1 << 16n) & MASK64;
     s1 = rotl(s1, 37n);
     state = s1 << 64n | s0;
-    return result37;
+    return result38;
   };
 }
 var rand = xoroshiro128(0xa187eb39cdcaed8f31c4b365b102e01en);
@@ -8090,16 +8090,16 @@ var Chess = class {
     return move3;
   }
   pgn({ newline = "\n", maxWidth = 0 } = {}) {
-    const result37 = [];
+    const result38 = [];
     let headerExists = false;
     for (const i in this._header) {
       const headerTag = this._header[i];
       if (headerTag)
-        result37.push(`[${i} "${this._header[i]}"]` + newline);
+        result38.push(`[${i} "${this._header[i]}"]` + newline);
       headerExists = true;
     }
     if (headerExists && this._history.length) {
-      result37.push(newline);
+      result38.push(newline);
     }
     const appendComment = (moveString2) => {
       const comment = this._comments[this.fen()];
@@ -8141,11 +8141,11 @@ var Chess = class {
     }
     moves.push(this._header.Result || "*");
     if (maxWidth === 0) {
-      return result37.join("") + moves.join(" ");
+      return result38.join("") + moves.join(" ");
     }
     const strip = function() {
-      if (result37.length > 0 && result37[result37.length - 1] === " ") {
-        result37.pop();
+      if (result38.length > 0 && result38[result38.length - 1] === " ") {
+        result38.pop();
         return true;
       }
       return false;
@@ -8159,12 +8159,12 @@ var Chess = class {
           while (strip()) {
             width--;
           }
-          result37.push(newline);
+          result38.push(newline);
           width = 0;
         }
-        result37.push(token);
+        result38.push(token);
         width += token.length;
-        result37.push(" ");
+        result38.push(" ");
         width++;
       }
       if (strip()) {
@@ -8181,19 +8181,19 @@ var Chess = class {
         }
       }
       if (currentWidth + moves[i].length > maxWidth && i !== 0) {
-        if (result37[result37.length - 1] === " ") {
-          result37.pop();
+        if (result38[result38.length - 1] === " ") {
+          result38.pop();
         }
-        result37.push(newline);
+        result38.push(newline);
         currentWidth = 0;
       } else if (i !== 0) {
-        result37.push(" ");
+        result38.push(" ");
         currentWidth++;
       }
-      result37.push(moves[i]);
+      result38.push(moves[i]);
       currentWidth += moves[i].length;
     }
-    return result37.join("");
+    return result38.join("");
   }
   /**
    * @deprecated Use `setHeader` and `getHeaders` instead. This method will return null header tags (which is not what you want)
@@ -8270,9 +8270,9 @@ var Chess = class {
       }
       node2 = node2.variations[0];
     }
-    const result37 = parsedPgn.result;
-    if (result37 && Object.keys(this._header).length && this._header["Result"] !== result37) {
-      this.setHeader("Result", result37);
+    const result38 = parsedPgn.result;
+    if (result38 && Object.keys(this._header).length && this._header["Result"] !== result38) {
+      this.setHeader("Result", result38);
     }
   }
   /*
@@ -8588,8 +8588,8 @@ var Chess = class {
       }
     }
     this._updateCastlingRights();
-    const result37 = this.getCastlingRights(color);
-    return (rights[KING2] === void 0 || rights[KING2] === result37[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result37[QUEEN2]);
+    const result38 = this.getCastlingRights(color);
+    return (rights[KING2] === void 0 || rights[KING2] === result38[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result38[QUEEN2]);
   }
   getCastlingRights(color) {
     return {
@@ -9229,11 +9229,11 @@ function nextPlayer(s, seat) {
 }
 function finish(s) {
   const counts2 = Array.from({ length: s.players }, (_, p) => territoriesOf(s, p).length);
-  const alive3 = counts2.flatMap((c, p) => c > 0 ? [p] : []);
+  const alive4 = counts2.flatMap((c, p) => c > 0 ? [p] : []);
   const goal = goalOf2(s);
   const leader = counts2.findIndex((c) => c >= goal);
-  if (alive3.length === 1 || leader >= 0) {
-    const winner = alive3.length === 1 ? alive3[0] ?? 0 : leader;
+  if (alive4.length === 1 || leader >= 0) {
+    const winner = alive4.length === 1 ? alive4[0] ?? 0 : leader;
     return { ...s, winner, outcome: counts2.map((_, p) => p === winner ? 1 : 0) };
   }
   return s;
@@ -13420,10 +13420,10 @@ function legalActions13(s, seat) {
   return [...others.map((vote) => ({ vote })), { vote: NOBODY }];
 }
 function finish3(s) {
-  const alive3 = living(s);
-  const mafia = alive3.filter((x) => s.roles[x] === "mafia").length;
+  const alive4 = living(s);
+  const mafia = alive4.filter((x) => s.roles[x] === "mafia").length;
   if (mafia === 0) return { ...s, winner: "town" };
-  if (mafia >= alive3.length - mafia) return { ...s, winner: "mafia" };
+  if (mafia >= alive4.length - mafia) return { ...s, winner: "mafia" };
   return s;
 }
 function plurality(picks) {
@@ -13456,10 +13456,10 @@ function dawn(s) {
     ...s.events,
     killed !== null && role !== void 0 && role !== HIDDEN4 ? { kind: "killed", day: s.day, seat: killed, role } : { kind: "saved", day: s.day }
   ];
-  const alive3 = s.alive.map((a, x) => a && x !== killed);
+  const alive4 = s.alive.map((a, x) => a && x !== killed);
   return finish3({
     ...s,
-    alive: alive3,
+    alive: alive4,
     checks,
     events,
     phase: "talk",
@@ -13480,10 +13480,10 @@ function dusk(s) {
     ...s.events,
     out !== null && role !== void 0 && role !== HIDDEN4 ? { kind: "executed", day: s.day, seat: out, role, votes } : { kind: "spared", day: s.day, votes }
   ];
-  const alive3 = s.alive.map((a, x) => a && x !== out);
+  const alive4 = s.alive.map((a, x) => a && x !== out);
   const next3 = finish3({
     ...s,
-    alive: alive3,
+    alive: alive4,
     events,
     votes: s.votes.map(() => null),
     phase: "night",
@@ -15012,8 +15012,8 @@ function applyAction15(s, seat, action) {
   const spot = next3.shot;
   const dive = next3.dive;
   const reach2 = columnOf(spot) === dive && !(isHigh(spot) && columnOf(spot) !== 1);
-  const result37 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
-  const kick = { shooter: shooterOf(s), spot, dive, result: result37 };
+  const result38 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
+  const kick = { shooter: shooterOf(s), spot, dive, result: result38 };
   return decide({ ...next3, shot: null, dive: null, kicks: [...s.kicks, kick], rng: rng.state });
 }
 function currentSeats15(s) {
@@ -18105,6 +18105,151 @@ var manifest62 = defineManifest({
   tags: ["party", "talk", "deduction", "multiplayer"]
 });
 
+// packages/games/word-chain/engine/index.ts
+var PACKS4 = ["en", "bg"];
+function configFrom23(raw) {
+  const pack = raw?.pack;
+  return { pack: PACKS4.find((p) => p === pack) ?? "en" };
+}
+var LIVES = 3;
+var MIN_LENGTH4 = 3;
+var MAX_WORDS = 80;
+var SKIP = { en: "", bg: "\u044C\u044A" };
+var STARTS = { en: "abcdefghlmnoprstw", bg: "\u0430\u0431\u0432\u0433\u0434\u0435\u043A\u043C\u043D\u043E\u043F\u0440\u0441\u0442" };
+function lastLetter(pack, word) {
+  const chars = charsOf(word);
+  for (let i = chars.length - 1; i >= 0; i--) {
+    const ch = chars[i] ?? "";
+    if (!SKIP[pack].includes(ch)) return ch;
+  }
+  return chars.at(-1) ?? "";
+}
+function initialState35(raw, seats, seed) {
+  const config = configFrom23(raw);
+  const rng = Rng.fromSeed(`word-chain:${seed}`);
+  return {
+    players: seats,
+    config,
+    letter: rng.pick(charsOf(STARTS[config.pack])),
+    words: [],
+    by: [],
+    lives: Array.from({ length: seats }, () => LIVES),
+    turn: 0,
+    moves: 0
+  };
+}
+var alive2 = (s) => s.lives.flatMap((l, seat) => l > 0 ? [seat] : []);
+var isOver7 = (s) => alive2(s).length <= 1 || s.words.length >= MAX_WORDS;
+function judge4(s, raw) {
+  const pack = s.config.pack;
+  const word = wordOf(pack, raw);
+  if (word === null || charsOf(word).length < MIN_LENGTH4) return "short";
+  if (charsOf(word)[0] !== s.letter) return "letter";
+  if (s.words.includes(word)) return "used";
+  if (!lexiconOf(pack, "all").has(word) || lexiconOf(pack, "blocked").has(word)) return "unknown";
+  return "ok";
+}
+function legalActions23(s, seat) {
+  return !isOver7(s) && seat === s.turn ? [{ pass: true }] : [];
+}
+function accepts3(s, seat, action) {
+  if (isOver7(s) || seat !== s.turn || typeof action !== "object" || action === null) return false;
+  if ("pass" in action) return action.pass === true;
+  const word = action.word;
+  return typeof word === "string" && judge4(s, word) === "ok";
+}
+function nextSeat2(lives, seat) {
+  for (let k = 1; k <= lives.length; k++) {
+    const next3 = (seat + k) % lives.length;
+    if ((lives[next3] ?? 0) > 0) return next3;
+  }
+  return seat;
+}
+function applyAction23(s, seat, action) {
+  if (!accepts3(s, seat, action)) return s;
+  if ("pass" in action) {
+    const lives = s.lives.map((l, i) => i === seat ? l - 1 : l);
+    return { ...s, lives, turn: nextSeat2(lives, seat), moves: s.moves + 1 };
+  }
+  const word = wordOf(s.config.pack, action.word) ?? "";
+  return {
+    ...s,
+    letter: lastLetter(s.config.pack, word),
+    words: [...s.words, word],
+    by: [...s.by, seat],
+    turn: nextSeat2(s.lives, seat),
+    moves: s.moves + 1
+  };
+}
+function currentSeats23(s) {
+  return isOver7(s) ? [] : [s.turn];
+}
+var wordsBy = (s) => s.lives.map((_, seat) => s.by.filter((b) => b === seat).length);
+function result35(s) {
+  if (!isOver7(s)) return null;
+  const said = wordsBy(s);
+  const rank2 = s.lives.map((l, i) => l * 1e3 + (said[i] ?? 0));
+  const best = Math.max(...rank2);
+  const top2 = rank2.filter((r) => r === best).length;
+  return {
+    completed: true,
+    outcome: rank2.map((r) => r === best ? top2 === 1 ? 1 : 0.5 : 0)
+  };
+}
+var engine63 = {
+  initialState: initialState35,
+  legalActions: legalActions23,
+  accepts: accepts3,
+  applyAction: applyAction23,
+  currentSeats: currentSeats23,
+  result: result35
+};
+
+// packages/games/word-chain/manifest.ts
+var manifest63 = defineManifest({
+  id: "word-chain",
+  version: 1,
+  category: "word",
+  kind: "turn",
+  players: { min: 2, max: 8, default: 2 },
+  modes: ["solo-bots", "hotseat", "online-private", "online-public", "quick-match"],
+  bots: { supported: true, difficulties: ["easy", "medium", "hard"], canFillSeats: true },
+  // No clock by default on one device; online rooms start with 30 s a move.
+  // A clock running out passes, which costs a life.
+  timers: [
+    { kind: "none" },
+    { kind: "per-move", seconds: 30, onExpiry: "random-move" },
+    { kind: "per-move", seconds: 15, onExpiry: "random-move" }
+  ],
+  onlineTimer: 1,
+  options: [
+    {
+      key: "pack",
+      label: "packOption",
+      values: [
+        { value: "en", label: "packEn", defaultIn: ["en"] },
+        { value: "bg", label: "packBg", defaultIn: ["bg"] }
+      ]
+    }
+  ],
+  contentPacks: ["en", "bg"],
+  lexicons: ["all", "common", "blocked"],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["keyboard", "tap"],
+  renderer: "dom",
+  estimatedMinutes: [3, 12],
+  leaderboards: [],
+  achievements: [
+    { id: "winner", icon: "crown", metric: "wins", tiers: [1, 25, 100] },
+    { id: "veteran", icon: "medal", metric: "played", tiers: [10, 50, 200] }
+  ],
+  // Every word and pass is a move, checked against the dictionary on replay.
+  scoreValidation: { kind: "replay" },
+  tags: ["words", "family", "multiplayer"]
+});
+
 // packages/games/word-search/content/bg.json
 var bg_default3 = {
   categories: [
@@ -18518,12 +18663,12 @@ var en_default3 = {
 };
 
 // packages/games/word-search/engine/index.ts
-var PACKS4 = ["en", "bg"];
+var PACKS5 = ["en", "bg"];
 var SIZES9 = [10, 8, 12];
-var configFrom23 = (raw) => {
+var configFrom24 = (raw) => {
   const r = raw;
   return {
-    pack: PACKS4.find((p) => p === r?.pack) ?? "en",
+    pack: PACKS5.find((p) => p === r?.pack) ?? "en",
     size: SIZES9.find((s) => s === r?.size) ?? 10
   };
 };
@@ -18560,8 +18705,8 @@ function fit(grid, size, word, row, col, [dr, dc]) {
   }
   return cells;
 }
-function initialState35(raw, seed) {
-  const { pack, size } = configFrom23(raw);
+function initialState36(raw, seed) {
+  const { pack, size } = configFrom24(raw);
   const rng = Rng.fromSeed(`word-search:${pack}:${String(size)}:${seed}`);
   const theme = rng.int(0, THEMES[pack].length - 1);
   const pool = rng.shuffle(
@@ -18620,18 +18765,18 @@ function apply13(s, raw) {
   if (index === null) return { ...s, misses: s.misses + 1 };
   return { ...s, found: s.found.map((f, i) => i === index ? { from, to } : f) };
 }
-function result35(s) {
+function result36(s) {
   return isSolved3(s) ? { completed: true } : null;
 }
-var engine63 = {
-  initialState: initialState35,
+var engine64 = {
+  initialState: initialState36,
   apply: apply13,
   progress: (s) => s.found.filter((f) => f !== null).length / Math.max(1, s.words.length),
-  result: result35
+  result: result36
 };
 
 // packages/games/word-search/manifest.ts
-var manifest63 = defineManifest({
+var manifest64 = defineManifest({
   id: "word-search",
   version: 1,
   category: "word",
@@ -18953,7 +19098,7 @@ function respawn(world, id) {
   spawn2(world, worm);
   return true;
 }
-var alive2 = (world, id) => world.worms.get(id)?.alive === true;
+var alive3 = (world, id) => world.worms.get(id)?.alive === true;
 function step3(world, inputs) {
   const rng = new Rng(world.rng);
   world.tick++;
@@ -19080,7 +19225,7 @@ function lifeResult(world, worm) {
     completed: true
   };
 }
-function result36(world, id) {
+function result37(world, id) {
   const worm = world.worms.get(id);
   if (!worm) return null;
   return worm.alive ? lifeResult(world, worm) : worm.lastLife;
@@ -19328,7 +19473,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine64 = {
+var engine65 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -19336,16 +19481,16 @@ var engine64 = {
   join,
   leave,
   respawn,
-  alive: alive2,
+  alive: alive3,
   step: step3,
   snapshot,
-  result: result36,
+  result: result37,
   snapshotCodec,
   inputCodec
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest64 = defineManifest({
+var manifest65 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -19439,8 +19584,9 @@ var GAMES = {
   "ultimate-ttt": { manifest: manifest60, engine: engine60 },
   "war": { manifest: manifest61, engine: engine61 },
   "whos-the-spy": { manifest: manifest62, engine: engine62 },
-  "word-search": { manifest: manifest63, engine: engine63 },
-  "worm-rush": { manifest: manifest64, engine: engine64, bots, host: arenaHost }
+  "word-chain": { manifest: manifest63, engine: engine63 },
+  "word-search": { manifest: manifest64, engine: engine64 },
+  "worm-rush": { manifest: manifest65, engine: engine65, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

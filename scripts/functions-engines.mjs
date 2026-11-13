@@ -664,6 +664,7 @@ if (process.argv.includes("--fixtures")) {
     associations: { pack: "en", rounds: 5 },
     mafia: undefined,
     hangman: { pack: "en", mode: "versus", rounds: 3 },
+    "word-chain": { pack: "en" },
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */
@@ -682,6 +683,22 @@ if (process.argv.includes("--fixtures")) {
     "whos-the-spy": 4,
     associations: 4,
     mafia: 8,
+    "word-chain": 3,
+  };
+  /**
+   * Turn games whose words are typed, so legalActions offers only a pass:
+   * the fixture plays a dictionary word the engine accepts, mostly.
+   */
+  const turnPolicies = {
+    "word-chain": (state, seat, random) => {
+      if (random() < 0.85) {
+        const words = lexiconOf(state.config.pack, "all")
+          .words({ prefix: state.letter, limit: 300 })
+          .filter((word) => GAMES["word-chain"].engine.accepts?.(state, seat, { word }));
+        if (words.length > 0) return { word: pick(random, words) };
+      }
+      return { pass: true };
+    },
   };
   const MAX_ACTIONS = 400;
   /** Real-time games: 20 s of a solo arena, the player steering at random. */
@@ -761,7 +778,10 @@ if (process.argv.includes("--fixtures")) {
     const moves = [];
     while (moves.length < MAX_ACTIONS && engine.result(state) === null) {
       const seat = engine.currentSeats(state)[0];
-      const action = pick(random, engine.legalActions(state, seat));
+      const policy = turnPolicies[id];
+      const action = policy
+        ? policy(state, seat, random)
+        : pick(random, engine.legalActions(state, seat));
       moves.push({ seat, action });
       state = engine.applyAction(state, seat, action);
     }
