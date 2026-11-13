@@ -149,13 +149,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine63, bots2, options) {
-    this.engine = engine63;
+  constructor(engine64, bots2, options) {
+    this.engine = engine64;
     this.bots = bots2;
     this.options = options;
-    this.world = engine63.createWorld(options.config, options.seed);
+    this.world = engine64.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine63.ticksPerSecond / engine63.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine64.ticksPerSecond / engine64.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -387,11 +387,11 @@ var ByteReader = class {
     return v;
   }
   varint() {
-    let result35 = 0;
+    let result36 = 0;
     for (let shift = 0; shift < 35; shift += 7) {
       const byte = this.u8();
-      result35 |= (byte & 127) << shift;
-      if (byte < 128) return result35 >>> 0;
+      result36 |= (byte & 127) << shift;
+      if (byte < 128) return result36 >>> 0;
     }
     throw new RangeError("varint longer than 5 bytes");
   }
@@ -551,6 +551,20 @@ function wordOf(lang, raw) {
   for (const ch of word) if (!isLetter(lang, ch)) return null;
   return word;
 }
+function letterCounts(word) {
+  const counts2 = /* @__PURE__ */ new Map();
+  for (const ch of word) counts2.set(ch, (counts2.get(ch) ?? 0) + 1);
+  return counts2;
+}
+function canSpell(word, letters2) {
+  const left = letterCounts(letters2);
+  for (const ch of word) {
+    const n = left.get(ch) ?? 0;
+    if (n === 0) return false;
+    left.set(ch, n - 1);
+  }
+  return true;
+}
 var PHYSICAL = {
   en: {},
   bg: physicalMap([
@@ -693,7 +707,7 @@ function lexiconOf(lang, name) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest63) => manifest63;
+var defineManifest = (manifest64) => manifest64;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -1041,6 +1055,2558 @@ var manifest2 = defineManifest({
   tags: ["speed", "reflex", "aim", "single-player"]
 });
 
+// packages/games/anagrams/content/bg.json
+var bg_default = {
+  seeds: [
+    "\u043A\u0430\u0440\u0442\u0438\u043D\u0430",
+    "\u043F\u043B\u0430\u043D\u0438\u043D\u0430",
+    "\u0433\u0440\u0430\u0434\u0438\u043D\u0430",
+    "\u0442\u0435\u043B\u0435\u0444\u043E\u043D",
+    "\u0443\u0447\u0435\u0431\u043D\u0438\u043A",
+    "\u043C\u0430\u0433\u0430\u0437\u0438\u043D",
+    "\u0430\u0432\u0442\u043E\u0431\u0443\u0441",
+    "\u0431\u043E\u043B\u043D\u0438\u0446\u0430",
+    "\u0443\u0447\u0438\u043B\u0438\u0449\u0435",
+    "\u043F\u0440\u0438\u044F\u0442\u0435\u043B",
+    "\u0441\u0430\u043C\u043E\u043B\u0435\u0442",
+    "\u0440\u0438\u0441\u0443\u043D\u043A\u0430",
+    "\u043F\u0438\u043F\u0435\u0440\u043A\u0430",
+    "\u0448\u043E\u043A\u043E\u043B\u0430\u0434",
+    "\u0441\u043B\u0430\u0434\u043A\u0438\u0448",
+    "\u043F\u0440\u0430\u0437\u043D\u0438\u043A",
+    "\u043F\u043E\u0434\u0430\u0440\u044A\u043A",
+    "\u0438\u0433\u0440\u0430\u0447\u043A\u0430",
+    "\u043A\u043E\u0442\u0435\u043D\u0446\u0435",
+    "\u0434\u0435\u043B\u0444\u0438\u043D\u0438",
+    "\u0441\u0442\u0430\u0434\u0438\u043E\u043D",
+    "\u0448\u0430\u043C\u043F\u0438\u043E\u043D",
+    "\u0433\u0440\u0430\u043D\u0438\u0446\u0430",
+    "\u0441\u0442\u043E\u043B\u0438\u0446\u0430",
+    "\u0434\u044A\u0440\u0436\u0430\u0432\u0430",
+    "\u043F\u043B\u0430\u043D\u0435\u0442\u0430",
+    "\u043B\u0435\u043A\u0430\u0440\u043A\u0430",
+    "\u0430\u043A\u0442\u0440\u0438\u0441\u0430",
+    "\u043F\u0438\u0441\u0430\u0442\u0435\u043B",
+    "\u0447\u0438\u0442\u0430\u0442\u0435\u043B",
+    "\u043A\u043E\u043D\u0446\u0435\u0440\u0442",
+    "\u0442\u0440\u043E\u043C\u043F\u0435\u0442",
+    "\u043C\u0435\u043B\u043E\u0434\u0438\u044F",
+    "\u0438\u0441\u0442\u043E\u0440\u0438\u044F"
+  ]
+};
+
+// packages/games/anagrams/content/en.json
+var en_default = {
+  seeds: [
+    "abdomen",
+    "abolish",
+    "aborted",
+    "abreast",
+    "abridge",
+    "abscond",
+    "absence",
+    "absolve",
+    "abstain",
+    "abusing",
+    "accrued",
+    "accuser",
+    "acrider",
+    "acrobat",
+    "acronym",
+    "acutest",
+    "adapter",
+    "adhered",
+    "admiral",
+    "admired",
+    "admirer",
+    "adopted",
+    "adoring",
+    "adorned",
+    "adverse",
+    "advised",
+    "adviser",
+    "advisor",
+    "aerosol",
+    "against",
+    "aground",
+    "ailment",
+    "airiest",
+    "airline",
+    "airport",
+    "alarmed",
+    "alerted",
+    "algebra",
+    "alibied",
+    "aliened",
+    "aligned",
+    "alleged",
+    "allergy",
+    "allowed",
+    "alloyed",
+    "allured",
+    "already",
+    "altered",
+    "amateur",
+    "ambient",
+    "ambling",
+    "amended",
+    "amenity",
+    "amnesia",
+    "amnesty",
+    "amplest",
+    "amplify",
+    "amusing",
+    "ancient",
+    "angelic",
+    "angered",
+    "angrier",
+    "angrily",
+    "anguish",
+    "animate",
+    "another",
+    "apostle",
+    "apparel",
+    "applied",
+    "appoint",
+    "approve",
+    "apricot",
+    "arbiter",
+    "archery",
+    "arching",
+    "archive",
+    "arising",
+    "armored",
+    "aroused",
+    "arrived",
+    "arsenal",
+    "arsenic",
+    "article",
+    "artisan",
+    "ascetic",
+    "ascribe",
+    "ashamed",
+    "ashtray",
+    "asphalt",
+    "aspired",
+    "aspirin",
+    "assumed",
+    "assured",
+    "astound",
+    "astride",
+    "atheism",
+    "atheist",
+    "atoning",
+    "attired",
+    "auction",
+    "audible",
+    "audibly",
+    "auditor",
+    "augment",
+    "austere",
+    "autopsy",
+    "availed",
+    "averted",
+    "awarded",
+    "awesome",
+    "baddest",
+    "baggier",
+    "baldest",
+    "balding",
+    "balking",
+    "balmier",
+    "baloney",
+    "bandied",
+    "baptism",
+    "barbing",
+    "bargain",
+    "barging",
+    "barking",
+    "barring",
+    "bashing",
+    "basking",
+    "basting",
+    "batched",
+    "bathing",
+    "battery",
+    "battled",
+    "bawdier",
+    "bawling",
+    "bayonet",
+    "beadier",
+    "beading",
+    "beaming",
+    "bearded",
+    "bearing",
+    "beating",
+    "bedrock",
+    "bedroom",
+    "bedtime",
+    "belabor",
+    "belated",
+    "belting",
+    "bemused",
+    "beneath",
+    "bestial",
+    "besting",
+    "bewared",
+    "biasing",
+    "bigoted",
+    "biplane",
+    "birched",
+    "birthed",
+    "blacked",
+    "blacken",
+    "blacker",
+    "bladder",
+    "blaming",
+    "blander",
+    "blanked",
+    "blanker",
+    "blanket",
+    "blaring",
+    "blasted",
+    "blaster",
+    "bleaker",
+    "bleated",
+    "blinded",
+    "blinder",
+    "blinked",
+    "blister",
+    "blither",
+    "blitzed",
+    "blonder",
+    "bloomed",
+    "blotted",
+    "bloused",
+    "blowing",
+    "blunder",
+    "blunted",
+    "blunter",
+    "blurted",
+    "blushed",
+    "bluster",
+    "boarded",
+    "boarder",
+    "boasted",
+    "boating",
+    "bobsled",
+    "boggled",
+    "boldest",
+    "bolster",
+    "bolting",
+    "bondage",
+    "bonfire",
+    "boniest",
+    "boosted",
+    "booster",
+    "bootleg",
+    "boredom",
+    "bossing",
+    "bottled",
+    "boulder",
+    "bounced",
+    "bounded",
+    "bowling",
+    "bracing",
+    "bracket",
+    "bragged",
+    "braided",
+    "brained",
+    "braised",
+    "braking",
+    "branded",
+    "brasher",
+    "bravely",
+    "bravest",
+    "braving",
+    "brawled",
+    "braying",
+    "breaded",
+    "breadth",
+    "breathe",
+    "bricked",
+    "bridged",
+    "bridled",
+    "briefed",
+    "brigade",
+    "brisked",
+    "bristle",
+    "broaden",
+    "broader",
+    "broadly",
+    "brocade",
+    "broiled",
+    "bronzed",
+    "brooded",
+    "brooked",
+    "brought",
+    "browned",
+    "browner",
+    "brownie",
+    "browsed",
+    "bruised",
+    "brushed",
+    "brutish",
+    "builder",
+    "bullied",
+    "bungled",
+    "bungler",
+    "buoyant",
+    "burnish",
+    "burping",
+    "burying",
+    "bushier",
+    "bushing",
+    "busiest",
+    "busting",
+    "bustled",
+    "busying",
+    "butcher",
+    "cabaret",
+    "cabinet",
+    "cabling",
+    "cagiest",
+    "caliber",
+    "calking",
+    "calmest",
+    "calming",
+    "calorie",
+    "candied",
+    "candled",
+    "cannier",
+    "capered",
+    "caprice",
+    "capsize",
+    "capsule",
+    "caption",
+    "captive",
+    "capture",
+    "caramel",
+    "carding",
+    "careful",
+    "carnage",
+    "caroled",
+    "carouse",
+    "carping",
+    "carried",
+    "carting",
+    "cartoon",
+    "cashier",
+    "cashing",
+    "casting",
+    "castled",
+    "catered",
+    "caterer",
+    "catfish",
+    "caulked",
+    "causing",
+    "caution",
+    "ceasing",
+    "cellist",
+    "censure",
+    "central",
+    "century",
+    "ceramic",
+    "certain",
+    "chagrin",
+    "chained",
+    "chaired",
+    "chalked",
+    "chamber",
+    "champed",
+    "chanted",
+    "chapter",
+    "charged",
+    "charger",
+    "chariot",
+    "charity",
+    "charmed",
+    "charred",
+    "charted",
+    "charter",
+    "chasing",
+    "chasten",
+    "chaster",
+    "chatted",
+    "chatter",
+    "cheaper",
+    "cheaply",
+    "cheated",
+    "chemist",
+    "chinked",
+    "chirped",
+    "cholera",
+    "chortle",
+    "chowder",
+    "chromed",
+    "churned",
+    "cistern",
+    "claimed",
+    "clamber",
+    "clammed",
+    "clamped",
+    "clanged",
+    "clanked",
+    "clapped",
+    "clapper",
+    "clarity",
+    "clashed",
+    "clasped",
+    "classed",
+    "clatter",
+    "clawing",
+    "cleaned",
+    "cleaner",
+    "cleanse",
+    "cleared",
+    "clearly",
+    "cleaver",
+    "climate",
+    "clinked",
+    "cloaked",
+    "closest",
+    "closing",
+    "closure",
+    "clothed",
+    "clouted",
+    "clowned",
+    "cluster",
+    "coaling",
+    "coarsen",
+    "coarser",
+    "coastal",
+    "coasted",
+    "coaster",
+    "coating",
+    "coldest",
+    "collate",
+    "collide",
+    "colored",
+    "compare",
+    "compile",
+    "compost",
+    "comrade",
+    "concise",
+    "confide",
+    "congeal",
+    "congest",
+    "conifer",
+    "consent",
+    "consist",
+    "console",
+    "consort",
+    "consult",
+    "consume",
+    "contend",
+    "contest",
+    "contour",
+    "convert",
+    "coolest",
+    "cordial",
+    "cording",
+    "corsage",
+    "costing",
+    "costume",
+    "counsel",
+    "counted",
+    "counter",
+    "country",
+    "coupled",
+    "courage",
+    "coursed",
+    "courser",
+    "courted",
+    "cowered",
+    "cowhide",
+    "crabbed",
+    "cracked",
+    "crackle",
+    "cradled",
+    "crafted",
+    "crammed",
+    "cramped",
+    "cranked",
+    "crashed",
+    "crasser",
+    "crating",
+    "crawled",
+    "creaked",
+    "creamed",
+    "creased",
+    "created",
+    "creator",
+    "cremate",
+    "crested",
+    "cringed",
+    "crinkle",
+    "crisped",
+    "crisper",
+    "croaked",
+    "crooked",
+    "crooned",
+    "cropped",
+    "crossed",
+    "crowded",
+    "crowing",
+    "crowned",
+    "crudely",
+    "crudest",
+    "cruelty",
+    "cruised",
+    "cruiser",
+    "crumbed",
+    "crusade",
+    "crushed",
+    "crusted",
+    "crystal",
+    "curable",
+    "curbing",
+    "curdled",
+    "current",
+    "curried",
+    "cursing",
+    "curtain",
+    "curtest",
+    "custard",
+    "cutlery",
+    "cyanide",
+    "dallied",
+    "dampest",
+    "damping",
+    "dandier",
+    "dangled",
+    "dankest",
+    "darkest",
+    "darling",
+    "darting",
+    "dashing",
+    "daubing",
+    "daunted",
+    "daytime",
+    "deadest",
+    "deafest",
+    "dealing",
+    "dearest",
+    "debrief",
+    "decimal",
+    "declare",
+    "decorum",
+    "default",
+    "defiant",
+    "defiled",
+    "deflate",
+    "defraud",
+    "defrost",
+    "degrade",
+    "delight",
+    "delimit",
+    "deliver",
+    "delving",
+    "demerit",
+    "demount",
+    "denoted",
+    "densely",
+    "densest",
+    "density",
+    "denting",
+    "dentist",
+    "deplore",
+    "deposit",
+    "deprave",
+    "deprive",
+    "derange",
+    "descent",
+    "desired",
+    "desktop",
+    "despair",
+    "despite",
+    "dessert",
+    "destine",
+    "destiny",
+    "destroy",
+    "detract",
+    "deviant",
+    "dialect",
+    "dictate",
+    "dietary",
+    "dieting",
+    "dilated",
+    "dilemma",
+    "diluted",
+    "dimmest",
+    "dimpled",
+    "dingier",
+    "diploma",
+    "disable",
+    "disband",
+    "discard",
+    "discern",
+    "dislike",
+    "disobey",
+    "display",
+    "dispose",
+    "dispute",
+    "disrupt",
+    "dissect",
+    "dissent",
+    "distant",
+    "distend",
+    "disturb",
+    "ditched",
+    "diverge",
+    "diverse",
+    "divorce",
+    "divulge",
+    "donated",
+    "doorman",
+    "doormen",
+    "dopiest",
+    "dormant",
+    "doubted",
+    "dourest",
+    "dousing",
+    "dowdier",
+    "downier",
+    "drabber",
+    "drafted",
+    "drained",
+    "drapery",
+    "draping",
+    "drastic",
+    "drawing",
+    "drawled",
+    "dreamed",
+    "dreamer",
+    "dribble",
+    "drifted",
+    "drinker",
+    "dropout",
+    "drought",
+    "drowned",
+    "drowsed",
+    "dualism",
+    "dueling",
+    "dumbest",
+    "dumpier",
+    "dungeon",
+    "durable",
+    "duskier",
+    "dustbin",
+    "dustier",
+    "dusting",
+    "dustmen",
+    "dustpan",
+    "dwarfed",
+    "dwindle",
+    "eagerly",
+    "eardrum",
+    "earnest",
+    "earning",
+    "earring",
+    "earshot",
+    "earthed",
+    "earthly",
+    "easiest",
+    "eastern",
+    "eclipse",
+    "ecstasy",
+    "edgiest",
+    "editing",
+    "edition",
+    "eeriest",
+    "egotism",
+    "elapsed",
+    "elastic",
+    "elation",
+    "elbowed",
+    "elegant",
+    "elitism",
+    "ellipse",
+    "eloping",
+    "eluding",
+    "emailed",
+    "embargo",
+    "embassy",
+    "embrace",
+    "emerald",
+    "emotion",
+    "empathy",
+    "empower",
+    "emptied",
+    "emptier",
+    "emulate",
+    "enabled",
+    "enacted",
+    "encased",
+    "enchant",
+    "encored",
+    "endorse",
+    "endowed",
+    "engrave",
+    "enlarge",
+    "enraged",
+    "enslave",
+    "ensuing",
+    "ensured",
+    "enticed",
+    "entreat",
+    "entropy",
+    "entrust",
+    "epaulet",
+    "episode",
+    "epsilon",
+    "equator",
+    "erasing",
+    "eroding",
+    "erosion",
+    "erratic",
+    "erudite",
+    "erupted",
+    "escaped",
+    "essayed",
+    "etching",
+    "eternal",
+    "ethical",
+    "evading",
+    "evasion",
+    "evident",
+    "evilest",
+    "exacter",
+    "exclaim",
+    "exhaust",
+    "existed",
+    "expanse",
+    "explain",
+    "extract",
+    "eyelash",
+    "faceted",
+    "faction",
+    "factory",
+    "failure",
+    "fainted",
+    "fainter",
+    "faintly",
+    "fairest",
+    "falsely",
+    "falsest",
+    "falsity",
+    "fancied",
+    "fancier",
+    "farming",
+    "farther",
+    "fastest",
+    "fasting",
+    "fattier",
+    "faulted",
+    "favored",
+    "fearing",
+    "feasted",
+    "feather",
+    "feature",
+    "federal",
+    "feinted",
+    "fellest",
+    "felting",
+    "fertile",
+    "festoon",
+    "feuding",
+    "fiddler",
+    "fielded",
+    "fighter",
+    "figment",
+    "figured",
+    "filched",
+    "firearm",
+    "fireman",
+    "firmest",
+    "fishery",
+    "fissure",
+    "flailed",
+    "flakier",
+    "flanked",
+    "flapped",
+    "flaring",
+    "flashed",
+    "flasher",
+    "flatted",
+    "flatten",
+    "flatter",
+    "flawing",
+    "fleshed",
+    "flicked",
+    "flirted",
+    "flitted",
+    "floated",
+    "flooder",
+    "floored",
+    "florist",
+    "flossed",
+    "floured",
+    "flouted",
+    "flowery",
+    "flowing",
+    "flushed",
+    "flusher",
+    "fluster",
+    "fluting",
+    "foaling",
+    "foamier",
+    "focused",
+    "foisted",
+    "folding",
+    "foliage",
+    "fondest",
+    "fondled",
+    "foraged",
+    "forayed",
+    "forbade",
+    "forbear",
+    "fording",
+    "forearm",
+    "foreign",
+    "foreleg",
+    "foreman",
+    "foresaw",
+    "forfeit",
+    "forgave",
+    "formula",
+    "forsake",
+    "fortune",
+    "forwent",
+    "foulest",
+    "founder",
+    "fowling",
+    "fragile",
+    "frailer",
+    "frailty",
+    "framing",
+    "franked",
+    "frantic",
+    "fraying",
+    "freaked",
+    "freedom",
+    "freeing",
+    "freeway",
+    "freight",
+    "frigate",
+    "fringed",
+    "frisked",
+    "frontal",
+    "fronted",
+    "frosted",
+    "frothed",
+    "frowned",
+    "fruited",
+    "fueling",
+    "fullest",
+    "funeral",
+    "furling",
+    "furnace",
+    "fussier",
+    "fussing",
+    "gallery",
+    "gambled",
+    "gambler",
+    "garbing",
+    "garbled",
+    "gargled",
+    "garment",
+    "garnish",
+    "gashing",
+    "gasping",
+    "gastric",
+    "gaudier",
+    "gaunter",
+    "gearing",
+    "gelatin",
+    "general",
+    "genital",
+    "gentile",
+    "gentled",
+    "gesture",
+    "ghastly",
+    "ghosted",
+    "girdled",
+    "glacier",
+    "gladden",
+    "gladder",
+    "glanced",
+    "glaring",
+    "glassed",
+    "gleamed",
+    "gleaned",
+    "glimpse",
+    "glinted",
+    "glisten",
+    "gloated",
+    "gloried",
+    "glossed",
+    "glucose",
+    "gnarled",
+    "gnashed",
+    "gobbled",
+    "godlier",
+    "godlike",
+    "godsend",
+    "gondola",
+    "goriest",
+    "gosling",
+    "goulash",
+    "gourmet",
+    "grabbed",
+    "grading",
+    "grafted",
+    "grander",
+    "granite",
+    "granted",
+    "granule",
+    "graphed",
+    "graphic",
+    "grapple",
+    "grasped",
+    "grassed",
+    "gratify",
+    "grating",
+    "gravely",
+    "gravest",
+    "grayest",
+    "greased",
+    "greater",
+    "greatly",
+    "gremlin",
+    "grenade",
+    "griddle",
+    "grieved",
+    "grilled",
+    "grimace",
+    "grinder",
+    "grinned",
+    "gripped",
+    "gristle",
+    "groaned",
+    "groomed",
+    "grossed",
+    "grouped",
+    "groused",
+    "growled",
+    "grumble",
+    "grunted",
+    "guarded",
+    "guested",
+    "gunfire",
+    "gunshot",
+    "gustier",
+    "gusting",
+    "gymnast",
+    "gyrated",
+    "haloing",
+    "halting",
+    "hamster",
+    "handier",
+    "handled",
+    "handler",
+    "handout",
+    "hangout",
+    "happier",
+    "hardest",
+    "hardier",
+    "harming",
+    "harmony",
+    "harping",
+    "harpist",
+    "harried",
+    "harsher",
+    "harvest",
+    "hashing",
+    "hassled",
+    "hastier",
+    "hastily",
+    "hasting",
+    "hatched",
+    "hateful",
+    "haunted",
+    "haywire",
+    "haziest",
+    "headier",
+    "heading",
+    "healing",
+    "heaping",
+    "hearing",
+    "hearsay",
+    "hearten",
+    "heather",
+    "heating",
+    "heftier",
+    "herding",
+    "heretic",
+    "heroism",
+    "herself",
+    "himself",
+    "hippest",
+    "history",
+    "hoarded",
+    "hoarder",
+    "hoarser",
+    "hoisted",
+    "holiest",
+    "holster",
+    "homiest",
+    "honesty",
+    "honored",
+    "horsing",
+    "hosiery",
+    "hostage",
+    "hostile",
+    "hosting",
+    "housing",
+    "hovered",
+    "humaner",
+    "humored",
+    "hurting",
+    "hurtled",
+    "husband",
+    "hushing",
+    "huskier",
+    "husking",
+    "hustled",
+    "hustler",
+    "hydrant",
+    "ideally",
+    "ignited",
+    "ignored",
+    "imagery",
+    "impaled",
+    "impasse",
+    "impeach",
+    "implant",
+    "implore",
+    "imposed",
+    "improve",
+    "impulse",
+    "inanest",
+    "inbreed",
+    "include",
+    "indulge",
+    "inertia",
+    "inexact",
+    "infidel",
+    "infield",
+    "inflame",
+    "inflate",
+    "infused",
+    "inhaled",
+    "inhaler",
+    "injured",
+    "inkiest",
+    "inquest",
+    "insaner",
+    "insider",
+    "insight",
+    "insofar",
+    "inspect",
+    "inspire",
+    "install",
+    "instead",
+    "insular",
+    "insured",
+    "insurer",
+    "integer",
+    "intense",
+    "interim",
+    "intrude",
+    "invaded",
+    "invader",
+    "inverse",
+    "invoked",
+    "isolate",
+    "jangled",
+    "janitor",
+    "jaunted",
+    "javelin",
+    "jesting",
+    "jointed",
+    "jolting",
+    "jostled",
+    "justice",
+    "keeling",
+    "keyword",
+    "kindest",
+    "kindled",
+    "kindred",
+    "kitchen",
+    "knitted",
+    "knotted",
+    "labeled",
+    "labored",
+    "laborer",
+    "laciest",
+    "lacking",
+    "ladybug",
+    "lambing",
+    "languid",
+    "lankier",
+    "lantern",
+    "lapsing",
+    "larceny",
+    "larding",
+    "largely",
+    "largest",
+    "larking",
+    "lashing",
+    "lasting",
+    "latched",
+    "lathing",
+    "latrine",
+    "lattice",
+    "lauding",
+    "laughed",
+    "launder",
+    "lawsuit",
+    "layered",
+    "laziest",
+    "leading",
+    "leafier",
+    "leafing",
+    "leaflet",
+    "leagued",
+    "leaking",
+    "leanest",
+    "leaning",
+    "leaping",
+    "learned",
+    "leashed",
+    "leasing",
+    "leather",
+    "leaving",
+    "leftest",
+    "leisure",
+    "lending",
+    "leopard",
+    "leotard",
+    "leprosy",
+    "lesbian",
+    "letdown",
+    "letting",
+    "lewdest",
+    "liberal",
+    "lighted",
+    "lighten",
+    "lighter",
+    "likened",
+    "limited",
+    "limpest",
+    "lineage",
+    "linkage",
+    "listing",
+    "literal",
+    "lithest",
+    "livened",
+    "loading",
+    "loafing",
+    "loathed",
+    "lobbied",
+    "lobster",
+    "located",
+    "locking",
+    "loftier",
+    "lofting",
+    "longest",
+    "longish",
+    "loosest",
+    "loosing",
+    "looting",
+    "lording",
+    "loudest",
+    "lounged",
+    "lousier",
+    "lowered",
+    "loyaler",
+    "lumpier",
+    "lurched",
+    "lushest",
+    "lustier",
+    "lusting",
+    "macabre",
+    "machete",
+    "machine",
+    "maddest",
+    "magenta",
+    "magnate",
+    "mailmen",
+    "majesty",
+    "majored",
+    "malting",
+    "manacle",
+    "manager",
+    "mandate",
+    "mangier",
+    "mangled",
+    "manhole",
+    "manlier",
+    "mantled",
+    "manured",
+    "marbled",
+    "marched",
+    "marcher",
+    "mariner",
+    "marking",
+    "married",
+    "mashing",
+    "masking",
+    "masonry",
+    "massing",
+    "mastery",
+    "matched",
+    "matured",
+    "maturer",
+    "mealier",
+    "meander",
+    "meanest",
+    "measure",
+    "mediate",
+    "medical",
+    "meeting",
+    "megaton",
+    "melodic",
+    "melting",
+    "menaced",
+    "menthol",
+    "mention",
+    "meowing",
+    "merited",
+    "mermaid",
+    "meshing",
+    "migrant",
+    "migrate",
+    "mildest",
+    "mineral",
+    "mingled",
+    "minored",
+    "minuted",
+    "minuter",
+    "miracle",
+    "miserly",
+    "mislaid",
+    "mislead",
+    "misread",
+    "mistake",
+    "mistier",
+    "mistype",
+    "misused",
+    "modesty",
+    "modular",
+    "moisten",
+    "moister",
+    "moldier",
+    "monarch",
+    "mongrel",
+    "monitor",
+    "monster",
+    "moodier",
+    "mossier",
+    "motlier",
+    "motored",
+    "mounded",
+    "mounted",
+    "mourned",
+    "mousier",
+    "mousing",
+    "moussed",
+    "mouthed",
+    "mushier",
+    "mushing",
+    "mussing",
+    "mustang",
+    "mustard",
+    "mustier",
+    "naively",
+    "naivest",
+    "naivety",
+    "nastier",
+    "nastily",
+    "nattier",
+    "naughty",
+    "nearest",
+    "nearing",
+    "neatest",
+    "negated",
+    "neither",
+    "nesting",
+    "nestled",
+    "network",
+    "neutral",
+    "neutron",
+    "newborn",
+    "newsier",
+    "nibbled",
+    "nitrate",
+    "noblest",
+    "noisier",
+    "nomadic",
+    "nosiest",
+    "nostril",
+    "notable",
+    "notably",
+    "notched",
+    "noticed",
+    "nourish",
+    "novelty",
+    "nowhere",
+    "nuclear",
+    "numbest",
+    "numeral",
+    "nuptial",
+    "nursing",
+    "nuttier",
+    "oatmeal",
+    "obelisk",
+    "obesity",
+    "obliged",
+    "obscure",
+    "observe",
+    "obtuser",
+    "oftener",
+    "oiliest",
+    "omitted",
+    "oneself",
+    "openest",
+    "operand",
+    "operate",
+    "optical",
+    "optimal",
+    "opulent",
+    "oration",
+    "orbital",
+    "orbited",
+    "organic",
+    "ostrich",
+    "ousting",
+    "outcast",
+    "outdone",
+    "outgrew",
+    "outlaid",
+    "outline",
+    "outpost",
+    "outrage",
+    "outside",
+    "outward",
+    "overate",
+    "overdid",
+    "overeat",
+    "overlap",
+    "overlay",
+    "overlie",
+    "oversaw",
+    "overtly",
+    "overuse",
+    "pageant",
+    "painted",
+    "painter",
+    "palette",
+    "palling",
+    "palming",
+    "paneled",
+    "panther",
+    "panting",
+    "papered",
+    "parable",
+    "parasol",
+    "parched",
+    "parking",
+    "paroled",
+    "parsing",
+    "parsley",
+    "parsnip",
+    "partake",
+    "partial",
+    "partied",
+    "parting",
+    "partner",
+    "partook",
+    "passage",
+    "passing",
+    "passion",
+    "passive",
+    "pastier",
+    "pastime",
+    "pasting",
+    "pasture",
+    "patched",
+    "patient",
+    "patriot",
+    "pattern",
+    "patting",
+    "pausing",
+    "payment",
+    "payroll",
+    "peaking",
+    "pealing",
+    "pearled",
+    "peasant",
+    "pedaled",
+    "pelican",
+    "pelting",
+    "penalty",
+    "pendant",
+    "pension",
+    "pensive",
+    "periled",
+    "perking",
+    "persist",
+    "persona",
+    "pertain",
+    "pertest",
+    "perusal",
+    "perused",
+    "pervade",
+    "peskier",
+    "petrify",
+    "petunia",
+    "phantom",
+    "phasing",
+    "phonied",
+    "phonier",
+    "photoed",
+    "phrased",
+    "pianist",
+    "pickled",
+    "picture",
+    "pierced",
+    "pigment",
+    "pillage",
+    "piloted",
+    "pinched",
+    "pinkest",
+    "pioneer",
+    "pirated",
+    "pitched",
+    "pitcher",
+    "pitfall",
+    "pivotal",
+    "pivoted",
+    "placate",
+    "placing",
+    "plagued",
+    "plainer",
+    "plainly",
+    "planked",
+    "planned",
+    "planner",
+    "planted",
+    "planter",
+    "plaster",
+    "plastic",
+    "plateau",
+    "plating",
+    "platoon",
+    "platter",
+    "playing",
+    "playpen",
+    "pleaded",
+    "pleased",
+    "pleated",
+    "pliable",
+    "plotted",
+    "plotter",
+    "plowing",
+    "plumage",
+    "plunder",
+    "plunged",
+    "plunger",
+    "plusher",
+    "poached",
+    "poacher",
+    "pointed",
+    "pointer",
+    "pokiest",
+    "polemic",
+    "policed",
+    "politer",
+    "polkaed",
+    "poorest",
+    "portend",
+    "portent",
+    "porting",
+    "portion",
+    "portray",
+    "postage",
+    "posting",
+    "postman",
+    "postmen",
+    "posture",
+    "potency",
+    "pothole",
+    "pottery",
+    "pounced",
+    "pounded",
+    "pouring",
+    "pouting",
+    "poverty",
+    "powdery",
+    "powered",
+    "praised",
+    "pranced",
+    "prattle",
+    "prawned",
+    "praying",
+    "precise",
+    "predict",
+    "preface",
+    "prelude",
+    "premise",
+    "prepaid",
+    "present",
+    "preside",
+    "presume",
+    "pretend",
+    "prevail",
+    "pricked",
+    "prickle",
+    "primate",
+    "primped",
+    "printed",
+    "printer",
+    "private",
+    "probing",
+    "proceed",
+    "produce",
+    "product",
+    "profane",
+    "profile",
+    "profuse",
+    "progeny",
+    "promise",
+    "promote",
+    "proofed",
+    "prophet",
+    "protein",
+    "protest",
+    "prouder",
+    "provide",
+    "prowled",
+    "prudent",
+    "puberty",
+    "pudgier",
+    "pulsate",
+    "pulsing",
+    "puniest",
+    "punkest",
+    "purpose",
+    "pursing",
+    "pursued",
+    "pushier",
+    "pushing",
+    "pussier",
+    "pyramid",
+    "raciest",
+    "racking",
+    "radiate",
+    "radioed",
+    "raffled",
+    "rafting",
+    "ragtime",
+    "raiding",
+    "rainbow",
+    "raising",
+    "rallied",
+    "rambled",
+    "rambler",
+    "rampage",
+    "rampant",
+    "ranched",
+    "rancher",
+    "rankest",
+    "rankled",
+    "ranting",
+    "rapider",
+    "rapidly",
+    "rapture",
+    "rashest",
+    "rasping",
+    "ratting",
+    "rattled",
+    "rattler",
+    "raveled",
+    "ravened",
+    "reached",
+    "reacted",
+    "reactor",
+    "readied",
+    "readier",
+    "readily",
+    "reading",
+    "realest",
+    "realism",
+    "realist",
+    "reality",
+    "reaming",
+    "reaping",
+    "rearing",
+    "rebated",
+    "rebound",
+    "rebuild",
+    "rebuilt",
+    "receipt",
+    "recital",
+    "recited",
+    "reclaim",
+    "recluse",
+    "recount",
+    "redhead",
+    "redoing",
+    "redraft",
+    "reefing",
+    "refined",
+    "refrain",
+    "refusal",
+    "refused",
+    "refuted",
+    "regaled",
+    "regalia",
+    "regular",
+    "reigned",
+    "relapse",
+    "related",
+    "relaxed",
+    "relayed",
+    "release",
+    "reliant",
+    "relived",
+    "remnant",
+    "remodel",
+    "removal",
+    "removed",
+    "renamed",
+    "rending",
+    "renewal",
+    "replace",
+    "replica",
+    "replied",
+    "reposed",
+    "reprint",
+    "reptile",
+    "repulse",
+    "reputed",
+    "rescind",
+    "rescued",
+    "resided",
+    "residue",
+    "resolve",
+    "resound",
+    "respect",
+    "respite",
+    "respond",
+    "restart",
+    "restful",
+    "resting",
+    "restive",
+    "restore",
+    "resumed",
+    "rethink",
+    "retired",
+    "retrace",
+    "retract",
+    "reunite",
+    "reusing",
+    "reviled",
+    "revised",
+    "revisit",
+    "revival",
+    "richest",
+    "righted",
+    "ringlet",
+    "ripened",
+    "riposte",
+    "rippled",
+    "risking",
+    "rivaled",
+    "riveted",
+    "roaming",
+    "roasted",
+    "romance",
+    "roosted",
+    "rooster",
+    "rosiest",
+    "rotated",
+    "rotunda",
+    "roughed",
+    "roughen",
+    "rounded",
+    "rounder",
+    "rousing",
+    "routine",
+    "routing",
+    "rowboat",
+    "rowdier",
+    "rubiest",
+    "rumbled",
+    "rummest",
+    "rumored",
+    "rushing",
+    "rustier",
+    "rusting",
+    "rustled",
+    "rustler",
+    "sacking",
+    "sailing",
+    "saintly",
+    "salient",
+    "saltest",
+    "saltier",
+    "salting",
+    "saluted",
+    "salvage",
+    "salving",
+    "sampled",
+    "sampler",
+    "sandier",
+    "sandmen",
+    "sapling",
+    "sapping",
+    "sardine",
+    "satanic",
+    "satchel",
+    "saucier",
+    "saucing",
+    "saunter",
+    "savager",
+    "savored",
+    "savvied",
+    "savvier",
+    "scalded",
+    "scalier",
+    "scaling",
+    "scallop",
+    "scalped",
+    "scalpel",
+    "scamper",
+    "scanned",
+    "scanner",
+    "scanted",
+    "scanter",
+    "scarcer",
+    "scarfed",
+    "scarier",
+    "scaring",
+    "scarlet",
+    "scarred",
+    "scatter",
+    "scented",
+    "scepter",
+    "scholar",
+    "scolded",
+    "scooped",
+    "scooted",
+    "scooter",
+    "scoping",
+    "scoring",
+    "scorned",
+    "scoured",
+    "scourge",
+    "scouted",
+    "scowled",
+    "scraped",
+    "scratch",
+    "scrawny",
+    "screwed",
+    "scruple",
+    "sealing",
+    "seaming",
+    "seaport",
+    "searing",
+    "seating",
+    "section",
+    "secular",
+    "secured",
+    "sedated",
+    "sedater",
+    "seeding",
+    "seeking",
+    "seeping",
+    "segment",
+    "seminar",
+    "senator",
+    "sending",
+    "serpent",
+    "servant",
+    "service",
+    "servile",
+    "serving",
+    "setback",
+    "setting",
+    "settler",
+    "seventh",
+    "seventy",
+    "several",
+    "shackle",
+    "shadier",
+    "shading",
+    "shadowy",
+    "shafted",
+    "shakier",
+    "shaking",
+    "shallow",
+    "shamble",
+    "shaming",
+    "shammed",
+    "shampoo",
+    "shapely",
+    "shaping",
+    "sharing",
+    "sharked",
+    "sharped",
+    "sharpen",
+    "sharper",
+    "sharply",
+    "shatter",
+    "shaving",
+    "sheared",
+    "sheathe",
+    "shelter",
+    "sherbet",
+    "shifted",
+    "shingle",
+    "shinier",
+    "shinned",
+    "shipped",
+    "shirked",
+    "shoaled",
+    "shocked",
+    "shoeing",
+    "shopped",
+    "shopper",
+    "shoring",
+    "shorted",
+    "shorten",
+    "shorter",
+    "shotgun",
+    "shouted",
+    "showier",
+    "showing",
+    "showman",
+    "showmen",
+    "shrivel",
+    "shucked",
+    "shudder",
+    "shunted",
+    "shutter",
+    "sickest",
+    "sighted",
+    "silting",
+    "silvery",
+    "similar",
+    "simpler",
+    "simplex",
+    "sincere",
+    "singled",
+    "sixteen",
+    "sizable",
+    "skating",
+    "skeptic",
+    "skewing",
+    "skilled",
+    "skillet",
+    "skimped",
+    "skinned",
+    "skipped",
+    "skipper",
+    "skirted",
+    "skyline",
+    "slabbed",
+    "slacked",
+    "slacken",
+    "slacker",
+    "slaking",
+    "slammed",
+    "slander",
+    "slanted",
+    "slapped",
+    "slashed",
+    "slating",
+    "slavery",
+    "slaving",
+    "slaying",
+    "slender",
+    "slewing",
+    "slicked",
+    "slicker",
+    "slimmed",
+    "slimmer",
+    "slipped",
+    "slipper",
+    "slither",
+    "slitter",
+    "slobber",
+    "slogged",
+    "sloping",
+    "slopped",
+    "sloshed",
+    "slotted",
+    "slowest",
+    "slowing",
+    "sluiced",
+    "slumber",
+    "slumped",
+    "slurred",
+    "smacked",
+    "smaller",
+    "smarted",
+    "smarter",
+    "smartly",
+    "smashed",
+    "smeared",
+    "smelted",
+    "smidgen",
+    "smirked",
+    "smitten",
+    "smocked",
+    "smokier",
+    "smolder",
+    "smother",
+    "smugger",
+    "snacked",
+    "snagged",
+    "snailed",
+    "snapped",
+    "snaring",
+    "snarled",
+    "sneaked",
+    "sneaker",
+    "snicker",
+    "snidest",
+    "sniffed",
+    "snipped",
+    "snippet",
+    "snooped",
+    "snoozed",
+    "snorted",
+    "snowier",
+    "snowing",
+    "snubbed",
+    "snuffed",
+    "snugged",
+    "snugger",
+    "soaking",
+    "soapier",
+    "soaping",
+    "soaring",
+    "sobered",
+    "socking",
+    "sodding",
+    "soiling",
+    "solaced",
+    "soldier",
+    "solider",
+    "soloing",
+    "soloist",
+    "solvent",
+    "solving",
+    "someday",
+    "somehow",
+    "soonest",
+    "soothed",
+    "sootier",
+    "soprano",
+    "sorting",
+    "sounded",
+    "sounder",
+    "souping",
+    "sourced",
+    "sourest",
+    "souring",
+    "spacial",
+    "spacing",
+    "spading",
+    "spangle",
+    "spaniel",
+    "spanked",
+    "spanned",
+    "spanner",
+    "sparest",
+    "sparing",
+    "sparked",
+    "sparkle",
+    "sparred",
+    "sparrow",
+    "sparser",
+    "spatial",
+    "spatted",
+    "spatter",
+    "spatula",
+    "spawned",
+    "spaying",
+    "speaker",
+    "speared",
+    "special",
+    "specter",
+    "spectra",
+    "spewing",
+    "spicier",
+    "spiking",
+    "spilled",
+    "spinach",
+    "spiting",
+    "spitted",
+    "spittle",
+    "spliced",
+    "splurge",
+    "spoiled",
+    "sponged",
+    "spooled",
+    "spooned",
+    "sporran",
+    "sported",
+    "spotted",
+    "spouted",
+    "sprayed",
+    "spriest",
+    "springy",
+    "spruced",
+    "sprucer",
+    "spurned",
+    "spurred",
+    "spurted",
+    "sputter",
+    "squared",
+    "squired",
+    "stabbed",
+    "stabled",
+    "stabler",
+    "stacked",
+    "stadium",
+    "staffed",
+    "stagger",
+    "staging",
+    "staider",
+    "stained",
+    "staking",
+    "stalest",
+    "staling",
+    "stalked",
+    "stalled",
+    "stamina",
+    "stammer",
+    "stamped",
+    "standby",
+    "stapled",
+    "stapler",
+    "starchy",
+    "stardom",
+    "staring",
+    "starker",
+    "starred",
+    "started",
+    "starter",
+    "startle",
+    "starved",
+    "stately",
+    "stating",
+    "station",
+    "stature",
+    "staunch",
+    "staving",
+    "staying",
+    "stealth",
+    "steamed",
+    "stellar",
+    "stencil",
+    "sterile",
+    "sterner",
+    "sternly",
+    "steward",
+    "stewing",
+    "sticker",
+    "stiffed",
+    "stiffen",
+    "stiffer",
+    "stifled",
+    "stilled",
+    "stiller",
+    "stilted",
+    "stinger",
+    "stinted",
+    "stirred",
+    "stirrup",
+    "stocked",
+    "stoical",
+    "stoking",
+    "stomach",
+    "stomped",
+    "stonier",
+    "stoning",
+    "stooped",
+    "stopgap",
+    "stopped",
+    "stopper",
+    "storage",
+    "storing",
+    "stormed",
+    "stouter",
+    "stowing",
+    "strange",
+    "stratum",
+    "strawed",
+    "strayed",
+    "strewed",
+    "striker",
+    "stringy",
+    "striped",
+    "striven",
+    "stroked",
+    "stubbed",
+    "stubble",
+    "student",
+    "studied",
+    "stumble",
+    "stumped",
+    "stunned",
+    "stunted",
+    "styling",
+    "suavest",
+    "subbing",
+    "subject",
+    "sublime",
+    "subside",
+    "subtler",
+    "subvert",
+    "sucking",
+    "suckled",
+    "suction",
+    "sugared",
+    "suiting",
+    "sulkier",
+    "sulking",
+    "sundial",
+    "sunnier",
+    "sunrise",
+    "suppler",
+    "support",
+    "supreme",
+    "surface",
+    "surfing",
+    "surgeon",
+    "surging",
+    "surlier",
+    "surmise",
+    "surname",
+    "surreal",
+    "suspect",
+    "suspend",
+    "sustain",
+    "swabbed",
+    "swagger",
+    "swamped",
+    "swapped",
+    "swarmed",
+    "swarthy",
+    "swathed",
+    "swatted",
+    "swaying",
+    "sweater",
+    "sweeten",
+    "sweetly",
+    "swelled",
+    "swerved",
+    "swifter",
+    "swilled",
+    "swindle",
+    "swirled",
+    "swished",
+    "swisher",
+    "swollen",
+    "swooned",
+    "swooped",
+    "synapse",
+    "syringe",
+    "tabling",
+    "tabloid",
+    "tabooed",
+    "tackier",
+    "tacking",
+    "tackled",
+    "tadpole",
+    "tainted",
+    "talking",
+    "tallest",
+    "tallied",
+    "tangled",
+    "tangoed",
+    "tannest",
+    "tapered",
+    "tapping",
+    "tardier",
+    "tarnish",
+    "tarried",
+    "tarring",
+    "tartest",
+    "tasking",
+    "tastier",
+    "tasting",
+    "taunted",
+    "tawnier",
+    "teacher",
+    "teaming",
+    "tearful",
+    "tearing",
+    "teasing",
+    "teeming",
+    "telling",
+    "tenable",
+    "tending",
+    "tendril",
+    "tensing",
+    "tension",
+    "tenured",
+    "terming",
+    "termini",
+    "terrace",
+    "terrain",
+    "tersely",
+    "testing",
+    "thanked",
+    "thawing",
+    "theater",
+    "theorem",
+    "therapy",
+    "therein",
+    "thereof",
+    "thereon",
+    "thermal",
+    "thicken",
+    "thicker",
+    "thimble",
+    "thinker",
+    "thinned",
+    "thistle",
+    "thrived",
+    "thunder",
+    "tickled",
+    "timider",
+    "tingled",
+    "tinkled",
+    "tipsier",
+    "tiptoed",
+    "tireder",
+    "toasted",
+    "toaster",
+    "toddler",
+    "toenail",
+    "tongued",
+    "tonnage",
+    "tooling",
+    "topical",
+    "toppled",
+    "torched",
+    "torment",
+    "tornado",
+    "torpedo",
+    "tossing",
+    "totaled",
+    "touched",
+    "toughen",
+    "tougher",
+    "touring",
+    "tourist",
+    "tousled",
+    "toweled",
+    "towered",
+    "tracing",
+    "tracked",
+    "trading",
+    "tragedy",
+    "trailed",
+    "trailer",
+    "trained",
+    "trainee",
+    "trainer",
+    "tramped",
+    "trample",
+    "transit",
+    "trapeze",
+    "trapped",
+    "trapper",
+    "trashed",
+    "trawled",
+    "trawler",
+    "treacle",
+    "treason",
+    "treated",
+    "trebled",
+    "treeing",
+    "trestle",
+    "tricked",
+    "trickle",
+    "trifled",
+    "trilled",
+    "trimmed",
+    "tripled",
+    "triplet",
+    "tripped",
+    "trodden",
+    "trolled",
+    "trooped",
+    "trouble",
+    "trounce",
+    "trouped",
+    "trouser",
+    "truancy",
+    "trucked",
+    "trusted",
+    "trustee",
+    "tumbled",
+    "tumbler",
+    "turbine",
+    "turfing",
+    "tussled",
+    "tutored",
+    "twanged",
+    "twiddle",
+    "twinged",
+    "twinkle",
+    "twinned",
+    "twirled",
+    "twisted",
+    "twister",
+    "typical",
+    "ugliest",
+    "umpired",
+    "unarmed",
+    "unclear",
+    "undergo",
+    "unearth",
+    "unheard",
+    "unleash",
+    "unmoved",
+    "unravel",
+    "unscrew",
+    "unwiser",
+    "updated",
+    "upgrade",
+    "upstart",
+    "urbaner",
+    "urinate",
+    "ushered",
+    "usurped",
+    "utensil",
+    "vaguest",
+    "vainest",
+    "valeted",
+    "vampire",
+    "variety",
+    "varsity",
+    "varying",
+    "vastest",
+    "vaulted",
+    "venture",
+    "verbose",
+    "verdict",
+    "veriest",
+    "versing",
+    "version",
+    "vertigo",
+    "vesting",
+    "veteran",
+    "vetoing",
+    "vibrant",
+    "vibrate",
+    "vinegar",
+    "vintage",
+    "violate",
+    "violent",
+    "visited",
+    "voltage",
+    "vomited",
+    "voyager",
+    "wafting",
+    "wagered",
+    "wakened",
+    "walking",
+    "waltzed",
+    "wannest",
+    "wanting",
+    "warbled",
+    "warding",
+    "warhead",
+    "wariest",
+    "warlike",
+    "warmest",
+    "warming",
+    "warping",
+    "wartime",
+    "washing",
+    "washout",
+    "wastage",
+    "wasting",
+    "watched",
+    "watered",
+    "wavered",
+    "waviest",
+    "waxiest",
+    "wayside",
+    "weakest",
+    "wealthy",
+    "wearied",
+    "wearily",
+    "wearing",
+    "weather",
+    "weaving",
+    "wedlock",
+    "weeding",
+    "welding",
+    "welfare",
+    "welting",
+    "western",
+    "whacked",
+    "whirled",
+    "whisked",
+    "whisker",
+    "whisper",
+    "whistle",
+    "whitest",
+    "widower",
+    "wildest",
+    "wiliest",
+    "winched",
+    "windier",
+    "winsome",
+    "wiriest",
+    "wispier",
+    "witched",
+    "wobbled",
+    "wolfing",
+    "woodier",
+    "wordier",
+    "wording",
+    "working",
+    "workman",
+    "workmen",
+    "worming",
+    "worried",
+    "worship",
+    "worsted",
+    "wounded",
+    "wrangle",
+    "wrapped",
+    "wreaked",
+    "wreathe",
+    "wrested",
+    "wrestle",
+    "writhed",
+    "written",
+    "wronged",
+    "wronger",
+    "wrought",
+    "yachted",
+    "yearned",
+    "younger",
+    "zaniest"
+  ]
+};
+
+// packages/games/anagrams/engine/index.ts
+var PACKS = ["en", "bg"];
+var configFrom = (raw) => {
+  const pack = raw?.pack;
+  return { pack: PACKS.find((p) => p === pack) ?? "en" };
+};
+var DURATION_MS = 12e4;
+var MIN_LENGTH = 3;
+var POINTS = { 3: 1, 4: 2, 5: 4, 6: 7, 7: 12 };
+var SEEDS = { en: en_default.seeds, bg: bg_default.seeds };
+function initialState2(raw, seed) {
+  const { pack } = configFrom(raw);
+  const rng = Rng.fromSeed(`anagrams:${pack}:${seed}`);
+  const word = rng.pick(SEEDS[pack]);
+  return {
+    pack,
+    seed: word,
+    letters: rng.shuffle(charsOf(word)),
+    found: [],
+    points: 0,
+    last: 0,
+    over: false
+  };
+}
+function judge(s, raw) {
+  const word = wordOf(s.pack, raw);
+  if (word === null || charsOf(word).length < MIN_LENGTH) return "short";
+  if (!canSpell(word, s.letters.join(""))) return "letters";
+  if (s.found.includes(word)) return "found";
+  return lexiconOf(s.pack, "all").has(word) ? "ok" : "unknown";
+}
+var pointsFor = (word) => POINTS[charsOf(word).length] ?? 0;
+function read2(s, action) {
+  if (s.over || typeof action !== "object" || action === null) return null;
+  if ("stop" in action) return action.stop === true ? { stop: true } : null;
+  const a = action;
+  const ms = measuredMs(a.ms, DURATION_MS - 1);
+  if (typeof a.word !== "string" || ms === null || ms - s.last < HUMAN.reactionMs) return null;
+  if (judge(s, a.word) !== "ok") return null;
+  return { word: wordOf(s.pack, a.word) ?? "", ms };
+}
+function apply2(s, action) {
+  const r = read2(s, action);
+  if (!r) return s;
+  if ("stop" in r) return { ...s, last: DURATION_MS, over: true };
+  return { ...s, found: [...s.found, r.word], points: s.points + pointsFor(r.word), last: r.ms };
+}
+function result2(s) {
+  return s.over ? { completed: false, score: s.points } : null;
+}
+var engine3 = {
+  initialState: initialState2,
+  apply: apply2,
+  progress: (s) => s.over ? 1 : s.last / DURATION_MS,
+  result: result2,
+  score: (s) => s.points,
+  actionMs: (s, action) => {
+    const r = read2(s, action);
+    if (!r) return 0;
+    return ("stop" in r ? DURATION_MS : r.ms) - s.last;
+  }
+};
+
+// packages/games/anagrams/manifest.ts
+var manifest3 = defineManifest({
+  id: "anagrams",
+  version: 1,
+  category: "word",
+  kind: "race",
+  players: { min: 1, max: 8, default: 1 },
+  modes: ["solo", "race", "online-private", "online-public", "quick-match"],
+  bots: { supported: false, difficulties: [], canFillSeats: false },
+  timers: [{ kind: "countdown", seconds: 180 }],
+  options: [
+    {
+      key: "pack",
+      label: "packOption",
+      values: [
+        { value: "en", label: "packEn", defaultIn: ["en"] },
+        { value: "bg", label: "packBg", defaultIn: ["bg"] }
+      ]
+    }
+  ],
+  contentPacks: ["en", "bg"],
+  lexicons: ["all", "common"],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard"],
+  renderer: "dom",
+  estimatedMinutes: [2, 3],
+  leaderboards: [
+    { id: "best-en", metric: "score", order: "desc", when: { pack: "en" } },
+    { id: "best-bg", metric: "score", order: "desc", when: { pack: "bg" } }
+  ],
+  achievements: [
+    { id: "played", icon: "repeat", metric: "played", tiers: [1, 25, 100] },
+    { id: "wordsmith", icon: "star", metric: "bestScore", tiers: [40, 80, 140] }
+  ],
+  // The letters come from the seed; every word is checked in the replay.
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 5 },
+  tags: ["words", "puzzle", "quick", "single-player"]
+});
+
 // packages/games/associations/engine/index.ts
 var PACK_SIZE = 30;
 var MAX_LENGTH = 24;
@@ -1049,7 +3615,7 @@ function normalize(word) {
   return word.normalize("NFKC").toLowerCase().normalize("NFD").replace(/([a-z])[̀-ͯ]+/g, "$1").normalize("NFC").replace(/[\s'’\-.]+/g, "").trim();
 }
 var validAnswer = (word) => typeof word === "string" && word.trim().length > 0 && word.trim().length <= MAX_LENGTH && /^[\p{L}\p{M}\p{N}' ’-]+$/u.test(word.trim()) && normalize(word).length > 0;
-function initialState2(config, seats, seed) {
+function initialState3(config, seats, seed) {
   const order = Rng.fromSeed(seed).shuffle(Array.from({ length: PACK_SIZE }, (_, i) => i));
   return {
     players: seats,
@@ -1097,7 +3663,7 @@ function applyAction(s, seat, action) {
 function currentSeats(s) {
   return over(s) ? [] : s.answered.flatMap((d, seat) => d ? [] : [seat]);
 }
-function result2(s) {
+function result3(s) {
   if (!over(s)) return null;
   const best = Math.max(...s.scores);
   const top2 = s.scores.filter((v) => v === best).length;
@@ -1116,19 +3682,19 @@ function view(s, seat) {
 function viewAction(action, seat, viewer) {
   return viewer === seat ? action : null;
 }
-var engine3 = {
-  initialState: initialState2,
+var engine4 = {
+  initialState: initialState3,
   legalActions,
   accepts,
   applyAction,
   currentSeats,
-  result: result2,
+  result: result3,
   view,
   viewAction
 };
 
 // packages/games/associations/manifest.ts
-var manifest3 = defineManifest({
+var manifest4 = defineManifest({
   id: "associations",
   version: 1,
   category: "party",
@@ -1306,7 +3872,7 @@ function newGame(base, rng) {
     rng: rng.state
   };
 }
-function initialState3(config, _seats, seed) {
+function initialState4(config, _seats, seed) {
   return newGame(
     {
       useCube: config.cube,
@@ -1385,24 +3951,24 @@ function applyAction2(s, seat, action) {
 function currentSeats2(s) {
   return over2(s) ? [] : [currentSeat(s)];
 }
-function result3(s) {
+function result4(s) {
   if (!over2(s)) return null;
   return { completed: true, outcome: s.scores[0] >= s.target ? [1, 0] : [0, 1] };
 }
 function view2(s) {
   return { ...s, rng: [0, 0, 0, 0] };
 }
-var engine4 = {
-  initialState: initialState3,
+var engine5 = {
+  initialState: initialState4,
   legalActions: legalActions2,
   applyAction: applyAction2,
   currentSeats: currentSeats2,
-  result: result3,
+  result: result4,
   view: view2
 };
 
 // packages/games/backgammon/manifest.ts
-var manifest4 = defineManifest({
+var manifest5 = defineManifest({
   id: "backgammon",
   version: 1,
   category: "board",
@@ -1500,7 +4066,7 @@ function deal(base, rng) {
     rng: rng.state
   };
 }
-function initialState4(_config, _seats, seed) {
+function initialState5(_config, _seats, seed) {
   return deal(
     {
       phase: "bid",
@@ -1755,7 +4321,7 @@ function applyAction3(state, seat, action) {
 function currentSeats3(state) {
   return over3(state) ? [] : [state.turn];
 }
-function result4(state) {
+function result5(state) {
   if (!over3(state)) return null;
   const winner = state.scores[0] > state.scores[1] ? 0 : 1;
   return { completed: true, outcome: [0, 1, 2, 3].map((s) => teamOf(s) === winner ? 1 : 0) };
@@ -1768,17 +4334,17 @@ function view3(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine5 = {
-  initialState: initialState4,
+var engine6 = {
+  initialState: initialState5,
   legalActions: legalActions3,
   applyAction: applyAction3,
   currentSeats: currentSeats3,
-  result: result4,
+  result: result5,
   view: view3
 };
 
 // packages/games/belote/manifest.ts
-var manifest5 = defineManifest({
+var manifest6 = defineManifest({
   id: "belote",
   version: 1,
   category: "cards",
@@ -1814,7 +4380,7 @@ var MAX_ROWS = 4e3;
 var START_SPEED = 2.5;
 var SPEED_GAIN = 0.08;
 var MAX_MS = 15 * 60 * 1e3;
-function initialState5(_config, seed) {
+function initialState6(_config, seed) {
   const rng = Rng.fromSeed(`black-keys:${seed}`);
   return {
     cols: Array.from({ length: MAX_ROWS }, () => rng.int(0, COLUMNS - 1)),
@@ -1831,7 +4397,7 @@ var showing = (row, ms) => {
   const y = scrollAt(ms);
   return y < row + 1 && row < y + VISIBLE_ROWS;
 };
-function read2(s, action) {
+function read3(s, action) {
   if (s.over !== null || s.played >= MAX_ROWS || typeof action !== "object" || action === null)
     return null;
   if ("miss" in action) {
@@ -1848,34 +4414,34 @@ function read2(s, action) {
   if (row < s.played || !showing(row, ms)) return null;
   return { tap: { row, col, ms } };
 }
-function apply2(s, action) {
-  const r = read2(s, action);
+function apply3(s, action) {
+  const r = read3(s, action);
   if (!r) return s;
   if ("miss" in r) return { ...s, last: r.miss, over: { why: "missed", row: s.played } };
   const { row, col, ms } = r.tap;
   if (row === s.played && col === s.cols[row]) return { ...s, played: s.played + 1, last: ms };
   return { ...s, last: ms, over: { why: "wrong", row, col } };
 }
-function result5(s) {
+function result6(s) {
   if (s.over === null && s.played < MAX_ROWS) return null;
   return { completed: false, score: s.played };
 }
-var engine6 = {
-  initialState: initialState5,
-  apply: apply2,
+var engine7 = {
+  initialState: initialState6,
+  apply: apply3,
   // No end in sight: progress grows with the rows, slowly.
   progress: (s) => Math.min(1, s.played / 200),
-  result: result5,
+  result: result6,
   score: (s) => s.played,
   actionMs: (s, action) => {
-    const r = read2(s, action);
+    const r = read3(s, action);
     if (!r) return 0;
     return ("miss" in r ? r.miss : r.tap.ms) - s.last;
   }
 };
 
 // packages/games/black-keys/manifest.ts
-var manifest6 = defineManifest({
+var manifest7 = defineManifest({
   id: "black-keys",
   version: 1,
   category: "speed",
@@ -2167,7 +4733,7 @@ var SPECS = {
   hard: { inner: 7, boxes: 3, walls: 0.3, minPushes: 22, rooms: 40, budget: 15e4 }
 };
 var DIRS = ["up", "down", "left", "right"];
-var configFrom = (raw) => {
+var configFrom2 = (raw) => {
   const r = raw ?? {};
   const difficulty = DIFFICULTIES.find((d) => d === r.difficulty) ?? "easy";
   const level = typeof r.level === "number" && Number.isInteger(r.level) && r.level >= 0 && r.level <= LEVELS ? r.level : 0;
@@ -2233,9 +4799,9 @@ function step(state, dir2, push) {
   }
   return { ...state, player: to, trail: [...state.trail, DIRS.indexOf(dir2) * 2] };
 }
-var engine7 = {
+var engine8 = {
   initialState(raw, seed) {
-    const config = configFrom(raw);
+    const config = configFrom2(raw);
     const level = levelFor(config, seed);
     return { config, level, boxes: level.boxes, player: level.player, trail: [], pushes: 0 };
   },
@@ -2283,7 +4849,7 @@ var engine7 = {
 };
 
 // packages/games/box-pusher/manifest.ts
-var manifest7 = defineManifest({
+var manifest8 = defineManifest({
   id: "box-pusher",
   version: 1,
   category: "logic",
@@ -2356,7 +4922,7 @@ var DIAGONALS = [
   [1, -1],
   [1, 1]
 ];
-function configFrom2(raw) {
+function configFrom3(raw) {
   const variant = raw?.variant;
   return { variant: VARIANTS.find((v) => v === variant) ?? "russian" };
 }
@@ -2438,9 +5004,9 @@ function initialBoard(variant) {
     return EMPTY;
   });
 }
-var engine8 = {
+var engine9 = {
   initialState(config) {
-    const { variant } = configFrom2(config);
+    const { variant } = configFrom3(config);
     const board = initialBoard(variant);
     return {
       variant,
@@ -2502,7 +5068,7 @@ var engine8 = {
 };
 
 // packages/games/checkers/manifest.ts
-var manifest8 = defineManifest({
+var manifest9 = defineManifest({
   id: "checkers",
   version: 1,
   category: "board",
@@ -2828,8 +5394,8 @@ function peg$parse(input, options) {
   var peg$f9 = function(line2) {
     return line2;
   };
-  var peg$f10 = function(result35, comment) {
-    return { result: result35, comment };
+  var peg$f10 = function(result36, comment) {
+    return { result: result36, comment };
   };
   var peg$currPos = options.peg$currPos | 0;
   var peg$posDetailsCache = [{ line: 1, column: 1 }];
@@ -3816,12 +6382,12 @@ function xoroshiro128(state) {
   return function() {
     let s0 = BigInt(state & MASK64);
     let s1 = BigInt(state >> 64n & MASK64);
-    const result35 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
+    const result36 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
     s1 ^= s0;
     s0 = (rotl(s0, 24n) ^ s1 ^ s1 << 16n) & MASK64;
     s1 = rotl(s1, 37n);
     state = s1 << 64n | s0;
-    return result35;
+    return result36;
   };
 }
 var rand = xoroshiro128(0xa187eb39cdcaed8f31c4b365b102e01en);
@@ -5524,16 +8090,16 @@ var Chess = class {
     return move3;
   }
   pgn({ newline = "\n", maxWidth = 0 } = {}) {
-    const result35 = [];
+    const result36 = [];
     let headerExists = false;
     for (const i in this._header) {
       const headerTag = this._header[i];
       if (headerTag)
-        result35.push(`[${i} "${this._header[i]}"]` + newline);
+        result36.push(`[${i} "${this._header[i]}"]` + newline);
       headerExists = true;
     }
     if (headerExists && this._history.length) {
-      result35.push(newline);
+      result36.push(newline);
     }
     const appendComment = (moveString2) => {
       const comment = this._comments[this.fen()];
@@ -5575,11 +8141,11 @@ var Chess = class {
     }
     moves.push(this._header.Result || "*");
     if (maxWidth === 0) {
-      return result35.join("") + moves.join(" ");
+      return result36.join("") + moves.join(" ");
     }
     const strip = function() {
-      if (result35.length > 0 && result35[result35.length - 1] === " ") {
-        result35.pop();
+      if (result36.length > 0 && result36[result36.length - 1] === " ") {
+        result36.pop();
         return true;
       }
       return false;
@@ -5593,12 +8159,12 @@ var Chess = class {
           while (strip()) {
             width--;
           }
-          result35.push(newline);
+          result36.push(newline);
           width = 0;
         }
-        result35.push(token);
+        result36.push(token);
         width += token.length;
-        result35.push(" ");
+        result36.push(" ");
         width++;
       }
       if (strip()) {
@@ -5615,19 +8181,19 @@ var Chess = class {
         }
       }
       if (currentWidth + moves[i].length > maxWidth && i !== 0) {
-        if (result35[result35.length - 1] === " ") {
-          result35.pop();
+        if (result36[result36.length - 1] === " ") {
+          result36.pop();
         }
-        result35.push(newline);
+        result36.push(newline);
         currentWidth = 0;
       } else if (i !== 0) {
-        result35.push(" ");
+        result36.push(" ");
         currentWidth++;
       }
-      result35.push(moves[i]);
+      result36.push(moves[i]);
       currentWidth += moves[i].length;
     }
-    return result35.join("");
+    return result36.join("");
   }
   /**
    * @deprecated Use `setHeader` and `getHeaders` instead. This method will return null header tags (which is not what you want)
@@ -5704,9 +8270,9 @@ var Chess = class {
       }
       node2 = node2.variations[0];
     }
-    const result35 = parsedPgn.result;
-    if (result35 && Object.keys(this._header).length && this._header["Result"] !== result35) {
-      this.setHeader("Result", result35);
+    const result36 = parsedPgn.result;
+    if (result36 && Object.keys(this._header).length && this._header["Result"] !== result36) {
+      this.setHeader("Result", result36);
     }
   }
   /*
@@ -6022,8 +8588,8 @@ var Chess = class {
       }
     }
     this._updateCastlingRights();
-    const result35 = this.getCastlingRights(color);
-    return (rights[KING2] === void 0 || rights[KING2] === result35[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result35[QUEEN2]);
+    const result36 = this.getCastlingRights(color);
+    return (rights[KING2] === void 0 || rights[KING2] === result36[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result36[QUEEN2]);
   }
   getCastlingRights(color) {
     return {
@@ -6095,7 +8661,7 @@ function takeBack(state, seat) {
   );
 }
 var hasMoved = (state, seat) => state.moves.length > seat;
-var engine9 = {
+var engine10 = {
   initialState(config) {
     return { config, moves: [], fen: START_FEN, drawOffer: null, takeback: null, end: null };
   },
@@ -6184,7 +8750,7 @@ var engine9 = {
 };
 
 // packages/games/chess/manifest.ts
-var manifest9 = defineManifest({
+var manifest10 = defineManifest({
   id: "chess",
   version: 1,
   category: "board",
@@ -6332,7 +8898,7 @@ function finished(state, seat) {
   const goal = armHoles(goalOf(state.seats, seat));
   return goal.every((h) => state.board[h] !== EMPTY3) && goal.some((h) => state.board[h] === seat);
 }
-var engine10 = {
+var engine11 = {
   initialState(_config, seats) {
     const board = HOLES.map(() => EMPTY3);
     for (let seat = 0; seat < seats; seat++) {
@@ -6379,7 +8945,7 @@ var engine10 = {
 };
 
 // packages/games/chinese-checkers/manifest.ts
-var manifest10 = defineManifest({
+var manifest11 = defineManifest({
   id: "chinese-checkers",
   version: 1,
   category: "strategy",
@@ -6411,9 +8977,9 @@ var manifest10 = defineManifest({
 
 // packages/games/color-clash/engine/index.ts
 var COLOURS = ["red", "blue", "green", "yellow"];
-var DURATION_MS = 3e4;
+var DURATION_MS2 = 3e4;
 var TRIALS = 300;
-function initialState6(_config, seed) {
+function initialState7(_config, seed) {
   const rng = Rng.fromSeed(`color-clash:${seed}`);
   const n = COLOURS.length;
   const trials = [];
@@ -6424,20 +8990,20 @@ function initialState6(_config, seed) {
   }
   return { trials, index: 0, shownAt: 0, last: 0, right: 0, wrong: 0, points: 0, over: false };
 }
-function read3(s, action) {
+function read4(s, action) {
   if (s.over || typeof action !== "object" || action === null) return null;
   if ("stop" in action) return action.stop === true ? { stop: true } : null;
   const a = action;
   const pick = measuredMs(a.pick, COLOURS.length - 1);
-  const ms = measuredMs(a.ms, DURATION_MS);
+  const ms = measuredMs(a.ms, DURATION_MS2);
   if (pick === null || ms === null || ms < s.last) return null;
   if (ms - s.shownAt < HUMAN.reactionMs || s.index >= TRIALS) return null;
   return { pick, ms };
 }
-function apply3(s, action) {
-  const r = read3(s, action);
+function apply4(s, action) {
+  const r = read4(s, action);
   if (!r) return s;
-  if ("stop" in r) return { ...s, last: DURATION_MS, over: true };
+  if ("stop" in r) return { ...s, last: DURATION_MS2, over: true };
   const trial = s.trials[s.index];
   if (!trial) return s;
   const right = r.pick === trial.ink;
@@ -6451,24 +9017,24 @@ function apply3(s, action) {
     points: right ? s.points + 1 : Math.max(0, s.points - 1)
   };
 }
-function result6(s) {
+function result7(s) {
   return s.over ? { completed: false, score: s.points } : null;
 }
-var engine11 = {
-  initialState: initialState6,
-  apply: apply3,
-  progress: (s) => s.over ? 1 : s.last / DURATION_MS,
-  result: result6,
+var engine12 = {
+  initialState: initialState7,
+  apply: apply4,
+  progress: (s) => s.over ? 1 : s.last / DURATION_MS2,
+  result: result7,
   score: (s) => s.points,
   actionMs: (s, action) => {
-    const r = read3(s, action);
+    const r = read4(s, action);
     if (!r) return 0;
-    return ("stop" in r ? DURATION_MS : r.ms) - s.last;
+    return ("stop" in r ? DURATION_MS2 : r.ms) - s.last;
   }
 };
 
 // packages/games/color-clash/manifest.ts
-var manifest11 = defineManifest({
+var manifest12 = defineManifest({
   id: "color-clash",
   version: 1,
   category: "speed",
@@ -6582,7 +9148,7 @@ function amounts(min, max) {
   if (max < min) return [];
   return [.../* @__PURE__ */ new Set([min, Math.max(min, Math.ceil(max / 2)), max])].sort((a, b) => a - b);
 }
-function initialState7(config, seats, seed) {
+function initialState8(config, seats, seed) {
   const rng = Rng.fromSeed(seed);
   const order = rng.shuffle(Array.from({ length: TERRITORIES }, (_, i) => i));
   const owner = Array.from({ length: TERRITORIES }, () => 0);
@@ -6761,23 +9327,23 @@ function applyAction4(s, seat, action) {
 function currentSeats4(s) {
   return s.outcome === null ? [s.turn] : [];
 }
-function result7(s) {
+function result8(s) {
   return s.outcome === null ? null : { completed: true, outcome: s.outcome };
 }
 function view4(s) {
   return { ...s, rng: [0, 0, 0, 0] };
 }
-var engine12 = {
-  initialState: initialState7,
+var engine13 = {
+  initialState: initialState8,
   legalActions: legalActions4,
   applyAction: applyAction4,
   currentSeats: currentSeats4,
-  result: result7,
+  result: result8,
   view: view4
 };
 
 // packages/games/conquest/manifest.ts
-var manifest12 = defineManifest({
+var manifest13 = defineManifest({
   id: "conquest",
   version: 1,
   category: "strategy",
@@ -6838,7 +9404,7 @@ function fits(state, id) {
   if (f.colour === state.colour) return true;
   return f.kind === "number" ? t2.kind === "number" && t2.n === f.n : t2.kind === f.kind;
 }
-function initialState8(config, seats, seed) {
+function initialState9(config, seats, seed) {
   const rng = Rng.fromSeed(seed);
   let deck2 = rng.shuffle(Array.from({ length: DECK_SIZE }, (_, i) => i));
   const hands = Array.from(
@@ -6956,7 +9522,7 @@ function applyAction5(state, seat, action) {
 function currentSeats5(state) {
   return over4(state) ? [] : [state.turn];
 }
-function result8(state) {
+function result9(state) {
   if (!over4(state)) return null;
   const fewest = Math.min(...state.hands.map((h) => h.length));
   const winners = state.winner !== null ? [state.winner] : state.hands.flatMap((h, i) => h.length === fewest ? [i] : []);
@@ -6976,17 +9542,17 @@ function view5(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine13 = {
-  initialState: initialState8,
+var engine14 = {
+  initialState: initialState9,
   legalActions: legalActions5,
   applyAction: applyAction5,
   currentSeats: currentSeats5,
-  result: result8,
+  result: result9,
   view: view5
 };
 
 // packages/games/crazy-colors/manifest.ts
-var manifest13 = defineManifest({
+var manifest14 = defineManifest({
   id: "crazy-colors",
   version: 1,
   category: "cards",
@@ -7055,43 +9621,43 @@ function field(rng, count3) {
   }
   return dots;
 }
-function initialState9(_config, seed) {
+function initialState10(_config, seed) {
   const rng = Rng.fromSeed(`dot-count:${seed}`);
   const rounds = RANGES.map(([lo, hi]) => ({ dots: field(rng, rng.int(lo, hi)) }));
   return { rounds, answers: [] };
 }
 var isOver2 = (s) => s.answers.length >= ROUNDS2;
-function pointsFor(guess, actual) {
+function pointsFor2(guess, actual) {
   if (guess === actual) return MAX_POINTS2;
   const off = Math.abs(guess - actual) / (actual / 2);
   return Math.max(0, Math.round(MAX_POINTS2 * 0.9 * (1 - off)));
 }
-function read4(s, action) {
+function read5(s, action) {
   if (isOver2(s) || typeof action !== "object" || action === null) return null;
   return measuredMs(action.guess, 999);
 }
-function apply4(s, action) {
-  const guess = read4(s, action);
+function apply5(s, action) {
+  const guess = read5(s, action);
   if (guess === null) return s;
   const actual = s.rounds[s.answers.length]?.dots.length ?? 0;
-  return { ...s, answers: [...s.answers, { guess, points: pointsFor(guess, actual) }] };
+  return { ...s, answers: [...s.answers, { guess, points: pointsFor2(guess, actual) }] };
 }
 var score3 = (s) => s.answers.reduce((n, a) => n + a.points, 0);
-function result9(s) {
+function result10(s) {
   return isOver2(s) ? { completed: false, score: score3(s) } : null;
 }
-var engine14 = {
-  initialState: initialState9,
-  apply: apply4,
+var engine15 = {
+  initialState: initialState10,
+  apply: apply5,
   progress: (s) => s.answers.length / ROUNDS2,
-  result: result9,
+  result: result10,
   score: score3,
   // Each answer follows its round's showing.
-  actionMs: (s, action) => read4(s, action) === null ? 0 : SHOW_MS
+  actionMs: (s, action) => read5(s, action) === null ? 0 : SHOW_MS
 };
 
 // packages/games/dot-count/manifest.ts
-var manifest14 = defineManifest({
+var manifest15 = defineManifest({
   id: "dot-count",
   version: 1,
   category: "speed",
@@ -7153,7 +9719,7 @@ function boxesOf(s, line2) {
 var sidesDrawn = (s, box) => sidesOf(s, box).reduce((n, line2) => s.lines[line2] === -1 ? n : n + 1, 0);
 var isOver3 = (s) => s.moves === s.lines.length;
 var score4 = (s, seat) => s.boxes.reduce((n, owner) => owner === seat ? n + 1 : n, 0);
-var engine15 = {
+var engine16 = {
   initialState(_config, seats) {
     const [cols, rows] = sizeFor(seats);
     const size = { cols, rows };
@@ -7204,7 +9770,7 @@ var engine15 = {
 };
 
 // packages/games/dots-and-boxes/manifest.ts
-var manifest15 = defineManifest({
+var manifest16 = defineManifest({
   id: "dots-and-boxes",
   version: 1,
   category: "board",
@@ -7253,7 +9819,7 @@ function attackers(state) {
   }
   return out;
 }
-function initialState10(config, seats, seed) {
+function initialState11(config, seats, seed) {
   const rng = Rng.fromSeed(seed);
   const deck2 = shuffledDeck(rng, 36);
   const hands = Array.from({ length: seats }, (_, s) => sortHand(deck2.slice(s * 6, s * 6 + 6)));
@@ -7441,7 +10007,7 @@ function applyAction6(state, seat, action) {
   if (passes >= count3) return { ...endBout({ ...state, moves }, state.phase === "pile"), moves };
   return { ...state, passes, turn: nextThrower(state, seat), moves };
 }
-function result10(state) {
+function result11(state) {
   if (!over5(state)) return null;
   const left = Array.from({ length: state.players }, (_, s) => s).filter(
     (s) => (state.hands[s]?.length ?? 0) > 0
@@ -7463,17 +10029,17 @@ function view6(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine16 = {
-  initialState: initialState10,
+var engine17 = {
+  initialState: initialState11,
   legalActions: legalActions6,
   applyAction: applyAction6,
   currentSeats: currentSeats6,
-  result: result10,
+  result: result11,
   view: view6
 };
 
 // packages/games/durak/manifest.ts
-var manifest16 = defineManifest({
+var manifest17 = defineManifest({
   id: "durak",
   version: 1,
   category: "cards",
@@ -7514,7 +10080,7 @@ var manifest16 = defineManifest({
 
 // packages/games/fifteen/engine/index.ts
 var SIZES2 = [4, 3, 5];
-var configFrom3 = (raw) => {
+var configFrom4 = (raw) => {
   const size = raw?.size;
   return { size: SIZES2.find((s) => s === size) ?? 4 };
 };
@@ -7535,9 +10101,9 @@ function slide2(tiles, size, cell) {
   out[cell] = 0;
   return out;
 }
-var engine17 = {
+var engine18 = {
   initialState(config, seed) {
-    const { size } = configFrom3(config);
+    const { size } = configFrom4(config);
     const n = size * size;
     let tiles = Array.from({ length: n }, (_, i) => i === n - 1 ? 0 : i + 1);
     const rng = Rng.fromSeed(`${seed}:fifteen:${String(size)}`);
@@ -7567,7 +10133,7 @@ var engine17 = {
 };
 
 // packages/games/fifteen/manifest.ts
-var manifest17 = defineManifest({
+var manifest18 = defineManifest({
   id: "fifteen",
   version: 1,
   category: "logic",
@@ -7695,22 +10261,22 @@ function lineEngine(rulesFor3) {
 }
 
 // packages/games/gomoku/engine/index.ts
-var configFrom4 = (raw) => ({
+var configFrom5 = (raw) => ({
   exactFive: raw?.exactFive === true
 });
 var rulesFor = (raw) => ({
   size: 15,
   line: 5,
-  exact: configFrom4(raw).exactFive
+  exact: configFrom5(raw).exactFive
 });
-var engine18 = lineEngine(rulesFor);
+var engine19 = lineEngine(rulesFor);
 
 // packages/games/five-colors/engine/index.ts
 var rulesFor2 = (_config, seats) => seats === 2 ? { size: 15, line: 5, exact: false } : { size: seats === 3 ? 15 : 17, line: 4, exact: false };
-var engine19 = lineEngine(rulesFor2);
+var engine20 = lineEngine(rulesFor2);
 
 // packages/games/five-colors/manifest.ts
-var manifest18 = defineManifest({
+var manifest19 = defineManifest({
   id: "five-colors",
   version: 1,
   category: "strategy",
@@ -7772,7 +10338,7 @@ function lineThrough(state, col, row, seat) {
   return null;
 }
 var isOver4 = (state) => state.winner !== null || state.moves === state.cols * state.rows;
-var engine20 = {
+var engine21 = {
   initialState(_config, seats) {
     const [cols, rows] = sizeFor2(seats);
     return {
@@ -7828,7 +10394,7 @@ var engine20 = {
 };
 
 // packages/games/four-in-a-row/manifest.ts
-var manifest19 = defineManifest({
+var manifest20 = defineManifest({
   id: "four-in-a-row",
   version: 1,
   category: "board",
@@ -7964,7 +10530,7 @@ function deal2(base, rng) {
     rng: rng.state
   };
 }
-function initialState11(config, _seats, seed) {
+function initialState12(config, _seats, seed) {
   return deal2(
     {
       turn: 1,
@@ -8067,7 +10633,7 @@ function applyAction7(state, seat, action) {
 function currentSeats7(state) {
   return over6(state) ? [] : [state.turn];
 }
-function result11(state) {
+function result12(state) {
   if (!over6(state)) return null;
   return { completed: true, outcome: state.scores[0] >= state.scores[1] ? [1, 0] : [0, 1] };
 }
@@ -8082,17 +10648,17 @@ function view7(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine21 = {
-  initialState: initialState11,
+var engine22 = {
+  initialState: initialState12,
   legalActions: legalActions7,
   applyAction: applyAction7,
   currentSeats: currentSeats7,
-  result: result11,
+  result: result12,
   view: view7
 };
 
 // packages/games/gin-rummy/manifest.ts
-var manifest20 = defineManifest({
+var manifest21 = defineManifest({
   id: "gin-rummy",
   version: 1,
   category: "cards",
@@ -8406,7 +10972,7 @@ function territory(cells, size, dead) {
 // packages/games/go/engine/index.ts
 var SIZES4 = [9, 13];
 var KOMI = 6.5;
-function configFrom5(raw) {
+function configFrom6(raw) {
   const size = raw?.size;
   return { size: SIZES4.find((s) => s === size) ?? 9 };
 }
@@ -8479,9 +11045,9 @@ function scoreOf(state, dead) {
   };
 }
 var groupAt = (state, point) => groups(state.board, state.size).find((g) => g.includes(point)) ?? [];
-var engine22 = {
+var engine23 = {
   initialState(config, _seats, seed) {
-    const { size } = configFrom5(config);
+    const { size } = configFrom6(config);
     return {
       size,
       seed,
@@ -8591,7 +11157,7 @@ var engine22 = {
   // Online, an away player passes (or, while scoring, accepts the count).
   skipTurn(state, seat) {
     if (state.phase === "over" || seat !== state.turn) return state;
-    return engine22.applyAction(state, seat, { type: state.phase === "scoring" ? "accept" : "pass" });
+    return engine23.applyAction(state, seat, { type: state.phase === "scoring" ? "accept" : "pass" });
   },
   result(state) {
     if (state.phase !== "over") return null;
@@ -8604,7 +11170,7 @@ var engine22 = {
 };
 
 // packages/games/go/manifest.ts
-var manifest21 = defineManifest({
+var manifest22 = defineManifest({
   id: "go",
   version: 1,
   category: "board",
@@ -8653,7 +11219,7 @@ var manifest21 = defineManifest({
 });
 
 // packages/games/gomoku/manifest.ts
-var manifest22 = defineManifest({
+var manifest23 = defineManifest({
   id: "gomoku",
   version: 1,
   category: "board",
@@ -8696,7 +11262,7 @@ var manifest22 = defineManifest({
 });
 
 // packages/games/hangman/content/bg.json
-var bg_default = {
+var bg_default2 = {
   categories: [
     {
       id: "animals",
@@ -8902,7 +11468,7 @@ var bg_default = {
 };
 
 // packages/games/hangman/content/en.json
-var en_default = {
+var en_default2 = {
   categories: [
     {
       id: "animals",
@@ -9108,33 +11674,33 @@ var en_default = {
 };
 
 // packages/games/hangman/engine/index.ts
-var PACKS = ["en", "bg"];
-function configFrom6(raw) {
+var PACKS2 = ["en", "bg"];
+function configFrom7(raw) {
   const r = raw;
   return {
-    pack: PACKS.find((p) => p === r?.pack) ?? "en",
+    pack: PACKS2.find((p) => p === r?.pack) ?? "en",
     mode: r?.mode === "versus" ? "versus" : "pack",
     rounds: r?.rounds === 3 ? 3 : 5
   };
 }
 var MAX_MISSES = 6;
-var MIN_LENGTH = 4;
+var MIN_LENGTH2 = 4;
 var MAX_LENGTH2 = 12;
 var SOLVE_BONUS = 3;
 var HIDDEN3 = "";
 var HIDDEN_PICK = -1;
 var flatten = (pack) => pack.categories.flatMap((c, category) => c.words.map((word) => ({ category, word })));
 var PACK_WORDS = {
-  en: flatten(en_default),
-  bg: flatten(bg_default)
+  en: flatten(en_default2),
+  bg: flatten(bg_default2)
 };
-var CATEGORIES = en_default.categories.map((c) => c.id);
+var CATEGORIES = en_default2.categories.map((c) => c.id);
 function validSecret(pack, raw) {
   if (typeof raw !== "string") return null;
   const word = wordOf(pack, raw);
   if (word === null) return null;
   const length = charsOf(word).length;
-  if (length < MIN_LENGTH || length > MAX_LENGTH2) return null;
+  if (length < MIN_LENGTH2 || length > MAX_LENGTH2) return null;
   if (!lexiconOf(pack, "all").has(word) || lexiconOf(pack, "blocked").has(word)) return null;
   return word;
 }
@@ -9173,8 +11739,8 @@ function startRound(s, round) {
     turn: round % s.players
   };
 }
-function initialState12(raw, seats, seed) {
-  const chosen = configFrom6(raw);
+function initialState13(raw, seats, seed) {
+  const chosen = configFrom7(raw);
   const config = seats > 1 ? chosen : { ...chosen, mode: "pack" };
   const pack = PACK_WORDS[config.pack];
   const rounds = config.mode === "versus" ? seats : config.rounds;
@@ -9258,7 +11824,7 @@ function currentSeats8(s) {
   return s.phase === "set" && s.setter !== null ? [s.setter] : [s.turn];
 }
 var solved2 = (s) => s.history.filter((r) => r.by !== null).length;
-function result12(s) {
+function result13(s) {
   if (!over7(s)) return null;
   if (s.players === 1) return { completed: true, outcome: [solved2(s) * 2 > s.rounds ? 1 : 0] };
   const best = Math.max(...s.scores);
@@ -9282,19 +11848,19 @@ function view8(s, seat) {
 function viewAction2(action, seat, viewer) {
   return "set" in action && viewer !== seat ? null : action;
 }
-var engine23 = {
-  initialState: initialState12,
+var engine24 = {
+  initialState: initialState13,
   legalActions: legalActions8,
   accepts: accepts2,
   applyAction: applyAction8,
   currentSeats: currentSeats8,
-  result: result12,
+  result: result13,
   view: view8,
   viewAction: viewAction2
 };
 
 // packages/games/hangman/manifest.ts
-var manifest23 = defineManifest({
+var manifest24 = defineManifest({
   id: "hangman",
   version: 1,
   category: "word",
@@ -9355,7 +11921,7 @@ var manifest23 = defineManifest({
 
 // packages/games/hanoi/engine/index.ts
 var DISCS = [4, 3, 5, 6, 7, 8];
-var configFrom7 = (raw) => {
+var configFrom8 = (raw) => {
   const discs = raw?.discs;
   return { discs: DISCS.find((d) => d === discs) ?? 4 };
 };
@@ -9371,9 +11937,9 @@ function canMove2(state, from, to) {
   return under === void 0 || under > disc;
 }
 var solved3 = (state) => state.pegs[2].length === state.discs;
-var engine24 = {
+var engine25 = {
   initialState(config) {
-    const { discs } = configFrom7(config);
+    const { discs } = configFrom8(config);
     return { discs, pegs: [Array.from({ length: discs }, (_, i) => discs - i), [], []], moves: 0 };
   },
   apply(state, { from, to }) {
@@ -9397,7 +11963,7 @@ var engine24 = {
 };
 
 // packages/games/hanoi/manifest.ts
-var manifest24 = defineManifest({
+var manifest25 = defineManifest({
   id: "hanoi",
   version: 1,
   category: "logic",
@@ -9469,7 +12035,7 @@ function deal3(state, rng) {
     rng: rng.state
   };
 }
-function initialState13(config, _seats, seed) {
+function initialState14(config, _seats, seed) {
   return deal3(
     {
       phase: "pass",
@@ -9603,7 +12169,7 @@ function currentSeats9(state) {
   if (state.phase === "pass") return state.passes.flatMap((p, i) => p === null ? [i] : []);
   return [state.turn];
 }
-function result13(state) {
+function result14(state) {
   if (!over8(state)) return null;
   const low4 = Math.min(...state.scores);
   const winners = state.scores.filter((s) => s === low4).length;
@@ -9624,18 +12190,18 @@ function view9(state, seat) {
 function viewAction3(action, seat, viewer) {
   return "pass" in action && seat !== viewer ? { pass: [HIDDEN, HIDDEN, HIDDEN] } : action;
 }
-var engine25 = {
-  initialState: initialState13,
+var engine26 = {
+  initialState: initialState14,
   legalActions: legalActions9,
   applyAction: applyAction9,
   currentSeats: currentSeats9,
-  result: result13,
+  result: result14,
   view: view9,
   viewAction: viewAction3
 };
 
 // packages/games/hearts/manifest.ts
-var manifest25 = defineManifest({
+var manifest26 = defineManifest({
   id: "hearts",
   version: 1,
   category: "cards",
@@ -9677,7 +12243,7 @@ var manifest25 = defineManifest({
 // packages/games/hex/engine/index.ts
 var SIZE2 = 11;
 var EMPTY6 = -1;
-var configFrom8 = (raw) => ({
+var configFrom9 = (raw) => ({
   swap: raw?.swap === true
 });
 var neighbourCache = /* @__PURE__ */ new Map();
@@ -9738,14 +12304,14 @@ function winningChain(board, size, seat) {
   return null;
 }
 var mirror = (cell, size) => cell % size * size + Math.floor(cell / size);
-var engine26 = {
+var engine27 = {
   initialState(config) {
     return {
       size: SIZE2,
       board: Array.from({ length: SIZE2 * SIZE2 }, () => EMPTY6),
       turn: 0,
       moves: 0,
-      swapRule: configFrom8(config).swap,
+      swapRule: configFrom9(config).swap,
       swapped: false,
       last: null,
       winner: null,
@@ -9792,7 +12358,7 @@ var engine26 = {
 };
 
 // packages/games/hex/manifest.ts
-var manifest26 = defineManifest({
+var manifest27 = defineManifest({
   id: "hex",
   version: 1,
   category: "board",
@@ -9838,7 +12404,7 @@ var manifest26 = defineManifest({
 var WINNABLE = { "1": ["klondike:bank1-1", "klondike:bank1-2", "klondike:bank1-3", "klondike:bank1-4", "klondike:bank1-6", "klondike:bank1-7", "klondike:bank1-8", "klondike:bank1-10", "klondike:bank1-11", "klondike:bank1-12", "klondike:bank1-13", "klondike:bank1-14", "klondike:bank1-17", "klondike:bank1-21", "klondike:bank1-23", "klondike:bank1-24", "klondike:bank1-27", "klondike:bank1-28", "klondike:bank1-29", "klondike:bank1-30", "klondike:bank1-31", "klondike:bank1-32", "klondike:bank1-33", "klondike:bank1-34", "klondike:bank1-36", "klondike:bank1-37", "klondike:bank1-39", "klondike:bank1-40", "klondike:bank1-41", "klondike:bank1-42", "klondike:bank1-45", "klondike:bank1-46", "klondike:bank1-48", "klondike:bank1-49", "klondike:bank1-50", "klondike:bank1-51", "klondike:bank1-52", "klondike:bank1-53", "klondike:bank1-54", "klondike:bank1-55", "klondike:bank1-57", "klondike:bank1-58", "klondike:bank1-59", "klondike:bank1-61", "klondike:bank1-63", "klondike:bank1-64", "klondike:bank1-65", "klondike:bank1-67", "klondike:bank1-70", "klondike:bank1-71", "klondike:bank1-76", "klondike:bank1-77", "klondike:bank1-78", "klondike:bank1-79", "klondike:bank1-80", "klondike:bank1-82", "klondike:bank1-84", "klondike:bank1-85", "klondike:bank1-86", "klondike:bank1-88", "klondike:bank1-89", "klondike:bank1-90", "klondike:bank1-92", "klondike:bank1-93", "klondike:bank1-94", "klondike:bank1-95", "klondike:bank1-96", "klondike:bank1-98", "klondike:bank1-99", "klondike:bank1-101", "klondike:bank1-102", "klondike:bank1-103", "klondike:bank1-104", "klondike:bank1-105", "klondike:bank1-106", "klondike:bank1-107", "klondike:bank1-108", "klondike:bank1-109", "klondike:bank1-110", "klondike:bank1-111", "klondike:bank1-112", "klondike:bank1-113", "klondike:bank1-116", "klondike:bank1-117", "klondike:bank1-118", "klondike:bank1-122", "klondike:bank1-123", "klondike:bank1-124", "klondike:bank1-126", "klondike:bank1-127", "klondike:bank1-128", "klondike:bank1-130", "klondike:bank1-131", "klondike:bank1-136", "klondike:bank1-137", "klondike:bank1-138", "klondike:bank1-140", "klondike:bank1-141", "klondike:bank1-142", "klondike:bank1-145", "klondike:bank1-147", "klondike:bank1-148", "klondike:bank1-152", "klondike:bank1-153", "klondike:bank1-154", "klondike:bank1-155", "klondike:bank1-158", "klondike:bank1-159", "klondike:bank1-160", "klondike:bank1-161", "klondike:bank1-162", "klondike:bank1-163", "klondike:bank1-164", "klondike:bank1-165", "klondike:bank1-166", "klondike:bank1-167", "klondike:bank1-169", "klondike:bank1-170", "klondike:bank1-171", "klondike:bank1-172"], "3": ["klondike:bank3-1", "klondike:bank3-2", "klondike:bank3-3", "klondike:bank3-4", "klondike:bank3-6", "klondike:bank3-8", "klondike:bank3-9", "klondike:bank3-10", "klondike:bank3-11", "klondike:bank3-12", "klondike:bank3-15", "klondike:bank3-16", "klondike:bank3-19", "klondike:bank3-23", "klondike:bank3-26", "klondike:bank3-27", "klondike:bank3-28", "klondike:bank3-29", "klondike:bank3-30", "klondike:bank3-31", "klondike:bank3-32", "klondike:bank3-33", "klondike:bank3-36", "klondike:bank3-37", "klondike:bank3-40", "klondike:bank3-42", "klondike:bank3-43", "klondike:bank3-45", "klondike:bank3-47", "klondike:bank3-50", "klondike:bank3-51", "klondike:bank3-54", "klondike:bank3-56", "klondike:bank3-58", "klondike:bank3-60", "klondike:bank3-61", "klondike:bank3-62", "klondike:bank3-64", "klondike:bank3-67", "klondike:bank3-70", "klondike:bank3-71", "klondike:bank3-74", "klondike:bank3-75", "klondike:bank3-76", "klondike:bank3-77", "klondike:bank3-79", "klondike:bank3-80", "klondike:bank3-82", "klondike:bank3-83", "klondike:bank3-84", "klondike:bank3-85", "klondike:bank3-86", "klondike:bank3-87", "klondike:bank3-91", "klondike:bank3-93", "klondike:bank3-95", "klondike:bank3-96", "klondike:bank3-97", "klondike:bank3-98", "klondike:bank3-99", "klondike:bank3-103", "klondike:bank3-105", "klondike:bank3-106", "klondike:bank3-107", "klondike:bank3-108", "klondike:bank3-113", "klondike:bank3-114", "klondike:bank3-116", "klondike:bank3-118", "klondike:bank3-119", "klondike:bank3-120", "klondike:bank3-122", "klondike:bank3-123", "klondike:bank3-125", "klondike:bank3-126", "klondike:bank3-127", "klondike:bank3-128", "klondike:bank3-130", "klondike:bank3-131", "klondike:bank3-133", "klondike:bank3-134", "klondike:bank3-137", "klondike:bank3-141", "klondike:bank3-142", "klondike:bank3-145", "klondike:bank3-149", "klondike:bank3-153", "klondike:bank3-154", "klondike:bank3-160", "klondike:bank3-162", "klondike:bank3-165", "klondike:bank3-166", "klondike:bank3-169", "klondike:bank3-170", "klondike:bank3-172", "klondike:bank3-173", "klondike:bank3-176", "klondike:bank3-177", "klondike:bank3-180", "klondike:bank3-181", "klondike:bank3-182", "klondike:bank3-188", "klondike:bank3-189", "klondike:bank3-190", "klondike:bank3-191", "klondike:bank3-192", "klondike:bank3-193", "klondike:bank3-195", "klondike:bank3-196", "klondike:bank3-197", "klondike:bank3-198", "klondike:bank3-201", "klondike:bank3-204", "klondike:bank3-208", "klondike:bank3-209", "klondike:bank3-214", "klondike:bank3-217", "klondike:bank3-218", "klondike:bank3-220", "klondike:bank3-222"] };
 
 // packages/games/klondike/engine/index.ts
-var configFrom9 = (raw) => {
+var configFrom10 = (raw) => {
   const r = raw ?? {};
   return { draw: r.draw === 3 ? 3 : 1, deal: r.deal === "random" ? "random" : "winnable" };
 };
@@ -9943,9 +12509,9 @@ function finish2(s) {
   }
   return cur;
 }
-var engine27 = {
+var engine28 = {
   initialState(config, seed) {
-    const c = configFrom9(config);
+    const c = configFrom10(config);
     return { ...deal4(dealSeed(c, seed)), draw: c.draw, moves: 0, history: [] };
   },
   apply(state, action) {
@@ -9994,7 +12560,7 @@ var engine27 = {
 };
 
 // packages/games/klondike/manifest.ts
-var manifest27 = defineManifest({
+var manifest28 = defineManifest({
   id: "klondike",
   version: 1,
   category: "cards",
@@ -10068,7 +12634,7 @@ function roll2(s) {
   const dice = s.dice.map((cup) => cup.map(() => rng.int(1, 6)));
   return { ...s, dice, rng: rng.state };
 }
-function initialState14(config, seats, seed) {
+function initialState15(config, seats, seed) {
   return roll2({
     players: seats,
     config,
@@ -10161,7 +12727,7 @@ function applyAction10(s, seat, action) {
 function currentSeats10(s) {
   return s.winner === null ? [s.turn] : [];
 }
-function result14(s) {
+function result15(s) {
   if (s.winner === null) return null;
   return {
     completed: true,
@@ -10175,17 +12741,17 @@ function view10(s, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine28 = {
-  initialState: initialState14,
+var engine29 = {
+  initialState: initialState15,
   legalActions: legalActions10,
   applyAction: applyAction10,
   currentSeats: currentSeats10,
-  result: result14,
+  result: result15,
   view: view10
 };
 
 // packages/games/liars-dice/manifest.ts
-var manifest28 = defineManifest({
+var manifest29 = defineManifest({
   id: "liars-dice",
   version: 1,
   category: "party",
@@ -10234,7 +12800,7 @@ var manifest28 = defineManifest({
 
 // packages/games/lights-off/engine/index.ts
 var SIZES5 = [5, 4, 6, 7];
-var configFrom10 = (raw) => {
+var configFrom11 = (raw) => {
   const size = raw?.size;
   return { size: SIZES5.find((s) => s === size) ?? 5 };
 };
@@ -10307,9 +12873,9 @@ function fewestPresses(lights, size) {
   return best;
 }
 var isDark2 = (lights) => lights.every((v) => v === 0);
-var engine29 = {
+var engine30 = {
   initialState(config, seed) {
-    const { size } = configFrom10(config);
+    const { size } = configFrom11(config);
     const n = size * size;
     const rng = Rng.fromSeed(`${seed}:lights:${String(size)}`);
     let lights = Array.from({ length: n }, () => 0);
@@ -10330,7 +12896,7 @@ var engine29 = {
 };
 
 // packages/games/lights-off/manifest.ts
-var manifest29 = defineManifest({
+var manifest30 = defineManifest({
   id: "lights-off",
   version: 1,
   category: "logic",
@@ -10386,7 +12952,7 @@ function lowestUnique(picks) {
   });
   return best;
 }
-function initialState15(config, seats) {
+function initialState16(config, seats) {
   return {
     players: seats,
     config,
@@ -10419,7 +12985,7 @@ function applyAction11(s, seat, action) {
 function currentSeats11(s) {
   return over9(s) ? [] : s.picks.flatMap((p, seat) => p === null ? [seat] : []);
 }
-function result15(s) {
+function result16(s) {
   if (!over9(s)) return null;
   const best = Math.max(...s.scores);
   const top2 = s.scores.filter((v) => v === best).length;
@@ -10434,18 +13000,18 @@ function view11(s, seat) {
 function viewAction4(action, seat, viewer) {
   return viewer === seat ? action : null;
 }
-var engine30 = {
-  initialState: initialState15,
+var engine31 = {
+  initialState: initialState16,
   legalActions: legalActions11,
   applyAction: applyAction11,
   currentSeats: currentSeats11,
-  result: result15,
+  result: result16,
   view: view11,
   viewAction: viewAction4
 };
 
 // packages/games/lowest-unique/manifest.ts
-var manifest30 = defineManifest({
+var manifest31 = defineManifest({
   id: "lowest-unique",
   version: 1,
   category: "party",
@@ -10496,7 +13062,7 @@ function rollDie(s) {
   const rng = new Rng(s.rng);
   return { ...s, die: rng.int(1, 6), rng: rng.state };
 }
-function initialState16(config, seats, seed) {
+function initialState17(config, seats, seed) {
   const s = {
     players: seats,
     colours: COLOURS2[seats] ?? [0, 1, 2, 3].slice(0, seats),
@@ -10579,7 +13145,7 @@ function applyAction12(s, seat, action) {
 function currentSeats12(s) {
   return s.winner === null ? [s.turn] : [];
 }
-function result16(s) {
+function result17(s) {
   if (s.winner === null) return null;
   return {
     completed: true,
@@ -10589,17 +13155,17 @@ function result16(s) {
 function view12(s) {
   return { ...s, rng: [0, 0, 0, 0] };
 }
-var engine31 = {
-  initialState: initialState16,
+var engine32 = {
+  initialState: initialState17,
   legalActions: legalActions12,
   applyAction: applyAction12,
   currentSeats: currentSeats12,
-  result: result16,
+  result: result17,
   view: view12
 };
 
 // packages/games/ludo/manifest.ts
-var manifest31 = defineManifest({
+var manifest32 = defineManifest({
   id: "ludo",
   version: 1,
   category: "board",
@@ -10643,7 +13209,7 @@ var HIDDEN4 = "hidden";
 var NOBODY = -1;
 var MAX_DAYS = 15;
 var mafiaFor = (players) => Math.max(1, Math.floor(players / 4));
-function initialState17(_config, seats, seed) {
+function initialState18(_config, seats, seed) {
   const rng = Rng.fromSeed(seed);
   const deck2 = [
     ...Array.from({ length: mafiaFor(seats) }, () => "mafia"),
@@ -10788,7 +13354,7 @@ function currentSeats13(s) {
     (x) => s.phase === "night" ? s.night[x] === null : s.phase === "talk" ? !s.ready[x] : s.votes[x] === null
   );
 }
-function result17(s) {
+function result18(s) {
   if (s.winner === null) return null;
   if (s.winner === "draw") return { completed: true, outcome: s.roles.map(() => 0.5) };
   return {
@@ -10813,18 +13379,18 @@ function view13(s, seat) {
 function viewAction5(action, seat, viewer) {
   return viewer === seat || "ready" in action ? action : null;
 }
-var engine32 = {
-  initialState: initialState17,
+var engine33 = {
+  initialState: initialState18,
   legalActions: legalActions13,
   applyAction: applyAction13,
   currentSeats: currentSeats13,
-  result: result17,
+  result: result18,
   view: view13,
   viewAction: viewAction5
 };
 
 // packages/games/mafia/manifest.ts
-var manifest32 = defineManifest({
+var manifest33 = defineManifest({
   id: "mafia",
   version: 1,
   category: "party",
@@ -10857,10 +13423,10 @@ var manifest32 = defineManifest({
 // packages/games/mancala/engine/index.ts
 var PITS = 6;
 var STORE = [6, 13];
-var SEEDS = [4, 3, 5, 6];
-var configFrom11 = (raw) => {
+var SEEDS2 = [4, 3, 5, 6];
+var configFrom12 = (raw) => {
   const seeds = raw?.seeds;
-  return { seeds: SEEDS.find((s) => s === seeds) ?? 4 };
+  return { seeds: SEEDS2.find((s) => s === seeds) ?? 4 };
 };
 var pitsOf = (seat) => Array.from({ length: PITS }, (_, i) => seat * 7 + i);
 var opposite2 = (pit) => 12 - pit;
@@ -10870,9 +13436,9 @@ function movesFor3(state, seat) {
 }
 var sideTotal = (holes, seat) => pitsOf(seat).reduce((n, p) => n + (holes[p] ?? 0), 0);
 var score5 = (state, seat) => state.holes[STORE[seat === 0 ? 0 : 1]] ?? 0;
-var engine33 = {
+var engine34 = {
   initialState(config) {
-    const { seeds } = configFrom11(config);
+    const { seeds } = configFrom12(config);
     const holes = Array.from({ length: 14 }, (_, i) => i === 6 || i === 13 ? 0 : seeds);
     return { holes, turn: 0, moves: 0, last: null, over: false };
   },
@@ -10931,7 +13497,7 @@ var engine33 = {
 };
 
 // packages/games/mancala/manifest.ts
-var manifest33 = defineManifest({
+var manifest34 = defineManifest({
   id: "mancala",
   version: 1,
   category: "board",
@@ -10976,9 +13542,9 @@ var manifest33 = defineManifest({
 
 // packages/games/math-sprint/engine/index.ts
 var LEVELS2 = ["easy", "medium", "hard"];
-var DURATION_MS2 = 6e4;
+var DURATION_MS3 = 6e4;
 var PROBLEMS = 400;
-var configFrom12 = (raw) => {
+var configFrom13 = (raw) => {
   const level = raw?.level;
   return { level: LEVELS2.find((l) => l === level) ?? "easy" };
 };
@@ -11014,8 +13580,8 @@ function problem(rng, level) {
   }
   return make(rng.int(100, 500), rng.next() < 0.5 ? "+" : "-", rng.int(25, 99));
 }
-function initialState18(config, seed) {
-  const level = configFrom12(config).level;
+function initialState19(config, seed) {
+  const level = configFrom13(config).level;
   const rng = Rng.fromSeed(`math-sprint:${level}:${seed}`);
   return {
     level,
@@ -11028,19 +13594,19 @@ function initialState18(config, seed) {
     over: false
   };
 }
-function read5(s, action) {
+function read6(s, action) {
   if (s.over || s.index >= PROBLEMS || typeof action !== "object" || action === null) return null;
   if ("stop" in action) return action.stop === true ? { stop: true } : null;
   const a = action;
   const answer = measuredMs(a.answer, 99999);
-  const ms = measuredMs(a.ms, DURATION_MS2 - 1);
+  const ms = measuredMs(a.ms, DURATION_MS3 - 1);
   if (answer === null || ms === null || ms - s.last < HUMAN.reactionMs) return null;
   return { answer, ms };
 }
-function apply5(s, action) {
-  const r = read5(s, action);
+function apply6(s, action) {
+  const r = read6(s, action);
   if (!r) return s;
-  if ("stop" in r) return { ...s, last: DURATION_MS2, over: true };
+  if ("stop" in r) return { ...s, last: DURATION_MS3, over: true };
   const right = r.answer === s.problems[s.index]?.answer;
   return {
     ...s,
@@ -11051,24 +13617,24 @@ function apply5(s, action) {
     answers: [...s.answers, { given: r.answer, right }]
   };
 }
-function result18(s) {
+function result19(s) {
   return s.over ? { completed: false, score: s.right } : null;
 }
-var engine34 = {
-  initialState: initialState18,
-  apply: apply5,
-  progress: (s) => s.over ? 1 : s.last / DURATION_MS2,
-  result: result18,
+var engine35 = {
+  initialState: initialState19,
+  apply: apply6,
+  progress: (s) => s.over ? 1 : s.last / DURATION_MS3,
+  result: result19,
   score: (s) => s.right,
   actionMs: (s, action) => {
-    const r = read5(s, action);
+    const r = read6(s, action);
     if (!r) return 0;
-    return ("stop" in r ? DURATION_MS2 : r.ms) - s.last;
+    return ("stop" in r ? DURATION_MS3 : r.ms) - s.last;
   }
 };
 
 // packages/games/math-sprint/manifest.ts
-var manifest34 = defineManifest({
+var manifest35 = defineManifest({
   id: "math-sprint",
   version: 1,
   category: "speed",
@@ -11110,7 +13676,7 @@ var manifest34 = defineManifest({
 
 // packages/games/memory-match/engine/index.ts
 var SIZES6 = [20, 12, 30];
-var configFrom13 = (raw) => {
+var configFrom14 = (raw) => {
   const cards = raw?.cards;
   return { cards: SIZES6.find((s) => s === cards) ?? 20 };
 };
@@ -11135,9 +13701,9 @@ function flip(table, card2) {
   return { table: { ...table, up: [first2, card2], flips }, outcome: "miss" };
 }
 var cleared = (table) => table.matched.every(Boolean);
-var engine35 = {
+var engine36 = {
   initialState(config, seed) {
-    const { cards } = configFrom13(config);
+    const { cards } = configFrom14(config);
     return { cards, ...deal5(cards, seed) };
   },
   apply(state, action) {
@@ -11173,7 +13739,7 @@ function partyWinners(party) {
 }
 
 // packages/games/memory-match/manifest.ts
-var manifest35 = defineManifest({
+var manifest36 = defineManifest({
   id: "memory-match",
   version: 1,
   category: "logic",
@@ -11219,7 +13785,7 @@ var manifest35 = defineManifest({
 
 // packages/games/memory-pairs/engine/index.ts
 var UNSEEN2 = -1;
-function initialState19(config, seats, seed) {
+function initialState20(config, seats, seed) {
   const party = startParty(config.cards, seats, seed);
   return { ...party, seen: party.symbols.map(() => UNSEEN2), moves: 0 };
 }
@@ -11241,7 +13807,7 @@ function applyAction14(s, seat, action) {
 function currentSeats14(s) {
   return over10(s) ? [] : [s.turn];
 }
-function result19(s) {
+function result20(s) {
   const winners = partyWinners(s);
   if (!winners) return null;
   const share = winners.length === 1 ? 1 : 0.5;
@@ -11258,17 +13824,17 @@ function view14(s) {
     )
   };
 }
-var engine36 = {
-  initialState: initialState19,
+var engine37 = {
+  initialState: initialState20,
   legalActions: legalActions14,
   applyAction: applyAction14,
   currentSeats: currentSeats14,
-  result: result19,
+  result: result20,
   view: view14
 };
 
 // packages/games/memory-pairs/manifest.ts
-var manifest36 = defineManifest({
+var manifest37 = defineManifest({
   id: "memory-pairs",
   version: 1,
   category: "logic",
@@ -11315,7 +13881,7 @@ var LEVELS3 = {
   expert: { cols: 16, rows: 30, mines: 99 }
 };
 var LEVEL_ORDER = ["beginner", "intermediate", "expert"];
-var configFrom14 = (raw) => {
+var configFrom15 = (raw) => {
   const level = raw?.level;
   return { level: LEVEL_ORDER.find((l) => l === level) ?? "beginner" };
 };
@@ -11410,9 +13976,9 @@ function layMines(seed, level, first2) {
 }
 var safeLeft = (s) => s.open.reduce((n, v, i) => n + (v || s.mines[i] ? 0 : 1), 0);
 var done = (s) => s.exploded !== null || s.won;
-var engine37 = {
+var engine38 = {
   initialState(config, seed) {
-    const { level } = configFrom14(config);
+    const { level } = configFrom15(config);
     const { cols, rows, mines: count3 } = LEVELS3[level];
     const rng = Rng.fromSeed(`${seed}:start:${level}`);
     const start = rng.int(2, rows - 3) * cols + rng.int(2, cols - 3);
@@ -11477,7 +14043,7 @@ var engine37 = {
 };
 
 // packages/games/minesweeper/manifest.ts
-var manifest37 = defineManifest({
+var manifest38 = defineManifest({
   id: "minesweeper",
   version: 1,
   category: "logic",
@@ -11523,7 +14089,7 @@ var manifest37 = defineManifest({
 
 // packages/games/nim/engine/index.ts
 var CLASSIC = [1, 3, 5, 7];
-var configFrom15 = (raw) => {
+var configFrom16 = (raw) => {
   const c = raw ?? {};
   return { piles: c.piles === "random" ? "random" : "classic", misere: c.misere === true };
 };
@@ -11533,9 +14099,9 @@ function startingPiles(config, seed) {
   return Array.from({ length: rng.int(3, 5) }, () => rng.int(1, 7));
 }
 var total = (piles) => piles.reduce((n, p) => n + p, 0);
-var engine38 = {
+var engine39 = {
   initialState(config, seats, seed) {
-    const c = configFrom15(config);
+    const c = configFrom16(config);
     return {
       piles: startingPiles(c, seed),
       seats,
@@ -11580,7 +14146,7 @@ var engine38 = {
 };
 
 // packages/games/nim/manifest.ts
-var manifest38 = defineManifest({
+var manifest39 = defineManifest({
   id: "nim",
   version: 1,
   category: "strategy",
@@ -11628,7 +14194,7 @@ var manifest38 = defineManifest({
 });
 
 // packages/games/nine-mens-morris/engine/index.ts
-var POINTS = 24;
+var POINTS2 = 24;
 var EMPTY7 = -1;
 var QUIET_LIMIT2 = 50;
 var ADJACENT = [
@@ -11676,7 +14242,7 @@ var MILLS = [
   [2, 14, 23]
 ];
 var MILLS_AT = Array.from(
-  { length: POINTS },
+  { length: POINTS2 },
   (_, p) => MILLS.filter((m) => m.includes(p))
 );
 var inMill = (board, point) => {
@@ -11684,7 +14250,7 @@ var inMill = (board, point) => {
   return seat !== EMPTY7 && (MILLS_AT[point] ?? []).some((m) => m.every((q) => board[q] === seat));
 };
 var countOf = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-function configFrom16(raw) {
+function configFrom17(raw) {
   const flying = raw?.flying;
   return { flying: flying !== false };
 }
@@ -11724,10 +14290,10 @@ function movesFor4(state, seat) {
   return out;
 }
 var key = (state) => `${String(state.turn)}${state.inHand.join("")}:${state.board.map((v) => String(v + 1)).join("")}`;
-var engine39 = {
+var engine40 = {
   initialState(config) {
-    const { flying } = configFrom16(config);
-    const board = Array.from({ length: POINTS }, () => EMPTY7);
+    const { flying } = configFrom17(config);
+    const board = Array.from({ length: POINTS2 }, () => EMPTY7);
     const state = {
       board,
       turn: 0,
@@ -11796,7 +14362,7 @@ var engine39 = {
 };
 
 // packages/games/nine-mens-morris/manifest.ts
-var manifest39 = defineManifest({
+var manifest40 = defineManifest({
   id: "nine-mens-morris",
   version: 1,
   category: "board",
@@ -11840,7 +14406,7 @@ var manifest39 = defineManifest({
 
 // packages/games/nonogram/engine/index.ts
 var SIZES7 = [10, 5, 15];
-var configFrom17 = (raw) => {
+var configFrom18 = (raw) => {
   const size = raw?.size;
   return { size: SIZES7.find((s) => s === size) ?? 10 };
 };
@@ -11979,9 +14545,9 @@ function makePuzzle(seed, size) {
   return best ?? { solution: [], rowClues: [], colClues: [] };
 }
 var solved4 = (s) => s.solution.every((v, i) => v === 1 === (s.marks[i] === 1));
-var engine40 = {
+var engine41 = {
   initialState(config, seed) {
-    const { size } = configFrom17(config);
+    const { size } = configFrom18(config);
     return {
       size,
       ...makePuzzle(seed, size),
@@ -12015,7 +14581,7 @@ var engine40 = {
 };
 
 // packages/games/nonogram/manifest.ts
-var manifest40 = defineManifest({
+var manifest41 = defineManifest({
   id: "nonogram",
   version: 1,
   category: "logic",
@@ -12063,7 +14629,7 @@ var SIZE3 = 5;
 var COUNT = SIZE3 * SIZE3;
 var PENALTY_MS = 1e3;
 var MAX_MS2 = 10 * 60 * 1e3;
-function initialState20(_config, seed) {
+function initialState21(_config, seed) {
   const rng = Rng.fromSeed(`number-hunt:${seed}`);
   return {
     grid: rng.shuffle(Array.from({ length: COUNT }, (_, i) => i + 1)),
@@ -12073,7 +14639,7 @@ function initialState20(_config, seed) {
   };
 }
 var isDone = (s) => s.next > COUNT;
-function read6(s, action) {
+function read7(s, action) {
   if (isDone(s) || typeof action !== "object" || action === null) return null;
   const a = action;
   const cell = measuredMs(a.cell, COUNT - 1);
@@ -12083,29 +14649,29 @@ function read6(s, action) {
   if (first2 ? ms < HUMAN.reactionMs : ms - s.last < HUMAN.tapGapMs) return null;
   return { cell, ms };
 }
-function apply6(s, action) {
-  const r = read6(s, action);
+function apply7(s, action) {
+  const r = read7(s, action);
   if (!r) return s;
   if (s.grid[r.cell] === s.next) return { ...s, next: s.next + 1, last: r.ms };
   return { ...s, mistakes: s.mistakes + 1, last: r.ms };
 }
 var score6 = (s) => s.last + s.mistakes * PENALTY_MS;
-function result20(s) {
+function result21(s) {
   return isDone(s) ? { completed: true, score: score6(s) } : null;
 }
-var engine41 = {
-  initialState: initialState20,
-  apply: apply6,
+var engine42 = {
+  initialState: initialState21,
+  apply: apply7,
   progress: (s) => (s.next - 1) / COUNT,
-  result: result20,
+  result: result21,
   actionMs: (s, action) => {
-    const r = read6(s, action);
+    const r = read7(s, action);
     return r ? r.ms - s.last : 0;
   }
 };
 
 // packages/games/number-hunt/manifest.ts
-var manifest41 = defineManifest({
+var manifest42 = defineManifest({
   id: "number-hunt",
   version: 1,
   category: "speed",
@@ -12132,7 +14698,7 @@ var manifest41 = defineManifest({
 });
 
 // packages/games/odd-one-out/engine/index.ts
-var DURATION_MS3 = 45e3;
+var DURATION_MS4 = 45e3;
 var PENALTY_MS2 = 2e3;
 var LEVELS4 = 60;
 function shape(level) {
@@ -12140,7 +14706,7 @@ function shape(level) {
   const diffs = [180, 90, 90, 60, 60, 45, 45, 40, 35, 30, 30, 25];
   return { size, diff: diffs[level] ?? 20 };
 }
-function initialState21(_config, seed) {
+function initialState22(_config, seed) {
   const rng = Rng.fromSeed(`odd-one-out:${seed}`);
   const levels = Array.from({ length: LEVELS4 }, (_, k) => {
     const { size, diff } = shape(k);
@@ -12154,22 +14720,22 @@ function initialState21(_config, seed) {
   });
   return { levels, cleared: 0, last: 0, mistakes: 0, over: false };
 }
-var deadline = (s) => DURATION_MS3 - s.mistakes * PENALTY_MS2;
-function read7(s, action) {
+var deadline = (s) => DURATION_MS4 - s.mistakes * PENALTY_MS2;
+function read8(s, action) {
   if (s.over || typeof action !== "object" || action === null) return null;
   if ("stop" in action) return action.stop === true ? { stop: true } : null;
   const level = s.levels[s.cleared];
   if (!level) return null;
   const a = action;
   const cell = measuredMs(a.cell, level.size * level.size - 1);
-  const ms = measuredMs(a.ms, DURATION_MS3);
+  const ms = measuredMs(a.ms, DURATION_MS4);
   if (cell === null || ms === null || ms < s.last || ms >= deadline(s)) return null;
   const first2 = s.cleared === 0 && s.mistakes === 0;
   if (first2 ? ms < HUMAN.reactionMs : ms - s.last < HUMAN.tapGapMs) return null;
   return { tap: { cell, ms } };
 }
-function apply7(s, action) {
-  const r = read7(s, action);
+function apply8(s, action) {
+  const r = read8(s, action);
   if (!r) return s;
   if ("stop" in r) return { ...s, last: Math.max(s.last, deadline(s)), over: true };
   const level = s.levels[s.cleared];
@@ -12179,24 +14745,24 @@ function apply7(s, action) {
   }
   return { ...s, mistakes: s.mistakes + 1, last: r.tap.ms };
 }
-function result21(s) {
+function result22(s) {
   return s.over ? { completed: false, score: s.cleared } : null;
 }
-var engine42 = {
-  initialState: initialState21,
-  apply: apply7,
-  progress: (s) => s.over ? 1 : Math.min(1, s.last / DURATION_MS3),
-  result: result21,
+var engine43 = {
+  initialState: initialState22,
+  apply: apply8,
+  progress: (s) => s.over ? 1 : Math.min(1, s.last / DURATION_MS4),
+  result: result22,
   score: (s) => s.cleared,
   actionMs: (s, action) => {
-    const r = read7(s, action);
+    const r = read8(s, action);
     if (!r) return 0;
     return Math.max(0, ("stop" in r ? deadline(s) : r.tap.ms) - s.last);
   }
 };
 
 // packages/games/odd-one-out/manifest.ts
-var manifest42 = defineManifest({
+var manifest43 = defineManifest({
   id: "odd-one-out",
   version: 1,
   category: "speed",
@@ -12237,7 +14803,7 @@ function goals(s, seat) {
   return s.kicks.filter((k) => k.shooter === seat && k.result === "goal").length;
 }
 var kicksBy = (s, seat) => s.kicks.filter((k) => k.shooter === seat).length;
-function initialState22(_config, _seats, seed) {
+function initialState23(_config, _seats, seed) {
   return {
     shot: null,
     dive: null,
@@ -12282,15 +14848,15 @@ function applyAction15(s, seat, action) {
   const spot = next3.shot;
   const dive = next3.dive;
   const reach2 = columnOf(spot) === dive && !(isHigh(spot) && columnOf(spot) !== 1);
-  const result35 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
-  const kick = { shooter: shooterOf(s), spot, dive, result: result35 };
+  const result36 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
+  const kick = { shooter: shooterOf(s), spot, dive, result: result36 };
   return decide({ ...next3, shot: null, dive: null, kicks: [...s.kicks, kick], rng: rng.state });
 }
 function currentSeats15(s) {
   if (over11(s)) return [];
   return [shooterOf(s), keeperOf(s)].filter((seat) => seat === shooterOf(s) ? s.shot === null : s.dive === null).sort((x, y) => x - y);
 }
-function result22(s) {
+function result23(s) {
   if (s.draw) return { completed: true, outcome: [0.5, 0.5] };
   if (s.winner === null) return null;
   return { completed: true, outcome: [0, 1].map((seat) => seat === s.winner ? 1 : 0) };
@@ -12306,18 +14872,18 @@ function view15(s, seat) {
 function viewAction6(action, seat, viewer) {
   return viewer === seat ? action : null;
 }
-var engine43 = {
-  initialState: initialState22,
+var engine44 = {
+  initialState: initialState23,
   legalActions: legalActions15,
   applyAction: applyAction15,
   currentSeats: currentSeats15,
-  result: result22,
+  result: result23,
   view: view15,
   viewAction: viewAction6
 };
 
 // packages/games/penalty-shootout/manifest.ts
-var manifest43 = defineManifest({
+var manifest44 = defineManifest({
   id: "penalty-shootout",
   version: 1,
   category: "sports",
@@ -12358,7 +14924,7 @@ var BANK2 = {
 
 // packages/games/pipe-link/engine/index.ts
 var SIZES8 = [6, 5, 7, 8, 9];
-var configFrom18 = (raw) => {
+var configFrom19 = (raw) => {
   const size = raw?.size;
   return { size: SIZES8.find((s) => s === size) ?? 6 };
 };
@@ -12417,9 +14983,9 @@ function validPath(state, colour, cells) {
   }
   return out;
 }
-var engine44 = {
+var engine45 = {
   initialState(config, seed) {
-    const { size } = configFrom18(config);
+    const { size } = configFrom19(config);
     const ends = puzzleFor(size, seed);
     return { size, ends, paths: ends.map(() => []), moves: 0 };
   },
@@ -12440,7 +15006,7 @@ var engine44 = {
 };
 
 // packages/games/pipe-link/manifest.ts
-var manifest44 = defineManifest({
+var manifest45 = defineManifest({
   id: "pipe-link",
   version: 1,
   category: "logic",
@@ -12494,7 +15060,7 @@ var MAX_FALSE_STARTS = 3;
 var MIN_WAIT_MS = 1500;
 var MAX_WAIT_MS = 4e3;
 var SLOW_MS = 1500;
-function initialState23(_config, seed) {
+function initialState24(_config, seed) {
   const rng = Rng.fromSeed(`reaction-flash:${seed}`);
   return {
     waits: Array.from(
@@ -12508,30 +15074,30 @@ function initialState23(_config, seed) {
 }
 var isOver5 = (s) => s.times.length >= ROUNDS3 || s.falseStarts >= MAX_FALSE_STARTS;
 var currentWait = (s) => isOver5(s) ? null : s.waits[s.tries] ?? null;
-function judge(wait, ms) {
+function judge2(wait, ms) {
   const reaction = ms - wait;
   return reaction < HUMAN.reactionMs ? { falseStart: true } : { reaction };
 }
-function apply8(s, action) {
+function apply9(s, action) {
   const wait = currentWait(s);
   if (wait === null) return s;
   const ms = measuredMs(action?.ms, wait + SLOW_MS);
   if (ms === null) return s;
-  const verdict = judge(wait, ms);
+  const verdict = judge2(wait, ms);
   if ("falseStart" in verdict) return { ...s, tries: s.tries + 1, falseStarts: s.falseStarts + 1 };
   return { ...s, tries: s.tries + 1, times: [...s.times, verdict.reaction] };
 }
 var average = (s) => s.times.length === 0 ? null : Math.round(mean(s.times));
-function result23(s) {
+function result24(s) {
   if (!isOver5(s)) return null;
   if (s.times.length < ROUNDS3) return { completed: false };
   return { completed: false, score: average(s) ?? 0 };
 }
-var engine45 = {
-  initialState: initialState23,
-  apply: apply8,
+var engine46 = {
+  initialState: initialState24,
+  apply: apply9,
   progress: (s) => s.times.length / ROUNDS3,
-  result: result23,
+  result: result24,
   actionMs: (s, action) => {
     const wait = currentWait(s);
     if (wait === null) return 0;
@@ -12540,7 +15106,7 @@ var engine45 = {
 };
 
 // packages/games/reaction-flash/manifest.ts
-var manifest45 = defineManifest({
+var manifest46 = defineManifest({
   id: "reaction-flash",
   version: 1,
   category: "speed",
@@ -12609,7 +15175,7 @@ function movesFor5(board, seat) {
   return moves;
 }
 var countDiscs = (board, seat) => board.reduce((n, v) => v === seat ? n + 1 : n, 0);
-var engine46 = {
+var engine47 = {
   initialState() {
     const board = Array.from({ length: SIZE4 * SIZE4 }, () => -1);
     board[3 * SIZE4 + 3] = 1;
@@ -12652,7 +15218,7 @@ var engine46 = {
 };
 
 // packages/games/reversi/manifest.ts
-var manifest46 = defineManifest({
+var manifest47 = defineManifest({
   id: "reversi",
   version: 1,
   category: "board",
@@ -12697,7 +15263,7 @@ var match = (a, b) => ({
   pending: [null, null],
   winner: b === null ? a : null
 });
-function initialState24(config, seats, seed) {
+function initialState25(config, seats, seed) {
   const order = Rng.fromSeed(seed).shuffle(Array.from({ length: seats }, (_, i) => i));
   let size = 1;
   while (size < seats) size *= 2;
@@ -12764,7 +15330,7 @@ function currentSeats16(s) {
     return [m.pending[0] === null ? m.a : null, m.pending[1] === null ? m.b : null];
   }).filter((seat) => seat !== null).sort((p, q) => p - q);
 }
-function result24(s) {
+function result25(s) {
   if (s.champion === null) return null;
   return {
     completed: true,
@@ -12788,18 +15354,18 @@ function view16(s, seat) {
 function viewAction7(action, seat, viewer) {
   return viewer === seat ? action : null;
 }
-var engine47 = {
-  initialState: initialState24,
+var engine48 = {
+  initialState: initialState25,
   legalActions: legalActions16,
   applyAction: applyAction16,
   currentSeats: currentSeats16,
-  result: result24,
+  result: result25,
   view: view16,
   viewAction: viewAction7
 };
 
 // packages/games/rps-tournament/manifest.ts
-var manifest47 = defineManifest({
+var manifest48 = defineManifest({
   id: "rps-tournament",
   version: 1,
   category: "party",
@@ -12864,7 +15430,7 @@ function deal6(base, rng) {
     rng: rng.state
   };
 }
-function initialState25(_config, _seats, seed) {
+function initialState26(_config, _seats, seed) {
   return deal6(
     {
       closed: null,
@@ -13006,7 +15572,7 @@ function applyAction17(state, seat, action) {
 function currentSeats17(state) {
   return over12(state) ? [] : [state.turn];
 }
-function result25(state) {
+function result26(state) {
   if (!over12(state)) return null;
   return { completed: true, outcome: state.scores[0] > state.scores[1] ? [1, 0] : [0, 1] };
 }
@@ -13022,17 +15588,17 @@ function view17(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine48 = {
-  initialState: initialState25,
+var engine49 = {
+  initialState: initialState26,
   legalActions: legalActions17,
   applyAction: applyAction17,
   currentSeats: currentSeats17,
-  result: result25,
+  result: result26,
   view: view17
 };
 
 // packages/games/santase/manifest.ts
-var manifest48 = defineManifest({
+var manifest49 = defineManifest({
   id: "santase",
   version: 1,
   category: "cards",
@@ -13114,7 +15680,7 @@ function sunkShips(s, seat) {
     (s.shots[other4(seat)] ?? []).flatMap((shot) => shot.sunk === null ? [] : [shot.sunk])
   );
 }
-function initialState26(config) {
+function initialState27(config) {
   return {
     config,
     phase: "place",
@@ -13203,7 +15769,7 @@ function currentSeats18(s) {
   if (s.phase === "place") return [0, 1].filter((seat) => !s.ready[seat]);
   return [s.turn];
 }
-function result26(s) {
+function result27(s) {
   if (s.winner === null) return null;
   return { completed: true, outcome: [0, 1].map((seat) => seat === s.winner ? 1 : 0) };
 }
@@ -13220,19 +15786,19 @@ function view18(s, seat) {
 function viewAction8(action, seat, viewer) {
   return "place" in action && viewer !== seat ? null : action;
 }
-var engine49 = {
-  initialState: initialState26,
+var engine50 = {
+  initialState: initialState27,
   legalActions: legalActions18,
   sideActions,
   applyAction: applyAction18,
   currentSeats: currentSeats18,
-  result: result26,
+  result: result27,
   view: view18,
   viewAction: viewAction8
 };
 
 // packages/games/sea-battle/manifest.ts
-var manifest49 = defineManifest({
+var manifest50 = defineManifest({
   id: "sea-battle",
   version: 1,
   category: "board",
@@ -13274,7 +15840,7 @@ var manifest49 = defineManifest({
 // packages/games/sequence-memory/engine/index.ts
 var PADS = 4;
 var MAX_LENGTH3 = 500;
-function initialState27(_config, seed) {
+function initialState28(_config, seed) {
   const rng = Rng.fromSeed(`sequence-memory:${seed}`);
   return {
     steps: Array.from({ length: MAX_LENGTH3 }, () => rng.int(0, PADS - 1)),
@@ -13286,32 +15852,32 @@ function initialState27(_config, seed) {
 var stepMs = (length) => Math.max(350, 600 - 20 * (length - 1));
 var showMs = (length) => length * stepMs(length);
 var isOver6 = (s) => s.missed !== null || s.length > MAX_LENGTH3;
-function read8(s, action) {
+function read9(s, action) {
   if (isOver6(s) || typeof action !== "object" || action === null) return null;
   return measuredMs(action.pad, PADS - 1);
 }
-function apply9(s, action) {
-  const pad = read8(s, action);
+function apply10(s, action) {
+  const pad = read9(s, action);
   if (pad === null) return s;
   if (pad !== s.steps[s.pos]) return { ...s, missed: pad };
   return s.pos + 1 === s.length ? { ...s, length: s.length + 1, pos: 0 } : { ...s, pos: s.pos + 1 };
 }
 var score7 = (s) => s.length - 1;
-function result27(s) {
+function result28(s) {
   return isOver6(s) ? { completed: false, score: score7(s) } : null;
 }
-var engine50 = {
-  initialState: initialState27,
-  apply: apply9,
+var engine51 = {
+  initialState: initialState28,
+  apply: apply10,
   progress: (s) => Math.min(1, score7(s) / 20),
-  result: result27,
+  result: result28,
   score: score7,
   // The round's first press comes after its sequence was shown.
-  actionMs: (s, action) => read8(s, action) !== null && s.pos === 0 ? showMs(s.length) : 0
+  actionMs: (s, action) => read9(s, action) !== null && s.pos === 0 ? showMs(s.length) : 0
 };
 
 // packages/games/sequence-memory/manifest.ts
-var manifest50 = defineManifest({
+var manifest51 = defineManifest({
   id: "sequence-memory",
   version: 1,
   category: "speed",
@@ -13586,7 +16152,7 @@ function isShape(state, slot, cells) {
   const rc = cells.map((cell) => [Math.floor(cell / size), cell % size]);
   return SHAPE_KEYS[shape2]?.has(keyOf(rc)) ?? false;
 }
-var engine51 = {
+var engine52 = {
   initialState(_config, seats, seed) {
     const size = sizeFor3(seats);
     const rng = Rng.fromSeed(`${seed}:bag`);
@@ -13671,7 +16237,7 @@ var engine51 = {
 };
 
 // packages/games/shape-claim/manifest.ts
-var manifest51 = defineManifest({
+var manifest52 = defineManifest({
   id: "shape-claim",
   version: 1,
   category: "strategy",
@@ -13704,7 +16270,7 @@ var manifest51 = defineManifest({
 var COLS = 20;
 var ROWS = 20;
 var CELLS2 = COLS * ROWS;
-var POINTS2 = { slow: 1, normal: 2, fast: 3 };
+var POINTS3 = { slow: 1, normal: 2, fast: 3 };
 var STEP_MS = { slow: 160, normal: 115, fast: 80 };
 var OPPOSITE = {
   up: "down",
@@ -13739,7 +16305,7 @@ function neighbor(cell, direction, walls) {
   c = (c + COLS) % COLS;
   return r * COLS + c;
 }
-var engine52 = {
+var engine53 = {
   initialState(config, seed) {
     const middle = Math.floor(ROWS / 2) * COLS + Math.floor(COLS / 2) - 3;
     const snake = [middle, middle - 1, middle - 2];
@@ -13789,7 +16355,7 @@ var engine52 = {
       queue,
       ticks,
       ...placed2,
-      score: state.score + POINTS2[state.config.speed],
+      score: state.score + POINTS3[state.config.speed],
       eaten: state.eaten + 1,
       over: won2,
       won: won2
@@ -13806,7 +16372,7 @@ var engine52 = {
 var stepMs2 = (state) => Math.round(STEP_MS[state.config.speed] * Math.max(0.6, 0.98 ** state.eaten));
 
 // packages/games/snake/manifest.ts
-var manifest52 = defineManifest({
+var manifest53 = defineManifest({
   id: "snake",
   version: 1,
   category: "arcade",
@@ -13875,7 +16441,7 @@ function deal7(state, rng) {
     rng: rng.state
   };
 }
-function initialState28(config, _seats, seed) {
+function initialState29(config, _seats, seed) {
   return deal7(
     {
       phase: "bid",
@@ -14007,7 +16573,7 @@ function applyAction19(state, seat, action) {
 function currentSeats19(state) {
   return over13(state) ? [] : [state.turn];
 }
-function result28(state) {
+function result29(state) {
   if (!over13(state)) return null;
   const [a, b] = state.scores;
   const winner = a <= MERCY ? 1 : b <= MERCY ? 0 : a > b ? 0 : 1;
@@ -14020,17 +16586,17 @@ function view19(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine53 = {
-  initialState: initialState28,
+var engine54 = {
+  initialState: initialState29,
   legalActions: legalActions19,
   applyAction: applyAction19,
   currentSeats: currentSeats19,
-  result: result28,
+  result: result29,
   view: view19
 };
 
 // packages/games/spades/manifest.ts
-var manifest53 = defineManifest({
+var manifest54 = defineManifest({
   id: "spades",
   version: 1,
   category: "cards",
@@ -14070,7 +16636,7 @@ var manifest53 = defineManifest({
 });
 
 // packages/games/spider/engine/index.ts
-var configFrom19 = (raw) => {
+var configFrom20 = (raw) => {
   const s = raw?.suits;
   return { suits: s === 2 || s === 4 ? s : 1 };
 };
@@ -14132,9 +16698,9 @@ function settle(s) {
 }
 var layout2 = (s) => ({ columns: s.columns, stock: s.stock, done: s.done });
 var canDeal = (s) => s.stock.length >= 10 && s.columns.every((c) => c.up.length > 0);
-var engine54 = {
+var engine55 = {
   initialState(config, seed) {
-    const c = configFrom19(config);
+    const c = configFrom20(config);
     return { ...deal8(c, seed), suits: c.suits, moves: 0, history: [] };
   },
   apply(state, action) {
@@ -14180,7 +16746,7 @@ var engine54 = {
 };
 
 // packages/games/spider/manifest.ts
-var manifest54 = defineManifest({
+var manifest55 = defineManifest({
   id: "spider",
   version: 1,
   category: "cards",
@@ -14261,7 +16827,7 @@ function startRound2(s) {
     out
   };
 }
-function initialState29(config, seats) {
+function initialState30(config, seats) {
   return startRound2({
     players: seats,
     config,
@@ -14311,7 +16877,7 @@ function currentSeats20(s) {
   if (over14(s)) return [];
   return s.pairs.flatMap((p) => [p.choices[0] === null ? p.a : null, p.choices[1] === null ? p.b : null]).filter((seat) => seat !== null).sort((x, y) => x - y);
 }
-function result29(s) {
+function result30(s) {
   if (!over14(s)) return null;
   const best = Math.max(...s.scores);
   const top2 = s.scores.filter((v) => v === best).length;
@@ -14337,18 +16903,18 @@ function view20(s, seat) {
 function viewAction9(action, seat, viewer) {
   return viewer === seat ? action : null;
 }
-var engine55 = {
-  initialState: initialState29,
+var engine56 = {
+  initialState: initialState30,
   legalActions: legalActions20,
   applyAction: applyAction20,
   currentSeats: currentSeats20,
-  result: result29,
+  result: result30,
   view: view20,
   viewAction: viewAction9
 };
 
 // packages/games/split-or-steal/manifest.ts
-var manifest55 = defineManifest({
+var manifest56 = defineManifest({
   id: "split-or-steal",
   version: 1,
   category: "party",
@@ -14745,7 +17311,7 @@ function commit(state, next3, extra = {}) {
     ]
   };
 }
-var engine56 = {
+var engine57 = {
   initialState(config, seed) {
     return fromPuzzle(generate(seed, config.difficulty));
   },
@@ -14802,7 +17368,7 @@ var engine56 = {
 };
 
 // packages/games/sudoku/manifest.ts
-var manifest56 = defineManifest({
+var manifest57 = defineManifest({
   id: "sudoku",
   version: 1,
   category: "logic",
@@ -14853,10 +17419,10 @@ var manifest56 = defineManifest({
 });
 
 // packages/games/tap-frenzy/engine/index.ts
-var DURATION_MS4 = 5e3;
+var DURATION_MS5 = 5e3;
 var STEADY_SPREAD_MS = 3;
 var STEADY_TAPS = 20;
-var initialState30 = () => ({ taps: [], last: 0, ignored: 0, over: false });
+var initialState31 = () => ({ taps: [], last: 0, ignored: 0, over: false });
 var gaps = (s) => s.taps.slice(1).map((t2, i) => t2 - (s.taps[i] ?? 0));
 function machineLike(s) {
   const g = gaps(s);
@@ -14865,17 +17431,17 @@ function machineLike(s) {
   const spread = Math.sqrt(mean(g.map((x) => (x - m) ** 2)));
   return spread < STEADY_SPREAD_MS;
 }
-function read9(s, action) {
+function read10(s, action) {
   if (s.over || typeof action !== "object" || action === null) return null;
   if ("stop" in action)
     return action.stop === true && s.taps.length > 0 ? { stop: true } : null;
-  const t2 = measuredMs(action.t, DURATION_MS4);
+  const t2 = measuredMs(action.t, DURATION_MS5);
   if (t2 === null) return null;
   if (s.taps.length === 0 ? t2 !== 0 : t2 < s.last) return null;
   return { tap: t2 };
 }
-function apply10(s, action) {
-  const read_ = read9(s, action);
+function apply11(s, action) {
+  const read_ = read10(s, action);
   if (!read_) return s;
   if ("stop" in read_) return { ...s, over: true };
   const t2 = read_.tap;
@@ -14884,25 +17450,25 @@ function apply10(s, action) {
     return { ...s, last: t2, ignored: s.ignored + 1 };
   return { ...s, taps: [...s.taps, t2], last: t2 };
 }
-function result30(s) {
+function result31(s) {
   if (!s.over) return null;
   if (machineLike(s)) return { completed: false };
   return { completed: false, score: s.taps.length };
 }
-var engine57 = {
-  initialState: initialState30,
-  apply: apply10,
-  progress: (s) => s.over ? 1 : Math.min(1, s.last / DURATION_MS4),
-  result: result30,
+var engine58 = {
+  initialState: initialState31,
+  apply: apply11,
+  progress: (s) => s.over ? 1 : Math.min(1, s.last / DURATION_MS5),
+  result: result31,
   actionMs: (s, action) => {
-    const read_ = read9(s, action);
+    const read_ = read10(s, action);
     if (!read_) return 0;
-    return ("stop" in read_ ? DURATION_MS4 : read_.tap) - s.last;
+    return ("stop" in read_ ? DURATION_MS5 : read_.tap) - s.last;
   }
 };
 
 // packages/games/tap-frenzy/manifest.ts
-var manifest57 = defineManifest({
+var manifest58 = defineManifest({
   id: "tap-frenzy",
   version: 1,
   category: "speed",
@@ -14940,7 +17506,7 @@ var LINES = [
   [0, 4, 8],
   [2, 4, 6]
 ];
-var configFrom20 = (raw) => ({
+var configFrom21 = (raw) => ({
   mode: raw?.mode === "classic" ? "classic" : "ultimate"
 });
 function lineOf(marks, seat) {
@@ -14957,9 +17523,9 @@ function movesFor6(state) {
     (b) => smallBoard(state.cells, b).flatMap((v, c) => v === EMPTY9 ? [b * 9 + c] : [])
   );
 }
-var engine58 = {
+var engine59 = {
   initialState(config) {
-    const { mode } = configFrom20(config);
+    const { mode } = configFrom21(config);
     return {
       mode,
       cells: Array.from({ length: mode === "classic" ? 9 : 81 }, () => EMPTY9),
@@ -15014,7 +17580,7 @@ var engine58 = {
 };
 
 // packages/games/ultimate-ttt/manifest.ts
-var manifest58 = defineManifest({
+var manifest59 = defineManifest({
   id: "ultimate-ttt",
   version: 1,
   category: "strategy",
@@ -15066,7 +17632,7 @@ function over15(state) {
   if (state.battle.up[0].length > 0 || state.battle.up[1].length > 0) return false;
   return state.piles[0].length === 0 || state.piles[1].length === 0 || state.battles >= state.limit;
 }
-function initialState31(config, _seats, seed) {
+function initialState32(config, _seats, seed) {
   const rng = Rng.fromSeed(seed);
   const deck2 = shuffledDeck(rng, 52);
   return {
@@ -15145,7 +17711,7 @@ function currentSeats21(state) {
   if (over15(state)) return [];
   return [0, 1].filter((s) => !state.flipped[s]);
 }
-function result31(state) {
+function result32(state) {
   if (!over15(state)) return null;
   if (state.outOfCards !== null) {
     return { completed: true, outcome: state.outOfCards === 0 ? [0, 1] : [1, 0] };
@@ -15175,17 +17741,17 @@ function view21(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine59 = {
-  initialState: initialState31,
+var engine60 = {
+  initialState: initialState32,
   legalActions: legalActions21,
   applyAction: applyAction21,
   currentSeats: currentSeats21,
-  result: result31,
+  result: result32,
   view: view21
 };
 
 // packages/games/war/manifest.ts
-var manifest59 = defineManifest({
+var manifest60 = defineManifest({
   id: "war",
   version: 1,
   category: "cards",
@@ -15229,7 +17795,7 @@ var manifest59 = defineManifest({
 // packages/games/whos-the-spy/engine/index.ts
 var PACK_SIZE2 = 30;
 var HIDDEN5 = -1;
-function initialState32(config, seats, seed) {
+function initialState33(config, seats, seed) {
   const rng = Rng.fromSeed(seed);
   return {
     players: seats,
@@ -15300,7 +17866,7 @@ function currentSeats22(s) {
   if (s.phase === "vote") return s.votes.flatMap((v, seat) => v === null ? [seat] : []);
   return [s.spy];
 }
-function result32(s) {
+function result33(s) {
   if (s.winner === null) return null;
   return {
     completed: true,
@@ -15323,19 +17889,19 @@ function view22(s, seat) {
 function viewAction10(action, seat, viewer) {
   return "vote" in action && viewer !== seat ? null : action;
 }
-var engine60 = {
-  initialState: initialState32,
+var engine61 = {
+  initialState: initialState33,
   legalActions: legalActions22,
   sideActions: sideActions2,
   applyAction: applyAction22,
   currentSeats: currentSeats22,
-  result: result32,
+  result: result33,
   view: view22,
   viewAction: viewAction10
 };
 
 // packages/games/whos-the-spy/manifest.ts
-var manifest60 = defineManifest({
+var manifest61 = defineManifest({
   id: "whos-the-spy",
   version: 1,
   category: "party",
@@ -15376,7 +17942,7 @@ var manifest60 = defineManifest({
 });
 
 // packages/games/word-search/content/bg.json
-var bg_default2 = {
+var bg_default3 = {
   categories: [
     {
       id: "animals",
@@ -15582,7 +18148,7 @@ var bg_default2 = {
 };
 
 // packages/games/word-search/content/en.json
-var en_default2 = {
+var en_default3 = {
   categories: [
     {
       id: "animals",
@@ -15788,21 +18354,21 @@ var en_default2 = {
 };
 
 // packages/games/word-search/engine/index.ts
-var PACKS2 = ["en", "bg"];
+var PACKS3 = ["en", "bg"];
 var SIZES9 = [10, 8, 12];
-var configFrom21 = (raw) => {
+var configFrom22 = (raw) => {
   const r = raw;
   return {
-    pack: PACKS2.find((p) => p === r?.pack) ?? "en",
+    pack: PACKS3.find((p) => p === r?.pack) ?? "en",
     size: SIZES9.find((s) => s === r?.size) ?? 10
   };
 };
 var WORDS_FOR = { 8: 6, 10: 8, 12: 10 };
 var THEMES = {
-  en: en_default2.categories,
-  bg: bg_default2.categories
+  en: en_default3.categories,
+  bg: bg_default3.categories
 };
-var THEME_IDS = en_default2.categories.map((c) => c.id);
+var THEME_IDS = en_default3.categories.map((c) => c.id);
 var FILLER = {
   en: "eeeeeeeeeeeeaaaaaaaaarrrrrrrriiiiiiiioooooooottttttttnnnnnnnsssssslllllcccccuuuudddppmmhhggbbffyywkvxzjq",
   bg: "\u0430\u0430\u0430\u0430\u0430\u0430\u0430\u0430\u043E\u043E\u043E\u043E\u043E\u043E\u043E\u043E\u0435\u0435\u0435\u0435\u0435\u0435\u0435\u0435\u0438\u0438\u0438\u0438\u0438\u0438\u0438\u0438\u0442\u0442\u0442\u0442\u0442\u0442\u043D\u043D\u043D\u043D\u043D\u043D\u043D\u0440\u0440\u0440\u0440\u0440\u0440\u0441\u0441\u0441\u0441\u0441\u0441\u0432\u0432\u0432\u0432\u0432\u043B\u043B\u043B\u043B\u043A\u043A\u043A\u043A\u043A\u0434\u0434\u0434\u0434\u0434\u043F\u043F\u043F\u043F\u043F\u043C\u043C\u043C\u043C\u0437\u0437\u0437\u0437\u044F\u044F\u044F\u0431\u0431\u0433\u0433\u0443\u0443\u0447\u0447\u044A\u044A\u0436\u0436\u0439\u0448\u0449\u0446\u0444\u0445\u044C\u044E\u044F"
@@ -15830,8 +18396,8 @@ function fit(grid, size, word, row, col, [dr, dc]) {
   }
   return cells;
 }
-function initialState33(raw, seed) {
-  const { pack, size } = configFrom21(raw);
+function initialState34(raw, seed) {
+  const { pack, size } = configFrom22(raw);
   const rng = Rng.fromSeed(`word-search:${pack}:${String(size)}:${seed}`);
   const theme = rng.int(0, THEMES[pack].length - 1);
   const pool = rng.shuffle(
@@ -15879,7 +18445,7 @@ function matched(s, from, to) {
   );
   return index < 0 ? null : index;
 }
-function apply11(s, raw) {
+function apply12(s, raw) {
   const action = raw;
   if (isSolved3(s) || typeof action !== "object" || action === null) return s;
   const { from, to } = action;
@@ -15890,18 +18456,18 @@ function apply11(s, raw) {
   if (index === null) return { ...s, misses: s.misses + 1 };
   return { ...s, found: s.found.map((f, i) => i === index ? { from, to } : f) };
 }
-function result33(s) {
+function result34(s) {
   return isSolved3(s) ? { completed: true } : null;
 }
-var engine61 = {
-  initialState: initialState33,
-  apply: apply11,
+var engine62 = {
+  initialState: initialState34,
+  apply: apply12,
   progress: (s) => s.found.filter((f) => f !== null).length / Math.max(1, s.words.length),
-  result: result33
+  result: result34
 };
 
 // packages/games/word-search/manifest.ts
-var manifest61 = defineManifest({
+var manifest62 = defineManifest({
   id: "word-search",
   version: 1,
   category: "word",
@@ -16350,7 +18916,7 @@ function lifeResult(world, worm) {
     completed: true
   };
 }
-function result34(world, id) {
+function result35(world, id) {
   const worm = world.worms.get(id);
   if (!worm) return null;
   return worm.alive ? lifeResult(world, worm) : worm.lastLife;
@@ -16598,7 +19164,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine62 = {
+var engine63 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -16609,13 +19175,13 @@ var engine62 = {
   alive: alive2,
   step: step3,
   snapshot,
-  result: result34,
+  result: result35,
   snapshotCodec,
   inputCodec
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest62 = defineManifest({
+var manifest63 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -16649,66 +19215,67 @@ var manifest62 = defineManifest({
 var GAMES = {
   "2048": { manifest, engine },
   "aim-trainer": { manifest: manifest2, engine: engine2 },
-  "associations": { manifest: manifest3, engine: engine3 },
-  "backgammon": { manifest: manifest4, engine: engine4 },
-  "belote": { manifest: manifest5, engine: engine5 },
-  "black-keys": { manifest: manifest6, engine: engine6 },
-  "box-pusher": { manifest: manifest7, engine: engine7 },
-  "checkers": { manifest: manifest8, engine: engine8 },
-  "chess": { manifest: manifest9, engine: engine9 },
-  "chinese-checkers": { manifest: manifest10, engine: engine10 },
-  "color-clash": { manifest: manifest11, engine: engine11 },
-  "conquest": { manifest: manifest12, engine: engine12 },
-  "crazy-colors": { manifest: manifest13, engine: engine13 },
-  "dot-count": { manifest: manifest14, engine: engine14 },
-  "dots-and-boxes": { manifest: manifest15, engine: engine15 },
-  "durak": { manifest: manifest16, engine: engine16 },
-  "fifteen": { manifest: manifest17, engine: engine17 },
-  "five-colors": { manifest: manifest18, engine: engine19 },
-  "four-in-a-row": { manifest: manifest19, engine: engine20 },
-  "gin-rummy": { manifest: manifest20, engine: engine21 },
-  "go": { manifest: manifest21, engine: engine22 },
-  "gomoku": { manifest: manifest22, engine: engine18 },
-  "hangman": { manifest: manifest23, engine: engine23 },
-  "hanoi": { manifest: manifest24, engine: engine24 },
-  "hearts": { manifest: manifest25, engine: engine25 },
-  "hex": { manifest: manifest26, engine: engine26 },
-  "klondike": { manifest: manifest27, engine: engine27 },
-  "liars-dice": { manifest: manifest28, engine: engine28 },
-  "lights-off": { manifest: manifest29, engine: engine29 },
-  "lowest-unique": { manifest: manifest30, engine: engine30 },
-  "ludo": { manifest: manifest31, engine: engine31 },
-  "mafia": { manifest: manifest32, engine: engine32 },
-  "mancala": { manifest: manifest33, engine: engine33 },
-  "math-sprint": { manifest: manifest34, engine: engine34 },
-  "memory-match": { manifest: manifest35, engine: engine35 },
-  "memory-pairs": { manifest: manifest36, engine: engine36 },
-  "minesweeper": { manifest: manifest37, engine: engine37 },
-  "nim": { manifest: manifest38, engine: engine38 },
-  "nine-mens-morris": { manifest: manifest39, engine: engine39 },
-  "nonogram": { manifest: manifest40, engine: engine40 },
-  "number-hunt": { manifest: manifest41, engine: engine41 },
-  "odd-one-out": { manifest: manifest42, engine: engine42 },
-  "penalty-shootout": { manifest: manifest43, engine: engine43 },
-  "pipe-link": { manifest: manifest44, engine: engine44 },
-  "reaction-flash": { manifest: manifest45, engine: engine45 },
-  "reversi": { manifest: manifest46, engine: engine46 },
-  "rps-tournament": { manifest: manifest47, engine: engine47 },
-  "santase": { manifest: manifest48, engine: engine48 },
-  "sea-battle": { manifest: manifest49, engine: engine49 },
-  "sequence-memory": { manifest: manifest50, engine: engine50 },
-  "shape-claim": { manifest: manifest51, engine: engine51 },
-  "snake": { manifest: manifest52, engine: engine52 },
-  "spades": { manifest: manifest53, engine: engine53 },
-  "spider": { manifest: manifest54, engine: engine54 },
-  "split-or-steal": { manifest: manifest55, engine: engine55 },
-  "sudoku": { manifest: manifest56, engine: engine56 },
-  "tap-frenzy": { manifest: manifest57, engine: engine57 },
-  "ultimate-ttt": { manifest: manifest58, engine: engine58 },
-  "war": { manifest: manifest59, engine: engine59 },
-  "whos-the-spy": { manifest: manifest60, engine: engine60 },
-  "word-search": { manifest: manifest61, engine: engine61 },
-  "worm-rush": { manifest: manifest62, engine: engine62, bots, host: arenaHost }
+  "anagrams": { manifest: manifest3, engine: engine3 },
+  "associations": { manifest: manifest4, engine: engine4 },
+  "backgammon": { manifest: manifest5, engine: engine5 },
+  "belote": { manifest: manifest6, engine: engine6 },
+  "black-keys": { manifest: manifest7, engine: engine7 },
+  "box-pusher": { manifest: manifest8, engine: engine8 },
+  "checkers": { manifest: manifest9, engine: engine9 },
+  "chess": { manifest: manifest10, engine: engine10 },
+  "chinese-checkers": { manifest: manifest11, engine: engine11 },
+  "color-clash": { manifest: manifest12, engine: engine12 },
+  "conquest": { manifest: manifest13, engine: engine13 },
+  "crazy-colors": { manifest: manifest14, engine: engine14 },
+  "dot-count": { manifest: manifest15, engine: engine15 },
+  "dots-and-boxes": { manifest: manifest16, engine: engine16 },
+  "durak": { manifest: manifest17, engine: engine17 },
+  "fifteen": { manifest: manifest18, engine: engine18 },
+  "five-colors": { manifest: manifest19, engine: engine20 },
+  "four-in-a-row": { manifest: manifest20, engine: engine21 },
+  "gin-rummy": { manifest: manifest21, engine: engine22 },
+  "go": { manifest: manifest22, engine: engine23 },
+  "gomoku": { manifest: manifest23, engine: engine19 },
+  "hangman": { manifest: manifest24, engine: engine24 },
+  "hanoi": { manifest: manifest25, engine: engine25 },
+  "hearts": { manifest: manifest26, engine: engine26 },
+  "hex": { manifest: manifest27, engine: engine27 },
+  "klondike": { manifest: manifest28, engine: engine28 },
+  "liars-dice": { manifest: manifest29, engine: engine29 },
+  "lights-off": { manifest: manifest30, engine: engine30 },
+  "lowest-unique": { manifest: manifest31, engine: engine31 },
+  "ludo": { manifest: manifest32, engine: engine32 },
+  "mafia": { manifest: manifest33, engine: engine33 },
+  "mancala": { manifest: manifest34, engine: engine34 },
+  "math-sprint": { manifest: manifest35, engine: engine35 },
+  "memory-match": { manifest: manifest36, engine: engine36 },
+  "memory-pairs": { manifest: manifest37, engine: engine37 },
+  "minesweeper": { manifest: manifest38, engine: engine38 },
+  "nim": { manifest: manifest39, engine: engine39 },
+  "nine-mens-morris": { manifest: manifest40, engine: engine40 },
+  "nonogram": { manifest: manifest41, engine: engine41 },
+  "number-hunt": { manifest: manifest42, engine: engine42 },
+  "odd-one-out": { manifest: manifest43, engine: engine43 },
+  "penalty-shootout": { manifest: manifest44, engine: engine44 },
+  "pipe-link": { manifest: manifest45, engine: engine45 },
+  "reaction-flash": { manifest: manifest46, engine: engine46 },
+  "reversi": { manifest: manifest47, engine: engine47 },
+  "rps-tournament": { manifest: manifest48, engine: engine48 },
+  "santase": { manifest: manifest49, engine: engine49 },
+  "sea-battle": { manifest: manifest50, engine: engine50 },
+  "sequence-memory": { manifest: manifest51, engine: engine51 },
+  "shape-claim": { manifest: manifest52, engine: engine52 },
+  "snake": { manifest: manifest53, engine: engine53 },
+  "spades": { manifest: manifest54, engine: engine54 },
+  "spider": { manifest: manifest55, engine: engine55 },
+  "split-or-steal": { manifest: manifest56, engine: engine56 },
+  "sudoku": { manifest: manifest57, engine: engine57 },
+  "tap-frenzy": { manifest: manifest58, engine: engine58 },
+  "ultimate-ttt": { manifest: manifest59, engine: engine59 },
+  "war": { manifest: manifest60, engine: engine60 },
+  "whos-the-spy": { manifest: manifest61, engine: engine61 },
+  "word-search": { manifest: manifest62, engine: engine62 },
+  "worm-rush": { manifest: manifest63, engine: engine63, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

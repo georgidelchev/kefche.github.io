@@ -257,7 +257,8 @@ export function useTypedKeys(
   lang: WordLang,
   handlers: {
     onLetter: (letter: string) => void;
-    onEnter?: () => void;
+    /** `at`: the key's own timestamp (performance.now()'s clock), for timed games. */
+    onEnter?: (at: number) => void;
     onBackspace?: () => void;
   },
   enabled = true,
@@ -274,7 +275,7 @@ export function useTypedKeys(
       // A focused button's own Enter stays a click on it.
       if (target instanceof HTMLButtonElement) return;
       event.preventDefault();
-      handlers.onEnter();
+      handlers.onEnter(event.timeStamp);
       return;
     }
     if (event.key === "Backspace" && handlers.onBackspace) {

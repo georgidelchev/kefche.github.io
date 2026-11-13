@@ -3217,6 +3217,21 @@ The owner answered "you decide, continue", so the recommended answers stand:
   - Checked:
     - 300 grids for each size and language: every word placed and readable along its line, every grid solvable selecting words backwards, each made in under 2 ms;
     - in Chrome, 30/30: the page in English and Bulgarian and none in Arabic; a 10 × 10 solved from the letters shown, by dragging, by tapping both ends and with the keyboard, every word crossed off; 360, 768 and 1280 px, both themes, cells at least 24 px at 12 × 12, and axe.
+- [x] **Step 16, Anagrams:**
+  - **Rules:** seven letters and two minutes; words of three letters or more, each letter used once a word, checked against the language's dictionary (`lexiconOf`). A word scores by length (1, 2, 4, 7, and 12 for all seven). A word within 100 ms of the last doesn't count, nor any after the two minutes; a stop ends the run.
+  - **Seed words** (every set hides a seven-letter word):
+    - English: the 2,402 common seven-letter words (SCOWL) holding at least 30 shorter words, picked by a script.
+    - Bulgarian: 34 chosen by hand, each a dictionary word holding at least 25. Six candidates holding fewer than 20 were dropped.
+  - **The screen:**
+    - letter tiles to tap (or type, phonetically in Bulgarian on a Latin keyboard), Shuffle, ⌫ and Enter;
+    - each word judged at once (+points, already found, not in the dictionary, not from these letters, too short);
+    - at the end, the seven-letter word and up to 24 words you could have made (the common ones where a language has a list).
+    - The lists load before the letters show (the puzzle flow's `create`), and paused time doesn't count.
+  - **Boards:** best score in English and in Bulgarian. **Achievements:** games played, and 40, 80 or 140 points.
+  - **Server:** its fixture (a non-word, then the seven-letter word) replays with the lists loaded.
+  - Checked:
+    - every seed a dictionary word in both languages; the rules (shuffled letters, each verdict, scoring, too soon and too late); all the words in a set found by walking the dictionary in 0.1 ms;
+    - in Chrome, 26/26: the page in English and Bulgarian and none in Arabic; English words typed and the seven-letter word tapped; shuffle; paused time not counted; a Bulgarian word and the end after two minutes with the seven-letter word and missed words; 360 and 1280 px, both themes, and axe. Axe found the word slots labelled without a role, now fixed.
 
 ## Known issues
 

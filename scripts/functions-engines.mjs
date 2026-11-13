@@ -572,6 +572,15 @@ if (process.argv.includes("--fixtures")) {
         return random() < 0.5 ? { from: w.from, to: w.to } : { from: w.to, to: w.from };
       },
     },
+    // A word that isn't one, then the seven-letter word, then the stop.
+    anagrams: {
+      config: { pack: "en" },
+      next: (state, random) => {
+        if (state.found.length > 0) return { stop: true };
+        if (random() < 0.4) return { word: "zzzq", ms: state.last + 2000 };
+        return { word: state.seed, ms: state.last + 3000 };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },

@@ -1,0 +1,94 @@
+{
+  "name": "Anagramme",
+  "tagline": "Sieben Buchstaben, zwei Minuten: Wie viele Wörter schaffst du?",
+  "description": "Spiele Anagramme kostenlos: Bilde in zwei Minuten so viele Wörter wie möglich aus sieben Buchstaben, mit Wörterbuch. Auf Englisch oder Bulgarisch.",
+  "about": [
+    "Anagrams gives you seven letters and two minutes. Make as many words as you can from them, three letters or longer, using each letter at most once in a word. Every set of letters hides at least one seven-letter word, and finding it is worth the most.",
+    "Longer words score more: a three-letter word is worth one point, four letters two, five letters four, six letters seven and the full seven twelve. Every word is checked against the game's dictionary as you send it, so you know straight away whether it counts.",
+    "When the time is up you see the seven-letter word and the common words you could have made. Play in English or Bulgarian, keep your best on this device, or race friends online with the very same letters."
+  ],
+  "howToPlay": [
+    "Press Start. Seven letters appear and two minutes begin.",
+    "Tap letters (or type them) to build a word, then press Enter.",
+    "A word counts if it's in the dictionary, has three letters or more, and you haven't found it already.",
+    "Longer words score more; the seven-letter word scores 12.",
+    "When the time runs out, you see your points, the seven-letter word and words you missed."
+  ],
+  "controls": [
+    "Phones and tablets: tap the letter tiles, then Enter. ⌫ takes a letter back; Shuffle mixes the tiles.",
+    "Keyboard: type the letters, Backspace to take one back, Enter to send the word.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А).",
+    "Pause from the bar above the game; paused time doesn't count."
+  ],
+  "tips": [
+    "Shuffle the tiles when you're stuck: a new order shows new words.",
+    "Look for common endings: -ING, -ED, -ER and -S make many words.",
+    "Find the seven-letter word early: it's worth as much as a dozen short ones.",
+    "Short words add up: three-letter words are quick to spot.",
+    "Every word you find suggests others: swap one letter, or add one."
+  ],
+  "faq": [
+    {
+      "question": "Is Anagrams free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Which words count?",
+      "answer": "Any word in the game's dictionary for that language, three letters or longer, made from the seven letters with each used at most once."
+    },
+    {
+      "question": "Is there always a seven-letter word?",
+      "answer": "Yes. Every set of letters is made from a seven-letter word, and sometimes there's more than one."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their dictionaries."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same seven letters at the same moment. The most points after two minutes wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "Anagramme",
+    "start": "Start",
+    "startDetail": "Sieben Buchstaben, zwei Minuten",
+    "best": "Bestwert: {n} Punkte",
+    "loadFailed": "Das Wörterbuch wurde nicht geladen. Prüfe die Verbindung und versuch es noch einmal.",
+    "loading": "Wörterbuch wird geladen …",
+    "points": "Punkte",
+    "words": "Wörter",
+    "timeLeft": "Verbleibend",
+    "seconds": "{s} s",
+    "yourWord": "Dein Wort",
+    "verdictOk": "+{points}",
+    "verdictShort": "zu kurz",
+    "verdictLetters": "nicht aus diesen Buchstaben",
+    "verdictFound": "schon gefunden",
+    "verdictUnknown": "nicht im Wörterbuch",
+    "lettersLabel": "Buchstaben",
+    "shuffle": "Mischen",
+    "foundLabel": "Gefundene Wörter",
+    "pointsTotal": "Punkte: {n}",
+    "seven": "Das Wort aus sieben Buchstaben: {word}",
+    "newBest": "Neuer Bestwert!",
+    "missed": "Wörter, die du hättest bilden können:",
+    "packOption": "Buchstaben auf",
+    "packEn": "Englisch",
+    "packBg": "Bulgarisch"
+  },
+  "achievements": {
+    "played": {
+      "name": "Buchstabenjongleur",
+      "description": "Spiele {count, plural, one {# Partie} other {# Partien}}"
+    },
+    "wordsmith": {
+      "name": "Wandelndes Lexikon",
+      "description": "Erziele {count} Punkte in einer Partie"
+    }
+  },
+  "leaderboards": {
+    "best-en": "Bestes Ergebnis · Englisch",
+    "best-bg": "Bestes Ergebnis · Bulgarisch"
+  }
+}

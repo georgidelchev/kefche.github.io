@@ -1,0 +1,94 @@
+{
+  "name": "アナグラム",
+  "tagline": "7文字で2分間。いくつ単語を作れる？",
+  "description": "アナグラムを無料でプレイ：2分間で7つの文字からできるだけ多くの単語を作ろう。辞書でチェック。英語かブルガリア語で。",
+  "about": [
+    "Anagrams gives you seven letters and two minutes. Make as many words as you can from them, three letters or longer, using each letter at most once in a word. Every set of letters hides at least one seven-letter word, and finding it is worth the most.",
+    "Longer words score more: a three-letter word is worth one point, four letters two, five letters four, six letters seven and the full seven twelve. Every word is checked against the game's dictionary as you send it, so you know straight away whether it counts.",
+    "When the time is up you see the seven-letter word and the common words you could have made. Play in English or Bulgarian, keep your best on this device, or race friends online with the very same letters."
+  ],
+  "howToPlay": [
+    "Press Start. Seven letters appear and two minutes begin.",
+    "Tap letters (or type them) to build a word, then press Enter.",
+    "A word counts if it's in the dictionary, has three letters or more, and you haven't found it already.",
+    "Longer words score more; the seven-letter word scores 12.",
+    "When the time runs out, you see your points, the seven-letter word and words you missed."
+  ],
+  "controls": [
+    "Phones and tablets: tap the letter tiles, then Enter. ⌫ takes a letter back; Shuffle mixes the tiles.",
+    "Keyboard: type the letters, Backspace to take one back, Enter to send the word.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А).",
+    "Pause from the bar above the game; paused time doesn't count."
+  ],
+  "tips": [
+    "Shuffle the tiles when you're stuck: a new order shows new words.",
+    "Look for common endings: -ING, -ED, -ER and -S make many words.",
+    "Find the seven-letter word early: it's worth as much as a dozen short ones.",
+    "Short words add up: three-letter words are quick to spot.",
+    "Every word you find suggests others: swap one letter, or add one."
+  ],
+  "faq": [
+    {
+      "question": "Is Anagrams free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Which words count?",
+      "answer": "Any word in the game's dictionary for that language, three letters or longer, made from the seven letters with each used at most once."
+    },
+    {
+      "question": "Is there always a seven-letter word?",
+      "answer": "Yes. Every set of letters is made from a seven-letter word, and sometimes there's more than one."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their dictionaries."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same seven letters at the same moment. The most points after two minutes wins."
+    }
+  ],
+  "ui": {
+    "chooseTitle": "アナグラム",
+    "start": "スタート",
+    "startDetail": "7文字、2分間",
+    "best": "ベスト：{n}点",
+    "loadFailed": "辞書を読み込めませんでした。接続を確認して、もう一度お試しください。",
+    "loading": "辞書を読み込み中…",
+    "points": "得点",
+    "words": "単語",
+    "timeLeft": "残り時間",
+    "seconds": "{s}秒",
+    "yourWord": "あなたの単語",
+    "verdictOk": "+{points}",
+    "verdictShort": "短すぎます",
+    "verdictLetters": "この文字では作れません",
+    "verdictFound": "見つけ済み",
+    "verdictUnknown": "辞書にありません",
+    "lettersLabel": "文字",
+    "shuffle": "シャッフル",
+    "foundLabel": "見つけた単語",
+    "pointsTotal": "{n}点",
+    "seven": "7文字の単語：{word}",
+    "newBest": "ベスト更新！",
+    "missed": "作れた単語：",
+    "packOption": "文字の言語",
+    "packEn": "英語",
+    "packBg": "ブルガリア語"
+  },
+  "achievements": {
+    "played": {
+      "name": "文字の曲芸師",
+      "description": "{count, plural, other {#回}}プレイする"
+    },
+    "wordsmith": {
+      "name": "歩く辞書",
+      "description": "1ゲームで{count}点を取る"
+    }
+  },
+  "leaderboards": {
+    "best-en": "ベストスコア · 英語",
+    "best-bg": "ベストスコア · ブルガリア語"
+  }
+}
