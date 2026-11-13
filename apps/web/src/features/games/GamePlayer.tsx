@@ -451,7 +451,7 @@ export function GamePlayer({
                 key={m}
                 size="lg"
                 variant={m === turn.config.modes[0] ? "primary" : "outline"}
-                className="w-full sm:w-auto sm:min-w-48"
+                className="w-full py-2 whitespace-normal sm:w-auto sm:min-w-48"
                 onClick={() => {
                   openSetup(m);
                 }}
@@ -467,7 +467,7 @@ export function GamePlayer({
           {daily && (
             <Button
               size="lg"
-              className="w-full sm:w-auto sm:min-w-48"
+              className="w-full py-2 whitespace-normal sm:w-auto sm:min-w-48"
               onClick={() => {
                 instanceRef.current?.destroy();
                 instanceRef.current = null;
@@ -482,7 +482,7 @@ export function GamePlayer({
           <Button
             size="lg"
             variant={daily ? "outline" : "primary"}
-            className="w-full sm:w-auto sm:min-w-48"
+            className="w-full py-2 whitespace-normal sm:w-auto sm:min-w-48"
             onClick={() => {
               dailyRef.current = null;
               void mount(nextSeed(), null);

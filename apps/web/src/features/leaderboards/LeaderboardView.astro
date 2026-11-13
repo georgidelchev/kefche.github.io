@@ -60,12 +60,17 @@ const control =
   data-strings={JSON.stringify(strings)}
 >
   <div class="flex flex-wrap items-end gap-3">
-    <label class:list={["grid gap-1 text-sm font-semibold", boards.length < 2 && "hidden"]}>
+    <label
+      class:list={[
+        "grid max-w-full min-w-0 gap-1 text-sm font-semibold",
+        boards.length < 2 && "hidden",
+      ]}
+    >
       {t("leaderboards:board")}
       <select
         id={`${idPrefix}-board`}
         data-board
-        class="min-h-11 max-w-full rounded-xl border border-border-strong bg-surface px-3 text-base font-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+        class="min-h-11 w-full max-w-full rounded-xl border border-border-strong bg-surface px-3 text-base font-normal focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
       >
         {groups.map((group) =>
           group.label === null ? (
