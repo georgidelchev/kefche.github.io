@@ -93,8 +93,16 @@ export function seatsFor(
   return seats;
 }
 
+/**
+ * The fewest seats a mode allows: two, except playing alone against the
+ * game itself (no bots) in a game whose manifest allows one player
+ * (Hangman, Phase 13). One device needs two people.
+ */
+export const fewestSeats = (config: TurnConfig, mode: TurnMode): number =>
+  mode === "solo-bots" ? Math.max(config.players.min, 1) : Math.max(config.players.min, 2);
+
 export function defaultChoice(config: TurnConfig, mode: TurnMode): SetupChoice {
-  const players = Math.max(config.players.default, 2);
+  const players = Math.max(config.players.default, fewestSeats(config, mode));
   return {
     players,
     seats: seatsFor(players, mode, config),
@@ -119,7 +127,7 @@ export function loadChoice(storage: GameStorage, config: TurnConfig, mode: TurnM
       const levelFits = (level: number | undefined) =>
         level === undefined || (levels !== undefined && level >= levels.min && level <= levels.max);
       const fits =
-        players >= Math.max(config.players.min, 2) &&
+        players >= fewestSeats(config, mode) &&
         players <= config.players.max &&
         seats.length === players &&
         seats.some((s) => s.kind === "human") &&

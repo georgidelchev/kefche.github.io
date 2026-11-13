@@ -10,6 +10,7 @@ import { PlayerMarker, type PlayerSlot } from "@kefche/ui/components/player-mark
 
 import { botStrength, fill, formatClock, seatName, timerLabel, type TurnStrings } from "./labels";
 import {
+  fewestSeats,
   levelSeat,
   seatsFor,
   type SeatChoice,
@@ -102,10 +103,8 @@ function TurnSetup({
     }
     onChange({ ...choice, seats });
   };
-  const counts = Array.from(
-    { length: config.players.max - Math.max(config.players.min, 2) + 1 },
-    (_, i) => Math.max(config.players.min, 2) + i,
-  );
+  const fewest = fewestSeats(config, mode);
+  const counts = Array.from({ length: config.players.max - fewest + 1 }, (_, i) => fewest + i);
   const difficulty = config.difficulties.includes("medium")
     ? "medium"
     : (config.difficulties[0] ?? "easy");

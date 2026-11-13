@@ -44,6 +44,7 @@ import {
   type TurnMove,
 } from "@kefche/game-sdk";
 
+import { readyLexicons } from "./lexicons";
 import { tableEntry, type TableRoom } from "./table-entry";
 import { reportTable } from "./table-report";
 import { TABLE_GAMES, type TableGame } from "./tables";
@@ -160,6 +161,7 @@ export class Table extends DurableObject<Env> {
     const match = this.match;
     const game = match ? TABLE_GAMES[match.room.gameId] : undefined;
     if (!match || !game || me.seat === null) return;
+    await readyLexicons(game.manifest);
     const now = Date.now();
     this.catchUp(match, game, now);
     const expired = this.expireDue(match, game, now);
@@ -195,6 +197,7 @@ export class Table extends DurableObject<Env> {
     }
     const game = TABLE_GAMES[match.room.gameId];
     if (!game) return;
+    await readyLexicons(game.manifest);
     this.catchUp(match, game, now);
     const changed = this.expireDue(match, game, now);
     await this.settle(match, game, now, changed);
@@ -228,6 +231,7 @@ export class Table extends DurableObject<Env> {
       this.refuse(ws, "unknown_game");
       return;
     }
+    await readyLexicons(game.manifest);
     // The first to arrive sets the match up, from the room's row.
     this.creating ??= this.match ? Promise.resolve(this.match) : this.create(name, entry, game);
     const match = (this.match ??= await this.creating);
@@ -294,7 +298,9 @@ export class Table extends DurableObject<Env> {
     if (still) return;
     match.awaySince[me.seat] = Date.now();
     const game = TABLE_GAMES[match.room.gameId];
-    if (game) await this.settle(match, game, Date.now(), true);
+    if (!game) return;
+    await readyLexicons(game.manifest);
+    await this.settle(match, game, Date.now(), true);
   }
 
   // ----------------------------------------------------------------- the match

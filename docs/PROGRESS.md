@@ -3182,6 +3182,29 @@ The owner answered "you decide, continue", so the recommended answers stand:
   - **The server's copy:** `words:build` writes the current files into the Edge Functions (`_shared/lexicons.gen.ts`, gzipped in base64, 849 KB). `submit-match` imports it only to replay a word game, checks the hashes, and keeps the lists for the instance. It needs no fetch and no setting, which a site address for the functions would have needed.
   - **CI** checks the copy with the other built lists.
   - Checked: a Deno test loads every list through `readyLexicons` (about 80 ms) and looks words up in both languages; Deno 135/135.
+- [x] **Step 14, Hangman** (the first word game):
+  - **Rules:** 1 to 6 players guess a hidden word a letter at a time; six wrong letters lose it.
+    - **Pack:** words from eight themes (from the seed), the theme shown as a clue. A right letter scores a point for each time it appears and keeps the turn; a wrong one passes it. Revealing the last letter scores 3 more. Alone, solve more than half the words to win.
+    - **Versus:** each player sets a word for the others: a dictionary word of 4 to 12 letters, not blocked. The setter scores a point for each wrong letter, and 3 if the word survives.
+    - The most points win.
+  - **Secret word:** a view shows only guessed letters (the setter sees their own word), so online it plays on the table. A set word is typed, so `accepts` checks it against the dictionary; a clock running out sets a pack word instead.
+  - **Word packs:** eight themes of 20 words in English and Bulgarian, written for the game. All 320 were checked against the dictionaries and the blocklists; three Bulgarian words the dictionary lacked (ръгби, круиз, банджо) were replaced.
+  - **Bots** use the packs, never the dictionary: the pack words that fit what's showing vote for their letters. Easy guesses at random half the time, medium uses every pack word, and hard only the round's theme. Setting, hard picks long words with rare letters.
+  - **The screen:** the gallows drawn part by part, the word as the kit's tiles, and the kit's keyboard with letters marked in the word or not (colour and a mark), typed or tapped. In versus, the setter's field checks the word as it's typed. There's no clock by default on one device; online rooms start with 30 s a move.
+  - **New in the framework, for word games:**
+    - **One player:** a turn game whose manifest allows it can be played alone in "vs bots" mode (`fewestSeats`); one device and rooms keep two.
+    - **Waiting:** `runTurnGame` can wait for something before the first match (`ready`); Hangman's lists load first.
+    - **Tables read the lists:** the arena reads the generated copy too (`apps/arena/src/lexicons.ts`) before a table runs a word game. The Worker bundle is now 1.43 MB, 769 KB gzipped, inside Workers Free's 3 MB.
+  - **Server:** its fixture (versus, three players, a set word) replays with the lists loaded by `readyLexicons`; Deno 136/136.
+  - Checked:
+    - the engine check at 1, 2, 4 and 6 players in pack and versus, English and Bulgarian: every game ended, every view offered the state's moves, no view showed a letter not guessed (except to its setter) or a pick, and every bot move took under 1.2 ms;
+    - the rules on their own: words, non-words, short and blocked words and Bulgarian forms; versus scoring; and the bots' strength over 200 games each (medium takes 99% of the points from easy, hard 84% from medium). Medium and hard were the wrong way round at first;
+    - in Chrome, 32/32:
+      - the page in English and Bulgarian, and none in Arabic;
+      - a game alone with the theme shown, letters typed and marked, and five words listed at the end;
+      - versus on one device: a cover before the setter, a non-word refused and a word taken, then the word gone from the screen and a right letter shown in place;
+      - the Cyrillic keyboard;
+      - 360, 768 and 1280 px, both themes, and axe.
 
 ## Known issues
 

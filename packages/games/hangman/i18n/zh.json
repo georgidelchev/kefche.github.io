@@ -1,0 +1,104 @@
+{
+  "name": "猜词绞刑架",
+  "tagline": "在绞刑架画完之前，一个字母一个字母地猜出单词。",
+  "description": "免费玩猜词绞刑架：独自猜主题词包里的单词，或和朋友在同一设备上或在线玩，也可以互相出题。",
+  "about": [
+    "Hangman is the classic word-guessing game. A word is hidden behind blank tiles; guess it one letter at a time. Every right letter appears in its places, every wrong one adds a part to the gallows, and six wrong letters lose the word.",
+    "Play alone against the gallows with words from eight themes, such as animals, food or music, and the theme shown as a clue. Or play with friends on one device or online: take turns guessing, score a point for every time your letter appears, and three more for revealing the last letter.",
+    "In versus mode, each player sets a word for the others to guess. Set words must be real words from the dictionary, four to twelve letters long, and the setter scores for every wrong guess and three more if the word survives. Hangman is played in English and Bulgarian."
+  ],
+  "howToPlay": [
+    "Choose the language of the words, how many words, and whether to use the themed packs or set words for each other.",
+    "On your turn, pick a letter. If it's in the word, it shows in every place it appears and you guess again.",
+    "If it isn't, a part is added to the gallows and the turn passes on. Six wrong letters and the word is lost.",
+    "With others, a right letter scores a point for each time it appears, and revealing the last letter scores three more.",
+    "In versus, the setter scores a point for each wrong letter and three if the word survives. The most points win."
+  ],
+  "controls": [
+    "Phones and tablets: tap the letters on the on-screen keyboard.",
+    "Keyboard: type a letter. In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А).",
+    "Bulgarian has two on-screen layouts, phonetic and БДС; the choice is kept on this device.",
+    "To set a word in versus, type it in the box and press Enter."
+  ],
+  "tips": [
+    "Start with common letters: in English E, A, I, O, S, R and T.",
+    "Use the theme: a five-letter animal narrows things down fast.",
+    "Look at the shape: a word ending in a double letter or with one vowel left often has only a few answers.",
+    "In versus, set words with rare letters (J, Q, X, Z) and few vowels.",
+    "Short words are harder than long ones: there are fewer letters to find and many possible answers."
+  ],
+  "faq": [
+    {
+      "question": "Is Hangman free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How many wrong guesses do I get?",
+      "answer": "Six. Each wrong letter adds a part to the gallows: head, body, two arms and two legs."
+    },
+    {
+      "question": "Can I set any word in versus?",
+      "answer": "It has to be a real word from the game's dictionary in that language, four to twelve letters, and not an offensive word."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their word packs."
+    },
+    {
+      "question": "How do I win alone?",
+      "answer": "Solve more than half of the words in the game."
+    }
+  ],
+  "ui": {
+    "scores": "得分",
+    "scoreLine": "{name}：{points}",
+    "roundOf": "第 {n} 个词，共 {total} 个",
+    "themeAnimals": "动物",
+    "themeFood": "食物",
+    "themeHome": "家里",
+    "themeNature": "自然",
+    "themeSport": "运动",
+    "themeJobs": "职业",
+    "themeTravel": "旅行",
+    "themeMusic": "音乐",
+    "missesLeft": "剩余错误次数：{n}",
+    "wordLabel": "单词：{total} 个字母中显示了 {shown} 个",
+    "choosing": "正在出题：{name}",
+    "setPrompt": "轮到你给其他人出一个词。",
+    "setLabel": "你的词",
+    "loadingWords": "正在加载词典…",
+    "setRules": "一个真实的词，4 到 12 个字母。",
+    "notAWord": "词典里没有这个词。",
+    "looksGood": "好词。",
+    "setWord": "出这个词",
+    "yourGuess": "轮到你：选一个字母",
+    "guessing": "正在猜：{name}",
+    "keyRight": "{letter}，在词中",
+    "keyWrong": "{letter}，不在词中",
+    "rounds": "已玩过的词",
+    "roundLost": "失败",
+    "roundSolvedSolo": "猜中",
+    "roundSolved": "猜中者：{name}",
+    "soloEnd": "你猜中了 {total} 个中的 {n} 个。",
+    "packOption": "单词语言",
+    "packEn": "英语",
+    "packBg": "保加利亚语",
+    "modeOption": "单词",
+    "modePack": "主题词包",
+    "modeVersus": "互相出题",
+    "roundsOption": "单词数量",
+    "rounds5": "5",
+    "rounds3": "3"
+  },
+  "achievements": {
+    "winner": {
+      "name": "文字工匠",
+      "description": "赢得 {count, plural, other {# 局}}"
+    },
+    "veteran": {
+      "name": "常客",
+      "description": "玩 {count, plural, other {# 局}}"
+    }
+  },
+  "leaderboards": {}
+}

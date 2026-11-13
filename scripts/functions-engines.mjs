@@ -614,10 +614,12 @@ if (process.argv.includes("--fixtures")) {
     "whos-the-spy": { pack: "en" },
     associations: { pack: "en", rounds: 5 },
     mafia: undefined,
+    hangman: { pack: "en", mode: "versus", rounds: 3 },
     war: { battles: 100 },
   };
   /** Turn games that need more than two seats. */
   const turnSeats = {
+    hangman: 3,
     hearts: 4,
     spades: 4,
     belote: 4,

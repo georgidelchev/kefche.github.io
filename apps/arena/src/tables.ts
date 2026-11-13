@@ -23,6 +23,9 @@ import { manifest as durakManifest } from "@kefche/game-durak/manifest";
 import { bots as ginBots } from "@kefche/game-gin-rummy/bots";
 import { engine as ginEngine } from "@kefche/game-gin-rummy/engine";
 import { manifest as ginManifest } from "@kefche/game-gin-rummy/manifest";
+import { bots as hangmanBots } from "@kefche/game-hangman/bots";
+import { engine as hangmanEngine } from "@kefche/game-hangman/engine";
+import { manifest as hangmanManifest } from "@kefche/game-hangman/manifest";
 import { bots as heartsBots } from "@kefche/game-hearts/bots";
 import { engine as heartsEngine } from "@kefche/game-hearts/engine";
 import { manifest as heartsManifest } from "@kefche/game-hearts/manifest";
@@ -105,5 +108,6 @@ export const TABLE_GAMES: Readonly<Record<string, TableGame>> = {
   "whos-the-spy": tableGame(spyManifest, spyEngine, spyBots),
   associations: tableGame(assocManifest, assocEngine, assocBots),
   mafia: tableGame(mafiaManifest, mafiaEngine, mafiaBots),
+  hangman: tableGame(hangmanManifest, hangmanEngine, hangmanBots),
   war: tableGame(warManifest, warEngine, warBots),
 };

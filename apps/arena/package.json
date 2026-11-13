@@ -24,6 +24,7 @@
     "@kefche/game-crazy-colors": "workspace:*",
     "@kefche/game-durak": "workspace:*",
     "@kefche/game-gin-rummy": "workspace:*",
+    "@kefche/game-hangman": "workspace:*",
     "@kefche/game-hearts": "workspace:*",
     "@kefche/game-liars-dice": "workspace:*",
     "@kefche/game-lowest-unique": "workspace:*",

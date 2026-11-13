@@ -1,0 +1,104 @@
+{
+  "name": "Hangman",
+  "tagline": "Guess the word a letter at a time, before the gallows is drawn.",
+  "description": "Play Hangman free: guess words from themed packs alone, or with friends on one device or online, or set words for each other.",
+  "about": [
+    "Hangman is the classic word-guessing game. A word is hidden behind blank tiles; guess it one letter at a time. Every right letter appears in its places, every wrong one adds a part to the gallows, and six wrong letters lose the word.",
+    "Play alone against the gallows with words from eight themes, such as animals, food or music, and the theme shown as a clue. Or play with friends on one device or online: take turns guessing, score a point for every time your letter appears, and three more for revealing the last letter.",
+    "In versus mode, each player sets a word for the others to guess. Set words must be real words from the dictionary, four to twelve letters long, and the setter scores for every wrong guess and three more if the word survives. Hangman is played in English and Bulgarian."
+  ],
+  "howToPlay": [
+    "Choose the language of the words, how many words, and whether to use the themed packs or set words for each other.",
+    "On your turn, pick a letter. If it's in the word, it shows in every place it appears and you guess again.",
+    "If it isn't, a part is added to the gallows and the turn passes on. Six wrong letters and the word is lost.",
+    "With others, a right letter scores a point for each time it appears, and revealing the last letter scores three more.",
+    "In versus, the setter scores a point for each wrong letter and three if the word survives. The most points win."
+  ],
+  "controls": [
+    "Phones and tablets: tap the letters on the on-screen keyboard.",
+    "Keyboard: type a letter. In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А).",
+    "Bulgarian has two on-screen layouts, phonetic and БДС; the choice is kept on this device.",
+    "To set a word in versus, type it in the box and press Enter."
+  ],
+  "tips": [
+    "Start with common letters: in English E, A, I, O, S, R and T.",
+    "Use the theme: a five-letter animal narrows things down fast.",
+    "Look at the shape: a word ending in a double letter or with one vowel left often has only a few answers.",
+    "In versus, set words with rare letters (J, Q, X, Z) and few vowels.",
+    "Short words are harder than long ones: there are fewer letters to find and many possible answers."
+  ],
+  "faq": [
+    {
+      "question": "Is Hangman free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How many wrong guesses do I get?",
+      "answer": "Six. Each wrong letter adds a part to the gallows: head, body, two arms and two legs."
+    },
+    {
+      "question": "Can I set any word in versus?",
+      "answer": "It has to be a real word from the game's dictionary in that language, four to twelve letters, and not an offensive word."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their word packs."
+    },
+    {
+      "question": "How do I win alone?",
+      "answer": "Solve more than half of the words in the game."
+    }
+  ],
+  "ui": {
+    "scores": "Scores",
+    "scoreLine": "{name}: {points}",
+    "roundOf": "Word {n} of {total}",
+    "themeAnimals": "Animals",
+    "themeFood": "Food",
+    "themeHome": "At home",
+    "themeNature": "Nature",
+    "themeSport": "Sport",
+    "themeJobs": "Jobs",
+    "themeTravel": "Travel",
+    "themeMusic": "Music",
+    "missesLeft": "Wrong guesses left: {n}",
+    "wordLabel": "The word: {shown} of {total} letters showing",
+    "choosing": "Choosing a word: {name}",
+    "setPrompt": "Your turn to set a word for the others.",
+    "setLabel": "Your word",
+    "loadingWords": "Loading the dictionary…",
+    "setRules": "A real word, 4 to 12 letters.",
+    "notAWord": "That's not in the dictionary.",
+    "looksGood": "Good word.",
+    "setWord": "Set the word",
+    "yourGuess": "Your guess: pick a letter",
+    "guessing": "Guessing: {name}",
+    "keyRight": "{letter}, in the word",
+    "keyWrong": "{letter}, not in the word",
+    "rounds": "Words so far",
+    "roundLost": "lost",
+    "roundSolvedSolo": "solved",
+    "roundSolved": "solved by {name}",
+    "soloEnd": "You solved {n} of {total}.",
+    "packOption": "Words in",
+    "packEn": "English",
+    "packBg": "Bulgarian",
+    "modeOption": "Words",
+    "modePack": "Themed packs",
+    "modeVersus": "Set words for each other",
+    "roundsOption": "Number of words",
+    "rounds5": "5",
+    "rounds3": "3"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Wordsmith",
+      "description": "Win {count, plural, one {# game} other {# games}}"
+    },
+    "veteran": {
+      "name": "Regular",
+      "description": "Play {count, plural, one {# game} other {# games}}"
+    }
+  },
+  "leaderboards": {}
+}

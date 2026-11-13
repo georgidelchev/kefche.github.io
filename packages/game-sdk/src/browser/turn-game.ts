@@ -32,13 +32,21 @@ export interface TurnGameOptions<State, Action, Config> extends Omit<
   }) => void;
   /** Frees what `render` set up (a React root, sounds) when the game closes. */
   dispose: () => void;
+  /**
+   * Something to wait for before the first match: a word game's lists, which
+   * its engine reads (Phase 13). Until it settles there's no session and the
+   * store has no view, so renderers show they're loading; if it fails, no
+   * match starts, and the renderer (which has the same promise) says so.
+   */
+  ready?: Promise<unknown>;
 }
 
 export function runTurnGame<State, Action, Config>(
   context: GameContext,
   options: TurnGameOptions<State, Action, Config>,
 ): GameInstance {
-  const { render, dispose, ...sessionOptions } = options;
+  const { render, dispose, ready, ...sessionOptions } = options;
+  let destroyed = false;
   let view: TurnView<State, Action> | null = null;
   const listeners = new Set<() => void>();
   const store: TurnViewStore<State, Action> = {
@@ -70,7 +78,14 @@ export function runTurnGame<State, Action, Config>(
     });
     render({ seed, session, store });
   };
-  start(context.seed);
+  if (ready) {
+    ready.then(
+      () => {
+        if (!destroyed) start(context.seed);
+      },
+      () => undefined,
+    );
+  } else start(context.seed);
 
   return {
     pause() {
@@ -86,6 +101,7 @@ export function runTurnGame<State, Action, Config>(
       start(seed);
     },
     destroy() {
+      destroyed = true;
       session?.destroy();
       session = null;
       listeners.clear();
