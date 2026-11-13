@@ -3256,6 +3256,35 @@ The owner answered "you decide, continue", so the recommended answers stand:
   - Checked:
     - the engine check at 2, 3 and 8 players in English and Bulgarian: every game ended, and every bot move was legal;
     - in Chrome, 32/32: the page in English and Bulgarian and none in Arabic; the field focused, each verdict, a word played, the bot's answer handing on its last letter, a used word flagged, three passes putting you out; Bulgarian typed phonetically; 360, 768 and 1280 px, both themes, and axe. Axe found the out player's faded name too faint, now shown in the muted text colour.
+- [x] **Step 19, Speed Typing:**
+  - **Rules:** type a passage exactly, word by word. The score is words a minute (five characters, spaces included, are a word) over the whole text, from the first key to the last word; accuracy counts every wrong key.
+    - A word counts once typed exactly with its space (the last needs none). Each is sent with its time and its wrong keys. A word faster than 30 ms a character (about 400 words a minute) doesn't count, nor any after ten minutes.
+    - A text left unfinished scores nothing, so a race compares whole texts.
+    - **Short** is a passage's opening sentences, 20 to 35 words, from the passages where that fits. **Long** is the whole passage, 27 to 72 words.
+  - **Texts** (Q4), in each language's `content/`:
+    - **English:** 17 passages from public-domain classics (Austen, Dickens, Melville, Carroll, Shelley, Brontë, Twain, Wells, Conan Doyle, Garnett's Tolstoy, Wilde, Grahame and Alcott) and 26 written for kefche.
+    - **Bulgarian:** 7 from Botev, Vazov, Yavorov and Aleko Konstantinov, and 25 written for kefche.
+    - Every classic was checked word for word against its published text: Project Gutenberg for English, Bulgarian Wikisource for Bulgarian. The check caught three slips in the English passages, written from memory; the Bulgarian ones are copied from Wikisource, since recall had already got two lines wrong. Only typography is simplified (an ellipsis as three dots, dashes as hyphens, plain quotes).
+    - The Bulgarian passages written for kefche need the owner's review, like the other Bulgarian content.
+  - **The screen:**
+    - The passage, with the word being typed shown letter by letter (right, wrong, still to come), and a box under it.
+    - Live speed, accuracy and words done; at the end, the speed, accuracy, time and where the text is from.
+    - The clock starts with the first key. Pasting does nothing.
+    - Curly quotes and long dashes from phone keyboards count as the plain ones, and Bulgarian types phonetically on a Latin keyboard, with Shift for capitals.
+  - **Boards:** the best speed for each language and length, marked as measured on the device. **Achievements:** games played, and 40, 70 or 100 words a minute.
+  - **Server:** its fixture, a Bulgarian short text at 70 words a minute with a few wrong keys.
+  - **Found on the way, in the site:**
+    - The leaderboard picker's longest name set the game page's minimum width, so Speed Typing's page scrolled sideways at 360 px in Bulgarian. The picker now shrinks.
+    - The play buttons couldn't wrap, so "Играть на этом устройстве" pushed the Russian Chess page wider than a 320 px screen. They now wrap.
+  - Checked:
+    - the rules and texts, 1,036 checks: every short text 20 to 35 words ending a sentence; the seeds reaching every passage; wrong, early, too-fast and late words refused; the speed, accuracy and an unfinished text's zero; the punctuation a phone types;
+    - in Chrome, 30/30:
+      - the page in English and Bulgarian, and none in Arabic;
+      - a wrong letter marked and fixed, and accuracy below 100%;
+      - pasting refused;
+      - a whole text typed with a phone's apostrophe, ending with the speed and a new best;
+      - a Bulgarian word typed phonetically with a capital;
+      - 360, 768 and 1280 px, both themes, and axe.
 
 ## Known issues
 

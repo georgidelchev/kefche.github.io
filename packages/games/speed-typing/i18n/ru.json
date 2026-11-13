@@ -1,0 +1,97 @@
+{
+  "name": "Быстрый набор",
+  "tagline": "Наберите отрывок слово за словом: сколько слов в минуту?",
+  "description": "Играйте в «Быстрый набор» бесплатно: тест набора на классических и новых текстах, в одиночку или в гонке с друзьями.",
+  "about": [
+    "Speed Typing is a typing test and a race: type a passage exactly, word by word, as fast as you can. Your speed is measured in words per minute, counting a word as five characters with spaces, and your accuracy shows how many of your key presses were right.",
+    "The passages come from public-domain classics, such as Jane Austen, Charles Dickens, Lewis Carroll and H. G. Wells, and from short texts written for kefche about everyday things. Choose a short text, a sentence or two, or a whole passage. Speed Typing is played in English and Bulgarian, with Bulgarian classics by Botev, Vazov, Yavorov and Aleko Konstantinov.",
+    "Practise alone and beat your best on this device, or race up to seven friends in a private or public room on the same text. Leaderboards keep the best speeds for each language and length. Speeds are measured on each player's own device."
+  ],
+  "howToPlay": [
+    "Choose a short text or a long one. The text appears with a box to type in below it.",
+    "The clock starts with your first key. Type each word exactly, with its capitals and punctuation, and press Space to go on.",
+    "Each letter shows as you type it: right, wrong, or still to come. A wrong word can't be finished until you fix it.",
+    "The last word needs no space. Your speed is the whole text's characters over your time, and your accuracy counts every wrong key.",
+    "In a race, everyone types the same text, and the fastest speed wins."
+  ],
+  "controls": [
+    "Use a real keyboard for your best speed; a phone's keyboard works too.",
+    "Backspace takes a letter back. Pasting doesn't work.",
+    "Curly quotes and long dashes from a phone keyboard count as the plain ones.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А)."
+  ],
+  "tips": [
+    "Look at the text, not at your hands, and keep your fingers on the middle row.",
+    "Accuracy first: fixing a mistake costs more time than typing steadily.",
+    "Read a word or two ahead while you type the current one.",
+    "Keep a steady rhythm rather than bursts of speed.",
+    "Short texts suit warming up; long ones show your real speed."
+  ],
+  "faq": [
+    {
+      "question": "Is Speed Typing free?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How is my speed counted?",
+      "answer": "In words per minute: every five characters you typed, spaces included, count as one word, over the time from your first key to the last word."
+    },
+    {
+      "question": "Where do the texts come from?",
+      "answer": "From public-domain classics, with their author and work shown, and from texts written for kefche."
+    },
+    {
+      "question": "Can I race my friends?",
+      "answer": "Yes. Make a room, invite up to seven friends, and you all type the same text at the same time."
+    },
+    {
+      "question": "Why are speeds marked as measured on the device?",
+      "answer": "Each player's own browser times their typing, so a speed depends a little on the device. Speeds no human could type don't count."
+    }
+  ],
+  "ui": {
+    "chooseLength": "Выберите длину",
+    "lengthOption": "Текст",
+    "lengthShort": "Короткий",
+    "lengthLong": "Длинный",
+    "shortDetail": "Одно-два предложения, около 20 слов",
+    "longDetail": "Целый отрывок, от 30 до 70 слов",
+    "best": "Лучшее: {n} слов/мин",
+    "loadFailed": "Текст не загрузился. Попробуйте ещё раз.",
+    "loading": "Готовим текст…",
+    "wpm": "Слов/мин",
+    "accuracy": "Точность",
+    "percent": "{n}%",
+    "words": "Слова",
+    "wordsOf": "{n} из {total}",
+    "textLabel": "Текст для набора",
+    "typeHere": "Набирайте текст здесь",
+    "startTyping": "Начинайте печатать: время идёт с первой клавиши",
+    "from": "Из: {source}",
+    "original": "Написано для kefche",
+    "wpmTotal": "{n} слов в минуту",
+    "accuracyTotal": "Точность: {n}%",
+    "timeTotal": "Время: {s} с",
+    "newBest": "Новый рекорд!",
+    "unfinished": "Не закончено: скорость считается только за весь текст.",
+    "packOption": "Тексты на языке",
+    "packEn": "английский",
+    "packBg": "болгарский"
+  },
+  "achievements": {
+    "played": {
+      "name": "Разминка",
+      "description": "Наберите {count, plural, one {# текст} few {# текста} many {# текстов} other {# текста}}"
+    },
+    "swift": {
+      "name": "Быстрые пальцы",
+      "description": "Наберите {count} слов в минуту"
+    }
+  },
+  "leaderboards": {
+    "en-short": "Лучшая скорость · английский, короткий",
+    "en-long": "Лучшая скорость · английский, длинный",
+    "bg-short": "Лучшая скорость · болгарский, короткий",
+    "bg-long": "Лучшая скорость · болгарский, длинный"
+  }
+}

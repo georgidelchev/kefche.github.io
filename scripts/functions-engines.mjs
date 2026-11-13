@@ -582,6 +582,15 @@ if (process.argv.includes("--fixtures")) {
     },
     // Five of the grid's words (found by walking the dictionary from each
     // square), two seconds apart, then the stop.
+    "speed-typing": {
+      config: { pack: "bg", length: "short" },
+      // Each word typed at 70 words a minute with a wrong key now and then.
+      next: (state, random) => {
+        const word = state.words[state.done];
+        const chars = word.length + (state.done > 0 ? 1 : 0);
+        return { word, ms: state.last + chars * 170, typos: random() < 0.2 ? 1 : 0 };
+      },
+    },
     "letter-grid": {
       config: { pack: "en", size: 4 },
       next: (state) => {

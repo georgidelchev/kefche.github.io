@@ -1,0 +1,97 @@
+{
+  "name": "Schnelltippen",
+  "tagline": "Tippe den Text Wort für Wort: wie viele Wörter pro Minute?",
+  "description": "Spiele Schnelltippen kostenlos: ein Tipptest mit klassischen und eigenen Texten, allein oder im Rennen mit Freunden.",
+  "about": [
+    "Speed Typing is a typing test and a race: type a passage exactly, word by word, as fast as you can. Your speed is measured in words per minute, counting a word as five characters with spaces, and your accuracy shows how many of your key presses were right.",
+    "The passages come from public-domain classics, such as Jane Austen, Charles Dickens, Lewis Carroll and H. G. Wells, and from short texts written for kefche about everyday things. Choose a short text, a sentence or two, or a whole passage. Speed Typing is played in English and Bulgarian, with Bulgarian classics by Botev, Vazov, Yavorov and Aleko Konstantinov.",
+    "Practise alone and beat your best on this device, or race up to seven friends in a private or public room on the same text. Leaderboards keep the best speeds for each language and length. Speeds are measured on each player's own device."
+  ],
+  "howToPlay": [
+    "Choose a short text or a long one. The text appears with a box to type in below it.",
+    "The clock starts with your first key. Type each word exactly, with its capitals and punctuation, and press Space to go on.",
+    "Each letter shows as you type it: right, wrong, or still to come. A wrong word can't be finished until you fix it.",
+    "The last word needs no space. Your speed is the whole text's characters over your time, and your accuracy counts every wrong key.",
+    "In a race, everyone types the same text, and the fastest speed wins."
+  ],
+  "controls": [
+    "Use a real keyboard for your best speed; a phone's keyboard works too.",
+    "Backspace takes a letter back. Pasting doesn't work.",
+    "Curly quotes and long dashes from a phone keyboard count as the plain ones.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А)."
+  ],
+  "tips": [
+    "Look at the text, not at your hands, and keep your fingers on the middle row.",
+    "Accuracy first: fixing a mistake costs more time than typing steadily.",
+    "Read a word or two ahead while you type the current one.",
+    "Keep a steady rhythm rather than bursts of speed.",
+    "Short texts suit warming up; long ones show your real speed."
+  ],
+  "faq": [
+    {
+      "question": "Is Speed Typing free?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "How is my speed counted?",
+      "answer": "In words per minute: every five characters you typed, spaces included, count as one word, over the time from your first key to the last word."
+    },
+    {
+      "question": "Where do the texts come from?",
+      "answer": "From public-domain classics, with their author and work shown, and from texts written for kefche."
+    },
+    {
+      "question": "Can I race my friends?",
+      "answer": "Yes. Make a room, invite up to seven friends, and you all type the same text at the same time."
+    },
+    {
+      "question": "Why are speeds marked as measured on the device?",
+      "answer": "Each player's own browser times their typing, so a speed depends a little on the device. Speeds no human could type don't count."
+    }
+  ],
+  "ui": {
+    "chooseLength": "Wähle eine Länge",
+    "lengthOption": "Text",
+    "lengthShort": "Kurz",
+    "lengthLong": "Lang",
+    "shortDetail": "Ein, zwei Sätze, etwa 20 Wörter",
+    "longDetail": "Ein ganzer Abschnitt, 30 bis 70 Wörter",
+    "best": "Bestwert: {n} WpM",
+    "loadFailed": "Der Text wurde nicht geladen. Versuche es noch einmal.",
+    "loading": "Der Text wird vorbereitet …",
+    "wpm": "WpM",
+    "accuracy": "Genauigkeit",
+    "percent": "{n} %",
+    "words": "Wörter",
+    "wordsOf": "{n} von {total}",
+    "textLabel": "Der Text zum Abtippen",
+    "typeHere": "Tippe den Text hier",
+    "startTyping": "Fang an zu tippen: die Uhr startet mit der ersten Taste",
+    "from": "Aus {source}",
+    "original": "Für kefche geschrieben",
+    "wpmTotal": "{n} Wörter pro Minute",
+    "accuracyTotal": "Genauigkeit: {n} %",
+    "timeTotal": "Zeit: {s} s",
+    "newBest": "Neuer Bestwert!",
+    "unfinished": "Nicht fertig: die Geschwindigkeit zählt nur für den ganzen Text.",
+    "packOption": "Texte auf",
+    "packEn": "Englisch",
+    "packBg": "Bulgarisch"
+  },
+  "achievements": {
+    "played": {
+      "name": "Aufgewärmt",
+      "description": "Tippe {count, plural, one {# Text} other {# Texte}}"
+    },
+    "swift": {
+      "name": "Flinke Finger",
+      "description": "Tippe {count} Wörter pro Minute"
+    }
+  },
+  "leaderboards": {
+    "en-short": "Höchstes Tempo · Englisch, kurz",
+    "en-long": "Höchstes Tempo · Englisch, lang",
+    "bg-short": "Höchstes Tempo · Bulgarisch, kurz",
+    "bg-long": "Höchstes Tempo · Bulgarisch, lang"
+  }
+}
