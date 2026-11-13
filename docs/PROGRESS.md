@@ -3205,6 +3205,18 @@ The owner answered "you decide, continue", so the recommended answers stand:
       - versus on one device: a cover before the setter, a non-word refused and a word taken, then the word gone from the screen and a right letter shown in place;
       - the Cyrillic keyboard;
       - 360, 768 and 1280 px, both themes, and axe.
+- [x] **Step 15, Word Search:**
+  - **Rules:** a theme's words hidden in a letter grid, in straight lines in any of eight directions; mark each by its first and last letters.
+    - The grid comes from the seed: a theme, the words that fit, placed crossing where letters agree, and the rest filled with the language's letters, weighted by how common they are.
+    - 8 × 8 with 6 words, 10 × 10 with 8, 12 × 12 with 10.
+    - A selection counts if its letters spell a word still to find, either way round, wherever it is (the filler can spell a word again by chance). The puzzle is solved when all are found.
+  - **Themes:** the same eight as Hangman, in the game's own packs (English and Bulgarian).
+  - **The screen:** drag across a word, tap both ends (the first tap shows), or use the arrow keys with Enter or Space at each end. Found words stay marked and are crossed off the list. The grid is an ARIA grid of rows and cells, and stays left to right.
+  - **Boards:** best time for each size, as for the other race puzzles. **Achievements:** puzzles solved, and one solved in 3 min, 90 s or 45 s.
+  - **Server:** its fixture (a Bulgarian 10 × 10, words selected both ways and a stray selection).
+  - Checked:
+    - 300 grids for each size and language: every word placed and readable along its line, every grid solvable selecting words backwards, each made in under 2 ms;
+    - in Chrome, 30/30: the page in English and Bulgarian and none in Arabic; a 10 × 10 solved from the letters shown, by dragging, by tapping both ends and with the keyboard, every word crossed off; 360, 768 and 1280 px, both themes, cells at least 24 px at 12 × 12, and axe.
 
 ## Known issues
 

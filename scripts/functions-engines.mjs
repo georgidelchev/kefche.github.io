@@ -561,6 +561,17 @@ if (process.argv.includes("--fixtures")) {
         return { answer: random() < 0.8 ? answer : answer + 1, ms };
       },
     },
+    // Each word in turn (from its placed ends, either way round), with a
+    // stray selection now and then.
+    "word-search": {
+      config: { pack: "bg", size: 10 },
+      next: (state, random) => {
+        const i = state.found.findIndex((f) => f === null);
+        const w = state.words[i];
+        if (random() < 0.15) return { from: w.from, to: w.from === 0 ? 1 : 0 };
+        return random() < 0.5 ? { from: w.from, to: w.to } : { from: w.to, to: w.from };
+      },
+    },
     // Presses at random.
     "lights-off": {
       config: { size: 4 },

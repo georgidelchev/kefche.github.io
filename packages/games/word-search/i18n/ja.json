@@ -1,0 +1,99 @@
+{
+  "name": "ワードサーチ",
+  "tagline": "どの向きにも隠れている単語を探そう。",
+  "description": "ワードサーチを無料でプレイ：文字の表に8方向で隠れたテーマの単語を探そう。3つのサイズ、英語かブルガリア語で。オンラインで競争も。",
+  "about": [
+    "Word Search hides a theme's words in a grid of letters. They run in straight lines in any of eight directions: left to right, right to left, up, down and along the diagonals. The words are listed under the grid; find each one and mark it.",
+    "Choose a small grid with six words for a quick break, or a big one with ten words hidden among a hundred and forty-four letters. The empty squares are filled with letters chosen the way they appear in real words, so the grid is full of false starts and near misses.",
+    "Each grid is made fresh from one of eight themes, such as animals, food, travel or music, in English or Bulgarian. Your best time for each size is kept on this device, and you can race friends online on the very same grid."
+  ],
+  "howToPlay": [
+    "Choose a size. The grid and its list of words appear, and the clock starts.",
+    "Find a word in the grid: it runs in a straight line, in any direction.",
+    "Mark it by dragging from its first letter to its last, or by tapping both ends.",
+    "Found words stay highlighted and are crossed off the list.",
+    "Find every word to finish. Your time is shown at the end."
+  ],
+  "controls": [
+    "Phones and tablets: drag across a word, or tap its first letter and then its last.",
+    "Mouse: drag across a word, or click both ends.",
+    "Keyboard: move with the arrow keys, press Enter or Space on the first letter and again on the last.",
+    "Tap the first letter again to change your mind."
+  ],
+  "tips": [
+    "Look for the rarest letter of a word first: a single K or Z is easier to spot than an E.",
+    "Long words are easier to find; save the short ones for last.",
+    "Scan the grid in strips, one row at a time, then column by column.",
+    "Remember words can run backwards and up.",
+    "On a phone, a quick drag is faster than tapping both ends."
+  ],
+  "faq": [
+    {
+      "question": "Is Word Search free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can words go backwards?",
+      "answer": "Yes. Words can run in any of eight directions, including right to left, upwards and diagonally."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their word packs."
+    },
+    {
+      "question": "What if a word appears twice?",
+      "answer": "Either place counts. The filler letters sometimes spell a word again by chance."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same grid at the same moment. The first to find every word wins."
+    }
+  ],
+  "ui": {
+    "chooseSize": "サイズを選ぶ",
+    "sizeLabel": "{size} × {size}",
+    "wordsCount": "単語：{n}",
+    "best": "ベスト：{time}",
+    "found": "発見",
+    "of": "{n} / {total}",
+    "time": "タイム",
+    "gridLabel": "文字の表：各単語の最初と最後の文字を選んで印をつける",
+    "cellStart": "{letter}、最初の文字を選択中",
+    "cellFound": "{letter}、見つけた単語の一部",
+    "wordsLabel": "探す単語",
+    "foundWord": "（発見済み）",
+    "solved": "{time}で全部見つけました。",
+    "newBest": "ベストタイム更新！",
+    "changeSize": "サイズを変える",
+    "packOption": "単語の言語",
+    "packEn": "英語",
+    "packBg": "ブルガリア語",
+    "size": "サイズ",
+    "themeAnimals": "動物",
+    "themeFood": "食べ物",
+    "themeHome": "家の中",
+    "themeNature": "自然",
+    "themeSport": "スポーツ",
+    "themeJobs": "仕事",
+    "themeTravel": "旅行",
+    "themeMusic": "音楽",
+    "size8": "8 × 8",
+    "size10": "10 × 10",
+    "size12": "12 × 12"
+  },
+  "achievements": {
+    "finder": {
+      "name": "探し上手",
+      "description": "パズルを{count, plural, other {#回}}解く"
+    },
+    "speed": {
+      "name": "鋭い目",
+      "description": "{time}以内でパズルを解く"
+    }
+  },
+  "leaderboards": {
+    "best-time-8": "ベストタイム · 8 × 8",
+    "best-time-10": "ベストタイム · 10 × 10",
+    "best-time-12": "ベストタイム · 12 × 12"
+  }
+}

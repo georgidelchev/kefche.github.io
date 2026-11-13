@@ -149,13 +149,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine62, bots2, options) {
-    this.engine = engine62;
+  constructor(engine63, bots2, options) {
+    this.engine = engine63;
     this.bots = bots2;
     this.options = options;
-    this.world = engine62.createWorld(options.config, options.seed);
+    this.world = engine63.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine62.ticksPerSecond / engine62.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine63.ticksPerSecond / engine63.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -387,11 +387,11 @@ var ByteReader = class {
     return v;
   }
   varint() {
-    let result34 = 0;
+    let result35 = 0;
     for (let shift = 0; shift < 35; shift += 7) {
       const byte = this.u8();
-      result34 |= (byte & 127) << shift;
-      if (byte < 128) return result34 >>> 0;
+      result35 |= (byte & 127) << shift;
+      if (byte < 128) return result35 >>> 0;
     }
     throw new RangeError("varint longer than 5 bytes");
   }
@@ -693,7 +693,7 @@ function lexiconOf(lang, name) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest62) => manifest62;
+var defineManifest = (manifest63) => manifest63;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -839,8 +839,8 @@ function slide(snapshot2, direction) {
   let gained = 0;
   let moved = false;
   const out = [];
-  for (let line = 0; line < SIZE; line++) {
-    const inLine = snapshot2.tiles.filter((t2) => (vertical ? t2.col : t2.row) === line).sort((a, b) => (vertical ? a.row - b.row : a.col - b.col) * (reverse ? -1 : 1));
+  for (let line2 = 0; line2 < SIZE; line2++) {
+    const inLine = snapshot2.tiles.filter((t2) => (vertical ? t2.col : t2.row) === line2).sort((a, b) => (vertical ? a.row - b.row : a.col - b.col) * (reverse ? -1 : 1));
     let slot = 0;
     for (let i = 0; i < inLine.length; i++) {
       const tile = inLine[i];
@@ -848,7 +848,7 @@ function slide(snapshot2, direction) {
       const next3 = inLine[i + 1];
       const value2 = next3?.value === tile.value ? tile.value * 2 : tile.value;
       const index = reverse ? SIZE - 1 - slot : slot;
-      const place2 = vertical ? { row: index, col: line } : { row: line, col: index };
+      const place2 = vertical ? { row: index, col: line2 } : { row: line2, col: index };
       if (place2.row !== tile.row || place2.col !== tile.col || next3?.value === tile.value)
         moved = true;
       if (next3?.value === tile.value) {
@@ -2389,8 +2389,8 @@ function captures(state, from) {
         if (!king) break;
         land = step2(land, size, dr, dc);
       }
-      const onward = lines.filter((line) => line.some((m) => m.captures.length > taken2.length + 1));
-      for (const line of onward.length > 0 ? onward : lines) found.push(...line);
+      const onward = lines.filter((line2) => line2.some((m) => m.captures.length > taken2.length + 1));
+      for (const line2 of onward.length > 0 ? onward : lines) found.push(...line2);
     }
     return found;
   };
@@ -2646,10 +2646,10 @@ peg$SyntaxError.prototype.format = function(sources) {
     if (src) {
       var e = this.location.end;
       var filler = peg$padEnd("", offset_s.line.toString().length, " ");
-      var line = src[s.line - 1];
-      var last = s.line === e.line ? e.column : line.length + 1;
+      var line2 = src[s.line - 1];
+      var last = s.line === e.line ? e.column : line2.length + 1;
       var hatLen = last - s.column || 1;
-      str += "\n --> " + loc + "\n" + filler + " |\n" + offset_s.line + " | " + line + "\n" + filler + " | " + peg$padEnd("", s.column - 1, " ") + peg$padEnd("", hatLen, "^");
+      str += "\n --> " + loc + "\n" + filler + " |\n" + offset_s.line + " | " + line2 + "\n" + filler + " | " + peg$padEnd("", s.column - 1, " ") + peg$padEnd("", hatLen, "^");
     } else {
       str += "\n at " + loc;
     }
@@ -2825,11 +2825,11 @@ function peg$parse(input, options) {
   var peg$f8 = function(comment) {
     return comment.trim();
   };
-  var peg$f9 = function(line) {
-    return line;
+  var peg$f9 = function(line2) {
+    return line2;
   };
-  var peg$f10 = function(result34, comment) {
-    return { result: result34, comment };
+  var peg$f10 = function(result35, comment) {
+    return { result: result35, comment };
   };
   var peg$currPos = options.peg$currPos | 0;
   var peg$posDetailsCache = [{ line: 1, column: 1 }];
@@ -3816,12 +3816,12 @@ function xoroshiro128(state) {
   return function() {
     let s0 = BigInt(state & MASK64);
     let s1 = BigInt(state >> 64n & MASK64);
-    const result34 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
+    const result35 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
     s1 ^= s0;
     s0 = (rotl(s0, 24n) ^ s1 ^ s1 << 16n) & MASK64;
     s1 = rotl(s1, 37n);
     state = s1 << 64n | s0;
-    return result34;
+    return result35;
   };
 }
 var rand = xoroshiro128(0xa187eb39cdcaed8f31c4b365b102e01en);
@@ -5524,16 +5524,16 @@ var Chess = class {
     return move3;
   }
   pgn({ newline = "\n", maxWidth = 0 } = {}) {
-    const result34 = [];
+    const result35 = [];
     let headerExists = false;
     for (const i in this._header) {
       const headerTag = this._header[i];
       if (headerTag)
-        result34.push(`[${i} "${this._header[i]}"]` + newline);
+        result35.push(`[${i} "${this._header[i]}"]` + newline);
       headerExists = true;
     }
     if (headerExists && this._history.length) {
-      result34.push(newline);
+      result35.push(newline);
     }
     const appendComment = (moveString2) => {
       const comment = this._comments[this.fen()];
@@ -5575,11 +5575,11 @@ var Chess = class {
     }
     moves.push(this._header.Result || "*");
     if (maxWidth === 0) {
-      return result34.join("") + moves.join(" ");
+      return result35.join("") + moves.join(" ");
     }
     const strip = function() {
-      if (result34.length > 0 && result34[result34.length - 1] === " ") {
-        result34.pop();
+      if (result35.length > 0 && result35[result35.length - 1] === " ") {
+        result35.pop();
         return true;
       }
       return false;
@@ -5593,12 +5593,12 @@ var Chess = class {
           while (strip()) {
             width--;
           }
-          result34.push(newline);
+          result35.push(newline);
           width = 0;
         }
-        result34.push(token);
+        result35.push(token);
         width += token.length;
-        result34.push(" ");
+        result35.push(" ");
         width++;
       }
       if (strip()) {
@@ -5615,19 +5615,19 @@ var Chess = class {
         }
       }
       if (currentWidth + moves[i].length > maxWidth && i !== 0) {
-        if (result34[result34.length - 1] === " ") {
-          result34.pop();
+        if (result35[result35.length - 1] === " ") {
+          result35.pop();
         }
-        result34.push(newline);
+        result35.push(newline);
         currentWidth = 0;
       } else if (i !== 0) {
-        result34.push(" ");
+        result35.push(" ");
         currentWidth++;
       }
-      result34.push(moves[i]);
+      result35.push(moves[i]);
       currentWidth += moves[i].length;
     }
-    return result34.join("");
+    return result35.join("");
   }
   /**
    * @deprecated Use `setHeader` and `getHeaders` instead. This method will return null header tags (which is not what you want)
@@ -5704,9 +5704,9 @@ var Chess = class {
       }
       node2 = node2.variations[0];
     }
-    const result34 = parsedPgn.result;
-    if (result34 && Object.keys(this._header).length && this._header["Result"] !== result34) {
-      this.setHeader("Result", result34);
+    const result35 = parsedPgn.result;
+    if (result35 && Object.keys(this._header).length && this._header["Result"] !== result35) {
+      this.setHeader("Result", result35);
     }
   }
   /*
@@ -6022,8 +6022,8 @@ var Chess = class {
       }
     }
     this._updateCastlingRights();
-    const result34 = this.getCastlingRights(color);
-    return (rights[KING2] === void 0 || rights[KING2] === result34[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result34[QUEEN2]);
+    const result35 = this.getCastlingRights(color);
+    return (rights[KING2] === void 0 || rights[KING2] === result35[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result35[QUEEN2]);
   }
   getCastlingRights(color) {
     return {
@@ -7138,19 +7138,19 @@ function sidesOf(s, box) {
     h + r * (s.cols + 1) + c + 1
   ];
 }
-function boxesOf(s, line) {
+function boxesOf(s, line2) {
   const h = horizontalCount(s);
-  if (line < h) {
-    const r2 = Math.floor(line / s.cols);
-    const c2 = line % s.cols;
+  if (line2 < h) {
+    const r2 = Math.floor(line2 / s.cols);
+    const c2 = line2 % s.cols;
     return [r2 - 1, r2].filter((row) => row >= 0 && row < s.rows).map((row) => row * s.cols + c2);
   }
-  const v = line - h;
+  const v = line2 - h;
   const r = Math.floor(v / (s.cols + 1));
   const c = v % (s.cols + 1);
   return [c - 1, c].filter((col) => col >= 0 && col < s.cols).map((col) => r * s.cols + col);
 }
-var sidesDrawn = (s, box) => sidesOf(s, box).reduce((n, line) => s.lines[line] === -1 ? n : n + 1, 0);
+var sidesDrawn = (s, box) => sidesOf(s, box).reduce((n, line2) => s.lines[line2] === -1 ? n : n + 1, 0);
 var isOver3 = (s) => s.moves === s.lines.length;
 var score4 = (s, seat) => s.boxes.reduce((n, owner) => owner === seat ? n + 1 : n, 0);
 var engine15 = {
@@ -7171,15 +7171,15 @@ var engine15 = {
   },
   legalActions(state, seat) {
     if (seat !== state.turn || isOver3(state)) return [];
-    return state.lines.flatMap((owner, line) => owner === -1 ? [{ line }] : []);
+    return state.lines.flatMap((owner, line2) => owner === -1 ? [{ line: line2 }] : []);
   },
-  applyAction(state, seat, { line }) {
-    if (seat !== state.turn || isOver3(state) || state.lines[line] !== -1) return state;
+  applyAction(state, seat, { line: line2 }) {
+    if (seat !== state.turn || isOver3(state) || state.lines[line2] !== -1) return state;
     const lines = state.lines.slice();
-    lines[line] = seat;
+    lines[line2] = seat;
     const boxes = state.boxes.slice();
-    const next3 = { ...state, lines, boxes, moves: state.moves + 1, last: line, claimed: [] };
-    const claimed = boxesOf(state, line).filter((box) => sidesDrawn(next3, box) === 4);
+    const next3 = { ...state, lines, boxes, moves: state.moves + 1, last: line2, claimed: [] };
+    const claimed = boxesOf(state, line2).filter((box) => sidesDrawn(next3, box) === 4);
     for (const box of claimed) boxes[box] = seat;
     return {
       ...next3,
@@ -7757,17 +7757,17 @@ var DIRECTIONS3 = [
 function lineThrough(state, col, row, seat) {
   const { cols, rows, cells } = state;
   for (const [dc, dr] of DIRECTIONS3) {
-    const line = [col * rows + row];
+    const line2 = [col * rows + row];
     for (const sign of [1, -1]) {
       let c = col + dc * sign;
       let r = row + dr * sign;
       while (c >= 0 && c < cols && r >= 0 && r < rows && cells[c * rows + r] === seat) {
-        line.push(c * rows + r);
+        line2.push(c * rows + r);
         c += dc * sign;
         r += dr * sign;
       }
     }
-    if (line.length >= WIN_LENGTH) return line;
+    if (line2.length >= WIN_LENGTH) return line2;
   }
   return null;
 }
@@ -7806,8 +7806,8 @@ var engine20 = {
       moves: state.moves + 1,
       turn: (state.turn + 1) % state.seats
     };
-    const line = lineThrough(next3, column, row, seat);
-    return line ? { ...next3, winner: seat, line } : next3;
+    const line2 = lineThrough(next3, column, row, seat);
+    return line2 ? { ...next3, winner: seat, line: line2 } : next3;
   },
   currentSeats: (state) => isOver4(state) ? [] : [state.turn],
   // Online, an away player's turn passes to the next seat.
@@ -11129,8 +11129,8 @@ function flip(table, card2) {
   const first2 = up[0];
   if (first2 === void 0) return { table: { ...table, up: [card2], flips }, outcome: "first" };
   if (table.symbols[first2] === table.symbols[card2]) {
-    const matched = table.matched.map((m, i) => m || i === first2 || i === card2);
-    return { table: { ...table, matched, up: [], flips }, outcome: "match" };
+    const matched2 = table.matched.map((m, i) => m || i === first2 || i === card2);
+    return { table: { ...table, matched: matched2, up: [], flips }, outcome: "match" };
   }
   return { table: { ...table, up: [first2, card2], flips }, outcome: "miss" };
 }
@@ -11844,10 +11844,10 @@ var configFrom17 = (raw) => {
   const size = raw?.size;
   return { size: SIZES7.find((s) => s === size) ?? 10 };
 };
-var clueOf = (line) => {
+var clueOf = (line2) => {
   const runs = [];
   let run = 0;
-  for (const v of line) {
+  for (const v of line2) {
     if (v === 1) run++;
     else if (run > 0) {
       runs.push(run);
@@ -11923,9 +11923,9 @@ function lineSolvable(rowClues, colClues, size) {
   for (let pass = 0; pass < size * size; pass++) {
     let changed = false;
     for (let r = 0; r < size; r++) {
-      const line = solveLine(rowClues[r] ?? [], rowOf(grid, size, r));
-      if (!line) return false;
-      for (const [c, v] of line.entries()) {
+      const line2 = solveLine(rowClues[r] ?? [], rowOf(grid, size, r));
+      if (!line2) return false;
+      for (const [c, v] of line2.entries()) {
         if (v !== -1 && grid[r * size + c] === -1) {
           grid[r * size + c] = v;
           changed = true;
@@ -11933,9 +11933,9 @@ function lineSolvable(rowClues, colClues, size) {
       }
     }
     for (let c = 0; c < size; c++) {
-      const line = solveLine(colClues[c] ?? [], colOf(grid, size, c));
-      if (!line) return false;
-      for (const [r, v] of line.entries()) {
+      const line2 = solveLine(colClues[c] ?? [], colOf(grid, size, c));
+      if (!line2) return false;
+      for (const [r, v] of line2.entries()) {
         if (v !== -1 && grid[r * size + c] === -1) {
           grid[r * size + c] = v;
           changed = true;
@@ -12282,8 +12282,8 @@ function applyAction15(s, seat, action) {
   const spot = next3.shot;
   const dive = next3.dive;
   const reach2 = columnOf(spot) === dive && !(isHigh(spot) && columnOf(spot) !== 1);
-  const result34 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
-  const kick = { shooter: shooterOf(s), spot, dive, result: result34 };
+  const result35 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
+  const kick = { shooter: shooterOf(s), spot, dive, result: result35 };
   return decide({ ...next3, shot: null, dive: null, kicks: [...s.kicks, kick], rng: rng.state });
 }
 function currentSeats15(s) {
@@ -12584,17 +12584,17 @@ function flipsFor(board, square2, seat) {
   const col = square2 % SIZE4;
   const flips = [];
   for (const [dr, dc] of DIRECTIONS4) {
-    const line = [];
+    const line2 = [];
     let r = row + dr;
     let c = col + dc;
     while (r >= 0 && r < SIZE4 && c >= 0 && c < SIZE4) {
       const v = board[r * SIZE4 + c];
       if (v === -1) break;
       if (v === seat) {
-        flips.push(...line);
+        flips.push(...line2);
         break;
       }
-      line.push(r * SIZE4 + c);
+      line2.push(r * SIZE4 + c);
       r += dr;
       c += dc;
     }
@@ -14554,7 +14554,7 @@ var LogicSolver = class {
     ]) {
       if (!base) continue;
       for (let d = 1; d <= 9; d++) {
-        const pairs = base.map((line) => this.places(line, d)).filter((at) => at.length === 2).map((at) => ({ at, key: at.map(cross).join() }));
+        const pairs = base.map((line2) => this.places(line2, d)).filter((at) => at.length === 2).map((at) => ({ at, key: at.map(cross).join() }));
         for (const [p, q] of combinations(pairs, 2)) {
           if (p.key !== q.key) continue;
           const crossLines = p.at.map(cross);
@@ -14944,7 +14944,7 @@ var configFrom20 = (raw) => ({
   mode: raw?.mode === "classic" ? "classic" : "ultimate"
 });
 function lineOf(marks, seat) {
-  for (const line of LINES) if (line.every((i) => marks[i] === seat)) return [...line];
+  for (const line2 of LINES) if (line2.every((i) => marks[i] === seat)) return [...line2];
   return null;
 }
 var smallBoard = (cells, b) => cells.slice(b * 9, b * 9 + 9);
@@ -14983,8 +14983,8 @@ var engine58 = {
     cells[cell] = seat;
     const base = { ...state, cells, moves: state.moves + 1, last: cell, turn: 1 - seat };
     if (state.mode === "classic") {
-      const line2 = lineOf(cells, seat);
-      if (line2) return { ...base, turn: seat, winner: seat, over: true, line: line2 };
+      const line3 = lineOf(cells, seat);
+      if (line3) return { ...base, turn: seat, winner: seat, over: true, line: line3 };
       if (cells.every((v) => v !== EMPTY9)) return { ...base, turn: seat, over: true };
       return base;
     }
@@ -14995,8 +14995,8 @@ var engine58 = {
     else if (small.every((v) => v !== EMPTY9)) boards2[board] = 2;
     const next3 = cell % 9;
     const after = { ...base, boards: boards2, next: next3 };
-    const line = lineOf(boards2, seat);
-    if (line) return { ...after, turn: seat, winner: seat, over: true, line };
+    const line2 = lineOf(boards2, seat);
+    if (line2) return { ...after, turn: seat, winner: seat, over: true, line: line2 };
     if (boards2.every((b) => b !== EMPTY9)) return { ...after, turn: seat, over: true };
     return after;
   },
@@ -15373,6 +15373,585 @@ var manifest60 = defineManifest({
   // The location and the spy come from the seed; every vote is a move.
   scoreValidation: { kind: "replay" },
   tags: ["party", "talk", "deduction", "multiplayer"]
+});
+
+// packages/games/word-search/content/bg.json
+var bg_default2 = {
+  categories: [
+    {
+      id: "animals",
+      words: [
+        "\u0442\u0438\u0433\u044A\u0440",
+        "\u0437\u0435\u0431\u0440\u0430",
+        "\u0437\u0430\u0435\u043A",
+        "\u043C\u0430\u0439\u043C\u0443\u043D\u0430",
+        "\u0436\u0438\u0440\u0430\u0444",
+        "\u0434\u0435\u043B\u0444\u0438\u043D",
+        "\u043F\u0438\u043D\u0433\u0432\u0438\u043D",
+        "\u043A\u0435\u043D\u0433\u0443\u0440\u0443",
+        "\u043A\u0430\u0442\u0435\u0440\u0438\u0446\u0430",
+        "\u0441\u043B\u043E\u043D",
+        "\u043A\u0430\u043C\u0438\u043B\u0430",
+        "\u043A\u043E\u0441\u0442\u0435\u043D\u0443\u0440\u043A\u0430",
+        "\u043F\u0430\u043F\u0430\u0433\u0430\u043B",
+        "\u043F\u0430\u044F\u043A",
+        "\u043C\u0430\u0433\u0430\u0440\u0435",
+        "\u0431\u043E\u0431\u044A\u0440",
+        "\u0433\u0443\u0449\u0435\u0440",
+        "\u043E\u043A\u0442\u043E\u043F\u043E\u0434",
+        "\u0442\u0430\u0440\u0430\u043B\u0435\u0436",
+        "\u043B\u0438\u0441\u0438\u0446\u0430"
+      ]
+    },
+    {
+      id: "food",
+      words: [
+        "\u0445\u043B\u044F\u0431",
+        "\u0441\u0438\u0440\u0435\u043D\u0435",
+        "\u043C\u0430\u0441\u043B\u043E",
+        "\u043F\u0438\u043F\u0435\u0440",
+        "\u0434\u043E\u043C\u0430\u0442",
+        "\u043A\u0430\u0440\u0442\u043E\u0444",
+        "\u0431\u0430\u043D\u0430\u043D",
+        "\u0447\u0435\u0440\u0435\u0448\u0430",
+        "\u043C\u043E\u0440\u043A\u043E\u0432",
+        "\u043F\u0430\u043B\u0430\u0447\u0438\u043D\u043A\u0430",
+        "\u0431\u0438\u0441\u043A\u0432\u0438\u0442\u0430",
+        "\u043D\u0430\u0434\u0435\u043D\u0438\u0446\u0430",
+        "\u043C\u043B\u044F\u043A\u043E",
+        "\u0431\u0430\u043D\u0438\u0446\u0430",
+        "\u0447\u0435\u0441\u044A\u043D",
+        "\u043B\u0438\u043C\u043E\u043D",
+        "\u044F\u0431\u044A\u043B\u043A\u0430",
+        "\u043E\u0440\u0435\u0445",
+        "\u043A\u0430\u0448\u043A\u0430\u0432\u0430\u043B",
+        "\u043A\u0440\u0443\u0448\u0430"
+      ]
+    },
+    {
+      id: "home",
+      words: [
+        "\u043F\u0440\u043E\u0437\u043E\u0440\u0435\u0446",
+        "\u043A\u0443\u0445\u043D\u044F",
+        "\u0432\u044A\u0437\u0433\u043B\u0430\u0432\u043D\u0438\u0446\u0430",
+        "\u043E\u0434\u0435\u044F\u043B\u043E",
+        "\u043E\u0433\u043B\u0435\u0434\u0430\u043B\u043E",
+        "\u043A\u0438\u043B\u0438\u043C",
+        "\u0441\u0442\u044A\u043B\u0431\u0430",
+        "\u0437\u0430\u0432\u0435\u0441\u0430",
+        "\u0447\u0435\u043A\u043C\u0435\u0434\u0436\u0435",
+        "\u0433\u0430\u0440\u0434\u0435\u0440\u043E\u0431",
+        "\u0433\u0440\u0430\u0434\u0438\u043D\u0430",
+        "\u043A\u043E\u043C\u0438\u043D",
+        "\u043A\u043E\u0444\u0430",
+        "\u0441\u0432\u0435\u0449",
+        "\u043B\u0430\u043C\u043F\u0430",
+        "\u0447\u0430\u0439\u043D\u0438\u043A",
+        "\u0434\u0438\u0432\u0430\u043D",
+        "\u043A\u043E\u0448\u043D\u0438\u0446\u0430",
+        "\u0440\u0430\u0444\u0442",
+        "\u0432\u0440\u0430\u0442\u0430"
+      ]
+    },
+    {
+      id: "nature",
+      words: [
+        "\u0440\u0435\u043A\u0430",
+        "\u0433\u043E\u0440\u0430",
+        "\u043F\u043B\u0430\u043D\u0438\u043D\u0430",
+        "\u043E\u0441\u0442\u0440\u043E\u0432",
+        "\u043F\u0443\u0441\u0442\u0438\u043D\u044F",
+        "\u0434\u043E\u043B\u0438\u043D\u0430",
+        "\u043F\u043E\u043B\u044F\u043D\u0430",
+        "\u0433\u0440\u044A\u043C\u043E\u0442\u0435\u0432\u0438\u0446\u0430",
+        "\u0434\u044A\u0433\u0430",
+        "\u0432\u0443\u043B\u043A\u0430\u043D",
+        "\u043B\u0435\u0434\u043D\u0438\u043A",
+        "\u043A\u0430\u043D\u044C\u043E\u043D",
+        "\u0437\u0430\u043B\u0435\u0437",
+        "\u0432\u044F\u0442\u044A\u0440",
+        "\u043A\u0430\u043C\u044A\u043A",
+        "\u0446\u0432\u0435\u0442\u0435",
+        "\u043A\u043B\u043E\u043D",
+        "\u043E\u0431\u043B\u0430\u043A",
+        "\u043E\u043A\u0435\u0430\u043D",
+        "\u0431\u0443\u0440\u044F"
+      ]
+    },
+    {
+      id: "sport",
+      words: [
+        "\u0444\u0443\u0442\u0431\u043E\u043B",
+        "\u0442\u0435\u043D\u0438\u0441",
+        "\u0445\u043E\u043A\u0435\u0439",
+        "\u0431\u043E\u043A\u0441",
+        "\u043A\u043E\u043B\u043E\u0435\u0437\u0434\u0435\u043D\u0435",
+        "\u0433\u0440\u0435\u0431\u0430\u043D\u0435",
+        "\u0441\u0442\u0440\u0435\u043B\u0431\u0430",
+        "\u043A\u0430\u0440\u0430\u0442\u0435",
+        "\u0433\u043E\u043B\u0444",
+        "\u043F\u043B\u0443\u0432\u0430\u043D\u0435",
+        "\u0441\u043F\u0440\u0438\u043D\u0442",
+        "\u043C\u0430\u0440\u0430\u0442\u043E\u043D",
+        "\u043A\u043E\u043F\u0438\u0435",
+        "\u0441\u044A\u0434\u0438\u044F",
+        "\u0432\u0440\u0430\u0442\u0430\u0440",
+        "\u0442\u0440\u043E\u0444\u0435\u0439",
+        "\u043C\u0435\u0434\u0430\u043B",
+        "\u0441\u0442\u0430\u0434\u0438\u043E\u043D",
+        "\u0440\u0430\u043A\u0435\u0442\u0430",
+        "\u0432\u043E\u043B\u0435\u0439\u0431\u043E\u043B"
+      ]
+    },
+    {
+      id: "jobs",
+      words: [
+        "\u043B\u0435\u043A\u0430\u0440",
+        "\u0444\u0435\u0440\u043C\u0435\u0440",
+        "\u043F\u0435\u043A\u0430\u0440",
+        "\u043F\u0438\u043B\u043E\u0442",
+        "\u0443\u0447\u0438\u0442\u0435\u043B",
+        "\u0441\u0435\u0441\u0442\u0440\u0430",
+        "\u0448\u043E\u0444\u044C\u043E\u0440",
+        "\u0445\u0443\u0434\u043E\u0436\u043D\u0438\u043A",
+        "\u0437\u044A\u0431\u043E\u043B\u0435\u043A\u0430\u0440",
+        "\u043C\u0435\u0441\u0430\u0440",
+        "\u0430\u0434\u0432\u043E\u043A\u0430\u0442",
+        "\u043C\u043E\u0440\u044F\u043A",
+        "\u0430\u043A\u0442\u044C\u043E\u0440",
+        "\u043F\u0438\u0441\u0430\u0442\u0435\u043B",
+        "\u0448\u0438\u0432\u0430\u0447",
+        "\u0433\u043E\u0442\u0432\u0430\u0447",
+        "\u0441\u0435\u0440\u0432\u0438\u0442\u044C\u043E\u0440",
+        "\u043F\u0435\u0432\u0435\u0446",
+        "\u043C\u0438\u043D\u044C\u043E\u0440",
+        "\u0441\u0442\u0440\u043E\u0438\u0442\u0435\u043B"
+      ]
+    },
+    {
+      id: "travel",
+      words: [
+        "\u0431\u0438\u043B\u0435\u0442",
+        "\u043A\u0443\u0444\u0430\u0440",
+        "\u043B\u0435\u0442\u0438\u0449\u0435",
+        "\u043F\u0430\u0441\u043F\u043E\u0440\u0442",
+        "\u043F\u044A\u0442\u0435\u0448\u0435\u0441\u0442\u0432\u0438\u0435",
+        "\u043F\u0440\u0438\u0441\u0442\u0430\u043D\u0438\u0449\u0435",
+        "\u0433\u0430\u0440\u0430",
+        "\u043A\u043E\u043C\u043F\u0430\u0441",
+        "\u0442\u0443\u043D\u0435\u043B",
+        "\u043C\u043E\u0441\u0442",
+        "\u0445\u043E\u0442\u0435\u043B",
+        "\u043A\u0430\u043C\u0435\u0440\u0430",
+        "\u043A\u0430\u0440\u0442\u0438\u0447\u043A\u0430",
+        "\u0431\u0430\u0433\u0430\u0436",
+        "\u043F\u044A\u0442\u043D\u0438\u043A",
+        "\u043C\u0443\u0437\u0435\u0439",
+        "\u0437\u0430\u043C\u044A\u043A",
+        "\u0441\u0435\u043B\u043E",
+        "\u0433\u0440\u0430\u043D\u0438\u0446\u0430",
+        "\u043C\u0430\u0433\u0438\u0441\u0442\u0440\u0430\u043B\u0430"
+      ]
+    },
+    {
+      id: "music",
+      words: [
+        "\u043A\u0438\u0442\u0430\u0440\u0430",
+        "\u0446\u0438\u0433\u0443\u043B\u043A\u0430",
+        "\u043F\u0438\u0430\u043D\u043E",
+        "\u0442\u0440\u043E\u043C\u043F\u0435\u0442",
+        "\u0431\u0430\u0440\u0430\u0431\u0430\u043D",
+        "\u043C\u0435\u043B\u043E\u0434\u0438\u044F",
+        "\u0440\u0438\u0442\u044A\u043C",
+        "\u043A\u043E\u043D\u0446\u0435\u0440\u0442",
+        "\u043F\u0435\u0441\u0435\u043D",
+        "\u0444\u043B\u0435\u0439\u0442\u0430",
+        "\u0432\u0438\u043E\u043B\u043E\u043D\u0447\u0435\u043B\u043E",
+        "\u0442\u0440\u043E\u043C\u0431\u043E\u043D",
+        "\u0430\u0440\u0444\u0430",
+        "\u043E\u0440\u043A\u0435\u0441\u0442\u044A\u0440",
+        "\u0430\u043A\u043E\u0440\u0434",
+        "\u0442\u0435\u043C\u043F\u043E",
+        "\u0431\u0430\u043B\u0430\u0434\u0430",
+        "\u0441\u0432\u0438\u0440\u043A\u0430",
+        "\u0430\u043A\u043E\u0440\u0434\u0435\u043E\u043D",
+        "\u0441\u0430\u043A\u0441\u043E\u0444\u043E\u043D"
+      ]
+    }
+  ]
+};
+
+// packages/games/word-search/content/en.json
+var en_default2 = {
+  categories: [
+    {
+      id: "animals",
+      words: [
+        "tiger",
+        "zebra",
+        "rabbit",
+        "monkey",
+        "giraffe",
+        "dolphin",
+        "penguin",
+        "kangaroo",
+        "squirrel",
+        "elephant",
+        "camel",
+        "turtle",
+        "parrot",
+        "spider",
+        "donkey",
+        "beaver",
+        "lizard",
+        "octopus",
+        "hedgehog",
+        "panther"
+      ]
+    },
+    {
+      id: "food",
+      words: [
+        "bread",
+        "cheese",
+        "butter",
+        "pepper",
+        "tomato",
+        "potato",
+        "banana",
+        "cherry",
+        "carrot",
+        "noodle",
+        "pancake",
+        "biscuit",
+        "sausage",
+        "yogurt",
+        "honey",
+        "onion",
+        "garlic",
+        "lemon",
+        "mango",
+        "walnut"
+      ]
+    },
+    {
+      id: "home",
+      words: [
+        "window",
+        "kitchen",
+        "pillow",
+        "blanket",
+        "mirror",
+        "carpet",
+        "ladder",
+        "curtain",
+        "drawer",
+        "closet",
+        "garden",
+        "chimney",
+        "bucket",
+        "candle",
+        "hammer",
+        "kettle",
+        "sofa",
+        "basket",
+        "teapot",
+        "shelf"
+      ]
+    },
+    {
+      id: "nature",
+      words: [
+        "river",
+        "forest",
+        "mountain",
+        "island",
+        "desert",
+        "valley",
+        "meadow",
+        "thunder",
+        "rainbow",
+        "volcano",
+        "glacier",
+        "canyon",
+        "sunset",
+        "breeze",
+        "pebble",
+        "flower",
+        "branch",
+        "cloud",
+        "ocean",
+        "storm"
+      ]
+    },
+    {
+      id: "sport",
+      words: [
+        "soccer",
+        "tennis",
+        "hockey",
+        "boxing",
+        "skiing",
+        "rowing",
+        "cycling",
+        "archery",
+        "karate",
+        "golf",
+        "rugby",
+        "sprint",
+        "marathon",
+        "javelin",
+        "referee",
+        "goalie",
+        "trophy",
+        "medal",
+        "stadium",
+        "racket"
+      ]
+    },
+    {
+      id: "jobs",
+      words: [
+        "doctor",
+        "farmer",
+        "baker",
+        "pilot",
+        "teacher",
+        "nurse",
+        "plumber",
+        "painter",
+        "dentist",
+        "butcher",
+        "lawyer",
+        "sailor",
+        "actor",
+        "writer",
+        "tailor",
+        "chef",
+        "waiter",
+        "singer",
+        "miner",
+        "builder"
+      ]
+    },
+    {
+      id: "travel",
+      words: [
+        "ticket",
+        "suitcase",
+        "airport",
+        "passport",
+        "journey",
+        "harbor",
+        "station",
+        "compass",
+        "tunnel",
+        "bridge",
+        "hotel",
+        "camera",
+        "postcard",
+        "luggage",
+        "voyage",
+        "museum",
+        "castle",
+        "village",
+        "border",
+        "highway"
+      ]
+    },
+    {
+      id: "music",
+      words: [
+        "guitar",
+        "violin",
+        "piano",
+        "trumpet",
+        "drummer",
+        "melody",
+        "rhythm",
+        "concert",
+        "chorus",
+        "flute",
+        "cello",
+        "banjo",
+        "harp",
+        "orchestra",
+        "lyric",
+        "tempo",
+        "ballad",
+        "whistle",
+        "accordion",
+        "saxophone"
+      ]
+    }
+  ]
+};
+
+// packages/games/word-search/engine/index.ts
+var PACKS2 = ["en", "bg"];
+var SIZES9 = [10, 8, 12];
+var configFrom21 = (raw) => {
+  const r = raw;
+  return {
+    pack: PACKS2.find((p) => p === r?.pack) ?? "en",
+    size: SIZES9.find((s) => s === r?.size) ?? 10
+  };
+};
+var WORDS_FOR = { 8: 6, 10: 8, 12: 10 };
+var THEMES = {
+  en: en_default2.categories,
+  bg: bg_default2.categories
+};
+var THEME_IDS = en_default2.categories.map((c) => c.id);
+var FILLER = {
+  en: "eeeeeeeeeeeeaaaaaaaaarrrrrrrriiiiiiiioooooooottttttttnnnnnnnsssssslllllcccccuuuudddppmmhhggbbffyywkvxzjq",
+  bg: "\u0430\u0430\u0430\u0430\u0430\u0430\u0430\u0430\u043E\u043E\u043E\u043E\u043E\u043E\u043E\u043E\u0435\u0435\u0435\u0435\u0435\u0435\u0435\u0435\u0438\u0438\u0438\u0438\u0438\u0438\u0438\u0438\u0442\u0442\u0442\u0442\u0442\u0442\u043D\u043D\u043D\u043D\u043D\u043D\u043D\u0440\u0440\u0440\u0440\u0440\u0440\u0441\u0441\u0441\u0441\u0441\u0441\u0432\u0432\u0432\u0432\u0432\u043B\u043B\u043B\u043B\u043A\u043A\u043A\u043A\u043A\u0434\u0434\u0434\u0434\u0434\u043F\u043F\u043F\u043F\u043F\u043C\u043C\u043C\u043C\u0437\u0437\u0437\u0437\u044F\u044F\u044F\u0431\u0431\u0433\u0433\u0443\u0443\u0447\u0447\u044A\u044A\u0436\u0436\u0439\u0448\u0449\u0446\u0444\u0445\u044C\u044E\u044F"
+};
+var DIRECTIONS5 = [
+  [0, 1],
+  [1, 0],
+  [1, 1],
+  [-1, 1],
+  [0, -1],
+  [-1, 0],
+  [-1, -1],
+  [1, -1]
+];
+function fit(grid, size, word, row, col, [dr, dc]) {
+  const cells = [];
+  for (let i = 0; i < word.length; i++) {
+    const r = row + dr * i;
+    const c = col + dc * i;
+    if (r < 0 || r >= size || c < 0 || c >= size) return null;
+    const cell = r * size + c;
+    const there = grid[cell];
+    if (there !== null && there !== word[i]) return null;
+    cells.push(cell);
+  }
+  return cells;
+}
+function initialState33(raw, seed) {
+  const { pack, size } = configFrom21(raw);
+  const rng = Rng.fromSeed(`word-search:${pack}:${String(size)}:${seed}`);
+  const theme = rng.int(0, THEMES[pack].length - 1);
+  const pool = rng.shuffle(
+    (THEMES[pack][theme]?.words ?? []).filter((w) => charsOf(w).length <= size)
+  );
+  const grid = Array.from({ length: size * size }, () => null);
+  const words = [];
+  for (const word of pool) {
+    if (words.length >= WORDS_FOR[size]) break;
+    const letters3 = charsOf(word);
+    for (let attempt = 0; attempt < 300; attempt++) {
+      const dir2 = DIRECTIONS5[rng.int(0, DIRECTIONS5.length - 1)] ?? [0, 1];
+      const cells = fit(grid, size, letters3, rng.int(0, size - 1), rng.int(0, size - 1), dir2);
+      if (!cells) continue;
+      cells.forEach((cell, i) => {
+        grid[cell] = letters3[i] ?? null;
+      });
+      words.push({ word, from: cells[0] ?? 0, to: cells.at(-1) ?? 0 });
+      break;
+    }
+  }
+  const filler = charsOf(FILLER[pack]);
+  const letters2 = grid.map((l) => l ?? rng.pick(filler));
+  return { pack, size, theme, letters: letters2, words, found: words.map(() => null), misses: 0 };
+}
+function line(size, from, to) {
+  const r0 = Math.floor(from / size);
+  const c0 = from % size;
+  const dr = Math.floor(to / size) - r0;
+  const dc = to % size - c0;
+  if (dr !== 0 && dc !== 0 && Math.abs(dr) !== Math.abs(dc)) return null;
+  const steps3 = Math.max(Math.abs(dr), Math.abs(dc));
+  const sr = Math.sign(dr);
+  const sc = Math.sign(dc);
+  return Array.from({ length: steps3 + 1 }, (_, i) => (r0 + sr * i) * size + c0 + sc * i);
+}
+var isSolved3 = (s) => s.found.every((f) => f !== null);
+function matched(s, from, to) {
+  const cells = line(s.size, from, to);
+  if (!cells) return null;
+  const spelled = cells.map((c) => s.letters[c] ?? "").join("");
+  const back = [...cells].reverse().map((c) => s.letters[c] ?? "").join("");
+  const index = s.words.findIndex(
+    (w, i) => s.found[i] === null && (w.word === spelled || w.word === back)
+  );
+  return index < 0 ? null : index;
+}
+function apply11(s, raw) {
+  const action = raw;
+  if (isSolved3(s) || typeof action !== "object" || action === null) return s;
+  const { from, to } = action;
+  const n = s.size * s.size;
+  if (typeof from !== "number" || typeof to !== "number" || !Number.isInteger(from) || !Number.isInteger(to) || from < 0 || to < 0 || from >= n || to >= n || from === to || !line(s.size, from, to))
+    return s;
+  const index = matched(s, from, to);
+  if (index === null) return { ...s, misses: s.misses + 1 };
+  return { ...s, found: s.found.map((f, i) => i === index ? { from, to } : f) };
+}
+function result33(s) {
+  return isSolved3(s) ? { completed: true } : null;
+}
+var engine61 = {
+  initialState: initialState33,
+  apply: apply11,
+  progress: (s) => s.found.filter((f) => f !== null).length / Math.max(1, s.words.length),
+  result: result33
+};
+
+// packages/games/word-search/manifest.ts
+var manifest61 = defineManifest({
+  id: "word-search",
+  version: 1,
+  category: "word",
+  kind: "race",
+  players: { min: 1, max: 8, default: 1 },
+  modes: ["solo", "race", "online-private", "online-public", "quick-match"],
+  bots: { supported: false, difficulties: [], canFillSeats: false },
+  timers: [
+    { kind: "countdown", seconds: 300 },
+    { kind: "countdown", seconds: 180 },
+    { kind: "countdown", seconds: 600 }
+  ],
+  options: [
+    {
+      key: "pack",
+      label: "packOption",
+      values: [
+        { value: "en", label: "packEn", defaultIn: ["en"] },
+        { value: "bg", label: "packBg", defaultIn: ["bg"] }
+      ]
+    },
+    {
+      key: "size",
+      label: "size",
+      values: [
+        { value: 10, label: "size10" },
+        { value: 8, label: "size8" },
+        { value: 12, label: "size12" }
+      ]
+    }
+  ],
+  contentPacks: ["en", "bg"],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard", "mouse"],
+  renderer: "dom",
+  estimatedMinutes: [2, 8],
+  leaderboards: [
+    { id: "best-time-8", metric: "time", order: "asc", when: { size: 8 } },
+    { id: "best-time-10", metric: "time", order: "asc", when: { size: 10 } },
+    { id: "best-time-12", metric: "time", order: "asc", when: { size: 12 } }
+  ],
+  achievements: [
+    { id: "finder", icon: "target", metric: "wins", tiers: [1, 25, 100] },
+    { id: "speed", icon: "timer", metric: "bestTime", tiers: [18e4, 9e4, 45e3] }
+  ],
+  // The grid comes from the seed; every selection is logged.
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 6 },
+  tags: ["words", "puzzle", "classic", "single-player"]
 });
 
 // packages/games/worm-rush/engine/world.ts
@@ -15771,7 +16350,7 @@ function lifeResult(world, worm) {
     completed: true
   };
 }
-function result33(world, id) {
+function result34(world, id) {
   const worm = world.worms.get(id);
   if (!worm) return null;
   return worm.alive ? lifeResult(world, worm) : worm.lastLife;
@@ -16019,7 +16598,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine61 = {
+var engine62 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -16030,13 +16609,13 @@ var engine61 = {
   alive: alive2,
   step: step3,
   snapshot,
-  result: result33,
+  result: result34,
   snapshotCodec,
   inputCodec
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest61 = defineManifest({
+var manifest62 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -16128,7 +16707,8 @@ var GAMES = {
   "ultimate-ttt": { manifest: manifest58, engine: engine58 },
   "war": { manifest: manifest59, engine: engine59 },
   "whos-the-spy": { manifest: manifest60, engine: engine60 },
-  "worm-rush": { manifest: manifest61, engine: engine61, bots, host: arenaHost }
+  "word-search": { manifest: manifest61, engine: engine61 },
+  "worm-rush": { manifest: manifest62, engine: engine62, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,
