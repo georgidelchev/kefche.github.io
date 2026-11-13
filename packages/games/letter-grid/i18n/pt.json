@@ -1,0 +1,96 @@
+{
+  "name": "Grade de Letras",
+  "tagline": "Ligue letras vizinhas em palavras antes que o tempo acabe.",
+  "description": "Jogue Grade de Letras grátis: ache palavras ligando letras vizinhas numa grade 4 × 4 ou 5 × 5 em três minutos. Em inglês ou búlgaro.",
+  "about": [
+    "Letter Grid gives you a square of letters and three minutes. Find words by joining letters that touch: across, up and down, or diagonally, using each square at most once in a word. Every word needs three letters or more and has to be in the game's dictionary.",
+    "Longer words are worth more: three or four letters score one point, five letters two, six letters three, seven letters five, and eight or more eleven. A 5 × 5 grid holds far more words than a 4 × 4, and every grid is checked before you see it to make sure there's plenty to find.",
+    "When the time is up you see your score and the words you could have found. Play in English or Bulgarian, keep your best for each size on this device, or race friends online on the very same grid."
+  ],
+  "howToPlay": [
+    "Choose a size. The grid appears and three minutes begin.",
+    "Build a word from touching letters: tap them one after another, drag through them, or type it.",
+    "Press Enter to send it. A word counts if it's in the dictionary, has three letters or more, and you haven't found it already.",
+    "Longer words score more, up to eleven points for eight letters or more.",
+    "When time runs out you see your points and words you missed."
+  ],
+  "controls": [
+    "Phones and tablets: tap touching letters one after another, or drag through them; lifting your finger sends the word.",
+    "Mouse: click or drag through the letters.",
+    "Keyboard: type the word (its path lights up), Backspace to take a letter back, Enter to send it.",
+    "Tap the last letter again to send a tapped word. Pause from the bar above; paused time doesn't count."
+  ],
+  "tips": [
+    "Look for common pieces first: TH, ING, ER and ED appear in many words.",
+    "Plurals count: if you find a word, try adding S.",
+    "Long words are worth much more, so look for them once the short ones dry up.",
+    "Work around the grid one letter at a time, seeing what words start there.",
+    "The 5 × 5 grid rewards patience: there are often more than two hundred words in it."
+  ],
+  "faq": [
+    {
+      "question": "Is Letter Grid free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can I use a letter twice in one word?",
+      "answer": "Only if it appears twice in the grid: each square can be used once in a word."
+    },
+    {
+      "question": "Do diagonal letters count as touching?",
+      "answer": "Yes. Every square touches up to eight others: across, up and down, and diagonally."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their dictionaries."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same grid at the same moment. The most points after three minutes wins."
+    }
+  ],
+  "ui": {
+    "chooseSize": "Escolha um tamanho",
+    "sizeLabel": "{size} × {size}",
+    "threeMinutes": "Três minutos",
+    "best": "Melhor: {n} pontos",
+    "loadFailed": "O dicionário não carregou. Verifique a conexão e tente de novo.",
+    "loading": "Carregando o dicionário…",
+    "points": "Pontos",
+    "words": "Palavras",
+    "timeLeft": "Tempo restante",
+    "seconds": "{s} s",
+    "gridLabel": "Grade de letras: ligue letras vizinhas para formar palavras",
+    "verdictOk": "+{points}",
+    "verdictShort": "curta demais",
+    "verdictPath": "não está na grade",
+    "verdictFound": "já encontrada",
+    "verdictUnknown": "não está no dicionário",
+    "clear": "Limpar",
+    "foundLabel": "Palavras encontradas",
+    "pointsTotal": "Pontos: {n}",
+    "wordsTotal": "Palavras encontradas: {n}",
+    "newBest": "Novo recorde!",
+    "missed": "Palavras que você podia ter achado:",
+    "packOption": "Letras em",
+    "packEn": "inglês",
+    "packBg": "búlgaro",
+    "size": "Tamanho",
+    "size4": "4 × 4",
+    "size5": "5 × 5"
+  },
+  "achievements": {
+    "played": {
+      "name": "Andarilho da grade",
+      "description": "Jogue {count, plural, one {# partida} other {# partidas}}"
+    },
+    "explorer": {
+      "name": "Caçador de palavras",
+      "description": "Faça {count} pontos em uma partida"
+    }
+  },
+  "leaderboards": {
+    "best-4": "Melhor pontuação · 4 × 4",
+    "best-5": "Melhor pontuação · 5 × 5"
+  }
+}

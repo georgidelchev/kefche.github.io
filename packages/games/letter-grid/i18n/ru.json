@@ -1,0 +1,96 @@
+{
+  "name": "Буквенная сетка",
+  "tagline": "Соединяйте соседние буквы в слова, пока не вышло время.",
+  "description": "Играйте в «Буквенную сетку» бесплатно: находите слова из соседних букв в сетке 4 × 4 или 5 × 5 за три минуты. На английском или болгарском.",
+  "about": [
+    "Letter Grid gives you a square of letters and three minutes. Find words by joining letters that touch: across, up and down, or diagonally, using each square at most once in a word. Every word needs three letters or more and has to be in the game's dictionary.",
+    "Longer words are worth more: three or four letters score one point, five letters two, six letters three, seven letters five, and eight or more eleven. A 5 × 5 grid holds far more words than a 4 × 4, and every grid is checked before you see it to make sure there's plenty to find.",
+    "When the time is up you see your score and the words you could have found. Play in English or Bulgarian, keep your best for each size on this device, or race friends online on the very same grid."
+  ],
+  "howToPlay": [
+    "Choose a size. The grid appears and three minutes begin.",
+    "Build a word from touching letters: tap them one after another, drag through them, or type it.",
+    "Press Enter to send it. A word counts if it's in the dictionary, has three letters or more, and you haven't found it already.",
+    "Longer words score more, up to eleven points for eight letters or more.",
+    "When time runs out you see your points and words you missed."
+  ],
+  "controls": [
+    "Phones and tablets: tap touching letters one after another, or drag through them; lifting your finger sends the word.",
+    "Mouse: click or drag through the letters.",
+    "Keyboard: type the word (its path lights up), Backspace to take a letter back, Enter to send it.",
+    "Tap the last letter again to send a tapped word. Pause from the bar above; paused time doesn't count."
+  ],
+  "tips": [
+    "Look for common pieces first: TH, ING, ER and ED appear in many words.",
+    "Plurals count: if you find a word, try adding S.",
+    "Long words are worth much more, so look for them once the short ones dry up.",
+    "Work around the grid one letter at a time, seeing what words start there.",
+    "The 5 × 5 grid rewards patience: there are often more than two hundred words in it."
+  ],
+  "faq": [
+    {
+      "question": "Is Letter Grid free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can I use a letter twice in one word?",
+      "answer": "Only if it appears twice in the grid: each square can be used once in a word."
+    },
+    {
+      "question": "Do diagonal letters count as touching?",
+      "answer": "Yes. Every square touches up to eight others: across, up and down, and diagonally."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their dictionaries."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same grid at the same moment. The most points after three minutes wins."
+    }
+  ],
+  "ui": {
+    "chooseSize": "Выберите размер",
+    "sizeLabel": "{size} × {size}",
+    "threeMinutes": "Три минуты",
+    "best": "Лучшее: очков {n}",
+    "loadFailed": "Словарь не загрузился. Проверьте соединение и попробуйте ещё раз.",
+    "loading": "Загрузка словаря…",
+    "points": "Очки",
+    "words": "Слова",
+    "timeLeft": "Осталось",
+    "seconds": "{s} с",
+    "gridLabel": "Таблица букв: соединяйте соседние буквы в слова",
+    "verdictOk": "+{points}",
+    "verdictShort": "слишком короткое",
+    "verdictPath": "нет в таблице",
+    "verdictFound": "уже найдено",
+    "verdictUnknown": "нет в словаре",
+    "clear": "Очистить",
+    "foundLabel": "Найденные слова",
+    "pointsTotal": "Очков: {n}",
+    "wordsTotal": "Найдено слов: {n}",
+    "newBest": "Новый рекорд!",
+    "missed": "Слова, которые можно было найти:",
+    "packOption": "Буквы на",
+    "packEn": "английском",
+    "packBg": "болгарском",
+    "size": "Размер",
+    "size4": "4 × 4",
+    "size5": "5 × 5"
+  },
+  "achievements": {
+    "played": {
+      "name": "Путник по сетке",
+      "description": "Сыграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    },
+    "explorer": {
+      "name": "Охотник за словами",
+      "description": "Наберите {count} очков за одну игру"
+    }
+  },
+  "leaderboards": {
+    "best-4": "Лучший результат · 4 × 4",
+    "best-5": "Лучший результат · 5 × 5"
+  }
+}

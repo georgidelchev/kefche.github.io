@@ -166,9 +166,8 @@ console.log(`engines.gen.js: ${ids.join(", ")} (${String(Math.round(bundle.lengt
 }
 
 if (process.argv.includes("--fixtures")) {
-  const { GAMES, ArenaHost, canonicalJson, inputHex, Lexicon, provideLexicon } = await import(
-    `${pathToFileURL(join(out, "engines.gen.js")).href}?t=${String(Date.now())}`
-  );
+  const { GAMES, ArenaHost, canonicalJson, inputHex, Lexicon, lexiconOf, provideLexicon } =
+    await import(`${pathToFileURL(join(out, "engines.gen.js")).href}?t=${String(Date.now())}`);
   // Word games' engines read word lists (ADR-0050): provide the current files,
   // as the browser and the server do before playing or replaying.
   {
@@ -579,6 +578,36 @@ if (process.argv.includes("--fixtures")) {
         if (state.found.length > 0) return { stop: true };
         if (random() < 0.4) return { word: "zzzq", ms: state.last + 2000 };
         return { word: state.seed, ms: state.last + 3000 };
+      },
+    },
+    // Five of the grid's words (found by walking the dictionary from each
+    // square), two seconds apart, then the stop.
+    "letter-grid": {
+      config: { pack: "en", size: 4 },
+      next: (state) => {
+        if (state.found.length >= 5) return { stop: true };
+        const lexicon = lexiconOf(state.pack, "all");
+        const near = (cell) =>
+          [-5, -4, -3, -1, 1, 3, 4, 5]
+            .map((d) => cell + d)
+            .filter((n) => n >= 0 && n < 16 && Math.abs((n % 4) - (cell % 4)) <= 1);
+        const walk = (cell, node, used, word) => {
+          const step = lexicon.step(node, state.letters[cell]);
+          if (!step) return null;
+          const next = word + state.letters[cell];
+          if (step.word && next.length >= 3 && !state.found.includes(next)) return next;
+          for (const n of near(cell)) {
+            if (used.includes(n)) continue;
+            const found = walk(n, step.node, [...used, n], next);
+            if (found) return found;
+          }
+          return null;
+        };
+        for (let cell = 0; cell < 16; cell++) {
+          const word = walk(cell, lexicon.root, [cell], "");
+          if (word) return { word, ms: state.last + 2000 };
+        }
+        return { stop: true };
       },
     },
     // Presses at random.

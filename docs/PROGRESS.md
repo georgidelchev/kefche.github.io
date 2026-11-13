@@ -3232,6 +3232,14 @@ The owner answered "you decide, continue", so the recommended answers stand:
   - Checked:
     - every seed a dictionary word in both languages; the rules (shuffled letters, each verdict, scoring, too soon and too late); all the words in a set found by walking the dictionary in 0.1 ms;
     - in Chrome, 26/26: the page in English and Bulgarian and none in Arabic; English words typed and the seven-letter word tapped; shuffle; paused time not counted; a Bulgarian word and the end after two minutes with the seven-letter word and missed words; 360 and 1280 px, both themes, and axe. Axe found the word slots labelled without a role, now fixed.
+- [x] **Step 17, Letter Grid** (an original name):
+  - **Rules:** a 4 × 4 or 5 × 5 grid and three minutes. Join touching letters (across, up and down, diagonally), each square once a word, three letters or more, in the dictionary. Points 1 (3 or 4 letters), 2, 3, 5, and 11 for 8 or more.
+  - **Grids** come from the seed: letters drawn by how common they are, drawn again (from the same seed) until the grid holds at least 40 words (4 × 4) or 90 (5 × 5). Over 100 seeds every grid made it, in 2 ms or less, holding 40 to 439 words.
+  - **A word is sent as its letters** and counts if it can be traced on the grid, so tapping, dragging and typing all work the same: tap touching squares (the last again to send), drag through them (a square counts near its middle, so diagonals don't catch a neighbour), or type (the path lights up).
+  - **The end** shows up to 24 words you could have found. The lists load first, and paused time doesn't count.
+  - **Boards:** best score for each size. **Achievements:** games played, and 25, 50 or 90 points.
+  - **Server:** its fixture finds five words by walking the dictionary from each square (the last "gauntries", 11 points).
+  - Checked in Chrome, 31/31: the page in English and Bulgarian and none in Arabic; a long word dragged, a short one tapped, one typed with its path lit, one not on the grid refused, and the points adding up; the end after three minutes with missed words; both sizes at 360, 768 and 1280 px, both themes, Bulgarian, and axe.
 
 ## Known issues
 

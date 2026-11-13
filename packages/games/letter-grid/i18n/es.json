@@ -1,0 +1,96 @@
+{
+  "name": "Rejilla de Letras",
+  "tagline": "Une letras vecinas en palabras antes de que se acabe el tiempo.",
+  "description": "Juega gratis a Rejilla de Letras: encuentra palabras uniendo letras vecinas en una cuadrícula de 4 × 4 o 5 × 5 en tres minutos.",
+  "about": [
+    "Letter Grid gives you a square of letters and three minutes. Find words by joining letters that touch: across, up and down, or diagonally, using each square at most once in a word. Every word needs three letters or more and has to be in the game's dictionary.",
+    "Longer words are worth more: three or four letters score one point, five letters two, six letters three, seven letters five, and eight or more eleven. A 5 × 5 grid holds far more words than a 4 × 4, and every grid is checked before you see it to make sure there's plenty to find.",
+    "When the time is up you see your score and the words you could have found. Play in English or Bulgarian, keep your best for each size on this device, or race friends online on the very same grid."
+  ],
+  "howToPlay": [
+    "Choose a size. The grid appears and three minutes begin.",
+    "Build a word from touching letters: tap them one after another, drag through them, or type it.",
+    "Press Enter to send it. A word counts if it's in the dictionary, has three letters or more, and you haven't found it already.",
+    "Longer words score more, up to eleven points for eight letters or more.",
+    "When time runs out you see your points and words you missed."
+  ],
+  "controls": [
+    "Phones and tablets: tap touching letters one after another, or drag through them; lifting your finger sends the word.",
+    "Mouse: click or drag through the letters.",
+    "Keyboard: type the word (its path lights up), Backspace to take a letter back, Enter to send it.",
+    "Tap the last letter again to send a tapped word. Pause from the bar above; paused time doesn't count."
+  ],
+  "tips": [
+    "Look for common pieces first: TH, ING, ER and ED appear in many words.",
+    "Plurals count: if you find a word, try adding S.",
+    "Long words are worth much more, so look for them once the short ones dry up.",
+    "Work around the grid one letter at a time, seeing what words start there.",
+    "The 5 × 5 grid rewards patience: there are often more than two hundred words in it."
+  ],
+  "faq": [
+    {
+      "question": "Is Letter Grid free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Can I use a letter twice in one word?",
+      "answer": "Only if it appears twice in the grid: each square can be used once in a word."
+    },
+    {
+      "question": "Do diagonal letters count as touching?",
+      "answer": "Yes. Every square touches up to eight others: across, up and down, and diagonally."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their dictionaries."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room gets the same grid at the same moment. The most points after three minutes wins."
+    }
+  ],
+  "ui": {
+    "chooseSize": "Elige un tamaño",
+    "sizeLabel": "{size} × {size}",
+    "threeMinutes": "Tres minutos",
+    "best": "Mejor: {n} puntos",
+    "loadFailed": "El diccionario no se cargó. Comprueba la conexión y vuelve a intentarlo.",
+    "loading": "Cargando el diccionario…",
+    "points": "Puntos",
+    "words": "Palabras",
+    "timeLeft": "Tiempo restante",
+    "seconds": "{s} s",
+    "gridLabel": "Cuadrícula de letras: une letras vecinas para formar palabras",
+    "verdictOk": "+{points}",
+    "verdictShort": "demasiado corta",
+    "verdictPath": "no está en la cuadrícula",
+    "verdictFound": "ya encontrada",
+    "verdictUnknown": "no está en el diccionario",
+    "clear": "Borrar",
+    "foundLabel": "Palabras encontradas",
+    "pointsTotal": "Puntos: {n}",
+    "wordsTotal": "Palabras encontradas: {n}",
+    "newBest": "¡Nuevo récord!",
+    "missed": "Palabras que podías haber encontrado:",
+    "packOption": "Letras en",
+    "packEn": "inglés",
+    "packBg": "búlgaro",
+    "size": "Tamaño",
+    "size4": "4 × 4",
+    "size5": "5 × 5"
+  },
+  "achievements": {
+    "played": {
+      "name": "Explorador de rejillas",
+      "description": "Juega {count, plural, one {# partida} other {# partidas}}"
+    },
+    "explorer": {
+      "name": "Cazapalabras",
+      "description": "Consigue {count} puntos en una partida"
+    }
+  },
+  "leaderboards": {
+    "best-4": "Mejor puntuación · 4 × 4",
+    "best-5": "Mejor puntuación · 5 × 5"
+  }
+}
