@@ -29,7 +29,9 @@
     "unread": "{count} ungelesen"
   },
   "wordOfTheDay": {
-    "title": "Wort des Tages"
+    "title": "Wort des Tages",
+    "intro": "Errate das heutige Wort mit fünf Buchstaben in sechs Versuchen.",
+    "play": "Heutiges Wort spielen"
   },
   "invite": {
     "region": "Einladungen",

@@ -146,6 +146,8 @@ interface Rules {
   table: boolean;
   /** The word lists its engine reads (ADR-0050): provided by readyLexicons before a replay. */
   lexicons: readonly ("all" | "common" | "blocked")[];
+  /** A daily puzzle whose config may carry the day's (the manifest's dailyPuzzle). */
+  dailyPuzzle: "word" | null;
 }
 
 export type ServerGame =
@@ -173,6 +175,7 @@ interface BundledManifest {
   achievements: AchievementDef[];
   leaderboards: LeaderboardDef[];
   lexicons?: ("all" | "common" | "blocked")[];
+  dailyPuzzle?: "word";
 }
 
 /** Every game by id. */
@@ -192,6 +195,7 @@ export const GAMES: ReadonlyMap<string, ServerGame> = new Map(
       leaderboards: m.leaderboards,
       table: m.kind === "turn" && m.hiddenInformation === true,
       lexicons: m.lexicons ?? [],
+      dailyPuzzle: m.dailyPuzzle ?? null,
     };
     const game: ServerGame =
       m.kind === "race"

@@ -17,6 +17,8 @@
   "breadcrumb": "パンくずリスト",
   "time": "タイム {time}",
   "playAgain": "もう一度遊ぶ",
+  "seeGame": "ゲームを見る",
+  "showResults": "結果を表示",
   "results": {
     "best": "ベスト：{value}",
     "newBest": "ベスト更新！",

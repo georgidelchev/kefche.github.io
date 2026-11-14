@@ -29,7 +29,9 @@
     "unread": "未読 {count} 件"
   },
   "wordOfTheDay": {
-    "title": "今日の言葉"
+    "title": "今日の言葉",
+    "intro": "今日の5文字の単語を6回以内に当てよう。",
+    "play": "今日の単語をプレイ"
   },
   "invite": {
     "region": "招待",

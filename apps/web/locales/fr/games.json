@@ -17,6 +17,8 @@
   "breadcrumb": "Fil d’Ariane",
   "time": "Temps {time}",
   "playAgain": "Rejouer",
+  "seeGame": "Voir la partie",
+  "showResults": "Voir les résultats",
   "results": {
     "best": "Record : {value}",
     "newBest": "Nouveau record !",

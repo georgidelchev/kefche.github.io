@@ -1,34 +1,63 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n";
 import { BookOpen } from "lucide-react";
 
+import { buttonVariants } from "@kefche/ui/components/button";
+
+import { getGame, offeredLocales } from "@/features/games/registry";
 import { getT } from "@/i18n/i18n";
 import type { Locale } from "@/i18n/locales";
 
-// Word of the Day (SPEC §12.7), scaffolding only (Phase 7 Q3): the words for
-// each language come with the content packs (Phase 15). The card stays
-// hidden until today has a word in the page's language (word-card.client.ts).
+// Word of the Day (SPEC §12.7) on the home page.
+// - Where the Word of the Day game is offered (Phase 13: English and
+//   Bulgarian), the day's word is the game's answer, so the card invites to
+//   play it and never shows the word.
+// - Elsewhere it shows the day's word and meaning, once the admin panel or
+//   the content packs (Phase 15) give one; it stays hidden until then
+//   (word-card.client.ts).
 interface Props {
   locale: Locale;
 }
 
 const { locale } = Astro.props;
 const t = getT(locale);
+const game = getGame("word-of-the-day");
+const playable = game !== undefined && offeredLocales(game).includes(locale);
 ---
 
-<section
-  hidden
-  class="grid gap-2 rounded-2xl border border-border bg-surface p-4 md:p-6"
-  aria-labelledby="word-heading"
-  data-word
-  data-locale={locale}
->
-  <h2 id="word-heading" class="flex items-center gap-2 text-2xl">
-    <BookOpen aria-hidden="true" className="size-6" />
-    {t("common:wordOfTheDay.title")}
-  </h2>
-  <p class="text-2xl font-semibold" data-word-text></p>
-  <p class="text-muted empty:hidden" data-word-meaning></p>
-</section>
+{playable ? (
+  <section
+    class="grid gap-2 rounded-2xl border border-border bg-surface p-4 md:p-6"
+    aria-labelledby="word-heading"
+  >
+    <h2 id="word-heading" class="flex items-center gap-2 text-2xl">
+      <BookOpen aria-hidden="true" className="size-6" />
+      {t("common:wordOfTheDay.title")}
+    </h2>
+    <p class="text-muted">{t("common:wordOfTheDay.intro")}</p>
+    <a
+      href={getRelativeLocaleUrl(locale, "/games/word-of-the-day/")}
+      class:list={[buttonVariants({ variant: "primary" }), "justify-self-start"]}
+    >
+      {t("common:wordOfTheDay.play")}
+    </a>
+  </section>
+) : (
+  <section
+    hidden
+    class="grid gap-2 rounded-2xl border border-border bg-surface p-4 md:p-6"
+    aria-labelledby="word-heading"
+    data-word
+    data-locale={locale}
+  >
+    <h2 id="word-heading" class="flex items-center gap-2 text-2xl">
+      <BookOpen aria-hidden="true" className="size-6" />
+      {t("common:wordOfTheDay.title")}
+    </h2>
+    <p class="text-2xl font-semibold" data-word-text />
+    <p class="text-muted empty:hidden" data-word-meaning />
+  </section>
+)}
 
 <script>
   import "@/features/daily/word-card.client";

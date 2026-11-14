@@ -29,7 +29,9 @@
     "unread": "{count} sin leer"
   },
   "wordOfTheDay": {
-    "title": "Palabra del día"
+    "title": "Palabra del día",
+    "intro": "Adivina la palabra de hoy, de cinco letras, en seis intentos.",
+    "play": "Jugar la palabra de hoy"
   },
   "invite": {
     "region": "Invitaciones",

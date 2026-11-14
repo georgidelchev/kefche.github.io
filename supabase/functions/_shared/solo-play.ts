@@ -65,11 +65,39 @@ export const TIME_GRACE_MS = 5000;
 export const CLOCK_SLACK = 0.95;
 export const MAX_ACTIONS = 200_000;
 
-/** The config if it's one the game offers: every option set to one of its values, nothing else. */
+/** A daily puzzle's day, as a game's config carries it (manifest dailyPuzzle "word"). */
+const dailyWordSchema = z
+  .object({
+    day: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    word: z.string().min(1).max(40),
+  })
+  .strict();
+export type DailyWord = z.infer<typeof dailyWordSchema>;
+
+/** The day's word a checked config claims, if any (the caller checks it's the real one). */
+export function dailyWordOf(
+  config: Record<string, unknown> | null,
+): (DailyWord & { pack: string }) | null {
+  const daily = dailyWordSchema.safeParse(config?.daily);
+  const pack = config?.pack;
+  return daily.success && typeof pack === "string" ? { ...daily.data, pack } : null;
+}
+
+/**
+ * The config if it's one the game offers: every option set to one of its
+ * values, nothing else, but for a daily puzzle's day (checked later).
+ */
 function checkConfig(
   options: readonly GameOption[],
   config: unknown,
+  dailyPuzzle: "word" | null,
 ): Record<string, unknown> | null | false {
+  if (dailyPuzzle && typeof config === "object" && config !== null && "daily" in config) {
+    const { daily, ...rest } = config as Record<string, unknown>;
+    if (!dailyWordSchema.safeParse(daily).success) return false;
+    const checked = checkConfig(options, rest, null);
+    return checked === false ? false : { ...checked, daily };
+  }
   if (options.length === 0) return config === null || config === undefined ? null : false;
   if (typeof config !== "object" || config === null || Array.isArray(config)) return false;
   const entries = Object.entries(config);
@@ -104,7 +132,7 @@ export function judgeSolo(
     ...extra,
   });
 
-  const config = checkConfig(game.options, record.config);
+  const config = checkConfig(game.options, record.config, game.dailyPuzzle);
   if (config === false) return verdict("review", "bad-config");
   const actions = unpackActions(record.log, MAX_ACTIONS);
   if (!actions) return verdict("review", "bad-log");

@@ -3309,6 +3309,45 @@ The owner answered "you decide, continue", so the recommended answers stand:
       - sending with `.` and `-` and with the on-screen keys;
       - Bulgarian answered phonetically through to the end of the minute, with a new best;
       - 360, 768 and 1280 px, both themes, both tasks, and axe.
+- [x] **Step 21, Word of the Day:**
+  - **Rules:** guess a five-letter word in six tries. Every guess must be in the language's full word list, and each letter is marked in the right place, in the word elsewhere, or not in it. A letter the answer holds once is marked once: right places first, then copies from left to right. Solving it scores 7 less the guesses (6 for the first try down to 1); six misses score nothing.
+  - **Today's word** is the same for everyone in a language, from `words_of_the_day` (Phase 7's table), changing at 00:00 UTC. **Practice** and races in rooms take a word from the seed.
+  - **Answers** (Q5): 620 English and 440 Bulgarian everyday five-letter words. All English ones are in SCOWL's common words; the Bulgarian ones are base forms, with plurals, definite forms and rare words taken out by hand. Each was checked against the dictionary and the blocklists. The Bulgarian words need the owner's review.
+  - **The migration** (`20261114100000_word_of_the_day.sql`):
+    - a year of daily words in both languages, from 2026-11-14 to 2027-11-13, in a fixed shuffle of the answers, never overwriting a day that already has one (TODO #6 for the next year);
+    - `daily_streaks`, per player, game and language (Mini Crossword's daily will use it too): days in a row solved, games played and won, and wins by tries;
+    - `finish_daily_word`, which records today's game once and checks the guesses: a solve on the last of up to six, or six misses;
+    - `daily_streak`, which reads a player's streak;
+    - `staff_set_word`, which now insists on five letters of the language in English and Bulgarian. The admin panel's text says so.
+  - **In the game:**
+    - A menu with today's word and practice, and the streak.
+    - Six rows of tiles over the language's keyboard. Colours plus a shape (a bar in place, a dot elsewhere), and each tile and key named for screen readers.
+    - A refused guess is explained (five letters, not a word, already tried) and shakes when motion is allowed.
+    - Today's game is kept on the device as it goes, so leaving the page doesn't give six fresh tries, and a finished day isn't played again.
+    - At the end: the word (and its meaning when the day has one), a grid to share with colours only, the streak, and when the next word comes. Phones open their share sheet; computers copy.
+    - A guest's streak is kept on the device, an account's on the server.
+  - **The home page** no longer shows the day's word where the game is offered, since it's the answer: the card invites you to play. Elsewhere it still shows a word and meaning when there is one.
+  - **SDK and site:**
+    - `context.daily`, a daily puzzle's server side for games: today's puzzle, finishing it, and the streak.
+    - A manifest's `dailyPuzzle: "word"` lets a solo play's config carry the day's word. `submit-match` checks it's the real word for that language and day (today or yesterday, UTC), otherwise sets the result aside as `bad-daily`.
+    - A game can add one line to the results screen (`note`; `finishNote` for puzzles), here "The word was …".
+  - **Found on the way, in the site:**
+    - The results screen covered the whole game, so a puzzle's final screen (here the word, the share and the streak) couldn't be seen. It now has **See the game**, which leaves a bar to bring the results back and covers nothing.
+    - A game taller than its screen was centred, so its top was cut off where it couldn't be scrolled to (Chess at 360 px lost 24 px). The stage now centres with auto margins, so such a game starts at the top and scrolls. Nine games of every kind were checked at 360 and 1280 px: all still centred when they fit.
+  - **Boards:** none (Q5: the word reaches the browser). **Achievements:** games played, and 3, 4 or 5 points in a game.
+  - **Server:** its fixture is a Bulgarian daily word solved at the third guess. Deno 144/144, including a daily config with junk in it, and another game carrying one, both set aside.
+  - Checked:
+    - the rules, 3,227 checks: every answer in its dictionary and not blocked, marking with double letters, refusals, the daily config, scores, and the device's streak (carried on, ended, stale);
+    - the database: guesses refused (a lone miss, too short, a solve followed by more, none, a language with no word), a win, a second game the same day ignored, a streak carried over a day and ended by a loss, a stale streak shown as 0, rows visible only to their owner, guests refused, and `staff_set_word`'s check;
+    - in Chrome, 50/50:
+      - the pages in English and Bulgarian, and none in Arabic;
+      - the home page's card with no spoiler;
+      - refusals, marks and key colours;
+      - leaving and carrying on;
+      - a solve, then See the game, the share (no letters) and the countdown;
+      - a practice game;
+      - a Bulgarian account solving today's word, kept on the server and counted by `submit-match`;
+      - 360, 768 and 1280 px, both themes, and axe.
 
 ## Known issues
 
@@ -3337,10 +3376,11 @@ The owner answered "you decide, continue", so the recommended answers stand:
 
 Each code `TODO` must reference an entry here (`TODO #n`). Resolved entries stay listed so the numbers aren't reused.
 
-| #   | Where                                                        | What                                                                                                                    | Status                            |
-| --- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
-| 1   | `apps/web/src/pages/[locale]/index.astro`, `astro.config.ts` | Only `en` generated, hard-coded English copy, fixed `/` → `/en/` 302.                                                   | ✅ Resolved (Phase 1 steps 4–5)   |
-| 2   | `apps/web/src/features/auth/SignUpForm.tsx`                  | Link the Community Guidelines page from sign-up (SPEC §8.3).                                                            | ✅ Resolved (Phase 8 step 11)     |
-| 3   | `supabase/templates/*.html`                                  | Auth emails are English only; localize and brand them (SPEC §3).                                                        | Open: Phase 21, with Resend       |
-| 4   | `apps/web/src/pages/[locale]/privacy.astro`                  | Privacy contact is the public GitHub issue tracker; replace it with a dedicated privacy address once the owner has one. | Open: owner to create the address |
-| 5   | `packages/games/memory-match/manifest.ts`                    | Make Memory Match a turn game too, for taking turns online, once the server deals hidden cards (SPEC §10.6).            | ✅ Resolved (Phase 12 step 18)    |
+| #   | Where                                                        | What                                                                                                                                            | Status                            |
+| --- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| 1   | `apps/web/src/pages/[locale]/index.astro`, `astro.config.ts` | Only `en` generated, hard-coded English copy, fixed `/` → `/en/` 302.                                                                           | ✅ Resolved (Phase 1 steps 4–5)   |
+| 2   | `apps/web/src/features/auth/SignUpForm.tsx`                  | Link the Community Guidelines page from sign-up (SPEC §8.3).                                                                                    | ✅ Resolved (Phase 8 step 11)     |
+| 3   | `supabase/templates/*.html`                                  | Auth emails are English only; localize and brand them (SPEC §3).                                                                                | Open: Phase 21, with Resend       |
+| 4   | `apps/web/src/pages/[locale]/privacy.astro`                  | Privacy contact is the public GitHub issue tracker; replace it with a dedicated privacy address once the owner has one.                         | Open: owner to create the address |
+| 5   | `packages/games/memory-match/manifest.ts`                    | Make Memory Match a turn game too, for taking turns online, once the server deals hidden cards (SPEC §10.6).                                    | ✅ Resolved (Phase 12 step 18)    |
+| 6   | `supabase/migrations/20261114100000_word_of_the_day.sql`     | Word of the Day has daily words to 2027-11-13: add the next year's (a new migration from the answers, the Bulgarian ones reviewed) before then. | Open: before 2027-11              |

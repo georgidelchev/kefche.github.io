@@ -29,7 +29,9 @@
     "unread": "{count} non lues"
   },
   "wordOfTheDay": {
-    "title": "Mot du jour"
+    "title": "Mot du jour",
+    "intro": "Devine le mot du jour de cinq lettres en six essais.",
+    "play": "Jouer le mot du jour"
   },
   "invite": {
     "region": "Invitations",

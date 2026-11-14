@@ -95,6 +95,7 @@ export const gameManifestSchema = z
     estimatedMinutes: z.tuple([z.int().positive(), z.int().positive()]),
     contentPacks: z.array(z.string()).optional(),
     lexicons: z.array(z.enum(["all", "common", "blocked"])).optional(),
+    dailyPuzzle: z.literal("word").optional(),
     leaderboards: z.array(
       z.object({
         id: z.string().regex(kebab),

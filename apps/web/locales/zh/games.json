@@ -17,6 +17,8 @@
   "breadcrumb": "导航路径",
   "time": "用时 {time}",
   "playAgain": "再玩一次",
+  "seeGame": "查看游戏",
+  "showResults": "查看结果",
   "results": {
     "best": "最佳：{value}",
     "newBest": "新纪录！",

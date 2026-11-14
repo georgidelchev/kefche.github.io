@@ -1,0 +1,107 @@
+{
+  "name": "Mot du jour",
+  "tagline": "Devine le mot du jour de cinq lettres en six essais.",
+  "description": "Joue gratuitement au Mot du jour : devine le mot quotidien de cinq lettres en six essais, garde ta série et partage ta grille.",
+  "about": [
+    "Word of the Day is a daily word puzzle: guess the five-letter word in six tries. Type any word and press Enter, and each letter is marked: in the right place, in the word but somewhere else, or not in the word at all. Use what you learn to narrow it down before your tries run out.",
+    "Everyone gets the same word each day in their language, and a new one comes at midnight UTC. Solve it day after day to build your streak; your games, wins and how many tries they took are kept for you. When you're done, share your grid of colours with friends: it shows how you got there without giving away a single letter.",
+    "Want more? Practice gives you a random word as often as you like, and you can race friends in a room on the same word. Word of the Day is played in English and Bulgarian, with every guess checked against a full dictionary of the language."
+  ],
+  "howToPlay": [
+    "Choose today's word or practice.",
+    "Type a five-letter word and press Enter. It has to be a real word.",
+    "Each letter is marked: green with a bar if it's in the right place, yellow with a dot if it's in the word but elsewhere, grey if it isn't in the word.",
+    "A letter the word holds once is marked once, so a double letter in your guess can show one mark and one grey.",
+    "Find the word within six guesses. Today's word counts once a day towards your streak.",
+    "Points: 6 for finding the word at the first guess, 5 at the second, down to 1 at the sixth; nothing if you miss."
+  ],
+  "controls": [
+    "Phones and tablets: tap the letters on the keyboard below, then Enter.",
+    "Keyboard: type the letters, Backspace to delete, Enter to guess.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А), and the on-screen keyboard can switch between the phonetic and БДС layouts.",
+    "The keyboard's keys take the colours of your guesses, so you can see which letters are left."
+  ],
+  "tips": [
+    "Start with a word that has several common letters, like vowels and R, S, T or N.",
+    "Use your second guess to test new letters rather than to win straight away.",
+    "Remember that letters can repeat: the answer may have two of the same.",
+    "A grey key means the letter is out: don't spend a guess on it again.",
+    "Practice is a good way to try out opening words without risking your streak."
+  ],
+  "faq": [
+    {
+      "question": "Is Word of the Day free?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "When does the word change?",
+      "answer": "At midnight UTC, the same moment for everyone. The menu shows how long until the next one."
+    },
+    {
+      "question": "How is my streak kept?",
+      "answer": "With an account, on your profile, so it follows you to any device. As a guest, on this device. A streak counts the days in a row you solved the word."
+    },
+    {
+      "question": "Does sharing give the word away?",
+      "answer": "No. What you share is only the grid of colours, with no letters."
+    },
+    {
+      "question": "Can I play more than once a day?",
+      "answer": "Today's word counts once, but practice has a new random word as often as you like."
+    }
+  ],
+  "ui": {
+    "chooseGame": "Choisis une partie",
+    "loadFailed": "La liste de mots ne s'est pas chargée. Réessaie.",
+    "loading": "Préparation des mots…",
+    "loadingToday": "Chargement du mot du jour…",
+    "noWordToday": "Pas de mot aujourd'hui. Essaie l'entraînement.",
+    "doneToday": "Tu as déjà joué le mot du jour.",
+    "todaysWord": "Mot du jour",
+    "todaysWordDetail": "Le même mot pour tous, jusqu'à minuit UTC",
+    "continueDetail": "Continue : {n} essais sur 6 utilisés",
+    "practice": "Entraînement",
+    "practiceDetail": "Un mot au hasard, autant de fois que tu veux",
+    "nextWord": "Prochain mot dans {h} h {m} min",
+    "guessOf": "Essai {n} sur {total}",
+    "board": "Tes essais",
+    "guessN": "Essai {n}",
+    "tileGood": "{letter}, bien placée",
+    "tileNear": "{letter}, dans le mot mais ailleurs",
+    "tileMiss": "{letter}, pas dans le mot",
+    "tooShort": "Cinq lettres, s'il te plaît",
+    "unknownWord": "Pas dans la liste de mots",
+    "repeatWord": "Déjà essayé",
+    "solvedIn": "Trouvé en {n} sur {total} !",
+    "theWordWas": "Le mot était {word}",
+    "share": "Partager",
+    "shared": "Copié : que des couleurs, pas de lettres.",
+    "shareDaily": "kefche Mot du jour {day} : {score}/6",
+    "sharePractice": "kefche Mot du jour, entraînement : {score}/6",
+    "playAgain": "Un autre mot",
+    "menu": "Menu",
+    "newBest": "Nouveau record !",
+    "statsTitle": "Tes mots du jour",
+    "played": "Jouées",
+    "won": "Trouvées",
+    "percent": "{n} %",
+    "streak": "Série",
+    "bestStreak": "Meilleure série",
+    "spreadTitle": "Victoires par essais",
+    "spreadRow": "En {tries} : {n}",
+    "packOption": "Mots en",
+    "packEn": "anglais",
+    "packBg": "bulgare"
+  },
+  "achievements": {
+    "played": {
+      "name": "Forgeur de mots",
+      "description": "Joue {count, plural, one {# partie} other {# parties}}"
+    },
+    "sharp": {
+      "name": "Œil de lynx",
+      "description": "Marque {count} points en une partie : 6 pour un mot trouvé au premier essai, jusqu'à 1 au sixième"
+    }
+  },
+  "leaderboards": {}
+}

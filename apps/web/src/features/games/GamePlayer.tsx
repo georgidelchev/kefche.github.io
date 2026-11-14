@@ -38,6 +38,7 @@ import { setPresenceContext } from "@/features/live/presence-context";
 import { getSupabase } from "@/lib/supabase/client";
 
 import { fetchDaily, startDaily, type DailyChallenge } from "./daily";
+import { dailyAccess } from "./daily-puzzles";
 import { loadGame } from "./loaders";
 import { createPlayRecorder } from "./play-recorder";
 import { createLowTimeSound, gameStorage, Overlay, useGameScreen, VOLUME } from "./player-parts";
@@ -84,6 +85,9 @@ export interface PlayerStrings {
   score: string;
   time: string;
   playAgain: string;
+  /** Sets the results aside to look at the finished game, and brings them back. */
+  seeGame: string;
+  showResults: string;
   /** "Play today's challenge" */
   daily: string;
   results: ResultsStrings;
@@ -129,6 +133,10 @@ export function GamePlayer({
 }: Props) {
   const [phase, setPhase] = useState<Phase>("idle");
   const [result, setResult] = useState<GameResult | null>(null);
+  // A line the game adds about its finish (a word puzzle's answer).
+  const [note, setNote] = useState<string | null>(null);
+  // The results set aside, to look at the finished game.
+  const [resultsHidden, setResultsHidden] = useState(false);
   const [rewards, setRewards] = useState<RewardsState>({ kind: "none" });
   // Each game's number: a late answer about an earlier game is dropped.
   const gameRef = useRef(0);
@@ -238,6 +246,7 @@ export function GamePlayer({
     setMuted(isMuted());
     try {
       const game = await loadGame(id);
+      const dailyPuzzle = dailyAccess(id);
       const stage = stageRef.current;
       if (!stage) return;
       instanceRef.current = game.mount(stage, {
@@ -256,6 +265,7 @@ export function GamePlayer({
         ...(arenaAccess ? { arena: arenaAccess } : {}),
         ...(realtime ? { lives } : {}),
         progress: () => playerProgress(id),
+        ...(dailyPuzzle ? { daily: dailyPuzzle } : {}),
         report: (event) => {
           if (event.type === "turn") {
             setReport((previous) => {
@@ -264,6 +274,8 @@ export function GamePlayer({
             });
           } else if (event.type === "finish") {
             setResult(event.result);
+            setNote(event.note ?? null);
+            setResultsHidden(false);
             setPhase("finished");
             const record = recorder.finish({ id, version }, event.result, event.turns, setup);
             if (!isAccount()) {
@@ -544,7 +556,8 @@ export function GamePlayer({
         )}
 
         <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-auto p-3">
-          <div ref={stageRef} className="flex h-full w-full items-center justify-center" />
+          {/* The game centred by auto margins: one taller than the screen starts at the top and scrolls. */}
+          <div ref={stageRef} className="flex h-full w-full [&>*]:m-auto" />
 
           {naming && arena && (
             <div className="absolute inset-0 z-20 overflow-auto bg-bg p-4">
@@ -639,12 +652,13 @@ export function GamePlayer({
               </Button>
             </Overlay>
           )}
-          {phase === "finished" && (
+          {phase === "finished" && !resultsHidden && (
             <Suspense fallback={null}>
               <GameResults
                 headline={headline}
                 details={
                   <>
+                    {note && <p className="text-lg">{note}</p>}
                     {timedOut && turn && (
                       <p className="text-lg">
                         {fill(turn.strings.outOfTime, { name: seatName(timedOut, turn.strings) })}
@@ -671,6 +685,14 @@ export function GamePlayer({
                     {turn.strings.changeSetup}
                   </Button>
                 )}
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setResultsHidden(true);
+                  }}
+                >
+                  {strings.seeGame}
+                </Button>
                 <Button variant="ghost" onClick={exit}>
                   {strings.exit}
                 </Button>
@@ -678,6 +700,22 @@ export function GamePlayer({
             </Suspense>
           )}
         </div>
+        {/* With the results set aside: a bar under the game, covering none of it. */}
+        {phase === "finished" && resultsHidden && (
+          <div className="flex flex-wrap items-center justify-center gap-3 border-t border-border bg-surface p-3">
+            <Button
+              ref={focusOnMount}
+              onClick={() => {
+                setResultsHidden(false);
+              }}
+            >
+              {strings.showResults}
+            </Button>
+            <Button variant="outline" onClick={restart}>
+              {strings.playAgain}
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );

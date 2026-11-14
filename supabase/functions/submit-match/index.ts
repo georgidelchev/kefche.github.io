@@ -80,7 +80,7 @@ import {
   submitDaily,
   submitToBoards,
 } from "../_shared/leaderboards.ts";
-import { judgeSolo, soloRecordSchema } from "../_shared/solo-play.ts";
+import { dailyWordOf, judgeSolo, soloRecordSchema } from "../_shared/solo-play.ts";
 import { judgeTurn, turnRecordSchema } from "../_shared/turn-play.ts";
 
 const playerBody = z.object({ roomId: z.uuid(), seed: z.string().min(1).max(64) });
@@ -200,6 +200,32 @@ async function stored(admin: SupabaseClient, matchId: string): Promise<Settled> 
     outcome: [Number(rows[0]?.outcome ?? 0), Number(rows[1]?.outcome ?? 0)],
     ratings: rows.map((r) => ({ before: r.rating_before ?? 1500, after: r.rating_after })),
   };
+}
+
+/**
+ * A daily puzzle's day in a config (Word of the Day's word) is the real one:
+ * the server's word for that language and day, today or yesterday (UTC), so
+ * a game begun before midnight can still finish. No day in it holds too.
+ */
+async function dailyPuzzleHolds(
+  admin: SupabaseClient,
+  config: Record<string, unknown> | null,
+  now: Date,
+): Promise<boolean> {
+  if (config === null || !("daily" in config)) return true;
+  const claim = dailyWordOf(config);
+  if (!claim) return false;
+  const today = now.toISOString().slice(0, 10);
+  const yesterday = new Date(now.getTime() - 86_400_000).toISOString().slice(0, 10);
+  if (claim.day !== today && claim.day !== yesterday) return false;
+  const row = await admin
+    .from("words_of_the_day")
+    .select("word")
+    .eq("locale", claim.pack)
+    .eq("day", claim.day)
+    .maybeSingle();
+  if (row.error) throw new Error(`word of the day: ${row.error.message}`);
+  return row.data?.word === claim.word;
 }
 
 /** Decides the game and, once it's over, stores the result (retrying if a rating moved meanwhile). */
@@ -344,11 +370,14 @@ async function submitPlay(admin: SupabaseClient, user: User, body: unknown): Pro
   if (record.mode === "solo") {
     if (game.kind !== "race") return fail("bad_request", 400);
     const judged = judgeSolo(game, issued, record);
-    // A daily game played with other settings than the day's is set aside.
+    // A daily game played with other settings than the day's is set aside,
+    // as is a daily puzzle whose day isn't the real one.
     const v =
       daily && judged.status === "counted" && !playedAsDaily(daily.config, judged.config)
         ? { ...judged, status: "review" as const, reason: "bad-config" }
-        : judged;
+        : judged.status === "counted" && !(await dailyPuzzleHolds(admin, judged.config, issued.now))
+          ? { ...judged, status: "review" as const, reason: "bad-daily" }
+          : judged;
     const counted = { score: v.score, timeMs: v.timeMs, assisted: v.assisted };
     result = {
       status: v.status,

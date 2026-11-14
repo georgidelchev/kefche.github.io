@@ -43,6 +43,8 @@ export function playerStrings(
     score: t("games:score", { score: "{score}" }),
     time: t("games:time", { time: "{time}" }),
     playAgain: t("games:playAgain"),
+    seeGame: t("games:seeGame"),
+    showResults: t("games:showResults"),
     daily: t("games:daily.play"),
     results: resultsStrings(t, locale, game),
   };

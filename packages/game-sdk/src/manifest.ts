@@ -205,6 +205,13 @@ export interface GameManifest {
    * server replays it.
    */
   lexicons?: ("all" | "common" | "blocked")[];
+  /**
+   * A daily puzzle (Phase 13): played alone, its config may also carry the
+   * day's puzzle as `daily`, which the server checks against its own.
+   * "word": `{ day, word }`, the day's word in the config's `pack`
+   * (words_of_the_day).
+   */
+  dailyPuzzle?: "word";
   achievements: AchievementDef[];
   scoreValidation: ScoreValidationRule;
   tags: string[];

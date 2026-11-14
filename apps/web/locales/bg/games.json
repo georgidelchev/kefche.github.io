@@ -17,6 +17,8 @@
   "breadcrumb": "Навигация",
   "time": "Време {time}",
   "playAgain": "Играй отново",
+  "seeGame": "Към играта",
+  "showResults": "Покажи резултата",
   "results": {
     "best": "Най-добро: {value}",
     "newBest": "Нов рекорд!",

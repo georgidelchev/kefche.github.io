@@ -143,6 +143,20 @@ isOneToOne: false
                   Relationships: [
                     
                   ]
+                },"daily_streaks": {
+                  Row: {
+                    "best": number,"current": number,"game_id": string,"last_day": string | null,"last_won": string | null,"locale": string,"played": number,"spread": (number)[],"user_id": string,"won": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "best"?: number,"current"?: number,"game_id": string,"last_day"?: string | null,"last_won"?: string | null,"locale": string,"played"?: number,"spread"?: (number)[],"user_id": string,"won"?: number
+                  }
+                  Update: {
+                    "best"?: number,"current"?: number,"game_id"?: string,"last_day"?: string | null,"last_won"?: string | null,"locale"?: string,"played"?: number,"spread"?: (number)[],"user_id"?: string,"won"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"feature_flags": {
                   Row: {
                     "enabled": boolean,"key": string,"updated_at": string,"updated_by": string | null
@@ -614,6 +628,9 @@ isOneToOne: false
 "daily_challenge":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"daily_streak":
+{ Args: { "p_game": string,"p_locale": string }; Returns: Json
+                           },
 "daily_submit":
 { Args: { "p_day": string,"p_entry": Json,"p_match": string,"p_user": string }; Returns: Json
                            },
@@ -640,6 +657,9 @@ isOneToOne: false
                            },
 "due_rated_games":
 { Args: { "p_limit": number }; Returns: string[]
+                           },
+"finish_daily_word":
+{ Args: { "p_guesses": (string)[],"p_locale": string }; Returns: Json
                            },
 "finish_room":
 { Args: { "p_room": string }; Returns: undefined

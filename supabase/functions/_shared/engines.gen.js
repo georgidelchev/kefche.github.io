@@ -149,13 +149,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine68, bots2, options) {
-    this.engine = engine68;
+  constructor(engine69, bots2, options) {
+    this.engine = engine69;
     this.bots = bots2;
     this.options = options;
-    this.world = engine68.createWorld(options.config, options.seed);
+    this.world = engine69.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine68.ticksPerSecond / engine68.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine69.ticksPerSecond / engine69.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -387,11 +387,11 @@ var ByteReader = class {
     return v;
   }
   varint() {
-    let result40 = 0;
+    let result41 = 0;
     for (let shift = 0; shift < 35; shift += 7) {
       const byte = this.u8();
-      result40 |= (byte & 127) << shift;
-      if (byte < 128) return result40 >>> 0;
+      result41 |= (byte & 127) << shift;
+      if (byte < 128) return result41 >>> 0;
     }
     throw new RangeError("varint longer than 5 bytes");
   }
@@ -707,7 +707,7 @@ function lexiconOf(lang, name) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest68) => manifest68;
+var defineManifest = (manifest69) => manifest69;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -5394,8 +5394,8 @@ function peg$parse(input, options) {
   var peg$f9 = function(line2) {
     return line2;
   };
-  var peg$f10 = function(result40, comment) {
-    return { result: result40, comment };
+  var peg$f10 = function(result41, comment) {
+    return { result: result41, comment };
   };
   var peg$currPos = options.peg$currPos | 0;
   var peg$posDetailsCache = [{ line: 1, column: 1 }];
@@ -6382,12 +6382,12 @@ function xoroshiro128(state) {
   return function() {
     let s0 = BigInt(state & MASK64);
     let s1 = BigInt(state >> 64n & MASK64);
-    const result40 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
+    const result41 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
     s1 ^= s0;
     s0 = (rotl(s0, 24n) ^ s1 ^ s1 << 16n) & MASK64;
     s1 = rotl(s1, 37n);
     state = s1 << 64n | s0;
-    return result40;
+    return result41;
   };
 }
 var rand = xoroshiro128(0xa187eb39cdcaed8f31c4b365b102e01en);
@@ -8090,16 +8090,16 @@ var Chess = class {
     return move3;
   }
   pgn({ newline = "\n", maxWidth = 0 } = {}) {
-    const result40 = [];
+    const result41 = [];
     let headerExists = false;
     for (const i in this._header) {
       const headerTag = this._header[i];
       if (headerTag)
-        result40.push(`[${i} "${this._header[i]}"]` + newline);
+        result41.push(`[${i} "${this._header[i]}"]` + newline);
       headerExists = true;
     }
     if (headerExists && this._history.length) {
-      result40.push(newline);
+      result41.push(newline);
     }
     const appendComment = (moveString2) => {
       const comment = this._comments[this.fen()];
@@ -8141,11 +8141,11 @@ var Chess = class {
     }
     moves.push(this._header.Result || "*");
     if (maxWidth === 0) {
-      return result40.join("") + moves.join(" ");
+      return result41.join("") + moves.join(" ");
     }
     const strip = function() {
-      if (result40.length > 0 && result40[result40.length - 1] === " ") {
-        result40.pop();
+      if (result41.length > 0 && result41[result41.length - 1] === " ") {
+        result41.pop();
         return true;
       }
       return false;
@@ -8159,12 +8159,12 @@ var Chess = class {
           while (strip()) {
             width--;
           }
-          result40.push(newline);
+          result41.push(newline);
           width = 0;
         }
-        result40.push(token);
+        result41.push(token);
         width += token.length;
-        result40.push(" ");
+        result41.push(" ");
         width++;
       }
       if (strip()) {
@@ -8181,19 +8181,19 @@ var Chess = class {
         }
       }
       if (currentWidth + moves[i].length > maxWidth && i !== 0) {
-        if (result40[result40.length - 1] === " ") {
-          result40.pop();
+        if (result41[result41.length - 1] === " ") {
+          result41.pop();
         }
-        result40.push(newline);
+        result41.push(newline);
         currentWidth = 0;
       } else if (i !== 0) {
-        result40.push(" ");
+        result41.push(" ");
         currentWidth++;
       }
-      result40.push(moves[i]);
+      result41.push(moves[i]);
       currentWidth += moves[i].length;
     }
-    return result40.join("");
+    return result41.join("");
   }
   /**
    * @deprecated Use `setHeader` and `getHeaders` instead. This method will return null header tags (which is not what you want)
@@ -8270,9 +8270,9 @@ var Chess = class {
       }
       node2 = node2.variations[0];
     }
-    const result40 = parsedPgn.result;
-    if (result40 && Object.keys(this._header).length && this._header["Result"] !== result40) {
-      this.setHeader("Result", result40);
+    const result41 = parsedPgn.result;
+    if (result41 && Object.keys(this._header).length && this._header["Result"] !== result41) {
+      this.setHeader("Result", result41);
     }
   }
   /*
@@ -8588,8 +8588,8 @@ var Chess = class {
       }
     }
     this._updateCastlingRights();
-    const result40 = this.getCastlingRights(color);
-    return (rights[KING2] === void 0 || rights[KING2] === result40[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result40[QUEEN2]);
+    const result41 = this.getCastlingRights(color);
+    return (rights[KING2] === void 0 || rights[KING2] === result41[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result41[QUEEN2]);
   }
   getCastlingRights(color) {
     return {
@@ -15223,8 +15223,8 @@ function applyAction15(s, seat, action) {
   const spot = next3.shot;
   const dive = next3.dive;
   const reach2 = columnOf(spot) === dive && !(isHigh(spot) && columnOf(spot) !== 1);
-  const result40 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
-  const kick = { shooter: shooterOf(s), spot, dive, result: result40 };
+  const result41 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
+  const kick = { shooter: shooterOf(s), spot, dive, result: result41 };
   return decide({ ...next3, shot: null, dive: null, kicks: [...s.kicks, kick], rng: rng.state });
 }
 function currentSeats15(s) {
@@ -18871,8 +18871,1205 @@ var manifest65 = defineManifest({
   tags: ["words", "family", "multiplayer"]
 });
 
-// packages/games/word-search/content/bg.json
+// packages/games/word-of-the-day/content/bg.json
 var bg_default4 = {
+  answers: [
+    "\u0430\u043A\u043E\u0440\u0434",
+    "\u0430\u043A\u0443\u043B\u0430",
+    "\u0430\u0440\u0435\u043D\u0430",
+    "\u0430\u0442\u043B\u0430\u0441",
+    "\u0431\u0430\u0432\u0435\u043D",
+    "\u0431\u0430\u0433\u0430\u0436",
+    "\u0431\u0430\u0434\u0435\u043C",
+    "\u0431\u0430\u043B\u043E\u043D",
+    "\u0431\u0430\u043D\u0430\u043D",
+    "\u0431\u0430\u043D\u043A\u0430",
+    "\u0431\u0430\u0440\u0436\u0430",
+    "\u0431\u0435\u0433\u0430\u0447",
+    "\u0431\u0435\u0434\u0435\u043D",
+    "\u0431\u0438\u043B\u0435\u0442",
+    "\u0431\u0438\u043B\u043A\u0430",
+    "\u0431\u0438\u0441\u0435\u0440",
+    "\u0431\u043B\u0443\u0437\u0430",
+    "\u0431\u043E\u0431\u044A\u0440",
+    "\u0431\u043E\u0433\u0430\u0442",
+    "\u0431\u043E\u043B\u0435\u043D",
+    "\u0431\u043E\u0442\u0443\u0448",
+    "\u0431\u0440\u0430\u0432\u0430",
+    "\u0431\u0440\u0430\u0434\u0430",
+    "\u0431\u0440\u0435\u0437\u0430",
+    "\u0431\u0443\u043A\u0432\u0430",
+    "\u0431\u0443\u043A\u0435\u0442",
+    "\u0431\u0443\u0442\u043E\u043D",
+    "\u0431\u0443\u0445\u0430\u043B",
+    "\u0432\u0430\u0433\u043E\u043D",
+    "\u0432\u0430\u0444\u043B\u0430",
+    "\u0432\u0435\u0436\u0434\u0430",
+    "\u0432\u0435\u0440\u0435\u043D",
+    "\u0432\u0435\u0441\u0435\u043B",
+    "\u0432\u0435\u0447\u0435\u0440",
+    "\u0432\u0438\u0434\u0440\u0430",
+    "\u0432\u0438\u0440\u0443\u0441",
+    "\u0432\u0438\u0445\u044A\u0440",
+    "\u0432\u0438\u0448\u043D\u0430",
+    "\u0432\u043E\u0434\u0430\u0447",
+    "\u0432\u043E\u0439\u043D\u0430",
+    "\u0432\u043E\u043B\u0430\u043D",
+    "\u0432\u0440\u0430\u043D\u0430",
+    "\u0432\u0440\u0430\u0442\u0430",
+    "\u0432\u0440\u0435\u043C\u0435",
+    "\u0432\u044A\u0437\u0435\u043B",
+    "\u0432\u044A\u043B\u043D\u0430",
+    "\u0432\u044F\u0442\u044A\u0440",
+    "\u0433\u0430\u0439\u0434\u0430",
+    "\u0433\u0430\u0440\u0430\u0436",
+    "\u0433\u0430\u0440\u0433\u0430",
+    "\u0433\u0435\u0440\u043E\u0439",
+    "\u0433\u043B\u0430\u0432\u0430",
+    "\u0433\u043B\u0438\u043D\u0430",
+    "\u0433\u043E\u043B\u044F\u043C",
+    "\u0433\u043E\u0440\u0435\u0449",
+    "\u0433\u043E\u0442\u0432\u044F",
+    "\u0433\u0440\u0438\u0432\u0430",
+    "\u0433\u0443\u0449\u0435\u0440",
+    "\u0433\u044A\u043B\u044A\u0431",
+    "\u0433\u044A\u0440\u0434\u0438",
+    "\u0433\u044A\u0440\u043D\u0435",
+    "\u0433\u044A\u0441\u043A\u0430",
+    "\u0434\u0435\u0431\u0435\u043B",
+    "\u0434\u0435\u043B\u0432\u0430",
+    "\u0434\u0438\u0432\u0430\u043D",
+    "\u0434\u0438\u0435\u0442\u0430",
+    "\u0434\u043E\u0431\u044A\u0440",
+    "\u0434\u043E\u043C\u0430\u0442",
+    "\u0434\u0440\u0430\u043C\u0430",
+    "\u0434\u044A\u043B\u044A\u0433",
+    "\u0434\u044A\u0440\u0432\u043E",
+    "\u0434\u044A\u0441\u043A\u0430",
+    "\u0435\u0432\u0442\u0438\u043D",
+    "\u0435\u0437\u0435\u0440\u043E",
+    "\u0435\u043A\u0440\u0430\u043D",
+    "\u0436\u0435\u0442\u0432\u0430",
+    "\u0436\u0438\u0432\u043E\u0442",
+    "\u0436\u0438\u0440\u0430\u0444",
+    "\u0436\u044A\u043B\u044A\u0434",
+    "\u0437\u0430\u0432\u0435\u0442",
+    "\u0437\u0430\u0432\u043E\u0439",
+    "\u0437\u0430\u043B\u0435\u0437",
+    "\u0437\u0430\u043B\u0438\u0432",
+    "\u0437\u0430\u043B\u043E\u0433",
+    "\u0437\u0430\u043C\u044A\u043A",
+    "\u0437\u0430\u043F\u0430\u0441",
+    "\u0437\u0430\u0445\u0430\u0440",
+    "\u0437\u0432\u0435\u043D\u043E",
+    "\u0437\u0434\u0440\u0430\u0432",
+    "\u0437\u0435\u0431\u0440\u0430",
+    "\u0437\u0435\u043B\u0435\u043D",
+    "\u0437\u0435\u043B\u043A\u0430",
+    "\u0437\u043B\u0430\u0442\u043E",
+    "\u0437\u043D\u0430\u043C\u0435",
+    "\u0437\u044A\u0440\u043D\u043E",
+    "\u0438\u0433\u0440\u0430\u044F",
+    "\u0438\u0437\u0432\u043E\u0434",
+    "\u0438\u0437\u0432\u043E\u0440",
+    "\u0438\u0437\u0445\u043E\u0434",
+    "\u043A\u0430\u0431\u0435\u043B",
+    "\u043A\u0430\u0432\u0430\u043B",
+    "\u043A\u0430\u0434\u0435\u0442",
+    "\u043A\u0430\u0434\u044A\u0440",
+    "\u043A\u0430\u0437\u0430\u043D",
+    "\u043A\u0430\u043C\u044A\u043A",
+    "\u043A\u0430\u043D\u0430\u043B",
+    "\u043A\u0430\u043F\u0430\u043A",
+    "\u043A\u0430\u043F\u0430\u043D",
+    "\u043A\u0430\u043F\u043A\u0430",
+    "\u043A\u0430\u0440\u0442\u0430",
+    "\u043A\u0430\u0442\u0435\u0440",
+    "\u043A\u0430\u0444\u044F\u0432",
+    "\u043A\u0432\u043E\u0442\u0430",
+    "\u043A\u0435\u0434\u044A\u0440",
+    "\u043A\u0435\u0441\u0438\u044F",
+    "\u043A\u0438\u043B\u0438\u043C",
+    "\u043A\u0438\u043E\u0441\u043A",
+    "\u043A\u0438\u0441\u0435\u043B",
+    "\u043A\u0438\u0442\u043A\u0430",
+    "\u043A\u0438\u0444\u043B\u0430",
+    "\u043A\u043B\u0430\u0434\u0430",
+    "\u043A\u043B\u0430\u0441\u0430",
+    "\u043A\u043B\u0435\u0449\u0438",
+    "\u043A\u043D\u0438\u0433\u0430",
+    "\u043A\u043E\u0430\u043B\u0430",
+    "\u043A\u043E\u043B\u0430\u043D",
+    "\u043A\u043E\u043C\u0430\u0440",
+    "\u043A\u043E\u043C\u0438\u043D",
+    "\u043A\u043E\u043D\u0435\u0446",
+    "\u043A\u043E\u043F\u0438\u0435",
+    "\u043A\u043E\u043F\u0447\u0435",
+    "\u043A\u043E\u043F\u044A\u0440",
+    "\u043A\u043E\u0440\u0430\u0431",
+    "\u043A\u043E\u0440\u0430\u043B",
+    "\u043A\u043E\u0440\u0435\u043C",
+    "\u043A\u043E\u0440\u0435\u043D",
+    "\u043A\u043E\u0442\u0432\u0430",
+    "\u043A\u043E\u0442\u0435\u043B",
+    "\u043A\u043E\u0442\u043A\u0430",
+    "\u043A\u043E\u0448\u0435\u0440",
+    "\u043A\u043E\u0448\u0447\u0435",
+    "\u043A\u0440\u0430\u0432\u0430",
+    "\u043A\u0440\u0438\u043B\u043E",
+    "\u043A\u0440\u0443\u0448\u0430",
+    "\u043A\u0440\u044A\u0441\u0442",
+    "\u043A\u0443\u0431\u0447\u0435",
+    "\u043A\u0443\u043A\u043B\u0430",
+    "\u043A\u0443\u043F\u043E\u043B",
+    "\u043A\u0443\u0440\u0430\u0436",
+    "\u043A\u0443\u0442\u0438\u044F",
+    "\u043A\u0443\u0442\u0440\u0435",
+    "\u043A\u0443\u0444\u0430\u0440",
+    "\u043A\u0443\u0445\u043D\u044F",
+    "\u043A\u044A\u043B\u0431\u043E",
+    "\u043A\u044A\u0440\u043F\u0430",
+    "\u043A\u044A\u0441\u0435\u043D",
+    "\u043B\u0430\u0432\u043A\u0430",
+    "\u043B\u0430\u0433\u0435\u0440",
+    "\u043B\u0430\u043A\u044A\u0442",
+    "\u043B\u0430\u043C\u043F\u0430",
+    "\u043B\u0435\u0431\u0435\u0434",
+    "\u043B\u0435\u0433\u043B\u043E",
+    "\u043B\u0435\u043A\u0430\u0440",
+    "\u043B\u0435\u043D\u0442\u0430",
+    "\u043B\u0435\u0441\u0435\u043D",
+    "\u043B\u0438\u043B\u0430\u0432",
+    "\u043B\u0438\u043B\u0438\u044F",
+    "\u043B\u0438\u043C\u043E\u043D",
+    "\u043B\u0438\u043D\u0438\u044F",
+    "\u043B\u0438\u0441\u0442\u043E",
+    "\u043B\u043E\u0432\u0435\u0446",
+    "\u043B\u043E\u0432\u044A\u043A",
+    "\u043B\u043E\u0434\u043A\u0430",
+    "\u043B\u044A\u0432\u0447\u0435",
+    "\u043B\u044E\u0431\u0438\u043C",
+    "\u043B\u044E\u0431\u043E\u0432",
+    "\u043B\u044E\u043B\u043A\u0430",
+    "\u043C\u0430\u0433\u0438\u044F",
+    "\u043C\u0430\u0439\u043A\u0430",
+    "\u043C\u0430\u043B\u044A\u043A",
+    "\u043C\u0430\u0440\u043A\u0430",
+    "\u043C\u0430\u0440\u043B\u044F",
+    "\u043C\u0430\u0441\u043A\u0430",
+    "\u043C\u0430\u0441\u043B\u043E",
+    "\u043C\u0430\u0447\u0442\u0430",
+    "\u043C\u0435\u0434\u0430\u043B",
+    "\u043C\u0435\u043B\u0431\u0430",
+    "\u043C\u0435\u0441\u0430\u0440",
+    "\u043C\u0435\u0441\u0435\u0446",
+    "\u043C\u0435\u0442\u043B\u0430",
+    "\u043C\u0435\u0442\u0440\u043E",
+    "\u043C\u0435\u0447\u043A\u0430",
+    "\u043C\u0435\u0447\u0442\u0430",
+    "\u043C\u0438\u0432\u043A\u0430",
+    "\u043C\u0438\u0441\u0438\u044F",
+    "\u043C\u0438\u0441\u043B\u044F",
+    "\u043C\u0438\u0448\u043A\u0430",
+    "\u043C\u043B\u044F\u043A\u043E",
+    "\u043C\u043E\u0434\u0435\u043B",
+    "\u043C\u043E\u0437\u044A\u043A",
+    "\u043C\u043E\u043A\u044A\u0440",
+    "\u043C\u043E\u043B\u0438\u0432",
+    "\u043C\u043E\u043C\u0447\u0435",
+    "\u043C\u043E\u0440\u044F\u043A",
+    "\u043C\u043E\u0442\u043E\u0440",
+    "\u043C\u0440\u0435\u0436\u0430",
+    "\u043C\u0443\u0437\u0435\u0439",
+    "\u043C\u044A\u0433\u043B\u0430",
+    "\u043C\u044A\u0434\u044A\u0440",
+    "\u043D\u0430\u0432\u0438\u043A",
+    "\u043D\u0438\u0441\u044A\u043A",
+    "\u043D\u043E\u0436\u0447\u0435",
+    "\u043D\u043E\u043A\u044A\u0442",
+    "\u043E\u0431\u0438\u0446\u0430",
+    "\u043E\u0431\u043B\u0430\u043A",
+    "\u043E\u0431\u043B\u043E\u0433",
+    "\u043E\u0431\u0440\u0430\u0437",
+    "\u043E\u0432\u0447\u0430\u0440",
+    "\u043E\u043A\u0435\u0430\u043D",
+    "\u043E\u043F\u0435\u0440\u0430",
+    "\u043E\u0440\u0435\u043E\u043B",
+    "\u043E\u0441\u0442\u044A\u0440",
+    "\u043E\u0442\u0431\u043E\u0440",
+    "\u043E\u0442\u0434\u0438\u0445",
+    "\u043E\u0442\u0440\u044F\u0434",
+    "\u043E\u0445\u043B\u044E\u0432",
+    "\u043F\u0430\u0437\u0430\u0440",
+    "\u043F\u0430\u0437\u0430\u0447",
+    "\u043F\u0430\u0437\u0432\u0430",
+    "\u043F\u0430\u043B\u043A\u0430",
+    "\u043F\u0430\u043B\u043C\u0430",
+    "\u043F\u0430\u043B\u0442\u043E",
+    "\u043F\u0430\u043C\u0443\u043A",
+    "\u043F\u0430\u043D\u0434\u0430",
+    "\u043F\u0430\u043D\u0435\u0440",
+    "\u043F\u0430\u0440\u0430\u0434",
+    "\u043F\u0430\u0440\u0447\u0435",
+    "\u043F\u0430\u0441\u0430\u0436",
+    "\u043F\u0430\u0441\u0442\u0430",
+    "\u043F\u0430\u0442\u043A\u0430",
+    "\u043F\u0430\u0443\u0437\u0430",
+    "\u043F\u0435\u0432\u0435\u0446",
+    "\u043F\u0435\u0439\u043A\u0430",
+    "\u043F\u0435\u043A\u0430\u0440",
+    "\u043F\u0435\u043B\u0438\u043D",
+    "\u043F\u0435\u043F\u0435\u043B",
+    "\u043F\u0435\u0440\u0434\u0435",
+    "\u043F\u0435\u0440\u043B\u0430",
+    "\u043F\u0435\u0441\u0435\u043D",
+    "\u043F\u0435\u0447\u0430\u0442",
+    "\u043F\u0435\u0447\u043A\u0430",
+    "\u043F\u0435\u0448\u043A\u0430",
+    "\u043F\u0438\u0430\u043D\u043E",
+    "\u043F\u0438\u0435\u0441\u0430",
+    "\u043F\u0438\u043B\u0430\u0444",
+    "\u043F\u0438\u043B\u043E\u0442",
+    "\u043F\u0438\u043F\u0435\u0440",
+    "\u043F\u0438\u0440\u043E\u0433",
+    "\u043F\u0438\u0440\u043E\u043D",
+    "\u043F\u0438\u0441\u043C\u043E",
+    "\u043F\u0438\u0441\u0442\u0430",
+    "\u043F\u0438\u0441\u044A\u043A",
+    "\u043F\u0438\u0442\u0430\u043C",
+    "\u043F\u043B\u0430\u0442\u043E",
+    "\u043F\u043B\u043E\u0447\u0430",
+    "\u043F\u043E\u0432\u043E\u0434",
+    "\u043F\u043E\u0435\u043C\u0430",
+    "\u043F\u043E\u0436\u0430\u0440",
+    "\u043F\u043E\u043B\u0435\u0442",
+    "\u043F\u043E\u043B\u043A\u0430",
+    "\u043F\u043E\u0440\u0438\u0432",
+    "\u043F\u043E\u0440\u0442\u0430",
+    "\u043F\u043E\u0441\u0435\u0432",
+    "\u043F\u043E\u0442\u043E\u043A",
+    "\u043F\u0440\u0430\u0441\u0435",
+    "\u043F\u0440\u0438\u043D\u0446",
+    "\u043F\u0440\u043E\u0431\u0430",
+    "\u043F\u0440\u044A\u0441\u0442",
+    "\u043F\u0442\u0438\u0446\u0430",
+    "\u043F\u0443\u0434\u0435\u043B",
+    "\u043F\u0443\u0448\u0435\u043A",
+    "\u043F\u0443\u0448\u043A\u0430",
+    "\u043F\u0447\u0435\u043B\u0430",
+    "\u043F\u044A\u043B\u0435\u043D",
+    "\u043F\u044A\u043F\u0435\u0448",
+    "\u043F\u044F\u0441\u044A\u043A",
+    "\u0440\u0430\u0434\u0438\u043E",
+    "\u0440\u0430\u043A\u0438\u044F",
+    "\u0440\u0430\u043C\u043A\u0430",
+    "\u0440\u0430\u043C\u043F\u0430",
+    "\u0440\u0430\u043D\u0435\u043D",
+    "\u0440\u0435\u0431\u0440\u043E",
+    "\u0440\u0438\u0431\u0430\u0440",
+    "\u0440\u0438\u0431\u043A\u0430",
+    "\u0440\u0438\u0446\u0430\u0440",
+    "\u0440\u043E\u0433\u0430\u0447",
+    "\u0440\u043E\u0437\u043E\u0432",
+    "\u0440\u043E\u043A\u043B\u044F",
+    "\u0440\u043E\u043C\u0430\u043D",
+    "\u0440\u0443\u0431\u0438\u043D",
+    "\u0440\u044A\u0436\u0434\u0430",
+    "\u0440\u044A\u0436\u0435\u043D",
+    "\u0440\u044A\u043A\u0430\u0432",
+    "\u0441\u0430\u043B\u043E\u043D",
+    "\u0441\u0430\u043F\u0443\u043D",
+    "\u0441\u0430\u0443\u043D\u0430",
+    "\u0441\u0432\u0438\u043B\u0430",
+    "\u0441\u0435\u0437\u043E\u043D",
+    "\u0441\u0435\u043C\u043A\u0430",
+    "\u0441\u0435\u0440\u0438\u044F",
+    "\u0441\u0435\u0440\u0443\u043C",
+    "\u0441\u0438\u043B\u0435\u043D",
+    "\u0441\u0438\u0440\u0430\u043A",
+    "\u0441\u043A\u0430\u043B\u0430",
+    "\u0441\u043A\u0438\u0446\u0430",
+    "\u0441\u043A\u043B\u0430\u0434",
+    "\u0441\u043A\u0440\u0435\u0436",
+    "\u0441\u043B\u0430\u043C\u0430",
+    "\u0441\u043B\u0430\u043D\u0430",
+    "\u0441\u043B\u0438\u0432\u0430",
+    "\u0441\u043C\u043E\u043B\u0430",
+    "\u0441\u043C\u044F\u043D\u0430",
+    "\u0441\u043D\u0430\u0445\u0430",
+    "\u0441\u043E\u043A\u043E\u043B",
+    "\u0441\u043E\u043B\u0435\u043D",
+    "\u0441\u043E\u043D\u0435\u0442",
+    "\u0441\u043E\u0444\u0440\u0430",
+    "\u0441\u043F\u0438\u0446\u0430",
+    "\u0441\u043F\u043E\u0440\u0442",
+    "\u0441\u0440\u0435\u0449\u0430",
+    "\u0441\u0442\u0430\u0434\u043E",
+    "\u0441\u0442\u0430\u0440\u0442",
+    "\u0441\u0442\u0435\u043D\u0430",
+    "\u0441\u0442\u043E\u043A\u0430",
+    "\u0441\u0442\u0440\u0430\u0445",
+    "\u0441\u0442\u0440\u044A\u043A",
+    "\u0441\u0442\u044A\u043B\u0431",
+    "\u0441\u0443\u043A\u043D\u043E",
+    "\u0441\u0446\u0435\u043D\u0430",
+    "\u0441\u044A\u0432\u0435\u0442",
+    "\u0441\u044A\u0434\u0438\u044F",
+    "\u0441\u044A\u0440\u043D\u0430",
+    "\u0441\u044A\u0440\u0446\u0435",
+    "\u0441\u044A\u0441\u0435\u0434",
+    "\u0441\u044F\u043D\u043A\u0430",
+    "\u0442\u0430\u0431\u043B\u043E",
+    "\u0442\u0430\u0432\u0430\u043D",
+    "\u0442\u0430\u043A\u0441\u0430",
+    "\u0442\u0430\u043A\u0441\u0438",
+    "\u0442\u0430\u043B\u043E\u043D",
+    "\u0442\u0430\u043D\u0433\u043E",
+    "\u0442\u0430\u043F\u0435\u0442",
+    "\u0442\u0432\u044A\u0440\u0434",
+    "\u0442\u0435\u0436\u044A\u043A",
+    "\u0442\u0435\u043D\u0438\u0441",
+    "\u0442\u0435\u043D\u043E\u0440",
+    "\u0442\u0435\u0440\u0435\u043D",
+    "\u0442\u0435\u0441\u0435\u043D",
+    "\u0442\u0435\u0441\u0442\u043E",
+    "\u0442\u0438\u0430\u0440\u0430",
+    "\u0442\u0438\u0433\u0430\u043D",
+    "\u0442\u0438\u0433\u044A\u0440",
+    "\u0442\u0438\u043A\u0432\u0430",
+    "\u0442\u0438\u0447\u0430\u043C",
+    "\u0442\u043E\u0432\u0430\u0440",
+    "\u0442\u043E\u043F\u0430\u0437",
+    "\u0442\u043E\u043F\u043A\u0430",
+    "\u0442\u043E\u043F\u044A\u043B",
+    "\u0442\u043E\u0440\u0431\u0430",
+    "\u0442\u043E\u0440\u0442\u0430",
+    "\u0442\u043E\u0447\u043A\u0430",
+    "\u0442\u043E\u044F\u0433\u0430",
+    "\u0442\u0440\u0435\u0432\u0430",
+    "\u0442\u0440\u0438\u043E\u043D",
+    "\u0442\u0440\u044A\u0431\u0430",
+    "\u0442\u0440\u044A\u0441\u0442",
+    "\u0442\u0443\u043D\u0435\u043B",
+    "\u0442\u0443\u0445\u043B\u0430",
+    "\u0442\u044A\u0436\u0435\u043D",
+    "\u0442\u044A\u043C\u0435\u043D",
+    "\u0442\u044A\u043D\u044A\u043A",
+    "\u0442\u044A\u043F\u0430\u043D",
+    "\u0442\u044A\u0440\u0441\u044F",
+    "\u0442\u044E\u043B\u0435\u043D",
+    "\u0443\u043B\u0438\u0446\u0430",
+    "\u0443\u0441\u043F\u0435\u0445",
+    "\u0443\u0441\u0442\u043D\u0430",
+    "\u0444\u0430\u0437\u0430\u043D",
+    "\u0444\u0430\u0441\u0443\u043B",
+    "\u0444\u0435\u043D\u0435\u0440",
+    "\u0444\u0435\u0440\u043C\u0430",
+    "\u0444\u0438\u043B\u0438\u044F",
+    "\u0444\u043E\u043A\u0443\u0441",
+    "\u0444\u043E\u0440\u043C\u0430",
+    "\u0444\u0440\u043E\u043D\u0442",
+    "\u0444\u0443\u0440\u0438\u044F",
+    "\u0444\u0443\u0440\u043D\u0430",
+    "\u0445\u0430\u043B\u0430\u0442",
+    "\u0445\u0430\u043B\u0432\u0430",
+    "\u0445\u0430\u043C\u0430\u043A",
+    "\u0445\u0430\u043C\u0443\u0442",
+    "\u0445\u0430\u043F\u043A\u0430",
+    "\u0445\u0438\u0435\u043D\u0430",
+    "\u0445\u0438\u0442\u044A\u0440",
+    "\u0445\u043E\u0431\u043E\u0442",
+    "\u0445\u043E\u043A\u0435\u0439",
+    "\u0445\u0443\u043C\u043E\u0440",
+    "\u0446\u0432\u0435\u0442\u0435",
+    "\u0446\u0438\u0444\u0440\u0430",
+    "\u0447\u0430\u0434\u044A\u0440",
+    "\u0447\u0430\u0439\u043A\u0430",
+    "\u0447\u0430\u043A\u0430\u043B",
+    "\u0447\u0430\u043D\u0442\u0430",
+    "\u0447\u0430\u043F\u043B\u0430",
+    "\u0447\u0430\u0448\u043A\u0430",
+    "\u0447\u0435\u0440\u0433\u0430",
+    "\u0447\u0435\u0440\u0435\u043D",
+    "\u0447\u0435\u0441\u044A\u043D",
+    "\u0447\u0435\u0442\u043A\u0430",
+    "\u0447\u0435\u0448\u043C\u0430",
+    "\u0447\u0438\u043D\u0438\u044F",
+    "\u0447\u0438\u0441\u043B\u043E",
+    "\u0447\u043E\u0432\u0435\u043A",
+    "\u0447\u043E\u0440\u0430\u043F",
+    "\u0447\u0443\u0447\u0443\u0440",
+    "\u0448\u0430\u0439\u043A\u0430",
+    "\u0448\u0430\u043F\u043A\u0430",
+    "\u0448\u0430\u0440\u043A\u0430",
+    "\u0448\u0435\u0439\u043D\u0430",
+    "\u0448\u0438\u0432\u0430\u0447",
+    "\u0448\u0438\u043F\u043A\u0430",
+    "\u0448\u0438\u0440\u043E\u043A",
+    "\u0448\u0438\u0444\u044A\u0440",
+    "\u0448\u043E\u0440\u0442\u0438",
+    "\u0448\u0443\u043C\u0435\u043D",
+    "\u0448\u0443\u043D\u043A\u0430",
+    "\u0449\u0443\u0440\u0435\u0446",
+    "\u044E\u043C\u0440\u0443\u043A",
+    "\u044F\u0433\u043E\u0434\u0430",
+    "\u044F\u0433\u0443\u0430\u0440"
+  ]
+};
+
+// packages/games/word-of-the-day/content/en.json
+var en_default4 = {
+  answers: [
+    "about",
+    "above",
+    "actor",
+    "acute",
+    "adapt",
+    "admit",
+    "adopt",
+    "adult",
+    "after",
+    "again",
+    "agent",
+    "agree",
+    "ahead",
+    "alarm",
+    "album",
+    "alert",
+    "alien",
+    "alike",
+    "alive",
+    "allow",
+    "alone",
+    "along",
+    "alter",
+    "amber",
+    "amuse",
+    "angel",
+    "anger",
+    "angle",
+    "angry",
+    "ankle",
+    "apart",
+    "apple",
+    "apply",
+    "apron",
+    "arena",
+    "argue",
+    "arise",
+    "armor",
+    "aroma",
+    "arrow",
+    "aside",
+    "asset",
+    "audio",
+    "audit",
+    "avoid",
+    "awake",
+    "award",
+    "aware",
+    "awful",
+    "bacon",
+    "badge",
+    "bagel",
+    "baker",
+    "basic",
+    "basin",
+    "batch",
+    "beach",
+    "beard",
+    "beast",
+    "begin",
+    "being",
+    "below",
+    "bench",
+    "berry",
+    "birth",
+    "black",
+    "blade",
+    "blame",
+    "blank",
+    "blast",
+    "blaze",
+    "blend",
+    "bless",
+    "blind",
+    "blink",
+    "block",
+    "bloom",
+    "blues",
+    "board",
+    "boast",
+    "bonus",
+    "boost",
+    "booth",
+    "brain",
+    "brake",
+    "brand",
+    "brass",
+    "brave",
+    "bread",
+    "break",
+    "brick",
+    "bride",
+    "brief",
+    "bring",
+    "broad",
+    "brook",
+    "broom",
+    "brown",
+    "brush",
+    "buddy",
+    "build",
+    "bunch",
+    "burst",
+    "cabin",
+    "cable",
+    "camel",
+    "canal",
+    "candy",
+    "canoe",
+    "cargo",
+    "carry",
+    "catch",
+    "cause",
+    "cedar",
+    "chain",
+    "chair",
+    "chalk",
+    "charm",
+    "chart",
+    "chase",
+    "cheap",
+    "check",
+    "cheek",
+    "cheer",
+    "chess",
+    "chest",
+    "chief",
+    "child",
+    "chill",
+    "china",
+    "choir",
+    "chord",
+    "civic",
+    "claim",
+    "class",
+    "clean",
+    "clear",
+    "clerk",
+    "click",
+    "cliff",
+    "climb",
+    "clock",
+    "close",
+    "cloth",
+    "cloud",
+    "clown",
+    "coach",
+    "coast",
+    "cocoa",
+    "coral",
+    "couch",
+    "cough",
+    "count",
+    "court",
+    "cover",
+    "crack",
+    "craft",
+    "crane",
+    "crash",
+    "crawl",
+    "crazy",
+    "cream",
+    "creek",
+    "crisp",
+    "crowd",
+    "crown",
+    "crumb",
+    "crust",
+    "curve",
+    "cycle",
+    "daily",
+    "dairy",
+    "daisy",
+    "dance",
+    "dealt",
+    "delay",
+    "depth",
+    "diary",
+    "dodge",
+    "doubt",
+    "dough",
+    "dozen",
+    "draft",
+    "drama",
+    "dream",
+    "dress",
+    "drift",
+    "drill",
+    "drink",
+    "drive",
+    "eager",
+    "eagle",
+    "early",
+    "earth",
+    "easel",
+    "eight",
+    "elbow",
+    "elder",
+    "empty",
+    "enemy",
+    "enjoy",
+    "enter",
+    "entry",
+    "equal",
+    "error",
+    "essay",
+    "event",
+    "every",
+    "exact",
+    "exist",
+    "extra",
+    "fable",
+    "faint",
+    "fairy",
+    "faith",
+    "false",
+    "fancy",
+    "feast",
+    "fence",
+    "ferry",
+    "fever",
+    "fiber",
+    "field",
+    "fifty",
+    "fight",
+    "final",
+    "flame",
+    "flash",
+    "fleet",
+    "flock",
+    "flood",
+    "floor",
+    "flour",
+    "fluid",
+    "flute",
+    "focus",
+    "force",
+    "forge",
+    "forth",
+    "forty",
+    "forum",
+    "found",
+    "frame",
+    "fresh",
+    "front",
+    "frost",
+    "fruit",
+    "funny",
+    "ghost",
+    "giant",
+    "given",
+    "glass",
+    "globe",
+    "glory",
+    "glove",
+    "goose",
+    "grace",
+    "grade",
+    "grain",
+    "grand",
+    "grape",
+    "graph",
+    "grass",
+    "great",
+    "green",
+    "greet",
+    "grief",
+    "grill",
+    "grind",
+    "group",
+    "grove",
+    "guard",
+    "guess",
+    "guest",
+    "guide",
+    "habit",
+    "happy",
+    "harsh",
+    "haste",
+    "heart",
+    "heavy",
+    "hedge",
+    "hello",
+    "hobby",
+    "honey",
+    "honor",
+    "horse",
+    "hotel",
+    "house",
+    "human",
+    "humor",
+    "hurry",
+    "ideal",
+    "image",
+    "index",
+    "inner",
+    "input",
+    "irony",
+    "issue",
+    "ivory",
+    "jelly",
+    "jewel",
+    "joint",
+    "jolly",
+    "judge",
+    "juice",
+    "jumbo",
+    "kayak",
+    "knife",
+    "knock",
+    "label",
+    "labor",
+    "large",
+    "laser",
+    "later",
+    "laugh",
+    "layer",
+    "learn",
+    "lemon",
+    "level",
+    "light",
+    "limit",
+    "linen",
+    "liver",
+    "lodge",
+    "logic",
+    "loose",
+    "lucky",
+    "lunar",
+    "lunch",
+    "magic",
+    "major",
+    "maker",
+    "mango",
+    "maple",
+    "march",
+    "match",
+    "mayor",
+    "medal",
+    "melon",
+    "mercy",
+    "merry",
+    "metal",
+    "meter",
+    "minor",
+    "mixer",
+    "model",
+    "money",
+    "month",
+    "moral",
+    "motor",
+    "mount",
+    "mouse",
+    "mouth",
+    "movie",
+    "muddy",
+    "music",
+    "nerve",
+    "never",
+    "night",
+    "noble",
+    "noise",
+    "north",
+    "novel",
+    "nurse",
+    "oasis",
+    "ocean",
+    "offer",
+    "often",
+    "olive",
+    "onion",
+    "opera",
+    "orbit",
+    "order",
+    "organ",
+    "other",
+    "otter",
+    "outer",
+    "owner",
+    "paint",
+    "panel",
+    "paper",
+    "party",
+    "pasta",
+    "patch",
+    "pause",
+    "peace",
+    "peach",
+    "pearl",
+    "pedal",
+    "penny",
+    "piano",
+    "piece",
+    "pilot",
+    "pizza",
+    "place",
+    "plain",
+    "plane",
+    "plant",
+    "plate",
+    "plaza",
+    "point",
+    "polar",
+    "porch",
+    "pouch",
+    "power",
+    "press",
+    "price",
+    "pride",
+    "prime",
+    "print",
+    "prize",
+    "proof",
+    "proud",
+    "prove",
+    "pulse",
+    "punch",
+    "puppy",
+    "quick",
+    "quiet",
+    "quilt",
+    "quota",
+    "quote",
+    "radar",
+    "radio",
+    "raise",
+    "rally",
+    "ranch",
+    "range",
+    "rapid",
+    "raven",
+    "reach",
+    "ready",
+    "realm",
+    "relax",
+    "reply",
+    "rider",
+    "ridge",
+    "right",
+    "rival",
+    "river",
+    "roast",
+    "robin",
+    "robot",
+    "rocky",
+    "rough",
+    "round",
+    "route",
+    "royal",
+    "ruler",
+    "rural",
+    "salad",
+    "sauce",
+    "scale",
+    "scarf",
+    "scene",
+    "scent",
+    "scoop",
+    "score",
+    "scout",
+    "shade",
+    "shake",
+    "shape",
+    "share",
+    "shark",
+    "sharp",
+    "sheep",
+    "sheet",
+    "shelf",
+    "shell",
+    "shine",
+    "shirt",
+    "shock",
+    "shore",
+    "short",
+    "shout",
+    "sight",
+    "skate",
+    "skill",
+    "skirt",
+    "sleep",
+    "slice",
+    "slide",
+    "slope",
+    "small",
+    "smart",
+    "smile",
+    "smoke",
+    "snack",
+    "snake",
+    "solar",
+    "solid",
+    "solve",
+    "sound",
+    "south",
+    "space",
+    "spare",
+    "spark",
+    "speak",
+    "speed",
+    "spend",
+    "spice",
+    "spine",
+    "spoon",
+    "sport",
+    "spray",
+    "squad",
+    "stack",
+    "staff",
+    "stage",
+    "stair",
+    "stamp",
+    "stand",
+    "start",
+    "steam",
+    "steel",
+    "steep",
+    "stick",
+    "still",
+    "stone",
+    "stool",
+    "storm",
+    "story",
+    "stove",
+    "straw",
+    "strip",
+    "study",
+    "style",
+    "sugar",
+    "suite",
+    "sunny",
+    "super",
+    "swamp",
+    "sweet",
+    "swift",
+    "swing",
+    "sword",
+    "table",
+    "taste",
+    "teach",
+    "thank",
+    "theme",
+    "thick",
+    "thing",
+    "think",
+    "third",
+    "three",
+    "thumb",
+    "tiger",
+    "title",
+    "toast",
+    "today",
+    "token",
+    "tooth",
+    "topic",
+    "torch",
+    "total",
+    "touch",
+    "tough",
+    "tower",
+    "toxic",
+    "track",
+    "trade",
+    "trail",
+    "train",
+    "treat",
+    "trend",
+    "trial",
+    "tribe",
+    "trick",
+    "truck",
+    "truly",
+    "trunk",
+    "trust",
+    "truth",
+    "tulip",
+    "tutor",
+    "twice",
+    "uncle",
+    "under",
+    "union",
+    "unity",
+    "until",
+    "upper",
+    "upset",
+    "urban",
+    "usual",
+    "valid",
+    "value",
+    "vapor",
+    "vault",
+    "video",
+    "visit",
+    "vital",
+    "vivid",
+    "vocal",
+    "voice",
+    "wagon",
+    "waste",
+    "watch",
+    "water",
+    "whale",
+    "wheat",
+    "wheel",
+    "while",
+    "white",
+    "whole",
+    "woman",
+    "world",
+    "worry",
+    "worth",
+    "would",
+    "wound",
+    "wrist",
+    "write",
+    "yacht",
+    "yield",
+    "young",
+    "youth",
+    "zebra"
+  ]
+};
+
+// packages/games/word-of-the-day/engine/index.ts
+var PACKS7 = ["en", "bg"];
+var LENGTH = 5;
+var TRIES = 6;
+var ANSWERS = {
+  en: en_default4.answers,
+  bg: bg_default4.answers
+};
+function answerWord(pack, raw) {
+  if (typeof raw !== "string") return null;
+  const word = wordOf(pack, raw);
+  return word !== null && charsOf(word).length === LENGTH ? word : null;
+}
+var configFrom26 = (raw) => {
+  const r = raw;
+  const pack = PACKS7.find((p) => p === r?.pack) ?? "en";
+  const d = r?.daily;
+  const word = answerWord(pack, d?.word);
+  const day = typeof d?.day === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d.day) ? d.day : null;
+  return word && day ? { pack, daily: { day, word } } : { pack };
+};
+function marksFor(guess, answer) {
+  const g = charsOf(guess);
+  const a = charsOf(answer);
+  const marks = g.map((ch, i) => ch === a[i] ? "good" : "miss");
+  const left = /* @__PURE__ */ new Map();
+  a.forEach((ch, i) => {
+    if (marks[i] !== "good") left.set(ch, (left.get(ch) ?? 0) + 1);
+  });
+  g.forEach((ch, i) => {
+    const n = left.get(ch) ?? 0;
+    if (marks[i] === "miss" && n > 0) {
+      marks[i] = "near";
+      left.set(ch, n - 1);
+    }
+  });
+  return marks;
+}
+function initialState38(raw, seed) {
+  const config = configFrom26(raw);
+  const { pack } = config;
+  const answer = config.daily?.word ?? Rng.fromSeed(`word-of-the-day:${pack}:${seed}`).pick(ANSWERS[pack]);
+  return {
+    pack,
+    day: config.daily?.day ?? null,
+    answer,
+    guesses: [],
+    marks: [],
+    won: false,
+    over: false
+  };
+}
+function refusal(s, raw) {
+  const word = answerWord(s.pack, raw);
+  if (word === null) return "length";
+  if (s.guesses.includes(word)) return "repeat";
+  if (word !== s.answer && !lexiconOf(s.pack, "all").has(word)) return "unknown";
+  return null;
+}
+function apply15(s, action) {
+  const raw = action?.guess;
+  if (s.over || typeof raw !== "string" || refusal(s, raw) !== null) return s;
+  const guess = answerWord(s.pack, raw) ?? "";
+  const won2 = guess === s.answer;
+  const guesses2 = [...s.guesses, guess];
+  return {
+    ...s,
+    guesses: guesses2,
+    marks: [...s.marks, marksFor(guess, s.answer)],
+    won: won2,
+    over: won2 || guesses2.length === TRIES
+  };
+}
+var scoreOf4 = (s) => s.won ? TRIES + 1 - s.guesses.length : 0;
+function result38(s) {
+  return s.over ? { completed: s.won, score: scoreOf4(s) } : null;
+}
+var engine66 = {
+  initialState: initialState38,
+  apply: apply15,
+  progress: (s) => s.over ? 1 : s.guesses.length / TRIES,
+  result: result38,
+  score: scoreOf4
+};
+
+// packages/games/word-of-the-day/manifest.ts
+var manifest66 = defineManifest({
+  id: "word-of-the-day",
+  version: 1,
+  category: "word",
+  kind: "race",
+  players: { min: 1, max: 8, default: 1 },
+  modes: ["solo", "race", "online-private", "online-public", "quick-match"],
+  bots: { supported: false, difficulties: [], canFillSeats: false },
+  timers: [{ kind: "countdown", seconds: 240 }],
+  options: [
+    {
+      key: "pack",
+      label: "packOption",
+      values: [
+        { value: "en", label: "packEn", defaultIn: ["en"] },
+        { value: "bg", label: "packBg", defaultIn: ["bg"] }
+      ]
+    }
+  ],
+  contentPacks: ["en", "bg"],
+  lexicons: ["all"],
+  // Today's game carries the day's word; submit-match checks it.
+  dailyPuzzle: "word",
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard", "mouse"],
+  renderer: "dom",
+  estimatedMinutes: [2, 5],
+  leaderboards: [],
+  achievements: [
+    { id: "played", icon: "repeat", metric: "played", tiers: [1, 30, 100] },
+    { id: "sharp", icon: "target", metric: "bestScore", tiers: [3, 4, 5] }
+  ],
+  // The word comes from the seed or the config; every guess is checked in the replay.
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 3 },
+  tags: ["words", "puzzle", "single-player", "daily"]
+});
+
+// packages/games/word-search/content/bg.json
+var bg_default5 = {
   categories: [
     {
       id: "animals",
@@ -19078,7 +20275,7 @@ var bg_default4 = {
 };
 
 // packages/games/word-search/content/en.json
-var en_default4 = {
+var en_default5 = {
   categories: [
     {
       id: "animals",
@@ -19284,21 +20481,21 @@ var en_default4 = {
 };
 
 // packages/games/word-search/engine/index.ts
-var PACKS7 = ["en", "bg"];
+var PACKS8 = ["en", "bg"];
 var SIZES9 = [10, 8, 12];
-var configFrom26 = (raw) => {
+var configFrom27 = (raw) => {
   const r = raw;
   return {
-    pack: PACKS7.find((p) => p === r?.pack) ?? "en",
+    pack: PACKS8.find((p) => p === r?.pack) ?? "en",
     size: SIZES9.find((s) => s === r?.size) ?? 10
   };
 };
 var WORDS_FOR = { 8: 6, 10: 8, 12: 10 };
 var THEMES = {
-  en: en_default4.categories,
-  bg: bg_default4.categories
+  en: en_default5.categories,
+  bg: bg_default5.categories
 };
-var THEME_IDS = en_default4.categories.map((c) => c.id);
+var THEME_IDS = en_default5.categories.map((c) => c.id);
 var FILLER = {
   en: "eeeeeeeeeeeeaaaaaaaaarrrrrrrriiiiiiiioooooooottttttttnnnnnnnsssssslllllcccccuuuudddppmmhhggbbffyywkvxzjq",
   bg: "\u0430\u0430\u0430\u0430\u0430\u0430\u0430\u0430\u043E\u043E\u043E\u043E\u043E\u043E\u043E\u043E\u0435\u0435\u0435\u0435\u0435\u0435\u0435\u0435\u0438\u0438\u0438\u0438\u0438\u0438\u0438\u0438\u0442\u0442\u0442\u0442\u0442\u0442\u043D\u043D\u043D\u043D\u043D\u043D\u043D\u0440\u0440\u0440\u0440\u0440\u0440\u0441\u0441\u0441\u0441\u0441\u0441\u0432\u0432\u0432\u0432\u0432\u043B\u043B\u043B\u043B\u043A\u043A\u043A\u043A\u043A\u0434\u0434\u0434\u0434\u0434\u043F\u043F\u043F\u043F\u043F\u043C\u043C\u043C\u043C\u0437\u0437\u0437\u0437\u044F\u044F\u044F\u0431\u0431\u0433\u0433\u0443\u0443\u0447\u0447\u044A\u044A\u0436\u0436\u0439\u0448\u0449\u0446\u0444\u0445\u044C\u044E\u044F"
@@ -19326,8 +20523,8 @@ function fit(grid, size, word, row, col, [dr, dc]) {
   }
   return cells;
 }
-function initialState38(raw, seed) {
-  const { pack, size } = configFrom26(raw);
+function initialState39(raw, seed) {
+  const { pack, size } = configFrom27(raw);
   const rng = Rng.fromSeed(`word-search:${pack}:${String(size)}:${seed}`);
   const theme = rng.int(0, THEMES[pack].length - 1);
   const pool = rng.shuffle(
@@ -19375,7 +20572,7 @@ function matched(s, from, to) {
   );
   return index < 0 ? null : index;
 }
-function apply15(s, raw) {
+function apply16(s, raw) {
   const action = raw;
   if (isSolved3(s) || typeof action !== "object" || action === null) return s;
   const { from, to } = action;
@@ -19386,18 +20583,18 @@ function apply15(s, raw) {
   if (index === null) return { ...s, misses: s.misses + 1 };
   return { ...s, found: s.found.map((f, i) => i === index ? { from, to } : f) };
 }
-function result38(s) {
+function result39(s) {
   return isSolved3(s) ? { completed: true } : null;
 }
-var engine66 = {
-  initialState: initialState38,
-  apply: apply15,
+var engine67 = {
+  initialState: initialState39,
+  apply: apply16,
   progress: (s) => s.found.filter((f) => f !== null).length / Math.max(1, s.words.length),
-  result: result38
+  result: result39
 };
 
 // packages/games/word-search/manifest.ts
-var manifest66 = defineManifest({
+var manifest67 = defineManifest({
   id: "word-search",
   version: 1,
   category: "word",
@@ -19846,7 +21043,7 @@ function lifeResult(world, worm) {
     completed: true
   };
 }
-function result39(world, id) {
+function result40(world, id) {
   const worm = world.worms.get(id);
   if (!worm) return null;
   return worm.alive ? lifeResult(world, worm) : worm.lastLife;
@@ -20094,7 +21291,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine67 = {
+var engine68 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -20105,13 +21302,13 @@ var engine67 = {
   alive: alive3,
   step: step3,
   snapshot,
-  result: result39,
+  result: result40,
   snapshotCodec,
   inputCodec
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest67 = defineManifest({
+var manifest68 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -20208,8 +21405,9 @@ var GAMES = {
   "war": { manifest: manifest63, engine: engine63 },
   "whos-the-spy": { manifest: manifest64, engine: engine64 },
   "word-chain": { manifest: manifest65, engine: engine65 },
-  "word-search": { manifest: manifest66, engine: engine66 },
-  "worm-rush": { manifest: manifest67, engine: engine67, bots, host: arenaHost }
+  "word-of-the-day": { manifest: manifest66, engine: engine66 },
+  "word-search": { manifest: manifest67, engine: engine67 },
+  "worm-rush": { manifest: manifest68, engine: engine68, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

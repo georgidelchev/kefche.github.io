@@ -17,6 +17,8 @@
   "breadcrumb": "Brotkrumen-Navigation",
   "time": "Zeit {time}",
   "playAgain": "Nochmal spielen",
+  "seeGame": "Spiel ansehen",
+  "showResults": "Ergebnis zeigen",
   "results": {
     "best": "Bestwert: {value}",
     "newBest": "Neuer Bestwert!",

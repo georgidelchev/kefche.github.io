@@ -17,6 +17,8 @@
   "breadcrumb": "مسار التنقل",
   "time": "الوقت {time}",
   "playAgain": "العب مرة أخرى",
+  "seeGame": "عرض اللعبة",
+  "showResults": "عرض النتائج",
   "results": {
     "best": "الأفضل: {value}",
     "newBest": "رقم قياسي جديد!",

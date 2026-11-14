@@ -560,6 +560,11 @@ if (process.argv.includes("--fixtures")) {
         return { answer: random() < 0.8 ? answer : answer + 1, ms };
       },
     },
+    // A day's word, as the server gives it: two misses, then the word.
+    "word-of-the-day": {
+      config: { pack: "bg", daily: { day: "2026-11-14", word: "котка" } },
+      next: (state) => ({ guess: ["пчела", "лодка"][state.guesses.length] ?? state.answer }),
+    },
     // A letter read every 1 to 2 s, right four times in five, until 60 s.
     "morse-master": {
       config: { pack: "bg", task: "read" },

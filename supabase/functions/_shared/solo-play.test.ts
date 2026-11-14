@@ -1,6 +1,7 @@
 // The server's verdict on single-player games, on the recorded fixtures.
 // Run: deno test _shared/solo-play.test.ts
-import { judgeSolo, type IssuedPlay, type SoloRecord } from "./solo-play.ts";
+import { readyLexicons } from "./engines.ts";
+import { dailyWordOf, judgeSolo, type IssuedPlay, type SoloRecord } from "./solo-play.ts";
 import { equal, fixture, pack } from "./test-utils.ts";
 
 function setup(id: string, playedForMs = 600_000) {
@@ -113,5 +114,32 @@ Deno.test("a config the game doesn't offer, or junk, is set aside", () => {
     judgeSolo(g2048.game, g2048.play, { ...g2048.record, log: { dict: [], runs: "zz" } }).reason,
     "bad-log",
     "junk log",
+  );
+});
+
+Deno.test("a daily puzzle's day rides in its config, well formed or set aside", async () => {
+  const { game, play, record } = setup("word-of-the-day");
+  await readyLexicons(game);
+  const v = judgeSolo(game, play, record);
+  equal([v.status, v.reason], ["counted", "completed"], "the day's word");
+  equal(dailyWordOf(v.config), { day: "2026-11-14", word: "котка", pack: "bg" }, "its claim");
+  const config = record.config as Record<string, unknown>;
+  for (const daily of [{ day: "today", word: "котка" }, { day: "2026-11-14" }, "котка", null]) {
+    equal(
+      judgeSolo(game, play, { ...record, config: { ...config, daily } }).reason,
+      "bad-config",
+      `junk ${JSON.stringify(daily)}`,
+    );
+  }
+  // Other games can't carry one.
+  const sudoku = setup("sudoku");
+  const extra = {
+    ...(sudoku.record.config as Record<string, unknown>),
+    daily: { day: "2026-11-14", word: "x" },
+  };
+  equal(
+    judgeSolo(sudoku.game, sudoku.play, { ...sudoku.record, config: extra }).reason,
+    "bad-config",
+    "sudoku",
   );
 });

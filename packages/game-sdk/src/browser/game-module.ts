@@ -146,7 +146,13 @@ export type GameEvent =
   | { type: "start" }
   | { type: "score"; score: number }
   | TurnReport
-  | { type: "finish"; result: GameResult; turns?: TurnRecord };
+  | {
+      type: "finish";
+      result: GameResult;
+      turns?: TurnRecord;
+      /** One line about the finish for the results screen (a word puzzle's answer). */
+      note?: string;
+    };
 
 /**
  * The online arena, for real-time games (Phase 9), when this build has one:
@@ -189,6 +195,32 @@ export interface ArenaLives {
   finish(life: ArenaLife): Promise<number | null>;
 }
 
+/** A player's streak in a daily puzzle and language (Phase 13). */
+export interface DailyStreak {
+  /** Days in a row solved, up to yesterday or today. */
+  current: number;
+  best: number;
+  played: number;
+  won: number;
+  /** Wins by tries or steps: [0] in one, [1] in two, and so on. */
+  spread: readonly number[];
+  /** The last day played (UTC, YYYY-MM-DD), or null. */
+  lastDay: string | null;
+}
+
+/**
+ * A daily puzzle's server side, the same for everyone each UTC day: the
+ * day's puzzle in a content language, and the player's streak. The puzzle
+ * comes as the server keeps it, so the game checks it. Never rejects:
+ * anything that goes wrong is null (no puzzle today, a guest, offline).
+ */
+export interface DailyAccess {
+  today(lang: string): Promise<{ day: string; data: unknown } | null>;
+  /** Records today's finish (only the day's first counts); the streak after it. */
+  finish(lang: string, answer: unknown): Promise<DailyStreak | null>;
+  streak(lang: string): Promise<DailyStreak | null>;
+}
+
 export interface GameContext {
   locale: string;
   dir: "ltr" | "rtl";
@@ -209,6 +241,8 @@ export interface GameContext {
   arena?: ArenaAccess;
   /** Real-time games: where their solo lives go. */
   lives?: ArenaLives;
+  /** Daily puzzles (Word of the Day): the day's puzzle and the player's streak. */
+  daily?: DailyAccess;
   /**
    * The player's level and this game's unlocked tiers, for cosmetic unlocks
    * (SPEC §12.6). Never makes a guest; resolves with no progress when

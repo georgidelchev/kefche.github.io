@@ -17,6 +17,8 @@
   "breadcrumb": "Navegação",
   "time": "Tempo {time}",
   "playAgain": "Jogar de novo",
+  "seeGame": "Ver o jogo",
+  "showResults": "Ver resultados",
   "results": {
     "best": "Melhor: {value}",
     "newBest": "Novo recorde!",

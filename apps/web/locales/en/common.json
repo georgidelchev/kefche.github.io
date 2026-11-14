@@ -29,7 +29,9 @@
     "unread": "{count} unread"
   },
   "wordOfTheDay": {
-    "title": "Word of the day"
+    "title": "Word of the day",
+    "intro": "Guess today's five-letter word in six tries.",
+    "play": "Play today's word"
   },
   "invite": {
     "region": "Invitations",

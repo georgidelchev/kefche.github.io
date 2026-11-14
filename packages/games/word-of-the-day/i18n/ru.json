@@ -1,0 +1,107 @@
+{
+  "name": "Слово дня",
+  "tagline": "Угадайте слово дня из пяти букв за шесть попыток.",
+  "description": "Играйте в «Слово дня» бесплатно: угадайте ежедневное слово из пяти букв за шесть попыток, держите серию и делитесь своей сеткой.",
+  "about": [
+    "Word of the Day is a daily word puzzle: guess the five-letter word in six tries. Type any word and press Enter, and each letter is marked: in the right place, in the word but somewhere else, or not in the word at all. Use what you learn to narrow it down before your tries run out.",
+    "Everyone gets the same word each day in their language, and a new one comes at midnight UTC. Solve it day after day to build your streak; your games, wins and how many tries they took are kept for you. When you're done, share your grid of colours with friends: it shows how you got there without giving away a single letter.",
+    "Want more? Practice gives you a random word as often as you like, and you can race friends in a room on the same word. Word of the Day is played in English and Bulgarian, with every guess checked against a full dictionary of the language."
+  ],
+  "howToPlay": [
+    "Choose today's word or practice.",
+    "Type a five-letter word and press Enter. It has to be a real word.",
+    "Each letter is marked: green with a bar if it's in the right place, yellow with a dot if it's in the word but elsewhere, grey if it isn't in the word.",
+    "A letter the word holds once is marked once, so a double letter in your guess can show one mark and one grey.",
+    "Find the word within six guesses. Today's word counts once a day towards your streak.",
+    "Points: 6 for finding the word at the first guess, 5 at the second, down to 1 at the sixth; nothing if you miss."
+  ],
+  "controls": [
+    "Phones and tablets: tap the letters on the keyboard below, then Enter.",
+    "Keyboard: type the letters, Backspace to delete, Enter to guess.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А), and the on-screen keyboard can switch between the phonetic and БДС layouts.",
+    "The keyboard's keys take the colours of your guesses, so you can see which letters are left."
+  ],
+  "tips": [
+    "Start with a word that has several common letters, like vowels and R, S, T or N.",
+    "Use your second guess to test new letters rather than to win straight away.",
+    "Remember that letters can repeat: the answer may have two of the same.",
+    "A grey key means the letter is out: don't spend a guess on it again.",
+    "Practice is a good way to try out opening words without risking your streak."
+  ],
+  "faq": [
+    {
+      "question": "Is Word of the Day free?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "When does the word change?",
+      "answer": "At midnight UTC, the same moment for everyone. The menu shows how long until the next one."
+    },
+    {
+      "question": "How is my streak kept?",
+      "answer": "With an account, on your profile, so it follows you to any device. As a guest, on this device. A streak counts the days in a row you solved the word."
+    },
+    {
+      "question": "Does sharing give the word away?",
+      "answer": "No. What you share is only the grid of colours, with no letters."
+    },
+    {
+      "question": "Can I play more than once a day?",
+      "answer": "Today's word counts once, but practice has a new random word as often as you like."
+    }
+  ],
+  "ui": {
+    "chooseGame": "Выберите игру",
+    "loadFailed": "Список слов не загрузился. Попробуйте ещё раз.",
+    "loading": "Готовим слова…",
+    "loadingToday": "Загружаем слово дня…",
+    "noWordToday": "Сегодня слова нет. Попробуйте тренировку.",
+    "doneToday": "Вы уже сыграли слово дня.",
+    "todaysWord": "Слово дня",
+    "todaysWordDetail": "Одно слово для всех до полуночи UTC",
+    "continueDetail": "Продолжить: использовано {n} из 6 попыток",
+    "practice": "Тренировка",
+    "practiceDetail": "Случайное слово, сколько угодно раз",
+    "nextWord": "Следующее слово через {h} ч {m} мин",
+    "guessOf": "Попытка {n} из {total}",
+    "board": "Ваши попытки",
+    "guessN": "Попытка {n}",
+    "tileGood": "{letter}, на своём месте",
+    "tileNear": "{letter}, есть в слове, но в другом месте",
+    "tileMiss": "{letter}, нет в слове",
+    "tooShort": "Нужно пять букв",
+    "unknownWord": "Нет в списке слов",
+    "repeatWord": "Уже пробовали",
+    "solvedIn": "Угадано за {n} из {total}!",
+    "theWordWas": "Слово было {word}",
+    "share": "Поделиться",
+    "shared": "Скопировано: только цвета, без букв.",
+    "shareDaily": "kefche Слово дня {day}: {score}/6",
+    "sharePractice": "kefche Слово дня, тренировка: {score}/6",
+    "playAgain": "Ещё слово",
+    "menu": "Меню",
+    "newBest": "Новый рекорд!",
+    "statsTitle": "Ваши слова дня",
+    "played": "Сыграно",
+    "won": "Угадано",
+    "percent": "{n}%",
+    "streak": "Серия",
+    "bestStreak": "Лучшая серия",
+    "spreadTitle": "Угадано по попыткам",
+    "spreadRow": "За {tries}: {n}",
+    "packOption": "Слова на языке",
+    "packEn": "английский",
+    "packBg": "болгарский"
+  },
+  "achievements": {
+    "played": {
+      "name": "Мастер слова",
+      "description": "Сыграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    },
+    "sharp": {
+      "name": "Зоркий глаз",
+      "description": "Наберите {count} очков за игру: 6 за слово с первой попытки, до 1 за шестую"
+    }
+  },
+  "leaderboards": {}
+}

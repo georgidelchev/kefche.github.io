@@ -17,6 +17,8 @@
   "breadcrumb": "Breadcrumb",
   "time": "Time {time}",
   "playAgain": "Play again",
+  "seeGame": "See the game",
+  "showResults": "Show results",
   "results": {
     "best": "Best: {value}",
     "newBest": "New best!",

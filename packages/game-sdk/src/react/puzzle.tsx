@@ -111,6 +111,8 @@ export interface PuzzleOptions<State, Action, Config> {
    * games): "asc" when lower is better (a reaction), "desc" when higher is.
    */
   best?: { order: "asc" | "desc" };
+  /** One line about the finish for the results screen ("The word was …"). */
+  finishNote?: (state: State) => string | null;
 }
 
 export interface Puzzle<State, Action, Config> {
@@ -139,6 +141,7 @@ export function usePuzzle<State, Action, Config>({
   timeKey,
   create,
   best,
+  finishNote,
 }: PuzzleOptions<State, Action, Config>): Puzzle<State, Action, Config> {
   const [racing] = useState(() => (context.race ? raceConfig(context.race.config) : null));
   const [screen, setScreen] = useState<PuzzleScreen>(racing === null ? "menu" : "loading");
@@ -218,7 +221,12 @@ export function usePuzzle<State, Action, Config>({
       } else if (racing === null && !best && result.completed) {
         setNewBest(recordBestTime(context.storage, timeKey(config), ms));
       }
-      context.report({ type: "finish", result: { ...result, timeMs: result.timeMs ?? ms } });
+      const note = finishNote?.(next) ?? null;
+      context.report({
+        type: "finish",
+        result: { ...result, timeMs: result.timeMs ?? ms },
+        ...(note ? { note } : {}),
+      });
     }
     return next;
   }
