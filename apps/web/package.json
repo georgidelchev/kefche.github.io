@@ -22,7 +22,7 @@
     "@kefche/ui": "workspace:*",
     "@supabase/supabase-js": "2.118.0",
     "@tailwindcss/vite": "4.3.3",
-    "astro": "7.4.1",
+    "astro": "7.4.7",
     "frimousse": "0.4.0",
     "i18next": "26.5.3",
     "i18next-icu": "2.6.1",
