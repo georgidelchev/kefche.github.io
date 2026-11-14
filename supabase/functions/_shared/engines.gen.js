@@ -149,13 +149,13 @@ function botsWanted(people, minimum, capacity) {
 
 // packages/game-sdk/src/arena-host.ts
 var ArenaHost = class {
-  constructor(engine70, bots2, options) {
-    this.engine = engine70;
+  constructor(engine71, bots2, options) {
+    this.engine = engine71;
     this.bots = bots2;
     this.options = options;
-    this.world = engine70.createWorld(options.config, options.seed);
+    this.world = engine71.createWorld(options.config, options.seed);
     this.rng = Rng.fromSeed(`${options.seed}:bots`);
-    this.snapshotEvery = Math.max(1, Math.round(engine70.ticksPerSecond / engine70.snapshotsPerSecond));
+    this.snapshotEvery = Math.max(1, Math.round(engine71.ticksPerSecond / engine71.snapshotsPerSecond));
     this.balance();
   }
   engine;
@@ -387,11 +387,11 @@ var ByteReader = class {
     return v;
   }
   varint() {
-    let result42 = 0;
+    let result43 = 0;
     for (let shift = 0; shift < 35; shift += 7) {
       const byte = this.u8();
-      result42 |= (byte & 127) << shift;
-      if (byte < 128) return result42 >>> 0;
+      result43 |= (byte & 127) << shift;
+      if (byte < 128) return result43 >>> 0;
     }
     throw new RangeError("varint longer than 5 bytes");
   }
@@ -712,7 +712,7 @@ function lexiconOf(lang, name) {
 }
 
 // packages/game-sdk/src/manifest.ts
-var defineManifest = (manifest70) => manifest70;
+var defineManifest = (manifest71) => manifest71;
 
 // packages/game-sdk/src/race-log.ts
 var RACE_LOG_LIMITS = { dict: 2e3, runs: 3e4 };
@@ -8303,8 +8303,8 @@ function peg$parse(input, options) {
   var peg$f9 = function(line2) {
     return line2;
   };
-  var peg$f10 = function(result42, comment) {
-    return { result: result42, comment };
+  var peg$f10 = function(result43, comment) {
+    return { result: result43, comment };
   };
   var peg$currPos = options.peg$currPos | 0;
   var peg$posDetailsCache = [{ line: 1, column: 1 }];
@@ -9291,12 +9291,12 @@ function xoroshiro128(state) {
   return function() {
     let s0 = BigInt(state & MASK64);
     let s1 = BigInt(state >> 64n & MASK64);
-    const result42 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
+    const result43 = wrappingMul(rotl(wrappingMul(s0, 5n), 7n), 9n);
     s1 ^= s0;
     s0 = (rotl(s0, 24n) ^ s1 ^ s1 << 16n) & MASK64;
     s1 = rotl(s1, 37n);
     state = s1 << 64n | s0;
-    return result42;
+    return result43;
   };
 }
 var rand = xoroshiro128(0xa187eb39cdcaed8f31c4b365b102e01en);
@@ -10999,16 +10999,16 @@ var Chess = class {
     return move3;
   }
   pgn({ newline = "\n", maxWidth = 0 } = {}) {
-    const result42 = [];
+    const result43 = [];
     let headerExists = false;
     for (const i in this._header) {
       const headerTag = this._header[i];
       if (headerTag)
-        result42.push(`[${i} "${this._header[i]}"]` + newline);
+        result43.push(`[${i} "${this._header[i]}"]` + newline);
       headerExists = true;
     }
     if (headerExists && this._history.length) {
-      result42.push(newline);
+      result43.push(newline);
     }
     const appendComment = (moveString2) => {
       const comment = this._comments[this.fen()];
@@ -11050,11 +11050,11 @@ var Chess = class {
     }
     moves.push(this._header.Result || "*");
     if (maxWidth === 0) {
-      return result42.join("") + moves.join(" ");
+      return result43.join("") + moves.join(" ");
     }
     const strip = function() {
-      if (result42.length > 0 && result42[result42.length - 1] === " ") {
-        result42.pop();
+      if (result43.length > 0 && result43[result43.length - 1] === " ") {
+        result43.pop();
         return true;
       }
       return false;
@@ -11068,12 +11068,12 @@ var Chess = class {
           while (strip()) {
             width--;
           }
-          result42.push(newline);
+          result43.push(newline);
           width = 0;
         }
-        result42.push(token);
+        result43.push(token);
         width += token.length;
-        result42.push(" ");
+        result43.push(" ");
         width++;
       }
       if (strip()) {
@@ -11090,19 +11090,19 @@ var Chess = class {
         }
       }
       if (currentWidth + moves[i].length > maxWidth && i !== 0) {
-        if (result42[result42.length - 1] === " ") {
-          result42.pop();
+        if (result43[result43.length - 1] === " ") {
+          result43.pop();
         }
-        result42.push(newline);
+        result43.push(newline);
         currentWidth = 0;
       } else if (i !== 0) {
-        result42.push(" ");
+        result43.push(" ");
         currentWidth++;
       }
-      result42.push(moves[i]);
+      result43.push(moves[i]);
       currentWidth += moves[i].length;
     }
-    return result42.join("");
+    return result43.join("");
   }
   /**
    * @deprecated Use `setHeader` and `getHeaders` instead. This method will return null header tags (which is not what you want)
@@ -11179,9 +11179,9 @@ var Chess = class {
       }
       node2 = node2.variations[0];
     }
-    const result42 = parsedPgn.result;
-    if (result42 && Object.keys(this._header).length && this._header["Result"] !== result42) {
-      this.setHeader("Result", result42);
+    const result43 = parsedPgn.result;
+    if (result43 && Object.keys(this._header).length && this._header["Result"] !== result43) {
+      this.setHeader("Result", result43);
     }
   }
   /*
@@ -11497,8 +11497,8 @@ var Chess = class {
       }
     }
     this._updateCastlingRights();
-    const result42 = this.getCastlingRights(color);
-    return (rights[KING2] === void 0 || rights[KING2] === result42[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result42[QUEEN2]);
+    const result43 = this.getCastlingRights(color);
+    return (rights[KING2] === void 0 || rights[KING2] === result43[KING2]) && (rights[QUEEN2] === void 0 || rights[QUEEN2] === result43[QUEEN2]);
   }
   getCastlingRights(color) {
     return {
@@ -18132,8 +18132,8 @@ function applyAction16(s, seat, action) {
   const spot = next3.shot;
   const dive = next3.dive;
   const reach2 = columnOf(spot) === dive && !(isHigh(spot) && columnOf(spot) !== 1);
-  const result42 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
-  const kick = { shooter: shooterOf(s), spot, dive, result: result42 };
+  const result43 = rng.next() < overChance(spot) ? "over" : reach2 ? "saved" : "goal";
+  const kick = { shooter: shooterOf(s), spot, dive, result: result43 };
   return decide({ ...next3, shot: null, dive: null, kicks: [...s.kicks, kick], rng: rng.state });
 }
 function currentSeats16(s) {
@@ -21188,6 +21188,3911 @@ var manifest62 = defineManifest({
   tags: ["speed", "reflex", "single-player", "quick"]
 });
 
+// packages/games/trivia/content/bg.json
+var bg_default5 = {
+  questions: [
+    {
+      id: 1,
+      category: "geography",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0435 \u0441\u0442\u043E\u043B\u0438\u0446\u0430\u0442\u0430 \u043D\u0430 \u0424\u0440\u0430\u043D\u0446\u0438\u044F?",
+      answers: ["\u041F\u0430\u0440\u0438\u0436", "\u041B\u0438\u043E\u043D", "\u041C\u0430\u0440\u0441\u0438\u043B\u0438\u044F", "\u041D\u0438\u0446\u0430"]
+    },
+    {
+      id: 2,
+      category: "geography",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u0439-\u0433\u043E\u043B\u0435\u043C\u0438\u044F\u0442 \u043E\u043A\u0435\u0430\u043D?",
+      answers: ["\u0422\u0438\u0445\u0438\u044F\u0442", "\u0410\u0442\u043B\u0430\u043D\u0442\u0438\u0447\u0435\u0441\u043A\u0438\u044F\u0442", "\u0418\u043D\u0434\u0438\u0439\u0441\u043A\u0438\u044F\u0442", "\u0421\u0435\u0432\u0435\u0440\u043D\u0438\u044F\u0442 \u043B\u0435\u0434\u043E\u0432\u0438\u0442"]
+    },
+    {
+      id: 3,
+      category: "geography",
+      level: 1,
+      question: "\u041D\u0430 \u043A\u043E\u0439 \u043A\u043E\u043D\u0442\u0438\u043D\u0435\u043D\u0442 \u0435 \u0415\u0433\u0438\u043F\u0435\u0442?",
+      answers: ["\u0410\u0444\u0440\u0438\u043A\u0430", "\u0410\u0437\u0438\u044F", "\u0415\u0432\u0440\u043E\u043F\u0430", "\u042E\u0436\u043D\u0430 \u0410\u043C\u0435\u0440\u0438\u043A\u0430"]
+    },
+    {
+      id: 4,
+      category: "geography",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0435 \u0441\u0442\u043E\u043B\u0438\u0446\u0430\u0442\u0430 \u043D\u0430 \u0411\u044A\u043B\u0433\u0430\u0440\u0438\u044F?",
+      answers: ["\u0421\u043E\u0444\u0438\u044F", "\u041F\u043B\u043E\u0432\u0434\u0438\u0432", "\u0412\u0430\u0440\u043D\u0430", "\u0411\u0443\u0440\u0433\u0430\u0441"]
+    },
+    {
+      id: 5,
+      category: "geography",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u0438\u043C\u0430 \u0444\u043E\u0440\u043C\u0430 \u043D\u0430 \u0431\u043E\u0442\u0443\u0448?",
+      answers: ["\u0418\u0442\u0430\u043B\u0438\u044F", "\u0418\u0441\u043F\u0430\u043D\u0438\u044F", "\u0413\u044A\u0440\u0446\u0438\u044F", "\u041F\u043E\u0440\u0442\u0443\u0433\u0430\u043B\u0438\u044F"]
+    },
+    {
+      id: 6,
+      category: "geography",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0435 \u0441\u0442\u043E\u043B\u0438\u0446\u0430\u0442\u0430 \u043D\u0430 \u042F\u043F\u043E\u043D\u0438\u044F?",
+      answers: ["\u0422\u043E\u043A\u0438\u043E", "\u041E\u0441\u0430\u043A\u0430", "\u041A\u0438\u043E\u0442\u043E", "\u0421\u0435\u0443\u043B"]
+    },
+    {
+      id: 7,
+      category: "geography",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0440\u0435\u043A\u0430 \u0442\u0435\u0447\u0435 \u043F\u0440\u0435\u0437 \u041B\u043E\u043D\u0434\u043E\u043D?",
+      answers: ["\u0422\u0435\u043C\u0437\u0430", "\u0421\u0435\u043D\u0430", "\u0414\u0443\u043D\u0430\u0432", "\u0420\u0435\u0439\u043D"]
+    },
+    {
+      id: 8,
+      category: "geography",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0435 \u043D\u0430\u0439-\u0433\u043E\u043B\u044F\u043C\u0430\u0442\u0430 \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u043F\u043E \u043F\u043B\u043E\u0449?",
+      answers: ["\u0420\u0443\u0441\u0438\u044F", "\u041A\u0430\u043D\u0430\u0434\u0430", "\u041A\u0438\u0442\u0430\u0439", "\u0421\u0410\u0429"]
+    },
+    {
+      id: 9,
+      category: "geography",
+      level: 1,
+      question: "\u041A\u043E\u0435 \u043C\u043E\u0440\u0435 \u0435 \u043D\u0430 \u0438\u0437\u0442\u043E\u043A \u043E\u0442 \u0411\u044A\u043B\u0433\u0430\u0440\u0438\u044F?",
+      answers: ["\u0427\u0435\u0440\u043D\u043E \u043C\u043E\u0440\u0435", "\u0415\u0433\u0435\u0439\u0441\u043A\u043E \u043C\u043E\u0440\u0435", "\u0410\u0434\u0440\u0438\u0430\u0442\u0438\u0447\u0435\u0441\u043A\u043E \u043C\u043E\u0440\u0435", "\u041A\u0430\u0441\u043F\u0438\u0439\u0441\u043A\u043E \u043C\u043E\u0440\u0435"]
+    },
+    {
+      id: 10,
+      category: "geography",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0435 \u0441\u0442\u043E\u043B\u0438\u0446\u0430\u0442\u0430 \u043D\u0430 \u0418\u0441\u043F\u0430\u043D\u0438\u044F?",
+      answers: ["\u041C\u0430\u0434\u0440\u0438\u0434", "\u0411\u0430\u0440\u0441\u0435\u043B\u043E\u043D\u0430", "\u0421\u0435\u0432\u0438\u043B\u044F", "\u0412\u0430\u043B\u0435\u043D\u0441\u0438\u044F"]
+    },
+    {
+      id: 11,
+      category: "geography",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0435 \u043D\u0430\u0439-\u0434\u044A\u043B\u0433\u0430\u0442\u0430 \u0440\u0435\u043A\u0430 \u0432 \u0415\u0432\u0440\u043E\u043F\u0430?",
+      answers: ["\u0412\u043E\u043B\u0433\u0430", "\u0414\u0443\u043D\u0430\u0432", "\u0420\u0435\u0439\u043D", "\u0414\u043D\u0435\u043F\u044A\u0440"]
+    },
+    {
+      id: 12,
+      category: "geography",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0435 \u0441\u0442\u043E\u043B\u0438\u0446\u0430\u0442\u0430 \u043D\u0430 \u0410\u0432\u0441\u0442\u0440\u0430\u043B\u0438\u044F?",
+      answers: ["\u041A\u0430\u043D\u0431\u0435\u0440\u0430", "\u0421\u0438\u0434\u043D\u0438", "\u041C\u0435\u043B\u0431\u044A\u0440\u043D", "\u041F\u044A\u0440\u0442"]
+    },
+    {
+      id: 13,
+      category: "geography",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u0439-\u0432\u0438\u0441\u043E\u043A\u0438\u044F\u0442 \u0432\u0440\u044A\u0445 \u0432 \u0411\u044A\u043B\u0433\u0430\u0440\u0438\u044F?",
+      answers: ["\u041C\u0443\u0441\u0430\u043B\u0430", "\u0412\u0438\u0445\u0440\u0435\u043D", "\u0411\u043E\u0442\u0435\u0432", "\u0427\u0435\u0440\u043D\u0438 \u0432\u0440\u044A\u0445"]
+    },
+    {
+      id: 14,
+      category: "geography",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0435 \u043D\u0430\u0439-\u0433\u043E\u043B\u044F\u043C\u0430\u0442\u0430 \u0433\u043E\u0440\u0435\u0449\u0430 \u043F\u0443\u0441\u0442\u0438\u043D\u044F \u0432 \u0441\u0432\u0435\u0442\u0430?",
+      answers: ["\u0421\u0430\u0445\u0430\u0440\u0430", "\u0413\u043E\u0431\u0438", "\u041A\u0430\u043B\u0430\u0445\u0430\u0440\u0438", "\u0410\u0442\u0430\u043A\u0430\u043C\u0430"]
+    },
+    {
+      id: 15,
+      category: "geography",
+      level: 2,
+      question: "\u041F\u0440\u0435\u0437 \u043A\u043E\u043B\u043A\u043E \u0434\u044A\u0440\u0436\u0430\u0432\u0438 \u0442\u0435\u0447\u0435 \u0440\u0435\u043A\u0430 \u0414\u0443\u043D\u0430\u0432?",
+      answers: ["10", "6", "8", "12"]
+    },
+    {
+      id: 16,
+      category: "geography",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0435 \u0441\u0442\u043E\u043B\u0438\u0446\u0430\u0442\u0430 \u043D\u0430 \u041A\u0430\u043D\u0430\u0434\u0430?",
+      answers: ["\u041E\u0442\u0430\u0432\u0430", "\u0422\u043E\u0440\u043E\u043D\u0442\u043E", "\u041C\u043E\u043D\u0440\u0435\u0430\u043B", "\u0412\u0430\u043D\u043A\u0443\u0432\u044A\u0440"]
+    },
+    {
+      id: 17,
+      category: "geography",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u043F\u0440\u043E\u0442\u043E\u043A \u0440\u0430\u0437\u0434\u0435\u043B\u044F \u0415\u0432\u0440\u043E\u043F\u0430 \u043E\u0442 \u0410\u0444\u0440\u0438\u043A\u0430?",
+      answers: ["\u0413\u0438\u0431\u0440\u0430\u043B\u0442\u0430\u0440\u0441\u043A\u0438\u044F\u0442", "\u0411\u043E\u0441\u0444\u043E\u0440\u044A\u0442", "\u041F\u0430 \u0434\u044C\u043E \u041A\u0430\u043B\u0435", "\u041C\u0435\u0441\u0438\u043D\u0441\u043A\u0438\u044F\u0442"]
+    },
+    {
+      id: 18,
+      category: "geography",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0435 \u043D\u0430\u0439-\u043C\u0430\u043B\u043A\u0430\u0442\u0430 \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u0432 \u0441\u0432\u0435\u0442\u0430?",
+      answers: ["\u0412\u0430\u0442\u0438\u043A\u0430\u043D", "\u041C\u043E\u043D\u0430\u043A\u043E", "\u0421\u0430\u043D \u041C\u0430\u0440\u0438\u043D\u043E", "\u041B\u0438\u0445\u0442\u0435\u043D\u0449\u0430\u0439\u043D"]
+    },
+    {
+      id: 19,
+      category: "geography",
+      level: 2,
+      question: "\u0412 \u043A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u0435 \u0432\u0440\u044A\u0445 \u041A\u0438\u043B\u0438\u043C\u0430\u043D\u0434\u0436\u0430\u0440\u043E?",
+      answers: ["\u0422\u0430\u043D\u0437\u0430\u043D\u0438\u044F", "\u041A\u0435\u043D\u0438\u044F", "\u0423\u0433\u0430\u043D\u0434\u0430", "\u0415\u0442\u0438\u043E\u043F\u0438\u044F"]
+    },
+    {
+      id: 20,
+      category: "geography",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0435 \u0441\u0442\u043E\u043B\u0438\u0446\u0430\u0442\u0430 \u043D\u0430 \u0422\u0443\u0440\u0446\u0438\u044F?",
+      answers: ["\u0410\u043D\u043A\u0430\u0440\u0430", "\u0418\u0441\u0442\u0430\u043D\u0431\u0443\u043B", "\u0418\u0437\u043C\u0438\u0440", "\u0411\u0443\u0440\u0441\u0430"]
+    },
+    {
+      id: 21,
+      category: "geography",
+      level: 3,
+      question: "\u041A\u043E\u0435 \u0435 \u043D\u0430\u0439-\u0434\u044A\u043B\u0431\u043E\u043A\u043E\u0442\u043E \u0435\u0437\u0435\u0440\u043E \u0432 \u0441\u0432\u0435\u0442\u0430?",
+      answers: ["\u0411\u0430\u0439\u043A\u0430\u043B", "\u0422\u0430\u043D\u0433\u0430\u043D\u0438\u043A\u0430", "\u0413\u043E\u0440\u043D\u043E \u0435\u0437\u0435\u0440\u043E", "\u0412\u0438\u043A\u0442\u043E\u0440\u0438\u044F"]
+    },
+    {
+      id: 22,
+      category: "geography",
+      level: 3,
+      question: "\u041A\u043E\u044F \u0435 \u0441\u0442\u043E\u043B\u0438\u0446\u0430\u0442\u0430 \u043D\u0430 \u041A\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043D?",
+      answers: ["\u0410\u0441\u0442\u0430\u043D\u0430", "\u0410\u043B\u043C\u0430\u0442\u0438", "\u0411\u0438\u0448\u043A\u0435\u043A", "\u0422\u0430\u0448\u043A\u0435\u043D\u0442"]
+    },
+    {
+      id: 23,
+      category: "geography",
+      level: 3,
+      question: "\u041A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u0438\u043C\u0430 \u043D\u0430\u0439-\u0434\u044A\u043B\u0433\u0430\u0442\u0430 \u0431\u0440\u0435\u0433\u043E\u0432\u0430 \u043B\u0438\u043D\u0438\u044F?",
+      answers: ["\u041A\u0430\u043D\u0430\u0434\u0430", "\u0420\u0443\u0441\u0438\u044F", "\u041D\u043E\u0440\u0432\u0435\u0433\u0438\u044F", "\u0410\u0432\u0441\u0442\u0440\u0430\u043B\u0438\u044F"]
+    },
+    {
+      id: 24,
+      category: "geography",
+      level: 3,
+      question: "\u041A\u043E\u044F \u0440\u0435\u043A\u0430 \u0442\u0435\u0447\u0435 \u043F\u0440\u0435\u0437 \u0411\u0430\u0433\u0434\u0430\u0434?",
+      answers: ["\u0422\u0438\u0433\u044A\u0440", "\u0415\u0444\u0440\u0430\u0442", "\u0419\u043E\u0440\u0434\u0430\u043D", "\u041D\u0438\u043B"]
+    },
+    {
+      id: 25,
+      category: "geography",
+      level: 3,
+      question: "\u0415\u0437\u0435\u0440\u043E\u0442\u043E \u0422\u0438\u0442\u0438\u043A\u0430\u043A\u0430 \u0435 \u043D\u0430 \u0433\u0440\u0430\u043D\u0438\u0446\u0430\u0442\u0430 \u043D\u0430 \u041F\u0435\u0440\u0443 \u0438 \u043A\u043E\u044F \u0434\u0440\u0443\u0433\u0430 \u0434\u044A\u0440\u0436\u0430\u0432\u0430?",
+      answers: ["\u0411\u043E\u043B\u0438\u0432\u0438\u044F", "\u0427\u0438\u043B\u0438", "\u0415\u043A\u0432\u0430\u0434\u043E\u0440", "\u0410\u0440\u0436\u0435\u043D\u0442\u0438\u043D\u0430"]
+    },
+    {
+      id: 26,
+      category: "geography",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u0439-\u0433\u043E\u043B\u0435\u043C\u0438\u044F\u0442 \u043E\u0441\u0442\u0440\u043E\u0432 \u0432 \u0441\u0432\u0435\u0442\u0430, \u0431\u0435\u0437 \u0434\u0430 \u0431\u0440\u043E\u0438\u043C \u0410\u0432\u0441\u0442\u0440\u0430\u043B\u0438\u044F?",
+      answers: ["\u0413\u0440\u0435\u043D\u043B\u0430\u043D\u0434\u0438\u044F", "\u041D\u043E\u0432\u0430 \u0413\u0432\u0438\u043D\u0435\u044F", "\u0411\u043E\u0440\u043D\u0435\u043E", "\u041C\u0430\u0434\u0430\u0433\u0430\u0441\u043A\u0430\u0440"]
+    },
+    {
+      id: 27,
+      category: "geography",
+      level: 3,
+      question: "\u041A\u043E\u0435 \u0435 \u043D\u0430\u0439-\u0433\u043E\u043B\u044F\u043C\u043E\u0442\u043E \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u043E \u043F\u0440\u0438\u0441\u0442\u0430\u043D\u0438\u0449\u0435 \u043D\u0430 \u0414\u0443\u043D\u0430\u0432?",
+      answers: ["\u0420\u0443\u0441\u0435", "\u0412\u0438\u0434\u0438\u043D", "\u041B\u043E\u043C", "\u0421\u0432\u0438\u0449\u043E\u0432"]
+    },
+    {
+      id: 28,
+      category: "geography",
+      level: 3,
+      question: "\u041A\u043E\u044F \u0435 \u0441\u0442\u043E\u043B\u0438\u0446\u0430\u0442\u0430 \u043D\u0430 \u041D\u043E\u0432\u0430 \u0417\u0435\u043B\u0430\u043D\u0434\u0438\u044F?",
+      answers: ["\u0423\u0435\u043B\u0438\u043D\u0433\u0442\u044A\u043D", "\u041E\u043A\u043B\u0430\u043D\u0434", "\u041A\u0440\u0430\u0439\u0441\u0442\u0447\u044A\u0440\u0447", "\u0425\u0430\u043C\u0438\u043B\u0442\u044A\u043D"]
+    },
+    {
+      id: 29,
+      category: "geography",
+      level: 3,
+      question: "\u041A\u043E\u0438 \u043F\u043B\u0430\u043D\u0438\u043D\u0438 \u043E\u0431\u0438\u043A\u043D\u043E\u0432\u0435\u043D\u043E \u0441\u0435 \u0441\u043C\u044F\u0442\u0430\u0442 \u0437\u0430 \u0433\u0440\u0430\u043D\u0438\u0446\u0430 \u043C\u0435\u0436\u0434\u0443 \u0415\u0432\u0440\u043E\u043F\u0430 \u0438 \u0410\u0437\u0438\u044F?",
+      answers: ["\u0423\u0440\u0430\u043B", "\u041A\u0430\u0432\u043A\u0430\u0437", "\u041A\u0430\u0440\u043F\u0430\u0442\u0438\u0442\u0435", "\u0410\u043B\u0442\u0430\u0439"]
+    },
+    {
+      id: 30,
+      category: "geography",
+      level: 3,
+      question: "\u041A\u043E\u044F \u0430\u0444\u0440\u0438\u043A\u0430\u043D\u0441\u043A\u0430 \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u043D\u044F\u043A\u043E\u0433\u0430 \u0441\u0435 \u0435 \u043D\u0430\u0440\u0438\u0447\u0430\u043B\u0430 \u0410\u0431\u0438\u0441\u0438\u043D\u0438\u044F?",
+      answers: ["\u0415\u0442\u0438\u043E\u043F\u0438\u044F", "\u0415\u0440\u0438\u0442\u0440\u0435\u044F", "\u0421\u043E\u043C\u0430\u043B\u0438\u044F", "\u0421\u0443\u0434\u0430\u043D"]
+    },
+    {
+      id: 31,
+      category: "history",
+      level: 1,
+      question: "\u041F\u0440\u0435\u0437 \u043A\u043E\u044F \u0433\u043E\u0434\u0438\u043D\u0430 \u0441\u0432\u044A\u0440\u0448\u0432\u0430 \u0412\u0442\u043E\u0440\u0430\u0442\u0430 \u0441\u0432\u0435\u0442\u043E\u0432\u043D\u0430 \u0432\u043E\u0439\u043D\u0430?",
+      answers: ["1945", "1918", "1939", "1950"]
+    },
+    {
+      id: 32,
+      category: "history",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0435 \u043F\u044A\u0440\u0432\u0438\u044F\u0442 \u0447\u043E\u0432\u0435\u043A, \u0441\u0442\u044A\u043F\u0438\u043B \u043D\u0430 \u041B\u0443\u043D\u0430\u0442\u0430?",
+      answers: ["\u041D\u0438\u0439\u043B \u0410\u0440\u043C\u0441\u0442\u0440\u043E\u043D\u0433", "\u042E\u0440\u0438\u0439 \u0413\u0430\u0433\u0430\u0440\u0438\u043D", "\u0411\u044A\u0437 \u041E\u043B\u0434\u0440\u0438\u043D", "\u0414\u0436\u043E\u043D \u0413\u043B\u0435\u043D"]
+    },
+    {
+      id: 33,
+      category: "history",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0434\u0440\u0435\u0432\u0435\u043D \u043D\u0430\u0440\u043E\u0434 \u0435 \u043F\u043E\u0441\u0442\u0440\u043E\u0438\u043B \u043F\u0438\u0440\u0430\u043C\u0438\u0434\u0438\u0442\u0435 \u0432 \u0413\u0438\u0437\u0430?",
+      answers: ["\u0415\u0433\u0438\u043F\u0442\u044F\u043D\u0438\u0442\u0435", "\u0420\u0438\u043C\u043B\u044F\u043D\u0438\u0442\u0435", "\u0413\u044A\u0440\u0446\u0438\u0442\u0435", "\u041F\u0435\u0440\u0441\u0438\u0442\u0435"]
+    },
+    {
+      id: 34,
+      category: "history",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0435 \u043F\u044A\u0440\u0432\u0438\u044F\u0442 \u0447\u043E\u0432\u0435\u043A \u0432 \u043A\u043E\u0441\u043C\u043E\u0441\u0430?",
+      answers: ["\u042E\u0440\u0438\u0439 \u0413\u0430\u0433\u0430\u0440\u0438\u043D", "\u041D\u0438\u0439\u043B \u0410\u0440\u043C\u0441\u0442\u0440\u043E\u043D\u0433", "\u0412\u0430\u043B\u0435\u043D\u0442\u0438\u043D\u0430 \u0422\u0435\u0440\u0435\u0448\u043A\u043E\u0432\u0430", "\u0410\u043B\u044A\u043D \u0428\u0435\u043F\u044A\u0440\u0434"]
+    },
+    {
+      id: 35,
+      category: "history",
+      level: 1,
+      question: "\u041A\u044A\u0434\u0435 \u0441\u0430 \u0441\u0435 \u043F\u0440\u043E\u0432\u0435\u0436\u0434\u0430\u043B\u0438 \u0434\u0440\u0435\u0432\u043D\u0438\u0442\u0435 \u041E\u043B\u0438\u043C\u043F\u0438\u0439\u0441\u043A\u0438 \u0438\u0433\u0440\u0438?",
+      answers: ["\u041E\u043B\u0438\u043C\u043F\u0438\u044F", "\u0410\u0442\u0438\u043D\u0430", "\u0421\u043F\u0430\u0440\u0442\u0430", "\u0414\u0435\u043B\u0444\u0438"]
+    },
+    {
+      id: 36,
+      category: "history",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u043A\u043E\u0440\u0430\u0431 \u043F\u043E\u0442\u044A\u0432\u0430 \u043F\u0440\u0435\u0437 1912 \u0433. \u0441\u043B\u0435\u0434 \u0441\u0431\u043B\u044A\u0441\u044A\u043A \u0441 \u0430\u0439\u0441\u0431\u0435\u0440\u0433?",
+      answers: ["\u201E\u0422\u0438\u0442\u0430\u043D\u0438\u043A\u201C", "\u201E\u041B\u0443\u0437\u0438\u0442\u0430\u043D\u0438\u044F\u201C", "\u201E\u0411\u0440\u0438\u0442\u0430\u043D\u0438\u043A\u201C", "\u201E\u041E\u043B\u0438\u043C\u043F\u0438\u043A\u201C"]
+    },
+    {
+      id: 37,
+      category: "history",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0441\u0442\u0435\u043D\u0430 \u043F\u0430\u0434\u0430 \u043F\u0440\u0435\u0437 1989 \u0433.?",
+      answers: [
+        "\u0411\u0435\u0440\u043B\u0438\u043D\u0441\u043A\u0430\u0442\u0430 \u0441\u0442\u0435\u043D\u0430",
+        "\u0412\u0435\u043B\u0438\u043A\u0430\u0442\u0430 \u043A\u0438\u0442\u0430\u0439\u0441\u043A\u0430 \u0441\u0442\u0435\u043D\u0430",
+        "\u0410\u0434\u0440\u0438\u0430\u043D\u043E\u0432\u0438\u044F\u0442 \u0432\u0430\u043B",
+        "\u0421\u0442\u0435\u043D\u0430\u0442\u0430 \u043D\u0430 \u043F\u043B\u0430\u0447\u0430"
+      ]
+    },
+    {
+      id: 38,
+      category: "history",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0435 \u043F\u044A\u0440\u0432\u0438\u044F\u0442 \u043F\u0440\u0435\u0437\u0438\u0434\u0435\u043D\u0442 \u043D\u0430 \u0421\u0410\u0429?",
+      answers: ["\u0414\u0436\u043E\u0440\u0434\u0436 \u0412\u0430\u0448\u0438\u043D\u0433\u0442\u043E\u043D", "\u0415\u0439\u0431\u0440\u0430\u0445\u0430\u043C \u041B\u0438\u043D\u043A\u044A\u043B\u043D", "\u0422\u043E\u043C\u0430\u0441 \u0414\u0436\u0435\u0444\u0435\u0440\u0441\u044A\u043D", "\u0414\u0436\u043E\u043D \u0410\u0434\u0430\u043C\u0441"]
+    },
+    {
+      id: 39,
+      category: "history",
+      level: 1,
+      question: "\u041F\u0440\u0435\u0437 \u043A\u043E\u044F \u0433\u043E\u0434\u0438\u043D\u0430 \u0425\u0440\u0438\u0441\u0442\u043E\u0444\u043E\u0440 \u041A\u043E\u043B\u0443\u043C\u0431 \u0437\u0430 \u043F\u0440\u044A\u0432 \u043F\u044A\u0442 \u0434\u043E\u0441\u0442\u0438\u0433\u0430 \u0410\u043C\u0435\u0440\u0438\u043A\u0430?",
+      answers: ["1492", "1453", "1517", "1607"]
+    },
+    {
+      id: 40,
+      category: "history",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u043F\u043E\u0434\u0430\u0440\u044F\u0432\u0430 \u0421\u0442\u0430\u0442\u0443\u044F\u0442\u0430 \u043D\u0430 \u0441\u0432\u043E\u0431\u043E\u0434\u0430\u0442\u0430 \u043D\u0430 \u0421\u0410\u0429?",
+      answers: ["\u0424\u0440\u0430\u043D\u0446\u0438\u044F", "\u0412\u0435\u043B\u0438\u043A\u043E\u0431\u0440\u0438\u0442\u0430\u043D\u0438\u044F", "\u0418\u0441\u043F\u0430\u043D\u0438\u044F", "\u0418\u0442\u0430\u043B\u0438\u044F"]
+    },
+    {
+      id: 41,
+      category: "history",
+      level: 2,
+      question: "\u041F\u0440\u0435\u0437 \u043A\u043E\u044F \u0433\u043E\u0434\u0438\u043D\u0430 \u0435 \u041E\u0441\u0432\u043E\u0431\u043E\u0436\u0434\u0435\u043D\u0438\u0435\u0442\u043E \u043D\u0430 \u0411\u044A\u043B\u0433\u0430\u0440\u0438\u044F, \u0441\u044A\u0441 \u0421\u0430\u043D\u0441\u0442\u0435\u0444\u0430\u043D\u0441\u043A\u0438\u044F \u043C\u0438\u0440\u0435\u043D \u0434\u043E\u0433\u043E\u0432\u043E\u0440?",
+      answers: ["1878", "1876", "1885", "1908"]
+    },
+    {
+      id: 42,
+      category: "history",
+      level: 2,
+      question: "\u041F\u0440\u0435\u0437 \u043A\u043E\u044F \u0433\u043E\u0434\u0438\u043D\u0430 \u0435 \u043E\u0431\u044F\u0432\u0435\u043D\u0430 \u043D\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043C\u043E\u0441\u0442\u0442\u0430 \u043D\u0430 \u0411\u044A\u043B\u0433\u0430\u0440\u0438\u044F?",
+      answers: ["1908", "1878", "1885", "1912"]
+    },
+    {
+      id: 43,
+      category: "history",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0445\u0430\u043D \u043E\u0441\u043D\u043E\u0432\u0430\u0432\u0430 \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0430\u0442\u0430 \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u043D\u0430 \u0414\u0443\u043D\u0430\u0432 \u043F\u0440\u0435\u0437 681 \u0433.?",
+      answers: ["\u0410\u0441\u043F\u0430\u0440\u0443\u0445", "\u041A\u0440\u0443\u043C", "\u0422\u0435\u0440\u0432\u0435\u043B", "\u041A\u0443\u0431\u0440\u0430\u0442"]
+    },
+    {
+      id: 44,
+      category: "history",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438 \u0432\u043B\u0430\u0434\u0435\u0442\u0435\u043B \u043F\u0440\u0438\u0435\u043C\u0430 \u0445\u0440\u0438\u0441\u0442\u0438\u044F\u043D\u0441\u0442\u0432\u043E\u0442\u043E \u0437\u0430 \u0434\u044A\u0440\u0436\u0430\u0432\u043D\u0430 \u0440\u0435\u043B\u0438\u0433\u0438\u044F \u043F\u0440\u0435\u0437 860-\u0442\u0435 \u0433\u043E\u0434\u0438\u043D\u0438?",
+      answers: ["\u0411\u043E\u0440\u0438\u0441 I", "\u0421\u0438\u043C\u0435\u043E\u043D I", "\u041A\u0440\u0443\u043C", "\u0421\u0430\u043C\u0443\u0438\u043B"]
+    },
+    {
+      id: 45,
+      category: "history",
+      level: 2,
+      question: "\u041A\u043E\u0438 \u0431\u0440\u0430\u0442\u044F \u0441\u044A\u0437\u0434\u0430\u0432\u0430\u0442 \u0433\u043B\u0430\u0433\u043E\u043B\u0438\u0446\u0430\u0442\u0430?",
+      answers: ["\u041A\u0438\u0440\u0438\u043B \u0438 \u041C\u0435\u0442\u043E\u0434\u0438\u0439", "\u041A\u043B\u0438\u043C\u0435\u043D\u0442 \u0438 \u041D\u0430\u0443\u043C", "\u0420\u043E\u043C\u0443\u043B \u0438 \u0420\u0435\u043C", "\u0411\u043E\u0440\u0438\u0441 \u0438 \u0413\u043B\u0435\u0431"]
+    },
+    {
+      id: 46,
+      category: "history",
+      level: 2,
+      question: "\u041F\u0440\u0435\u0437 \u043A\u043E\u044F \u0433\u043E\u0434\u0438\u043D\u0430 \u0437\u0430\u043F\u043E\u0447\u0432\u0430 \u041F\u044A\u0440\u0432\u0430\u0442\u0430 \u0441\u0432\u0435\u0442\u043E\u0432\u043D\u0430 \u0432\u043E\u0439\u043D\u0430?",
+      answers: ["1914", "1912", "1916", "1918"]
+    },
+    {
+      id: 47,
+      category: "history",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0444\u0440\u0435\u043D\u0441\u043A\u0438 \u0438\u043C\u043F\u0435\u0440\u0430\u0442\u043E\u0440 \u0435 \u043F\u043E\u0431\u0435\u0434\u0435\u043D \u043F\u0440\u0438 \u0412\u0430\u0442\u0435\u0440\u043B\u043E?",
+      answers: ["\u041D\u0430\u043F\u043E\u043B\u0435\u043E\u043D", "\u041B\u0443\u0438 XIV", "\u041A\u0430\u0440\u043B \u0412\u0435\u043B\u0438\u043A\u0438", "\u041B\u0443\u0438 XVI"]
+    },
+    {
+      id: 48,
+      category: "history",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0433\u0440\u0430\u0434 \u0435 \u0441\u0442\u043E\u043B\u0438\u0446\u0430 \u043D\u0430 \u0412\u0438\u0437\u0430\u043D\u0442\u0438\u0439\u0441\u043A\u0430\u0442\u0430 \u0438\u043C\u043F\u0435\u0440\u0438\u044F?",
+      answers: ["\u041A\u043E\u043D\u0441\u0442\u0430\u043D\u0442\u0438\u043D\u043E\u043F\u043E\u043B", "\u0420\u0438\u043C", "\u0410\u0442\u0438\u043D\u0430", "\u0421\u043E\u043B\u0443\u043D"]
+    },
+    {
+      id: 49,
+      category: "history",
+      level: 2,
+      question: "\u041F\u0440\u0435\u0437 \u043A\u043E\u044F \u0433\u043E\u0434\u0438\u043D\u0430 \u0437\u0430\u043F\u043E\u0447\u0432\u0430 \u0424\u0440\u0435\u043D\u0441\u043A\u0430\u0442\u0430 \u0440\u0435\u0432\u043E\u043B\u044E\u0446\u0438\u044F?",
+      answers: ["1789", "1776", "1815", "1848"]
+    },
+    {
+      id: 50,
+      category: "history",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438 \u0440\u0435\u0432\u043E\u043B\u044E\u0446\u0438\u043E\u043D\u0435\u0440 \u0435 \u043D\u0430\u0440\u0438\u0447\u0430\u043D \u0410\u043F\u043E\u0441\u0442\u043E\u043B\u0430 \u043D\u0430 \u0441\u0432\u043E\u0431\u043E\u0434\u0430\u0442\u0430?",
+      answers: ["\u0412\u0430\u0441\u0438\u043B \u041B\u0435\u0432\u0441\u043A\u0438", "\u0425\u0440\u0438\u0441\u0442\u043E \u0411\u043E\u0442\u0435\u0432", "\u0413\u0435\u043E\u0440\u0433\u0438 \u0420\u0430\u043A\u043E\u0432\u0441\u043A\u0438", "\u041B\u044E\u0431\u0435\u043D \u041A\u0430\u0440\u0430\u0432\u0435\u043B\u043E\u0432"]
+    },
+    {
+      id: 51,
+      category: "history",
+      level: 3,
+      question: "\u041F\u0440\u0435\u0437 \u043A\u043E\u044F \u0433\u043E\u0434\u0438\u043D\u0430 \u041A\u043E\u043D\u0441\u0442\u0430\u043D\u0442\u0438\u043D\u043E\u043F\u043E\u043B \u0435 \u043F\u0440\u0435\u0432\u0437\u0435\u0442 \u043E\u0442 \u043E\u0441\u043C\u0430\u043D\u0446\u0438\u0442\u0435?",
+      answers: ["1453", "1389", "1492", "1526"]
+    },
+    {
+      id: 52,
+      category: "history",
+      level: 3,
+      question: "\u041F\u0440\u0435\u0437 \u043A\u043E\u044F \u0433\u043E\u0434\u0438\u043D\u0430 \u0435 \u0410\u043F\u0440\u0438\u043B\u0441\u043A\u043E\u0442\u043E \u0432\u044A\u0441\u0442\u0430\u043D\u0438\u0435?",
+      answers: ["1876", "1878", "1867", "1885"]
+    },
+    {
+      id: 53,
+      category: "history",
+      level: 3,
+      question: "\u041F\u0440\u0438 \u043A\u043E\u0439 \u0432\u043B\u0430\u0434\u0435\u0442\u0435\u043B \u0435 \u0417\u043B\u0430\u0442\u043D\u0438\u044F\u0442 \u0432\u0435\u043A \u043D\u0430 \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0430\u0442\u0430 \u043A\u0443\u043B\u0442\u0443\u0440\u0430?",
+      answers: ["\u0421\u0438\u043C\u0435\u043E\u043D I", "\u0411\u043E\u0440\u0438\u0441 I", "\u0418\u0432\u0430\u043D \u0410\u0441\u0435\u043D II", "\u041A\u0430\u043B\u043E\u044F\u043D"]
+    },
+    {
+      id: 54,
+      category: "history",
+      level: 3,
+      question: "\u041F\u0440\u0435\u0437 \u043A\u043E\u044F \u0433\u043E\u0434\u0438\u043D\u0430 \u0441\u0435 \u043E\u0431\u0435\u0434\u0438\u043D\u044F\u0432\u0430\u0442 \u041A\u043D\u044F\u0436\u0435\u0441\u0442\u0432\u043E \u0411\u044A\u043B\u0433\u0430\u0440\u0438\u044F \u0438 \u0418\u0437\u0442\u043E\u0447\u043D\u0430 \u0420\u0443\u043C\u0435\u043B\u0438\u044F?",
+      answers: ["1885", "1878", "1879", "1908"]
+    },
+    {
+      id: 55,
+      category: "history",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u043D\u0430\u043F\u0438\u0441\u0432\u0430 \u201E\u0418\u0441\u0442\u043E\u0440\u0438\u044F \u0441\u043B\u0430\u0432\u044F\u043D\u043E\u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0430\u201C \u043F\u0440\u0435\u0437 1762 \u0433.?",
+      answers: ["\u041F\u0430\u0438\u0441\u0438\u0439 \u0425\u0438\u043B\u0435\u043D\u0434\u0430\u0440\u0441\u043A\u0438", "\u0421\u043E\u0444\u0440\u043E\u043D\u0438\u0439 \u0412\u0440\u0430\u0447\u0430\u043D\u0441\u043A\u0438", "\u041D\u0435\u043E\u0444\u0438\u0442 \u0420\u0438\u043B\u0441\u043A\u0438", "\u0412\u0430\u0441\u0438\u043B \u0410\u043F\u0440\u0438\u043B\u043E\u0432"]
+    },
+    {
+      id: 56,
+      category: "history",
+      level: 3,
+      question: "\u041A\u043E\u0435 \u0447\u0443\u0434\u043E \u043D\u0430 \u0434\u0440\u0435\u0432\u043D\u0438\u044F \u0441\u0432\u044F\u0442 \u0441\u0435 \u0435 \u043D\u0430\u043C\u0438\u0440\u0430\u043B\u043E \u0432 \u0410\u043B\u0435\u043A\u0441\u0430\u043D\u0434\u0440\u0438\u044F?",
+      answers: ["\u0424\u0430\u0440\u044A\u0442", "\u041A\u043E\u043B\u043E\u0441\u044A\u0442", "\u0412\u0438\u0441\u044F\u0449\u0438\u0442\u0435 \u0433\u0440\u0430\u0434\u0438\u043D\u0438", "\u0425\u0440\u0430\u043C\u044A\u0442 \u043D\u0430 \u0410\u0440\u0442\u0435\u043C\u0438\u0434\u0430"]
+    },
+    {
+      id: 57,
+      category: "history",
+      level: 3,
+      question: "\u041A\u043E\u044F \u0435 \u043F\u044A\u0440\u0432\u0430\u0442\u0430 \u0436\u0435\u043D\u0430 \u0432 \u043A\u043E\u0441\u043C\u043E\u0441\u0430?",
+      answers: ["\u0412\u0430\u043B\u0435\u043D\u0442\u0438\u043D\u0430 \u0422\u0435\u0440\u0435\u0448\u043A\u043E\u0432\u0430", "\u0421\u0430\u043B\u0438 \u0420\u0430\u0439\u0434", "\u0421\u0432\u0435\u0442\u043B\u0430\u043D\u0430 \u0421\u0430\u0432\u0438\u0446\u043A\u0430", "\u041C\u0435\u0439 \u0414\u0436\u0435\u043C\u0438\u0441\u044A\u043D"]
+    },
+    {
+      id: 58,
+      category: "history",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0434\u043E\u0433\u043E\u0432\u043E\u0440 \u043E\u0442 1919 \u0433. \u0441\u043B\u0430\u0433\u0430 \u043A\u0440\u0430\u0439 \u043D\u0430 \u041F\u044A\u0440\u0432\u0430\u0442\u0430 \u0441\u0432\u0435\u0442\u043E\u0432\u043D\u0430 \u0432\u043E\u0439\u043D\u0430 \u0441 \u0413\u0435\u0440\u043C\u0430\u043D\u0438\u044F?",
+      answers: ["\u0412\u0435\u0440\u0441\u0430\u0439\u0441\u043A\u0438\u044F\u0442", "\u041D\u044C\u043E\u0439\u0441\u043A\u0438\u044F\u0442", "\u0422\u0440\u0438\u0430\u043D\u043E\u043D\u0441\u043A\u0438\u044F\u0442", "\u041F\u0430\u0440\u0438\u0436\u043A\u0438\u044F\u0442"]
+    },
+    {
+      id: 59,
+      category: "history",
+      level: 3,
+      question: "\u0421\u043F\u0430\u0440\u0442\u0430\u043A, \u043A\u043E\u0439\u0442\u043E \u0432\u043E\u0434\u0438 \u0432\u044A\u0441\u0442\u0430\u043D\u0438\u0435 \u043D\u0430 \u0440\u043E\u0431\u0438\u0442\u0435 \u0441\u0440\u0435\u0449\u0443 \u0420\u0438\u043C, \u0435 \u043E\u0442 \u043A\u043E\u0439 \u043D\u0430\u0440\u043E\u0434?",
+      answers: ["\u0422\u0440\u0430\u043A\u0438\u0442\u0435", "\u0413\u0430\u043B\u0438\u0442\u0435", "\u0413\u0435\u0440\u043C\u0430\u043D\u0438\u0442\u0435", "\u041A\u0430\u0440\u0442\u0430\u0433\u0435\u043D\u0446\u0438\u0442\u0435"]
+    },
+    {
+      id: 60,
+      category: "history",
+      level: 3,
+      question: "\u041A\u043E\u044F \u0438\u043C\u043F\u0435\u0440\u0438\u044F \u043F\u043E\u0441\u0442\u0440\u043E\u044F\u0432\u0430 \u041C\u0430\u0447\u0443 \u041F\u0438\u043A\u0447\u0443?",
+      answers: ["\u0418\u043D\u043A\u0438\u0442\u0435", "\u0410\u0446\u0442\u0435\u043A\u0438\u0442\u0435", "\u041C\u0430\u0438\u0442\u0435", "\u041E\u043B\u043C\u0435\u043A\u0438\u0442\u0435"]
+    },
+    {
+      id: 61,
+      category: "science",
+      level: 1,
+      question: "\u041A\u0430\u043A \u0435 \u043F\u043E-\u0438\u0437\u0432\u0435\u0441\u0442\u043D\u043E \u0432\u0435\u0449\u0435\u0441\u0442\u0432\u043E\u0442\u043E H\u2082O?",
+      answers: ["\u0412\u043E\u0434\u0430", "\u0421\u043E\u043B", "\u041A\u0438\u0441\u043B\u043E\u0440\u043E\u0434", "\u0417\u0430\u0445\u0430\u0440"]
+    },
+    {
+      id: 62,
+      category: "science",
+      level: 1,
+      question: "\u041A\u043E\u044F \u043F\u043B\u0430\u043D\u0435\u0442\u0430 \u0435 \u043D\u0430\u0439-\u0431\u043B\u0438\u0437\u043E \u0434\u043E \u0421\u043B\u044A\u043D\u0446\u0435\u0442\u043E?",
+      answers: ["\u041C\u0435\u0440\u043A\u0443\u0440\u0438\u0439", "\u0412\u0435\u043D\u0435\u0440\u0430", "\u041C\u0430\u0440\u0441", "\u0417\u0435\u043C\u044F\u0442\u0430"]
+    },
+    {
+      id: 63,
+      category: "science",
+      level: 1,
+      question: "\u041A\u043E\u044F \u043F\u043B\u0430\u043D\u0435\u0442\u0430 \u0435 \u043D\u0430\u0440\u0438\u0447\u0430\u043D\u0430 \u0427\u0435\u0440\u0432\u0435\u043D\u0430\u0442\u0430 \u043F\u043B\u0430\u043D\u0435\u0442\u0430?",
+      answers: ["\u041C\u0430\u0440\u0441", "\u042E\u043F\u0438\u0442\u0435\u0440", "\u0412\u0435\u043D\u0435\u0440\u0430", "\u0421\u0430\u0442\u0443\u0440\u043D"]
+    },
+    {
+      id: 64,
+      category: "science",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0441\u0438\u043B\u0430 \u043D\u0438 \u0434\u044A\u0440\u0436\u0438 \u043D\u0430 \u0437\u0435\u043C\u044F\u0442\u0430?",
+      answers: ["\u0413\u0440\u0430\u0432\u0438\u0442\u0430\u0446\u0438\u044F\u0442\u0430", "\u041C\u0430\u0433\u043D\u0435\u0442\u0438\u0437\u043C\u044A\u0442", "\u0422\u0440\u0438\u0435\u043D\u0435\u0442\u043E", "\u041D\u0430\u043B\u044F\u0433\u0430\u043D\u0435\u0442\u043E"]
+    },
+    {
+      id: 65,
+      category: "science",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0433\u0430\u0437 \u043F\u043E\u0435\u043C\u0430\u0442 \u0440\u0430\u0441\u0442\u0435\u043D\u0438\u044F\u0442\u0430 \u043E\u0442 \u0432\u044A\u0437\u0434\u0443\u0445\u0430, \u0437\u0430 \u0434\u0430 \u0441\u0438 \u043F\u0440\u0430\u0432\u044F\u0442 \u0445\u0440\u0430\u043D\u0430?",
+      answers: ["\u0412\u044A\u0433\u043B\u0435\u0440\u043E\u0434\u0435\u043D \u0434\u0438\u043E\u043A\u0441\u0438\u0434", "\u041A\u0438\u0441\u043B\u043E\u0440\u043E\u0434", "\u0410\u0437\u043E\u0442", "\u0425\u0435\u043B\u0438\u0439"]
+    },
+    {
+      id: 66,
+      category: "science",
+      level: 1,
+      question: "\u041F\u0440\u0438 \u043A\u0430\u043A\u0432\u0430 \u0442\u0435\u043C\u043F\u0435\u0440\u0430\u0442\u0443\u0440\u0430 \u043A\u0438\u043F\u0438 \u0432\u043E\u0434\u0430\u0442\u0430 \u043D\u0430 \u043C\u043E\u0440\u0441\u043A\u043E\u0442\u043E \u0440\u0430\u0432\u043D\u0438\u0449\u0435?",
+      answers: ["100 \xB0C", "90 \xB0C", "80 \xB0C", "120 \xB0C"]
+    },
+    {
+      id: 67,
+      category: "science",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0435 \u043D\u0430\u0439-\u0433\u043E\u043B\u044F\u043C\u0430\u0442\u0430 \u043F\u043B\u0430\u043D\u0435\u0442\u0430 \u0432 \u0421\u043B\u044A\u043D\u0447\u0435\u0432\u0430\u0442\u0430 \u0441\u0438\u0441\u0442\u0435\u043C\u0430?",
+      answers: ["\u042E\u043F\u0438\u0442\u0435\u0440", "\u0421\u0430\u0442\u0443\u0440\u043D", "\u041D\u0435\u043F\u0442\u0443\u043D", "\u0417\u0435\u043C\u044F\u0442\u0430"]
+    },
+    {
+      id: 68,
+      category: "science",
+      level: 1,
+      question: "\u041A\u043E\u043B\u043A\u043E \u043F\u043B\u0430\u043D\u0435\u0442\u0438 \u0438\u043C\u0430 \u0432 \u0421\u043B\u044A\u043D\u0447\u0435\u0432\u0430\u0442\u0430 \u0441\u0438\u0441\u0442\u0435\u043C\u0430?",
+      answers: ["\u041E\u0441\u0435\u043C", "\u0421\u0435\u0434\u0435\u043C", "\u0414\u0435\u0432\u0435\u0442", "\u0414\u0435\u0441\u0435\u0442"]
+    },
+    {
+      id: 69,
+      category: "science",
+      level: 1,
+      question: "\u041A\u0430\u043A\u0432\u043E \u0438\u0437\u043C\u0435\u0440\u0432\u0430 \u0442\u0435\u0440\u043C\u043E\u043C\u0435\u0442\u044A\u0440\u044A\u0442?",
+      answers: ["\u0422\u0435\u043C\u043F\u0435\u0440\u0430\u0442\u0443\u0440\u0430", "\u041D\u0430\u043B\u044F\u0433\u0430\u043D\u0435", "\u0422\u0435\u0433\u043B\u043E", "\u0421\u043A\u043E\u0440\u043E\u0441\u0442"]
+    },
+    {
+      id: 70,
+      category: "science",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u043E\u0440\u0433\u0430\u043D \u0438\u0437\u043F\u043E\u043C\u043F\u0432\u0430 \u043A\u0440\u044A\u0432\u0442\u0430 \u0432 \u0442\u044F\u043B\u043E\u0442\u043E?",
+      answers: ["\u0421\u044A\u0440\u0446\u0435\u0442\u043E", "\u0427\u0435\u0440\u043D\u0438\u044F\u0442 \u0434\u0440\u043E\u0431", "\u0411\u0435\u043B\u0438\u0442\u0435 \u0434\u0440\u043E\u0431\u043E\u0432\u0435", "\u0411\u044A\u0431\u0440\u0435\u0446\u0438\u0442\u0435"]
+    },
+    {
+      id: 71,
+      category: "science",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u0445\u0438\u043C\u0438\u0447\u043D\u0438\u044F\u0442 \u0441\u0438\u043C\u0432\u043E\u043B \u043D\u0430 \u0437\u043B\u0430\u0442\u043E\u0442\u043E?",
+      answers: ["Au", "Ag", "Go", "Gd"]
+    },
+    {
+      id: 72,
+      category: "science",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u0439-\u0442\u0432\u044A\u0440\u0434\u0438\u044F\u0442 \u0435\u0441\u0442\u0435\u0441\u0442\u0432\u0435\u043D \u043C\u0430\u0442\u0435\u0440\u0438\u0430\u043B?",
+      answers: ["\u0414\u0438\u0430\u043C\u0430\u043D\u0442\u044A\u0442", "\u041A\u0432\u0430\u0440\u0446\u044A\u0442", "\u0413\u0440\u0430\u043D\u0438\u0442\u044A\u0442", "\u0416\u0435\u043B\u044F\u0437\u043E\u0442\u043E"]
+    },
+    {
+      id: 73,
+      category: "science",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0441\u044A\u0437\u0434\u0430\u0432\u0430 \u0442\u0435\u043E\u0440\u0438\u044F\u0442\u0430 \u043D\u0430 \u043E\u0442\u043D\u043E\u0441\u0438\u0442\u0435\u043B\u043D\u043E\u0441\u0442\u0442\u0430?",
+      answers: ["\u0410\u043B\u0431\u0435\u0440\u0442 \u0410\u0439\u043D\u0449\u0430\u0439\u043D", "\u0418\u0441\u0430\u043A \u041D\u044E\u0442\u043E\u043D", "\u041D\u0438\u043B\u0441 \u0411\u043E\u0440", "\u0413\u0430\u043B\u0438\u043B\u0435\u043E \u0413\u0430\u043B\u0438\u043B\u0435\u0439"]
+    },
+    {
+      id: 74,
+      category: "science",
+      level: 2,
+      question: "\u041A\u043E\u043B\u043A\u043E \u043A\u043E\u0441\u0442\u0438 \u0438\u043C\u0430 \u0432 \u0442\u044F\u043B\u043E\u0442\u043E \u043D\u0430 \u0432\u044A\u0437\u0440\u0430\u0441\u0442\u0435\u043D \u0447\u043E\u0432\u0435\u043A?",
+      answers: ["206", "186", "226", "306"]
+    },
+    {
+      id: 75,
+      category: "science",
+      level: 2,
+      question: "\u0412 \u043A\u043E\u044F \u0447\u0430\u0441\u0442 \u043D\u0430 \u043A\u043B\u0435\u0442\u043A\u0430\u0442\u0430 \u0435 \u043F\u043E-\u0433\u043E\u043B\u044F\u043C\u0430\u0442\u0430 \u0447\u0430\u0441\u0442 \u043E\u0442 \u0414\u041D\u041A?",
+      answers: ["\u0412 \u044F\u0434\u0440\u043E\u0442\u043E", "\u0412 \u043C\u0435\u043C\u0431\u0440\u0430\u043D\u0430\u0442\u0430", "\u0412 \u0440\u0438\u0431\u043E\u0437\u043E\u043C\u0438\u0442\u0435", "\u0412 \u0446\u0438\u0442\u043E\u043F\u043B\u0430\u0437\u043C\u0430\u0442\u0430"]
+    },
+    {
+      id: 76,
+      category: "science",
+      level: 2,
+      question: "\u041F\u0440\u0438\u0431\u043B\u0438\u0437\u0438\u0442\u0435\u043B\u043D\u043E \u0441 \u043A\u0430\u043A\u0432\u0430 \u0441\u043A\u043E\u0440\u043E\u0441\u0442 \u0441\u0435 \u0434\u0432\u0438\u0436\u0438 \u0441\u0432\u0435\u0442\u043B\u0438\u043D\u0430\u0442\u0430?",
+      answers: ["300 000 km/s", "30 000 km/s", "3000 km/s", "3 000 000 km/s"]
+    },
+    {
+      id: 77,
+      category: "science",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0433\u0430\u0437 \u0441\u044A\u0441\u0442\u0430\u0432\u043B\u044F\u0432\u0430 \u043F\u043E-\u0433\u043E\u043B\u044F\u043C\u0430\u0442\u0430 \u0447\u0430\u0441\u0442 \u043E\u0442 \u0430\u0442\u043C\u043E\u0441\u0444\u0435\u0440\u0430\u0442\u0430 \u043D\u0430 \u0417\u0435\u043C\u044F\u0442\u0430?",
+      answers: ["\u0410\u0437\u043E\u0442", "\u041A\u0438\u0441\u043B\u043E\u0440\u043E\u0434", "\u0412\u044A\u0433\u043B\u0435\u0440\u043E\u0434\u0435\u043D \u0434\u0438\u043E\u043A\u0441\u0438\u0434", "\u0410\u0440\u0433\u043E\u043D"]
+    },
+    {
+      id: 78,
+      category: "science",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u043E\u0442\u043A\u0440\u0438\u0432\u0430 \u043F\u0435\u043D\u0438\u0446\u0438\u043B\u0438\u043D\u0430?",
+      answers: ["\u0410\u043B\u0435\u043A\u0441\u0430\u043D\u0434\u044A\u0440 \u0424\u043B\u0435\u043C\u0438\u043D\u0433", "\u041B\u0443\u0438 \u041F\u0430\u0441\u0442\u044C\u043E\u0440", "\u041C\u0430\u0440\u0438\u044F \u041A\u044E\u0440\u0438", "\u0420\u043E\u0431\u0435\u0440\u0442 \u041A\u043E\u0445"]
+    },
+    {
+      id: 79,
+      category: "science",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u0445\u0438\u043C\u0438\u0447\u043D\u0438\u044F\u0442 \u0441\u0438\u043C\u0432\u043E\u043B \u043D\u0430 \u043D\u0430\u0442\u0440\u0438\u044F?",
+      answers: ["Na", "So", "Sd", "S"]
+    },
+    {
+      id: 80,
+      category: "science",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0444\u043E\u0440\u043C\u0443\u043B\u0438\u0440\u0430 \u0442\u0440\u0438\u0442\u0435 \u0437\u0430\u043A\u043E\u043D\u0430 \u0437\u0430 \u0434\u0432\u0438\u0436\u0435\u043D\u0438\u0435\u0442\u043E?",
+      answers: ["\u0418\u0441\u0430\u043A \u041D\u044E\u0442\u043E\u043D", "\u0413\u0430\u043B\u0438\u043B\u0435\u043E \u0413\u0430\u043B\u0438\u043B\u0435\u0439", "\u0419\u043E\u0445\u0430\u043D\u0435\u0441 \u041A\u0435\u043F\u043B\u0435\u0440", "\u0410\u043B\u0431\u0435\u0440\u0442 \u0410\u0439\u043D\u0449\u0430\u0439\u043D"]
+    },
+    {
+      id: 81,
+      category: "science",
+      level: 3,
+      question: "\u041A\u0430\u043A\u044A\u0432 \u0435 \u0430\u0442\u043E\u043C\u043D\u0438\u044F\u0442 \u043D\u043E\u043C\u0435\u0440 \u043D\u0430 \u0432\u044A\u0433\u043B\u0435\u0440\u043E\u0434\u0430?",
+      answers: ["6", "8", "12", "14"]
+    },
+    {
+      id: 82,
+      category: "science",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u043F\u0443\u0431\u043B\u0438\u043A\u0443\u0432\u0430 \u043F\u0435\u0440\u0438\u043E\u0434\u0438\u0447\u043D\u0430\u0442\u0430 \u0442\u0430\u0431\u043B\u0438\u0446\u0430 \u043D\u0430 \u0435\u043B\u0435\u043C\u0435\u043D\u0442\u0438\u0442\u0435 \u043F\u0440\u0435\u0437 1869 \u0433.?",
+      answers: ["\u0414\u043C\u0438\u0442\u0440\u0438\u0439 \u041C\u0435\u043D\u0434\u0435\u043B\u0435\u0435\u0432", "\u0410\u043D\u0442\u043E\u0430\u043D \u041B\u0430\u0432\u043E\u0430\u0437\u0438\u0435", "\u0414\u0436\u043E\u043D \u0414\u0430\u043B\u0442\u044A\u043D", "\u042A\u0440\u043D\u0435\u0441\u0442 \u0420\u044A\u0434\u044A\u0440\u0444\u043E\u0440\u0434"]
+    },
+    {
+      id: 83,
+      category: "science",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u0439-\u0440\u0430\u0437\u043F\u0440\u043E\u0441\u0442\u0440\u0430\u043D\u0435\u043D\u0438\u044F\u0442 \u0435\u043B\u0435\u043C\u0435\u043D\u0442 \u0432\u044A\u0432 \u0412\u0441\u0435\u043B\u0435\u043D\u0430\u0442\u0430?",
+      answers: ["\u0412\u043E\u0434\u043E\u0440\u043E\u0434\u044A\u0442", "\u0425\u0435\u043B\u0438\u044F\u0442", "\u041A\u0438\u0441\u043B\u043E\u0440\u043E\u0434\u044A\u0442", "\u0412\u044A\u0433\u043B\u0435\u0440\u043E\u0434\u044A\u0442"]
+    },
+    {
+      id: 84,
+      category: "science",
+      level: 3,
+      question: "\u041A\u043E\u044F \u0435 \u043C\u0435\u0440\u043D\u0430\u0442\u0430 \u0435\u0434\u0438\u043D\u0438\u0446\u0430 \u0437\u0430 \u0435\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u043E \u0441\u044A\u043F\u0440\u043E\u0442\u0438\u0432\u043B\u0435\u043D\u0438\u0435?",
+      answers: ["\u041E\u043C", "\u0412\u043E\u043B\u0442", "\u0410\u043C\u043F\u0435\u0440", "\u0412\u0430\u0442"]
+    },
+    {
+      id: 85,
+      category: "science",
+      level: 3,
+      question: "\u041A\u043E\u044F \u043A\u0440\u044A\u0432\u043D\u0430 \u0433\u0440\u0443\u043F\u0430 \u0435 \u0438\u0437\u0432\u0435\u0441\u0442\u043D\u0430 \u043A\u0430\u0442\u043E \u0443\u043D\u0438\u0432\u0435\u0440\u0441\u0430\u043B\u0435\u043D \u0434\u043E\u043D\u043E\u0440?",
+      answers: ["0 \u043E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u043D\u0430", "AB \u043F\u043E\u043B\u043E\u0436\u0438\u0442\u0435\u043B\u043D\u0430", "A \u043F\u043E\u043B\u043E\u0436\u0438\u0442\u0435\u043B\u043D\u0430", "B \u043E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u043D\u0430"]
+    },
+    {
+      id: 86,
+      category: "science",
+      level: 3,
+      question: "\u041F\u0440\u0438 \u043A\u043E\u043B\u043A\u043E \u0433\u0440\u0430\u0434\u0443\u0441\u0430 \u043F\u043E \u0424\u0430\u0440\u0435\u043D\u0445\u0430\u0439\u0442 \u0437\u0430\u043C\u0440\u044A\u0437\u0432\u0430 \u0432\u043E\u0434\u0430\u0442\u0430?",
+      answers: ["32 \xB0F", "0 \xB0F", "100 \xB0F", "212 \xB0F"]
+    },
+    {
+      id: 87,
+      category: "science",
+      level: 3,
+      question: "\u041A\u043E\u044F \u043F\u043B\u0430\u043D\u0435\u0442\u0430 \u0441\u0435 \u0432\u044A\u0440\u0442\u0438 \u201E\u043B\u0435\u0433\u043D\u0430\u043B\u0430\u201C, \u043D\u0430\u043A\u043B\u043E\u043D\u0435\u043D\u0430 \u043D\u0430 \u043E\u043A\u043E\u043B\u043E 98\xB0?",
+      answers: ["\u0423\u0440\u0430\u043D", "\u041D\u0435\u043F\u0442\u0443\u043D", "\u0421\u0430\u0442\u0443\u0440\u043D", "\u0412\u0435\u043D\u0435\u0440\u0430"]
+    },
+    {
+      id: 88,
+      category: "science",
+      level: 3,
+      question: "\u041A\u043E\u044F \u0447\u0430\u0441\u0442\u0438\u0446\u0430 \u0438\u043C\u0430 \u043E\u0442\u0440\u0438\u0446\u0430\u0442\u0435\u043B\u0435\u043D \u0435\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u0438 \u0437\u0430\u0440\u044F\u0434?",
+      answers: ["\u0415\u043B\u0435\u043A\u0442\u0440\u043E\u043D\u044A\u0442", "\u041F\u0440\u043E\u0442\u043E\u043D\u044A\u0442", "\u041D\u0435\u0443\u0442\u0440\u043E\u043D\u044A\u0442", "\u0424\u043E\u0442\u043E\u043D\u044A\u0442"]
+    },
+    {
+      id: 89,
+      category: "science",
+      level: 3,
+      question: "\u041F\u0440\u0438\u0431\u043B\u0438\u0437\u0438\u0442\u0435\u043B\u043D\u043E \u0437\u0430 \u043A\u043E\u043B\u043A\u043E \u0432\u0440\u0435\u043C\u0435 \u0441\u043B\u044A\u043D\u0447\u0435\u0432\u0430\u0442\u0430 \u0441\u0432\u0435\u0442\u043B\u0438\u043D\u0430 \u0434\u043E\u0441\u0442\u0438\u0433\u0430 \u0417\u0435\u043C\u044F\u0442\u0430?",
+      answers: ["8 \u043C\u0438\u043D\u0443\u0442\u0438", "8 \u0441\u0435\u043A\u0443\u043D\u0434\u0438", "1 \u0447\u0430\u0441", "1 \u0434\u0435\u043D"]
+    },
+    {
+      id: 90,
+      category: "science",
+      level: 3,
+      question: "\u041A\u0430\u043A\u0432\u043E \u0438\u0437\u043C\u0435\u0440\u0432\u0430 \u0441\u0432\u0435\u0442\u043B\u0438\u043D\u043D\u0430\u0442\u0430 \u0433\u043E\u0434\u0438\u043D\u0430?",
+      answers: ["\u0420\u0430\u0437\u0441\u0442\u043E\u044F\u043D\u0438\u0435", "\u0412\u0440\u0435\u043C\u0435", "\u042F\u0440\u043A\u043E\u0441\u0442", "\u0421\u043A\u043E\u0440\u043E\u0441\u0442"]
+    },
+    {
+      id: 91,
+      category: "nature",
+      level: 1,
+      question: "\u041A\u043E\u0435 \u0435 \u043D\u0430\u0439-\u0433\u043E\u043B\u044F\u043C\u043E\u0442\u043E \u0436\u0438\u0432\u043E\u0442\u043D\u043E \u043D\u0430 \u0417\u0435\u043C\u044F\u0442\u0430?",
+      answers: ["\u0421\u0438\u043D\u0438\u044F\u0442 \u043A\u0438\u0442", "\u0421\u043B\u043E\u043D\u044A\u0442", "\u0416\u0438\u0440\u0430\u0444\u044A\u0442", "\u0413\u043E\u043B\u044F\u043C\u0430\u0442\u0430 \u0431\u044F\u043B\u0430 \u0430\u043A\u0443\u043B\u0430"]
+    },
+    {
+      id: 92,
+      category: "nature",
+      level: 1,
+      question: "\u041A\u043E\u043B\u043A\u043E \u043A\u0440\u0430\u043A\u0430 \u0438\u043C\u0430 \u043F\u0430\u044F\u043A\u044A\u0442?",
+      answers: ["\u041E\u0441\u0435\u043C", "\u0428\u0435\u0441\u0442", "\u0414\u0435\u0441\u0435\u0442", "\u0414\u0432\u0430\u043D\u0430\u0434\u0435\u0441\u0435\u0442"]
+    },
+    {
+      id: 93,
+      category: "nature",
+      level: 1,
+      question: "\u0412 \u043A\u0430\u043A\u0432\u043E \u0441\u0435 \u043F\u0440\u0435\u0432\u0440\u044A\u0449\u0430 \u0433\u044A\u0441\u0435\u043D\u0438\u0446\u0430\u0442\u0430?",
+      answers: ["\u0412 \u043F\u0435\u043F\u0435\u0440\u0443\u0434\u0430", "\u0412 \u0431\u0440\u044A\u043C\u0431\u0430\u0440", "\u0412 \u043F\u0447\u0435\u043B\u0430", "\u0412\u044A\u0432 \u0432\u043E\u0434\u043D\u043E \u043A\u043E\u043D\u0447\u0435"]
+    },
+    {
+      id: 94,
+      category: "nature",
+      level: 1,
+      question: "\u041A\u043E\u0435 \u0436\u0438\u0432\u043E\u0442\u043D\u043E \u043D\u0430\u0440\u0438\u0447\u0430\u0442 \u0446\u0430\u0440 \u043D\u0430 \u0436\u0438\u0432\u043E\u0442\u043D\u0438\u0442\u0435?",
+      answers: ["\u041B\u044A\u0432\u044A\u0442", "\u0422\u0438\u0433\u044A\u0440\u044A\u0442", "\u0421\u043B\u043E\u043D\u044A\u0442", "\u0413\u043E\u0440\u0438\u043B\u0430\u0442\u0430"]
+    },
+    {
+      id: 95,
+      category: "nature",
+      level: 1,
+      question: "\u041A\u043E\u0435 \u0435 \u043D\u0430\u0439-\u0432\u0438\u0441\u043E\u043A\u043E\u0442\u043E \u0436\u0438\u0432\u043E\u0442\u043D\u043E?",
+      answers: ["\u0416\u0438\u0440\u0430\u0444\u044A\u0442", "\u0421\u043B\u043E\u043D\u044A\u0442", "\u041A\u0430\u043C\u0438\u043B\u0430\u0442\u0430", "\u0429\u0440\u0430\u0443\u0441\u044A\u0442"]
+    },
+    {
+      id: 96,
+      category: "nature",
+      level: 1,
+      question: "\u041A\u043E\u044F \u043F\u0442\u0438\u0446\u0430 \u0435 \u0441\u0438\u043C\u0432\u043E\u043B \u043D\u0430 \u043C\u0438\u0440\u0430?",
+      answers: ["\u0413\u044A\u043B\u044A\u0431\u044A\u0442", "\u041E\u0440\u0435\u043B\u044A\u0442", "\u041B\u0435\u0431\u0435\u0434\u044A\u0442", "\u0421\u043E\u0432\u0430\u0442\u0430"]
+    },
+    {
+      id: 97,
+      category: "nature",
+      level: 1,
+      question: "\u041A\u0430\u043A\u0432\u043E \u043F\u0440\u0430\u0432\u044F\u0442 \u043F\u0447\u0435\u043B\u0438\u0442\u0435?",
+      answers: ["\u041C\u0435\u0434", "\u041A\u043E\u043F\u0440\u0438\u043D\u0430", "\u041C\u0430\u0441\u043B\u043E", "\u0417\u0430\u0445\u0430\u0440"]
+    },
+    {
+      id: 98,
+      category: "nature",
+      level: 1,
+      question: "\u041A\u043E\u043B\u043A\u043E \u043A\u0440\u0430\u043A\u0430 \u0438\u043C\u0430 \u0435\u0434\u043D\u043E \u043D\u0430\u0441\u0435\u043A\u043E\u043C\u043E?",
+      answers: ["\u0428\u0435\u0441\u0442", "\u0427\u0435\u0442\u0438\u0440\u0438", "\u041E\u0441\u0435\u043C", "\u0414\u0435\u0441\u0435\u0442"]
+    },
+    {
+      id: 99,
+      category: "nature",
+      level: 1,
+      question: "\u041A\u043E\u0435 \u043E\u0442 \u0442\u0435\u0437\u0438 \u0435 \u0431\u043E\u0437\u0430\u0439\u043D\u0438\u043A?",
+      answers: ["\u0414\u0435\u043B\u0444\u0438\u043D\u044A\u0442", "\u0410\u043A\u0443\u043B\u0430\u0442\u0430", "\u041F\u044A\u0441\u0442\u044A\u0440\u0432\u0430\u0442\u0430", "\u041E\u043A\u0442\u043E\u043F\u043E\u0434\u044A\u0442"]
+    },
+    {
+      id: 100,
+      category: "nature",
+      level: 1,
+      question: "\u041A\u0430\u043A \u0441\u0435 \u043D\u0430\u0440\u0438\u0447\u0430 \u043C\u0430\u043B\u043A\u043E\u0442\u043E \u043D\u0430 \u043A\u0443\u0447\u0435\u0442\u043E?",
+      answers: ["\u041A\u0443\u0447\u0435\u043D\u0446\u0435", "\u041A\u043E\u0442\u0435", "\u0422\u0435\u043B\u0435", "\u0416\u0440\u0435\u0431\u0447\u0435"]
+    },
+    {
+      id: 101,
+      category: "nature",
+      level: 2,
+      question: "\u041A\u043E\u0435 \u0435 \u043D\u0430\u0439-\u0431\u044A\u0440\u0437\u043E\u0442\u043E \u0441\u0443\u0445\u043E\u0437\u0435\u043C\u043D\u043E \u0436\u0438\u0432\u043E\u0442\u043D\u043E?",
+      answers: ["\u0413\u0435\u043F\u0430\u0440\u0434\u044A\u0442", "\u041B\u044A\u0432\u044A\u0442", "\u041A\u043E\u043D\u044F\u0442", "\u0413\u0430\u0437\u0435\u043B\u0430\u0442\u0430"]
+    },
+    {
+      id: 102,
+      category: "nature",
+      level: 2,
+      question: "\u041A\u043E\u044F \u043E\u0442 \u0442\u0435\u0437\u0438 \u043F\u0442\u0438\u0446\u0438 \u043D\u0435 \u043C\u043E\u0436\u0435 \u0434\u0430 \u043B\u0435\u0442\u0438?",
+      answers: ["\u041F\u0438\u043D\u0433\u0432\u0438\u043D\u044A\u0442", "\u041B\u0435\u0431\u0435\u0434\u044A\u0442", "\u041E\u0440\u0435\u043B\u044A\u0442", "\u041F\u0430\u043F\u0430\u0433\u0430\u043B\u044A\u0442"]
+    },
+    {
+      id: 103,
+      category: "nature",
+      level: 2,
+      question: "\u041A\u0430\u043A \u0441\u0435 \u043D\u0430\u0440\u0438\u0447\u0430 \u0436\u0438\u0432\u043E\u0442\u043D\u043E, \u043A\u043E\u0435\u0442\u043E \u044F\u0434\u0435 \u0441\u0430\u043C\u043E \u0440\u0430\u0441\u0442\u0435\u043D\u0438\u044F?",
+      answers: ["\u0422\u0440\u0435\u0432\u043E\u043F\u0430\u0441\u043D\u043E", "\u041C\u0435\u0441\u043E\u044F\u0434\u043D\u043E", "\u0412\u0441\u0435\u044F\u0434\u043D\u043E", "\u0425\u0438\u0449\u043D\u0438\u043A"]
+    },
+    {
+      id: 104,
+      category: "nature",
+      level: 2,
+      question: "\u041A\u043E\u0435 \u0434\u044A\u0440\u0432\u043E \u0434\u0430\u0432\u0430 \u0436\u044A\u043B\u044A\u0434\u0438?",
+      answers: ["\u0414\u044A\u0431\u044A\u0442", "\u0411\u0443\u043A\u044A\u0442", "\u041A\u043B\u0435\u043D\u044A\u0442", "\u0411\u043E\u0440\u044A\u0442"]
+    },
+    {
+      id: 105,
+      category: "nature",
+      level: 2,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0441\u044A\u0440\u0446\u0430 \u0438\u043C\u0430 \u043E\u043A\u0442\u043E\u043F\u043E\u0434\u044A\u0442?",
+      answers: ["\u0422\u0440\u0438", "\u0415\u0434\u043D\u043E", "\u0414\u0432\u0435", "\u041E\u0441\u0435\u043C"]
+    },
+    {
+      id: 106,
+      category: "nature",
+      level: 2,
+      question: "\u041A\u043E\u0435 \u0436\u0438\u0432\u043E\u0442\u043D\u043E \u0435 \u043D\u0430 \u0433\u0435\u0440\u0431\u0430 \u043D\u0430 \u0411\u044A\u043B\u0433\u0430\u0440\u0438\u044F?",
+      answers: ["\u041B\u044A\u0432\u044A\u0442", "\u041E\u0440\u0435\u043B\u044A\u0442", "\u041C\u0435\u0447\u043A\u0430\u0442\u0430", "\u0412\u044A\u043B\u043A\u044A\u0442"]
+    },
+    {
+      id: 107,
+      category: "nature",
+      level: 2,
+      question: "\u041A\u0430\u043A \u0441\u0435 \u043D\u0430\u0440\u0438\u0447\u0430 \u0433\u0440\u0443\u043F\u0430 \u0432\u044A\u043B\u0446\u0438?",
+      answers: ["\u0413\u043B\u0443\u0442\u043D\u0438\u0446\u0430", "\u0421\u0442\u0430\u0434\u043E", "\u042F\u0442\u043E", "\u041F\u0430\u0441\u0430\u0436"]
+    },
+    {
+      id: 108,
+      category: "nature",
+      level: 2,
+      question: "\u041A\u043E\u0435 \u0436\u0438\u0432\u043E\u0442\u043D\u043E \u0441\u043F\u0438, \u0443\u0432\u0438\u0441\u043D\u0430\u043B\u043E \u0441 \u0433\u043B\u0430\u0432\u0430\u0442\u0430 \u043D\u0430\u0434\u043E\u043B\u0443?",
+      answers: ["\u041F\u0440\u0438\u043B\u0435\u043F\u044A\u0442", "\u0421\u043E\u0432\u0430\u0442\u0430", "\u041A\u0430\u0442\u0435\u0440\u0438\u0446\u0430\u0442\u0430", "\u0415\u043D\u043E\u0442\u044A\u0442"]
+    },
+    {
+      id: 109,
+      category: "nature",
+      level: 2,
+      question: "\u041A\u044A\u043C \u043A\u043E\u0438 \u0436\u0438\u0432\u043E\u0442\u043D\u0438 \u0441\u043F\u0430\u0434\u0430 \u0436\u0430\u0431\u0430\u0442\u0430?",
+      answers: ["\u0417\u0435\u043C\u043D\u043E\u0432\u043E\u0434\u043D\u0438", "\u0412\u043B\u0435\u0447\u0443\u0433\u0438", "\u0411\u043E\u0437\u0430\u0439\u043D\u0438\u0446\u0438", "\u0420\u0438\u0431\u0438"]
+    },
+    {
+      id: 110,
+      category: "nature",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0435 \u043D\u0430\u0439-\u0433\u043E\u043B\u044F\u043C\u0430\u0442\u0430 \u043F\u0442\u0438\u0446\u0430 \u0434\u043D\u0435\u0441?",
+      answers: ["\u0429\u0440\u0430\u0443\u0441\u044A\u0442", "\u0415\u043C\u0443\u0442\u043E", "\u0410\u043B\u0431\u0430\u0442\u0440\u043E\u0441\u044A\u0442", "\u041A\u043E\u043D\u0434\u043E\u0440\u044A\u0442"]
+    },
+    {
+      id: 111,
+      category: "nature",
+      level: 3,
+      question: "\u041A\u043E\u0435 \u0436\u0438\u0432\u043E\u0442\u043D\u043E \u0438\u0437\u043D\u043E\u0441\u0432\u0430 \u043C\u0430\u043B\u043A\u043E\u0442\u043E \u0441\u0438 \u043D\u0430\u0439-\u0434\u044A\u043B\u0433\u043E, \u043E\u043A\u043E\u043B\u043E 22 \u043C\u0435\u0441\u0435\u0446\u0430?",
+      answers: ["\u0410\u0444\u0440\u0438\u043A\u0430\u043D\u0441\u043A\u0438\u044F\u0442 \u0441\u043B\u043E\u043D", "\u0421\u0438\u043D\u0438\u044F\u0442 \u043A\u0438\u0442", "\u0416\u0438\u0440\u0430\u0444\u044A\u0442", "\u041D\u043E\u0441\u043E\u0440\u043E\u0433\u044A\u0442"]
+    },
+    {
+      id: 112,
+      category: "nature",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0432\u0438\u0434 \u0434\u044A\u0440\u0432\u043E \u0440\u0430\u0441\u0442\u0435 \u043D\u0430\u0439-\u0432\u0438\u0441\u043E\u043A\u043E?",
+      answers: ["\u0412\u0435\u0447\u043D\u043E\u0437\u0435\u043B\u0435\u043D\u0430\u0442\u0430 \u0441\u0435\u043A\u0432\u043E\u044F", "\u0413\u0438\u0433\u0430\u043D\u0442\u0441\u043A\u0430\u0442\u0430 \u0441\u0435\u043A\u0432\u043E\u044F", "\u0414\u0443\u0433\u043B\u0430\u0441\u043A\u0430\u0442\u0430 \u0435\u043B\u0430", "\u0415\u0432\u043A\u0430\u043B\u0438\u043F\u0442\u044A\u0442"]
+    },
+    {
+      id: 113,
+      category: "nature",
+      level: 3,
+      question: "\u041E\u0442 \u043A\u043E\u043B\u043A\u043E \u0447\u0430\u0441\u0442\u0438 \u0435 \u0441\u0442\u043E\u043C\u0430\u0445\u044A\u0442 \u043D\u0430 \u043A\u0440\u0430\u0432\u0430\u0442\u0430?",
+      answers: ["\u0427\u0435\u0442\u0438\u0440\u0438", "\u0414\u0432\u0435", "\u0422\u0440\u0438", "\u0428\u0435\u0441\u0442"]
+    },
+    {
+      id: 114,
+      category: "nature",
+      level: 3,
+      question: "\u041D\u0430 \u043A\u043E\u0439 \u043A\u043E\u043D\u0442\u0438\u043D\u0435\u043D\u0442 \u043D\u044F\u043C\u0430 \u043C\u0435\u0441\u0442\u043D\u0438 \u0432\u0438\u0434\u043E\u0432\u0435 \u043C\u0440\u0430\u0432\u043A\u0438?",
+      answers: ["\u0410\u043D\u0442\u0430\u0440\u043A\u0442\u0438\u0434\u0430", "\u0410\u0432\u0441\u0442\u0440\u0430\u043B\u0438\u044F", "\u0415\u0432\u0440\u043E\u043F\u0430", "\u042E\u0436\u043D\u0430 \u0410\u043C\u0435\u0440\u0438\u043A\u0430"]
+    },
+    {
+      id: 115,
+      category: "nature",
+      level: 3,
+      question: "\u041A\u043E\u044F \u043D\u0435\u043B\u0435\u0442\u044F\u0449\u0430 \u043F\u0442\u0438\u0446\u0430 \u0435 \u043D\u0430\u0446\u0438\u043E\u043D\u0430\u043B\u0435\u043D \u0441\u0438\u043C\u0432\u043E\u043B \u043D\u0430 \u041D\u043E\u0432\u0430 \u0417\u0435\u043B\u0430\u043D\u0434\u0438\u044F?",
+      answers: ["\u041A\u0438\u0432\u0438\u0442\u043E", "\u0415\u043C\u0443\u0442\u043E", "\u041A\u0435\u0430\u0442\u0430", "\u041A\u0430\u0437\u0443\u0430\u0440\u044A\u0442"]
+    },
+    {
+      id: 116,
+      category: "nature",
+      level: 3,
+      question: "\u041A\u043E\u0435 \u0436\u0438\u0432\u043E\u0442\u043D\u043E \u0438\u043C\u0430 \u043F\u0440\u044A\u0441\u0442\u043E\u0432\u0438 \u043E\u0442\u043F\u0435\u0447\u0430\u0442\u044A\u0446\u0438 \u043F\u043E\u0447\u0442\u0438 \u043A\u0430\u0442\u043E \u0447\u043E\u0432\u0435\u0448\u043A\u0438\u0442\u0435?",
+      answers: ["\u041A\u043E\u0430\u043B\u0430\u0442\u0430", "\u041A\u0443\u0447\u0435\u0442\u043E", "\u041F\u0430\u043D\u0434\u0430\u0442\u0430", "\u041A\u043E\u0442\u043A\u0430\u0442\u0430"]
+    },
+    {
+      id: 117,
+      category: "nature",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u0439-\u0433\u043E\u043B\u0435\u043C\u0438\u044F\u0442 \u0432\u0438\u0434 \u0430\u043A\u0443\u043B\u0430?",
+      answers: ["\u041A\u0438\u0442\u043E\u0432\u0430\u0442\u0430 \u0430\u043A\u0443\u043B\u0430", "\u0413\u043E\u043B\u044F\u043C\u0430\u0442\u0430 \u0431\u044F\u043B\u0430 \u0430\u043A\u0443\u043B\u0430", "\u0410\u043A\u0443\u043B\u0430\u0442\u0430 \u0447\u0443\u043A", "\u0422\u0438\u0433\u0440\u043E\u0432\u0430\u0442\u0430 \u0430\u043A\u0443\u043B\u0430"]
+    },
+    {
+      id: 118,
+      category: "nature",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u043E\u0442 \u0442\u0435\u0437\u0438 \u0431\u043E\u0437\u0430\u0439\u043D\u0438\u0446\u0438 \u0441\u043D\u0430\u0441\u044F \u044F\u0439\u0446\u0430?",
+      answers: ["\u041F\u0442\u0438\u0446\u0435\u0447\u043E\u0432\u043A\u0430\u0442\u0430", "\u0422\u0430\u0440\u0430\u043B\u0435\u0436\u044A\u0442", "\u0411\u0440\u043E\u043D\u0435\u043D\u043E\u0441\u0435\u0446\u044A\u0442", "\u041A\u044A\u0440\u0442\u0438\u0446\u0430\u0442\u0430"]
+    },
+    {
+      id: 119,
+      category: "nature",
+      level: 3,
+      question: "\u041A\u043E\u043B\u043A\u043E \u043E\u0447\u0438 \u0438\u043C\u0430 \u043C\u0435\u0434\u043E\u043D\u043E\u0441\u043D\u0430\u0442\u0430 \u043F\u0447\u0435\u043B\u0430?",
+      answers: ["\u041F\u0435\u0442", "\u0414\u0432\u0435", "\u0427\u0435\u0442\u0438\u0440\u0438", "\u041E\u0441\u0435\u043C"]
+    },
+    {
+      id: 120,
+      category: "nature",
+      level: 3,
+      question: "\u041A\u043E\u0435 \u043E\u0442 \u0442\u0435\u0437\u0438 \u0436\u0438\u0432\u043E\u0442\u043D\u0438 \u0435 \u043D\u0430\u0439-\u0431\u043B\u0438\u0437\u043A\u0438\u044F\u0442 \u0436\u0438\u0432 \u0440\u043E\u0434\u043D\u0438\u043D\u0430 \u043D\u0430 \u0447\u043E\u0432\u0435\u043A\u0430?",
+      answers: ["\u0428\u0438\u043C\u043F\u0430\u043D\u0437\u0435\u0442\u043E", "\u0413\u043E\u0440\u0438\u043B\u0430\u0442\u0430", "\u041E\u0440\u0430\u043D\u0433\u0443\u0442\u0430\u043D\u044A\u0442", "\u0413\u0438\u0431\u043E\u043D\u044A\u0442"]
+    },
+    {
+      id: 121,
+      category: "sport",
+      level: 1,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0438\u0433\u0440\u0430\u0447\u0438 \u0438\u043C\u0430 \u0435\u0434\u0438\u043D \u0444\u0443\u0442\u0431\u043E\u043B\u0435\u043D \u043E\u0442\u0431\u043E\u0440 \u043D\u0430 \u0442\u0435\u0440\u0435\u043D\u0430?",
+      answers: ["\u0415\u0434\u0438\u043D\u0430\u0434\u0435\u0441\u0435\u0442", "\u0414\u0435\u0441\u0435\u0442", "\u0414\u0435\u0432\u0435\u0442", "\u0414\u0432\u0430\u043D\u0430\u0434\u0435\u0441\u0435\u0442"]
+    },
+    {
+      id: 122,
+      category: "sport",
+      level: 1,
+      question: "\u0412 \u043A\u043E\u0439 \u0441\u043F\u043E\u0440\u0442 \u0441\u0435 \u0443\u0434\u0440\u044F \u043F\u0435\u0440\u0446\u0435?",
+      answers: ["\u0411\u0430\u0434\u043C\u0438\u043D\u0442\u043E\u043D", "\u0422\u0435\u043D\u0438\u0441", "\u0421\u043A\u0443\u043E\u0448", "\u0422\u0435\u043D\u0438\u0441 \u043D\u0430 \u043C\u0430\u0441\u0430"]
+    },
+    {
+      id: 123,
+      category: "sport",
+      level: 1,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0447\u0435\u0441\u0442\u043E \u0441\u0435 \u043F\u0440\u043E\u0432\u0435\u0436\u0434\u0430\u0442 \u041B\u0435\u0442\u043D\u0438\u0442\u0435 \u043E\u043B\u0438\u043C\u043F\u0438\u0439\u0441\u043A\u0438 \u0438\u0433\u0440\u0438?",
+      answers: [
+        "\u041D\u0430 \u0432\u0441\u0435\u043A\u0438 \u0447\u0435\u0442\u0438\u0440\u0438 \u0433\u043E\u0434\u0438\u043D\u0438",
+        "\u041D\u0430 \u0432\u0441\u0435\u043A\u0438 \u0434\u0432\u0435 \u0433\u043E\u0434\u0438\u043D\u0438",
+        "\u041D\u0430 \u0432\u0441\u0435\u043A\u0438 \u0442\u0440\u0438 \u0433\u043E\u0434\u0438\u043D\u0438",
+        "\u041D\u0430 \u0432\u0441\u0435\u043A\u0438 \u043F\u0435\u0442 \u0433\u043E\u0434\u0438\u043D\u0438"
+      ]
+    },
+    {
+      id: 124,
+      category: "sport",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0441\u043F\u043E\u0440\u0442 \u0441\u0435 \u0438\u0433\u0440\u0430\u0435 \u043D\u0430 \u201E\u0423\u0438\u043C\u0431\u044A\u043B\u0434\u044A\u043D\u201C?",
+      answers: ["\u0422\u0435\u043D\u0438\u0441", "\u0413\u043E\u043B\u0444", "\u041A\u0440\u0438\u043A\u0435\u0442", "\u0424\u0443\u0442\u0431\u043E\u043B"]
+    },
+    {
+      id: 125,
+      category: "sport",
+      level: 1,
+      question: "\u041A\u043E\u043B\u043A\u043E \u043A\u0440\u044A\u0433\u0430 \u0438\u043C\u0430 \u043D\u0430 \u043E\u043B\u0438\u043C\u043F\u0438\u0439\u0441\u043A\u043E\u0442\u043E \u0437\u043D\u0430\u043C\u0435?",
+      answers: ["\u041F\u0435\u0442", "\u0427\u0435\u0442\u0438\u0440\u0438", "\u0428\u0435\u0441\u0442", "\u0421\u0435\u0434\u0435\u043C"]
+    },
+    {
+      id: 126,
+      category: "sport",
+      level: 1,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0442\u043E\u0447\u043A\u0438 \u043D\u043E\u0441\u0438 \u0441\u0442\u0440\u0435\u043B\u0431\u0430 \u0432 \u0431\u0430\u0441\u043A\u0435\u0442\u0431\u043E\u043B\u0430 \u043E\u0442 \u0437\u0430\u0434 \u043B\u0438\u043D\u0438\u044F\u0442\u0430 \u043D\u0430 \u0434\u044A\u0433\u0430\u0442\u0430?",
+      answers: ["\u0422\u0440\u0438", "\u0414\u0432\u0435", "\u0427\u0435\u0442\u0438\u0440\u0438", "\u041F\u0435\u0442"]
+    },
+    {
+      id: 127,
+      category: "sport",
+      level: 1,
+      question: "\u0412 \u043A\u043E\u0439 \u0441\u043F\u043E\u0440\u0442 \u0441\u0435 \u0438\u0433\u0440\u0430\u0435 \u0441 \u0448\u0430\u0439\u0431\u0430?",
+      answers: ["\u0425\u043E\u043A\u0435\u0439 \u043D\u0430 \u043B\u0435\u0434", "\u041A\u044A\u0440\u043B\u0438\u043D\u0433", "\u041F\u043E\u043B\u043E", "\u041B\u0430\u043A\u0440\u043E\u0441"]
+    },
+    {
+      id: 128,
+      category: "sport",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0448\u0430\u0445\u043C\u0430\u0442\u043D\u0430 \u0444\u0438\u0433\u0443\u0440\u0430 \u0441\u0435 \u0434\u0432\u0438\u0436\u0438 \u0441\u0430\u043C\u043E \u043F\u043E \u0434\u0438\u0430\u0433\u043E\u043D\u0430\u043B?",
+      answers: ["\u041E\u0444\u0438\u0446\u0435\u0440\u044A\u0442", "\u0422\u043E\u043F\u044A\u0442", "\u041A\u043E\u043D\u044F\u0442", "\u0426\u0430\u0440\u044F\u0442"]
+    },
+    {
+      id: 129,
+      category: "sport",
+      level: 1,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0434\u0443\u043F\u043A\u0438 \u0438\u043C\u0430 \u0432 \u0441\u0442\u0430\u043D\u0434\u0430\u0440\u0442\u0435\u043D \u043A\u0440\u044A\u0433 \u0433\u043E\u043B\u0444?",
+      answers: ["18", "9", "12", "24"]
+    },
+    {
+      id: 130,
+      category: "sport",
+      level: 1,
+      question: "\u0412 \u043A\u043E\u0439 \u0441\u043F\u043E\u0440\u0442 \u0441\u0435 \u043E\u0442\u0431\u0435\u043B\u044F\u0437\u0432\u0430 \u201E\u043E\u043F\u0438\u0442\u201C (try)?",
+      answers: ["\u0420\u044A\u0433\u0431\u0438", "\u0424\u0443\u0442\u0431\u043E\u043B", "\u0422\u0435\u043D\u0438\u0441", "\u0425\u043E\u043A\u0435\u0439"]
+    },
+    {
+      id: 131,
+      category: "sport",
+      level: 2,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0438\u0433\u0440\u0430\u0447\u0438 \u0438\u043C\u0430 \u0435\u0434\u0438\u043D \u0432\u043E\u043B\u0435\u0439\u0431\u043E\u043B\u0435\u043D \u043E\u0442\u0431\u043E\u0440 \u043D\u0430 \u0438\u0433\u0440\u0438\u0449\u0435\u0442\u043E?",
+      answers: ["\u0428\u0435\u0441\u0442", "\u041F\u0435\u0442", "\u0421\u0435\u0434\u0435\u043C", "\u041E\u0441\u0435\u043C"]
+    },
+    {
+      id: 132,
+      category: "sport",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u0435 \u0434\u043E\u043C\u0430\u043A\u0438\u043D \u043D\u0430 \u043F\u044A\u0440\u0432\u0438\u0442\u0435 \u0441\u044A\u0432\u0440\u0435\u043C\u0435\u043D\u043D\u0438 \u043E\u043B\u0438\u043C\u043F\u0438\u0439\u0441\u043A\u0438 \u0438\u0433\u0440\u0438 \u043F\u0440\u0435\u0437 1896 \u0433.?",
+      answers: ["\u0413\u044A\u0440\u0446\u0438\u044F", "\u0424\u0440\u0430\u043D\u0446\u0438\u044F", "\u0412\u0435\u043B\u0438\u043A\u043E\u0431\u0440\u0438\u0442\u0430\u043D\u0438\u044F", "\u0421\u0410\u0429"]
+    },
+    {
+      id: 133,
+      category: "sport",
+      level: 2,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0435 \u0434\u044A\u043B\u044A\u0433 \u043C\u0430\u0440\u0430\u0442\u043E\u043D\u044A\u0442?",
+      answers: ["42,195 km", "40 km", "45 km", "21,1 km"]
+    },
+    {
+      id: 134,
+      category: "sport",
+      level: 2,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0438\u0433\u0440\u0430\u0447\u0438 \u0438\u043C\u0430 \u0435\u0434\u0438\u043D \u0431\u0430\u0441\u043A\u0435\u0442\u0431\u043E\u043B\u0435\u043D \u043E\u0442\u0431\u043E\u0440 \u043D\u0430 \u0438\u0433\u0440\u0438\u0449\u0435\u0442\u043E?",
+      answers: ["\u041F\u0435\u0442", "\u0428\u0435\u0441\u0442", "\u0427\u0435\u0442\u0438\u0440\u0438", "\u0421\u0435\u0434\u0435\u043C"]
+    },
+    {
+      id: 135,
+      category: "sport",
+      level: 2,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0441\u0435\u0442\u0430 \u0442\u0440\u044F\u0431\u0432\u0430 \u0434\u0430 \u0441\u043F\u0435\u0447\u0435\u043B\u0438 \u043C\u044A\u0436, \u0437\u0430 \u0434\u0430 \u0432\u0437\u0435\u043C\u0435 \u043C\u0430\u0447 \u043D\u0430 \u0442\u0443\u0440\u043D\u0438\u0440 \u043E\u0442 \u0413\u043E\u043B\u0435\u043C\u0438\u044F \u0448\u043B\u0435\u043C \u043F\u043E \u0442\u0435\u043D\u0438\u0441?",
+      answers: ["\u0422\u0440\u0438", "\u0414\u0432\u0430", "\u0427\u0435\u0442\u0438\u0440\u0438", "\u041F\u0435\u0442"]
+    },
+    {
+      id: 136,
+      category: "sport",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438 \u0444\u0443\u0442\u0431\u043E\u043B\u0438\u0441\u0442 \u043F\u0435\u0447\u0435\u043B\u0438 \u201E\u0417\u043B\u0430\u0442\u043D\u0430\u0442\u0430 \u0442\u043E\u043F\u043A\u0430\u201C \u043F\u0440\u0435\u0437 1994 \u0433.?",
+      answers: ["\u0425\u0440\u0438\u0441\u0442\u043E \u0421\u0442\u043E\u0438\u0447\u043A\u043E\u0432", "\u0414\u0438\u043C\u0438\u0442\u044A\u0440 \u0411\u0435\u0440\u0431\u0430\u0442\u043E\u0432", "\u041A\u0440\u0430\u0441\u0438\u043C\u0438\u0440 \u0411\u0430\u043B\u044A\u043A\u043E\u0432", "\u0419\u043E\u0440\u0434\u0430\u043D \u041B\u0435\u0447\u043A\u043E\u0432"]
+    },
+    {
+      id: 137,
+      category: "sport",
+      level: 2,
+      question: "\u041A\u043E\u043B\u043A\u043E \u043F\u043E\u043B\u0435\u0442\u0430 \u0438\u043C\u0430 \u0448\u0430\u0445\u043C\u0430\u0442\u043D\u0430\u0442\u0430 \u0434\u044A\u0441\u043A\u0430?",
+      answers: ["64", "49", "81", "100"]
+    },
+    {
+      id: 138,
+      category: "sport",
+      level: 2,
+      question: "\u0412 \u043A\u043E\u0439 \u0441\u043F\u043E\u0440\u0442 \u0441\u0435 \u0432\u0440\u044A\u0447\u0432\u0430 \u043A\u0443\u043F\u0430\u0442\u0430 \u201E\u0421\u0442\u0435\u043D\u043B\u0438\u201C?",
+      answers: ["\u0425\u043E\u043A\u0435\u0439 \u043D\u0430 \u043B\u0435\u0434", "\u0411\u0430\u0441\u043A\u0435\u0442\u0431\u043E\u043B", "\u0411\u0435\u0439\u0437\u0431\u043E\u043B", "\u0410\u043C\u0435\u0440\u0438\u043A\u0430\u043D\u0441\u043A\u0438 \u0444\u0443\u0442\u0431\u043E\u043B"]
+    },
+    {
+      id: 139,
+      category: "sport",
+      level: 2,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0435 \u043E\u0431\u0438\u0447\u0430\u0439\u043D\u0438\u044F\u0442 \u043C\u0430\u043A\u0441\u0438\u043C\u0430\u043B\u0435\u043D \u0431\u0440\u0435\u0439\u043A \u0432 \u0441\u043D\u0443\u043A\u044A\u0440\u0430?",
+      answers: ["147", "155", "140", "180"]
+    },
+    {
+      id: 140,
+      category: "sport",
+      level: 2,
+      question: "\u0412 \u043A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u0435 \u0441\u044A\u0437\u0434\u0430\u0434\u0435\u043D\u043E \u0434\u0436\u0443\u0434\u043E\u0442\u043E?",
+      answers: ["\u042F\u043F\u043E\u043D\u0438\u044F", "\u041A\u0438\u0442\u0430\u0439", "\u041A\u043E\u0440\u0435\u044F", "\u0422\u0430\u0439\u043B\u0430\u043D\u0434"]
+    },
+    {
+      id: 141,
+      category: "sport",
+      level: 3,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0438\u0433\u0440\u0430\u0447\u0438 \u0438\u043C\u0430 \u0435\u0434\u0438\u043D \u0432\u0430\u0442\u0435\u0440\u043F\u043E\u043B\u0435\u043D \u043E\u0442\u0431\u043E\u0440 \u0432\u044A\u0432 \u0432\u043E\u0434\u0430\u0442\u0430?",
+      answers: ["\u0421\u0435\u0434\u0435\u043C", "\u0428\u0435\u0441\u0442", "\u041E\u0441\u0435\u043C", "\u041F\u0435\u0442"]
+    },
+    {
+      id: 142,
+      category: "sport",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0433\u0440\u0430\u0434 \u0435 \u0434\u043E\u043C\u0430\u043A\u0438\u043D \u043D\u0430 \u041B\u0435\u0442\u043D\u0438\u0442\u0435 \u043E\u043B\u0438\u043C\u043F\u0438\u0439\u0441\u043A\u0438 \u0438\u0433\u0440\u0438 \u043F\u0440\u0435\u0437 1980 \u0433.?",
+      answers: ["\u041C\u043E\u0441\u043A\u0432\u0430", "\u041B\u043E\u0441 \u0410\u043D\u0434\u0436\u0435\u043B\u0438\u0441", "\u041C\u043E\u043D\u0440\u0435\u0430\u043B", "\u0421\u0435\u0443\u043B"]
+    },
+    {
+      id: 143,
+      category: "sport",
+      level: 3,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0435 \u0434\u044A\u043B\u044A\u0433 \u043E\u043B\u0438\u043C\u043F\u0438\u0439\u0441\u043A\u0438\u044F\u0442 \u043F\u043B\u0443\u0432\u0435\u043D \u0431\u0430\u0441\u0435\u0439\u043D?",
+      answers: ["50 m", "25 m", "100 m", "75 m"]
+    },
+    {
+      id: 144,
+      category: "sport",
+      level: 3,
+      question: "\u0412 \u043A\u043E\u0439 \u0441\u043F\u043E\u0440\u0442 \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438\u0442\u0435 \u0441\u044A\u0441\u0442\u0435\u0437\u0430\u0442\u0435\u043B\u043A\u0438 \u0441\u0430 \u0438\u0437\u0432\u0435\u0441\u0442\u043D\u0438 \u0441 \u043B\u0435\u043D\u0442\u0430, \u043E\u0431\u0440\u044A\u0447 \u0438 \u0442\u043E\u043F\u043A\u0430?",
+      answers: [
+        "\u0425\u0443\u0434\u043E\u0436\u0435\u0441\u0442\u0432\u0435\u043D\u0430 \u0433\u0438\u043C\u043D\u0430\u0441\u0442\u0438\u043A\u0430",
+        "\u0421\u043F\u043E\u0440\u0442\u043D\u0430 \u0433\u0438\u043C\u043D\u0430\u0441\u0442\u0438\u043A\u0430",
+        "\u0424\u0438\u0433\u0443\u0440\u043D\u043E \u043F\u044A\u0440\u0437\u0430\u043B\u044F\u043D\u0435",
+        "\u0410\u0440\u0442\u0438\u0441\u0442\u0438\u0447\u043D\u043E \u043F\u043B\u0443\u0432\u0430\u043D\u0435"
+      ]
+    },
+    {
+      id: 145,
+      category: "sport",
+      level: 3,
+      question: "\u041A\u043E\u044F \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0430 \u043B\u0435\u043A\u043E\u0430\u0442\u043B\u0435\u0442\u043A\u0430 \u043F\u043E\u0441\u0442\u0430\u0432\u044F \u0441\u0432\u0435\u0442\u043E\u0432\u0435\u043D \u0440\u0435\u043A\u043E\u0440\u0434 \u043E\u0442 2,09 m \u0432 \u0441\u043A\u043E\u043A\u0430 \u043D\u0430 \u0432\u0438\u0441\u043E\u0447\u0438\u043D\u0430 \u043F\u0440\u0435\u0437 1987 \u0433.?",
+      answers: ["\u0421\u0442\u0435\u0444\u043A\u0430 \u041A\u043E\u0441\u0442\u0430\u0434\u0438\u043D\u043E\u0432\u0430", "\u0419\u043E\u0440\u0434\u0430\u043D\u043A\u0430 \u0414\u043E\u043D\u043A\u043E\u0432\u0430", "\u0422\u0435\u0440\u0435\u0437\u0430 \u041C\u0430\u0440\u0438\u043D\u043E\u0432\u0430", "\u0418\u0432\u0435\u0442 \u041B\u0430\u043B\u043E\u0432\u0430"]
+    },
+    {
+      id: 146,
+      category: "sport",
+      level: 3,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0442\u043E\u0447\u043A\u0438 \u043D\u043E\u0441\u0438 \u0442\u044A\u0447\u0434\u0430\u0443\u043D \u0432 \u0430\u043C\u0435\u0440\u0438\u043A\u0430\u043D\u0441\u043A\u0438\u044F \u0444\u0443\u0442\u0431\u043E\u043B?",
+      answers: ["\u0428\u0435\u0441\u0442", "\u0422\u0440\u0438", "\u0421\u0435\u0434\u0435\u043C", "\u0414\u0432\u0435"]
+    },
+    {
+      id: 147,
+      category: "sport",
+      level: 3,
+      question: "\u041A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u043F\u0435\u0447\u0435\u043B\u0438 \u043F\u044A\u0440\u0432\u043E\u0442\u043E \u0421\u0432\u0435\u0442\u043E\u0432\u043D\u043E \u043F\u044A\u0440\u0432\u0435\u043D\u0441\u0442\u0432\u043E \u043F\u043E \u0444\u0443\u0442\u0431\u043E\u043B \u043F\u0440\u0435\u0437 1930 \u0433.?",
+      answers: ["\u0423\u0440\u0443\u0433\u0432\u0430\u0439", "\u0411\u0440\u0430\u0437\u0438\u043B\u0438\u044F", "\u0410\u0440\u0436\u0435\u043D\u0442\u0438\u043D\u0430", "\u0418\u0442\u0430\u043B\u0438\u044F"]
+    },
+    {
+      id: 148,
+      category: "sport",
+      level: 3,
+      question: "\u0412 \u043A\u043E\u0439 \u0441\u043F\u043E\u0440\u0442 \u201E\u0431\u044A\u0440\u0434\u0438\u201C \u043E\u0437\u043D\u0430\u0447\u0430\u0432\u0430 \u0435\u0434\u0438\u043D \u0443\u0434\u0430\u0440 \u043F\u043E\u0434 \u043F\u0430\u0440?",
+      answers: ["\u0413\u043E\u043B\u0444", "\u0411\u0430\u0434\u043C\u0438\u043D\u0442\u043E\u043D", "\u0411\u043E\u0443\u043B\u0438\u043D\u0433", "\u0414\u0430\u0440\u0442\u0441"]
+    },
+    {
+      id: 149,
+      category: "sport",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u0439-\u0432\u0438\u0441\u043E\u043A\u0438\u044F\u0442 \u0440\u0435\u0437\u0443\u043B\u0442\u0430\u0442 \u0441 \u0442\u0440\u0438 \u0441\u0442\u0440\u0435\u043B\u0438\u0447\u043A\u0438 \u0432 \u0434\u0430\u0440\u0442\u0441\u0430?",
+      answers: ["180", "150", "120", "200"]
+    },
+    {
+      id: 150,
+      category: "sport",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0432\u0438\u0434 \u0431\u043E\u0440\u0431\u0430 \u0435 \u0442\u0440\u0430\u0434\u0438\u0446\u0438\u043E\u043D\u0435\u043D \u0437\u0430 \u042F\u043F\u043E\u043D\u0438\u044F \u0438 \u0441\u0435 \u0432\u043E\u0434\u0438 \u043D\u0430 \u0440\u0438\u043D\u0433, \u043D\u0430\u0440\u0435\u0447\u0435\u043D \u0434\u043E\u0445\u044C\u043E?",
+      answers: ["\u0421\u0443\u043C\u043E", "\u0414\u0436\u0443\u0434\u043E", "\u041A\u0430\u0440\u0430\u0442\u0435", "\u041A\u0435\u043D\u0434\u043E"]
+    },
+    {
+      id: 151,
+      category: "arts",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u0440\u0438\u0441\u0443\u0432\u0430\u043B \u201E\u041C\u043E\u043D\u0430 \u041B\u0438\u0437\u0430\u201C?",
+      answers: ["\u041B\u0435\u043E\u043D\u0430\u0440\u0434\u043E \u0434\u0430 \u0412\u0438\u043D\u0447\u0438", "\u041C\u0438\u043A\u0435\u043B\u0430\u043D\u0434\u0436\u0435\u043B\u043E", "\u0420\u0430\u0444\u0430\u0435\u043B\u043E", "\u0412\u0438\u043D\u0441\u0435\u043D\u0442 \u0432\u0430\u043D \u0413\u043E\u0433"]
+    },
+    {
+      id: 152,
+      category: "arts",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u043F\u0438\u0441\u0430\u043B \u201E\u0420\u043E\u043C\u0435\u043E \u0438 \u0416\u0443\u043B\u0438\u0435\u0442\u0430\u201C?",
+      answers: ["\u0423\u0438\u043B\u044F\u043C \u0428\u0435\u043A\u0441\u043F\u0438\u0440", "\u0427\u0430\u0440\u043B\u0437 \u0414\u0438\u043A\u0435\u043D\u0441", "\u0414\u0436\u0435\u0439\u043D \u041E\u0441\u0442\u0438\u043D", "\u041C\u0430\u0440\u043A \u0422\u0432\u0435\u043D"]
+    },
+    {
+      id: 153,
+      category: "arts",
+      level: 1,
+      question: "\u041A\u0430\u043A\u044A\u0432 \u0446\u0432\u044F\u0442 \u0441\u0435 \u043F\u043E\u043B\u0443\u0447\u0430\u0432\u0430 \u043F\u0440\u0438 \u0441\u043C\u0435\u0441\u0432\u0430\u043D\u0435 \u043D\u0430 \u0441\u0438\u043D\u044F \u0438 \u0436\u044A\u043B\u0442\u0430 \u0431\u043E\u044F?",
+      answers: ["\u0417\u0435\u043B\u0435\u043D", "\u041B\u0438\u043B\u0430\u0432", "\u041E\u0440\u0430\u043D\u0436\u0435\u0432", "\u041A\u0430\u0444\u044F\u0432"]
+    },
+    {
+      id: 154,
+      category: "arts",
+      level: 1,
+      question: "\u041A\u043E\u044F \u043F\u0440\u0438\u043A\u0430\u0437\u043D\u0430 \u0433\u0435\u0440\u043E\u0438\u043D\u044F \u0433\u0443\u0431\u0438 \u0441\u0442\u044A\u043A\u043B\u0435\u043D\u0430 \u043F\u0430\u043D\u0442\u043E\u0444\u043A\u0430?",
+      answers: ["\u041F\u0435\u043F\u0435\u043B\u044F\u0448\u043A\u0430", "\u0421\u043D\u0435\u0436\u0430\u043D\u043A\u0430", "\u0421\u043F\u044F\u0449\u0430\u0442\u0430 \u043A\u0440\u0430\u0441\u0430\u0432\u0438\u0446\u0430", "\u0420\u0430\u043F\u0443\u043D\u0446\u0435\u043B"]
+    },
+    {
+      id: 155,
+      category: "arts",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0434\u0435\u0442\u0435\u043A\u0442\u0438\u0432 \u0436\u0438\u0432\u0435\u0435 \u043D\u0430 \u201E\u0411\u0435\u0439\u043A\u044A\u0440 \u0441\u0442\u0440\u0438\u0439\u0442\u201C 221\u0411?",
+      answers: ["\u0428\u0435\u0440\u043B\u043E\u043A \u0425\u043E\u043B\u043C\u0441", "\u0415\u0440\u043A\u044E\u043B \u041F\u043E\u0430\u0440\u043E", "\u041C\u0438\u0441 \u041C\u0430\u0440\u043F\u044A\u043B", "\u0418\u043D\u0441\u043F\u0435\u043A\u0442\u043E\u0440 \u041C\u043E\u0440\u0441"]
+    },
+    {
+      id: 156,
+      category: "arts",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u043F\u0438\u0441\u0430\u043B \u043A\u043D\u0438\u0433\u0438\u0442\u0435 \u0437\u0430 \u0425\u0430\u0440\u0438 \u041F\u043E\u0442\u044A\u0440?",
+      answers: ["\u0414\u0436. \u041A. \u0420\u043E\u0443\u043B\u0438\u043D\u0433", "\u0420\u043E\u0430\u043B\u0434 \u0414\u0430\u043B", "\u041A. \u0421. \u041B\u0443\u0438\u0441", "\u0414\u0436. \u0420. \u0420. \u0422\u043E\u043B\u043A\u0438\u043D"]
+    },
+    {
+      id: 157,
+      category: "arts",
+      level: 1,
+      question: "\u0412 \u043A\u043E\u0439 \u0433\u0440\u0430\u0434 \u0435 \u043C\u0443\u0437\u0435\u044F\u0442 \u041B\u0443\u0432\u044A\u0440?",
+      answers: ["\u041F\u0430\u0440\u0438\u0436", "\u041B\u043E\u043D\u0434\u043E\u043D", "\u0420\u0438\u043C", "\u041C\u0430\u0434\u0440\u0438\u0434"]
+    },
+    {
+      id: 158,
+      category: "arts",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u043F\u0438\u0441\u0430\u043B \u201E\u041C\u0430\u043B\u043A\u0438\u044F\u0442 \u043F\u0440\u0438\u043D\u0446\u201C?",
+      answers: ["\u0410\u043D\u0442\u043E\u0430\u043D \u0434\u044C\u043E \u0421\u0435\u043D\u0442-\u0415\u043A\u0437\u044E\u043F\u0435\u0440\u0438", "\u0412\u0438\u043A\u0442\u043E\u0440 \u042E\u0433\u043E", "\u0416\u0443\u043B \u0412\u0435\u0440\u043D", "\u0410\u043B\u0435\u043A\u0441\u0430\u043D\u0434\u044A\u0440 \u0414\u044E\u043C\u0430"]
+    },
+    {
+      id: 159,
+      category: "arts",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u043E\u0442 \u0442\u0435\u0437\u0438 \u0446\u0432\u0435\u0442\u043E\u0432\u0435 \u0435 \u043E\u0441\u043D\u043E\u0432\u0435\u043D \u0432 \u0440\u0438\u0441\u0443\u0432\u0430\u043D\u0435\u0442\u043E?",
+      answers: ["\u0427\u0435\u0440\u0432\u0435\u043D\u0438\u044F\u0442", "\u0417\u0435\u043B\u0435\u043D\u0438\u044F\u0442", "\u041E\u0440\u0430\u043D\u0436\u0435\u0432\u0438\u044F\u0442", "\u041B\u0438\u043B\u0430\u0432\u0438\u044F\u0442"]
+    },
+    {
+      id: 160,
+      category: "arts",
+      level: 1,
+      question: "\u041D\u043E\u0441\u044A\u0442 \u043D\u0430 \u043A\u043E\u044F \u0434\u044A\u0440\u0432\u0435\u043D\u0430 \u043A\u0443\u043A\u043B\u0430 \u0440\u0430\u0441\u0442\u0435, \u043A\u043E\u0433\u0430\u0442\u043E \u0442\u044F \u043B\u044A\u0436\u0435?",
+      answers: ["\u041F\u0438\u043D\u043E\u043A\u0438\u043E", "\u041F\u0438\u0442\u044A\u0440 \u041F\u0430\u043D", "\u0413\u044A\u043B\u0438\u0432\u0435\u0440", "\u0411\u0430\u043C\u0431\u0438"]
+    },
+    {
+      id: 161,
+      category: "arts",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u043F\u0438\u0441\u0430\u043B \u0440\u043E\u043C\u0430\u043D\u0430 \u201E\u041F\u043E\u0434 \u0438\u0433\u043E\u0442\u043E\u201C?",
+      answers: ["\u0418\u0432\u0430\u043D \u0412\u0430\u0437\u043E\u0432", "\u0425\u0440\u0438\u0441\u0442\u043E \u0411\u043E\u0442\u0435\u0432", "\u0410\u043B\u0435\u043A\u043E \u041A\u043E\u043D\u0441\u0442\u0430\u043D\u0442\u0438\u043D\u043E\u0432", "\u0415\u043B\u0438\u043D \u041F\u0435\u043B\u0438\u043D"]
+    },
+    {
+      id: 162,
+      category: "arts",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u0440\u0438\u0441\u0443\u0432\u0430\u043B \u201E\u0417\u0432\u0435\u0437\u0434\u043D\u0430 \u043D\u043E\u0449\u201C?",
+      answers: ["\u0412\u0438\u043D\u0441\u0435\u043D\u0442 \u0432\u0430\u043D \u0413\u043E\u0433", "\u041A\u043B\u043E\u0434 \u041C\u043E\u043D\u0435", "\u041F\u0430\u0431\u043B\u043E \u041F\u0438\u043A\u0430\u0441\u043E", "\u0421\u0430\u043B\u0432\u0430\u0434\u043E\u0440 \u0414\u0430\u043B\u0438"]
+    },
+    {
+      id: 163,
+      category: "arts",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u043F\u0438\u0441\u0430\u043B \u201E\u0414\u043E\u043D \u041A\u0438\u0445\u043E\u0442\u201C?",
+      answers: ["\u041C\u0438\u0433\u0435\u043B \u0434\u0435 \u0421\u0435\u0440\u0432\u0430\u043D\u0442\u0435\u0441", "\u041B\u043E\u043F\u0435 \u0434\u0435 \u0412\u0435\u0433\u0430", "\u0413\u0430\u0431\u0440\u0438\u0435\u043B \u0413\u0430\u0440\u0441\u0438\u044F \u041C\u0430\u0440\u043A\u0435\u0441", "\u0414\u0430\u043D\u0442\u0435 \u0410\u043B\u0438\u0433\u0438\u0435\u0440\u0438"]
+    },
+    {
+      id: 164,
+      category: "arts",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0438\u0437\u0432\u0430\u044F\u0432\u0430 \u043C\u0440\u0430\u043C\u043E\u0440\u043D\u0430\u0442\u0430 \u0441\u0442\u0430\u0442\u0443\u044F \u043D\u0430 \u0414\u0430\u0432\u0438\u0434, \u0437\u0430\u0432\u044A\u0440\u0448\u0435\u043D\u0430 \u043F\u0440\u0435\u0437 1504 \u0433. \u0432\u044A\u0432 \u0424\u043B\u043E\u0440\u0435\u043D\u0446\u0438\u044F?",
+      answers: ["\u041C\u0438\u043A\u0435\u043B\u0430\u043D\u0434\u0436\u0435\u043B\u043E", "\u0414\u043E\u043D\u0430\u0442\u0435\u043B\u043E", "\u0411\u0435\u0440\u043D\u0438\u043D\u0438", "\u0420\u043E\u0434\u0435\u043D"]
+    },
+    {
+      id: 165,
+      category: "arts",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u043F\u0438\u0441\u0430\u043B \u201E\u0411\u0430\u0439 \u0413\u0430\u043D\u044C\u043E\u201C?",
+      answers: ["\u0410\u043B\u0435\u043A\u043E \u041A\u043E\u043D\u0441\u0442\u0430\u043D\u0442\u0438\u043D\u043E\u0432", "\u0418\u0432\u0430\u043D \u0412\u0430\u0437\u043E\u0432", "\u0415\u043B\u0438\u043D \u041F\u0435\u043B\u0438\u043D", "\u0419\u043E\u0440\u0434\u0430\u043D \u0419\u043E\u0432\u043A\u043E\u0432"]
+    },
+    {
+      id: 166,
+      category: "arts",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u043F\u0438\u0441\u0430\u043B \u201E\u0412\u043E\u0439\u043D\u0430 \u0438 \u043C\u0438\u0440\u201C?",
+      answers: ["\u041B\u0435\u0432 \u0422\u043E\u043B\u0441\u0442\u043E\u0439", "\u0424\u044C\u043E\u0434\u043E\u0440 \u0414\u043E\u0441\u0442\u043E\u0435\u0432\u0441\u043A\u0438", "\u0410\u043D\u0442\u043E\u043D \u0427\u0435\u0445\u043E\u0432", "\u0418\u0432\u0430\u043D \u0422\u0443\u0440\u0433\u0435\u043D\u0435\u0432"]
+    },
+    {
+      id: 167,
+      category: "arts",
+      level: 2,
+      question: "\u041A\u043E\u0435 \u043D\u0430\u043F\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435 \u0432 \u0438\u0437\u043A\u0443\u0441\u0442\u0432\u043E\u0442\u043E \u043E\u0441\u043D\u043E\u0432\u0430\u0432\u0430 \u041F\u0430\u0431\u043B\u043E \u041F\u0438\u043A\u0430\u0441\u043E \u0437\u0430\u0435\u0434\u043D\u043E \u0441 \u0416\u043E\u0440\u0436 \u0411\u0440\u0430\u043A?",
+      answers: ["\u041A\u0443\u0431\u0438\u0437\u043C\u044A\u0442", "\u0418\u043C\u043F\u0440\u0435\u0441\u0438\u043E\u043D\u0438\u0437\u043C\u044A\u0442", "\u0421\u044E\u0440\u0440\u0435\u0430\u043B\u0438\u0437\u043C\u044A\u0442", "\u0411\u0430\u0440\u043E\u043A\u044A\u0442"]
+    },
+    {
+      id: 168,
+      category: "arts",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u043F\u0438\u0441\u0430\u043B \u201E\u041A\u043B\u0435\u0442\u043D\u0438\u0446\u0438\u0442\u0435\u201C?",
+      answers: ["\u0412\u0438\u043A\u0442\u043E\u0440 \u042E\u0433\u043E", "\u0415\u043C\u0438\u043B \u0417\u043E\u043B\u0430", "\u0413\u044E\u0441\u0442\u0430\u0432 \u0424\u043B\u043E\u0431\u0435\u0440", "\u041E\u043D\u043E\u0440\u0435 \u0434\u044C\u043E \u0411\u0430\u043B\u0437\u0430\u043A"]
+    },
+    {
+      id: 169,
+      category: "arts",
+      level: 2,
+      question: "\u041D\u0430 \u043A\u043E\u0433\u043E \u0441\u0435 \u043F\u0440\u0438\u043F\u0438\u0441\u0432\u0430 \u201E\u041E\u0434\u0438\u0441\u0435\u044F\u201C?",
+      answers: ["\u041E\u043C\u0438\u0440", "\u0421\u043E\u0444\u043E\u043A\u044A\u043B", "\u0412\u0435\u0440\u0433\u0438\u043B\u0438\u0439", "\u041F\u043B\u0430\u0442\u043E\u043D"]
+    },
+    {
+      id: 170,
+      category: "arts",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438 \u043F\u043E\u0435\u0442 \u0438 \u0440\u0435\u0432\u043E\u043B\u044E\u0446\u0438\u043E\u043D\u0435\u0440 \u0437\u0430\u0433\u0438\u0432\u0430 \u043F\u0440\u0435\u0437 1876 \u0433. \u0432\u044A\u0432 \u0412\u0440\u0430\u0447\u0430\u043D\u0441\u043A\u0438\u044F \u0411\u0430\u043B\u043A\u0430\u043D?",
+      answers: ["\u0425\u0440\u0438\u0441\u0442\u043E \u0411\u043E\u0442\u0435\u0432", "\u0412\u0430\u0441\u0438\u043B \u041B\u0435\u0432\u0441\u043A\u0438", "\u0418\u0432\u0430\u043D \u0412\u0430\u0437\u043E\u0432", "\u041F\u0435\u0439\u043E \u042F\u0432\u043E\u0440\u043E\u0432"]
+    },
+    {
+      id: 171,
+      category: "arts",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u0440\u0438\u0441\u0443\u0432\u0430\u043B \u201E\u0422\u0430\u0439\u043D\u0430\u0442\u0430 \u0432\u0435\u0447\u0435\u0440\u044F\u201C \u0432 \u041C\u0438\u043B\u0430\u043D\u043E?",
+      answers: ["\u041B\u0435\u043E\u043D\u0430\u0440\u0434\u043E \u0434\u0430 \u0412\u0438\u043D\u0447\u0438", "\u041C\u0438\u043A\u0435\u043B\u0430\u043D\u0434\u0436\u0435\u043B\u043E", "\u0420\u0430\u0444\u0430\u0435\u043B\u043E", "\u0422\u0438\u0446\u0438\u0430\u043D"]
+    },
+    {
+      id: 172,
+      category: "arts",
+      level: 3,
+      question: "\u0425\u0443\u0434\u043E\u0436\u043D\u0438\u043A\u044A\u0442 \u041A\u0440\u0438\u0441\u0442\u043E, \u043A\u043E\u0439\u0442\u043E \u043E\u043F\u0430\u043A\u043E\u0432\u0430 \u0420\u0430\u0439\u0445\u0441\u0442\u0430\u0433\u0430 \u0432 \u0411\u0435\u0440\u043B\u0438\u043D, \u0435 \u0440\u043E\u0434\u0435\u043D \u0432 \u043A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430?",
+      answers: ["\u0411\u044A\u043B\u0433\u0430\u0440\u0438\u044F", "\u0413\u0435\u0440\u043C\u0430\u043D\u0438\u044F", "\u0424\u0440\u0430\u043D\u0446\u0438\u044F", "\u0421\u0410\u0429"]
+    },
+    {
+      id: 173,
+      category: "arts",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u043F\u0438\u0441\u0430\u043B \u201E\u041F\u0440\u0435\u0441\u0442\u044A\u043F\u043B\u0435\u043D\u0438\u0435 \u0438 \u043D\u0430\u043A\u0430\u0437\u0430\u043D\u0438\u0435\u201C?",
+      answers: ["\u0424\u044C\u043E\u0434\u043E\u0440 \u0414\u043E\u0441\u0442\u043E\u0435\u0432\u0441\u043A\u0438", "\u041B\u0435\u0432 \u0422\u043E\u043B\u0441\u0442\u043E\u0439", "\u041D\u0438\u043A\u043E\u043B\u0430\u0439 \u0413\u043E\u0433\u043E\u043B", "\u0410\u043B\u0435\u043A\u0441\u0430\u043D\u0434\u044A\u0440 \u041F\u0443\u0448\u043A\u0438\u043D"]
+    },
+    {
+      id: 174,
+      category: "arts",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u043F\u0438\u0441\u0430\u043B \u201E\u0413\u043E\u0440\u0434\u043E\u0441\u0442 \u0438 \u043F\u0440\u0435\u0434\u0440\u0430\u0437\u0441\u044A\u0434\u044A\u0446\u0438\u201C?",
+      answers: ["\u0414\u0436\u0435\u0439\u043D \u041E\u0441\u0442\u0438\u043D", "\u0428\u0430\u0440\u043B\u043E\u0442 \u0411\u0440\u043E\u043D\u0442\u0435", "\u0415\u043C\u0438\u043B\u0438 \u0411\u0440\u043E\u043D\u0442\u0435", "\u041C\u0435\u0440\u0438 \u0428\u0435\u043B\u0438"]
+    },
+    {
+      id: 175,
+      category: "arts",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0445\u043E\u043B\u0430\u043D\u0434\u0441\u043A\u0438 \u0445\u0443\u0434\u043E\u0436\u043D\u0438\u043A \u0435 \u043D\u0430\u0440\u0438\u0441\u0443\u0432\u0430\u043B \u201E\u041C\u043E\u043C\u0438\u0447\u0435 \u0441 \u043F\u0435\u0440\u043B\u0435\u043D\u0430 \u043E\u0431\u0438\u0446\u0430\u201C?",
+      answers: ["\u0419\u043E\u0445\u0430\u043D\u0435\u0441 \u0412\u0435\u0440\u043C\u0435\u0435\u0440", "\u0420\u0435\u043C\u0431\u0440\u0430\u043D\u0434", "\u0424\u0440\u0430\u043D\u0441 \u0425\u0430\u043B\u0441", "\u0412\u0438\u043D\u0441\u0435\u043D\u0442 \u0432\u0430\u043D \u0413\u043E\u0433"]
+    },
+    {
+      id: 176,
+      category: "arts",
+      level: 3,
+      question: "\u041A\u0430\u043A\u0432\u043E \u0435 \u0438\u0441\u0442\u0438\u043D\u0441\u043A\u043E\u0442\u043E \u0438\u043C\u0435 \u043D\u0430 \u043F\u0438\u0441\u0430\u0442\u0435\u043B\u044F \u0415\u043B\u0438\u043D \u041F\u0435\u043B\u0438\u043D?",
+      answers: ["\u0414\u0438\u043C\u0438\u0442\u044A\u0440 \u0421\u0442\u043E\u044F\u043D\u043E\u0432", "\u0418\u0432\u0430\u043D \u0421\u0442\u043E\u044F\u043D\u043E\u0432", "\u041F\u0435\u0442\u043A\u043E \u0422\u043E\u0434\u043E\u0440\u043E\u0432", "\u0413\u0435\u043E\u0440\u0433\u0438 \u0421\u0442\u0430\u043C\u0430\u0442\u043E\u0432"]
+    },
+    {
+      id: 177,
+      category: "arts",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u043F\u0438\u0441\u0430\u043B \u201E\u0411\u043E\u0436\u0435\u0441\u0442\u0432\u0435\u043D\u0430 \u043A\u043E\u043C\u0435\u0434\u0438\u044F\u201C?",
+      answers: ["\u0414\u0430\u043D\u0442\u0435 \u0410\u043B\u0438\u0433\u0438\u0435\u0440\u0438", "\u0424\u0440\u0430\u043D\u0447\u0435\u0441\u043A\u043E \u041F\u0435\u0442\u0440\u0430\u0440\u043A\u0430", "\u0414\u0436\u043E\u0432\u0430\u043D\u0438 \u0411\u043E\u043A\u0430\u0447\u043E", "\u041D\u0438\u043A\u043E\u043B\u043E \u041C\u0430\u043A\u0438\u0430\u0432\u0435\u043B\u0438"]
+    },
+    {
+      id: 178,
+      category: "arts",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0445\u0443\u0434\u043E\u0436\u043D\u0438\u043A \u0435 \u0438\u0437\u0432\u0435\u0441\u0442\u0435\u043D \u0441 \u0440\u0430\u0437\u0442\u043E\u043F\u0435\u043D\u0438\u0442\u0435 \u0447\u0430\u0441\u043E\u0432\u043D\u0438\u0446\u0438 \u0432 \u201E\u041F\u043E\u0441\u0442\u043E\u044F\u043D\u0441\u0442\u0432\u043E\u0442\u043E \u043D\u0430 \u043F\u0430\u043C\u0435\u0442\u0442\u0430\u201C?",
+      answers: ["\u0421\u0430\u043B\u0432\u0430\u0434\u043E\u0440 \u0414\u0430\u043B\u0438", "\u0420\u0435\u043D\u0435 \u041C\u0430\u0433\u0440\u0438\u0442", "\u0416\u043E\u0430\u043D \u041C\u0438\u0440\u043E", "\u041C\u0430\u043A\u0441 \u0415\u0440\u043D\u0441\u0442"]
+    },
+    {
+      id: 179,
+      category: "arts",
+      level: 3,
+      question: "\u0412 \u043A\u043E\u0439 \u043C\u0443\u0437\u0435\u0439 \u0441\u0435 \u043D\u0430\u043C\u0438\u0440\u0430 \u201E\u041D\u043E\u0449\u043D\u0430 \u0441\u0442\u0440\u0430\u0436\u0430\u201C \u043D\u0430 \u0420\u0435\u043C\u0431\u0440\u0430\u043D\u0434?",
+      answers: ["\u0420\u0435\u0439\u043A\u0441\u043C\u044E\u0437\u0435\u0443\u043C", "\u041B\u0443\u0432\u044A\u0440", "\u041F\u0440\u0430\u0434\u043E", "\u0423\u0444\u0438\u0446\u0438"]
+    },
+    {
+      id: 180,
+      category: "arts",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u043F\u0438\u0441\u0430\u043B \u201E\u0421\u0442\u043E \u0433\u043E\u0434\u0438\u043D\u0438 \u0441\u0430\u043C\u043E\u0442\u0430\u201C?",
+      answers: ["\u0413\u0430\u0431\u0440\u0438\u0435\u043B \u0413\u0430\u0440\u0441\u0438\u044F \u041C\u0430\u0440\u043A\u0435\u0441", "\u0425\u043E\u0440\u0445\u0435 \u041B\u0443\u0438\u0441 \u0411\u043E\u0440\u0445\u0435\u0441", "\u041F\u0430\u0431\u043B\u043E \u041D\u0435\u0440\u0443\u0434\u0430", "\u0418\u0441\u0430\u0431\u0435\u043B \u0410\u043B\u0438\u0435\u043D\u0434\u0435"]
+    },
+    {
+      id: 181,
+      category: "music",
+      level: 1,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0441\u0442\u0440\u0443\u043D\u0438 \u0438\u043C\u0430 \u043E\u0431\u0438\u043A\u043D\u043E\u0432\u0435\u043D\u0430\u0442\u0430 \u043A\u0438\u0442\u0430\u0440\u0430?",
+      answers: ["\u0428\u0435\u0441\u0442", "\u0427\u0435\u0442\u0438\u0440\u0438", "\u041F\u0435\u0442", "\u0421\u0435\u0434\u0435\u043C"]
+    },
+    {
+      id: 182,
+      category: "music",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0438\u043D\u0441\u0442\u0440\u0443\u043C\u0435\u043D\u0442 \u0438\u043C\u0430 \u0447\u0435\u0440\u043D\u0438 \u0438 \u0431\u0435\u043B\u0438 \u043A\u043B\u0430\u0432\u0438\u0448\u0438?",
+      answers: ["\u041F\u0438\u0430\u043D\u043E\u0442\u043E", "\u0426\u0438\u0433\u0443\u043B\u043A\u0430\u0442\u0430", "\u0424\u043B\u0435\u0439\u0442\u0430\u0442\u0430", "\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u044A\u0442"]
+    },
+    {
+      id: 183,
+      category: "music",
+      level: 1,
+      question: "\u041A\u043E\u043B\u043A\u043E \u043B\u0438\u043D\u0438\u0438 \u0438\u043C\u0430 \u043D\u043E\u0442\u043D\u0438\u044F\u0442 \u0440\u0435\u0434?",
+      answers: ["\u041F\u0435\u0442", "\u0427\u0435\u0442\u0438\u0440\u0438", "\u0428\u0435\u0441\u0442", "\u0421\u0435\u0434\u0435\u043C"]
+    },
+    {
+      id: 184,
+      category: "music",
+      level: 1,
+      question: "\u0412 \u043A\u043E\u0439 \u043E\u0442 \u0442\u0435\u0437\u0438 \u0438\u043D\u0441\u0442\u0440\u0443\u043C\u0435\u043D\u0442\u0438 \u0441\u0435 \u0434\u0443\u0445\u0430?",
+      answers: ["\u0412 \u0442\u0440\u043E\u043C\u043F\u0435\u0442\u0430", "\u0412 \u0446\u0438\u0433\u0443\u043B\u043A\u0430\u0442\u0430", "\u0412 \u043F\u0438\u0430\u043D\u043E\u0442\u043E", "\u0412 \u0431\u0430\u0440\u0430\u0431\u0430\u043D\u0430"]
+    },
+    {
+      id: 185,
+      category: "music",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0435 \u043A\u043E\u043C\u043F\u043E\u0437\u0438\u0440\u0430\u043B \u201E\u0417\u0430 \u0415\u043B\u0438\u0437\u0430\u201C?",
+      answers: [
+        "\u041B\u0443\u0434\u0432\u0438\u0433 \u0432\u0430\u043D \u0411\u0435\u0442\u0445\u043E\u0432\u0435\u043D",
+        "\u0412\u043E\u043B\u0444\u0433\u0430\u043D\u0433 \u0410\u043C\u0430\u0434\u0435\u0443\u0441 \u041C\u043E\u0446\u0430\u0440\u0442",
+        "\u0419\u043E\u0445\u0430\u043D \u0421\u0435\u0431\u0430\u0441\u0442\u0438\u0430\u043D \u0411\u0430\u0445",
+        "\u0424\u0440\u0435\u0434\u0435\u0440\u0438\u043A \u0428\u043E\u043F\u0435\u043D"
+      ]
+    },
+    {
+      id: 186,
+      category: "music",
+      level: 1,
+      question: "\u041A\u0430\u043A \u0441\u0435 \u043D\u0430\u0440\u0438\u0447\u0430 \u0433\u0440\u0443\u043F\u0430 \u043E\u0442 \u0447\u0435\u0442\u0438\u0440\u0438\u043C\u0430 \u043C\u0443\u0437\u0438\u043A\u0430\u043D\u0442\u0438?",
+      answers: ["\u041A\u0432\u0430\u0440\u0442\u0435\u0442", "\u0422\u0440\u0438\u043E", "\u0414\u0443\u0435\u0442", "\u041A\u0432\u0438\u043D\u0442\u0435\u0442"]
+    },
+    {
+      id: 187,
+      category: "music",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u043E\u0442 \u0442\u0435\u0437\u0438 \u0435 \u0443\u0434\u0430\u0440\u0435\u043D \u0438\u043D\u0441\u0442\u0440\u0443\u043C\u0435\u043D\u0442?",
+      answers: ["\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u044A\u0442", "\u0424\u043B\u0435\u0439\u0442\u0430\u0442\u0430", "\u0412\u0438\u043E\u043B\u043E\u043D\u0447\u0435\u043B\u043E\u0442\u043E", "\u0410\u0440\u0444\u0430\u0442\u0430"]
+    },
+    {
+      id: 188,
+      category: "music",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0438\u0437\u0432\u0435\u0441\u0442\u043D\u0430 \u0433\u0440\u0443\u043F\u0430 \u0435 \u043E\u0442 \u041B\u0438\u0432\u044A\u0440\u043F\u0443\u043B?",
+      answers: ["\u201E\u0411\u0438\u0439\u0442\u044A\u043B\u0441\u201C", "\u201E\u0420\u043E\u043B\u0438\u043D\u0433 \u0421\u0442\u043E\u0443\u043D\u0441\u201C", "\u201E\u041A\u0443\u0438\u0439\u043D\u201C", "\u201E\u0410\u0411\u0411\u0410\u201C"]
+    },
+    {
+      id: 189,
+      category: "music",
+      level: 1,
+      question: "\u041E\u0442 \u043A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u0435 \u0444\u043B\u0430\u043C\u0435\u043D\u043A\u043E\u0442\u043E?",
+      answers: ["\u0418\u0441\u043F\u0430\u043D\u0438\u044F", "\u0418\u0442\u0430\u043B\u0438\u044F", "\u041C\u0435\u043A\u0441\u0438\u043A\u043E", "\u041F\u043E\u0440\u0442\u0443\u0433\u0430\u043B\u0438\u044F"]
+    },
+    {
+      id: 190,
+      category: "music",
+      level: 1,
+      question: "\u041A\u0430\u043A\u0432\u043E \u0434\u044A\u0440\u0436\u0438 \u0434\u0438\u0440\u0438\u0433\u0435\u043D\u0442\u044A\u0442, \u0437\u0430 \u0434\u0430 \u0432\u043E\u0434\u0438 \u043E\u0440\u043A\u0435\u0441\u0442\u044A\u0440\u0430?",
+      answers: ["\u041F\u0430\u043B\u043A\u0430", "\u041B\u044A\u043A", "\u0427\u0443\u043A\u0447\u0435", "\u041F\u0435\u0440\u0446\u0435"]
+    },
+    {
+      id: 191,
+      category: "music",
+      level: 2,
+      question: "\u041A\u043E\u043B\u043A\u043E \u043A\u043B\u0430\u0432\u0438\u0448\u0430 \u0438\u043C\u0430 \u0441\u0442\u0430\u043D\u0434\u0430\u0440\u0442\u043D\u043E\u0442\u043E \u043F\u0438\u0430\u043D\u043E?",
+      answers: ["88", "76", "92", "100"]
+    },
+    {
+      id: 192,
+      category: "music",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u043A\u043E\u043C\u043F\u043E\u0437\u0438\u0440\u0430\u043B \u201E\u0427\u0435\u0442\u0438\u0440\u0438\u0442\u0435 \u0433\u043E\u0434\u0438\u0448\u043D\u0438 \u0432\u0440\u0435\u043C\u0435\u043D\u0430\u201C?",
+      answers: ["\u0410\u043D\u0442\u043E\u043D\u0438\u043E \u0412\u0438\u0432\u0430\u043B\u0434\u0438", "\u0419\u043E\u0445\u0430\u043D \u0421\u0435\u0431\u0430\u0441\u0442\u0438\u0430\u043D \u0411\u0430\u0445", "\u0413\u0435\u043E\u0440\u0433 \u0424\u0440\u0438\u0434\u0440\u0438\u0445 \u0425\u0435\u043D\u0434\u0435\u043B", "\u0419\u043E\u0437\u0435\u0444 \u0425\u0430\u0439\u0434\u043D"]
+    },
+    {
+      id: 193,
+      category: "music",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u043A\u043E\u043C\u043F\u043E\u0437\u0438\u0442\u043E\u0440 \u043E\u0433\u043B\u0443\u0448\u0430\u0432\u0430, \u043D\u043E \u043F\u0440\u043E\u0434\u044A\u043B\u0436\u0430\u0432\u0430 \u0434\u0430 \u043A\u043E\u043C\u043F\u043E\u0437\u0438\u0440\u0430?",
+      answers: ["\u041B\u0443\u0434\u0432\u0438\u0433 \u0432\u0430\u043D \u0411\u0435\u0442\u0445\u043E\u0432\u0435\u043D", "\u0412\u043E\u043B\u0444\u0433\u0430\u043D\u0433 \u0410\u043C\u0430\u0434\u0435\u0443\u0441 \u041C\u043E\u0446\u0430\u0440\u0442", "\u0424\u0440\u0430\u043D\u0446 \u0428\u0443\u0431\u0435\u0440\u0442", "\u0420\u0438\u0445\u0430\u0440\u0434 \u0412\u0430\u0433\u043D\u0435\u0440"]
+    },
+    {
+      id: 194,
+      category: "music",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0448\u0432\u0435\u0434\u0441\u043A\u0430 \u0433\u0440\u0443\u043F\u0430 \u043F\u0435\u0447\u0435\u043B\u0438 \u201E\u0415\u0432\u0440\u043E\u0432\u0438\u0437\u0438\u044F\u201C \u043F\u0440\u0435\u0437 1974 \u0433. \u0441 \u201E\u0412\u0430\u0442\u0435\u0440\u043B\u043E\u201C?",
+      answers: ["\u201E\u0410\u0411\u0411\u0410\u201C", "\u201E\u0420\u043E\u043A\u0441\u0435\u0442\u201C", "\u201E\u042E\u0440\u044A\u043F\u201C", "\u201E\u0415\u0439\u0441 \u044A\u0444 \u0411\u0435\u0439\u0441\u201C"]
+    },
+    {
+      id: 195,
+      category: "music",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u043D\u0430\u0439-\u0433\u043E\u043B\u0435\u043C\u0438\u044F\u0442 \u0441\u0442\u0440\u0443\u043D\u0435\u043D \u0438\u043D\u0441\u0442\u0440\u0443\u043C\u0435\u043D\u0442 \u0432 \u043E\u0440\u043A\u0435\u0441\u0442\u044A\u0440\u0430?",
+      answers: ["\u041A\u043E\u043D\u0442\u0440\u0430\u0431\u0430\u0441\u044A\u0442", "\u0412\u0438\u043E\u043B\u043E\u043D\u0447\u0435\u043B\u043E\u0442\u043E", "\u0412\u0438\u043E\u043B\u0430\u0442\u0430", "\u0426\u0438\u0433\u0443\u043B\u043A\u0430\u0442\u0430"]
+    },
+    {
+      id: 196,
+      category: "music",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438 \u043D\u0430\u0440\u043E\u0434\u0435\u043D \u0438\u043D\u0441\u0442\u0440\u0443\u043C\u0435\u043D\u0442 \u0435 \u0441 \u043C\u044F\u0445?",
+      answers: ["\u0413\u0430\u0439\u0434\u0430\u0442\u0430", "\u041A\u0430\u0432\u0430\u043B\u044A\u0442", "\u0413\u044A\u0434\u0443\u043B\u043A\u0430\u0442\u0430", "\u0422\u0430\u043C\u0431\u0443\u0440\u0430\u0442\u0430"]
+    },
+    {
+      id: 197,
+      category: "music",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0430 \u043D\u0430\u0440\u043E\u0434\u043D\u0430 \u043F\u0435\u0441\u0435\u043D \u043F\u044A\u0442\u0443\u0432\u0430 \u0432 \u043A\u043E\u0441\u043C\u043E\u0441\u0430 \u043D\u0430 \u043F\u043B\u043E\u0447\u0430\u0442\u0430 \u043D\u0430 \u201E\u0412\u043E\u044F\u0434\u0436\u044A\u0440\u201C?",
+      answers: [
+        "\u201E\u0418\u0437\u043B\u0435\u043B \u0435 \u0414\u0435\u043B\u044C\u043E \u0445\u0430\u0439\u0434\u0443\u0442\u0438\u043D\u201C",
+        "\u201E\u041F\u043E\u043B\u0435\u0433\u043D\u0430\u043B\u0430 \u0435 \u0422\u043E\u0434\u043E\u0440\u0430\u201C",
+        "\u201E\u041A\u0430\u043B\u0438\u043C\u0430\u043D\u043A\u0443 \u0414\u0435\u043D\u043A\u0443\u201C",
+        "\u201E\u041C\u0430\u043B\u043A\u0430 \u043C\u043E\u043C\u0430\u201C"
+      ]
+    },
+    {
+      id: 198,
+      category: "music",
+      level: 2,
+      question: "\u041A\u043E\u0439 \u0435 \u043A\u043E\u043C\u043F\u043E\u0437\u0438\u0440\u0430\u043B \u043E\u043F\u0435\u0440\u0430\u0442\u0430 \u201E\u0412\u044A\u043B\u0448\u0435\u0431\u043D\u0430\u0442\u0430 \u0444\u043B\u0435\u0439\u0442\u0430\u201C?",
+      answers: ["\u0412\u043E\u043B\u0444\u0433\u0430\u043D\u0433 \u0410\u043C\u0430\u0434\u0435\u0443\u0441 \u041C\u043E\u0446\u0430\u0440\u0442", "\u0414\u0436\u0443\u0437\u0435\u043F\u0435 \u0412\u0435\u0440\u0434\u0438", "\u0414\u0436\u043E\u0430\u043A\u0438\u043D\u043E \u0420\u043E\u0441\u0438\u043D\u0438", "\u0420\u0438\u0445\u0430\u0440\u0434 \u0412\u0430\u0433\u043D\u0435\u0440"]
+    },
+    {
+      id: 199,
+      category: "music",
+      level: 2,
+      question: "\u0412 \u043A\u043E\u0439 \u0433\u0440\u0430\u0434 \u0435 \u0440\u043E\u0434\u0435\u043D \u041C\u043E\u0446\u0430\u0440\u0442?",
+      answers: ["\u0417\u0430\u043B\u0446\u0431\u0443\u0440\u0433", "\u0412\u0438\u0435\u043D\u0430", "\u041F\u0440\u0430\u0433\u0430", "\u041C\u044E\u043D\u0445\u0435\u043D"]
+    },
+    {
+      id: 200,
+      category: "music",
+      level: 2,
+      question: "\u041A\u0430\u043A\u044A\u0432 \u0438\u043D\u0441\u0442\u0440\u0443\u043C\u0435\u043D\u0442 \u0435 \u043A\u0430\u0432\u0430\u043B\u044A\u0442?",
+      answers: [
+        "\u0414\u0443\u0445\u043E\u0432, \u0432\u0438\u0434 \u0444\u043B\u0435\u0439\u0442\u0430",
+        "\u0421 \u043C\u044F\u0445, \u0432\u0438\u0434 \u0433\u0430\u0439\u0434\u0430",
+        "\u0421\u0442\u0440\u0443\u043D\u0435\u043D, \u0432\u0438\u0434 \u0446\u0438\u0433\u0443\u043B\u043A\u0430",
+        "\u0423\u0434\u0430\u0440\u0435\u043D, \u0432\u0438\u0434 \u0442\u044A\u043F\u0430\u043D"
+      ]
+    },
+    {
+      id: 201,
+      category: "music",
+      level: 3,
+      question: "\u041A\u043E\u043B\u043A\u043E \u0441\u0438\u043C\u0444\u043E\u043D\u0438\u0438 \u0437\u0430\u0432\u044A\u0440\u0448\u0432\u0430 \u0411\u0435\u0442\u0445\u043E\u0432\u0435\u043D?",
+      answers: ["\u0414\u0435\u0432\u0435\u0442", "\u041F\u0435\u0442", "\u0421\u0435\u0434\u0435\u043C", "\u0414\u0432\u0430\u043D\u0430\u0434\u0435\u0441\u0435\u0442"]
+    },
+    {
+      id: 202,
+      category: "music",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0435 \u043A\u043E\u043C\u043F\u043E\u0437\u0438\u0440\u0430\u043B \u043E\u043F\u0435\u0440\u0430\u0442\u0430 \u201E\u041A\u0430\u0440\u043C\u0435\u043D\u201C?",
+      answers: ["\u0416\u043E\u0440\u0436 \u0411\u0438\u0437\u0435", "\u0414\u0436\u0443\u0437\u0435\u043F\u0435 \u0412\u0435\u0440\u0434\u0438", "\u0414\u0436\u0430\u043A\u043E\u043C\u043E \u041F\u0443\u0447\u0438\u043D\u0438", "\u0414\u0436\u043E\u0430\u043A\u0438\u043D\u043E \u0420\u043E\u0441\u0438\u043D\u0438"]
+    },
+    {
+      id: 203,
+      category: "music",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0435 \u043A\u043E\u043C\u043F\u043E\u0437\u0438\u0440\u0430\u043B \u0431\u0430\u043B\u0435\u0442\u0430 \u201E\u041B\u0435\u0431\u0435\u0434\u043E\u0432\u043E \u0435\u0437\u0435\u0440\u043E\u201C?",
+      answers: [
+        "\u041F\u044C\u043E\u0442\u044A\u0440 \u0418\u043B\u0438\u0447 \u0427\u0430\u0439\u043A\u043E\u0432\u0441\u043A\u0438",
+        "\u0418\u0433\u043E\u0440 \u0421\u0442\u0440\u0430\u0432\u0438\u043D\u0441\u043A\u0438",
+        "\u0421\u0435\u0440\u0433\u0435\u0439 \u041F\u0440\u043E\u043A\u043E\u0444\u0438\u0435\u0432",
+        "\u041D\u0438\u043A\u043E\u043B\u0430\u0439 \u0420\u0438\u043C\u0441\u043A\u0438-\u041A\u043E\u0440\u0441\u0430\u043A\u043E\u0432"
+      ]
+    },
+    {
+      id: 204,
+      category: "music",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u043F\u043E\u043B\u0441\u043A\u0438 \u043A\u043E\u043C\u043F\u043E\u0437\u0438\u0442\u043E\u0440 \u043D\u0430 \u043C\u0443\u0437\u0438\u043A\u0430 \u0437\u0430 \u043F\u0438\u0430\u043D\u043E \u0443\u043C\u0438\u0440\u0430 \u0432 \u041F\u0430\u0440\u0438\u0436 \u043F\u0440\u0435\u0437 1849 \u0433.?",
+      answers: ["\u0424\u0440\u0435\u0434\u0435\u0440\u0438\u043A \u0428\u043E\u043F\u0435\u043D", "\u0424\u0435\u0440\u0435\u043D\u0446 \u041B\u0438\u0441\u0442", "\u0420\u043E\u0431\u0435\u0440\u0442 \u0428\u0443\u043C\u0430\u043D", "\u0424\u0435\u043B\u0438\u043A\u0441 \u041C\u0435\u043D\u0434\u0435\u043B\u0441\u043E\u043D"]
+    },
+    {
+      id: 205,
+      category: "music",
+      level: 3,
+      question: "\u041A\u043E\u044F \u043F\u0435\u0432\u0438\u0446\u0430 \u0438\u0437\u043F\u044A\u043B\u043D\u044F\u0432\u0430 \u201E\u0418\u0437\u043B\u0435\u043B \u0435 \u0414\u0435\u043B\u044C\u043E \u0445\u0430\u0439\u0434\u0443\u0442\u0438\u043D\u201C, \u043F\u0435\u0441\u0435\u043D\u0442\u0430 \u043D\u0430 \u043F\u043B\u043E\u0447\u0430\u0442\u0430 \u043D\u0430 \u201E\u0412\u043E\u044F\u0434\u0436\u044A\u0440\u201C?",
+      answers: ["\u0412\u0430\u043B\u044F \u0411\u0430\u043B\u043A\u0430\u043D\u0441\u043A\u0430", "\u041D\u0430\u0434\u043A\u0430 \u041A\u0430\u0440\u0430\u0434\u0436\u043E\u0432\u0430", "\u042F\u043D\u043A\u0430 \u0420\u0443\u043F\u043A\u0438\u043D\u0430", "\u041A\u0430\u043B\u0438\u043D\u043A\u0430 \u0412\u044A\u043B\u0447\u0435\u0432\u0430"]
+    },
+    {
+      id: 206,
+      category: "music",
+      level: 3,
+      question: "\u041A\u0430\u043A\u0432\u043E \u043E\u0437\u043D\u0430\u0447\u0430\u0432\u0430 \u0444\u043E\u0440\u0442\u0435 \u0432 \u043C\u0443\u0437\u0438\u043A\u0430\u0442\u0430?",
+      answers: ["\u0421\u0438\u043B\u043D\u043E", "\u0422\u0438\u0445\u043E", "\u0411\u044A\u0440\u0437\u043E", "\u0411\u0430\u0432\u043D\u043E"]
+    },
+    {
+      id: 207,
+      category: "music",
+      level: 3,
+      question: "\u041A\u0430\u043A\u0432\u043E \u043E\u0437\u043D\u0430\u0447\u0430\u0432\u0430 \u0430\u043B\u0435\u0433\u0440\u043E \u0432 \u043C\u0443\u0437\u0438\u043A\u0430\u0442\u0430?",
+      answers: ["\u0411\u044A\u0440\u0437\u043E \u0438 \u0436\u0438\u0432\u043E", "\u0411\u0430\u0432\u043D\u043E", "\u0421\u0438\u043B\u043D\u043E", "\u0422\u0438\u0445\u043E"]
+    },
+    {
+      id: 208,
+      category: "music",
+      level: 3,
+      question: "\u041A\u043E\u043B\u043A\u043E \u043F\u043E\u043B\u0443\u0442\u043E\u043D\u0430 \u0438\u043C\u0430 \u0432 \u0435\u0434\u043D\u0430 \u043E\u043A\u0442\u0430\u0432\u0430?",
+      answers: ["\u0414\u0432\u0430\u043D\u0430\u0434\u0435\u0441\u0435\u0442", "\u041E\u0441\u0435\u043C", "\u0421\u0435\u0434\u0435\u043C", "\u0414\u0435\u0441\u0435\u0442"]
+    },
+    {
+      id: 209,
+      category: "music",
+      level: 3,
+      question: "\u041D\u0430 \u043A\u0430\u043A\u044A\u0432 \u0438\u043D\u0441\u0442\u0440\u0443\u043C\u0435\u043D\u0442 \u0441\u0432\u0438\u0440\u0438 \u0437\u043D\u0430\u043C\u0435\u043D\u0438\u0442\u0438\u044F\u0442 \u0414\u0436\u0438\u043C\u0438 \u0425\u0435\u043D\u0434\u0440\u0438\u043A\u0441?",
+      answers: ["\u0415\u043B\u0435\u043A\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u0430 \u043A\u0438\u0442\u0430\u0440\u0430", "\u0411\u0430\u0440\u0430\u0431\u0430\u043D\u0438", "\u0411\u0430\u0441 \u043A\u0438\u0442\u0430\u0440\u0430", "\u0421\u0430\u043A\u0441\u043E\u0444\u043E\u043D"]
+    },
+    {
+      id: 210,
+      category: "music",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u043A\u043E\u043C\u043F\u043E\u0437\u0438\u0442\u043E\u0440 \u0435 \u0440\u043E\u0434\u0435\u043D \u043F\u0440\u0435\u0437 1685 \u0433., \u0433\u043E\u0434\u0438\u043D\u0430\u0442\u0430 \u043D\u0430 \u0425\u0435\u043D\u0434\u0435\u043B?",
+      answers: ["\u0419\u043E\u0445\u0430\u043D \u0421\u0435\u0431\u0430\u0441\u0442\u0438\u0430\u043D \u0411\u0430\u0445", "\u0410\u043D\u0442\u043E\u043D\u0438\u043E \u0412\u0438\u0432\u0430\u043B\u0434\u0438", "\u0413\u0435\u043E\u0440\u0433 \u0424\u0438\u043B\u0438\u043F \u0422\u0435\u043B\u0435\u043C\u0430\u043D", "\u0419\u043E\u0437\u0435\u0444 \u0425\u0430\u0439\u0434\u043D"]
+    },
+    {
+      id: 211,
+      category: "food",
+      level: 1,
+      question: "\u041E\u0442 \u043A\u043E\u0439 \u043F\u043B\u043E\u0434 \u0441\u0435 \u043F\u0440\u0430\u0432\u0438 \u0433\u0443\u0430\u043A\u0430\u043C\u043E\u043B\u0435?",
+      answers: ["\u0410\u0432\u043E\u043A\u0430\u0434\u043E", "\u0411\u0430\u043D\u0430\u043D", "\u041C\u0430\u043D\u0433\u043E", "\u041A\u0440\u0443\u0448\u0430"]
+    },
+    {
+      id: 212,
+      category: "food",
+      level: 1,
+      question: "\u041E\u0442 \u043A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u0435 \u043F\u0438\u0446\u0430\u0442\u0430?",
+      answers: ["\u0418\u0442\u0430\u043B\u0438\u044F", "\u0413\u044A\u0440\u0446\u0438\u044F", "\u0418\u0441\u043F\u0430\u043D\u0438\u044F", "\u0424\u0440\u0430\u043D\u0446\u0438\u044F"]
+    },
+    {
+      id: 213,
+      category: "food",
+      level: 1,
+      question: "\u0421 \u043A\u0430\u043A\u0432\u043E \u0432\u0438\u043D\u0430\u0433\u0438 \u0441\u0435 \u043F\u0440\u0430\u0432\u0438 \u0441\u0443\u0448\u0438?",
+      answers: ["\u0421 \u043E\u0440\u0438\u0437", "\u0421 \u0445\u043B\u044F\u0431", "\u0421 \u043F\u0430\u0441\u0442\u0430", "\u0421 \u043A\u0430\u0440\u0442\u043E\u0444\u0438"]
+    },
+    {
+      id: 214,
+      category: "food",
+      level: 1,
+      question: "\u041A\u043E\u0439 \u0437\u0435\u043B\u0435\u043D\u0447\u0443\u043A \u043C\u043E\u0436\u0435 \u0434\u0430 \u0432\u0438 \u0440\u0430\u0437\u043F\u043B\u0430\u0447\u0435, \u0434\u043E\u043A\u0430\u0442\u043E \u0433\u043E \u0440\u0435\u0436\u0435\u0442\u0435?",
+      answers: ["\u041B\u0443\u043A\u044A\u0442", "\u041C\u043E\u0440\u043A\u043E\u0432\u044A\u0442", "\u041A\u0440\u0430\u0441\u0442\u0430\u0432\u0438\u0446\u0430\u0442\u0430", "\u0427\u0443\u0448\u043A\u0430\u0442\u0430"]
+    },
+    {
+      id: 215,
+      category: "food",
+      level: 1,
+      question: "\u041A\u0430\u043A\u0432\u043E \u0441\u0435 \u043F\u043E\u043B\u0443\u0447\u0430\u0432\u0430, \u043A\u043E\u0433\u0430\u0442\u043E \u0441\u0435 \u0431\u0438\u0435 \u0441\u043C\u0435\u0442\u0430\u043D\u0430 \u0434\u044A\u043B\u0433\u043E?",
+      answers: ["\u041C\u0430\u0441\u043B\u043E", "\u0421\u0438\u0440\u0435\u043D\u0435", "\u041A\u0438\u0441\u0435\u043B\u043E \u043C\u043B\u044F\u043A\u043E", "\u0421\u043B\u0430\u0434\u043E\u043B\u0435\u0434"]
+    },
+    {
+      id: 216,
+      category: "food",
+      level: 1,
+      question: "\u041A\u043E\u044F \u043D\u0430\u043F\u0438\u0442\u043A\u0430 \u0441\u0435 \u043F\u0440\u0430\u0432\u0438 \u043E\u0442 \u0438\u0437\u043F\u0435\u0447\u0435\u043D\u0438 \u0437\u044A\u0440\u043D\u0430?",
+      answers: ["\u041A\u0430\u0444\u0435\u0442\u043E", "\u0427\u0430\u044F\u0442", "\u0421\u043E\u043A\u044A\u0442", "\u041B\u0438\u043C\u043E\u043D\u0430\u0434\u0430\u0442\u0430"]
+    },
+    {
+      id: 217,
+      category: "food",
+      level: 1,
+      question: "\u041A\u0430\u043A\u044A\u0432 \u0446\u0432\u044F\u0442 \u0435 \u0443\u0437\u0440\u0435\u043B\u0438\u044F\u0442 \u0431\u0430\u043D\u0430\u043D?",
+      answers: ["\u0416\u044A\u043B\u0442", "\u0427\u0435\u0440\u0432\u0435\u043D", "\u041B\u0438\u043B\u0430\u0432", "\u0421\u0438\u043D"]
+    },
+    {
+      id: 218,
+      category: "food",
+      level: 1,
+      question: "\u041E\u0442 \u043A\u043E\u0439 \u044F\u0434\u043A\u043E\u0432 \u043F\u043B\u043E\u0434 \u0441\u0435 \u043F\u0440\u0430\u0432\u0438 \u043C\u0430\u0440\u0446\u0438\u043F\u0430\u043D?",
+      answers: ["\u0411\u0430\u0434\u0435\u043C", "\u041E\u0440\u0435\u0445", "\u0424\u044A\u0441\u0442\u044A\u043A", "\u041B\u0435\u0448\u043D\u0438\u043A"]
+    },
+    {
+      id: 219,
+      category: "food",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0430 \u0441\u0442\u0443\u0434\u0435\u043D\u0430 \u0441\u0443\u043F\u0430 \u0441\u0435 \u043F\u0440\u0430\u0432\u0438 \u0441 \u043A\u0438\u0441\u0435\u043B\u043E \u043C\u043B\u044F\u043A\u043E \u0438 \u043A\u0440\u0430\u0441\u0442\u0430\u0432\u0438\u0446\u0430?",
+      answers: ["\u0422\u0430\u0440\u0430\u0442\u043E\u0440", "\u0428\u043A\u0435\u043C\u0431\u0435 \u0447\u043E\u0440\u0431\u0430", "\u0411\u043E\u0431 \u0447\u043E\u0440\u0431\u0430", "\u0413\u044E\u0432\u0435\u0447"]
+    },
+    {
+      id: 220,
+      category: "food",
+      level: 1,
+      question: "\u041A\u043E\u044F \u0435 \u043E\u0441\u043D\u043E\u0432\u043D\u0430\u0442\u0430 \u0441\u044A\u0441\u0442\u0430\u0432\u043A\u0430 \u043D\u0430 \u043E\u043C\u043B\u0435\u0442\u0430?",
+      answers: ["\u042F\u0439\u0446\u0430\u0442\u0430", "\u0411\u0440\u0430\u0448\u043D\u043E\u0442\u043E", "\u041C\u043B\u044F\u043A\u043E\u0442\u043E", "\u041E\u0440\u0438\u0437\u044A\u0442"]
+    },
+    {
+      id: 221,
+      category: "food",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0430 \u0441\u0430\u043B\u0430\u0442\u0430 \u0435 \u0441 \u0434\u043E\u043C\u0430\u0442\u0438, \u043A\u0440\u0430\u0441\u0442\u0430\u0432\u0438\u0446\u0438, \u0447\u0443\u0448\u043A\u0438 \u0438 \u043D\u0430\u0441\u0442\u044A\u0440\u0433\u0430\u043D\u043E \u0431\u044F\u043B\u043E \u0441\u0438\u0440\u0435\u043D\u0435?",
+      answers: ["\u0428\u043E\u043F\u0441\u043A\u0430 \u0441\u0430\u043B\u0430\u0442\u0430", "\u0421\u043D\u0435\u0436\u0430\u043D\u043A\u0430", "\u041E\u0432\u0447\u0430\u0440\u0441\u043A\u0430 \u0441\u0430\u043B\u0430\u0442\u0430", "\u0413\u0440\u044A\u0446\u043A\u0430 \u0441\u0430\u043B\u0430\u0442\u0430"]
+    },
+    {
+      id: 222,
+      category: "food",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0431\u0430\u043A\u0442\u0435\u0440\u0438\u044F \u043D\u043E\u0441\u0438 \u0438\u043C\u0435\u0442\u043E \u043D\u0430 \u0411\u044A\u043B\u0433\u0430\u0440\u0438\u044F \u0437\u0430\u0440\u0430\u0434\u0438 \u043A\u0438\u0441\u0435\u043B\u043E\u0442\u043E \u043C\u043B\u044F\u043A\u043E?",
+      answers: [
+        "Lactobacillus bulgaricus",
+        "Lactobacillus acidophilus",
+        "Bifidobacterium",
+        "Streptococcus mutans"
+      ]
+    },
+    {
+      id: 223,
+      category: "food",
+      level: 2,
+      question: "\u041E\u0442 \u043A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u0435 \u043F\u0430\u0435\u043B\u044F\u0442\u0430?",
+      answers: ["\u0418\u0441\u043F\u0430\u043D\u0438\u044F", "\u041F\u043E\u0440\u0442\u0443\u0433\u0430\u043B\u0438\u044F", "\u0418\u0442\u0430\u043B\u0438\u044F", "\u041C\u0435\u043A\u0441\u0438\u043A\u043E"]
+    },
+    {
+      id: 224,
+      category: "food",
+      level: 2,
+      question: "\u041A\u043E\u044F \u043F\u043E\u0434\u043F\u0440\u0430\u0432\u043A\u0430 \u0435 \u043D\u0430\u0439-\u0441\u043A\u044A\u043F\u0430 \u043D\u0430 \u0442\u0435\u0433\u043B\u043E?",
+      answers: ["\u0428\u0430\u0444\u0440\u0430\u043D\u044A\u0442", "\u0412\u0430\u043D\u0438\u043B\u0438\u044F\u0442\u0430", "\u041A\u0430\u0440\u0434\u0430\u043C\u043E\u043D\u044A\u0442", "\u041A\u0430\u043D\u0435\u043B\u0430\u0442\u0430"]
+    },
+    {
+      id: 225,
+      category: "food",
+      level: 2,
+      question: "\u041A\u043E\u044F \u0435 \u043E\u0441\u043D\u043E\u0432\u043D\u0430\u0442\u0430 \u0441\u044A\u0441\u0442\u0430\u0432\u043A\u0430 \u043D\u0430 \u0445\u0443\u043C\u0443\u0441\u0430?",
+      answers: ["\u041D\u0430\u0445\u0443\u0442\u044A\u0442", "\u041B\u0435\u0449\u0430\u0442\u0430", "\u0411\u043E\u0431\u044A\u0442", "\u0413\u0440\u0430\u0445\u044A\u0442"]
+    },
+    {
+      id: 226,
+      category: "food",
+      level: 2,
+      question: "\u041E\u0442 \u043A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u0435 \u0441\u0438\u0440\u0435\u043D\u0435\u0442\u043E \u0444\u0435\u0442\u0430?",
+      answers: ["\u0413\u044A\u0440\u0446\u0438\u044F", "\u0418\u0442\u0430\u043B\u0438\u044F", "\u0424\u0440\u0430\u043D\u0446\u0438\u044F", "\u0422\u0443\u0440\u0446\u0438\u044F"]
+    },
+    {
+      id: 227,
+      category: "food",
+      level: 2,
+      question: "\u041E\u0442 \u043A\u0430\u043A\u0432\u043E \u0441\u0435 \u043F\u0440\u0430\u0432\u0438 \u0442\u043E\u0444\u0443?",
+      answers: ["\u041E\u0442 \u0441\u043E\u044F", "\u041E\u0442 \u043E\u0440\u0438\u0437", "\u041E\u0442 \u043F\u0448\u0435\u043D\u0438\u0446\u0430", "\u041E\u0442 \u0446\u0430\u0440\u0435\u0432\u0438\u0446\u0430"]
+    },
+    {
+      id: 228,
+      category: "food",
+      level: 2,
+      question: "\u041A\u043E\u0435 \u0438\u0442\u0430\u043B\u0438\u0430\u043D\u0441\u043A\u043E \u044F\u0441\u0442\u0438\u0435 \u0435 \u043D\u0430 \u043F\u043B\u0430\u0441\u0442\u043E\u0432\u0435 \u043F\u0430\u0441\u0442\u0430, \u0441\u043E\u0441 \u0441 \u043C\u0435\u0441\u043E \u0438 \u0431\u0435\u0448\u0430\u043C\u0435\u043B?",
+      answers: ["\u041B\u0430\u0437\u0430\u043D\u044F", "\u0420\u0438\u0437\u043E\u0442\u043E", "\u0420\u0430\u0432\u0438\u043E\u043B\u0438", "\u041A\u0430\u0440\u0431\u043E\u043D\u0430\u0440\u0430"]
+    },
+    {
+      id: 229,
+      category: "food",
+      level: 2,
+      question: "\u041A\u043E\u0435 \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u043E \u0442\u0435\u0441\u0442\u0435\u043D\u043E \u0438\u0437\u0434\u0435\u043B\u0438\u0435 \u0441\u0435 \u043F\u0440\u0430\u0432\u0438 \u0441 \u043A\u043E\u0440\u0438, \u044F\u0439\u0446\u0430 \u0438 \u0431\u044F\u043B\u043E \u0441\u0438\u0440\u0435\u043D\u0435?",
+      answers: ["\u0411\u0430\u043D\u0438\u0446\u0430", "\u041C\u0435\u043A\u0438\u0446\u0430", "\u041A\u043E\u0437\u0443\u043D\u0430\u043A", "\u041F\u043E\u0433\u0430\u0447\u0430"]
+    },
+    {
+      id: 230,
+      category: "food",
+      level: 2,
+      question: "\u041E\u0442 \u0441\u0435\u043C\u0435\u043D\u0430\u0442\u0430 \u043D\u0430 \u043A\u043E\u0435 \u0440\u0430\u0441\u0442\u0435\u043D\u0438\u0435 \u0441\u0435 \u043F\u0440\u0430\u0432\u0438 \u0448\u043E\u043A\u043E\u043B\u0430\u0434?",
+      answers: ["\u041A\u0430\u043A\u0430\u043E", "\u041A\u0430\u0444\u0435", "\u0420\u043E\u0436\u043A\u043E\u0432", "\u0412\u0430\u043D\u0438\u043B\u0438\u044F"]
+    },
+    {
+      id: 231,
+      category: "food",
+      level: 3,
+      question: "\u0421 \u043A\u043E\u0435 \u043C\u0430\u0441\u043B\u043E, \u0438\u0437\u043F\u043E\u043B\u0437\u0432\u0430\u043D\u043E \u0432 \u043F\u0430\u0440\u0444\u044E\u043C\u0438\u0442\u0435, \u0435 \u0438\u0437\u0432\u0435\u0441\u0442\u043D\u0430 \u0411\u044A\u043B\u0433\u0430\u0440\u0438\u044F?",
+      answers: ["\u0420\u043E\u0437\u043E\u0432\u043E\u0442\u043E", "\u041B\u0430\u0432\u0430\u043D\u0434\u0443\u043B\u043E\u0432\u043E\u0442\u043E", "\u0417\u0435\u0445\u0442\u0438\u043D\u044A\u0442", "\u0421\u043B\u044A\u043D\u0447\u043E\u0433\u043B\u0435\u0434\u043E\u0432\u043E\u0442\u043E"]
+    },
+    {
+      id: 232,
+      category: "food",
+      level: 3,
+      question: "\u041A\u0430\u043A \u0441\u0435 \u043D\u0430\u0440\u0438\u0447\u0430 \u0441\u043B\u0430\u0434\u043A\u0438\u044F\u0442 \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u0438 \u0432\u0435\u043B\u0438\u043A\u0434\u0435\u043D\u0441\u043A\u0438 \u0445\u043B\u044F\u0431?",
+      answers: ["\u041A\u043E\u0437\u0443\u043D\u0430\u043A", "\u0411\u0430\u043D\u0438\u0446\u0430", "\u041F\u0438\u0442\u043A\u0430", "\u041C\u0435\u043A\u0438\u0446\u0430"]
+    },
+    {
+      id: 233,
+      category: "food",
+      level: 3,
+      question: "\u041E\u0442 \u043A\u043E\u0435 \u0437\u044A\u0440\u043D\u043E \u0441\u0435 \u043F\u0440\u0430\u0432\u0438 \u0442\u0440\u0430\u0434\u0438\u0446\u0438\u043E\u043D\u043D\u043E\u0442\u043E \u044F\u043F\u043E\u043D\u0441\u043A\u043E \u0441\u0430\u043A\u0435?",
+      answers: ["\u041E\u0442 \u043E\u0440\u0438\u0437", "\u041E\u0442 \u0435\u0447\u0435\u043C\u0438\u043A", "\u041E\u0442 \u043F\u0448\u0435\u043D\u0438\u0446\u0430", "\u041E\u0442 \u043F\u0440\u043E\u0441\u043E"]
+    },
+    {
+      id: 234,
+      category: "food",
+      level: 3,
+      question: "\u041A\u043E\u0435 \u0441\u0438\u0440\u0435\u043D\u0435 \u0441\u0435 \u0441\u043B\u0430\u0433\u0430 \u043D\u0430 \u043F\u0438\u0446\u0430 \u201E\u041C\u0430\u0440\u0433\u0430\u0440\u0438\u0442\u0430\u201C?",
+      answers: ["\u041C\u043E\u0446\u0430\u0440\u0435\u043B\u0430", "\u041F\u0430\u0440\u043C\u0435\u0437\u0430\u043D", "\u0427\u0435\u0434\u044A\u0440", "\u0413\u043E\u0440\u0433\u043E\u043D\u0437\u043E\u043B\u0430"]
+    },
+    {
+      id: 235,
+      category: "food",
+      level: 3,
+      question: "\u041A\u0430\u043A\u0432\u043E \u0435 \u043C\u0430\u043D\u0430\u0442\u0430\u0440\u043A\u0430\u0442\u0430?",
+      answers: ["\u0413\u044A\u0431\u0430", "\u0420\u0438\u0431\u0430", "\u041F\u043E\u0434\u043F\u0440\u0430\u0432\u043A\u0430", "\u0421\u0438\u0440\u0435\u043D\u0435"]
+    },
+    {
+      id: 236,
+      category: "food",
+      level: 3,
+      question: "\u041A\u043E\u0435 \u0431\u044A\u043B\u0433\u0430\u0440\u0441\u043A\u043E \u044F\u0441\u0442\u0438\u0435 \u043D\u0430 \u0441\u043A\u0430\u0440\u0430 \u0435 \u043A\u0430\u0439\u043C\u0430, \u043E\u0444\u043E\u0440\u043C\u0435\u043D\u0430 \u043D\u0430 \u043F\u0440\u043E\u0434\u044A\u043B\u0433\u043E\u0432\u0430\u0442\u043E \u0440\u0443\u043B\u043E?",
+      answers: ["\u041A\u0435\u0431\u0430\u043F\u0447\u0435", "\u041A\u044E\u0444\u0442\u0435", "\u0421\u0430\u0440\u043C\u0430", "\u041A\u0430\u0432\u0430\u0440\u043C\u0430"]
+    },
+    {
+      id: 237,
+      category: "food",
+      level: 3,
+      question: "\u041E\u0442 \u043A\u0430\u043A\u0432\u043E \u043E\u0441\u043D\u043E\u0432\u043D\u043E \u0441\u0435 \u043F\u0440\u0430\u0432\u0438 \u043B\u044E\u0442\u0435\u043D\u0438\u0446\u0430\u0442\u0430?",
+      answers: [
+        "\u041E\u0442 \u0447\u0435\u0440\u0432\u0435\u043D\u0438 \u0447\u0443\u0448\u043A\u0438 \u0438 \u0434\u043E\u043C\u0430\u0442\u0438",
+        "\u041E\u0442 \u0437\u0435\u043B\u0435 \u0438 \u043C\u043E\u0440\u043A\u043E\u0432\u0438",
+        "\u041E\u0442 \u0431\u043E\u0431 \u0438 \u043B\u0443\u043A",
+        "\u041E\u0442 \u043A\u0440\u0430\u0441\u0442\u0430\u0432\u0438\u0446\u0438 \u0438 \u043A\u043E\u043F\u044A\u0440"
+      ]
+    },
+    {
+      id: 238,
+      category: "food",
+      level: 3,
+      question: "\u041E\u0442 \u043A\u043E\u044F \u0434\u044A\u0440\u0436\u0430\u0432\u0430 \u0435 \u0433\u0443\u043B\u0430\u0448\u044A\u0442?",
+      answers: ["\u0423\u043D\u0433\u0430\u0440\u0438\u044F", "\u0410\u0432\u0441\u0442\u0440\u0438\u044F", "\u0427\u0435\u0445\u0438\u044F", "\u041F\u043E\u043B\u0448\u0430"]
+    },
+    {
+      id: 239,
+      category: "food",
+      level: 3,
+      question: "\u041A\u0430\u043A\u0432\u043E \u0438\u0437\u043C\u0435\u0440\u0432\u0430 \u0441\u043A\u0430\u043B\u0430\u0442\u0430 \u043D\u0430 \u0421\u043A\u043E\u0432\u0438\u043B?",
+      answers: [
+        "\u041B\u044E\u0442\u0438\u0432\u0438\u043D\u0430\u0442\u0430 \u043D\u0430 \u0447\u0443\u0448\u043A\u0438\u0442\u0435",
+        "\u0421\u043B\u0430\u0434\u043E\u0441\u0442\u0442\u0430 \u043D\u0430 \u043F\u043B\u043E\u0434\u043E\u0432\u0435\u0442\u0435",
+        "\u041A\u0438\u0441\u0435\u043B\u0438\u043D\u0430\u0442\u0430 \u043D\u0430 \u043D\u0430\u043F\u0438\u0442\u043A\u0438\u0442\u0435",
+        "\u0421\u043E\u043B\u0435\u043D\u043E\u0441\u0442\u0442\u0430 \u043D\u0430 \u0445\u0440\u0430\u043D\u0430\u0442\u0430"
+      ]
+    },
+    {
+      id: 240,
+      category: "food",
+      level: 3,
+      question: "\u041A\u043E\u0439 \u0437\u0435\u043B\u0435\u043D\u0447\u0443\u043A \u0435 \u043E\u0441\u043D\u043E\u0432\u043D\u0430\u0442\u0430 \u0441\u044A\u0441\u0442\u0430\u0432\u043A\u0430 \u043D\u0430 \u0431\u043E\u0440\u0448\u0430?",
+      answers: ["\u0426\u0432\u0435\u043A\u043B\u043E\u0442\u043E", "\u0417\u0435\u043B\u0435\u0442\u043E", "\u041A\u0430\u0440\u0442\u043E\u0444\u044A\u0442", "\u041C\u043E\u0440\u043A\u043E\u0432\u044A\u0442"]
+    }
+  ]
+};
+
+// packages/games/trivia/content/en.json
+var en_default5 = {
+  questions: [
+    {
+      id: 1,
+      category: "geography",
+      level: 1,
+      question: "What is the capital of France?",
+      answers: ["Paris", "Lyon", "Marseille", "Nice"],
+      checked: "France"
+    },
+    {
+      id: 2,
+      category: "geography",
+      level: 1,
+      question: "Which is the largest ocean?",
+      answers: ["The Pacific", "The Atlantic", "The Indian", "The Arctic"],
+      checked: "Pacific Ocean"
+    },
+    {
+      id: 3,
+      category: "geography",
+      level: 1,
+      question: "On which continent is Egypt?",
+      answers: ["Africa", "Asia", "Europe", "South America"],
+      checked: "Egypt"
+    },
+    {
+      id: 4,
+      category: "geography",
+      level: 1,
+      question: "What is the capital of Bulgaria?",
+      answers: ["Sofia", "Plovdiv", "Varna", "Burgas"],
+      checked: "Bulgaria"
+    },
+    {
+      id: 5,
+      category: "geography",
+      level: 1,
+      question: "Which country is shaped like a boot?",
+      answers: ["Italy", "Spain", "Greece", "Portugal"],
+      checked: "Italy"
+    },
+    {
+      id: 6,
+      category: "geography",
+      level: 1,
+      question: "What is the capital of Japan?",
+      answers: ["Tokyo", "Osaka", "Kyoto", "Seoul"],
+      checked: "Japan"
+    },
+    {
+      id: 7,
+      category: "geography",
+      level: 1,
+      question: "Which river flows through London?",
+      answers: ["The Thames", "The Seine", "The Danube", "The Rhine"],
+      checked: "River Thames"
+    },
+    {
+      id: 8,
+      category: "geography",
+      level: 1,
+      question: "Which is the largest country by area?",
+      answers: ["Russia", "Canada", "China", "The United States"],
+      checked: "Russia"
+    },
+    {
+      id: 9,
+      category: "geography",
+      level: 1,
+      question: "Which sea lies to the east of Bulgaria?",
+      answers: ["The Black Sea", "The Aegean Sea", "The Adriatic Sea", "The Caspian Sea"],
+      checked: "Black Sea"
+    },
+    {
+      id: 10,
+      category: "geography",
+      level: 1,
+      question: "What is the capital of Spain?",
+      answers: ["Madrid", "Barcelona", "Seville", "Valencia"],
+      checked: "Spain"
+    },
+    {
+      id: 11,
+      category: "geography",
+      level: 2,
+      question: "Which is the longest river in Europe?",
+      answers: ["The Volga", "The Danube", "The Rhine", "The Dnieper"],
+      checked: "Volga"
+    },
+    {
+      id: 12,
+      category: "geography",
+      level: 2,
+      question: "What is the capital of Australia?",
+      answers: ["Canberra", "Sydney", "Melbourne", "Perth"],
+      checked: "Canberra"
+    },
+    {
+      id: 13,
+      category: "geography",
+      level: 2,
+      question: "Which is the highest peak in Bulgaria?",
+      answers: ["Musala", "Vihren", "Botev", "Cherni Vrah"],
+      checked: "Musala"
+    },
+    {
+      id: 14,
+      category: "geography",
+      level: 2,
+      question: "Which is the largest hot desert in the world?",
+      answers: ["The Sahara", "The Gobi", "The Kalahari", "The Atacama"],
+      checked: "Sahara"
+    },
+    {
+      id: 15,
+      category: "geography",
+      level: 2,
+      question: "Through how many countries does the Danube flow?",
+      answers: ["10", "6", "8", "12"],
+      checked: "Danube"
+    },
+    {
+      id: 16,
+      category: "geography",
+      level: 2,
+      question: "What is the capital of Canada?",
+      answers: ["Ottawa", "Toronto", "Montreal", "Vancouver"],
+      checked: "Ottawa"
+    },
+    {
+      id: 17,
+      category: "geography",
+      level: 2,
+      question: "Which strait separates Europe from Africa?",
+      answers: [
+        "The Strait of Gibraltar",
+        "The Bosphorus",
+        "The Strait of Dover",
+        "The Strait of Messina"
+      ],
+      checked: "Strait of Gibraltar"
+    },
+    {
+      id: 18,
+      category: "geography",
+      level: 2,
+      question: "Which is the smallest country in the world?",
+      answers: ["Vatican City", "Monaco", "San Marino", "Liechtenstein"],
+      checked: "Vatican City"
+    },
+    {
+      id: 19,
+      category: "geography",
+      level: 2,
+      question: "In which country is Mount Kilimanjaro?",
+      answers: ["Tanzania", "Kenya", "Uganda", "Ethiopia"],
+      checked: "Mount Kilimanjaro"
+    },
+    {
+      id: 20,
+      category: "geography",
+      level: 2,
+      question: "What is the capital of Turkey?",
+      answers: ["Ankara", "Istanbul", "Izmir", "Bursa"],
+      checked: "Ankara"
+    },
+    {
+      id: 21,
+      category: "geography",
+      level: 3,
+      question: "Which is the deepest lake in the world?",
+      answers: ["Baikal", "Tanganyika", "Superior", "Victoria"],
+      checked: "Lake Baikal"
+    },
+    {
+      id: 22,
+      category: "geography",
+      level: 3,
+      question: "What is the capital of Kazakhstan?",
+      answers: ["Astana", "Almaty", "Bishkek", "Tashkent"],
+      checked: "Astana"
+    },
+    {
+      id: 23,
+      category: "geography",
+      level: 3,
+      question: "Which country has the longest coastline?",
+      answers: ["Canada", "Russia", "Norway", "Australia"],
+      checked: "Canada"
+    },
+    {
+      id: 24,
+      category: "geography",
+      level: 3,
+      question: "Which river flows through Baghdad?",
+      answers: ["The Tigris", "The Euphrates", "The Jordan", "The Nile"],
+      checked: "Tigris"
+    },
+    {
+      id: 25,
+      category: "geography",
+      level: 3,
+      question: "Lake Titicaca lies on the border of Peru and which other country?",
+      answers: ["Bolivia", "Chile", "Ecuador", "Argentina"],
+      checked: "Lake Titicaca"
+    },
+    {
+      id: 26,
+      category: "geography",
+      level: 3,
+      question: "Which is the largest island in the world, not counting Australia?",
+      answers: ["Greenland", "New Guinea", "Borneo", "Madagascar"],
+      checked: "Greenland"
+    },
+    {
+      id: 27,
+      category: "geography",
+      level: 3,
+      question: "Which is Bulgaria's largest port on the Danube?",
+      answers: ["Ruse", "Vidin", "Lom", "Svishtov"],
+      checked: "Ruse"
+    },
+    {
+      id: 28,
+      category: "geography",
+      level: 3,
+      question: "What is the capital of New Zealand?",
+      answers: ["Wellington", "Auckland", "Christchurch", "Hamilton"],
+      checked: "Wellington"
+    },
+    {
+      id: 29,
+      category: "geography",
+      level: 3,
+      question: "Which mountains are usually taken as the border between Europe and Asia?",
+      answers: ["The Urals", "The Caucasus", "The Carpathians", "The Altai"],
+      checked: "Ural Mountains"
+    },
+    {
+      id: 30,
+      category: "geography",
+      level: 3,
+      question: "Which African country was once called Abyssinia?",
+      answers: ["Ethiopia", "Eritrea", "Somalia", "Sudan"],
+      checked: "Ethiopia"
+    },
+    {
+      id: 31,
+      category: "history",
+      level: 1,
+      question: "In which year did the Second World War end?",
+      answers: ["1945", "1918", "1939", "1950"],
+      checked: "World War II"
+    },
+    {
+      id: 32,
+      category: "history",
+      level: 1,
+      question: "Who was the first person to walk on the Moon?",
+      answers: ["Neil Armstrong", "Yuri Gagarin", "Buzz Aldrin", "John Glenn"],
+      checked: "Neil Armstrong"
+    },
+    {
+      id: 33,
+      category: "history",
+      level: 1,
+      question: "Which ancient people built the pyramids at Giza?",
+      answers: ["The Egyptians", "The Romans", "The Greeks", "The Persians"],
+      checked: "Giza pyramid complex"
+    },
+    {
+      id: 34,
+      category: "history",
+      level: 1,
+      question: "Who was the first person in space?",
+      answers: ["Yuri Gagarin", "Neil Armstrong", "Valentina Tereshkova", "Alan Shepard"],
+      checked: "Yuri Gagarin"
+    },
+    {
+      id: 35,
+      category: "history",
+      level: 1,
+      question: "Where were the ancient Olympic Games held?",
+      answers: ["Olympia", "Athens", "Sparta", "Delphi"],
+      checked: "Ancient Olympic Games"
+    },
+    {
+      id: 36,
+      category: "history",
+      level: 1,
+      question: "Which ship sank in 1912 after hitting an iceberg?",
+      answers: ["The Titanic", "The Lusitania", "The Britannic", "The Olympic"],
+      checked: "Titanic"
+    },
+    {
+      id: 37,
+      category: "history",
+      level: 1,
+      question: "Which wall fell in 1989?",
+      answers: [
+        "The Berlin Wall",
+        "The Great Wall of China",
+        "Hadrian's Wall",
+        "The Western Wall"
+      ],
+      checked: "Berlin Wall"
+    },
+    {
+      id: 38,
+      category: "history",
+      level: 1,
+      question: "Who was the first President of the United States?",
+      answers: ["George Washington", "Abraham Lincoln", "Thomas Jefferson", "John Adams"],
+      checked: "George Washington"
+    },
+    {
+      id: 39,
+      category: "history",
+      level: 1,
+      question: "In which year did Christopher Columbus first reach the Americas?",
+      answers: ["1492", "1453", "1517", "1607"],
+      checked: "Christopher Columbus"
+    },
+    {
+      id: 40,
+      category: "history",
+      level: 1,
+      question: "Which country gave the Statue of Liberty to the United States?",
+      answers: ["France", "Britain", "Spain", "Italy"],
+      checked: "Statue of Liberty"
+    },
+    {
+      id: 41,
+      category: "history",
+      level: 2,
+      question: "In which year was Bulgaria liberated, with the Treaty of San Stefano?",
+      answers: ["1878", "1876", "1885", "1908"],
+      checked: "Liberation of Bulgaria"
+    },
+    {
+      id: 42,
+      category: "history",
+      level: 2,
+      question: "In which year did Bulgaria declare its independence?",
+      answers: ["1908", "1878", "1885", "1912"],
+      checked: "Bulgarian Declaration of Independence"
+    },
+    {
+      id: 43,
+      category: "history",
+      level: 2,
+      question: "Which khan founded the Bulgarian state on the Danube in 681?",
+      answers: ["Asparuh", "Krum", "Tervel", "Kubrat"],
+      checked: "Asparuh"
+    },
+    {
+      id: 44,
+      category: "history",
+      level: 2,
+      question: "Which Bulgarian ruler made Christianity the state religion in the 860s?",
+      answers: ["Boris I", "Simeon I", "Krum", "Samuil"],
+      checked: "Boris I of Bulgaria"
+    },
+    {
+      id: 45,
+      category: "history",
+      level: 2,
+      question: "Which brothers created the Glagolitic alphabet?",
+      answers: ["Cyril and Methodius", "Clement and Naum", "Romulus and Remus", "Boris and Gleb"],
+      checked: "Glagolitic script"
+    },
+    {
+      id: 46,
+      category: "history",
+      level: 2,
+      question: "In which year did the First World War begin?",
+      answers: ["1914", "1912", "1916", "1918"],
+      checked: "World War I"
+    },
+    {
+      id: 47,
+      category: "history",
+      level: 2,
+      question: "Which French emperor was defeated at Waterloo?",
+      answers: ["Napoleon", "Louis XIV", "Charlemagne", "Louis XVI"],
+      checked: "Battle of Waterloo"
+    },
+    {
+      id: 48,
+      category: "history",
+      level: 2,
+      question: "Which city was the capital of the Byzantine Empire?",
+      answers: ["Constantinople", "Rome", "Athens", "Thessaloniki"],
+      checked: "Constantinople"
+    },
+    {
+      id: 49,
+      category: "history",
+      level: 2,
+      question: "In which year did the French Revolution begin?",
+      answers: ["1789", "1776", "1815", "1848"],
+      checked: "French Revolution"
+    },
+    {
+      id: 50,
+      category: "history",
+      level: 2,
+      question: "Which Bulgarian revolutionary is called the Apostle of Freedom?",
+      answers: ["Vasil Levski", "Hristo Botev", "Georgi Rakovski", "Lyuben Karavelov"],
+      checked: "Vasil Levski"
+    },
+    {
+      id: 51,
+      category: "history",
+      level: 3,
+      question: "In which year did Constantinople fall to the Ottomans?",
+      answers: ["1453", "1389", "1492", "1526"],
+      checked: "Fall of Constantinople"
+    },
+    {
+      id: 52,
+      category: "history",
+      level: 3,
+      question: "In which year was the April Uprising in Bulgaria?",
+      answers: ["1876", "1878", "1867", "1885"],
+      checked: "April Uprising"
+    },
+    {
+      id: 53,
+      category: "history",
+      level: 3,
+      question: "Under which ruler did Bulgaria have the Golden Age of its culture?",
+      answers: ["Simeon I", "Boris I", "Ivan Asen II", "Kaloyan"],
+      checked: "Simeon I"
+    },
+    {
+      id: 54,
+      category: "history",
+      level: 3,
+      question: "In which year were the Principality of Bulgaria and Eastern Rumelia united?",
+      answers: ["1885", "1878", "1879", "1908"],
+      checked: "Unification of Bulgaria"
+    },
+    {
+      id: 55,
+      category: "history",
+      level: 3,
+      question: "Who wrote the Slavonic-Bulgarian History in 1762?",
+      answers: ["Paisius of Hilendar", "Sophronius of Vratsa", "Neofit Rilski", "Vasil Aprilov"],
+      checked: "Paisius of Hilendar"
+    },
+    {
+      id: 56,
+      category: "history",
+      level: 3,
+      question: "Which wonder of the ancient world stood in Alexandria?",
+      answers: ["The Lighthouse", "The Colossus", "The Hanging Gardens", "The Temple of Artemis"],
+      checked: "Lighthouse of Alexandria"
+    },
+    {
+      id: 57,
+      category: "history",
+      level: 3,
+      question: "Who was the first woman in space?",
+      answers: ["Valentina Tereshkova", "Sally Ride", "Svetlana Savitskaya", "Mae Jemison"],
+      checked: "Valentina Tereshkova"
+    },
+    {
+      id: 58,
+      category: "history",
+      level: 3,
+      question: "Which treaty of 1919 ended the First World War with Germany?",
+      answers: [
+        "The Treaty of Versailles",
+        "The Treaty of Neuilly",
+        "The Treaty of Trianon",
+        "The Treaty of Paris"
+      ],
+      checked: "Treaty of Versailles"
+    },
+    {
+      id: 59,
+      category: "history",
+      level: 3,
+      question: "Spartacus, who led a slave revolt against Rome, came from which people?",
+      answers: ["The Thracians", "The Gauls", "The Germans", "The Carthaginians"],
+      checked: "Spartacus"
+    },
+    {
+      id: 60,
+      category: "history",
+      level: 3,
+      question: "Which empire built Machu Picchu?",
+      answers: ["The Inca", "The Aztec", "The Maya", "The Olmec"],
+      checked: "Machu Picchu"
+    },
+    {
+      id: 61,
+      category: "science",
+      level: 1,
+      question: "What is H\u2082O better known as?",
+      answers: ["Water", "Salt", "Oxygen", "Sugar"],
+      checked: "Water"
+    },
+    {
+      id: 62,
+      category: "science",
+      level: 1,
+      question: "Which planet is closest to the Sun?",
+      answers: ["Mercury", "Venus", "Mars", "Earth"],
+      checked: "Mercury (planet)"
+    },
+    {
+      id: 63,
+      category: "science",
+      level: 1,
+      question: "Which planet is known as the Red Planet?",
+      answers: ["Mars", "Jupiter", "Venus", "Saturn"],
+      checked: "Mars"
+    },
+    {
+      id: 64,
+      category: "science",
+      level: 1,
+      question: "Which force keeps us on the ground?",
+      answers: ["Gravity", "Magnetism", "Friction", "Pressure"],
+      checked: "Gravity"
+    },
+    {
+      id: 65,
+      category: "science",
+      level: 1,
+      question: "Which gas do plants take from the air to make their food?",
+      answers: ["Carbon dioxide", "Oxygen", "Nitrogen", "Helium"],
+      checked: "Photosynthesis"
+    },
+    {
+      id: 66,
+      category: "science",
+      level: 1,
+      question: "At what temperature does water boil at sea level?",
+      answers: ["100 \xB0C", "90 \xB0C", "80 \xB0C", "120 \xB0C"],
+      checked: "Boiling point"
+    },
+    {
+      id: 67,
+      category: "science",
+      level: 1,
+      question: "Which is the largest planet in the Solar System?",
+      answers: ["Jupiter", "Saturn", "Neptune", "Earth"],
+      checked: "Jupiter"
+    },
+    {
+      id: 68,
+      category: "science",
+      level: 1,
+      question: "How many planets are there in the Solar System?",
+      answers: ["Eight", "Seven", "Nine", "Ten"],
+      checked: "Solar System"
+    },
+    {
+      id: 69,
+      category: "science",
+      level: 1,
+      question: "What does a thermometer measure?",
+      answers: ["Temperature", "Pressure", "Weight", "Speed"],
+      checked: "Thermometer"
+    },
+    {
+      id: 70,
+      category: "science",
+      level: 1,
+      question: "Which organ pumps blood around the body?",
+      answers: ["The heart", "The liver", "The lungs", "The kidneys"],
+      checked: "Heart"
+    },
+    {
+      id: 71,
+      category: "science",
+      level: 2,
+      question: "What is the chemical symbol for gold?",
+      answers: ["Au", "Ag", "Go", "Gd"],
+      checked: "Gold"
+    },
+    {
+      id: 72,
+      category: "science",
+      level: 2,
+      question: "Which is the hardest natural material?",
+      answers: ["Diamond", "Quartz", "Granite", "Iron"],
+      checked: "Diamond"
+    },
+    {
+      id: 73,
+      category: "science",
+      level: 2,
+      question: "Who developed the theory of relativity?",
+      answers: ["Albert Einstein", "Isaac Newton", "Niels Bohr", "Galileo Galilei"],
+      checked: "Theory of relativity"
+    },
+    {
+      id: 74,
+      category: "science",
+      level: 2,
+      question: "How many bones are there in an adult human body?",
+      answers: ["206", "186", "226", "306"],
+      checked: "Human skeleton"
+    },
+    {
+      id: 75,
+      category: "science",
+      level: 2,
+      question: "In which part of a cell is most of its DNA?",
+      answers: ["The nucleus", "The membrane", "The ribosomes", "The cytoplasm"],
+      checked: "Cell nucleus"
+    },
+    {
+      id: 76,
+      category: "science",
+      level: 2,
+      question: "About how fast does light travel?",
+      answers: ["300,000 km/s", "30,000 km/s", "3,000 km/s", "3,000,000 km/s"],
+      checked: "Speed of light"
+    },
+    {
+      id: 77,
+      category: "science",
+      level: 2,
+      question: "Which gas makes up most of Earth's atmosphere?",
+      answers: ["Nitrogen", "Oxygen", "Carbon dioxide", "Argon"],
+      checked: "Atmosphere of Earth"
+    },
+    {
+      id: 78,
+      category: "science",
+      level: 2,
+      question: "Who discovered penicillin?",
+      answers: ["Alexander Fleming", "Louis Pasteur", "Marie Curie", "Robert Koch"],
+      checked: "Penicillin"
+    },
+    {
+      id: 79,
+      category: "science",
+      level: 2,
+      question: "What is the chemical symbol for sodium?",
+      answers: ["Na", "So", "Sd", "S"],
+      checked: "Sodium"
+    },
+    {
+      id: 80,
+      category: "science",
+      level: 2,
+      question: "Who set out the three laws of motion?",
+      answers: ["Isaac Newton", "Galileo Galilei", "Johannes Kepler", "Albert Einstein"],
+      checked: "Newton's laws of motion"
+    },
+    {
+      id: 81,
+      category: "science",
+      level: 3,
+      question: "What is the atomic number of carbon?",
+      answers: ["6", "8", "12", "14"],
+      checked: "Carbon"
+    },
+    {
+      id: 82,
+      category: "science",
+      level: 3,
+      question: "Who published the periodic table of the elements in 1869?",
+      answers: ["Dmitri Mendeleev", "Antoine Lavoisier", "John Dalton", "Ernest Rutherford"],
+      checked: "Periodic table"
+    },
+    {
+      id: 83,
+      category: "science",
+      level: 3,
+      question: "Which is the most abundant element in the universe?",
+      answers: ["Hydrogen", "Helium", "Oxygen", "Carbon"],
+      checked: "Hydrogen"
+    },
+    {
+      id: 84,
+      category: "science",
+      level: 3,
+      question: "What is the unit of electrical resistance?",
+      answers: ["The ohm", "The volt", "The ampere", "The watt"],
+      checked: "Ohm"
+    },
+    {
+      id: 85,
+      category: "science",
+      level: 3,
+      question: "Which blood type is known as the universal donor?",
+      answers: ["O negative", "AB positive", "A positive", "B negative"],
+      checked: "Blood type"
+    },
+    {
+      id: 86,
+      category: "science",
+      level: 3,
+      question: "At what temperature in Fahrenheit does water freeze?",
+      answers: ["32 \xB0F", "0 \xB0F", "100 \xB0F", "212 \xB0F"],
+      checked: "Fahrenheit"
+    },
+    {
+      id: 87,
+      category: "science",
+      level: 3,
+      question: "Which planet spins on its side, tilted by about 98\xB0?",
+      answers: ["Uranus", "Neptune", "Saturn", "Venus"],
+      checked: "Uranus"
+    },
+    {
+      id: 88,
+      category: "science",
+      level: 3,
+      question: "Which particle has a negative electric charge?",
+      answers: ["The electron", "The proton", "The neutron", "The photon"],
+      checked: "Electron"
+    },
+    {
+      id: 89,
+      category: "science",
+      level: 3,
+      question: "About how long does sunlight take to reach Earth?",
+      answers: ["8 minutes", "8 seconds", "1 hour", "1 day"],
+      checked: "Sunlight"
+    },
+    {
+      id: 90,
+      category: "science",
+      level: 3,
+      question: "What does a light-year measure?",
+      answers: ["Distance", "Time", "Brightness", "Speed"],
+      checked: "Light-year"
+    },
+    {
+      id: 91,
+      category: "nature",
+      level: 1,
+      question: "Which is the largest animal on Earth?",
+      answers: ["The blue whale", "The elephant", "The giraffe", "The great white shark"],
+      checked: "Blue whale"
+    },
+    {
+      id: 92,
+      category: "nature",
+      level: 1,
+      question: "How many legs does a spider have?",
+      answers: ["Eight", "Six", "Ten", "Twelve"],
+      checked: "Spider"
+    },
+    {
+      id: 93,
+      category: "nature",
+      level: 1,
+      question: "What does a caterpillar become?",
+      answers: ["A butterfly", "A beetle", "A bee", "A dragonfly"],
+      checked: "Butterfly"
+    },
+    {
+      id: 94,
+      category: "nature",
+      level: 1,
+      question: "Which animal is called the king of the animals?",
+      answers: ["The lion", "The tiger", "The elephant", "The gorilla"],
+      checked: "Lion"
+    },
+    {
+      id: 95,
+      category: "nature",
+      level: 1,
+      question: "Which is the tallest animal?",
+      answers: ["The giraffe", "The elephant", "The camel", "The ostrich"],
+      checked: "Giraffe"
+    },
+    {
+      id: 96,
+      category: "nature",
+      level: 1,
+      question: "Which bird is a symbol of peace?",
+      answers: ["The dove", "The eagle", "The swan", "The owl"],
+      checked: "Dove"
+    },
+    {
+      id: 97,
+      category: "nature",
+      level: 1,
+      question: "What do bees make?",
+      answers: ["Honey", "Silk", "Butter", "Sugar"],
+      checked: "Honey"
+    },
+    {
+      id: 98,
+      category: "nature",
+      level: 1,
+      question: "How many legs does an insect have?",
+      answers: ["Six", "Four", "Eight", "Ten"],
+      checked: "Insect"
+    },
+    {
+      id: 99,
+      category: "nature",
+      level: 1,
+      question: "Which of these is a mammal?",
+      answers: ["The dolphin", "The shark", "The trout", "The octopus"],
+      checked: "Dolphin"
+    },
+    {
+      id: 100,
+      category: "nature",
+      level: 1,
+      question: "What is a young dog called?",
+      answers: ["A puppy", "A kitten", "A calf", "A foal"],
+      checked: "Puppy"
+    },
+    {
+      id: 101,
+      category: "nature",
+      level: 2,
+      question: "Which is the fastest land animal?",
+      answers: ["The cheetah", "The lion", "The horse", "The gazelle"],
+      checked: "Cheetah"
+    },
+    {
+      id: 102,
+      category: "nature",
+      level: 2,
+      question: "Which of these birds cannot fly?",
+      answers: ["The penguin", "The swan", "The eagle", "The parrot"],
+      checked: "Penguin"
+    },
+    {
+      id: 103,
+      category: "nature",
+      level: 2,
+      question: "What is an animal that eats only plants called?",
+      answers: ["A herbivore", "A carnivore", "An omnivore", "A predator"],
+      checked: "Herbivore"
+    },
+    {
+      id: 104,
+      category: "nature",
+      level: 2,
+      question: "Which tree grows acorns?",
+      answers: ["The oak", "The beech", "The maple", "The pine"],
+      checked: "Oak"
+    },
+    {
+      id: 105,
+      category: "nature",
+      level: 2,
+      question: "How many hearts does an octopus have?",
+      answers: ["Three", "One", "Two", "Eight"],
+      checked: "Octopus"
+    },
+    {
+      id: 106,
+      category: "nature",
+      level: 2,
+      question: "Which animal is on Bulgaria's coat of arms?",
+      answers: ["The lion", "The eagle", "The bear", "The wolf"],
+      checked: "Coat of arms of Bulgaria"
+    },
+    {
+      id: 107,
+      category: "nature",
+      level: 2,
+      question: "What is a group of wolves called?",
+      answers: ["A pack", "A herd", "A flock", "A school"],
+      checked: "Wolf"
+    },
+    {
+      id: 108,
+      category: "nature",
+      level: 2,
+      question: "Which animal sleeps hanging upside down?",
+      answers: ["The bat", "The owl", "The squirrel", "The raccoon"],
+      checked: "Bat"
+    },
+    {
+      id: 109,
+      category: "nature",
+      level: 2,
+      question: "What kind of animal is a frog?",
+      answers: ["An amphibian", "A reptile", "A mammal", "A fish"],
+      checked: "Frog"
+    },
+    {
+      id: 110,
+      category: "nature",
+      level: 2,
+      question: "Which is the largest bird alive today?",
+      answers: ["The ostrich", "The emu", "The albatross", "The condor"],
+      checked: "Ostrich"
+    },
+    {
+      id: 111,
+      category: "nature",
+      level: 3,
+      question: "Which animal carries its young the longest, about 22 months?",
+      answers: ["The African elephant", "The blue whale", "The giraffe", "The rhinoceros"],
+      checked: "African elephant"
+    },
+    {
+      id: 112,
+      category: "nature",
+      level: 3,
+      question: "Which species of tree grows the tallest?",
+      answers: ["The coast redwood", "The giant sequoia", "The Douglas fir", "The eucalyptus"],
+      checked: "Coast redwood"
+    },
+    {
+      id: 113,
+      category: "nature",
+      level: 3,
+      question: "How many chambers does a cow's stomach have?",
+      answers: ["Four", "Two", "Three", "Six"],
+      checked: "Ruminant"
+    },
+    {
+      id: 114,
+      category: "nature",
+      level: 3,
+      question: "On which continent are there no native ants?",
+      answers: ["Antarctica", "Australia", "Europe", "South America"],
+      checked: "Ant"
+    },
+    {
+      id: 115,
+      category: "nature",
+      level: 3,
+      question: "Which flightless bird is a national symbol of New Zealand?",
+      answers: ["The kiwi", "The emu", "The kea", "The cassowary"],
+      checked: "Kiwi (bird)"
+    },
+    {
+      id: 116,
+      category: "nature",
+      level: 3,
+      question: "Which animal has fingerprints almost like a human's?",
+      answers: ["The koala", "The dog", "The panda", "The cat"],
+      checked: "Koala"
+    },
+    {
+      id: 117,
+      category: "nature",
+      level: 3,
+      question: "Which is the largest species of shark?",
+      answers: [
+        "The whale shark",
+        "The great white shark",
+        "The hammerhead shark",
+        "The tiger shark"
+      ],
+      checked: "Whale shark"
+    },
+    {
+      id: 118,
+      category: "nature",
+      level: 3,
+      question: "Which of these mammals lays eggs?",
+      answers: ["The platypus", "The hedgehog", "The armadillo", "The mole"],
+      checked: "Platypus"
+    },
+    {
+      id: 119,
+      category: "nature",
+      level: 3,
+      question: "How many eyes does a honey bee have?",
+      answers: ["Five", "Two", "Four", "Eight"],
+      checked: "Honey bee"
+    },
+    {
+      id: 120,
+      category: "nature",
+      level: 3,
+      question: "Which of these animals is the closest living relative of humans?",
+      answers: ["The chimpanzee", "The gorilla", "The orangutan", "The gibbon"],
+      checked: "Chimpanzee"
+    },
+    {
+      id: 121,
+      category: "sport",
+      level: 1,
+      question: "How many players does a football team have on the pitch?",
+      answers: ["Eleven", "Ten", "Nine", "Twelve"],
+      checked: "Association football"
+    },
+    {
+      id: 122,
+      category: "sport",
+      level: 1,
+      question: "In which sport do you hit a shuttlecock?",
+      answers: ["Badminton", "Tennis", "Squash", "Table tennis"],
+      checked: "Badminton"
+    },
+    {
+      id: 123,
+      category: "sport",
+      level: 1,
+      question: "How often are the Summer Olympic Games held?",
+      answers: ["Every four years", "Every two years", "Every three years", "Every five years"],
+      checked: "Summer Olympic Games"
+    },
+    {
+      id: 124,
+      category: "sport",
+      level: 1,
+      question: "Which sport is played at Wimbledon?",
+      answers: ["Tennis", "Golf", "Cricket", "Football"],
+      checked: "Wimbledon Championships"
+    },
+    {
+      id: 125,
+      category: "sport",
+      level: 1,
+      question: "How many rings are on the Olympic flag?",
+      answers: ["Five", "Four", "Six", "Seven"],
+      checked: "Olympic rings"
+    },
+    {
+      id: 126,
+      category: "sport",
+      level: 1,
+      question: "How many points is a basketball shot from beyond the arc worth?",
+      answers: ["Three", "Two", "Four", "Five"],
+      checked: "Three-point field goal"
+    },
+    {
+      id: 127,
+      category: "sport",
+      level: 1,
+      question: "Which sport is played with a puck?",
+      answers: ["Ice hockey", "Curling", "Polo", "Lacrosse"],
+      checked: "Ice hockey"
+    },
+    {
+      id: 128,
+      category: "sport",
+      level: 1,
+      question: "Which chess piece moves only diagonally?",
+      answers: ["The bishop", "The rook", "The knight", "The king"],
+      checked: "Bishop (chess)"
+    },
+    {
+      id: 129,
+      category: "sport",
+      level: 1,
+      question: "How many holes are in a standard round of golf?",
+      answers: ["18", "9", "12", "24"],
+      checked: "Golf"
+    },
+    {
+      id: 130,
+      category: "sport",
+      level: 1,
+      question: "In which sport do you score a try?",
+      answers: ["Rugby", "Football", "Tennis", "Hockey"],
+      checked: "Rugby union"
+    },
+    {
+      id: 131,
+      category: "sport",
+      level: 2,
+      question: "How many players does a volleyball team have on court?",
+      answers: ["Six", "Five", "Seven", "Eight"],
+      checked: "Volleyball"
+    },
+    {
+      id: 132,
+      category: "sport",
+      level: 2,
+      question: "Which country hosted the first modern Olympic Games, in 1896?",
+      answers: ["Greece", "France", "Britain", "The United States"],
+      checked: "1896 Summer Olympics"
+    },
+    {
+      id: 133,
+      category: "sport",
+      level: 2,
+      question: "How long is a marathon?",
+      answers: ["42.195 km", "40 km", "45 km", "21.1 km"],
+      checked: "Marathon"
+    },
+    {
+      id: 134,
+      category: "sport",
+      level: 2,
+      question: "How many players does a basketball team have on court?",
+      answers: ["Five", "Six", "Four", "Seven"],
+      checked: "Basketball"
+    },
+    {
+      id: 135,
+      category: "sport",
+      level: 2,
+      question: "How many sets must a man win to take a Grand Slam tennis match?",
+      answers: ["Three", "Two", "Four", "Five"],
+      checked: "Grand Slam (tennis)"
+    },
+    {
+      id: 136,
+      category: "sport",
+      level: 2,
+      question: "Which Bulgarian footballer won the Ballon d'Or in 1994?",
+      answers: ["Hristo Stoichkov", "Dimitar Berbatov", "Krasimir Balakov", "Yordan Letchkov"],
+      checked: "Hristo Stoichkov"
+    },
+    {
+      id: 137,
+      category: "sport",
+      level: 2,
+      question: "How many squares are there on a chessboard?",
+      answers: ["64", "49", "81", "100"],
+      checked: "Chessboard"
+    },
+    {
+      id: 138,
+      category: "sport",
+      level: 2,
+      question: "In which sport is the Stanley Cup awarded?",
+      answers: ["Ice hockey", "Basketball", "Baseball", "American football"],
+      checked: "Stanley Cup"
+    },
+    {
+      id: 139,
+      category: "sport",
+      level: 2,
+      question: "What is the usual maximum break in snooker?",
+      answers: ["147", "155", "140", "180"],
+      checked: "Maximum break"
+    },
+    {
+      id: 140,
+      category: "sport",
+      level: 2,
+      question: "In which country did judo begin?",
+      answers: ["Japan", "China", "Korea", "Thailand"],
+      checked: "Judo"
+    },
+    {
+      id: 141,
+      category: "sport",
+      level: 3,
+      question: "How many players does a water polo team have in the water?",
+      answers: ["Seven", "Six", "Eight", "Five"],
+      checked: "Water polo"
+    },
+    {
+      id: 142,
+      category: "sport",
+      level: 3,
+      question: "Which city hosted the 1980 Summer Olympics?",
+      answers: ["Moscow", "Los Angeles", "Montreal", "Seoul"],
+      checked: "1980 Summer Olympics"
+    },
+    {
+      id: 143,
+      category: "sport",
+      level: 3,
+      question: "How long is an Olympic swimming pool?",
+      answers: ["50 m", "25 m", "100 m", "75 m"],
+      checked: "Olympic-size swimming pool"
+    },
+    {
+      id: 144,
+      category: "sport",
+      level: 3,
+      question: "In which sport do Bulgarian athletes famously compete with ribbons, hoops and balls?",
+      answers: [
+        "Rhythmic gymnastics",
+        "Artistic gymnastics",
+        "Figure skating",
+        "Artistic swimming"
+      ],
+      checked: "Rhythmic gymnastics"
+    },
+    {
+      id: 145,
+      category: "sport",
+      level: 3,
+      question: "Which Bulgarian athlete set a world record of 2.09 m in the high jump in 1987?",
+      answers: ["Stefka Kostadinova", "Yordanka Donkova", "Tereza Marinova", "Ivet Lalova"],
+      checked: "Stefka Kostadinova"
+    },
+    {
+      id: 146,
+      category: "sport",
+      level: 3,
+      question: "How many points is a touchdown worth in American football?",
+      answers: ["Six", "Three", "Seven", "Two"],
+      checked: "Touchdown"
+    },
+    {
+      id: 147,
+      category: "sport",
+      level: 3,
+      question: "Which country won the first football World Cup, in 1930?",
+      answers: ["Uruguay", "Brazil", "Argentina", "Italy"],
+      checked: "1930 FIFA World Cup"
+    },
+    {
+      id: 148,
+      category: "sport",
+      level: 3,
+      question: 'In which sport is a "birdie" one stroke under par?',
+      answers: ["Golf", "Badminton", "Bowling", "Darts"],
+      checked: "Birdie"
+    },
+    {
+      id: 149,
+      category: "sport",
+      level: 3,
+      question: "What is the highest score with three darts?",
+      answers: ["180", "150", "120", "200"],
+      checked: "Darts"
+    },
+    {
+      id: 150,
+      category: "sport",
+      level: 3,
+      question: "Which wrestling sport is traditional in Japan and fought in a ring called a dohy\u014D?",
+      answers: ["Sumo", "Judo", "Karate", "Kendo"],
+      checked: "Sumo"
+    },
+    {
+      id: 151,
+      category: "arts",
+      level: 1,
+      question: "Who painted the Mona Lisa?",
+      answers: ["Leonardo da Vinci", "Michelangelo", "Raphael", "Vincent van Gogh"],
+      checked: "Mona Lisa"
+    },
+    {
+      id: 152,
+      category: "arts",
+      level: 1,
+      question: "Who wrote Romeo and Juliet?",
+      answers: ["William Shakespeare", "Charles Dickens", "Jane Austen", "Mark Twain"],
+      checked: "Romeo and Juliet"
+    },
+    {
+      id: 153,
+      category: "arts",
+      level: 1,
+      question: "Which colour do you get by mixing blue and yellow paint?",
+      answers: ["Green", "Purple", "Orange", "Brown"],
+      checked: "Colour mixing"
+    },
+    {
+      id: 154,
+      category: "arts",
+      level: 1,
+      question: "Which fairy-tale heroine loses a glass slipper?",
+      answers: ["Cinderella", "Snow White", "Sleeping Beauty", "Rapunzel"],
+      checked: "Cinderella"
+    },
+    {
+      id: 155,
+      category: "arts",
+      level: 1,
+      question: "Which detective lives at 221B Baker Street?",
+      answers: ["Sherlock Holmes", "Hercule Poirot", "Miss Marple", "Inspector Morse"],
+      checked: "Sherlock Holmes"
+    },
+    {
+      id: 156,
+      category: "arts",
+      level: 1,
+      question: "Who wrote the Harry Potter books?",
+      answers: ["J. K. Rowling", "Roald Dahl", "C. S. Lewis", "J. R. R. Tolkien"],
+      checked: "Harry Potter"
+    },
+    {
+      id: 157,
+      category: "arts",
+      level: 1,
+      question: "In which city is the Louvre museum?",
+      answers: ["Paris", "London", "Rome", "Madrid"],
+      checked: "Louvre"
+    },
+    {
+      id: 158,
+      category: "arts",
+      level: 1,
+      question: "Who wrote The Little Prince?",
+      answers: ["Antoine de Saint-Exup\xE9ry", "Victor Hugo", "Jules Verne", "Alexandre Dumas"],
+      checked: "The Little Prince"
+    },
+    {
+      id: 159,
+      category: "arts",
+      level: 1,
+      question: "Which of these is a primary colour in painting?",
+      answers: ["Red", "Green", "Orange", "Purple"],
+      checked: "Primary colour"
+    },
+    {
+      id: 160,
+      category: "arts",
+      level: 1,
+      question: "Which wooden puppet's nose grows when he lies?",
+      answers: ["Pinocchio", "Peter Pan", "Gulliver", "Bambi"],
+      checked: "Pinocchio"
+    },
+    {
+      id: 161,
+      category: "arts",
+      level: 2,
+      question: "Who wrote the novel Under the Yoke?",
+      answers: ["Ivan Vazov", "Hristo Botev", "Aleko Konstantinov", "Elin Pelin"],
+      checked: "Under the Yoke"
+    },
+    {
+      id: 162,
+      category: "arts",
+      level: 2,
+      question: "Who painted The Starry Night?",
+      answers: ["Vincent van Gogh", "Claude Monet", "Pablo Picasso", "Salvador Dal\xED"],
+      checked: "The Starry Night"
+    },
+    {
+      id: 163,
+      category: "arts",
+      level: 2,
+      question: "Who wrote Don Quixote?",
+      answers: [
+        "Miguel de Cervantes",
+        "Lope de Vega",
+        "Gabriel Garc\xEDa M\xE1rquez",
+        "Dante Alighieri"
+      ],
+      checked: "Don Quixote"
+    },
+    {
+      id: 164,
+      category: "arts",
+      level: 2,
+      question: "Who carved the marble statue of David finished in 1504 in Florence?",
+      answers: ["Michelangelo", "Donatello", "Bernini", "Rodin"],
+      checked: "David (Michelangelo)"
+    },
+    {
+      id: 165,
+      category: "arts",
+      level: 2,
+      question: "Who wrote Bay Ganyo?",
+      answers: ["Aleko Konstantinov", "Ivan Vazov", "Elin Pelin", "Yordan Yovkov"],
+      checked: "Bay Ganyo"
+    },
+    {
+      id: 166,
+      category: "arts",
+      level: 2,
+      question: "Who wrote War and Peace?",
+      answers: ["Leo Tolstoy", "Fyodor Dostoevsky", "Anton Chekhov", "Ivan Turgenev"],
+      checked: "War and Peace"
+    },
+    {
+      id: 167,
+      category: "arts",
+      level: 2,
+      question: "Which art movement did Pablo Picasso found with Georges Braque?",
+      answers: ["Cubism", "Impressionism", "Surrealism", "Baroque"],
+      checked: "Cubism"
+    },
+    {
+      id: 168,
+      category: "arts",
+      level: 2,
+      question: "Who wrote Les Mis\xE9rables?",
+      answers: ["Victor Hugo", "\xC9mile Zola", "Gustave Flaubert", "Honor\xE9 de Balzac"],
+      checked: "Les Mis\xE9rables"
+    },
+    {
+      id: 169,
+      category: "arts",
+      level: 2,
+      question: "Who is said to have composed the Odyssey?",
+      answers: ["Homer", "Sophocles", "Virgil", "Plato"],
+      checked: "Odyssey"
+    },
+    {
+      id: 170,
+      category: "arts",
+      level: 2,
+      question: "Which Bulgarian poet and revolutionary was killed in 1876 in the Vratsa Balkan?",
+      answers: ["Hristo Botev", "Vasil Levski", "Ivan Vazov", "Peyo Yavorov"],
+      checked: "Hristo Botev"
+    },
+    {
+      id: 171,
+      category: "arts",
+      level: 3,
+      question: "Who painted The Last Supper in Milan?",
+      answers: ["Leonardo da Vinci", "Michelangelo", "Raphael", "Titian"],
+      checked: "The Last Supper"
+    },
+    {
+      id: 172,
+      category: "arts",
+      level: 3,
+      question: "The artist Christo, who wrapped the Reichstag in Berlin, was born in which country?",
+      answers: ["Bulgaria", "Germany", "France", "The United States"],
+      checked: "Christo"
+    },
+    {
+      id: 173,
+      category: "arts",
+      level: 3,
+      question: "Who wrote Crime and Punishment?",
+      answers: ["Fyodor Dostoevsky", "Leo Tolstoy", "Nikolai Gogol", "Alexander Pushkin"],
+      checked: "Crime and Punishment"
+    },
+    {
+      id: 174,
+      category: "arts",
+      level: 3,
+      question: "Who wrote Pride and Prejudice?",
+      answers: ["Jane Austen", "Charlotte Bront\xEB", "Emily Bront\xEB", "Mary Shelley"],
+      checked: "Pride and Prejudice"
+    },
+    {
+      id: 175,
+      category: "arts",
+      level: 3,
+      question: "Which Dutch painter made Girl with a Pearl Earring?",
+      answers: ["Johannes Vermeer", "Rembrandt", "Frans Hals", "Vincent van Gogh"],
+      checked: "Girl with a Pearl Earring"
+    },
+    {
+      id: 176,
+      category: "arts",
+      level: 3,
+      question: "What was the real name of the writer Elin Pelin?",
+      answers: ["Dimitar Stoyanov", "Ivan Stoyanov", "Petko Todorov", "Georgi Stamatov"],
+      checked: "Elin Pelin"
+    },
+    {
+      id: 177,
+      category: "arts",
+      level: 3,
+      question: "Who wrote The Divine Comedy?",
+      answers: ["Dante Alighieri", "Petrarch", "Giovanni Boccaccio", "Niccol\xF2 Machiavelli"],
+      checked: "Divine Comedy"
+    },
+    {
+      id: 178,
+      category: "arts",
+      level: 3,
+      question: "Which painter is famous for the melting clocks of The Persistence of Memory?",
+      answers: ["Salvador Dal\xED", "Ren\xE9 Magritte", "Joan Mir\xF3", "Max Ernst"],
+      checked: "The Persistence of Memory"
+    },
+    {
+      id: 179,
+      category: "arts",
+      level: 3,
+      question: "In which museum hangs Rembrandt's The Night Watch?",
+      answers: ["The Rijksmuseum", "The Louvre", "The Prado", "The Uffizi"],
+      checked: "The Night Watch"
+    },
+    {
+      id: 180,
+      category: "arts",
+      level: 3,
+      question: "Who wrote One Hundred Years of Solitude?",
+      answers: ["Gabriel Garc\xEDa M\xE1rquez", "Jorge Luis Borges", "Pablo Neruda", "Isabel Allende"],
+      checked: "One Hundred Years of Solitude"
+    },
+    {
+      id: 181,
+      category: "music",
+      level: 1,
+      question: "How many strings does a standard guitar have?",
+      answers: ["Six", "Four", "Five", "Seven"],
+      checked: "Guitar"
+    },
+    {
+      id: 182,
+      category: "music",
+      level: 1,
+      question: "Which instrument has black and white keys?",
+      answers: ["The piano", "The violin", "The flute", "The drum"],
+      checked: "Piano"
+    },
+    {
+      id: 183,
+      category: "music",
+      level: 1,
+      question: "How many lines does a musical staff have?",
+      answers: ["Five", "Four", "Six", "Seven"],
+      checked: "Staff (music)"
+    },
+    {
+      id: 184,
+      category: "music",
+      level: 1,
+      question: "Which of these instruments do you blow into?",
+      answers: ["The trumpet", "The violin", "The piano", "The drum"],
+      checked: "Trumpet"
+    },
+    {
+      id: 185,
+      category: "music",
+      level: 1,
+      question: "Who composed F\xFCr Elise?",
+      answers: [
+        "Ludwig van Beethoven",
+        "Wolfgang Amadeus Mozart",
+        "Johann Sebastian Bach",
+        "Fr\xE9d\xE9ric Chopin"
+      ],
+      checked: "F\xFCr Elise"
+    },
+    {
+      id: 186,
+      category: "music",
+      level: 1,
+      question: "What is a group of four musicians called?",
+      answers: ["A quartet", "A trio", "A duo", "A quintet"],
+      checked: "Quartet"
+    },
+    {
+      id: 187,
+      category: "music",
+      level: 1,
+      question: "Which of these is a percussion instrument?",
+      answers: ["The drum", "The flute", "The cello", "The harp"],
+      checked: "Drum"
+    },
+    {
+      id: 188,
+      category: "music",
+      level: 1,
+      question: "Which famous band came from Liverpool?",
+      answers: ["The Beatles", "The Rolling Stones", "Queen", "ABBA"],
+      checked: "The Beatles"
+    },
+    {
+      id: 189,
+      category: "music",
+      level: 1,
+      question: "Which country does flamenco come from?",
+      answers: ["Spain", "Italy", "Mexico", "Portugal"],
+      checked: "Flamenco"
+    },
+    {
+      id: 190,
+      category: "music",
+      level: 1,
+      question: "What does a conductor hold to lead an orchestra?",
+      answers: ["A baton", "A bow", "A mallet", "A plectrum"],
+      checked: "Baton (conducting)"
+    },
+    {
+      id: 191,
+      category: "music",
+      level: 2,
+      question: "How many keys does a standard piano have?",
+      answers: ["88", "76", "92", "100"],
+      checked: "Piano"
+    },
+    {
+      id: 192,
+      category: "music",
+      level: 2,
+      question: "Who composed The Four Seasons?",
+      answers: [
+        "Antonio Vivaldi",
+        "Johann Sebastian Bach",
+        "George Frideric Handel",
+        "Joseph Haydn"
+      ],
+      checked: "The Four Seasons (Vivaldi)"
+    },
+    {
+      id: 193,
+      category: "music",
+      level: 2,
+      question: "Which composer went deaf but kept on composing?",
+      answers: [
+        "Ludwig van Beethoven",
+        "Wolfgang Amadeus Mozart",
+        "Franz Schubert",
+        "Richard Wagner"
+      ],
+      checked: "Ludwig van Beethoven"
+    },
+    {
+      id: 194,
+      category: "music",
+      level: 2,
+      question: "Which Swedish band won Eurovision in 1974 with Waterloo?",
+      answers: ["ABBA", "Roxette", "Europe", "Ace of Base"],
+      checked: "Waterloo (ABBA song)"
+    },
+    {
+      id: 195,
+      category: "music",
+      level: 2,
+      question: "Which is the largest instrument of the orchestra's string family?",
+      answers: ["The double bass", "The cello", "The viola", "The violin"],
+      checked: "Double bass"
+    },
+    {
+      id: 196,
+      category: "music",
+      level: 2,
+      question: "Which Bulgarian folk instrument is a bagpipe?",
+      answers: ["The gaida", "The kaval", "The gadulka", "The tambura"],
+      checked: "Gaida"
+    },
+    {
+      id: 197,
+      category: "music",
+      level: 2,
+      question: "Which Bulgarian folk song travels in space on the Voyager record?",
+      answers: ["Izlel e Delyo Haydutin", "Polegnala e Todora", "Kalimanku Denku", "Malka moma"],
+      checked: "Voyager Golden Record"
+    },
+    {
+      id: 198,
+      category: "music",
+      level: 2,
+      question: "Who composed the opera The Magic Flute?",
+      answers: [
+        "Wolfgang Amadeus Mozart",
+        "Giuseppe Verdi",
+        "Gioachino Rossini",
+        "Richard Wagner"
+      ],
+      checked: "The Magic Flute"
+    },
+    {
+      id: 199,
+      category: "music",
+      level: 2,
+      question: "In which city was Mozart born?",
+      answers: ["Salzburg", "Vienna", "Prague", "Munich"],
+      checked: "Wolfgang Amadeus Mozart"
+    },
+    {
+      id: 200,
+      category: "music",
+      level: 2,
+      question: "What kind of instrument is the Bulgarian kaval?",
+      answers: ["A flute", "A bagpipe", "A fiddle", "A drum"],
+      checked: "Kaval"
+    },
+    {
+      id: 201,
+      category: "music",
+      level: 3,
+      question: "How many symphonies did Beethoven complete?",
+      answers: ["Nine", "Five", "Seven", "Twelve"],
+      checked: "Beethoven's symphonies"
+    },
+    {
+      id: 202,
+      category: "music",
+      level: 3,
+      question: "Who composed the opera Carmen?",
+      answers: ["Georges Bizet", "Giuseppe Verdi", "Giacomo Puccini", "Gioachino Rossini"],
+      checked: "Carmen"
+    },
+    {
+      id: 203,
+      category: "music",
+      level: 3,
+      question: "Who composed the ballet Swan Lake?",
+      answers: [
+        "Pyotr Ilyich Tchaikovsky",
+        "Igor Stravinsky",
+        "Sergei Prokofiev",
+        "Nikolai Rimsky-Korsakov"
+      ],
+      checked: "Swan Lake"
+    },
+    {
+      id: 204,
+      category: "music",
+      level: 3,
+      question: "Which Polish composer of piano music died in Paris in 1849?",
+      answers: ["Fr\xE9d\xE9ric Chopin", "Franz Liszt", "Robert Schumann", "Felix Mendelssohn"],
+      checked: "Fr\xE9d\xE9ric Chopin"
+    },
+    {
+      id: 205,
+      category: "music",
+      level: 3,
+      question: "Who sang Izlel e Delyo Haydutin, the song on the Voyager record?",
+      answers: ["Valya Balkanska", "Nadka Karadzhova", "Yanka Rupkina", "Kalinka Valcheva"],
+      checked: "Valya Balkanska"
+    },
+    {
+      id: 206,
+      category: "music",
+      level: 3,
+      question: "What does forte mean in music?",
+      answers: ["Loud", "Soft", "Fast", "Slow"],
+      checked: "Forte (music)"
+    },
+    {
+      id: 207,
+      category: "music",
+      level: 3,
+      question: "What does allegro mean in music?",
+      answers: ["Fast and lively", "Slow", "Loud", "Quiet"],
+      checked: "Allegro"
+    },
+    {
+      id: 208,
+      category: "music",
+      level: 3,
+      question: "How many semitones are in an octave?",
+      answers: ["Twelve", "Eight", "Seven", "Ten"],
+      checked: "Octave"
+    },
+    {
+      id: 209,
+      category: "music",
+      level: 3,
+      question: "Which instrument did Jimi Hendrix famously play?",
+      answers: ["The electric guitar", "The drums", "The bass guitar", "The saxophone"],
+      checked: "Jimi Hendrix"
+    },
+    {
+      id: 210,
+      category: "music",
+      level: 3,
+      question: "Which composer was born in 1685, the same year as Handel?",
+      answers: [
+        "Johann Sebastian Bach",
+        "Antonio Vivaldi",
+        "Georg Philipp Telemann",
+        "Joseph Haydn"
+      ],
+      checked: "Johann Sebastian Bach"
+    },
+    {
+      id: 211,
+      category: "food",
+      level: 1,
+      question: "Which fruit is guacamole made from?",
+      answers: ["Avocado", "Banana", "Mango", "Pear"],
+      checked: "Guacamole"
+    },
+    {
+      id: 212,
+      category: "food",
+      level: 1,
+      question: "Which country does pizza come from?",
+      answers: ["Italy", "Greece", "Spain", "France"],
+      checked: "Pizza"
+    },
+    {
+      id: 213,
+      category: "food",
+      level: 1,
+      question: "What is sushi always made with?",
+      answers: ["Rice", "Bread", "Pasta", "Potatoes"],
+      checked: "Sushi"
+    },
+    {
+      id: 214,
+      category: "food",
+      level: 1,
+      question: "Which vegetable can make you cry when you cut it?",
+      answers: ["The onion", "The carrot", "The cucumber", "The pepper"],
+      checked: "Onion"
+    },
+    {
+      id: 215,
+      category: "food",
+      level: 1,
+      question: "What do you get when you churn cream?",
+      answers: ["Butter", "Cheese", "Yogurt", "Ice cream"],
+      checked: "Butter"
+    },
+    {
+      id: 216,
+      category: "food",
+      level: 1,
+      question: "Which drink is made from roasted beans?",
+      answers: ["Coffee", "Tea", "Juice", "Lemonade"],
+      checked: "Coffee"
+    },
+    {
+      id: 217,
+      category: "food",
+      level: 1,
+      question: "What colour is a ripe banana?",
+      answers: ["Yellow", "Red", "Purple", "Blue"],
+      checked: "Banana"
+    },
+    {
+      id: 218,
+      category: "food",
+      level: 1,
+      question: "Which nut is marzipan made from?",
+      answers: ["Almond", "Walnut", "Peanut", "Hazelnut"],
+      checked: "Marzipan"
+    },
+    {
+      id: 219,
+      category: "food",
+      level: 1,
+      question: "Which Bulgarian cold soup is made with yogurt and cucumber?",
+      answers: ["Tarator", "Shkembe chorba", "Bob chorba", "Gyuvech"],
+      checked: "Tarator"
+    },
+    {
+      id: 220,
+      category: "food",
+      level: 1,
+      question: "What is the main ingredient of an omelette?",
+      answers: ["Eggs", "Flour", "Milk", "Rice"],
+      checked: "Omelette"
+    },
+    {
+      id: 221,
+      category: "food",
+      level: 2,
+      question: "Which Bulgarian salad has tomatoes, cucumbers, peppers and grated white cheese?",
+      answers: ["Shopska salad", "Snezhanka", "Ovcharska salad", "Greek salad"],
+      checked: "Shopska salad"
+    },
+    {
+      id: 222,
+      category: "food",
+      level: 2,
+      question: "Which bacterium is named after Bulgaria, for its yogurt?",
+      answers: [
+        "Lactobacillus bulgaricus",
+        "Lactobacillus acidophilus",
+        "Bifidobacterium",
+        "Streptococcus mutans"
+      ],
+      checked: "Lactobacillus delbrueckii subsp. bulgaricus"
+    },
+    {
+      id: 223,
+      category: "food",
+      level: 2,
+      question: "Which country does paella come from?",
+      answers: ["Spain", "Portugal", "Italy", "Mexico"],
+      checked: "Paella"
+    },
+    {
+      id: 224,
+      category: "food",
+      level: 2,
+      question: "Which spice is the most expensive by weight?",
+      answers: ["Saffron", "Vanilla", "Cardamom", "Cinnamon"],
+      checked: "Saffron"
+    },
+    {
+      id: 225,
+      category: "food",
+      level: 2,
+      question: "What is the main ingredient of hummus?",
+      answers: ["Chickpeas", "Lentils", "Beans", "Peas"],
+      checked: "Hummus"
+    },
+    {
+      id: 226,
+      category: "food",
+      level: 2,
+      question: "Which country does feta cheese come from?",
+      answers: ["Greece", "Italy", "France", "Turkey"],
+      checked: "Feta"
+    },
+    {
+      id: 227,
+      category: "food",
+      level: 2,
+      question: "What is tofu made from?",
+      answers: ["Soybeans", "Rice", "Wheat", "Corn"],
+      checked: "Tofu"
+    },
+    {
+      id: 228,
+      category: "food",
+      level: 2,
+      question: "Which Italian dish has layers of pasta, meat sauce and b\xE9chamel?",
+      answers: ["Lasagne", "Risotto", "Ravioli", "Carbonara"],
+      checked: "Lasagne"
+    },
+    {
+      id: 229,
+      category: "food",
+      level: 2,
+      question: "Which Bulgarian pastry is made with filo sheets, eggs and white cheese?",
+      answers: ["Banitsa", "Mekitsa", "Kozunak", "Pogacha"],
+      checked: "Banitsa"
+    },
+    {
+      id: 230,
+      category: "food",
+      level: 2,
+      question: "From which plant's seeds is chocolate made?",
+      answers: ["Cacao", "Coffee", "Carob", "Vanilla"],
+      checked: "Chocolate"
+    },
+    {
+      id: 231,
+      category: "food",
+      level: 3,
+      question: "Bulgaria is famous for which oil, used in perfumes?",
+      answers: ["Rose oil", "Lavender oil", "Olive oil", "Sunflower oil"],
+      checked: "Rose oil"
+    },
+    {
+      id: 232,
+      category: "food",
+      level: 3,
+      question: "What is the sweet Bulgarian Easter bread called?",
+      answers: ["Kozunak", "Banitsa", "Pitka", "Mekitsa"],
+      checked: "Kozunak"
+    },
+    {
+      id: 233,
+      category: "food",
+      level: 3,
+      question: "Which grain is traditional Japanese sake made from?",
+      answers: ["Rice", "Barley", "Wheat", "Millet"],
+      checked: "Sake"
+    },
+    {
+      id: 234,
+      category: "food",
+      level: 3,
+      question: "Which cheese goes on a pizza Margherita?",
+      answers: ["Mozzarella", "Parmesan", "Cheddar", "Gorgonzola"],
+      checked: "Pizza Margherita"
+    },
+    {
+      id: 235,
+      category: "food",
+      level: 3,
+      question: "What kind of food is a boletus?",
+      answers: ["A mushroom", "A fish", "A herb", "A cheese"],
+      checked: "Boletus"
+    },
+    {
+      id: 236,
+      category: "food",
+      level: 3,
+      question: "Which Bulgarian grilled dish is minced meat shaped into a long roll?",
+      answers: ["Kebapche", "Kyufte", "Sarma", "Kavarma"],
+      checked: "Kebapche"
+    },
+    {
+      id: 237,
+      category: "food",
+      level: 3,
+      question: "What is the Bulgarian relish lyutenitsa mainly made of?",
+      answers: [
+        "Red peppers and tomatoes",
+        "Cabbage and carrots",
+        "Beans and onions",
+        "Cucumbers and dill"
+      ],
+      checked: "Lyutenitsa"
+    },
+    {
+      id: 238,
+      category: "food",
+      level: 3,
+      question: "Which country does goulash come from?",
+      answers: ["Hungary", "Austria", "Czechia", "Poland"],
+      checked: "Goulash"
+    },
+    {
+      id: 239,
+      category: "food",
+      level: 3,
+      question: "What does the Scoville scale measure?",
+      answers: [
+        "How hot chilli peppers are",
+        "How sweet fruit is",
+        "How sour a drink is",
+        "How salty food is"
+      ],
+      checked: "Scoville scale"
+    },
+    {
+      id: 240,
+      category: "food",
+      level: 3,
+      question: "Which vegetable is the main ingredient of borscht?",
+      answers: ["Beetroot", "Cabbage", "Potato", "Carrot"],
+      checked: "Borscht"
+    }
+  ]
+};
+
+// packages/games/trivia/engine/index.ts
+var PACKS7 = ["en", "bg"];
+var CATEGORIES3 = [
+  "geography",
+  "history",
+  "science",
+  "nature",
+  "sport",
+  "arts",
+  "music",
+  "food"
+];
+var TOPICS = ["mixed", ...CATEGORIES3];
+var configFrom25 = (raw) => {
+  const r = raw;
+  return {
+    pack: PACKS7.find((p) => p === r?.pack) ?? "en",
+    topic: TOPICS.find((t2) => t2 === r?.topic) ?? "mixed"
+  };
+};
+var BANK3 = {
+  en: en_default5.questions,
+  bg: bg_default5.questions
+};
+var PER_LEVEL = [3, 4, 3];
+var LIMIT_MS = 15e3;
+var MIN_MS = 500;
+var LEVEL_POINTS = [0, 100, 150, 200];
+function pointsFor4(level, ms) {
+  const base = LEVEL_POINTS[level] ?? 100;
+  const left = Math.max(0, LIMIT_MS - ms) / LIMIT_MS;
+  return base / 2 + Math.round(base / 2 * left);
+}
+function initialState36(raw, seed) {
+  const { pack, topic } = configFrom25(raw);
+  const rng = Rng.fromSeed(`trivia:${pack}:${topic}:${seed}`);
+  const bank = BANK3[pack];
+  const picks = [];
+  PER_LEVEL.forEach((count3, i) => {
+    const pool = bank.flatMap(
+      (q, k) => q.level === i + 1 && (topic === "mixed" || q.category === topic) ? [k] : []
+    );
+    picks.push(...rng.shuffle(pool).slice(0, count3));
+  });
+  return {
+    pack,
+    topic,
+    picks,
+    orders: picks.map(() => rng.shuffle([0, 1, 2, 3])),
+    index: 0,
+    answers: [],
+    score: 0,
+    over: picks.length === 0
+  };
+}
+function read14(s, action) {
+  if (s.over || typeof action !== "object" || action === null) return null;
+  if ("timeout" in action) {
+    return action.timeout === true ? { timeout: true } : null;
+  }
+  const a = action;
+  const choice = typeof a.choice === "number" && Number.isInteger(a.choice) && a.choice >= 0 && a.choice <= 3 ? a.choice : null;
+  const ms = measuredMs(a.ms, LIMIT_MS - 1);
+  if (choice === null || ms === null || ms < MIN_MS) return null;
+  return { choice, ms };
+}
+function apply15(s, action) {
+  const r = read14(s, action);
+  if (!r) return s;
+  const level = BANK3[s.pack][s.picks[s.index] ?? -1]?.level ?? 1;
+  const answer = "timeout" in r ? { choice: null, ms: LIMIT_MS, right: false, points: 0 } : (() => {
+    const right = s.orders[s.index]?.[r.choice] === 0;
+    return { choice: r.choice, ms: r.ms, right, points: right ? pointsFor4(level, r.ms) : 0 };
+  })();
+  const index = s.index + 1;
+  return {
+    ...s,
+    index,
+    answers: [...s.answers, answer],
+    score: s.score + answer.points,
+    over: index >= s.picks.length
+  };
+}
+function result36(s) {
+  return s.over ? { completed: true, score: s.score } : null;
+}
+var engine63 = {
+  initialState: initialState36,
+  apply: apply15,
+  progress: (s) => s.picks.length === 0 ? 1 : s.index / s.picks.length,
+  result: result36,
+  score: (s) => s.score,
+  actionMs: (s, action) => {
+    const r = read14(s, action);
+    if (!r) return 0;
+    return "timeout" in r ? LIMIT_MS : r.ms;
+  }
+};
+
+// packages/games/trivia/manifest.ts
+var manifest63 = defineManifest({
+  id: "trivia",
+  version: 1,
+  category: "party",
+  kind: "race",
+  players: { min: 1, max: 10, default: 4 },
+  modes: ["solo", "race", "online-private", "online-public", "quick-match"],
+  bots: { supported: false, difficulties: [], canFillSeats: false },
+  timers: [{ kind: "countdown", seconds: 240 }],
+  options: [
+    {
+      key: "pack",
+      label: "packOption",
+      values: [
+        { value: "en", label: "packEn", defaultIn: ["en"] },
+        { value: "bg", label: "packBg", defaultIn: ["bg"] }
+      ]
+    },
+    {
+      key: "topic",
+      label: "topicOption",
+      values: [
+        { value: "mixed", label: "topicMixed" },
+        { value: "geography", label: "topicGeography" },
+        { value: "history", label: "topicHistory" },
+        { value: "science", label: "topicScience" },
+        { value: "nature", label: "topicNature" },
+        { value: "sport", label: "topicSport" },
+        { value: "arts", label: "topicArts" },
+        { value: "music", label: "topicMusic" },
+        { value: "food", label: "topicFood" }
+      ]
+    }
+  ],
+  contentPacks: ["en", "bg"],
+  rated: false,
+  hiddenInformation: false,
+  orientation: "any",
+  controls: ["tap", "keyboard", "mouse"],
+  renderer: "dom",
+  estimatedMinutes: [2, 4],
+  // Mixed games only, one board per language; the speed part is measured on
+  // the player's device (Q6).
+  leaderboards: [
+    {
+      id: "best-en",
+      metric: "score",
+      order: "desc",
+      when: { pack: "en", topic: "mixed" },
+      device: true
+    },
+    {
+      id: "best-bg",
+      metric: "score",
+      order: "desc",
+      when: { pack: "bg", topic: "mixed" },
+      device: true
+    }
+  ],
+  achievements: [
+    { id: "played", icon: "repeat", metric: "played", tiers: [1, 25, 100] },
+    { id: "brainbox", icon: "star", metric: "bestScore", tiers: [900, 1200, 1400] }
+  ],
+  // Every answer carries its time; the engine applies the limits.
+  scoreValidation: { kind: "replay", maxActionsPerSecond: 2 },
+  tags: ["quiz", "knowledge", "brain", "multiplayer"]
+});
+
 // packages/games/ultimate-ttt/engine/index.ts
 var EMPTY9 = -1;
 var LINES = [
@@ -21200,7 +25105,7 @@ var LINES = [
   [0, 4, 8],
   [2, 4, 6]
 ];
-var configFrom25 = (raw) => ({
+var configFrom26 = (raw) => ({
   mode: raw?.mode === "classic" ? "classic" : "ultimate"
 });
 function lineOf(marks, seat) {
@@ -21217,9 +25122,9 @@ function movesFor6(state) {
     (b) => smallBoard(state.cells, b).flatMap((v, c) => v === EMPTY9 ? [b * 9 + c] : [])
   );
 }
-var engine63 = {
+var engine64 = {
   initialState(config) {
-    const { mode } = configFrom25(config);
+    const { mode } = configFrom26(config);
     return {
       mode,
       cells: Array.from({ length: mode === "classic" ? 9 : 81 }, () => EMPTY9),
@@ -21274,7 +25179,7 @@ var engine63 = {
 };
 
 // packages/games/ultimate-ttt/manifest.ts
-var manifest63 = defineManifest({
+var manifest64 = defineManifest({
   id: "ultimate-ttt",
   version: 1,
   category: "strategy",
@@ -21326,7 +25231,7 @@ function over16(state) {
   if (state.battle.up[0].length > 0 || state.battle.up[1].length > 0) return false;
   return state.piles[0].length === 0 || state.piles[1].length === 0 || state.battles >= state.limit;
 }
-function initialState36(config, _seats, seed) {
+function initialState37(config, _seats, seed) {
   const rng = Rng.fromSeed(seed);
   const deck2 = shuffledDeck(rng, 52);
   return {
@@ -21405,7 +25310,7 @@ function currentSeats22(state) {
   if (over16(state)) return [];
   return [0, 1].filter((s) => !state.flipped[s]);
 }
-function result36(state) {
+function result37(state) {
   if (!over16(state)) return null;
   if (state.outOfCards !== null) {
     return { completed: true, outcome: state.outOfCards === 0 ? [0, 1] : [1, 0] };
@@ -21435,17 +25340,17 @@ function view22(state, seat) {
     rng: [0, 0, 0, 0]
   };
 }
-var engine64 = {
-  initialState: initialState36,
+var engine65 = {
+  initialState: initialState37,
   legalActions: legalActions22,
   applyAction: applyAction22,
   currentSeats: currentSeats22,
-  result: result36,
+  result: result37,
   view: view22
 };
 
 // packages/games/war/manifest.ts
-var manifest64 = defineManifest({
+var manifest65 = defineManifest({
   id: "war",
   version: 1,
   category: "cards",
@@ -21489,7 +25394,7 @@ var manifest64 = defineManifest({
 // packages/games/whos-the-spy/engine/index.ts
 var PACK_SIZE2 = 30;
 var HIDDEN6 = -1;
-function initialState37(config, seats, seed) {
+function initialState38(config, seats, seed) {
   const rng = Rng.fromSeed(seed);
   return {
     players: seats,
@@ -21560,7 +25465,7 @@ function currentSeats23(s) {
   if (s.phase === "vote") return s.votes.flatMap((v, seat) => v === null ? [seat] : []);
   return [s.spy];
 }
-function result37(s) {
+function result38(s) {
   if (s.winner === null) return null;
   return {
     completed: true,
@@ -21583,19 +25488,19 @@ function view23(s, seat) {
 function viewAction11(action, seat, viewer) {
   return "vote" in action && viewer !== seat ? null : action;
 }
-var engine65 = {
-  initialState: initialState37,
+var engine66 = {
+  initialState: initialState38,
   legalActions: legalActions23,
   sideActions: sideActions2,
   applyAction: applyAction23,
   currentSeats: currentSeats23,
-  result: result37,
+  result: result38,
   view: view23,
   viewAction: viewAction11
 };
 
 // packages/games/whos-the-spy/manifest.ts
-var manifest65 = defineManifest({
+var manifest66 = defineManifest({
   id: "whos-the-spy",
   version: 1,
   category: "party",
@@ -21636,10 +25541,10 @@ var manifest65 = defineManifest({
 });
 
 // packages/games/word-chain/engine/index.ts
-var PACKS7 = ["en", "bg"];
-function configFrom26(raw) {
+var PACKS8 = ["en", "bg"];
+function configFrom27(raw) {
   const pack = raw?.pack;
-  return { pack: PACKS7.find((p) => p === pack) ?? "en" };
+  return { pack: PACKS8.find((p) => p === pack) ?? "en" };
 }
 var LIVES = 3;
 var MIN_LENGTH4 = 3;
@@ -21654,8 +25559,8 @@ function lastLetter(pack, word) {
   }
   return chars.at(-1) ?? "";
 }
-function initialState38(raw, seats, seed) {
-  const config = configFrom26(raw);
+function initialState39(raw, seats, seed) {
+  const config = configFrom27(raw);
   const rng = Rng.fromSeed(`word-chain:${seed}`);
   return {
     players: seats,
@@ -21715,7 +25620,7 @@ function currentSeats24(s) {
   return isOver7(s) ? [] : [s.turn];
 }
 var wordsBy = (s) => s.lives.map((_, seat) => s.by.filter((b) => b === seat).length);
-function result38(s) {
+function result39(s) {
   if (!isOver7(s)) return null;
   const said = wordsBy(s);
   const rank2 = s.lives.map((l, i) => l * 1e3 + (said[i] ?? 0));
@@ -21726,17 +25631,17 @@ function result38(s) {
     outcome: rank2.map((r) => r === best ? top2 === 1 ? 1 : 0.5 : 0)
   };
 }
-var engine66 = {
-  initialState: initialState38,
+var engine67 = {
+  initialState: initialState39,
   legalActions: legalActions24,
   accepts: accepts4,
   applyAction: applyAction24,
   currentSeats: currentSeats24,
-  result: result38
+  result: result39
 };
 
 // packages/games/word-chain/manifest.ts
-var manifest66 = defineManifest({
+var manifest67 = defineManifest({
   id: "word-chain",
   version: 1,
   category: "word",
@@ -21781,7 +25686,7 @@ var manifest66 = defineManifest({
 });
 
 // packages/games/word-of-the-day/content/bg.json
-var bg_default5 = {
+var bg_default6 = {
   answers: [
     "\u0430\u043A\u043E\u0440\u0434",
     "\u0430\u043A\u0443\u043B\u0430",
@@ -22227,7 +26132,7 @@ var bg_default5 = {
 };
 
 // packages/games/word-of-the-day/content/en.json
-var en_default5 = {
+var en_default6 = {
   answers: [
     "about",
     "above",
@@ -22853,21 +26758,21 @@ var en_default5 = {
 };
 
 // packages/games/word-of-the-day/engine/index.ts
-var PACKS8 = ["en", "bg"];
+var PACKS9 = ["en", "bg"];
 var LENGTH = 5;
 var TRIES = 6;
 var ANSWERS = {
-  en: en_default5.answers,
-  bg: bg_default5.answers
+  en: en_default6.answers,
+  bg: bg_default6.answers
 };
 function answerWord(pack, raw) {
   if (typeof raw !== "string") return null;
   const word = wordOf(pack, raw);
   return word !== null && charsOf(word).length === LENGTH ? word : null;
 }
-var configFrom27 = (raw) => {
+var configFrom28 = (raw) => {
   const r = raw;
-  const pack = PACKS8.find((p) => p === r?.pack) ?? "en";
+  const pack = PACKS9.find((p) => p === r?.pack) ?? "en";
   const d = r?.daily;
   const word = answerWord(pack, d?.word);
   const day = typeof d?.day === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d.day) ? d.day : null;
@@ -22890,8 +26795,8 @@ function marksFor(guess, answer) {
   });
   return marks;
 }
-function initialState39(raw, seed) {
-  const config = configFrom27(raw);
+function initialState40(raw, seed) {
+  const config = configFrom28(raw);
   const { pack } = config;
   const answer = config.daily?.word ?? Rng.fromSeed(`word-of-the-day:${pack}:${seed}`).pick(ANSWERS[pack]);
   return {
@@ -22911,7 +26816,7 @@ function refusal(s, raw) {
   if (word !== s.answer && !lexiconOf(s.pack, "all").has(word)) return "unknown";
   return null;
 }
-function apply15(s, action) {
+function apply16(s, action) {
   const raw = action?.guess;
   if (s.over || typeof raw !== "string" || refusal(s, raw) !== null) return s;
   const guess = answerWord(s.pack, raw) ?? "";
@@ -22926,19 +26831,19 @@ function apply15(s, action) {
   };
 }
 var scoreOf4 = (s) => s.won ? TRIES + 1 - s.guesses.length : 0;
-function result39(s) {
+function result40(s) {
   return s.over ? { completed: s.won, score: scoreOf4(s) } : null;
 }
-var engine67 = {
-  initialState: initialState39,
-  apply: apply15,
+var engine68 = {
+  initialState: initialState40,
+  apply: apply16,
   progress: (s) => s.over ? 1 : s.guesses.length / TRIES,
-  result: result39,
+  result: result40,
   score: scoreOf4
 };
 
 // packages/games/word-of-the-day/manifest.ts
-var manifest67 = defineManifest({
+var manifest68 = defineManifest({
   id: "word-of-the-day",
   version: 1,
   category: "word",
@@ -22978,7 +26883,7 @@ var manifest67 = defineManifest({
 });
 
 // packages/games/word-search/content/bg.json
-var bg_default6 = {
+var bg_default7 = {
   categories: [
     {
       id: "animals",
@@ -23184,7 +27089,7 @@ var bg_default6 = {
 };
 
 // packages/games/word-search/content/en.json
-var en_default6 = {
+var en_default7 = {
   categories: [
     {
       id: "animals",
@@ -23390,21 +27295,21 @@ var en_default6 = {
 };
 
 // packages/games/word-search/engine/index.ts
-var PACKS9 = ["en", "bg"];
+var PACKS10 = ["en", "bg"];
 var SIZES9 = [10, 8, 12];
-var configFrom28 = (raw) => {
+var configFrom29 = (raw) => {
   const r = raw;
   return {
-    pack: PACKS9.find((p) => p === r?.pack) ?? "en",
+    pack: PACKS10.find((p) => p === r?.pack) ?? "en",
     size: SIZES9.find((s) => s === r?.size) ?? 10
   };
 };
 var WORDS_FOR = { 8: 6, 10: 8, 12: 10 };
 var THEMES = {
-  en: en_default6.categories,
-  bg: bg_default6.categories
+  en: en_default7.categories,
+  bg: bg_default7.categories
 };
-var THEME_IDS = en_default6.categories.map((c) => c.id);
+var THEME_IDS = en_default7.categories.map((c) => c.id);
 var FILLER = {
   en: "eeeeeeeeeeeeaaaaaaaaarrrrrrrriiiiiiiioooooooottttttttnnnnnnnsssssslllllcccccuuuudddppmmhhggbbffyywkvxzjq",
   bg: "\u0430\u0430\u0430\u0430\u0430\u0430\u0430\u0430\u043E\u043E\u043E\u043E\u043E\u043E\u043E\u043E\u0435\u0435\u0435\u0435\u0435\u0435\u0435\u0435\u0438\u0438\u0438\u0438\u0438\u0438\u0438\u0438\u0442\u0442\u0442\u0442\u0442\u0442\u043D\u043D\u043D\u043D\u043D\u043D\u043D\u0440\u0440\u0440\u0440\u0440\u0440\u0441\u0441\u0441\u0441\u0441\u0441\u0432\u0432\u0432\u0432\u0432\u043B\u043B\u043B\u043B\u043A\u043A\u043A\u043A\u043A\u0434\u0434\u0434\u0434\u0434\u043F\u043F\u043F\u043F\u043F\u043C\u043C\u043C\u043C\u0437\u0437\u0437\u0437\u044F\u044F\u044F\u0431\u0431\u0433\u0433\u0443\u0443\u0447\u0447\u044A\u044A\u0436\u0436\u0439\u0448\u0449\u0446\u0444\u0445\u044C\u044E\u044F"
@@ -23432,8 +27337,8 @@ function fit(grid, size, word, row, col, [dr, dc]) {
   }
   return cells;
 }
-function initialState40(raw, seed) {
-  const { pack, size } = configFrom28(raw);
+function initialState41(raw, seed) {
+  const { pack, size } = configFrom29(raw);
   const rng = Rng.fromSeed(`word-search:${pack}:${String(size)}:${seed}`);
   const theme = rng.int(0, THEMES[pack].length - 1);
   const pool = rng.shuffle(
@@ -23481,7 +27386,7 @@ function matched(s, from, to) {
   );
   return index < 0 ? null : index;
 }
-function apply16(s, raw) {
+function apply17(s, raw) {
   const action = raw;
   if (isSolved3(s) || typeof action !== "object" || action === null) return s;
   const { from, to } = action;
@@ -23492,18 +27397,18 @@ function apply16(s, raw) {
   if (index === null) return { ...s, misses: s.misses + 1 };
   return { ...s, found: s.found.map((f, i) => i === index ? { from, to } : f) };
 }
-function result40(s) {
+function result41(s) {
   return isSolved3(s) ? { completed: true } : null;
 }
-var engine68 = {
-  initialState: initialState40,
-  apply: apply16,
+var engine69 = {
+  initialState: initialState41,
+  apply: apply17,
   progress: (s) => s.found.filter((f) => f !== null).length / Math.max(1, s.words.length),
-  result: result40
+  result: result41
 };
 
 // packages/games/word-search/manifest.ts
-var manifest68 = defineManifest({
+var manifest69 = defineManifest({
   id: "word-search",
   version: 1,
   category: "word",
@@ -23952,7 +27857,7 @@ function lifeResult(world, worm) {
     completed: true
   };
 }
-function result41(world, id) {
+function result42(world, id) {
   const worm = world.worms.get(id);
   if (!worm) return null;
   return worm.alive ? lifeResult(world, worm) : worm.lastLife;
@@ -24200,7 +28105,7 @@ var bots = {
 };
 
 // packages/games/worm-rush/engine/index.ts
-var engine69 = {
+var engine70 = {
   ticksPerSecond: TICKS_PER_SECOND,
   snapshotsPerSecond: SNAPSHOTS_PER_SECOND,
   capacity: CAPACITY,
@@ -24211,13 +28116,13 @@ var engine69 = {
   alive: alive3,
   step: step3,
   snapshot,
-  result: result41,
+  result: result42,
   snapshotCodec,
   inputCodec
 };
 
 // packages/games/worm-rush/manifest.ts
-var manifest69 = defineManifest({
+var manifest70 = defineManifest({
   id: "worm-rush",
   // Stored with every result; the arena server reports it with online lives.
   version: 1,
@@ -24311,13 +28216,14 @@ var GAMES = {
   "split-or-steal": { manifest: manifest60, engine: engine60 },
   "sudoku": { manifest: manifest61, engine: engine61 },
   "tap-frenzy": { manifest: manifest62, engine: engine62 },
-  "ultimate-ttt": { manifest: manifest63, engine: engine63 },
-  "war": { manifest: manifest64, engine: engine64 },
-  "whos-the-spy": { manifest: manifest65, engine: engine65 },
-  "word-chain": { manifest: manifest66, engine: engine66 },
-  "word-of-the-day": { manifest: manifest67, engine: engine67 },
-  "word-search": { manifest: manifest68, engine: engine68 },
-  "worm-rush": { manifest: manifest69, engine: engine69, bots, host: arenaHost }
+  "trivia": { manifest: manifest63, engine: engine63 },
+  "ultimate-ttt": { manifest: manifest64, engine: engine64 },
+  "war": { manifest: manifest65, engine: engine65 },
+  "whos-the-spy": { manifest: manifest66, engine: engine66 },
+  "word-chain": { manifest: manifest67, engine: engine67 },
+  "word-of-the-day": { manifest: manifest68, engine: engine68 },
+  "word-search": { manifest: manifest69, engine: engine69 },
+  "worm-rush": { manifest: manifest70, engine: engine70, bots, host: arenaHost }
 };
 export {
   ARENA_REPLAY_SECONDS,

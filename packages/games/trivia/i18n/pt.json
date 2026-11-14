@@ -1,0 +1,99 @@
+{
+  "name": "Quiz",
+  "tagline": "Dez perguntas, quatro respostas e pontos pela rapidez.",
+  "description": "Jogue Quiz grátis: dez perguntas de geografia, história, ciência, esporte e mais, com pontos pela rapidez. Sozinho ou numa corrida com amigos.",
+  "about": [
+    "Trivia is a quick quiz of ten questions, from geography, history, science, nature, sport, art and books, music, and food and drink. Every question has four answers and 15 seconds.",
+    "A right answer scores 100, 150 or 200 points, for an easy, medium or hard question: half for being right, and half that shrinks as the seconds pass. A wrong answer, or none, scores nothing. Each game has three easy questions, four medium and three hard, easiest first.",
+    "Play alone for your best score, or race friends in a room on the same ten questions. The questions are written for kefche in English and Bulgarian, the same in both, and each was checked against an encyclopedia."
+  ],
+  "howToPlay": [
+    "Choose a topic: Mixed for questions from every category, or one category.",
+    "After a 3-2-1 countdown, the first question appears with four answers and a 15-second bar.",
+    "Tap or click an answer, or press 1 to 4. The faster a right answer, the more points.",
+    "The right answer shows for a moment, then the next question comes. After ten, see your score and every answer."
+  ],
+  "controls": [
+    "Phones and tablets: tap an answer.",
+    "Mouse: click an answer.",
+    "Keyboard: press 1, 2, 3 or 4, or Tab to an answer and press Enter or Space."
+  ],
+  "tips": [
+    "Read all four answers before you choose: half the points are for being right.",
+    "If you don't know, rule out the answers you're sure are wrong.",
+    "Pausing gives up the question on screen, so finish it first.",
+    "Play a single topic to learn it: the end of each game shows every right answer."
+  ],
+  "faq": [
+    {
+      "question": "Is Trivia free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Where do the questions come from?",
+      "answer": "They're written for kefche, in English and Bulgarian, and each answer was checked against an encyclopedia."
+    },
+    {
+      "question": "How are points worked out?",
+      "answer": "An easy question is worth up to 100 points, a medium one 150 and a hard one 200. Half comes for a right answer, and the other half shrinks over the 15 seconds."
+    },
+    {
+      "question": "Can I play with friends?",
+      "answer": "Yes. Create a room and race on the same ten questions; the most points win."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their questions."
+    }
+  ],
+  "ui": {
+    "packEn": "inglês",
+    "packOption": "Idioma",
+    "packBg": "búlgaro",
+    "topicOption": "Tema",
+    "topicMixed": "Variado",
+    "topicGeography": "Geografia",
+    "topicHistory": "História",
+    "topicScience": "Ciência",
+    "topicNature": "Natureza",
+    "topicSport": "Esporte",
+    "topicArts": "Arte e livros",
+    "topicMusic": "Música",
+    "topicFood": "Comida e bebida",
+    "topicMixedDetail": "Perguntas de todas as categorias",
+    "topicOneDetail": "Dez perguntas deste tema",
+    "chooseTopic": "Escolha um tema",
+    "best": "Melhor: {n} pontos",
+    "question": "Pergunta",
+    "questionOf": "{n} de {total}",
+    "points": "Pontos",
+    "pointsTotal": "{n} pontos",
+    "resultNote": "{n} de {total} acertos",
+    "newBest": "Novo recorde neste aparelho!",
+    "reviewRight": "Certa: {answer} (+{points})",
+    "reviewWrong": "{answer} (você respondeu {yours})",
+    "reviewTimeout": "{answer} (sem resposta)",
+    "again": "Jogar de novo",
+    "menu": "Temas",
+    "timeLeft": "Tempo restante",
+    "answers": "Respostas",
+    "rightPoints": "Certo! +{points}",
+    "timeUp": "Acabou o tempo",
+    "wrongAnswer": "Não é essa",
+    "quit": "Sair"
+  },
+  "achievements": {
+    "played": {
+      "name": "Quizzeiro",
+      "description": "Jogue {count, plural, one {# partida} other {# partidas}}"
+    },
+    "brainbox": {
+      "name": "Sabichão",
+      "description": "Faça {count} pontos em uma partida"
+    }
+  },
+  "leaderboards": {
+    "best-en": "Melhor pontuação · inglês",
+    "best-bg": "Melhor pontuação · búlgaro"
+  }
+}

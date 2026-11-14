@@ -1,0 +1,1999 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "category": "geography",
+      "level": 1,
+      "question": "What is the capital of France?",
+      "answers": ["Paris", "Lyon", "Marseille", "Nice"],
+      "checked": "France"
+    },
+    {
+      "id": 2,
+      "category": "geography",
+      "level": 1,
+      "question": "Which is the largest ocean?",
+      "answers": ["The Pacific", "The Atlantic", "The Indian", "The Arctic"],
+      "checked": "Pacific Ocean"
+    },
+    {
+      "id": 3,
+      "category": "geography",
+      "level": 1,
+      "question": "On which continent is Egypt?",
+      "answers": ["Africa", "Asia", "Europe", "South America"],
+      "checked": "Egypt"
+    },
+    {
+      "id": 4,
+      "category": "geography",
+      "level": 1,
+      "question": "What is the capital of Bulgaria?",
+      "answers": ["Sofia", "Plovdiv", "Varna", "Burgas"],
+      "checked": "Bulgaria"
+    },
+    {
+      "id": 5,
+      "category": "geography",
+      "level": 1,
+      "question": "Which country is shaped like a boot?",
+      "answers": ["Italy", "Spain", "Greece", "Portugal"],
+      "checked": "Italy"
+    },
+    {
+      "id": 6,
+      "category": "geography",
+      "level": 1,
+      "question": "What is the capital of Japan?",
+      "answers": ["Tokyo", "Osaka", "Kyoto", "Seoul"],
+      "checked": "Japan"
+    },
+    {
+      "id": 7,
+      "category": "geography",
+      "level": 1,
+      "question": "Which river flows through London?",
+      "answers": ["The Thames", "The Seine", "The Danube", "The Rhine"],
+      "checked": "River Thames"
+    },
+    {
+      "id": 8,
+      "category": "geography",
+      "level": 1,
+      "question": "Which is the largest country by area?",
+      "answers": ["Russia", "Canada", "China", "The United States"],
+      "checked": "Russia"
+    },
+    {
+      "id": 9,
+      "category": "geography",
+      "level": 1,
+      "question": "Which sea lies to the east of Bulgaria?",
+      "answers": ["The Black Sea", "The Aegean Sea", "The Adriatic Sea", "The Caspian Sea"],
+      "checked": "Black Sea"
+    },
+    {
+      "id": 10,
+      "category": "geography",
+      "level": 1,
+      "question": "What is the capital of Spain?",
+      "answers": ["Madrid", "Barcelona", "Seville", "Valencia"],
+      "checked": "Spain"
+    },
+    {
+      "id": 11,
+      "category": "geography",
+      "level": 2,
+      "question": "Which is the longest river in Europe?",
+      "answers": ["The Volga", "The Danube", "The Rhine", "The Dnieper"],
+      "checked": "Volga"
+    },
+    {
+      "id": 12,
+      "category": "geography",
+      "level": 2,
+      "question": "What is the capital of Australia?",
+      "answers": ["Canberra", "Sydney", "Melbourne", "Perth"],
+      "checked": "Canberra"
+    },
+    {
+      "id": 13,
+      "category": "geography",
+      "level": 2,
+      "question": "Which is the highest peak in Bulgaria?",
+      "answers": ["Musala", "Vihren", "Botev", "Cherni Vrah"],
+      "checked": "Musala"
+    },
+    {
+      "id": 14,
+      "category": "geography",
+      "level": 2,
+      "question": "Which is the largest hot desert in the world?",
+      "answers": ["The Sahara", "The Gobi", "The Kalahari", "The Atacama"],
+      "checked": "Sahara"
+    },
+    {
+      "id": 15,
+      "category": "geography",
+      "level": 2,
+      "question": "Through how many countries does the Danube flow?",
+      "answers": ["10", "6", "8", "12"],
+      "checked": "Danube"
+    },
+    {
+      "id": 16,
+      "category": "geography",
+      "level": 2,
+      "question": "What is the capital of Canada?",
+      "answers": ["Ottawa", "Toronto", "Montreal", "Vancouver"],
+      "checked": "Ottawa"
+    },
+    {
+      "id": 17,
+      "category": "geography",
+      "level": 2,
+      "question": "Which strait separates Europe from Africa?",
+      "answers": [
+        "The Strait of Gibraltar",
+        "The Bosphorus",
+        "The Strait of Dover",
+        "The Strait of Messina"
+      ],
+      "checked": "Strait of Gibraltar"
+    },
+    {
+      "id": 18,
+      "category": "geography",
+      "level": 2,
+      "question": "Which is the smallest country in the world?",
+      "answers": ["Vatican City", "Monaco", "San Marino", "Liechtenstein"],
+      "checked": "Vatican City"
+    },
+    {
+      "id": 19,
+      "category": "geography",
+      "level": 2,
+      "question": "In which country is Mount Kilimanjaro?",
+      "answers": ["Tanzania", "Kenya", "Uganda", "Ethiopia"],
+      "checked": "Mount Kilimanjaro"
+    },
+    {
+      "id": 20,
+      "category": "geography",
+      "level": 2,
+      "question": "What is the capital of Turkey?",
+      "answers": ["Ankara", "Istanbul", "Izmir", "Bursa"],
+      "checked": "Ankara"
+    },
+    {
+      "id": 21,
+      "category": "geography",
+      "level": 3,
+      "question": "Which is the deepest lake in the world?",
+      "answers": ["Baikal", "Tanganyika", "Superior", "Victoria"],
+      "checked": "Lake Baikal"
+    },
+    {
+      "id": 22,
+      "category": "geography",
+      "level": 3,
+      "question": "What is the capital of Kazakhstan?",
+      "answers": ["Astana", "Almaty", "Bishkek", "Tashkent"],
+      "checked": "Astana"
+    },
+    {
+      "id": 23,
+      "category": "geography",
+      "level": 3,
+      "question": "Which country has the longest coastline?",
+      "answers": ["Canada", "Russia", "Norway", "Australia"],
+      "checked": "Canada"
+    },
+    {
+      "id": 24,
+      "category": "geography",
+      "level": 3,
+      "question": "Which river flows through Baghdad?",
+      "answers": ["The Tigris", "The Euphrates", "The Jordan", "The Nile"],
+      "checked": "Tigris"
+    },
+    {
+      "id": 25,
+      "category": "geography",
+      "level": 3,
+      "question": "Lake Titicaca lies on the border of Peru and which other country?",
+      "answers": ["Bolivia", "Chile", "Ecuador", "Argentina"],
+      "checked": "Lake Titicaca"
+    },
+    {
+      "id": 26,
+      "category": "geography",
+      "level": 3,
+      "question": "Which is the largest island in the world, not counting Australia?",
+      "answers": ["Greenland", "New Guinea", "Borneo", "Madagascar"],
+      "checked": "Greenland"
+    },
+    {
+      "id": 27,
+      "category": "geography",
+      "level": 3,
+      "question": "Which is Bulgaria's largest port on the Danube?",
+      "answers": ["Ruse", "Vidin", "Lom", "Svishtov"],
+      "checked": "Ruse"
+    },
+    {
+      "id": 28,
+      "category": "geography",
+      "level": 3,
+      "question": "What is the capital of New Zealand?",
+      "answers": ["Wellington", "Auckland", "Christchurch", "Hamilton"],
+      "checked": "Wellington"
+    },
+    {
+      "id": 29,
+      "category": "geography",
+      "level": 3,
+      "question": "Which mountains are usually taken as the border between Europe and Asia?",
+      "answers": ["The Urals", "The Caucasus", "The Carpathians", "The Altai"],
+      "checked": "Ural Mountains"
+    },
+    {
+      "id": 30,
+      "category": "geography",
+      "level": 3,
+      "question": "Which African country was once called Abyssinia?",
+      "answers": ["Ethiopia", "Eritrea", "Somalia", "Sudan"],
+      "checked": "Ethiopia"
+    },
+    {
+      "id": 31,
+      "category": "history",
+      "level": 1,
+      "question": "In which year did the Second World War end?",
+      "answers": ["1945", "1918", "1939", "1950"],
+      "checked": "World War II"
+    },
+    {
+      "id": 32,
+      "category": "history",
+      "level": 1,
+      "question": "Who was the first person to walk on the Moon?",
+      "answers": ["Neil Armstrong", "Yuri Gagarin", "Buzz Aldrin", "John Glenn"],
+      "checked": "Neil Armstrong"
+    },
+    {
+      "id": 33,
+      "category": "history",
+      "level": 1,
+      "question": "Which ancient people built the pyramids at Giza?",
+      "answers": ["The Egyptians", "The Romans", "The Greeks", "The Persians"],
+      "checked": "Giza pyramid complex"
+    },
+    {
+      "id": 34,
+      "category": "history",
+      "level": 1,
+      "question": "Who was the first person in space?",
+      "answers": ["Yuri Gagarin", "Neil Armstrong", "Valentina Tereshkova", "Alan Shepard"],
+      "checked": "Yuri Gagarin"
+    },
+    {
+      "id": 35,
+      "category": "history",
+      "level": 1,
+      "question": "Where were the ancient Olympic Games held?",
+      "answers": ["Olympia", "Athens", "Sparta", "Delphi"],
+      "checked": "Ancient Olympic Games"
+    },
+    {
+      "id": 36,
+      "category": "history",
+      "level": 1,
+      "question": "Which ship sank in 1912 after hitting an iceberg?",
+      "answers": ["The Titanic", "The Lusitania", "The Britannic", "The Olympic"],
+      "checked": "Titanic"
+    },
+    {
+      "id": 37,
+      "category": "history",
+      "level": 1,
+      "question": "Which wall fell in 1989?",
+      "answers": [
+        "The Berlin Wall",
+        "The Great Wall of China",
+        "Hadrian's Wall",
+        "The Western Wall"
+      ],
+      "checked": "Berlin Wall"
+    },
+    {
+      "id": 38,
+      "category": "history",
+      "level": 1,
+      "question": "Who was the first President of the United States?",
+      "answers": ["George Washington", "Abraham Lincoln", "Thomas Jefferson", "John Adams"],
+      "checked": "George Washington"
+    },
+    {
+      "id": 39,
+      "category": "history",
+      "level": 1,
+      "question": "In which year did Christopher Columbus first reach the Americas?",
+      "answers": ["1492", "1453", "1517", "1607"],
+      "checked": "Christopher Columbus"
+    },
+    {
+      "id": 40,
+      "category": "history",
+      "level": 1,
+      "question": "Which country gave the Statue of Liberty to the United States?",
+      "answers": ["France", "Britain", "Spain", "Italy"],
+      "checked": "Statue of Liberty"
+    },
+    {
+      "id": 41,
+      "category": "history",
+      "level": 2,
+      "question": "In which year was Bulgaria liberated, with the Treaty of San Stefano?",
+      "answers": ["1878", "1876", "1885", "1908"],
+      "checked": "Liberation of Bulgaria"
+    },
+    {
+      "id": 42,
+      "category": "history",
+      "level": 2,
+      "question": "In which year did Bulgaria declare its independence?",
+      "answers": ["1908", "1878", "1885", "1912"],
+      "checked": "Bulgarian Declaration of Independence"
+    },
+    {
+      "id": 43,
+      "category": "history",
+      "level": 2,
+      "question": "Which khan founded the Bulgarian state on the Danube in 681?",
+      "answers": ["Asparuh", "Krum", "Tervel", "Kubrat"],
+      "checked": "Asparuh"
+    },
+    {
+      "id": 44,
+      "category": "history",
+      "level": 2,
+      "question": "Which Bulgarian ruler made Christianity the state religion in the 860s?",
+      "answers": ["Boris I", "Simeon I", "Krum", "Samuil"],
+      "checked": "Boris I of Bulgaria"
+    },
+    {
+      "id": 45,
+      "category": "history",
+      "level": 2,
+      "question": "Which brothers created the Glagolitic alphabet?",
+      "answers": ["Cyril and Methodius", "Clement and Naum", "Romulus and Remus", "Boris and Gleb"],
+      "checked": "Glagolitic script"
+    },
+    {
+      "id": 46,
+      "category": "history",
+      "level": 2,
+      "question": "In which year did the First World War begin?",
+      "answers": ["1914", "1912", "1916", "1918"],
+      "checked": "World War I"
+    },
+    {
+      "id": 47,
+      "category": "history",
+      "level": 2,
+      "question": "Which French emperor was defeated at Waterloo?",
+      "answers": ["Napoleon", "Louis XIV", "Charlemagne", "Louis XVI"],
+      "checked": "Battle of Waterloo"
+    },
+    {
+      "id": 48,
+      "category": "history",
+      "level": 2,
+      "question": "Which city was the capital of the Byzantine Empire?",
+      "answers": ["Constantinople", "Rome", "Athens", "Thessaloniki"],
+      "checked": "Constantinople"
+    },
+    {
+      "id": 49,
+      "category": "history",
+      "level": 2,
+      "question": "In which year did the French Revolution begin?",
+      "answers": ["1789", "1776", "1815", "1848"],
+      "checked": "French Revolution"
+    },
+    {
+      "id": 50,
+      "category": "history",
+      "level": 2,
+      "question": "Which Bulgarian revolutionary is called the Apostle of Freedom?",
+      "answers": ["Vasil Levski", "Hristo Botev", "Georgi Rakovski", "Lyuben Karavelov"],
+      "checked": "Vasil Levski"
+    },
+    {
+      "id": 51,
+      "category": "history",
+      "level": 3,
+      "question": "In which year did Constantinople fall to the Ottomans?",
+      "answers": ["1453", "1389", "1492", "1526"],
+      "checked": "Fall of Constantinople"
+    },
+    {
+      "id": 52,
+      "category": "history",
+      "level": 3,
+      "question": "In which year was the April Uprising in Bulgaria?",
+      "answers": ["1876", "1878", "1867", "1885"],
+      "checked": "April Uprising"
+    },
+    {
+      "id": 53,
+      "category": "history",
+      "level": 3,
+      "question": "Under which ruler did Bulgaria have the Golden Age of its culture?",
+      "answers": ["Simeon I", "Boris I", "Ivan Asen II", "Kaloyan"],
+      "checked": "Simeon I"
+    },
+    {
+      "id": 54,
+      "category": "history",
+      "level": 3,
+      "question": "In which year were the Principality of Bulgaria and Eastern Rumelia united?",
+      "answers": ["1885", "1878", "1879", "1908"],
+      "checked": "Unification of Bulgaria"
+    },
+    {
+      "id": 55,
+      "category": "history",
+      "level": 3,
+      "question": "Who wrote the Slavonic-Bulgarian History in 1762?",
+      "answers": ["Paisius of Hilendar", "Sophronius of Vratsa", "Neofit Rilski", "Vasil Aprilov"],
+      "checked": "Paisius of Hilendar"
+    },
+    {
+      "id": 56,
+      "category": "history",
+      "level": 3,
+      "question": "Which wonder of the ancient world stood in Alexandria?",
+      "answers": ["The Lighthouse", "The Colossus", "The Hanging Gardens", "The Temple of Artemis"],
+      "checked": "Lighthouse of Alexandria"
+    },
+    {
+      "id": 57,
+      "category": "history",
+      "level": 3,
+      "question": "Who was the first woman in space?",
+      "answers": ["Valentina Tereshkova", "Sally Ride", "Svetlana Savitskaya", "Mae Jemison"],
+      "checked": "Valentina Tereshkova"
+    },
+    {
+      "id": 58,
+      "category": "history",
+      "level": 3,
+      "question": "Which treaty of 1919 ended the First World War with Germany?",
+      "answers": [
+        "The Treaty of Versailles",
+        "The Treaty of Neuilly",
+        "The Treaty of Trianon",
+        "The Treaty of Paris"
+      ],
+      "checked": "Treaty of Versailles"
+    },
+    {
+      "id": 59,
+      "category": "history",
+      "level": 3,
+      "question": "Spartacus, who led a slave revolt against Rome, came from which people?",
+      "answers": ["The Thracians", "The Gauls", "The Germans", "The Carthaginians"],
+      "checked": "Spartacus"
+    },
+    {
+      "id": 60,
+      "category": "history",
+      "level": 3,
+      "question": "Which empire built Machu Picchu?",
+      "answers": ["The Inca", "The Aztec", "The Maya", "The Olmec"],
+      "checked": "Machu Picchu"
+    },
+    {
+      "id": 61,
+      "category": "science",
+      "level": 1,
+      "question": "What is H₂O better known as?",
+      "answers": ["Water", "Salt", "Oxygen", "Sugar"],
+      "checked": "Water"
+    },
+    {
+      "id": 62,
+      "category": "science",
+      "level": 1,
+      "question": "Which planet is closest to the Sun?",
+      "answers": ["Mercury", "Venus", "Mars", "Earth"],
+      "checked": "Mercury (planet)"
+    },
+    {
+      "id": 63,
+      "category": "science",
+      "level": 1,
+      "question": "Which planet is known as the Red Planet?",
+      "answers": ["Mars", "Jupiter", "Venus", "Saturn"],
+      "checked": "Mars"
+    },
+    {
+      "id": 64,
+      "category": "science",
+      "level": 1,
+      "question": "Which force keeps us on the ground?",
+      "answers": ["Gravity", "Magnetism", "Friction", "Pressure"],
+      "checked": "Gravity"
+    },
+    {
+      "id": 65,
+      "category": "science",
+      "level": 1,
+      "question": "Which gas do plants take from the air to make their food?",
+      "answers": ["Carbon dioxide", "Oxygen", "Nitrogen", "Helium"],
+      "checked": "Photosynthesis"
+    },
+    {
+      "id": 66,
+      "category": "science",
+      "level": 1,
+      "question": "At what temperature does water boil at sea level?",
+      "answers": ["100 °C", "90 °C", "80 °C", "120 °C"],
+      "checked": "Boiling point"
+    },
+    {
+      "id": 67,
+      "category": "science",
+      "level": 1,
+      "question": "Which is the largest planet in the Solar System?",
+      "answers": ["Jupiter", "Saturn", "Neptune", "Earth"],
+      "checked": "Jupiter"
+    },
+    {
+      "id": 68,
+      "category": "science",
+      "level": 1,
+      "question": "How many planets are there in the Solar System?",
+      "answers": ["Eight", "Seven", "Nine", "Ten"],
+      "checked": "Solar System"
+    },
+    {
+      "id": 69,
+      "category": "science",
+      "level": 1,
+      "question": "What does a thermometer measure?",
+      "answers": ["Temperature", "Pressure", "Weight", "Speed"],
+      "checked": "Thermometer"
+    },
+    {
+      "id": 70,
+      "category": "science",
+      "level": 1,
+      "question": "Which organ pumps blood around the body?",
+      "answers": ["The heart", "The liver", "The lungs", "The kidneys"],
+      "checked": "Heart"
+    },
+    {
+      "id": 71,
+      "category": "science",
+      "level": 2,
+      "question": "What is the chemical symbol for gold?",
+      "answers": ["Au", "Ag", "Go", "Gd"],
+      "checked": "Gold"
+    },
+    {
+      "id": 72,
+      "category": "science",
+      "level": 2,
+      "question": "Which is the hardest natural material?",
+      "answers": ["Diamond", "Quartz", "Granite", "Iron"],
+      "checked": "Diamond"
+    },
+    {
+      "id": 73,
+      "category": "science",
+      "level": 2,
+      "question": "Who developed the theory of relativity?",
+      "answers": ["Albert Einstein", "Isaac Newton", "Niels Bohr", "Galileo Galilei"],
+      "checked": "Theory of relativity"
+    },
+    {
+      "id": 74,
+      "category": "science",
+      "level": 2,
+      "question": "How many bones are there in an adult human body?",
+      "answers": ["206", "186", "226", "306"],
+      "checked": "Human skeleton"
+    },
+    {
+      "id": 75,
+      "category": "science",
+      "level": 2,
+      "question": "In which part of a cell is most of its DNA?",
+      "answers": ["The nucleus", "The membrane", "The ribosomes", "The cytoplasm"],
+      "checked": "Cell nucleus"
+    },
+    {
+      "id": 76,
+      "category": "science",
+      "level": 2,
+      "question": "About how fast does light travel?",
+      "answers": ["300,000 km/s", "30,000 km/s", "3,000 km/s", "3,000,000 km/s"],
+      "checked": "Speed of light"
+    },
+    {
+      "id": 77,
+      "category": "science",
+      "level": 2,
+      "question": "Which gas makes up most of Earth's atmosphere?",
+      "answers": ["Nitrogen", "Oxygen", "Carbon dioxide", "Argon"],
+      "checked": "Atmosphere of Earth"
+    },
+    {
+      "id": 78,
+      "category": "science",
+      "level": 2,
+      "question": "Who discovered penicillin?",
+      "answers": ["Alexander Fleming", "Louis Pasteur", "Marie Curie", "Robert Koch"],
+      "checked": "Penicillin"
+    },
+    {
+      "id": 79,
+      "category": "science",
+      "level": 2,
+      "question": "What is the chemical symbol for sodium?",
+      "answers": ["Na", "So", "Sd", "S"],
+      "checked": "Sodium"
+    },
+    {
+      "id": 80,
+      "category": "science",
+      "level": 2,
+      "question": "Who set out the three laws of motion?",
+      "answers": ["Isaac Newton", "Galileo Galilei", "Johannes Kepler", "Albert Einstein"],
+      "checked": "Newton's laws of motion"
+    },
+    {
+      "id": 81,
+      "category": "science",
+      "level": 3,
+      "question": "What is the atomic number of carbon?",
+      "answers": ["6", "8", "12", "14"],
+      "checked": "Carbon"
+    },
+    {
+      "id": 82,
+      "category": "science",
+      "level": 3,
+      "question": "Who published the periodic table of the elements in 1869?",
+      "answers": ["Dmitri Mendeleev", "Antoine Lavoisier", "John Dalton", "Ernest Rutherford"],
+      "checked": "Periodic table"
+    },
+    {
+      "id": 83,
+      "category": "science",
+      "level": 3,
+      "question": "Which is the most abundant element in the universe?",
+      "answers": ["Hydrogen", "Helium", "Oxygen", "Carbon"],
+      "checked": "Hydrogen"
+    },
+    {
+      "id": 84,
+      "category": "science",
+      "level": 3,
+      "question": "What is the unit of electrical resistance?",
+      "answers": ["The ohm", "The volt", "The ampere", "The watt"],
+      "checked": "Ohm"
+    },
+    {
+      "id": 85,
+      "category": "science",
+      "level": 3,
+      "question": "Which blood type is known as the universal donor?",
+      "answers": ["O negative", "AB positive", "A positive", "B negative"],
+      "checked": "Blood type"
+    },
+    {
+      "id": 86,
+      "category": "science",
+      "level": 3,
+      "question": "At what temperature in Fahrenheit does water freeze?",
+      "answers": ["32 °F", "0 °F", "100 °F", "212 °F"],
+      "checked": "Fahrenheit"
+    },
+    {
+      "id": 87,
+      "category": "science",
+      "level": 3,
+      "question": "Which planet spins on its side, tilted by about 98°?",
+      "answers": ["Uranus", "Neptune", "Saturn", "Venus"],
+      "checked": "Uranus"
+    },
+    {
+      "id": 88,
+      "category": "science",
+      "level": 3,
+      "question": "Which particle has a negative electric charge?",
+      "answers": ["The electron", "The proton", "The neutron", "The photon"],
+      "checked": "Electron"
+    },
+    {
+      "id": 89,
+      "category": "science",
+      "level": 3,
+      "question": "About how long does sunlight take to reach Earth?",
+      "answers": ["8 minutes", "8 seconds", "1 hour", "1 day"],
+      "checked": "Sunlight"
+    },
+    {
+      "id": 90,
+      "category": "science",
+      "level": 3,
+      "question": "What does a light-year measure?",
+      "answers": ["Distance", "Time", "Brightness", "Speed"],
+      "checked": "Light-year"
+    },
+    {
+      "id": 91,
+      "category": "nature",
+      "level": 1,
+      "question": "Which is the largest animal on Earth?",
+      "answers": ["The blue whale", "The elephant", "The giraffe", "The great white shark"],
+      "checked": "Blue whale"
+    },
+    {
+      "id": 92,
+      "category": "nature",
+      "level": 1,
+      "question": "How many legs does a spider have?",
+      "answers": ["Eight", "Six", "Ten", "Twelve"],
+      "checked": "Spider"
+    },
+    {
+      "id": 93,
+      "category": "nature",
+      "level": 1,
+      "question": "What does a caterpillar become?",
+      "answers": ["A butterfly", "A beetle", "A bee", "A dragonfly"],
+      "checked": "Butterfly"
+    },
+    {
+      "id": 94,
+      "category": "nature",
+      "level": 1,
+      "question": "Which animal is called the king of the animals?",
+      "answers": ["The lion", "The tiger", "The elephant", "The gorilla"],
+      "checked": "Lion"
+    },
+    {
+      "id": 95,
+      "category": "nature",
+      "level": 1,
+      "question": "Which is the tallest animal?",
+      "answers": ["The giraffe", "The elephant", "The camel", "The ostrich"],
+      "checked": "Giraffe"
+    },
+    {
+      "id": 96,
+      "category": "nature",
+      "level": 1,
+      "question": "Which bird is a symbol of peace?",
+      "answers": ["The dove", "The eagle", "The swan", "The owl"],
+      "checked": "Dove"
+    },
+    {
+      "id": 97,
+      "category": "nature",
+      "level": 1,
+      "question": "What do bees make?",
+      "answers": ["Honey", "Silk", "Butter", "Sugar"],
+      "checked": "Honey"
+    },
+    {
+      "id": 98,
+      "category": "nature",
+      "level": 1,
+      "question": "How many legs does an insect have?",
+      "answers": ["Six", "Four", "Eight", "Ten"],
+      "checked": "Insect"
+    },
+    {
+      "id": 99,
+      "category": "nature",
+      "level": 1,
+      "question": "Which of these is a mammal?",
+      "answers": ["The dolphin", "The shark", "The trout", "The octopus"],
+      "checked": "Dolphin"
+    },
+    {
+      "id": 100,
+      "category": "nature",
+      "level": 1,
+      "question": "What is a young dog called?",
+      "answers": ["A puppy", "A kitten", "A calf", "A foal"],
+      "checked": "Puppy"
+    },
+    {
+      "id": 101,
+      "category": "nature",
+      "level": 2,
+      "question": "Which is the fastest land animal?",
+      "answers": ["The cheetah", "The lion", "The horse", "The gazelle"],
+      "checked": "Cheetah"
+    },
+    {
+      "id": 102,
+      "category": "nature",
+      "level": 2,
+      "question": "Which of these birds cannot fly?",
+      "answers": ["The penguin", "The swan", "The eagle", "The parrot"],
+      "checked": "Penguin"
+    },
+    {
+      "id": 103,
+      "category": "nature",
+      "level": 2,
+      "question": "What is an animal that eats only plants called?",
+      "answers": ["A herbivore", "A carnivore", "An omnivore", "A predator"],
+      "checked": "Herbivore"
+    },
+    {
+      "id": 104,
+      "category": "nature",
+      "level": 2,
+      "question": "Which tree grows acorns?",
+      "answers": ["The oak", "The beech", "The maple", "The pine"],
+      "checked": "Oak"
+    },
+    {
+      "id": 105,
+      "category": "nature",
+      "level": 2,
+      "question": "How many hearts does an octopus have?",
+      "answers": ["Three", "One", "Two", "Eight"],
+      "checked": "Octopus"
+    },
+    {
+      "id": 106,
+      "category": "nature",
+      "level": 2,
+      "question": "Which animal is on Bulgaria's coat of arms?",
+      "answers": ["The lion", "The eagle", "The bear", "The wolf"],
+      "checked": "Coat of arms of Bulgaria"
+    },
+    {
+      "id": 107,
+      "category": "nature",
+      "level": 2,
+      "question": "What is a group of wolves called?",
+      "answers": ["A pack", "A herd", "A flock", "A school"],
+      "checked": "Wolf"
+    },
+    {
+      "id": 108,
+      "category": "nature",
+      "level": 2,
+      "question": "Which animal sleeps hanging upside down?",
+      "answers": ["The bat", "The owl", "The squirrel", "The raccoon"],
+      "checked": "Bat"
+    },
+    {
+      "id": 109,
+      "category": "nature",
+      "level": 2,
+      "question": "What kind of animal is a frog?",
+      "answers": ["An amphibian", "A reptile", "A mammal", "A fish"],
+      "checked": "Frog"
+    },
+    {
+      "id": 110,
+      "category": "nature",
+      "level": 2,
+      "question": "Which is the largest bird alive today?",
+      "answers": ["The ostrich", "The emu", "The albatross", "The condor"],
+      "checked": "Ostrich"
+    },
+    {
+      "id": 111,
+      "category": "nature",
+      "level": 3,
+      "question": "Which animal carries its young the longest, about 22 months?",
+      "answers": ["The African elephant", "The blue whale", "The giraffe", "The rhinoceros"],
+      "checked": "African elephant"
+    },
+    {
+      "id": 112,
+      "category": "nature",
+      "level": 3,
+      "question": "Which species of tree grows the tallest?",
+      "answers": ["The coast redwood", "The giant sequoia", "The Douglas fir", "The eucalyptus"],
+      "checked": "Coast redwood"
+    },
+    {
+      "id": 113,
+      "category": "nature",
+      "level": 3,
+      "question": "How many chambers does a cow's stomach have?",
+      "answers": ["Four", "Two", "Three", "Six"],
+      "checked": "Ruminant"
+    },
+    {
+      "id": 114,
+      "category": "nature",
+      "level": 3,
+      "question": "On which continent are there no native ants?",
+      "answers": ["Antarctica", "Australia", "Europe", "South America"],
+      "checked": "Ant"
+    },
+    {
+      "id": 115,
+      "category": "nature",
+      "level": 3,
+      "question": "Which flightless bird is a national symbol of New Zealand?",
+      "answers": ["The kiwi", "The emu", "The kea", "The cassowary"],
+      "checked": "Kiwi (bird)"
+    },
+    {
+      "id": 116,
+      "category": "nature",
+      "level": 3,
+      "question": "Which animal has fingerprints almost like a human's?",
+      "answers": ["The koala", "The dog", "The panda", "The cat"],
+      "checked": "Koala"
+    },
+    {
+      "id": 117,
+      "category": "nature",
+      "level": 3,
+      "question": "Which is the largest species of shark?",
+      "answers": [
+        "The whale shark",
+        "The great white shark",
+        "The hammerhead shark",
+        "The tiger shark"
+      ],
+      "checked": "Whale shark"
+    },
+    {
+      "id": 118,
+      "category": "nature",
+      "level": 3,
+      "question": "Which of these mammals lays eggs?",
+      "answers": ["The platypus", "The hedgehog", "The armadillo", "The mole"],
+      "checked": "Platypus"
+    },
+    {
+      "id": 119,
+      "category": "nature",
+      "level": 3,
+      "question": "How many eyes does a honey bee have?",
+      "answers": ["Five", "Two", "Four", "Eight"],
+      "checked": "Honey bee"
+    },
+    {
+      "id": 120,
+      "category": "nature",
+      "level": 3,
+      "question": "Which of these animals is the closest living relative of humans?",
+      "answers": ["The chimpanzee", "The gorilla", "The orangutan", "The gibbon"],
+      "checked": "Chimpanzee"
+    },
+    {
+      "id": 121,
+      "category": "sport",
+      "level": 1,
+      "question": "How many players does a football team have on the pitch?",
+      "answers": ["Eleven", "Ten", "Nine", "Twelve"],
+      "checked": "Association football"
+    },
+    {
+      "id": 122,
+      "category": "sport",
+      "level": 1,
+      "question": "In which sport do you hit a shuttlecock?",
+      "answers": ["Badminton", "Tennis", "Squash", "Table tennis"],
+      "checked": "Badminton"
+    },
+    {
+      "id": 123,
+      "category": "sport",
+      "level": 1,
+      "question": "How often are the Summer Olympic Games held?",
+      "answers": ["Every four years", "Every two years", "Every three years", "Every five years"],
+      "checked": "Summer Olympic Games"
+    },
+    {
+      "id": 124,
+      "category": "sport",
+      "level": 1,
+      "question": "Which sport is played at Wimbledon?",
+      "answers": ["Tennis", "Golf", "Cricket", "Football"],
+      "checked": "Wimbledon Championships"
+    },
+    {
+      "id": 125,
+      "category": "sport",
+      "level": 1,
+      "question": "How many rings are on the Olympic flag?",
+      "answers": ["Five", "Four", "Six", "Seven"],
+      "checked": "Olympic rings"
+    },
+    {
+      "id": 126,
+      "category": "sport",
+      "level": 1,
+      "question": "How many points is a basketball shot from beyond the arc worth?",
+      "answers": ["Three", "Two", "Four", "Five"],
+      "checked": "Three-point field goal"
+    },
+    {
+      "id": 127,
+      "category": "sport",
+      "level": 1,
+      "question": "Which sport is played with a puck?",
+      "answers": ["Ice hockey", "Curling", "Polo", "Lacrosse"],
+      "checked": "Ice hockey"
+    },
+    {
+      "id": 128,
+      "category": "sport",
+      "level": 1,
+      "question": "Which chess piece moves only diagonally?",
+      "answers": ["The bishop", "The rook", "The knight", "The king"],
+      "checked": "Bishop (chess)"
+    },
+    {
+      "id": 129,
+      "category": "sport",
+      "level": 1,
+      "question": "How many holes are in a standard round of golf?",
+      "answers": ["18", "9", "12", "24"],
+      "checked": "Golf"
+    },
+    {
+      "id": 130,
+      "category": "sport",
+      "level": 1,
+      "question": "In which sport do you score a try?",
+      "answers": ["Rugby", "Football", "Tennis", "Hockey"],
+      "checked": "Rugby union"
+    },
+    {
+      "id": 131,
+      "category": "sport",
+      "level": 2,
+      "question": "How many players does a volleyball team have on court?",
+      "answers": ["Six", "Five", "Seven", "Eight"],
+      "checked": "Volleyball"
+    },
+    {
+      "id": 132,
+      "category": "sport",
+      "level": 2,
+      "question": "Which country hosted the first modern Olympic Games, in 1896?",
+      "answers": ["Greece", "France", "Britain", "The United States"],
+      "checked": "1896 Summer Olympics"
+    },
+    {
+      "id": 133,
+      "category": "sport",
+      "level": 2,
+      "question": "How long is a marathon?",
+      "answers": ["42.195 km", "40 km", "45 km", "21.1 km"],
+      "checked": "Marathon"
+    },
+    {
+      "id": 134,
+      "category": "sport",
+      "level": 2,
+      "question": "How many players does a basketball team have on court?",
+      "answers": ["Five", "Six", "Four", "Seven"],
+      "checked": "Basketball"
+    },
+    {
+      "id": 135,
+      "category": "sport",
+      "level": 2,
+      "question": "How many sets must a man win to take a Grand Slam tennis match?",
+      "answers": ["Three", "Two", "Four", "Five"],
+      "checked": "Grand Slam (tennis)"
+    },
+    {
+      "id": 136,
+      "category": "sport",
+      "level": 2,
+      "question": "Which Bulgarian footballer won the Ballon d'Or in 1994?",
+      "answers": ["Hristo Stoichkov", "Dimitar Berbatov", "Krasimir Balakov", "Yordan Letchkov"],
+      "checked": "Hristo Stoichkov"
+    },
+    {
+      "id": 137,
+      "category": "sport",
+      "level": 2,
+      "question": "How many squares are there on a chessboard?",
+      "answers": ["64", "49", "81", "100"],
+      "checked": "Chessboard"
+    },
+    {
+      "id": 138,
+      "category": "sport",
+      "level": 2,
+      "question": "In which sport is the Stanley Cup awarded?",
+      "answers": ["Ice hockey", "Basketball", "Baseball", "American football"],
+      "checked": "Stanley Cup"
+    },
+    {
+      "id": 139,
+      "category": "sport",
+      "level": 2,
+      "question": "What is the usual maximum break in snooker?",
+      "answers": ["147", "155", "140", "180"],
+      "checked": "Maximum break"
+    },
+    {
+      "id": 140,
+      "category": "sport",
+      "level": 2,
+      "question": "In which country did judo begin?",
+      "answers": ["Japan", "China", "Korea", "Thailand"],
+      "checked": "Judo"
+    },
+    {
+      "id": 141,
+      "category": "sport",
+      "level": 3,
+      "question": "How many players does a water polo team have in the water?",
+      "answers": ["Seven", "Six", "Eight", "Five"],
+      "checked": "Water polo"
+    },
+    {
+      "id": 142,
+      "category": "sport",
+      "level": 3,
+      "question": "Which city hosted the 1980 Summer Olympics?",
+      "answers": ["Moscow", "Los Angeles", "Montreal", "Seoul"],
+      "checked": "1980 Summer Olympics"
+    },
+    {
+      "id": 143,
+      "category": "sport",
+      "level": 3,
+      "question": "How long is an Olympic swimming pool?",
+      "answers": ["50 m", "25 m", "100 m", "75 m"],
+      "checked": "Olympic-size swimming pool"
+    },
+    {
+      "id": 144,
+      "category": "sport",
+      "level": 3,
+      "question": "In which sport do Bulgarian athletes famously compete with ribbons, hoops and balls?",
+      "answers": [
+        "Rhythmic gymnastics",
+        "Artistic gymnastics",
+        "Figure skating",
+        "Artistic swimming"
+      ],
+      "checked": "Rhythmic gymnastics"
+    },
+    {
+      "id": 145,
+      "category": "sport",
+      "level": 3,
+      "question": "Which Bulgarian athlete set a world record of 2.09 m in the high jump in 1987?",
+      "answers": ["Stefka Kostadinova", "Yordanka Donkova", "Tereza Marinova", "Ivet Lalova"],
+      "checked": "Stefka Kostadinova"
+    },
+    {
+      "id": 146,
+      "category": "sport",
+      "level": 3,
+      "question": "How many points is a touchdown worth in American football?",
+      "answers": ["Six", "Three", "Seven", "Two"],
+      "checked": "Touchdown"
+    },
+    {
+      "id": 147,
+      "category": "sport",
+      "level": 3,
+      "question": "Which country won the first football World Cup, in 1930?",
+      "answers": ["Uruguay", "Brazil", "Argentina", "Italy"],
+      "checked": "1930 FIFA World Cup"
+    },
+    {
+      "id": 148,
+      "category": "sport",
+      "level": 3,
+      "question": "In which sport is a \"birdie\" one stroke under par?",
+      "answers": ["Golf", "Badminton", "Bowling", "Darts"],
+      "checked": "Birdie"
+    },
+    {
+      "id": 149,
+      "category": "sport",
+      "level": 3,
+      "question": "What is the highest score with three darts?",
+      "answers": ["180", "150", "120", "200"],
+      "checked": "Darts"
+    },
+    {
+      "id": 150,
+      "category": "sport",
+      "level": 3,
+      "question": "Which wrestling sport is traditional in Japan and fought in a ring called a dohyō?",
+      "answers": ["Sumo", "Judo", "Karate", "Kendo"],
+      "checked": "Sumo"
+    },
+    {
+      "id": 151,
+      "category": "arts",
+      "level": 1,
+      "question": "Who painted the Mona Lisa?",
+      "answers": ["Leonardo da Vinci", "Michelangelo", "Raphael", "Vincent van Gogh"],
+      "checked": "Mona Lisa"
+    },
+    {
+      "id": 152,
+      "category": "arts",
+      "level": 1,
+      "question": "Who wrote Romeo and Juliet?",
+      "answers": ["William Shakespeare", "Charles Dickens", "Jane Austen", "Mark Twain"],
+      "checked": "Romeo and Juliet"
+    },
+    {
+      "id": 153,
+      "category": "arts",
+      "level": 1,
+      "question": "Which colour do you get by mixing blue and yellow paint?",
+      "answers": ["Green", "Purple", "Orange", "Brown"],
+      "checked": "Colour mixing"
+    },
+    {
+      "id": 154,
+      "category": "arts",
+      "level": 1,
+      "question": "Which fairy-tale heroine loses a glass slipper?",
+      "answers": ["Cinderella", "Snow White", "Sleeping Beauty", "Rapunzel"],
+      "checked": "Cinderella"
+    },
+    {
+      "id": 155,
+      "category": "arts",
+      "level": 1,
+      "question": "Which detective lives at 221B Baker Street?",
+      "answers": ["Sherlock Holmes", "Hercule Poirot", "Miss Marple", "Inspector Morse"],
+      "checked": "Sherlock Holmes"
+    },
+    {
+      "id": 156,
+      "category": "arts",
+      "level": 1,
+      "question": "Who wrote the Harry Potter books?",
+      "answers": ["J. K. Rowling", "Roald Dahl", "C. S. Lewis", "J. R. R. Tolkien"],
+      "checked": "Harry Potter"
+    },
+    {
+      "id": 157,
+      "category": "arts",
+      "level": 1,
+      "question": "In which city is the Louvre museum?",
+      "answers": ["Paris", "London", "Rome", "Madrid"],
+      "checked": "Louvre"
+    },
+    {
+      "id": 158,
+      "category": "arts",
+      "level": 1,
+      "question": "Who wrote The Little Prince?",
+      "answers": ["Antoine de Saint-Exupéry", "Victor Hugo", "Jules Verne", "Alexandre Dumas"],
+      "checked": "The Little Prince"
+    },
+    {
+      "id": 159,
+      "category": "arts",
+      "level": 1,
+      "question": "Which of these is a primary colour in painting?",
+      "answers": ["Red", "Green", "Orange", "Purple"],
+      "checked": "Primary colour"
+    },
+    {
+      "id": 160,
+      "category": "arts",
+      "level": 1,
+      "question": "Which wooden puppet's nose grows when he lies?",
+      "answers": ["Pinocchio", "Peter Pan", "Gulliver", "Bambi"],
+      "checked": "Pinocchio"
+    },
+    {
+      "id": 161,
+      "category": "arts",
+      "level": 2,
+      "question": "Who wrote the novel Under the Yoke?",
+      "answers": ["Ivan Vazov", "Hristo Botev", "Aleko Konstantinov", "Elin Pelin"],
+      "checked": "Under the Yoke"
+    },
+    {
+      "id": 162,
+      "category": "arts",
+      "level": 2,
+      "question": "Who painted The Starry Night?",
+      "answers": ["Vincent van Gogh", "Claude Monet", "Pablo Picasso", "Salvador Dalí"],
+      "checked": "The Starry Night"
+    },
+    {
+      "id": 163,
+      "category": "arts",
+      "level": 2,
+      "question": "Who wrote Don Quixote?",
+      "answers": [
+        "Miguel de Cervantes",
+        "Lope de Vega",
+        "Gabriel García Márquez",
+        "Dante Alighieri"
+      ],
+      "checked": "Don Quixote"
+    },
+    {
+      "id": 164,
+      "category": "arts",
+      "level": 2,
+      "question": "Who carved the marble statue of David finished in 1504 in Florence?",
+      "answers": ["Michelangelo", "Donatello", "Bernini", "Rodin"],
+      "checked": "David (Michelangelo)"
+    },
+    {
+      "id": 165,
+      "category": "arts",
+      "level": 2,
+      "question": "Who wrote Bay Ganyo?",
+      "answers": ["Aleko Konstantinov", "Ivan Vazov", "Elin Pelin", "Yordan Yovkov"],
+      "checked": "Bay Ganyo"
+    },
+    {
+      "id": 166,
+      "category": "arts",
+      "level": 2,
+      "question": "Who wrote War and Peace?",
+      "answers": ["Leo Tolstoy", "Fyodor Dostoevsky", "Anton Chekhov", "Ivan Turgenev"],
+      "checked": "War and Peace"
+    },
+    {
+      "id": 167,
+      "category": "arts",
+      "level": 2,
+      "question": "Which art movement did Pablo Picasso found with Georges Braque?",
+      "answers": ["Cubism", "Impressionism", "Surrealism", "Baroque"],
+      "checked": "Cubism"
+    },
+    {
+      "id": 168,
+      "category": "arts",
+      "level": 2,
+      "question": "Who wrote Les Misérables?",
+      "answers": ["Victor Hugo", "Émile Zola", "Gustave Flaubert", "Honoré de Balzac"],
+      "checked": "Les Misérables"
+    },
+    {
+      "id": 169,
+      "category": "arts",
+      "level": 2,
+      "question": "Who is said to have composed the Odyssey?",
+      "answers": ["Homer", "Sophocles", "Virgil", "Plato"],
+      "checked": "Odyssey"
+    },
+    {
+      "id": 170,
+      "category": "arts",
+      "level": 2,
+      "question": "Which Bulgarian poet and revolutionary was killed in 1876 in the Vratsa Balkan?",
+      "answers": ["Hristo Botev", "Vasil Levski", "Ivan Vazov", "Peyo Yavorov"],
+      "checked": "Hristo Botev"
+    },
+    {
+      "id": 171,
+      "category": "arts",
+      "level": 3,
+      "question": "Who painted The Last Supper in Milan?",
+      "answers": ["Leonardo da Vinci", "Michelangelo", "Raphael", "Titian"],
+      "checked": "The Last Supper"
+    },
+    {
+      "id": 172,
+      "category": "arts",
+      "level": 3,
+      "question": "The artist Christo, who wrapped the Reichstag in Berlin, was born in which country?",
+      "answers": ["Bulgaria", "Germany", "France", "The United States"],
+      "checked": "Christo"
+    },
+    {
+      "id": 173,
+      "category": "arts",
+      "level": 3,
+      "question": "Who wrote Crime and Punishment?",
+      "answers": ["Fyodor Dostoevsky", "Leo Tolstoy", "Nikolai Gogol", "Alexander Pushkin"],
+      "checked": "Crime and Punishment"
+    },
+    {
+      "id": 174,
+      "category": "arts",
+      "level": 3,
+      "question": "Who wrote Pride and Prejudice?",
+      "answers": ["Jane Austen", "Charlotte Brontë", "Emily Brontë", "Mary Shelley"],
+      "checked": "Pride and Prejudice"
+    },
+    {
+      "id": 175,
+      "category": "arts",
+      "level": 3,
+      "question": "Which Dutch painter made Girl with a Pearl Earring?",
+      "answers": ["Johannes Vermeer", "Rembrandt", "Frans Hals", "Vincent van Gogh"],
+      "checked": "Girl with a Pearl Earring"
+    },
+    {
+      "id": 176,
+      "category": "arts",
+      "level": 3,
+      "question": "What was the real name of the writer Elin Pelin?",
+      "answers": ["Dimitar Stoyanov", "Ivan Stoyanov", "Petko Todorov", "Georgi Stamatov"],
+      "checked": "Elin Pelin"
+    },
+    {
+      "id": 177,
+      "category": "arts",
+      "level": 3,
+      "question": "Who wrote The Divine Comedy?",
+      "answers": ["Dante Alighieri", "Petrarch", "Giovanni Boccaccio", "Niccolò Machiavelli"],
+      "checked": "Divine Comedy"
+    },
+    {
+      "id": 178,
+      "category": "arts",
+      "level": 3,
+      "question": "Which painter is famous for the melting clocks of The Persistence of Memory?",
+      "answers": ["Salvador Dalí", "René Magritte", "Joan Miró", "Max Ernst"],
+      "checked": "The Persistence of Memory"
+    },
+    {
+      "id": 179,
+      "category": "arts",
+      "level": 3,
+      "question": "In which museum hangs Rembrandt's The Night Watch?",
+      "answers": ["The Rijksmuseum", "The Louvre", "The Prado", "The Uffizi"],
+      "checked": "The Night Watch"
+    },
+    {
+      "id": 180,
+      "category": "arts",
+      "level": 3,
+      "question": "Who wrote One Hundred Years of Solitude?",
+      "answers": ["Gabriel García Márquez", "Jorge Luis Borges", "Pablo Neruda", "Isabel Allende"],
+      "checked": "One Hundred Years of Solitude"
+    },
+    {
+      "id": 181,
+      "category": "music",
+      "level": 1,
+      "question": "How many strings does a standard guitar have?",
+      "answers": ["Six", "Four", "Five", "Seven"],
+      "checked": "Guitar"
+    },
+    {
+      "id": 182,
+      "category": "music",
+      "level": 1,
+      "question": "Which instrument has black and white keys?",
+      "answers": ["The piano", "The violin", "The flute", "The drum"],
+      "checked": "Piano"
+    },
+    {
+      "id": 183,
+      "category": "music",
+      "level": 1,
+      "question": "How many lines does a musical staff have?",
+      "answers": ["Five", "Four", "Six", "Seven"],
+      "checked": "Staff (music)"
+    },
+    {
+      "id": 184,
+      "category": "music",
+      "level": 1,
+      "question": "Which of these instruments do you blow into?",
+      "answers": ["The trumpet", "The violin", "The piano", "The drum"],
+      "checked": "Trumpet"
+    },
+    {
+      "id": 185,
+      "category": "music",
+      "level": 1,
+      "question": "Who composed Für Elise?",
+      "answers": [
+        "Ludwig van Beethoven",
+        "Wolfgang Amadeus Mozart",
+        "Johann Sebastian Bach",
+        "Frédéric Chopin"
+      ],
+      "checked": "Für Elise"
+    },
+    {
+      "id": 186,
+      "category": "music",
+      "level": 1,
+      "question": "What is a group of four musicians called?",
+      "answers": ["A quartet", "A trio", "A duo", "A quintet"],
+      "checked": "Quartet"
+    },
+    {
+      "id": 187,
+      "category": "music",
+      "level": 1,
+      "question": "Which of these is a percussion instrument?",
+      "answers": ["The drum", "The flute", "The cello", "The harp"],
+      "checked": "Drum"
+    },
+    {
+      "id": 188,
+      "category": "music",
+      "level": 1,
+      "question": "Which famous band came from Liverpool?",
+      "answers": ["The Beatles", "The Rolling Stones", "Queen", "ABBA"],
+      "checked": "The Beatles"
+    },
+    {
+      "id": 189,
+      "category": "music",
+      "level": 1,
+      "question": "Which country does flamenco come from?",
+      "answers": ["Spain", "Italy", "Mexico", "Portugal"],
+      "checked": "Flamenco"
+    },
+    {
+      "id": 190,
+      "category": "music",
+      "level": 1,
+      "question": "What does a conductor hold to lead an orchestra?",
+      "answers": ["A baton", "A bow", "A mallet", "A plectrum"],
+      "checked": "Baton (conducting)"
+    },
+    {
+      "id": 191,
+      "category": "music",
+      "level": 2,
+      "question": "How many keys does a standard piano have?",
+      "answers": ["88", "76", "92", "100"],
+      "checked": "Piano"
+    },
+    {
+      "id": 192,
+      "category": "music",
+      "level": 2,
+      "question": "Who composed The Four Seasons?",
+      "answers": [
+        "Antonio Vivaldi",
+        "Johann Sebastian Bach",
+        "George Frideric Handel",
+        "Joseph Haydn"
+      ],
+      "checked": "The Four Seasons (Vivaldi)"
+    },
+    {
+      "id": 193,
+      "category": "music",
+      "level": 2,
+      "question": "Which composer went deaf but kept on composing?",
+      "answers": [
+        "Ludwig van Beethoven",
+        "Wolfgang Amadeus Mozart",
+        "Franz Schubert",
+        "Richard Wagner"
+      ],
+      "checked": "Ludwig van Beethoven"
+    },
+    {
+      "id": 194,
+      "category": "music",
+      "level": 2,
+      "question": "Which Swedish band won Eurovision in 1974 with Waterloo?",
+      "answers": ["ABBA", "Roxette", "Europe", "Ace of Base"],
+      "checked": "Waterloo (ABBA song)"
+    },
+    {
+      "id": 195,
+      "category": "music",
+      "level": 2,
+      "question": "Which is the largest instrument of the orchestra's string family?",
+      "answers": ["The double bass", "The cello", "The viola", "The violin"],
+      "checked": "Double bass"
+    },
+    {
+      "id": 196,
+      "category": "music",
+      "level": 2,
+      "question": "Which Bulgarian folk instrument is a bagpipe?",
+      "answers": ["The gaida", "The kaval", "The gadulka", "The tambura"],
+      "checked": "Gaida"
+    },
+    {
+      "id": 197,
+      "category": "music",
+      "level": 2,
+      "question": "Which Bulgarian folk song travels in space on the Voyager record?",
+      "answers": ["Izlel e Delyo Haydutin", "Polegnala e Todora", "Kalimanku Denku", "Malka moma"],
+      "checked": "Voyager Golden Record"
+    },
+    {
+      "id": 198,
+      "category": "music",
+      "level": 2,
+      "question": "Who composed the opera The Magic Flute?",
+      "answers": [
+        "Wolfgang Amadeus Mozart",
+        "Giuseppe Verdi",
+        "Gioachino Rossini",
+        "Richard Wagner"
+      ],
+      "checked": "The Magic Flute"
+    },
+    {
+      "id": 199,
+      "category": "music",
+      "level": 2,
+      "question": "In which city was Mozart born?",
+      "answers": ["Salzburg", "Vienna", "Prague", "Munich"],
+      "checked": "Wolfgang Amadeus Mozart"
+    },
+    {
+      "id": 200,
+      "category": "music",
+      "level": 2,
+      "question": "What kind of instrument is the Bulgarian kaval?",
+      "answers": ["A flute", "A bagpipe", "A fiddle", "A drum"],
+      "checked": "Kaval"
+    },
+    {
+      "id": 201,
+      "category": "music",
+      "level": 3,
+      "question": "How many symphonies did Beethoven complete?",
+      "answers": ["Nine", "Five", "Seven", "Twelve"],
+      "checked": "Beethoven's symphonies"
+    },
+    {
+      "id": 202,
+      "category": "music",
+      "level": 3,
+      "question": "Who composed the opera Carmen?",
+      "answers": ["Georges Bizet", "Giuseppe Verdi", "Giacomo Puccini", "Gioachino Rossini"],
+      "checked": "Carmen"
+    },
+    {
+      "id": 203,
+      "category": "music",
+      "level": 3,
+      "question": "Who composed the ballet Swan Lake?",
+      "answers": [
+        "Pyotr Ilyich Tchaikovsky",
+        "Igor Stravinsky",
+        "Sergei Prokofiev",
+        "Nikolai Rimsky-Korsakov"
+      ],
+      "checked": "Swan Lake"
+    },
+    {
+      "id": 204,
+      "category": "music",
+      "level": 3,
+      "question": "Which Polish composer of piano music died in Paris in 1849?",
+      "answers": ["Frédéric Chopin", "Franz Liszt", "Robert Schumann", "Felix Mendelssohn"],
+      "checked": "Frédéric Chopin"
+    },
+    {
+      "id": 205,
+      "category": "music",
+      "level": 3,
+      "question": "Who sang Izlel e Delyo Haydutin, the song on the Voyager record?",
+      "answers": ["Valya Balkanska", "Nadka Karadzhova", "Yanka Rupkina", "Kalinka Valcheva"],
+      "checked": "Valya Balkanska"
+    },
+    {
+      "id": 206,
+      "category": "music",
+      "level": 3,
+      "question": "What does forte mean in music?",
+      "answers": ["Loud", "Soft", "Fast", "Slow"],
+      "checked": "Forte (music)"
+    },
+    {
+      "id": 207,
+      "category": "music",
+      "level": 3,
+      "question": "What does allegro mean in music?",
+      "answers": ["Fast and lively", "Slow", "Loud", "Quiet"],
+      "checked": "Allegro"
+    },
+    {
+      "id": 208,
+      "category": "music",
+      "level": 3,
+      "question": "How many semitones are in an octave?",
+      "answers": ["Twelve", "Eight", "Seven", "Ten"],
+      "checked": "Octave"
+    },
+    {
+      "id": 209,
+      "category": "music",
+      "level": 3,
+      "question": "Which instrument did Jimi Hendrix famously play?",
+      "answers": ["The electric guitar", "The drums", "The bass guitar", "The saxophone"],
+      "checked": "Jimi Hendrix"
+    },
+    {
+      "id": 210,
+      "category": "music",
+      "level": 3,
+      "question": "Which composer was born in 1685, the same year as Handel?",
+      "answers": [
+        "Johann Sebastian Bach",
+        "Antonio Vivaldi",
+        "Georg Philipp Telemann",
+        "Joseph Haydn"
+      ],
+      "checked": "Johann Sebastian Bach"
+    },
+    {
+      "id": 211,
+      "category": "food",
+      "level": 1,
+      "question": "Which fruit is guacamole made from?",
+      "answers": ["Avocado", "Banana", "Mango", "Pear"],
+      "checked": "Guacamole"
+    },
+    {
+      "id": 212,
+      "category": "food",
+      "level": 1,
+      "question": "Which country does pizza come from?",
+      "answers": ["Italy", "Greece", "Spain", "France"],
+      "checked": "Pizza"
+    },
+    {
+      "id": 213,
+      "category": "food",
+      "level": 1,
+      "question": "What is sushi always made with?",
+      "answers": ["Rice", "Bread", "Pasta", "Potatoes"],
+      "checked": "Sushi"
+    },
+    {
+      "id": 214,
+      "category": "food",
+      "level": 1,
+      "question": "Which vegetable can make you cry when you cut it?",
+      "answers": ["The onion", "The carrot", "The cucumber", "The pepper"],
+      "checked": "Onion"
+    },
+    {
+      "id": 215,
+      "category": "food",
+      "level": 1,
+      "question": "What do you get when you churn cream?",
+      "answers": ["Butter", "Cheese", "Yogurt", "Ice cream"],
+      "checked": "Butter"
+    },
+    {
+      "id": 216,
+      "category": "food",
+      "level": 1,
+      "question": "Which drink is made from roasted beans?",
+      "answers": ["Coffee", "Tea", "Juice", "Lemonade"],
+      "checked": "Coffee"
+    },
+    {
+      "id": 217,
+      "category": "food",
+      "level": 1,
+      "question": "What colour is a ripe banana?",
+      "answers": ["Yellow", "Red", "Purple", "Blue"],
+      "checked": "Banana"
+    },
+    {
+      "id": 218,
+      "category": "food",
+      "level": 1,
+      "question": "Which nut is marzipan made from?",
+      "answers": ["Almond", "Walnut", "Peanut", "Hazelnut"],
+      "checked": "Marzipan"
+    },
+    {
+      "id": 219,
+      "category": "food",
+      "level": 1,
+      "question": "Which Bulgarian cold soup is made with yogurt and cucumber?",
+      "answers": ["Tarator", "Shkembe chorba", "Bob chorba", "Gyuvech"],
+      "checked": "Tarator"
+    },
+    {
+      "id": 220,
+      "category": "food",
+      "level": 1,
+      "question": "What is the main ingredient of an omelette?",
+      "answers": ["Eggs", "Flour", "Milk", "Rice"],
+      "checked": "Omelette"
+    },
+    {
+      "id": 221,
+      "category": "food",
+      "level": 2,
+      "question": "Which Bulgarian salad has tomatoes, cucumbers, peppers and grated white cheese?",
+      "answers": ["Shopska salad", "Snezhanka", "Ovcharska salad", "Greek salad"],
+      "checked": "Shopska salad"
+    },
+    {
+      "id": 222,
+      "category": "food",
+      "level": 2,
+      "question": "Which bacterium is named after Bulgaria, for its yogurt?",
+      "answers": [
+        "Lactobacillus bulgaricus",
+        "Lactobacillus acidophilus",
+        "Bifidobacterium",
+        "Streptococcus mutans"
+      ],
+      "checked": "Lactobacillus delbrueckii subsp. bulgaricus"
+    },
+    {
+      "id": 223,
+      "category": "food",
+      "level": 2,
+      "question": "Which country does paella come from?",
+      "answers": ["Spain", "Portugal", "Italy", "Mexico"],
+      "checked": "Paella"
+    },
+    {
+      "id": 224,
+      "category": "food",
+      "level": 2,
+      "question": "Which spice is the most expensive by weight?",
+      "answers": ["Saffron", "Vanilla", "Cardamom", "Cinnamon"],
+      "checked": "Saffron"
+    },
+    {
+      "id": 225,
+      "category": "food",
+      "level": 2,
+      "question": "What is the main ingredient of hummus?",
+      "answers": ["Chickpeas", "Lentils", "Beans", "Peas"],
+      "checked": "Hummus"
+    },
+    {
+      "id": 226,
+      "category": "food",
+      "level": 2,
+      "question": "Which country does feta cheese come from?",
+      "answers": ["Greece", "Italy", "France", "Turkey"],
+      "checked": "Feta"
+    },
+    {
+      "id": 227,
+      "category": "food",
+      "level": 2,
+      "question": "What is tofu made from?",
+      "answers": ["Soybeans", "Rice", "Wheat", "Corn"],
+      "checked": "Tofu"
+    },
+    {
+      "id": 228,
+      "category": "food",
+      "level": 2,
+      "question": "Which Italian dish has layers of pasta, meat sauce and béchamel?",
+      "answers": ["Lasagne", "Risotto", "Ravioli", "Carbonara"],
+      "checked": "Lasagne"
+    },
+    {
+      "id": 229,
+      "category": "food",
+      "level": 2,
+      "question": "Which Bulgarian pastry is made with filo sheets, eggs and white cheese?",
+      "answers": ["Banitsa", "Mekitsa", "Kozunak", "Pogacha"],
+      "checked": "Banitsa"
+    },
+    {
+      "id": 230,
+      "category": "food",
+      "level": 2,
+      "question": "From which plant's seeds is chocolate made?",
+      "answers": ["Cacao", "Coffee", "Carob", "Vanilla"],
+      "checked": "Chocolate"
+    },
+    {
+      "id": 231,
+      "category": "food",
+      "level": 3,
+      "question": "Bulgaria is famous for which oil, used in perfumes?",
+      "answers": ["Rose oil", "Lavender oil", "Olive oil", "Sunflower oil"],
+      "checked": "Rose oil"
+    },
+    {
+      "id": 232,
+      "category": "food",
+      "level": 3,
+      "question": "What is the sweet Bulgarian Easter bread called?",
+      "answers": ["Kozunak", "Banitsa", "Pitka", "Mekitsa"],
+      "checked": "Kozunak"
+    },
+    {
+      "id": 233,
+      "category": "food",
+      "level": 3,
+      "question": "Which grain is traditional Japanese sake made from?",
+      "answers": ["Rice", "Barley", "Wheat", "Millet"],
+      "checked": "Sake"
+    },
+    {
+      "id": 234,
+      "category": "food",
+      "level": 3,
+      "question": "Which cheese goes on a pizza Margherita?",
+      "answers": ["Mozzarella", "Parmesan", "Cheddar", "Gorgonzola"],
+      "checked": "Pizza Margherita"
+    },
+    {
+      "id": 235,
+      "category": "food",
+      "level": 3,
+      "question": "What kind of food is a boletus?",
+      "answers": ["A mushroom", "A fish", "A herb", "A cheese"],
+      "checked": "Boletus"
+    },
+    {
+      "id": 236,
+      "category": "food",
+      "level": 3,
+      "question": "Which Bulgarian grilled dish is minced meat shaped into a long roll?",
+      "answers": ["Kebapche", "Kyufte", "Sarma", "Kavarma"],
+      "checked": "Kebapche"
+    },
+    {
+      "id": 237,
+      "category": "food",
+      "level": 3,
+      "question": "What is the Bulgarian relish lyutenitsa mainly made of?",
+      "answers": [
+        "Red peppers and tomatoes",
+        "Cabbage and carrots",
+        "Beans and onions",
+        "Cucumbers and dill"
+      ],
+      "checked": "Lyutenitsa"
+    },
+    {
+      "id": 238,
+      "category": "food",
+      "level": 3,
+      "question": "Which country does goulash come from?",
+      "answers": ["Hungary", "Austria", "Czechia", "Poland"],
+      "checked": "Goulash"
+    },
+    {
+      "id": 239,
+      "category": "food",
+      "level": 3,
+      "question": "What does the Scoville scale measure?",
+      "answers": [
+        "How hot chilli peppers are",
+        "How sweet fruit is",
+        "How sour a drink is",
+        "How salty food is"
+      ],
+      "checked": "Scoville scale"
+    },
+    {
+      "id": 240,
+      "category": "food",
+      "level": 3,
+      "question": "Which vegetable is the main ingredient of borscht?",
+      "answers": ["Beetroot", "Cabbage", "Potato", "Carrot"],
+      "checked": "Borscht"
+    }
+  ]
+}

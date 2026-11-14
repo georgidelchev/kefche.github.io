@@ -565,6 +565,17 @@ if (process.argv.includes("--fixtures")) {
       config: { pack: "bg", daily: { day: "2026-11-14", word: "котка" } },
       next: (state) => ({ guess: ["пчела", "лодка"][state.guesses.length] ?? state.answer }),
     },
+    // Bulgarian mixed questions answered at random times, mostly right, and
+    // one question let run out.
+    trivia: {
+      config: { pack: "bg", topic: "mixed" },
+      next: (state, random) => {
+        if (state.index === 4) return { timeout: true };
+        const order = state.orders[state.index];
+        const choice = random() < 0.7 ? order.indexOf(0) : Math.floor(random() * 4);
+        return { choice, ms: 600 + Math.floor(random() * 13_000) };
+      },
+    },
     // A letter read every 1 to 2 s, right four times in five, until 60 s.
     "morse-master": {
       config: { pack: "bg", task: "read" },

@@ -1,0 +1,99 @@
+{
+  "name": "クイズ",
+  "tagline": "10問、4択、早さでポイント。",
+  "description": "クイズを無料でプレイ。地理、歴史、科学、スポーツなどの10問に答え、早く正解するほど高得点。ひとりでも、友だちと競争でも。",
+  "about": [
+    "Trivia is a quick quiz of ten questions, from geography, history, science, nature, sport, art and books, music, and food and drink. Every question has four answers and 15 seconds.",
+    "A right answer scores 100, 150 or 200 points, for an easy, medium or hard question: half for being right, and half that shrinks as the seconds pass. A wrong answer, or none, scores nothing. Each game has three easy questions, four medium and three hard, easiest first.",
+    "Play alone for your best score, or race friends in a room on the same ten questions. The questions are written for kefche in English and Bulgarian, the same in both, and each was checked against an encyclopedia."
+  ],
+  "howToPlay": [
+    "Choose a topic: Mixed for questions from every category, or one category.",
+    "After a 3-2-1 countdown, the first question appears with four answers and a 15-second bar.",
+    "Tap or click an answer, or press 1 to 4. The faster a right answer, the more points.",
+    "The right answer shows for a moment, then the next question comes. After ten, see your score and every answer."
+  ],
+  "controls": [
+    "Phones and tablets: tap an answer.",
+    "Mouse: click an answer.",
+    "Keyboard: press 1, 2, 3 or 4, or Tab to an answer and press Enter or Space."
+  ],
+  "tips": [
+    "Read all four answers before you choose: half the points are for being right.",
+    "If you don't know, rule out the answers you're sure are wrong.",
+    "Pausing gives up the question on screen, so finish it first.",
+    "Play a single topic to learn it: the end of each game shows every right answer."
+  ],
+  "faq": [
+    {
+      "question": "Is Trivia free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Where do the questions come from?",
+      "answer": "They're written for kefche, in English and Bulgarian, and each answer was checked against an encyclopedia."
+    },
+    {
+      "question": "How are points worked out?",
+      "answer": "An easy question is worth up to 100 points, a medium one 150 and a hard one 200. Half comes for a right answer, and the other half shrinks over the 15 seconds."
+    },
+    {
+      "question": "Can I play with friends?",
+      "answer": "Yes. Create a room and race on the same ten questions; the most points win."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their questions."
+    }
+  ],
+  "ui": {
+    "packEn": "英語",
+    "packOption": "言語",
+    "packBg": "ブルガリア語",
+    "topicOption": "テーマ",
+    "topicMixed": "ミックス",
+    "topicGeography": "地理",
+    "topicHistory": "歴史",
+    "topicScience": "科学",
+    "topicNature": "自然",
+    "topicSport": "スポーツ",
+    "topicArts": "芸術と本",
+    "topicMusic": "音楽",
+    "topicFood": "食べ物と飲み物",
+    "topicMixedDetail": "すべてのカテゴリーから出題",
+    "topicOneDetail": "このテーマから10問",
+    "chooseTopic": "テーマを選ぶ",
+    "best": "ベスト：{n}点",
+    "question": "問題",
+    "questionOf": "{n}／{total}",
+    "points": "得点",
+    "pointsTotal": "{n}点",
+    "resultNote": "{total}問中{n}問正解",
+    "newBest": "この端末での新記録！",
+    "reviewRight": "正解：{answer}（+{points}）",
+    "reviewWrong": "{answer}（あなたの答え：{yours}）",
+    "reviewTimeout": "{answer}（無回答）",
+    "again": "もう一度",
+    "menu": "テーマ",
+    "timeLeft": "残り時間",
+    "answers": "選択肢",
+    "rightPoints": "正解！ +{points}",
+    "timeUp": "時間切れ",
+    "wrongAnswer": "はずれ",
+    "quit": "やめる"
+  },
+  "achievements": {
+    "played": {
+      "name": "クイズ好き",
+      "description": "{count, plural, other {#回}}プレイする"
+    },
+    "brainbox": {
+      "name": "物知り博士",
+      "description": "1ゲームで{count}点を取る"
+    }
+  },
+  "leaderboards": {
+    "best-en": "ベストスコア · 英語",
+    "best-bg": "ベストスコア · ブルガリア語"
+  }
+}

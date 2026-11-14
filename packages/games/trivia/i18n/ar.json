@@ -1,0 +1,99 @@
+{
+  "name": "مسابقة المعلومات",
+  "tagline": "عشرة أسئلة وأربع إجابات ونقاط للسرعة.",
+  "description": "العب مسابقة المعلومات مجانًا: عشرة أسئلة في الجغرافيا والتاريخ والعلوم والرياضة وغيرها، مع نقاط للسرعة. وحدك أو في سباق مع الأصدقاء.",
+  "about": [
+    "Trivia is a quick quiz of ten questions, from geography, history, science, nature, sport, art and books, music, and food and drink. Every question has four answers and 15 seconds.",
+    "A right answer scores 100, 150 or 200 points, for an easy, medium or hard question: half for being right, and half that shrinks as the seconds pass. A wrong answer, or none, scores nothing. Each game has three easy questions, four medium and three hard, easiest first.",
+    "Play alone for your best score, or race friends in a room on the same ten questions. The questions are written for kefche in English and Bulgarian, the same in both, and each was checked against an encyclopedia."
+  ],
+  "howToPlay": [
+    "Choose a topic: Mixed for questions from every category, or one category.",
+    "After a 3-2-1 countdown, the first question appears with four answers and a 15-second bar.",
+    "Tap or click an answer, or press 1 to 4. The faster a right answer, the more points.",
+    "The right answer shows for a moment, then the next question comes. After ten, see your score and every answer."
+  ],
+  "controls": [
+    "Phones and tablets: tap an answer.",
+    "Mouse: click an answer.",
+    "Keyboard: press 1, 2, 3 or 4, or Tab to an answer and press Enter or Space."
+  ],
+  "tips": [
+    "Read all four answers before you choose: half the points are for being right.",
+    "If you don't know, rule out the answers you're sure are wrong.",
+    "Pausing gives up the question on screen, so finish it first.",
+    "Play a single topic to learn it: the end of each game shows every right answer."
+  ],
+  "faq": [
+    {
+      "question": "Is Trivia free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Where do the questions come from?",
+      "answer": "They're written for kefche, in English and Bulgarian, and each answer was checked against an encyclopedia."
+    },
+    {
+      "question": "How are points worked out?",
+      "answer": "An easy question is worth up to 100 points, a medium one 150 and a hard one 200. Half comes for a right answer, and the other half shrinks over the 15 seconds."
+    },
+    {
+      "question": "Can I play with friends?",
+      "answer": "Yes. Create a room and race on the same ten questions; the most points win."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their questions."
+    }
+  ],
+  "ui": {
+    "packEn": "الإنجليزية",
+    "packOption": "اللغة",
+    "packBg": "البلغارية",
+    "topicOption": "الموضوع",
+    "topicMixed": "منوّعة",
+    "topicGeography": "الجغرافيا",
+    "topicHistory": "التاريخ",
+    "topicScience": "العلوم",
+    "topicNature": "الطبيعة",
+    "topicSport": "الرياضة",
+    "topicArts": "الفن والكتب",
+    "topicMusic": "الموسيقى",
+    "topicFood": "الطعام والشراب",
+    "topicMixedDetail": "أسئلة من كل الفئات",
+    "topicOneDetail": "عشرة أسئلة في هذا الموضوع",
+    "chooseTopic": "اختر موضوعًا",
+    "best": "الأفضل: {n} نقطة",
+    "question": "السؤال",
+    "questionOf": "{n} من {total}",
+    "points": "النقاط",
+    "pointsTotal": "{n} نقطة",
+    "resultNote": "{n} صحيحة من {total}",
+    "newBest": "أفضل نتيجة جديدة على هذا الجهاز!",
+    "reviewRight": "صحيح: {answer} (+{points})",
+    "reviewWrong": "{answer} (إجابتك: {yours})",
+    "reviewTimeout": "{answer} (بلا إجابة)",
+    "again": "العب مجددًا",
+    "menu": "المواضيع",
+    "timeLeft": "الوقت المتبقي",
+    "answers": "الإجابات",
+    "rightPoints": "صحيح! +{points}",
+    "timeUp": "انتهى الوقت",
+    "wrongAnswer": "ليست هذه",
+    "quit": "خروج"
+  },
+  "achievements": {
+    "played": {
+      "name": "محب المسابقات",
+      "description": "العب {count, plural, one {مباراة واحدة} two {مباراتين} few {# مباريات} many {# مباراة} other {# مباراة}}"
+    },
+    "brainbox": {
+      "name": "العبقري",
+      "description": "اجمع {count} نقطة في مباراة واحدة"
+    }
+  },
+  "leaderboards": {
+    "best-en": "أفضل نتيجة · الإنجليزية",
+    "best-bg": "أفضل نتيجة · البلغارية"
+  }
+}

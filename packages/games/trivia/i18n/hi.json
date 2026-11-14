@@ -1,0 +1,99 @@
+{
+  "name": "प्रश्नोत्तरी",
+  "tagline": "दस सवाल, चार जवाब, और तेज़ी के अंक।",
+  "description": "प्रश्नोत्तरी मुफ़्त खेलें: भूगोल, इतिहास, विज्ञान, खेल और बहुत कुछ पर दस सवाल, तेज़ी के अंकों के साथ। अकेले या दोस्तों से मुक़ाबला।",
+  "about": [
+    "Trivia is a quick quiz of ten questions, from geography, history, science, nature, sport, art and books, music, and food and drink. Every question has four answers and 15 seconds.",
+    "A right answer scores 100, 150 or 200 points, for an easy, medium or hard question: half for being right, and half that shrinks as the seconds pass. A wrong answer, or none, scores nothing. Each game has three easy questions, four medium and three hard, easiest first.",
+    "Play alone for your best score, or race friends in a room on the same ten questions. The questions are written for kefche in English and Bulgarian, the same in both, and each was checked against an encyclopedia."
+  ],
+  "howToPlay": [
+    "Choose a topic: Mixed for questions from every category, or one category.",
+    "After a 3-2-1 countdown, the first question appears with four answers and a 15-second bar.",
+    "Tap or click an answer, or press 1 to 4. The faster a right answer, the more points.",
+    "The right answer shows for a moment, then the next question comes. After ten, see your score and every answer."
+  ],
+  "controls": [
+    "Phones and tablets: tap an answer.",
+    "Mouse: click an answer.",
+    "Keyboard: press 1, 2, 3 or 4, or Tab to an answer and press Enter or Space."
+  ],
+  "tips": [
+    "Read all four answers before you choose: half the points are for being right.",
+    "If you don't know, rule out the answers you're sure are wrong.",
+    "Pausing gives up the question on screen, so finish it first.",
+    "Play a single topic to learn it: the end of each game shows every right answer."
+  ],
+  "faq": [
+    {
+      "question": "Is Trivia free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Where do the questions come from?",
+      "answer": "They're written for kefche, in English and Bulgarian, and each answer was checked against an encyclopedia."
+    },
+    {
+      "question": "How are points worked out?",
+      "answer": "An easy question is worth up to 100 points, a medium one 150 and a hard one 200. Half comes for a right answer, and the other half shrinks over the 15 seconds."
+    },
+    {
+      "question": "Can I play with friends?",
+      "answer": "Yes. Create a room and race on the same ten questions; the most points win."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their questions."
+    }
+  ],
+  "ui": {
+    "packEn": "अंग्रेज़ी",
+    "packOption": "भाषा",
+    "packBg": "बल्गेरियाई",
+    "topicOption": "विषय",
+    "topicMixed": "मिले-जुले",
+    "topicGeography": "भूगोल",
+    "topicHistory": "इतिहास",
+    "topicScience": "विज्ञान",
+    "topicNature": "प्रकृति",
+    "topicSport": "खेल",
+    "topicArts": "कला और किताबें",
+    "topicMusic": "संगीत",
+    "topicFood": "खाना-पीना",
+    "topicMixedDetail": "हर श्रेणी से सवाल",
+    "topicOneDetail": "इस विषय पर दस सवाल",
+    "chooseTopic": "विषय चुनें",
+    "best": "सर्वश्रेष्ठ: {n} अंक",
+    "question": "सवाल",
+    "questionOf": "{n} / {total}",
+    "points": "अंक",
+    "pointsTotal": "{n} अंक",
+    "resultNote": "{total} में से {n} सही",
+    "newBest": "इस डिवाइस पर नया सर्वश्रेष्ठ!",
+    "reviewRight": "सही: {answer} (+{points})",
+    "reviewWrong": "{answer} (आपका जवाब: {yours})",
+    "reviewTimeout": "{answer} (कोई जवाब नहीं)",
+    "again": "फिर खेलें",
+    "menu": "विषय",
+    "timeLeft": "बचा समय",
+    "answers": "जवाब",
+    "rightPoints": "सही! +{points}",
+    "timeUp": "समय ख़त्म",
+    "wrongAnswer": "यह नहीं",
+    "quit": "बाहर निकलें"
+  },
+  "achievements": {
+    "played": {
+      "name": "क्विज़ प्रेमी",
+      "description": "{count, plural, one {# गेम} other {# गेम}} खेलें"
+    },
+    "brainbox": {
+      "name": "ज्ञानी",
+      "description": "एक गेम में {count} अंक पाएँ"
+    }
+  },
+  "leaderboards": {
+    "best-en": "सर्वश्रेष्ठ स्कोर · अंग्रेज़ी",
+    "best-bg": "सर्वश्रेष्ठ स्कोर · बल्गेरियाई"
+  }
+}

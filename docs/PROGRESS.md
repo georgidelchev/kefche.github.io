@@ -3371,8 +3371,24 @@ The owner answered "you decide, continue", so the recommended answers stand:
       - two players on one device, each voting on the other's answer;
       - a 60 s clock sending a typed answer by itself;
       - 360, 768 and 1280 px, both themes, Bulgarian with phonetic typing, and axe.
+- [x] **Step 23, Trivia:**
+  - **Rules:** ten questions, each with four answers and 15 s. A right answer scores 100, 150 or 200 points for an easy, medium or hard question: half for being right, half shrinking over the 15 s. A wrong answer or none scores nothing. A game has 3 easy, 4 medium and 3 hard questions, easiest first, from every category (Mixed) or one.
+  - **Questions** (Q3): 240 written for kefche, the same in English and Bulgarian: eight categories (geography, history, science, nature, sport, art and books, music, food and drink), 10 at each level in each. Each English question names the encyclopedia topic its answer was checked against (`checked`). Facts that change (records, populations, holders of titles) were left out. **Fewer than the plan's ~600:** I chose fewer, carefully checked questions; the bank can grow in later steps without changing the engine (new questions only add to the pool). The Bulgarian text needs the owner's review.
+  - **Timing:** each answer is timed from the frame that drew the question to the input's own event (the speed kit). Under 500 ms doesn't count, and 15 s or more is a timeout. A pause gives up the question on screen, since it could be looked up meanwhile (it goes on the first frame back, as nothing is taken while paused).
+  - **Modes:** solo, races in rooms and quick match; a race's seed gives everyone the same questions in the same order.
+  - **Boards:** a best score in each language for Mixed games, marked as measured on the player's device (Q6). **Achievements:** games played, and 900, 1,200 or 1,400 points in a game (a perfect game at half a second an answer scores about 1,480).
+  - **Category:** Party, as SPEC §20.6 #54 has it.
+  - **Server:** its fixture is a Bulgarian mixed game, mostly right, with one question let run out. Deno 146/146.
+  - Checked:
+    - the engine, 2,233 checks: both banks match question for question, four distinct answers each, no answer given away by its question, every topic in both languages giving 3-4-3 questions easiest first, the right answer spread over the four places, the points, and every limit;
+    - in Chrome, 36/36:
+      - the pages in English and Bulgarian, and none in Arabic;
+      - a game: the menu's nine topics, the countdown, a right answer by click with its points, a wrong one by key, a pause giving up a question, one running out, and the end with every answer reviewed and a new best;
+      - 360, 768 and 1280 px, both themes, a Bulgarian history game, and axe.
 
 ## Known issues
+
+- **A wrong trivia question can't be reported yet (Phase 13):** the plan meant players to report a question with the existing reporting, but that reports players and messages, not content. Until there's a way (a report button on the end screen's review, sent to the admin panel's reports), a wrong question has to reach the owner some other way.
 
 - **A continued Sudoku isn't recorded (Phase 7):** a saved puzzle finished on a later visit has no log from its start, so the server can't replay it, and it counts for nothing beyond the device's own best times. Saving the log with the game would fix it.
 - **Online casual results are taken on the players' word (Phase 7)** (except on tables, Phase 12, where the server holds the moves): the server compares what the players report, but holds no moves to replay: only the host's browser has them. A result one account reports alone (against a guest, or after the other left) counts unchecked, like a game against bots (Q1), and casual results reach no leaderboard. Sending the host's moves along with its report would let the server replay them.
