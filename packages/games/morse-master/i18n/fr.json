@@ -1,0 +1,99 @@
+{
+  "name": "Maître du morse",
+  "tagline": "Lis et envoie du morse, lettre par lettre, pendant une minute.",
+  "description": "Joue gratuitement à Maître du morse : apprends le morse à l'œil et à l'oreille, en lisant et envoyant des lettres contre la montre.",
+  "about": [
+    "Morse Master is a minute of Morse code, one letter at a time. Read a code, drawn as dots and dashes and played as beeps, and answer with its letter; or see a letter and send its code yourself with the dot and dash keys. Every right answer is a point, and the next letter comes straight away.",
+    "In English you learn International Morse, the code radio amateurs still use, for the 26 letters from A to Z. In Bulgarian it's the Cyrillic table for all 30 letters of the Bulgarian alphabet, from А to Я. The code chart under the menu shows every letter with its code, so you can learn before you play and check the ones you missed afterwards.",
+    "A wrong answer shows you the right code and rests the keys for a second, so guessing doesn't pay. Beat your best on this device for each task, or race up to seven friends in a private or public room on the same letters. Leaderboards keep the best scores for each alphabet and task, measured on each player's own device."
+  ],
+  "howToPlay": [
+    "Choose a task: Read or Send. After a 3, 2, 1 countdown the first letter comes and the minute starts.",
+    "Read: a code appears as dots and dashes and plays as beeps. Tap its letter on the keyboard below, or type it.",
+    "Send: a letter appears. Key its code with the dot and dash keys; it's judged as soon as it's complete or goes wrong.",
+    "A right answer is a point, and the next letter comes at once. A wrong one shows the right code, and the keys rest for a second.",
+    "When the minute is up you see your right and wrong answers."
+  ],
+  "controls": [
+    "Phones and tablets: tap the letter keys (Read) or the dot and dash keys (Send).",
+    "Keyboard: type the letter (Read), or press . for a dot and - for a dash (Send).",
+    "Play again repeats the beeps. They follow your sound settings, and the code is always drawn too.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А).",
+    "Pause or start again from the bar above the game. Pausing starts the minute over."
+  ],
+  "tips": [
+    "Learn the short letters first: E is one dot, T is one dash, and I, A, N and M have two symbols each.",
+    "Learn each letter as a rhythm rather than counting: A sounds like \"di-dah\", N like \"dah-dit\".",
+    "Many letters mirror each other: A (·−) and N (−·), D (−··) and U (··−).",
+    "In Send, hum the rhythm in your head as you key it.",
+    "Open the code chart under the menu between games to go over the letters you missed."
+  ],
+  "faq": [
+    {
+      "question": "Is Morse Master free?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is Morse code?",
+      "answer": "A way of sending letters as short and long signals, dots and dashes, by sound, light or radio. It was made for the electric telegraph in the 19th century and radio amateurs still use it."
+    },
+    {
+      "question": "Which Morse code does the game use?",
+      "answer": "In English, International Morse (the ITU standard) for the letters A to Z. In Bulgarian, the Cyrillic table as Bulgaria uses it, where Ъ and Ь take the codes of X and Y."
+    },
+    {
+      "question": "Is there a penalty for a wrong answer?",
+      "answer": "A wrong answer scores nothing, and your next answer only counts a second later, while the right code shows."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room plays the same alphabet and task and gets the same letters. The most right answers in the minute wins."
+    }
+  ],
+  "ui": {
+    "chooseTask": "Choisis une tâche",
+    "taskOption": "Tâche",
+    "taskRead": "Lire",
+    "taskReadDetail": "Vois et écoute un code, réponds par sa lettre",
+    "taskSend": "Envoyer",
+    "taskSendDetail": "Vois une lettre, tape son code en points et traits",
+    "best": "Record : {n} justes",
+    "right": "Justes",
+    "timeLeft": "Temps restant",
+    "seconds": "{s} s",
+    "dot": "point",
+    "dash": "trait",
+    "codeIs": "Code : {code}",
+    "keyLetter": "Envoie la lettre {letter}",
+    "keyHint": "Tape son code ci-dessous",
+    "keyedSoFar": "Tapé jusqu'ici : {code}",
+    "wasRight": "{letter}, c'est {code} : juste !",
+    "wasWrong": "{letter}, c'est {code}",
+    "playAgain": "Réécouter",
+    "morseKey": "Manipulateur Morse",
+    "rightTotal": "{n} justes",
+    "wrongTotal": "Fausses : {n}",
+    "newBest": "Nouveau record !",
+    "quit": "Quitter",
+    "chart": "Table du code",
+    "packOption": "Alphabet",
+    "packEn": "anglais (latin)",
+    "packBg": "bulgare (cyrillique)"
+  },
+  "achievements": {
+    "played": {
+      "name": "En ondes",
+      "description": "Joue {count, plural, one {# partie} other {# parties}}"
+    },
+    "operator": {
+      "name": "Opérateur radio",
+      "description": "Fais {count} bonnes réponses en une partie"
+    }
+  },
+  "leaderboards": {
+    "en-read": "Le plus de justes · anglais, lire",
+    "en-send": "Le plus de justes · anglais, envoyer",
+    "bg-read": "Le plus de justes · bulgare, lire",
+    "bg-send": "Le plus de justes · bulgare, envoyer"
+  }
+}

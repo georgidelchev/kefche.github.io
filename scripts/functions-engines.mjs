@@ -560,6 +560,16 @@ if (process.argv.includes("--fixtures")) {
         return { answer: random() < 0.8 ? answer : answer + 1, ms };
       },
     },
+    // A letter read every 1 to 2 s, right four times in five, until 60 s.
+    "morse-master": {
+      config: { pack: "bg", task: "read" },
+      next: (state, random) => {
+        const ms = state.last + 1000 + Math.floor(random() * 1000);
+        if (ms >= 60000) return { stop: true };
+        const letter = state.letters[state.index];
+        return { answer: random() < 0.8 ? letter : letter === "а" ? "б" : "а", ms };
+      },
+    },
     // Each word in turn (from its placed ends, either way round), with a
     // stray selection now and then.
     "word-search": {
@@ -580,8 +590,6 @@ if (process.argv.includes("--fixtures")) {
         return { word: state.seed, ms: state.last + 3000 };
       },
     },
-    // Five of the grid's words (found by walking the dictionary from each
-    // square), two seconds apart, then the stop.
     "speed-typing": {
       config: { pack: "bg", length: "short" },
       // Each word typed at 70 words a minute with a wrong key now and then.
@@ -591,6 +599,8 @@ if (process.argv.includes("--fixtures")) {
         return { word, ms: state.last + chars * 170, typos: random() < 0.2 ? 1 : 0 };
       },
     },
+    // Five of the grid's words (found by walking the dictionary from each
+    // square), two seconds apart, then the stop.
     "letter-grid": {
       config: { pack: "en", size: 4 },
       next: (state) => {

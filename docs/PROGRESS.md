@@ -3285,6 +3285,30 @@ The owner answered "you decide, continue", so the recommended answers stand:
       - a whole text typed with a phone's apostrophe, ending with the speed and a new best;
       - a Bulgarian word typed phonetically with a capital;
       - 360, 768 and 1280 px, both themes, and axe.
+- [x] **Step 20, Morse Master:**
+  - **Rules:** a minute of Morse code, one letter at a time, with two tasks:
+    - **Read:** a letter's code is drawn and played as tones; answer with its letter.
+    - **Send:** a letter is shown; key its code in dots and dashes.
+    - A right answer is a point. A wrong one scores nothing and shows the right code, and the next answer counts only a second later, so guessing scores almost nothing: in the rules check, a run guessing as fast as the rules allow scores 6 or fewer.
+    - The letters come from the seed, never the same twice running. An answer within 100 ms of the last, a code keyed faster than 50 ms a symbol, and anything after the 60 s don't count.
+  - **The codes:** International Morse (ITU-R M.1677-1) for A to Z in English, and the Cyrillic table for all 30 Bulgarian letters. Bulgarian puts Ъ on X's code (−··−) and Ь on Y's (−·−−), unlike Russian. I had that the other way round from memory; both Wikipedia tables (Bulgarian "Морзова азбука" and English "Morse code for non-Latin alphabets") agree, and the game follows them.
+  - **The screen:**
+    - **Read:** the code drawn large, Play again, and the on-screen keyboard (or typing; Bulgarian types phonetically on a Latin keyboard).
+    - **Send:** the letter, the code so far, and two large dot and dash keys (or `.` and `-`). Each symbol sounds as it's keyed, and the code is judged as soon as it's complete or goes wrong.
+    - A code chart, to learn from, under the menu and at the end, never during a run.
+  - **Tones:** a 650 Hz sine at about 15 words a minute, scheduled on Web Audio's clock with soft edges (`renderer/tones.ts`). The shared mute and volume apply, and the code is always drawn too, so the game works without sound.
+  - **Boards:** most right for each alphabet and task, marked as measured on the device. **Achievements:** games played, and 15, 30 or 50 right.
+  - **Server:** its fixture reads Bulgarian letters every 1 to 2 s, one wrong among 38.
+  - Checked:
+    - the rules, 139 checks: both tables complete with no code twice, spot checks against the sources, the letters Latin and Cyrillic share having the same codes, early, late and too-fast answers refused, the second's rest after a wrong answer, and an honest run's score;
+    - in Chrome, 47/47:
+      - the page in English and Bulgarian, and none in Arabic;
+      - the chart (26 and 30 letters);
+      - reading by typing and by tapping, with the tones played;
+      - a wrong letter showing the right code while the keys rest;
+      - sending with `.` and `-` and with the on-screen keys;
+      - Bulgarian answered phonetically through to the end of the minute, with a new best;
+      - 360, 768 and 1280 px, both themes, both tasks, and axe.
 
 ## Known issues
 

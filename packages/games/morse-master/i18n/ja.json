@@ -1,0 +1,99 @@
+{
+  "name": "モールス信号マスター",
+  "tagline": "1分間、1文字ずつモールス信号を受信・送信しよう。",
+  "description": "モールス信号マスターを無料でプレイ：目と耳でモールス信号を覚え、時間内に文字を受信・送信。ひとりでも競争でも。",
+  "about": [
+    "Morse Master is a minute of Morse code, one letter at a time. Read a code, drawn as dots and dashes and played as beeps, and answer with its letter; or see a letter and send its code yourself with the dot and dash keys. Every right answer is a point, and the next letter comes straight away.",
+    "In English you learn International Morse, the code radio amateurs still use, for the 26 letters from A to Z. In Bulgarian it's the Cyrillic table for all 30 letters of the Bulgarian alphabet, from А to Я. The code chart under the menu shows every letter with its code, so you can learn before you play and check the ones you missed afterwards.",
+    "A wrong answer shows you the right code and rests the keys for a second, so guessing doesn't pay. Beat your best on this device for each task, or race up to seven friends in a private or public room on the same letters. Leaderboards keep the best scores for each alphabet and task, measured on each player's own device."
+  ],
+  "howToPlay": [
+    "Choose a task: Read or Send. After a 3, 2, 1 countdown the first letter comes and the minute starts.",
+    "Read: a code appears as dots and dashes and plays as beeps. Tap its letter on the keyboard below, or type it.",
+    "Send: a letter appears. Key its code with the dot and dash keys; it's judged as soon as it's complete or goes wrong.",
+    "A right answer is a point, and the next letter comes at once. A wrong one shows the right code, and the keys rest for a second.",
+    "When the minute is up you see your right and wrong answers."
+  ],
+  "controls": [
+    "Phones and tablets: tap the letter keys (Read) or the dot and dash keys (Send).",
+    "Keyboard: type the letter (Read), or press . for a dot and - for a dash (Send).",
+    "Play again repeats the beeps. They follow your sound settings, and the code is always drawn too.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А).",
+    "Pause or start again from the bar above the game. Pausing starts the minute over."
+  ],
+  "tips": [
+    "Learn the short letters first: E is one dot, T is one dash, and I, A, N and M have two symbols each.",
+    "Learn each letter as a rhythm rather than counting: A sounds like \"di-dah\", N like \"dah-dit\".",
+    "Many letters mirror each other: A (·−) and N (−·), D (−··) and U (··−).",
+    "In Send, hum the rhythm in your head as you key it.",
+    "Open the code chart under the menu between games to go over the letters you missed."
+  ],
+  "faq": [
+    {
+      "question": "Is Morse Master free?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "What is Morse code?",
+      "answer": "A way of sending letters as short and long signals, dots and dashes, by sound, light or radio. It was made for the electric telegraph in the 19th century and radio amateurs still use it."
+    },
+    {
+      "question": "Which Morse code does the game use?",
+      "answer": "In English, International Morse (the ITU standard) for the letters A to Z. In Bulgarian, the Cyrillic table as Bulgaria uses it, where Ъ and Ь take the codes of X and Y."
+    },
+    {
+      "question": "Is there a penalty for a wrong answer?",
+      "answer": "A wrong answer scores nothing, and your next answer only counts a second later, while the right code shows."
+    },
+    {
+      "question": "How do races work?",
+      "answer": "Everyone in the room plays the same alphabet and task and gets the same letters. The most right answers in the minute wins."
+    }
+  ],
+  "ui": {
+    "chooseTask": "モードを選ぶ",
+    "taskOption": "モード",
+    "taskRead": "受信",
+    "taskReadDetail": "符号を見て聞いて、文字で答える",
+    "taskSend": "送信",
+    "taskSendDetail": "文字を見て、その符号を短点と長点で打つ",
+    "best": "ベスト：{n}問正解",
+    "right": "正解",
+    "timeLeft": "残り時間",
+    "seconds": "{s}秒",
+    "dot": "短点",
+    "dash": "長点",
+    "codeIs": "符号：{code}",
+    "keyLetter": "文字 {letter} を送信",
+    "keyHint": "下のキーで符号を打つ",
+    "keyedSoFar": "ここまで：{code}",
+    "wasRight": "{letter} は {code}：正解！",
+    "wasWrong": "{letter} は {code}",
+    "playAgain": "もう一度聞く",
+    "morseKey": "電鍵",
+    "rightTotal": "{n}問正解",
+    "wrongTotal": "不正解：{n}",
+    "newBest": "ベスト更新！",
+    "quit": "やめる",
+    "chart": "符号表",
+    "packOption": "文字",
+    "packEn": "英語（ラテン文字）",
+    "packBg": "ブルガリア語（キリル文字）"
+  },
+  "achievements": {
+    "played": {
+      "name": "オンエア",
+      "description": "{count, plural, other {#回}}プレイする"
+    },
+    "operator": {
+      "name": "通信士",
+      "description": "1ゲームで {count} 問正解する"
+    }
+  },
+  "leaderboards": {
+    "en-read": "最多正解 · 英語・受信",
+    "en-send": "最多正解 · 英語・送信",
+    "bg-read": "最多正解 · ブルガリア語・受信",
+    "bg-send": "最多正解 · ブルガリア語・送信"
+  }
+}
