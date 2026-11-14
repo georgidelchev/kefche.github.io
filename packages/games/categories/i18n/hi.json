@@ -1,0 +1,106 @@
+{
+  "name": "श्रेणियाँ",
+  "tagline": "एक अक्षर, छह श्रेणियाँ, और सब एक साथ जवाब देते हैं।",
+  "description": "श्रेणियाँ मुफ़्त खेलें: किसी अक्षर से देश, शहर, जानवर और बहुत कुछ बताएँ, बॉट्स के ख़िलाफ़, एक डिवाइस पर या ऑनलाइन, अंग्रेज़ी और बल्गेरियाई में।",
+  "about": [
+    "Categories is the classic pencil-and-paper word game for 2 to 10 players. Each round a letter is drawn, and everyone at once names a country, a city, an animal and more that start with it.",
+    "Each game uses six of eight categories: country, city, animal, plant, food, first name, job and thing at home. An answer nobody else gave scores 10; one that others gave too scores 5 each. An empty answer, or one with the wrong first letter, scores nothing.",
+    "Answers the game knows count straight away. Any other answer goes to a vote: everyone else says whether it fits, and it counts unless most of them vote it out. Play against bots, with friends on one device, or online, where every sheet is held on our server until all are in."
+  ],
+  "howToPlay": [
+    "Choose the language of the answers and 3 or 5 rounds, then play against bots, on this device or in a room.",
+    "A letter is drawn. Type an answer for each category that starts with it, then press Done. Enter moves to the next field.",
+    "When everyone is done, all the answers are shown. Vote on the ones the game doesn't know: Counts or Doesn't count.",
+    "Unique answers score 10, shared ones 5. After the last round, the most points win.",
+    "With a clock on, your answers are sent as they are when time runs out."
+  ],
+  "controls": [
+    "Type with your keyboard or your phone's; Enter moves to the next field.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А).",
+    "Tap or click Counts or Doesn't count to vote, then Done voting."
+  ],
+  "tips": [
+    "Fill every field, even with a plain answer: 5 points beat none.",
+    "An unusual answer is worth double, if nobody else thinks of it.",
+    "Spelling matters: answers are compared letter by letter, so a typo isn't shared, but it may be voted out.",
+    "Keep an eye on the clock: what you've typed is sent when it runs out."
+  ],
+  "faq": [
+    {
+      "question": "Is it free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Who decides if an answer counts?",
+      "answer": "Answers in the game's own lists count at once. Any other goes to a vote of the other players; it counts unless most of them vote it out, so a tie lets it in."
+    },
+    {
+      "question": "Can others see my answers before I'm done?",
+      "answer": "No. Answers stay hidden until everyone has sent theirs; online, they're held on our server."
+    },
+    {
+      "question": "How do the bots play?",
+      "answer": "They answer from the game's lists: easy ones leave many fields empty, hard ones fill nearly all with less obvious answers. Easy bots let every answer in; the others vote by how likely an answer looks."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their answer lists."
+    }
+  ],
+  "ui": {
+    "rounds3": "3",
+    "rounds5": "5",
+    "markKnown": "✓",
+    "markPoints": "+{n}",
+    "scoreLine": "{name}: {points}",
+    "packOption": "भाषा",
+    "packEn": "अंग्रेज़ी",
+    "packBg": "बल्गेरियाई",
+    "roundsOption": "दौर",
+    "scores": "अंक",
+    "roundN": "दौर {n} / {total}",
+    "letterIs": "अक्षर",
+    "catCountry": "देश",
+    "catCity": "शहर",
+    "catAnimal": "जानवर",
+    "catPlant": "पौधा",
+    "catFood": "खाना",
+    "catName": "नाम",
+    "catJob": "पेशा",
+    "catThing": "घर की चीज़",
+    "sheet": "आपके जवाब",
+    "answerHint": "हर जवाब {letter} से शुरू होता है। कुछ न सूझे तो फ़ील्ड खाली छोड़ दें।",
+    "wrongLetter": "{letter} से शुरू नहीं होता",
+    "send": "हो गया",
+    "stillAnswering": "अभी जवाब दे रहे हैं: {names}",
+    "stillVoting": "अभी वोट कर रहे हैं: {names}",
+    "voteTitle": "इन जवाबों पर वोट करें",
+    "voteHelp": "क्या हर जवाब अपनी श्रेणी में ठीक है? जब तक ज़्यादातर लोग ख़िलाफ़ वोट न करें, वह गिना जाता है।",
+    "voteIn": "गिना जाए",
+    "voteOut": "न गिना जाए",
+    "voteOn": "{answer}, {name} का",
+    "yours": "आपका: बाक़ी लोग तय करेंगे",
+    "sendVotes": "वोटिंग पूरी",
+    "thisRound": "यह दौर: {letter}",
+    "lastRound": "पिछला दौर: {letter}",
+    "roundLetter": "दौर {n}: {letter}",
+    "earlier": "पिछले दौर",
+    "tally": "{answer}: {yes} पक्ष में, {no} विपक्ष में",
+    "markEmpty": "कोई जवाब नहीं",
+    "markLetter": "ग़लत अक्षर",
+    "markBlocked": "अनुमति नहीं",
+    "markDoubt": "वोट के लिए",
+    "markOut": "ख़ारिज"
+  },
+  "achievements": {
+    "winner": {
+      "name": "विजेता",
+      "description": "{count, plural, one {# खेल} other {# खेल}} जीतें"
+    },
+    "veteran": {
+      "name": "अनुभवी",
+      "description": "{count, plural, one {# खेल} other {# खेल}} खेलें"
+    }
+  },
+  "leaderboards": {}
+}

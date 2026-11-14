@@ -20,6 +20,7 @@
     "@kefche/game-associations": "workspace:*",
     "@kefche/game-backgammon": "workspace:*",
     "@kefche/game-belote": "workspace:*",
+    "@kefche/game-categories": "workspace:*",
     "@kefche/game-conquest": "workspace:*",
     "@kefche/game-crazy-colors": "workspace:*",
     "@kefche/game-durak": "workspace:*",

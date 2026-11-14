@@ -1,0 +1,106 @@
+{
+  "name": "Kategorien",
+  "tagline": "Ein Buchstabe, sechs Kategorien, und alle antworten gleichzeitig.",
+  "description": "Spiele Kategorien kostenlos: Land, Stadt, Tier und mehr zu einem zufälligen Buchstaben, gegen Bots, an einem Gerät oder online, auf Englisch und Bulgarisch.",
+  "about": [
+    "Categories is the classic pencil-and-paper word game for 2 to 10 players. Each round a letter is drawn, and everyone at once names a country, a city, an animal and more that start with it.",
+    "Each game uses six of eight categories: country, city, animal, plant, food, first name, job and thing at home. An answer nobody else gave scores 10; one that others gave too scores 5 each. An empty answer, or one with the wrong first letter, scores nothing.",
+    "Answers the game knows count straight away. Any other answer goes to a vote: everyone else says whether it fits, and it counts unless most of them vote it out. Play against bots, with friends on one device, or online, where every sheet is held on our server until all are in."
+  ],
+  "howToPlay": [
+    "Choose the language of the answers and 3 or 5 rounds, then play against bots, on this device or in a room.",
+    "A letter is drawn. Type an answer for each category that starts with it, then press Done. Enter moves to the next field.",
+    "When everyone is done, all the answers are shown. Vote on the ones the game doesn't know: Counts or Doesn't count.",
+    "Unique answers score 10, shared ones 5. After the last round, the most points win.",
+    "With a clock on, your answers are sent as they are when time runs out."
+  ],
+  "controls": [
+    "Type with your keyboard or your phone's; Enter moves to the next field.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А).",
+    "Tap or click Counts or Doesn't count to vote, then Done voting."
+  ],
+  "tips": [
+    "Fill every field, even with a plain answer: 5 points beat none.",
+    "An unusual answer is worth double, if nobody else thinks of it.",
+    "Spelling matters: answers are compared letter by letter, so a typo isn't shared, but it may be voted out.",
+    "Keep an eye on the clock: what you've typed is sent when it runs out."
+  ],
+  "faq": [
+    {
+      "question": "Is it free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Who decides if an answer counts?",
+      "answer": "Answers in the game's own lists count at once. Any other goes to a vote of the other players; it counts unless most of them vote it out, so a tie lets it in."
+    },
+    {
+      "question": "Can others see my answers before I'm done?",
+      "answer": "No. Answers stay hidden until everyone has sent theirs; online, they're held on our server."
+    },
+    {
+      "question": "How do the bots play?",
+      "answer": "They answer from the game's lists: easy ones leave many fields empty, hard ones fill nearly all with less obvious answers. Easy bots let every answer in; the others vote by how likely an answer looks."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their answer lists."
+    }
+  ],
+  "ui": {
+    "rounds3": "3",
+    "rounds5": "5",
+    "markKnown": "✓",
+    "markPoints": "+{n}",
+    "scoreLine": "{name}: {points}",
+    "packOption": "Sprache",
+    "packEn": "Englisch",
+    "packBg": "Bulgarisch",
+    "roundsOption": "Runden",
+    "scores": "Punkte",
+    "roundN": "Runde {n} von {total}",
+    "letterIs": "Buchstabe",
+    "catCountry": "Land",
+    "catCity": "Stadt",
+    "catAnimal": "Tier",
+    "catPlant": "Pflanze",
+    "catFood": "Essen",
+    "catName": "Vorname",
+    "catJob": "Beruf",
+    "catThing": "Ding im Haus",
+    "sheet": "Deine Antworten",
+    "answerHint": "Jede Antwort beginnt mit {letter}. Lass ein Feld leer, wenn dir nichts einfällt.",
+    "wrongLetter": "Beginnt nicht mit {letter}",
+    "send": "Fertig",
+    "stillAnswering": "Antworten noch: {names}",
+    "stillVoting": "Stimmen noch ab: {names}",
+    "voteTitle": "Stimme über diese Antworten ab",
+    "voteHelp": "Passt jede Antwort zu ihrer Kategorie? Sie zählt, außer die Mehrheit stimmt dagegen.",
+    "voteIn": "Zählt",
+    "voteOut": "Zählt nicht",
+    "voteOn": "{answer}, von {name}",
+    "yours": "Deine: die anderen entscheiden",
+    "sendVotes": "Abstimmung fertig",
+    "thisRound": "Diese Runde: {letter}",
+    "lastRound": "Letzte Runde: {letter}",
+    "roundLetter": "Runde {n}: {letter}",
+    "earlier": "Frühere Runden",
+    "tally": "{answer}: {yes} dafür, {no} dagegen",
+    "markEmpty": "keine Antwort",
+    "markLetter": "falscher Buchstabe",
+    "markBlocked": "nicht erlaubt",
+    "markDoubt": "zur Abstimmung",
+    "markOut": "abgelehnt"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Sieger",
+      "description": "Gewinne {count, plural, one {# Spiel} other {# Spiele}}"
+    },
+    "veteran": {
+      "name": "Veteran",
+      "description": "Spiele {count, plural, one {# Spiel} other {# Spiele}}"
+    }
+  },
+  "leaderboards": {}
+}

@@ -1,0 +1,106 @@
+{
+  "name": "Категории",
+  "tagline": "Буква, шесть категорий, и все отвечают одновременно.",
+  "description": "Играйте в «Категории» бесплатно: страна, город, животное и другое на случайную букву, против ботов, на одном устройстве или онлайн, на английском и болгарском.",
+  "about": [
+    "Categories is the classic pencil-and-paper word game for 2 to 10 players. Each round a letter is drawn, and everyone at once names a country, a city, an animal and more that start with it.",
+    "Each game uses six of eight categories: country, city, animal, plant, food, first name, job and thing at home. An answer nobody else gave scores 10; one that others gave too scores 5 each. An empty answer, or one with the wrong first letter, scores nothing.",
+    "Answers the game knows count straight away. Any other answer goes to a vote: everyone else says whether it fits, and it counts unless most of them vote it out. Play against bots, with friends on one device, or online, where every sheet is held on our server until all are in."
+  ],
+  "howToPlay": [
+    "Choose the language of the answers and 3 or 5 rounds, then play against bots, on this device or in a room.",
+    "A letter is drawn. Type an answer for each category that starts with it, then press Done. Enter moves to the next field.",
+    "When everyone is done, all the answers are shown. Vote on the ones the game doesn't know: Counts or Doesn't count.",
+    "Unique answers score 10, shared ones 5. After the last round, the most points win.",
+    "With a clock on, your answers are sent as they are when time runs out."
+  ],
+  "controls": [
+    "Type with your keyboard or your phone's; Enter moves to the next field.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А).",
+    "Tap or click Counts or Doesn't count to vote, then Done voting."
+  ],
+  "tips": [
+    "Fill every field, even with a plain answer: 5 points beat none.",
+    "An unusual answer is worth double, if nobody else thinks of it.",
+    "Spelling matters: answers are compared letter by letter, so a typo isn't shared, but it may be voted out.",
+    "Keep an eye on the clock: what you've typed is sent when it runs out."
+  ],
+  "faq": [
+    {
+      "question": "Is it free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Who decides if an answer counts?",
+      "answer": "Answers in the game's own lists count at once. Any other goes to a vote of the other players; it counts unless most of them vote it out, so a tie lets it in."
+    },
+    {
+      "question": "Can others see my answers before I'm done?",
+      "answer": "No. Answers stay hidden until everyone has sent theirs; online, they're held on our server."
+    },
+    {
+      "question": "How do the bots play?",
+      "answer": "They answer from the game's lists: easy ones leave many fields empty, hard ones fill nearly all with less obvious answers. Easy bots let every answer in; the others vote by how likely an answer looks."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their answer lists."
+    }
+  ],
+  "ui": {
+    "rounds3": "3",
+    "rounds5": "5",
+    "markKnown": "✓",
+    "markPoints": "+{n}",
+    "scoreLine": "{name}: {points}",
+    "packOption": "Язык",
+    "packEn": "английский",
+    "packBg": "болгарский",
+    "roundsOption": "Раунды",
+    "scores": "Очки",
+    "roundN": "Раунд {n} из {total}",
+    "letterIs": "Буква",
+    "catCountry": "Страна",
+    "catCity": "Город",
+    "catAnimal": "Животное",
+    "catPlant": "Растение",
+    "catFood": "Еда",
+    "catName": "Имя",
+    "catJob": "Профессия",
+    "catThing": "Вещь в доме",
+    "sheet": "Ваши ответы",
+    "answerHint": "Каждый ответ начинается на {letter}. Если ничего не приходит в голову, оставьте поле пустым.",
+    "wrongLetter": "Не начинается на {letter}",
+    "send": "Готово",
+    "stillAnswering": "Ещё отвечают: {names}",
+    "stillVoting": "Ещё голосуют: {names}",
+    "voteTitle": "Проголосуйте за эти ответы",
+    "voteHelp": "Подходит ли каждый ответ к своей категории? Он засчитывается, если большинство не против.",
+    "voteIn": "Засчитать",
+    "voteOut": "Не засчитывать",
+    "voteOn": "{answer}, от {name}",
+    "yours": "Ваш: решают другие",
+    "sendVotes": "Завершить голосование",
+    "thisRound": "Этот раунд: {letter}",
+    "lastRound": "Прошлый раунд: {letter}",
+    "roundLetter": "Раунд {n}: {letter}",
+    "earlier": "Прошлые раунды",
+    "tally": "{answer}: {yes} за, {no} против",
+    "markEmpty": "нет ответа",
+    "markLetter": "не та буква",
+    "markBlocked": "не допускается",
+    "markDoubt": "на голосовании",
+    "markOut": "отклонён"
+  },
+  "achievements": {
+    "winner": {
+      "name": "Победитель",
+      "description": "Выиграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    },
+    "veteran": {
+      "name": "Ветеран",
+      "description": "Сыграйте {count, plural, one {# игру} few {# игры} many {# игр} other {# игры}}"
+    }
+  },
+  "leaderboards": {}
+}

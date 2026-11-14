@@ -690,6 +690,7 @@ if (process.argv.includes("--fixtures")) {
     hangman: { pack: "en", mode: "versus", rounds: 3 },
     "word-chain": { pack: "en" },
     war: { battles: 100 },
+    categories: { pack: "bg", rounds: 3 },
   };
   /** Turn games that need more than two seats. */
   const turnSeats = {
@@ -708,6 +709,7 @@ if (process.argv.includes("--fixtures")) {
     associations: 4,
     mafia: 8,
     "word-chain": 3,
+    categories: 3,
   };
   /**
    * Turn games whose words are typed, so legalActions offers only a pass:
@@ -722,6 +724,18 @@ if (process.argv.includes("--fixtures")) {
         if (words.length > 0) return { word: pick(random, words) };
       }
       return { pass: true };
+    },
+    // Sheets of dictionary words starting with the letter, some left empty, so
+    // most answers are doubtful and go to a vote; ballots at random.
+    categories: (state, _seat, random) => {
+      if (state.phase === "vote") return { votes: state.doubts.map(() => random() < 0.6) };
+      const letter = state.letters[state.round];
+      const words = lexiconOf(state.config.pack, "all").words({ prefix: letter, limit: 200 });
+      return {
+        answers: state.categories.map(() =>
+          random() < 0.7 && words.length > 0 ? pick(random, words) : "",
+        ),
+      };
     },
   };
   const MAX_ACTIONS = 400;

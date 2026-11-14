@@ -3348,6 +3348,29 @@ The owner answered "you decide, continue", so the recommended answers stand:
       - a practice game;
       - a Bulgarian account solving today's word, kept on the server and counted by `submit-match`;
       - 360, 768 and 1280 px, both themes, and axe.
+- [x] **Step 22, Categories:**
+  - **Rules:** 2 to 10 players, 3 or 5 rounds. Each round draws a letter, and everyone answers at once, one answer for each of six categories drawn for the game from eight (country, city, animal, plant, food, first name, job, thing at home).
+    - An empty answer, one that doesn't start with the letter, or a blocked word scores nothing (a blocked word is blanked, so nobody else sees it).
+    - An answer in the language's pack of known answers counts at once. Any other goes to a vote: everyone but its author votes at once and in secret, and it counts unless most vote it out (a tie lets it in).
+    - An answer nobody else gave scores 10; one others gave too (the same letters, spaces aside) scores 5 each. The most points win; a tie is shared.
+  - **Known answers** (`content/`): every country, and cities, animals, plants, food, first names, jobs and things at home, about 1,200 in each language on the 20 letters each plays with (English without Q, U, V, X, Y and Z; Bulgarian without Ж, Й, Ш, Щ, Ъ, Ь, Ю, Я, У and Ц). The Bulgarian ones need the owner's review.
+  - **Secrets:** sheets stay hidden until all are in, ballots until all are cast, and the letters still to come; online on the table. A typed sheet is checked by `accepts`.
+  - **The clock:** a clock running out would send an empty sheet, so the renderer watches the clocks the session reports and sends what's typed (or the ballot as it stands) 2 s before. No clock by default on one device; online rooms start with 90 s.
+  - **On one device:** players answer and vote in turn. No cover is needed: a sent sheet or ballot is in nobody else's view.
+  - **Bots:**
+    - They answer from the packs, so their answers always count: easy fills about half the categories with the most common answers, medium three quarters, hard nearly all with less common ones.
+    - Easy lets every doubtful answer in. Medium and hard let in a known answer misspelt by a letter or two, a dictionary word for a category of things, or anything plausible as a city or a name; never an unknown country.
+    - Measured over 150 two-player games: medium took 94% of the points against easy, hard 100% against easy and 93% against medium.
+  - **Boards:** none. **Achievements:** wins and games played.
+  - **Server:** a fixture of three Bulgarian rounds with dictionary words, so every round has a vote. Deno 145/145.
+  - Checked:
+    - the rules and packs, 46 checks: the packs (clean, not blocked, no duplicates, each letter's coverage), marks, votes, shared and unique points, a round with no vote, blocked words, and views at 2 to 10 players that never show another seat's sheet, ballot or a later letter;
+    - in Chrome, 41/41:
+      - the pages in English and Bulgarian, and none in Arabic;
+      - a round against bots: Enter moving between fields, a wrong first letter flagged, the vote on a made-up answer and its tally, the points, and the end with earlier rounds;
+      - two players on one device, each voting on the other's answer;
+      - a 60 s clock sending a typed answer by itself;
+      - 360, 768 and 1280 px, both themes, Bulgarian with phonetic typing, and axe.
 
 ## Known issues
 

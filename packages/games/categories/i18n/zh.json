@@ -1,0 +1,106 @@
+{
+  "name": "分类游戏",
+  "tagline": "一个字母，六个类别，大家同时作答。",
+  "description": "免费玩分类游戏：用随机字母说出国家、城市、动物等，可对战机器人、在一台设备上或在线玩，支持英语和保加利亚语。",
+  "about": [
+    "Categories is the classic pencil-and-paper word game for 2 to 10 players. Each round a letter is drawn, and everyone at once names a country, a city, an animal and more that start with it.",
+    "Each game uses six of eight categories: country, city, animal, plant, food, first name, job and thing at home. An answer nobody else gave scores 10; one that others gave too scores 5 each. An empty answer, or one with the wrong first letter, scores nothing.",
+    "Answers the game knows count straight away. Any other answer goes to a vote: everyone else says whether it fits, and it counts unless most of them vote it out. Play against bots, with friends on one device, or online, where every sheet is held on our server until all are in."
+  ],
+  "howToPlay": [
+    "Choose the language of the answers and 3 or 5 rounds, then play against bots, on this device or in a room.",
+    "A letter is drawn. Type an answer for each category that starts with it, then press Done. Enter moves to the next field.",
+    "When everyone is done, all the answers are shown. Vote on the ones the game doesn't know: Counts or Doesn't count.",
+    "Unique answers score 10, shared ones 5. After the last round, the most points win.",
+    "With a clock on, your answers are sent as they are when time runs out."
+  ],
+  "controls": [
+    "Type with your keyboard or your phone's; Enter moves to the next field.",
+    "In Bulgarian, a keyboard without Cyrillic types phonetically (A gives А).",
+    "Tap or click Counts or Doesn't count to vote, then Done voting."
+  ],
+  "tips": [
+    "Fill every field, even with a plain answer: 5 points beat none.",
+    "An unusual answer is worth double, if nobody else thinks of it.",
+    "Spelling matters: answers are compared letter by letter, so a typo isn't shared, but it may be voted out.",
+    "Keep an eye on the clock: what you've typed is sent when it runs out."
+  ],
+  "faq": [
+    {
+      "question": "Is it free to play?",
+      "answer": "Yes. kefche is free, has no ads, and you don't need an account to play."
+    },
+    {
+      "question": "Who decides if an answer counts?",
+      "answer": "Answers in the game's own lists count at once. Any other goes to a vote of the other players; it counts unless most of them vote it out, so a tie lets it in."
+    },
+    {
+      "question": "Can others see my answers before I'm done?",
+      "answer": "No. Answers stay hidden until everyone has sent theirs; online, they're held on our server."
+    },
+    {
+      "question": "How do the bots play?",
+      "answer": "They answer from the game's lists: easy ones leave many fields empty, hard ones fill nearly all with less obvious answers. Easy bots let every answer in; the others vote by how likely an answer looks."
+    },
+    {
+      "question": "Which languages can I play in?",
+      "answer": "English and Bulgarian for now. More languages are coming with their answer lists."
+    }
+  ],
+  "ui": {
+    "rounds3": "3",
+    "rounds5": "5",
+    "markKnown": "✓",
+    "markPoints": "+{n}",
+    "scoreLine": "{name}：{points}",
+    "packOption": "语言",
+    "packEn": "英语",
+    "packBg": "保加利亚语",
+    "roundsOption": "轮数",
+    "scores": "得分",
+    "roundN": "第 {n} 轮，共 {total} 轮",
+    "letterIs": "字母",
+    "catCountry": "国家",
+    "catCity": "城市",
+    "catAnimal": "动物",
+    "catPlant": "植物",
+    "catFood": "食物",
+    "catName": "人名",
+    "catJob": "职业",
+    "catThing": "家中物品",
+    "sheet": "你的答案",
+    "answerHint": "每个答案都以 {letter} 开头。想不出来就留空。",
+    "wrongLetter": "不是以 {letter} 开头",
+    "send": "完成",
+    "stillAnswering": "仍在作答：{names}",
+    "stillVoting": "仍在投票：{names}",
+    "voteTitle": "为这些答案投票",
+    "voteHelp": "每个答案符合它的类别吗？除非多数人反对，否则就算数。",
+    "voteIn": "算数",
+    "voteOut": "不算",
+    "voteOn": "{answer}，来自 {name}",
+    "yours": "你的答案：由其他人决定",
+    "sendVotes": "投票完成",
+    "thisRound": "本轮：{letter}",
+    "lastRound": "上一轮：{letter}",
+    "roundLetter": "第 {n} 轮：{letter}",
+    "earlier": "之前的轮次",
+    "tally": "{answer}：{yes} 票赞成，{no} 票反对",
+    "markEmpty": "未作答",
+    "markLetter": "字母不对",
+    "markBlocked": "不允许",
+    "markDoubt": "待投票",
+    "markOut": "被否决"
+  },
+  "achievements": {
+    "winner": {
+      "name": "赢家",
+      "description": "赢得 {count, plural, other {# 局}}"
+    },
+    "veteran": {
+      "name": "老手",
+      "description": "玩 {count, plural, other {# 局}}"
+    }
+  },
+  "leaderboards": {}
+}
